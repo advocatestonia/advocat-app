@@ -71,11 +71,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get aiErrorRateLimit =>
-      'The service is temporarily overloaded. Please try again in 1-2 minutes.';
+      'Usługa jest tymczasowo przeciążona. Spróbuj ponownie za 1-2 minuty.';
 
   @override
   String get aiErrorOverload =>
-      'The AI is busy right now, please try again in a minute.';
+      'AI jest teraz zajęte, spróbuj ponownie za chwilę.';
 
   @override
   String freeLimitReached(int count) {
@@ -191,11 +191,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get continueWithGoogle => 'Kontynuuj z Google';
 
   @override
-  String get appleComingSoon => 'Coming soon';
+  String get appleComingSoon => 'Już wkrótce';
 
   @override
   String get appleComingSoonMessage =>
-      'Apple Sign-In becomes available soon. Use Google or email to continue.';
+      'Logowanie przez Apple będzie wkrótce dostępne. Użyj Google lub e-maila, aby kontynuować.';
 
   @override
   String get copyText => 'Kopiuj tekst';
@@ -619,31 +619,31 @@ class AppLocalizationsPl extends AppLocalizations {
   String get privacyPolicy => 'Politykę prywatności';
 
   @override
-  String get dpaTitle => 'Data Processing Agreement';
+  String get dpaTitle => 'Umowa powierzenia przetwarzania danych';
 
   @override
-  String get dpaCheckoutGateTitle => 'Before you upgrade';
+  String get dpaCheckoutGateTitle => 'Zanim przejdziesz na wyższy plan';
 
   @override
   String get dpaCheckoutGateBody =>
-      'EU law (GDPR Art. 28) requires us to sign a Data Processing Agreement with every paying customer. Please review and accept.';
+      'Prawo UE (art. 28 RODO) wymaga od nas zawarcia umowy powierzenia przetwarzania danych z każdym płacącym klientem. Zapoznaj się z nią i zaakceptuj.';
 
   @override
-  String get dpaViewLink => 'View Data Processing Agreement';
+  String get dpaViewLink => 'Wyświetl umowę powierzenia przetwarzania danych';
 
   @override
   String get dpaCheckboxLabel =>
-      'I have read and accept the Data Processing Agreement (v1.0).';
+      'Przeczytałem(-am) i akceptuję umowę powierzenia przetwarzania danych (v1.0).';
 
   @override
-  String get dpaCancel => 'Cancel';
+  String get dpaCancel => 'Anuluj';
 
   @override
-  String get dpaAcceptAndContinue => 'Accept and continue';
+  String get dpaAcceptAndContinue => 'Zaakceptuj i kontynuuj';
 
   @override
   String get dpaOpenHint =>
-      'Open the DPA at least once to enable the Accept button.';
+      'Otwórz umowę powierzenia przynajmniej raz, aby aktywować przycisk Zaakceptuj.';
 
   @override
   String get pro => 'Pro';
@@ -1267,54 +1267,56 @@ class AppLocalizationsPl extends AppLocalizations {
   String get caseInfoUpdated => 'Informacje o sprawie zostały zaktualizowane.';
 
   @override
-  String get noEventsForFilter => 'No events match this filter';
+  String get noEventsForFilter => 'Brak zdarzeń pasujących do tego filtra';
 
   @override
-  String get timelineFilterAll => 'All';
+  String get timelineFilterAll => 'Wszystkie';
 
   @override
-  String get timelineFilterEmails => 'Emails';
+  String get timelineFilterEmails => 'E-maile';
 
   @override
-  String get timelineFilterConsilium => 'AI decisions';
+  String get timelineFilterConsilium => 'Decyzje AI';
 
   @override
-  String get timelineFilterDeadlines => 'Deadlines';
+  String get timelineFilterDeadlines => 'Terminy';
 
   @override
-  String get timelineFilterNotes => 'Notes';
+  String get timelineFilterNotes => 'Notatki';
 
   @override
-  String get timelineEventEmailIn => 'Email received';
+  String get timelineEventEmailIn => 'E-mail otrzymany';
 
   @override
-  String get timelineEventEmailOut => 'Email sent';
+  String get timelineEventEmailOut => 'E-mail wysłany';
 
   @override
-  String get timelineEventConsiliumDecision => 'AI decision';
+  String get timelineEventConsiliumDecision => 'Decyzja AI';
 
   @override
-  String get timelineEventDeadlineSet => 'Deadline';
+  String get timelineEventDeadlineSet => 'Termin';
 
   @override
-  String get timelineEventDocUploaded => 'Document';
+  String get timelineEventDocUploaded => 'Dokument';
 
   @override
-  String get timelineEventPhaseChange => 'Phase change';
+  String get timelineEventPhaseChange => 'Zmiana fazy';
 
   @override
-  String get timelineEventManualNote => 'Note';
+  String get timelineEventManualNote => 'Notatka';
 
   @override
-  String get timelineJustNow => 'Just now';
+  String get timelineJustNow => 'Przed chwilą';
 
   @override
   String timelineMinutesAgo(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count minutes ago',
-      one: '1 minute ago',
+      other: '$count minuty temu',
+      many: '$count minut temu',
+      few: '$count minuty temu',
+      one: '1 minutę temu',
     );
     return '$_temp0';
   }
@@ -1324,8 +1326,10 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count hours ago',
-      one: '1 hour ago',
+      other: '$count godziny temu',
+      many: '$count godzin temu',
+      few: '$count godziny temu',
+      one: '1 godzinę temu',
     );
     return '$_temp0';
   }
@@ -1335,8 +1339,10 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days ago',
-      one: '1 day ago',
+      other: '$count dnia temu',
+      many: '$count dni temu',
+      few: '$count dni temu',
+      one: '1 dzień temu',
     );
     return '$_temp0';
   }
@@ -1615,10 +1621,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get gmailReauthBannerBody =>
-      'Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.';
+      'Advocat v2.1 czyta Twoją skrzynkę, aby przygotowywać odpowiedzi; możesz cofnąć dostęp w dowolnym momencie. Połącz ponownie Gmail, aby włączyć proaktywne sortowanie.';
 
   @override
-  String get gmailReauthBannerCta => 'Reauthorize';
+  String get gmailReauthBannerCta => 'Autoryzuj ponownie';
 
   @override
   String connectedTo(String email) {
@@ -2726,408 +2732,411 @@ class AppLocalizationsPl extends AppLocalizations {
   String get backToChat => 'Wróć do czatu';
 
   @override
-  String get upgradeBannerTitle => 'Upgrade for unlimited consultations';
+  String get upgradeBannerTitle =>
+      'Przejdź na wyższy plan, aby uzyskać nieograniczone konsultacje';
 
   @override
-  String get upgradeBannerCta => 'Upgrade';
+  String get upgradeBannerCta => 'Ulepsz plan';
 
   @override
-  String get paymentSuccessTitle => 'Payment successful';
+  String get paymentSuccessTitle => 'Płatność zakończona pomyślnie';
 
   @override
-  String get paymentSuccessBody => 'Your subscription is now active.';
+  String get paymentSuccessBody => 'Twoja subskrypcja jest teraz aktywna.';
 
   @override
   String get commonOk => 'OK';
 
   @override
-  String get feedbackThumbsUpLabel => 'Helpful';
+  String get feedbackThumbsUpLabel => 'Pomocne';
 
   @override
-  String get feedbackThumbsDownLabel => 'Not helpful';
+  String get feedbackThumbsDownLabel => 'Niepomocne';
 
   @override
-  String get feedbackCommentPrompt => 'What was wrong?';
+  String get feedbackCommentPrompt => 'Co było nie tak?';
 
   @override
-  String get feedbackSend => 'Send';
+  String get feedbackSend => 'Wyślij';
 
   @override
-  String get feedbackCancel => 'Cancel';
+  String get feedbackCancel => 'Anuluj';
 
   @override
-  String get reasoningPillIdle => 'Thinking…';
+  String get reasoningPillIdle => 'Myślę…';
 
   @override
-  String get reasoningPillSearchingLaw => 'Searching Estonian law…';
+  String get reasoningPillSearchingLaw => 'Przeszukuję prawo estońskie…';
 
   @override
-  String get reasoningPillSearchingWeb => 'Searching the web…';
+  String get reasoningPillSearchingWeb => 'Przeszukuję sieć…';
 
   @override
-  String get reasoningPillCheckingCompany => 'Checking company registry…';
+  String get reasoningPillCheckingCompany =>
+      'Sprawdzam rejestr przedsiębiorstw…';
 
   @override
-  String get reasoningPillCheckingVehicle => 'Checking vehicle registry…';
+  String get reasoningPillCheckingVehicle => 'Sprawdzam rejestr pojazdów…';
 
   @override
-  String get reasoningPillReadingDocument => 'Reading your document…';
+  String get reasoningPillReadingDocument => 'Czytam Twój dokument…';
 
   @override
-  String get reasoningPillDrafting => 'Drafting the document…';
+  String get reasoningPillDrafting => 'Przygotowuję dokument…';
 
   @override
-  String get reasoningPillPreparingEmail => 'Preparing email…';
+  String get reasoningPillPreparingEmail => 'Przygotowuję e-mail…';
 
   @override
-  String get reasoningPillFindingLawyer => 'Looking up lawyers…';
+  String get reasoningPillFindingLawyer => 'Wyszukuję prawników…';
 
   @override
-  String get reasoningPillThinking => 'Reasoning through your case…';
+  String get reasoningPillThinking => 'Analizuję Twoją sprawę…';
 
   @override
-  String get reasoningPillFinalising => 'Composing your answer…';
+  String get reasoningPillFinalising => 'Tworzę Twoją odpowiedź…';
 
   @override
   String reasoningCollapsedFormat(int sec, int sources) {
-    return 'Reasoned for ${sec}s · $sources sources';
+    return 'Analiza trwała $sec s · $sources źródeł';
   }
 
   @override
-  String get reasoningExpandHint => 'tap to see steps';
+  String get reasoningExpandHint => 'dotknij, aby zobaczyć kroki';
 
   @override
-  String get caseFileTitle => 'Case File';
+  String get caseFileTitle => 'Akta sprawy';
 
   @override
-  String get caseFileTimeline => 'Timeline';
+  String get caseFileTimeline => 'Oś czasu';
 
   @override
-  String get caseFileParties => 'Parties';
+  String get caseFileParties => 'Strony';
 
   @override
-  String get caseFileDeadlines => 'Deadlines';
+  String get caseFileDeadlines => 'Terminy';
 
   @override
-  String get caseFileExportPdf => 'Download dossier (PDF)';
+  String get caseFileExportPdf => 'Pobierz akta (PDF)';
 
   @override
   String get caseFileEmpty =>
-      'Chat with the AI about your case — your timeline will build itself.';
+      'Porozmawiaj z AI o swojej sprawie — oś czasu zbuduje się sama.';
 
   @override
   String get caseFileDisclaimer =>
-      'This dossier is auto-extracted from your chat. It is not legal advice.';
+      'Te akta są automatycznie wyodrębniane z Twojej rozmowy. To nie jest porada prawna.';
 
   @override
-  String get caseFileTabLabel => 'Case';
+  String get caseFileTabLabel => 'Sprawa';
 
   @override
-  String get refresh => 'Refresh';
+  String get refresh => 'Odśwież';
 
   @override
   String get demoLimitReached =>
-      'Demo limit reached. Sign up for free to continue.';
+      'Osiągnięto limit wersji demo. Zarejestruj się bezpłatnie, aby kontynuować.';
 
   @override
-  String get demoLimitSignUpCta => 'Sign up';
+  String get demoLimitSignUpCta => 'Zarejestruj się';
 
   @override
   String get freeQuotaExhausted =>
-      'You\'ve used all 10 free messages this month.';
+      'Wykorzystałeś(-aś) wszystkie 10 bezpłatnych wiadomości w tym miesiącu.';
 
   @override
-  String get upgradeForUnlimited => 'Upgrade to Pro for unlimited';
+  String get upgradeForUnlimited =>
+      'Przejdź na Pro, aby uzyskać dostęp bez limitów';
 
   @override
-  String get upgradeCta => 'Upgrade';
+  String get upgradeCta => 'Ulepsz plan';
 
   @override
   String get rateLimitTryAgain =>
-      'Sending too fast. Try again in a few seconds.';
+      'Wysyłasz zbyt szybko. Spróbuj ponownie za kilka sekund.';
 
   @override
   String get quickProfilePrompt =>
-      'So I can help more precisely, what is your legal status: are you an Estonian citizen, an EU citizen from another country, or do you have a residence permit?';
+      'Abym mógł pomóc Ci dokładniej, jaki jest Twój status prawny: jesteś obywatelem Estonii, obywatelem UE z innego kraju, czy posiadasz zezwolenie na pobyt?';
 
   @override
-  String get quickProfileChipEstonianCitizen => 'Estonian citizen';
+  String get quickProfileChipEstonianCitizen => 'Obywatel Estonii';
 
   @override
-  String get quickProfileChipEuCitizen => 'EU citizen (other)';
+  String get quickProfileChipEuCitizen => 'Obywatel UE (inny)';
 
   @override
-  String get quickProfileChipResidencePermit => 'Residence permit';
+  String get quickProfileChipResidencePermit => 'Zezwolenie na pobyt';
 
   @override
-  String get quickProfileSkipBtn => 'Skip';
+  String get quickProfileSkipBtn => 'Pomiń';
 
   @override
-  String get quickProfileSavedAck => 'Got it. Now, what\'s your question?';
+  String get quickProfileSavedAck =>
+      'Zrozumiałem. A teraz, jakie jest Twoje pytanie?';
 
   @override
-  String get caseTitleLabel => 'Case title';
+  String get caseTitleLabel => 'Tytuł sprawy';
 
   @override
-  String get jurisdictionLabel => 'Jurisdiction';
+  String get jurisdictionLabel => 'Jurysdykcja';
 
   @override
-  String get caseTypeLabel => 'Case type';
+  String get caseTypeLabel => 'Rodzaj sprawy';
 
   @override
-  String get caseLanguageLabel => 'Language';
+  String get caseLanguageLabel => 'Język';
 
   @override
-  String get caseNumbersSection => 'Case numbers';
+  String get caseNumbersSection => 'Numery spraw';
 
   @override
-  String get partiesSection => 'Parties';
+  String get partiesSection => 'Strony';
 
   @override
-  String get authoritiesSection => 'Authorities';
+  String get authoritiesSection => 'Organy';
 
   @override
-  String get timelineSection => 'Timeline';
+  String get timelineSection => 'Oś czasu';
 
   @override
-  String get openQuestionsSection => 'Open questions';
+  String get openQuestionsSection => 'Otwarte pytania';
 
   @override
-  String get nextActionsSection => 'Next actions';
+  String get nextActionsSection => 'Następne działania';
 
   @override
-  String get summarySection => 'Summary';
+  String get summarySection => 'Podsumowanie';
 
   @override
-  String get addRow => 'Add row';
+  String get addRow => 'Dodaj wiersz';
 
   @override
-  String get removeRow => 'Remove';
+  String get removeRow => 'Usuń';
 
   @override
-  String get archiveCase => 'Archive case';
+  String get archiveCase => 'Archiwizuj sprawę';
 
   @override
-  String get closeCase => 'Close case';
+  String get closeCase => 'Zamknij sprawę';
 
   @override
-  String get continueChatAboutCase => 'Continue chat about this case';
+  String get continueChatAboutCase => 'Kontynuuj czat o tej sprawie';
 
   @override
-  String get linkChatToCase => 'Link to case';
+  String get linkChatToCase => 'Powiąż ze sprawą';
 
   @override
-  String get clearActiveCase => 'Clear active case';
+  String get clearActiveCase => 'Wyczyść aktywną sprawę';
 
   @override
-  String get caseSavedAck => 'Case saved';
+  String get caseSavedAck => 'Sprawa zapisana';
 
   @override
-  String get caseArchivedAck => 'Case archived';
+  String get caseArchivedAck => 'Sprawa zarchiwizowana';
 
   @override
-  String get intakeStep1Title => 'Where is the case?';
+  String get intakeStep1Title => 'Gdzie toczy się sprawa?';
 
   @override
-  String get intakeStep1Subtitle =>
-      'Country and authority you are dealing with.';
+  String get intakeStep1Subtitle => 'Kraj i organ, z którym masz do czynienia.';
 
   @override
-  String get intakeJurisdictionLabel => 'Country / jurisdiction';
+  String get intakeJurisdictionLabel => 'Kraj / jurysdykcja';
 
   @override
-  String get intakeAuthorityLabel => 'Authority type';
+  String get intakeAuthorityLabel => 'Rodzaj organu';
 
   @override
-  String get intakeAuthorityNameLabel => 'Authority name (optional)';
+  String get intakeAuthorityNameLabel => 'Nazwa organu (opcjonalnie)';
 
   @override
-  String get intakeAuthorityPolice => 'Police';
+  String get intakeAuthorityPolice => 'Policja';
 
   @override
-  String get intakeAuthorityCourt => 'Court';
+  String get intakeAuthorityCourt => 'Sąd';
 
   @override
-  String get intakeAuthoritySocial => 'Social services';
+  String get intakeAuthoritySocial => 'Pomoc społeczna';
 
   @override
-  String get intakeAuthorityEmployer => 'Employer';
+  String get intakeAuthorityEmployer => 'Pracodawca';
 
   @override
-  String get intakeAuthorityLandlord => 'Landlord';
+  String get intakeAuthorityLandlord => 'Wynajmujący';
 
   @override
-  String get intakeAuthorityOpposingParty => 'Opposing party';
+  String get intakeAuthorityOpposingParty => 'Strona przeciwna';
 
   @override
-  String get intakeAuthorityOther => 'Other';
+  String get intakeAuthorityOther => 'Inne';
 
   @override
-  String get intakeStep2Title => 'What kind of case?';
+  String get intakeStep2Title => 'Jakiego rodzaju to sprawa?';
 
   @override
   String get intakeStep2Subtitle =>
-      'Pick the closest type — you can refine later.';
+      'Wybierz najbliższy rodzaj — możesz go później doprecyzować.';
 
   @override
-  String get intakeCaseTypeCriminal => 'Criminal';
+  String get intakeCaseTypeCriminal => 'Karna';
 
   @override
-  String get intakeCaseTypeCivil => 'Civil';
+  String get intakeCaseTypeCivil => 'Cywilna';
 
   @override
-  String get intakeCaseTypeFamily => 'Family';
+  String get intakeCaseTypeFamily => 'Rodzinna';
 
   @override
-  String get intakeCaseTypeAdmin => 'Administrative';
+  String get intakeCaseTypeAdmin => 'Administracyjna';
 
   @override
-  String get intakeCaseTypeImmigration => 'Immigration';
+  String get intakeCaseTypeImmigration => 'Imigracyjna';
 
   @override
-  String get intakeCaseTypeLabor => 'Labor';
+  String get intakeCaseTypeLabor => 'Pracownicza';
 
   @override
-  String get intakeCaseTypeConsumer => 'Consumer';
+  String get intakeCaseTypeConsumer => 'Konsumencka';
 
   @override
-  String get intakeCaseTypeInheritance => 'Inheritance';
+  String get intakeCaseTypeInheritance => 'Spadkowa';
 
   @override
-  String get intakeCaseTypeOther => 'Other';
+  String get intakeCaseTypeOther => 'Inna';
 
   @override
-  String get intakeStep3Title => 'Who is involved?';
+  String get intakeStep3Title => 'Kto jest zaangażowany?';
 
   @override
-  String get intakeStep3Subtitle => 'Your role and the other side.';
+  String get intakeStep3Subtitle => 'Twoja rola i strona przeciwna.';
 
   @override
-  String get intakeRoleLabel => 'Your role';
+  String get intakeRoleLabel => 'Twoja rola';
 
   @override
-  String get intakeRolePlaintiff => 'Plaintiff';
+  String get intakeRolePlaintiff => 'Powód';
 
   @override
-  String get intakeRoleDefendant => 'Defendant';
+  String get intakeRoleDefendant => 'Pozwany';
 
   @override
-  String get intakeRoleVictim => 'Victim';
+  String get intakeRoleVictim => 'Pokrzywdzony';
 
   @override
-  String get intakeRoleAccused => 'Accused';
+  String get intakeRoleAccused => 'Oskarżony';
 
   @override
-  String get intakeRoleWitness => 'Witness';
+  String get intakeRoleWitness => 'Świadek';
 
   @override
-  String get intakeRoleFamily => 'Family member';
+  String get intakeRoleFamily => 'Członek rodziny';
 
   @override
-  String get intakeRoleOther => 'Other';
+  String get intakeRoleOther => 'Inna';
 
   @override
-  String get intakeOpposingSideLabel => 'Opposing side (optional)';
+  String get intakeOpposingSideLabel => 'Strona przeciwna (opcjonalnie)';
 
   @override
-  String get intakeWitnessesLabel => 'Witnesses (optional)';
+  String get intakeWitnessesLabel => 'Świadkowie (opcjonalnie)';
 
   @override
-  String get intakeAddWitness => 'Add witness';
+  String get intakeAddWitness => 'Dodaj świadka';
 
   @override
-  String get intakeWitnessHint => 'Name or contact';
+  String get intakeWitnessHint => 'Imię lub kontakt';
 
   @override
-  String get intakeStep4Title => 'Numbers & dates';
+  String get intakeStep4Title => 'Numery i daty';
 
   @override
   String get intakeStep4Subtitle =>
-      'Whatever you already have. Skip what you don\'t.';
+      'Wszystko, co już masz. Pomiń to, czego nie masz.';
 
   @override
-  String get intakeCaseNumberLabel => 'Case number (optional)';
+  String get intakeCaseNumberLabel => 'Numer sprawy (opcjonalnie)';
 
   @override
-  String get intakeIncidentDateLabel => 'Incident date (optional)';
+  String get intakeIncidentDateLabel => 'Data zdarzenia (opcjonalnie)';
 
   @override
-  String get intakeIncidentDatePick => 'Pick date';
+  String get intakeIncidentDatePick => 'Wybierz datę';
 
   @override
-  String get intakeDeadlinesLabel => 'Known deadlines';
+  String get intakeDeadlinesLabel => 'Znane terminy';
 
   @override
-  String get intakeAddDeadline => 'Add deadline';
+  String get intakeAddDeadline => 'Dodaj termin';
 
   @override
-  String get intakeDeadlineWhatHint => 'What';
+  String get intakeDeadlineWhatHint => 'Co';
 
   @override
-  String get intakeStep5Title => 'Documents';
+  String get intakeStep5Title => 'Dokumenty';
 
   @override
   String get intakeStep5Subtitle =>
-      'Upload anything relevant. We will read it.';
+      'Prześlij wszystko, co istotne. Przeczytamy to.';
 
   @override
-  String get intakeUploadDocsLabel => 'Upload documents';
+  String get intakeUploadDocsLabel => 'Prześlij dokumenty';
 
   @override
-  String get intakeSkipDocs => 'Skip — I\'ll upload later';
+  String get intakeSkipDocs => 'Pomiń — prześlę później';
 
   @override
-  String get intakeNextBtn => 'Next';
+  String get intakeNextBtn => 'Dalej';
 
   @override
-  String get intakeBackBtn => 'Back';
+  String get intakeBackBtn => 'Wstecz';
 
   @override
-  String get intakeFinishBtn => 'Finish & open chat';
+  String get intakeFinishBtn => 'Zakończ i otwórz czat';
 
   @override
-  String get intakeUrgentBtn => 'Urgent — ask now';
+  String get intakeUrgentBtn => 'Pilne — zapytaj teraz';
 
   @override
-  String get intakeUrgentDialogTitle => 'Open chat now?';
+  String get intakeUrgentDialogTitle => 'Otworzyć czat teraz?';
 
   @override
   String get intakeUrgentDialogBody =>
-      'We\'ll save what you\'ve entered as a draft case. You can finish the wizard from the case page anytime.';
+      'Zapiszemy wprowadzone dane jako wersję roboczą sprawy. Kreator możesz dokończyć ze strony sprawy w dowolnym momencie.';
 
   @override
-  String get intakeUrgentConfirm => 'Open chat';
+  String get intakeUrgentConfirm => 'Otwórz czat';
 
   @override
-  String get intakeUrgentCancel => 'Keep filling';
+  String get intakeUrgentCancel => 'Wypełniaj dalej';
 
   @override
-  String get intakePreparingCase => 'Preparing your case…';
+  String get intakePreparingCase => 'Przygotowuję Twoją sprawę…';
 
   @override
   String get intakeFallbackGreeting =>
-      'I see your case. Tell me what\'s most pressing — I\'ll work through it with you.';
+      'Widzę Twoją sprawę. Powiedz mi, co jest najpilniejsze — przeanalizuję to razem z Tobą.';
 
   @override
   String get intakeUrgentGreeting =>
-      'I see this is urgent. Ask your question — I\'ll fill in the rest as we go.';
+      'Widzę, że to pilne. Zadaj pytanie — resztę uzupełnię w trakcie.';
 
   @override
   String intakeStepIndicator(int current, int total) {
-    return 'Step $current of $total';
+    return 'Krok $current z $total';
   }
 
   @override
-  String get intakeFieldRequired => 'Required';
+  String get intakeFieldRequired => 'Wymagane';
 
   @override
   String intakeUploadProgress(int done, int total) {
-    return 'Uploading $done / $total…';
+    return 'Przesyłanie $done / $total…';
   }
 
   @override
   String get uplDisclaimerFooter =>
-      'Advocat is not a law firm. This is information, not legal advice.';
+      'Advocat nie jest kancelarią prawną. To informacja, a nie porada prawna.';
 
   @override
   String get citationStatusVerifiedBadge => 'Zweryfikowano';
@@ -3459,110 +3468,135 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String parallelActionsHeadline(int count) {
-    return 'Consilium recommends $count parallel actions';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count działania równoległe',
+      many: '$count działań równoległych',
+      few: '$count działania równoległe',
+      one: '1 działanie równoległe',
+    );
+    return 'Konsylium zaleca $_temp0';
   }
 
   @override
-  String get parallelActionsApproveAll => 'Approve All & Send';
+  String get parallelActionsApproveAll => 'Zatwierdź wszystkie i wyślij';
 
   @override
   String parallelActionsApproveSelected(int count, int total) {
-    return 'Approve $count of $total';
+    return 'Zatwierdź $count z $total';
   }
 
   @override
   String parallelActionsConfirmTitle(int count) {
-    return 'Send $count emails?';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count e-maila',
+      many: '$count e-maili',
+      few: '$count e-maile',
+      one: '1 e-mail',
+    );
+    return 'Wysłać $_temp0?';
   }
 
   @override
   String parallelActionsConfirmBody(int count) {
-    return 'Advocat will dispatch $count prepared replies via your connected Gmail. Each one is sent independently — if any one fails, the others still go.';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count przygotowane odpowiedzi',
+      many: '$count przygotowanych odpowiedzi',
+      few: '$count przygotowane odpowiedzi',
+      one: '1 przygotowaną odpowiedź',
+    );
+    return 'Advocat wyśle $_temp0 przez połączony Gmail. Każda jest wysyłana niezależnie — jeśli jedna się nie powiedzie, pozostałe i tak zostaną wysłane.';
   }
 
   @override
   String parallelActionsSentToast(int count) {
-    return '$count sent.';
+    return 'Wysłano: $count.';
   }
 
   @override
   String parallelActionsPartialFailureToast(int sent, int failed) {
-    return '$sent sent, $failed failed.';
+    return 'Wysłano: $sent, nieudane: $failed.';
   }
 
   @override
-  String get parallelActionsKindReply => 'reply';
+  String get parallelActionsKindReply => 'odpowiedź';
 
   @override
-  String get parallelActionsKindNew => 'new';
+  String get parallelActionsKindNew => 'nowy';
 
   @override
-  String get parallelActionsCheckboxSelected => 'Action selected';
+  String get parallelActionsCheckboxSelected => 'Działanie wybrane';
 
   @override
-  String get parallelActionsCheckboxUnselected => 'Action not selected';
+  String get parallelActionsCheckboxUnselected => 'Działanie niewybrane';
 
   @override
   String parallelActionsCitationCount(int count) {
-    return '$count cit';
+    return '$count cyt.';
   }
 
   @override
   String parallelActionsRetryFailed(int count) {
-    return 'Retry failed ($count)';
+    return 'Ponów nieudane ($count)';
   }
 
   @override
-  String get agentApprovalNeedsReviewTitle => 'Advocat needs your approval';
+  String get agentApprovalNeedsReviewTitle =>
+      'Advocat potrzebuje Twojego zatwierdzenia';
 
   @override
-  String get agentApprovalResolvedTitle => 'Action resolved';
+  String get agentApprovalResolvedTitle => 'Działanie rozstrzygnięte';
 
   @override
-  String get agentApprovalStepsLabel => 'steps';
+  String get agentApprovalStepsLabel => 'kroki';
 
   @override
-  String get agentApprovalApproveButton => 'Approve & Send';
+  String get agentApprovalApproveButton => 'Zatwierdź i wyślij';
 
   @override
-  String get agentApprovalDeclineButton => 'Decline';
+  String get agentApprovalDeclineButton => 'Odrzuć';
 
   @override
-  String get agentApprovalAttachmentsLabel => 'Attachments';
+  String get agentApprovalAttachmentsLabel => 'Załączniki';
 
   @override
-  String get agentApprovalSentSummary => 'Sent on your behalf.';
+  String get agentApprovalSentSummary => 'Wysłano w Twoim imieniu.';
 
   @override
-  String get agentApprovalDeclinedSummary => 'Declined — nothing was sent.';
+  String get agentApprovalDeclinedSummary => 'Odrzucono — nic nie wysłano.';
 
   @override
-  String get agentToolDraftEmailAtt => 'Send email with attachments';
+  String get agentToolDraftEmailAtt => 'Wyślij e-mail z załącznikami';
 
   @override
-  String get agentToolSendEmail => 'Send email';
+  String get agentToolSendEmail => 'Wyślij e-mail';
 
   @override
-  String get agentToolGeneratePdf => 'Generate PDF';
+  String get agentToolGeneratePdf => 'Wygeneruj PDF';
 
   @override
-  String get agentToolApproveSend => 'Send prepared reply';
+  String get agentToolApproveSend => 'Wyślij przygotowaną odpowiedź';
 
   @override
-  String get inboxErrorTitle => 'Could not load inbox';
+  String get inboxErrorTitle => 'Nie można załadować skrzynki odbiorczej';
 
   @override
-  String get inboxEditDiscardTitle => 'Discard unsaved edits?';
+  String get inboxEditDiscardTitle => 'Odrzucić niezapisane zmiany?';
 
   @override
   String get inboxEditDiscardBody =>
-      'You have unsaved changes to this draft. Going back will discard them.';
+      'Masz niezapisane zmiany w tej wersji roboczej. Powrót spowoduje ich odrzucenie.';
 
   @override
-  String get inboxEditKeepEditing => 'Keep editing';
+  String get inboxEditKeepEditing => 'Kontynuuj edycję';
 
   @override
-  String get inboxEditDiscard => 'Discard';
+  String get inboxEditDiscard => 'Odrzuć';
 
   @override
   String get workspaceTabOverview => 'Overview';
@@ -3589,71 +3623,71 @@ class AppLocalizationsPl extends AppLocalizations {
   String get workspaceInboxEmpty => 'No related email.';
 
   @override
-  String get plannerSettingsTitle => 'Three-pass legal reasoning';
+  String get plannerSettingsTitle => 'Trzyetapowe rozumowanie prawne';
 
   @override
   String get plannerSettingsSubtitle =>
-      'Plan → answer → critique. Slower but more thorough.';
+      'Plan → odpowiedź → krytyka. Wolniej, ale dokładniej.';
 
   @override
   String get plannerSettingsProBadge => 'Pro';
 
   @override
-  String get plannerSettingsProDescription => 'Available on Pro plan';
+  String get plannerSettingsProDescription => 'Dostępne w planie Pro';
 
   @override
   String get plannerTrailHeaderPlan => 'Plan';
 
   @override
-  String get plannerTrailHeaderCritique => 'Critique';
+  String get plannerTrailHeaderCritique => 'Krytyka';
 
   @override
-  String get plannerTrailSubQuestions => 'Sub-questions';
+  String get plannerTrailSubQuestions => 'Podpytania';
 
   @override
-  String get plannerTrailCounterArgs => 'Counter-arguments';
+  String get plannerTrailCounterArgs => 'Kontrargumenty';
 
   @override
-  String get plannerTrailEvidenceGaps => 'Evidence gaps';
+  String get plannerTrailEvidenceGaps => 'Braki dowodowe';
 
   @override
-  String get plannerTrailMaterialGapTrue => 'Material gap detected';
+  String get plannerTrailMaterialGapTrue => 'Wykryto istotny brak';
 
   @override
-  String get plannerTrailRegeneratedBadge => 'Regenerated once';
+  String get plannerTrailRegeneratedBadge => 'Wygenerowano ponownie raz';
 
   @override
-  String get plannerTrailEmpty => 'no items';
+  String get plannerTrailEmpty => 'brak pozycji';
 
   @override
-  String get supportTitle => 'Help';
+  String get supportTitle => 'Pomoc';
 
   @override
-  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+  String get supportSubtitle => 'Zwykle odpowiadamy w ciągu 1-2 godzin.';
 
   @override
-  String get supportSearchPlaceholder => 'Search help…';
+  String get supportSearchPlaceholder => 'Szukaj w pomocy…';
 
   @override
-  String get supportStatusAllOk => 'All systems normal';
+  String get supportStatusAllOk => 'Wszystkie systemy działają prawidłowo';
 
   @override
-  String get supportFaqWhatIs => 'What is Advocat?';
+  String get supportFaqWhatIs => 'Czym jest Advocat?';
 
   @override
-  String get supportFaqHowSubscribe => 'How do I subscribe to Pro?';
+  String get supportFaqHowSubscribe => 'Jak wykupić plan Pro?';
 
   @override
-  String get supportFaqExportData => 'Can I export my data?';
+  String get supportFaqExportData => 'Czy mogę wyeksportować moje dane?';
 
   @override
-  String get supportFaqCancelAccount => 'Cancel or delete account';
+  String get supportFaqCancelAccount => 'Anulowanie lub usunięcie konta';
 
   @override
-  String get supportFaqTalkHuman => 'Talk to a human';
+  String get supportFaqTalkHuman => 'Porozmawiaj z człowiekiem';
 
   @override
-  String get supportContactEmail => 'Email';
+  String get supportContactEmail => 'E-mail';
 
   @override
   String get supportContactTelegram => 'Telegram';
@@ -3662,58 +3696,59 @@ class AppLocalizationsPl extends AppLocalizations {
   String get supportContactWhatsapp => 'WhatsApp';
 
   @override
-  String get supportFooterSla => 'We respond within 24h';
+  String get supportFooterSla => 'Odpowiadamy w ciągu 24 godz.';
 
   @override
   String get supportWhatsapp => 'WhatsApp';
 
   @override
-  String get supportEmail => 'Email';
+  String get supportEmail => 'E-mail';
 
   @override
-  String get supportInApp => 'Message us here';
+  String get supportInApp => 'Napisz do nas tutaj';
 
   @override
-  String get supportCategoryLabel => 'Category';
+  String get supportCategoryLabel => 'Kategoria';
 
   @override
-  String get supportCategoryBug => 'Bug';
+  String get supportCategoryBug => 'Błąd';
 
   @override
-  String get supportCategoryPayment => 'Payment issue';
+  String get supportCategoryPayment => 'Problem z płatnością';
 
   @override
-  String get supportCategoryQuestion => 'Question';
+  String get supportCategoryQuestion => 'Pytanie';
 
   @override
-  String get supportCategoryFeature => 'Feature request';
+  String get supportCategoryFeature => 'Propozycja funkcji';
 
   @override
-  String get supportCategoryOther => 'Other';
+  String get supportCategoryOther => 'Inne';
 
   @override
-  String get supportMessagePlaceholder => 'Describe your problem...';
+  String get supportMessagePlaceholder => 'Opisz swój problem...';
 
   @override
-  String get supportEmailLabel => 'Email (optional)';
+  String get supportEmailLabel => 'E-mail (opcjonalnie)';
 
   @override
-  String get supportSend => 'Send';
+  String get supportSend => 'Wyślij';
 
   @override
-  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+  String get supportSentSuccess => 'Wiadomość wysłana! Odpowiemy wkrótce.';
 
   @override
-  String get supportError => 'Something went wrong. Try again.';
+  String get supportError => 'Coś poszło nie tak. Spróbuj ponownie.';
 
   @override
-  String get supportErrorTooShort => 'Please write at least 10 characters.';
+  String get supportErrorTooShort => 'Wpisz co najmniej 10 znaków.';
 
   @override
-  String get supportErrorTooLong => 'Maximum 2000 characters.';
+  String get supportErrorTooLong => 'Maksymalnie 2000 znaków.';
 
   @override
-  String get supportPrivacyNotice => 'Your message is stored securely.';
+  String get supportPrivacyNotice =>
+      'Twoja wiadomość jest przechowywana bezpiecznie.';
 
   @override
   String get reviewThisContract => 'Przeanalizuj umowę';
@@ -3838,38 +3873,40 @@ class AppLocalizationsPl extends AppLocalizations {
       'Spodobało się? Zaproś znajomego — obaj dostaniecie darmowy miesiąc.';
 
   @override
-  String get referralAntiFraud => 'Maximum 12 successful referrals per year.';
+  String get referralAntiFraud => 'Maksymalnie 12 udanych poleceń rocznie.';
 
   @override
   String get referralEmpty =>
-      'No referrals yet. Send your link to start earning.';
+      'Brak poleceń. Wyślij swój link, aby zacząć zarabiać.';
 
   @override
-  String get referralRecentActivity => 'Recent activity';
+  String get referralRecentActivity => 'Ostatnia aktywność';
 
   @override
   String referralActivityInvited(String when) {
-    return 'Invited $when';
+    return 'Zaproszono $when';
   }
 
   @override
   String referralActivityActivated(String when) {
-    return 'activated $when';
+    return 'aktywowano $when';
   }
 
   @override
-  String get referralActivityPending => 'not activated yet';
+  String get referralActivityPending => 'jeszcze nieaktywowane';
 
   @override
   String referralStatsInvitedCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count friends',
-      one: '1 friend',
-      zero: 'no friends yet',
+      other: '$count znajomych',
+      many: '$count znajomych',
+      few: '$count znajomych',
+      one: '1 znajomy',
+      zero: 'jeszcze nikogo',
     );
-    return 'You\'ve invited $_temp0';
+    return 'Zaproszono: $_temp0';
   }
 
   @override
@@ -3877,9 +3914,11 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count have activated',
-      one: '1 has activated',
-      zero: 'none activated yet',
+      other: '$count aktywowało',
+      many: '$count aktywowało',
+      few: '$count aktywowało',
+      one: '1 aktywował',
+      zero: 'nikt jeszcze nie aktywował',
     );
     return '$_temp0';
   }
@@ -3889,45 +3928,47 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       months,
       locale: localeName,
-      other: '$months free months',
-      one: '1 free month',
-      zero: 'nothing yet',
+      other: '$months darmowego miesiąca',
+      many: '$months darmowych miesięcy',
+      few: '$months darmowe miesiące',
+      one: '1 darmowy miesiąc',
+      zero: 'jeszcze nic',
     );
-    return 'Your bonus: $_temp0';
+    return 'Twój bonus: $_temp0';
   }
 
   @override
   String get referralNudgeMessage =>
-      'Like Advocat? Invite a friend — both get a free month.';
+      'Podoba Ci się Advocat? Zaproś znajomego — oboje otrzymacie darmowy miesiąc.';
 
   @override
-  String get referralNudgeAction => 'Invite';
+  String get referralNudgeAction => 'Zaproś';
 
   @override
-  String get referralLandingTitle => 'You\'ve been invited to Advocat';
+  String get referralLandingTitle => 'Otrzymałeś(-aś) zaproszenie do Advocat';
 
   @override
   String referralLandingSubtitle(String inviterName) {
-    return '$inviterName invited you — claim your free first month.';
+    return '$inviterName zaprosił(a) Cię — odbierz swój darmowy pierwszy miesiąc.';
   }
 
   @override
   String get referralLandingSubtitleGeneric =>
-      'Claim your free first month of Advocat Pro.';
+      'Odbierz swój darmowy pierwszy miesiąc Advocat Pro.';
 
   @override
-  String get referralLandingCta => 'Activate free month & sign up';
+  String get referralLandingCta => 'Aktywuj darmowy miesiąc i zarejestruj się';
 
   @override
-  String get referralLandingCtaSecondary => 'Or learn more about Advocat';
+  String get referralLandingCtaSecondary => 'Lub dowiedz się więcej o Advocat';
 
   @override
   String get referralLandingFallback =>
-      'This link has expired — but you can still try Advocat free.';
+      'Ten link wygasł — ale nadal możesz wypróbować Advocat za darmo.';
 
   @override
   String get referralLandingBenefits =>
-      '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+      '17 języków • Prawdziwe prawo estońskie, fińskie i UE • 24/7 — bez czekania';
 
   @override
   String get checkerProTagline => 'Profesjonalne narzędzia weryfikacji';
@@ -4022,162 +4063,165 @@ class AppLocalizationsPl extends AppLocalizations {
   String get increaseDependents => 'Zwiększ';
 
   @override
-  String get sensitiveConsentTitle => 'Sensitive data consent';
+  String get sensitiveConsentTitle => 'Zgoda na dane wrażliwe';
 
   @override
   String get sensitiveConsentBody =>
-      'Documents you\'re about to upload may contain special-category personal data under GDPR Art. 9 — such as health records, criminal records, biometric data, or information about your racial origin, religion, or sexual orientation.\n\nWe process this data only to provide you with AI legal assistance, store it encrypted in your private account, and never use it to train models. You can withdraw consent and delete the data at any time from Settings.\n\nBy accepting, you give explicit consent under Art. 9(2)(a) GDPR to process special-category data for this purpose.';
+      'Dokumenty, które zamierzasz przesłać, mogą zawierać dane osobowe szczególnej kategorii zgodnie z art. 9 RODO — takie jak dokumentacja medyczna, dane o karalności, dane biometryczne lub informacje o pochodzeniu rasowym, wyznaniu czy orientacji seksualnej.\n\nPrzetwarzamy te dane wyłącznie w celu świadczenia Ci pomocy prawnej z użyciem AI, przechowujemy je zaszyfrowane na Twoim prywatnym koncie i nigdy nie używamy ich do trenowania modeli. W każdej chwili możesz cofnąć zgodę i usunąć dane w Ustawieniach.\n\nAkceptując, wyrażasz wyraźną zgodę zgodnie z art. 9 ust. 2 lit. a) RODO na przetwarzanie danych szczególnej kategorii w tym celu.';
 
   @override
   String get sensitiveConsentExplicitCheckbox =>
-      'I give explicit consent to process special-category data (Art. 9(2)(a) GDPR).';
+      'Wyrażam wyraźną zgodę na przetwarzanie danych szczególnej kategorii (art. 9 ust. 2 lit. a) RODO).';
 
   @override
   String get sensitiveConsentRightToShareCheckbox =>
-      'I confirm I have the right to share this data (the data is mine, or I have informed/lawful basis to share third-party data).';
+      'Potwierdzam, że mam prawo udostępnić te dane (dane są moje lub mam podstawę prawną do udostępnienia danych osób trzecich).';
 
   @override
   String get sensitiveConsentViewCategories =>
-      'View what counts as sensitive →';
+      'Zobacz, co uznaje się za wrażliwe →';
 
   @override
-  String get sensitiveConsentWithdrawAction =>
-      'Withdraw sensitive data consent';
+  String get sensitiveConsentWithdrawAction => 'Cofnij zgodę na dane wrażliwe';
 
   @override
-  String get privacyAndData => 'PRIVACY & DATA';
+  String get privacyAndData => 'PRYWATNOŚĆ I DANE';
 
   @override
   String get exportMyDataSubtitle =>
-      'Download a copy of all your personal data (GDPR Art. 15).';
+      'Pobierz kopię wszystkich swoich danych osobowych (art. 15 RODO).';
 
   @override
-  String get withdrawSensitiveConsent => 'Sensitive data consent';
+  String get withdrawSensitiveConsent => 'Zgoda na dane wrażliwe';
 
   @override
   String get withdrawSensitiveConsentSubtitle =>
-      'Manage or withdraw consent to process special-category data (GDPR Art. 9(2)(a)).';
+      'Zarządzaj lub cofnij zgodę na przetwarzanie danych szczególnej kategorii (art. 9 ust. 2 lit. a) RODO).';
 
   @override
-  String get dataProcessingAgreement => 'Data Processing Agreement';
+  String get dataProcessingAgreement =>
+      'Umowa powierzenia przetwarzania danych';
 
   @override
-  String get exportingData => 'Exporting your data…';
+  String get exportingData => 'Eksportowanie Twoich danych…';
 
   @override
-  String get exportComplete => 'Data export ready — saved to your device.';
+  String get exportComplete =>
+      'Eksport danych gotowy — zapisano na Twoim urządzeniu.';
 
   @override
   String get exportFailed =>
-      'Export failed. Please try again or contact support.';
+      'Eksport nie powiódł się. Spróbuj ponownie lub skontaktuj się z pomocą techniczną.';
 
   @override
-  String get quotaExhaustedTitle => 'Free message limit reached';
+  String get quotaExhaustedTitle => 'Osiągnięto limit bezpłatnych wiadomości';
 
   @override
   String quotaExhaustedBody(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month and get unlimited AI legal consultations.';
+    return 'Wykorzystałeś(-aś) wszystkie $count bezpłatnych wiadomości. Przejdź na Advocat Counsel za 19,99 €/miesiąc i uzyskaj nieograniczone konsultacje prawne z AI.';
   }
 
   @override
-  String get quotaExhaustedLater => 'Later';
+  String get quotaExhaustedLater => 'Później';
 
   @override
-  String get quotaExhaustedUpgrade => 'Advocat Counsel — €19.99/mo';
+  String get quotaExhaustedUpgrade => 'Advocat Counsel — 19,99 €/mies.';
 
   @override
   String quotaCtaMessage(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month.';
+    return 'Wykorzystałeś(-aś) wszystkie $count bezpłatnych wiadomości. Przejdź na Advocat Counsel za 19,99 €/miesiąc.';
   }
 
   @override
-  String get quotaCtaButton => 'Get Advocat Counsel — €19.99/mo';
+  String get quotaCtaButton => 'Wybierz Advocat Counsel — 19,99 €/mies.';
 
   @override
   String get aiErrorQuota =>
-      'Free message limit reached. Subscribe to continue using AI.';
+      'Osiągnięto limit bezpłatnych wiadomości. Subskrybuj, aby nadal korzystać z AI.';
 
   @override
   String get aiErrorAuth =>
-      'Sign-in required to use the AI. Please register or log in.';
+      'Aby korzystać z AI, wymagane jest zalogowanie. Zarejestruj się lub zaloguj.';
 
   @override
   String get aiErrorGeneric =>
-      'Temporary AI error. Please try again in a minute. If it persists, contact support.';
+      'Tymczasowy błąd AI. Spróbuj ponownie za chwilę. Jeśli problem się utrzymuje, skontaktuj się z pomocą techniczną.';
 
   @override
-  String get tooltipShareCase => 'Share case summary';
+  String get tooltipShareCase => 'Udostępnij podsumowanie sprawy';
 
   @override
-  String get tooltipMuteVoice => 'Mute voice';
+  String get tooltipMuteVoice => 'Wycisz głos';
 
   @override
-  String get tooltipUnmuteVoice => 'Unmute voice';
+  String get tooltipUnmuteVoice => 'Włącz głos';
 
   @override
-  String get tooltipAttachDoc => 'Attach document';
+  String get tooltipAttachDoc => 'Dołącz dokument';
 
   @override
   String get aiTypingHint => 'AI…';
 
   @override
-  String get error404Title => 'Page not found';
+  String get error404Title => 'Nie znaleziono strony';
 
   @override
   String error404Body(String path) {
-    return 'We couldn\'t find: $path';
+    return 'Nie mogliśmy znaleźć: $path';
   }
 
   @override
-  String get goToHome => 'Go to home';
+  String get goToHome => 'Przejdź do strony głównej';
 
   @override
   String get emailAlreadyRegistered =>
-      'This email is already registered. Want to sign in?';
+      'Ten e-mail jest już zarejestrowany. Chcesz się zalogować?';
 
   @override
-  String get actionSignIn => 'Sign in';
+  String get actionSignIn => 'Zaloguj się';
 
   @override
-  String get actionUndo => 'Undo';
+  String get actionUndo => 'Cofnij';
 
   @override
-  String get intakeUrgentOpened => 'Chat opened — your draft is saved.';
+  String get intakeUrgentOpened =>
+      'Czat otwarty — Twoja wersja robocza jest zapisana.';
 
   @override
-  String get panicCoachmark => 'Hold for emergency help.';
+  String get panicCoachmark =>
+      'Przytrzymaj, aby uzyskać pomoc w nagłym wypadku.';
 
   @override
-  String get panicTitle => 'What do you need right now?';
+  String get panicTitle => 'Czego potrzebujesz w tej chwili?';
 
   @override
-  String get panicCardReadAloud => 'Read aloud to the officer';
+  String get panicCardReadAloud => 'Przeczytaj na głos funkcjonariuszowi';
 
   @override
-  String get panicCardRecord => 'Record this conversation';
+  String get panicCardRecord => 'Nagraj tę rozmowę';
 
   @override
-  String get panicCardCall => 'Call a lawyer';
+  String get panicCardCall => 'Zadzwoń do prawnika';
 
   @override
-  String get panicCardAi => 'Talk to Advocat now';
+  String get panicCardAi => 'Porozmawiaj teraz z Advocat';
 
   @override
-  String get panicClose => 'Close';
+  String get panicClose => 'Zamknij';
 
   @override
   String get panicBadgeV2 => 'V2';
 
   @override
-  String get panicRecordV1Title => 'Coming in V2';
+  String get panicRecordV1Title => 'Wkrótce w V2';
 
   @override
   String get panicRecordV1Body =>
-      'The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone\'s built-in voice recorder.';
+      'Funkcja nagrywania jest obecnie walidowana prawnie dla Estonii i pojawi się w V2. Na razie użyj wbudowanego dyktafonu w telefonie.';
 
   @override
   String get panicCallFallbackBody =>
-      'Email kiire@advocat.ee with a short description and we will call you back.';
+      'Napisz na kiire@advocat.ee z krótkim opisem, a oddzwonimy.';
 
   @override
   String get consiliumHeader => 'Konsylium prawników';
@@ -4257,10 +4301,10 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get softCaseShellBanner =>
-      'We created \"Untitled case\" to track this. Tap to rename.';
+      'Utworzyliśmy „Sprawę bez tytułu”, aby ją śledzić. Dotknij, aby zmienić nazwę.';
 
   @override
-  String get softCaseShellBannerCta => 'Rename';
+  String get softCaseShellBannerCta => 'Zmień nazwę';
 
   @override
   String get draftsTab => 'Drafts';

@@ -1843,7 +1843,6 @@
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
     },
-    "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
     "draftingEmpty": "Empty draft",
@@ -2000,7 +1999,440 @@
     "iapRestoreSuccess": "Dein Abonnement wurde wiederhergestellt.",
     "iapRestoreNoActive": "Kein aktives Abonnement zum Wiederherstellen gefunden.",
     "deadlineEuRadarTitle": "EU deadline radar (preview)",
-    "@deadlineEuRadarTitle": {"x-todo": "translate to de"},
+    "@deadlineEuRadarTitle": {
+        "x-todo": "translate to de"
+    },
     "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
-    "@deadlineEuRadarSubtitle": {"x-todo": "translate to de"}
+    "@deadlineEuRadarSubtitle": {
+        "x-todo": "translate to de"
+    },
+    "aiErrorRateLimit": "Der Dienst ist vorübergehend überlastet. Bitte versuchen Sie es in 1-2 Minuten erneut.",
+    "aiErrorOverload": "Die KI ist gerade ausgelastet, bitte versuchen Sie es in einer Minute erneut.",
+    "appleComingSoon": "Demnächst verfügbar",
+    "appleComingSoonMessage": "Apple-Anmeldung wird bald verfügbar. Nutzen Sie Google oder E-Mail, um fortzufahren.",
+    "dpaTitle": "Auftragsverarbeitungsvertrag",
+    "dpaCheckoutGateTitle": "Vor dem Upgrade",
+    "dpaCheckoutGateBody": "Das EU-Recht (Art. 28 DSGVO) verpflichtet uns, mit jedem zahlenden Kunden einen Auftragsverarbeitungsvertrag zu schließen. Bitte prüfen und akzeptieren Sie diesen.",
+    "dpaViewLink": "Auftragsverarbeitungsvertrag ansehen",
+    "dpaCheckboxLabel": "Ich habe den Auftragsverarbeitungsvertrag (v1.0) gelesen und akzeptiere ihn.",
+    "dpaCancel": "Abbrechen",
+    "dpaAcceptAndContinue": "Akzeptieren und fortfahren",
+    "dpaOpenHint": "Öffnen Sie den AVV mindestens einmal, um die Schaltfläche „Akzeptieren“ freizuschalten.",
+    "noEventsForFilter": "Keine Ereignisse entsprechen diesem Filter",
+    "timelineFilterAll": "Alle",
+    "timelineFilterEmails": "E-Mails",
+    "timelineFilterConsilium": "KI-Entscheidungen",
+    "timelineFilterDeadlines": "Fristen",
+    "timelineFilterNotes": "Notizen",
+    "timelineEventEmailIn": "E-Mail empfangen",
+    "timelineEventEmailOut": "E-Mail gesendet",
+    "timelineEventConsiliumDecision": "KI-Entscheidung",
+    "timelineEventDeadlineSet": "Frist",
+    "timelineEventDocUploaded": "Dokument",
+    "timelineEventPhaseChange": "Phasenwechsel",
+    "timelineEventManualNote": "Notiz",
+    "timelineJustNow": "Gerade eben",
+    "timelineMinutesAgo": "{count, plural, =1{vor 1 Minute} other{vor {count} Minuten}}",
+    "@timelineMinutesAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "timelineHoursAgo": "{count, plural, =1{vor 1 Stunde} other{vor {count} Stunden}}",
+    "@timelineHoursAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "timelineDaysAgo": "{count, plural, =1{vor 1 Tag} other{vor {count} Tagen}}",
+    "@timelineDaysAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "gmailReauthBannerBody": "Advocat v2.1 liest Ihren Posteingang, um Antworten zu entwerfen; Sie können dies jederzeit widerrufen. Verbinden Sie Gmail erneut, um die proaktive Triage zu aktivieren.",
+    "gmailReauthBannerCta": "Erneut autorisieren",
+    "upgradeBannerTitle": "Upgrade für unbegrenzte Beratungen",
+    "upgradeBannerCta": "Upgrade",
+    "paymentSuccessTitle": "Zahlung erfolgreich",
+    "paymentSuccessBody": "Ihr Abonnement ist jetzt aktiv.",
+    "commonOk": "OK",
+    "feedbackThumbsUpLabel": "Hilfreich",
+    "feedbackThumbsDownLabel": "Nicht hilfreich",
+    "feedbackCommentPrompt": "Was war falsch?",
+    "feedbackSend": "Senden",
+    "feedbackCancel": "Abbrechen",
+    "reasoningPillIdle": "Denkt nach…",
+    "reasoningPillSearchingLaw": "Estnisches Recht wird durchsucht…",
+    "reasoningPillSearchingWeb": "Das Web wird durchsucht…",
+    "reasoningPillCheckingCompany": "Handelsregister wird geprüft…",
+    "reasoningPillCheckingVehicle": "Fahrzeugregister wird geprüft…",
+    "reasoningPillReadingDocument": "Ihr Dokument wird gelesen…",
+    "reasoningPillDrafting": "Das Dokument wird entworfen…",
+    "reasoningPillPreparingEmail": "E-Mail wird vorbereitet…",
+    "reasoningPillFindingLawyer": "Anwälte werden gesucht…",
+    "reasoningPillThinking": "Ihr Fall wird durchdacht…",
+    "reasoningPillFinalising": "Ihre Antwort wird verfasst…",
+    "reasoningCollapsedFormat": "{sec} Sek. überlegt · {sources} Quellen",
+    "@reasoningCollapsedFormat": {
+        "placeholders": {
+            "sec": {
+                "type": "int"
+            },
+            "sources": {
+                "type": "int"
+            }
+        }
+    },
+    "reasoningExpandHint": "tippen, um Schritte zu sehen",
+    "caseFileTitle": "Fallakte",
+    "caseFileTimeline": "Zeitleiste",
+    "caseFileParties": "Beteiligte",
+    "caseFileDeadlines": "Fristen",
+    "caseFileExportPdf": "Dossier herunterladen (PDF)",
+    "caseFileEmpty": "Sprechen Sie mit der KI über Ihren Fall — Ihre Zeitleiste baut sich von selbst auf.",
+    "caseFileDisclaimer": "Dieses Dossier wird automatisch aus Ihrem Chat erstellt. Es stellt keine Rechtsberatung dar.",
+    "caseFileTabLabel": "Fall",
+    "refresh": "Aktualisieren",
+    "demoLimitReached": "Demo-Limit erreicht. Registrieren Sie sich kostenlos, um fortzufahren.",
+    "demoLimitSignUpCta": "Registrieren",
+    "freeQuotaExhausted": "Sie haben alle 10 kostenlosen Nachrichten diesen Monat aufgebraucht.",
+    "upgradeForUnlimited": "Auf Pro upgraden für unbegrenzte Nutzung",
+    "upgradeCta": "Upgrade",
+    "rateLimitTryAgain": "Zu schnell gesendet. Versuchen Sie es in ein paar Sekunden erneut.",
+    "caseTitleLabel": "Falltitel",
+    "jurisdictionLabel": "Zuständigkeit",
+    "caseTypeLabel": "Fallart",
+    "caseLanguageLabel": "Sprache",
+    "caseNumbersSection": "Aktenzeichen",
+    "partiesSection": "Beteiligte",
+    "authoritiesSection": "Behörden",
+    "timelineSection": "Zeitleiste",
+    "openQuestionsSection": "Offene Fragen",
+    "nextActionsSection": "Nächste Schritte",
+    "summarySection": "Zusammenfassung",
+    "addRow": "Zeile hinzufügen",
+    "removeRow": "Entfernen",
+    "archiveCase": "Fall archivieren",
+    "closeCase": "Fall schließen",
+    "continueChatAboutCase": "Chat zu diesem Fall fortsetzen",
+    "linkChatToCase": "Mit Fall verknüpfen",
+    "clearActiveCase": "Aktiven Fall zurücksetzen",
+    "caseSavedAck": "Fall gespeichert",
+    "caseArchivedAck": "Fall archiviert",
+    "intakeStep1Title": "Wo befindet sich der Fall?",
+    "intakeStep1Subtitle": "Land und Behörde, mit der Sie es zu tun haben.",
+    "intakeJurisdictionLabel": "Land / Zuständigkeit",
+    "intakeAuthorityLabel": "Behördentyp",
+    "intakeAuthorityNameLabel": "Behördenname (optional)",
+    "intakeAuthorityPolice": "Polizei",
+    "intakeAuthorityCourt": "Gericht",
+    "intakeAuthoritySocial": "Sozialdienste",
+    "intakeAuthorityEmployer": "Arbeitgeber",
+    "intakeAuthorityLandlord": "Vermieter",
+    "intakeAuthorityOpposingParty": "Gegenpartei",
+    "intakeAuthorityOther": "Sonstige",
+    "intakeStep2Title": "Um welche Art von Fall handelt es sich?",
+    "intakeStep2Subtitle": "Wählen Sie die passendste Art — Sie können sie später verfeinern.",
+    "intakeCaseTypeCriminal": "Strafrecht",
+    "intakeCaseTypeCivil": "Zivilrecht",
+    "intakeCaseTypeFamily": "Familienrecht",
+    "intakeCaseTypeAdmin": "Verwaltungsrecht",
+    "intakeCaseTypeImmigration": "Einwanderung",
+    "intakeCaseTypeLabor": "Arbeitsrecht",
+    "intakeCaseTypeConsumer": "Verbraucherrecht",
+    "intakeCaseTypeInheritance": "Erbrecht",
+    "intakeCaseTypeOther": "Sonstige",
+    "intakeStep3Title": "Wer ist beteiligt?",
+    "intakeStep3Subtitle": "Ihre Rolle und die Gegenseite.",
+    "intakeRoleLabel": "Ihre Rolle",
+    "intakeRolePlaintiff": "Kläger",
+    "intakeRoleDefendant": "Beklagter",
+    "intakeRoleVictim": "Geschädigter",
+    "intakeRoleAccused": "Angeklagter",
+    "intakeRoleWitness": "Zeuge",
+    "intakeRoleFamily": "Familienangehöriger",
+    "intakeRoleOther": "Sonstige",
+    "intakeOpposingSideLabel": "Gegenseite (optional)",
+    "intakeWitnessesLabel": "Zeugen (optional)",
+    "intakeAddWitness": "Zeugen hinzufügen",
+    "intakeWitnessHint": "Name oder Kontakt",
+    "intakeStep4Title": "Nummern & Daten",
+    "intakeStep4Subtitle": "Alles, was Sie bereits haben. Überspringen Sie, was Sie nicht haben.",
+    "intakeCaseNumberLabel": "Aktenzeichen (optional)",
+    "intakeIncidentDateLabel": "Datum des Vorfalls (optional)",
+    "intakeIncidentDatePick": "Datum wählen",
+    "intakeDeadlinesLabel": "Bekannte Fristen",
+    "intakeAddDeadline": "Frist hinzufügen",
+    "intakeDeadlineWhatHint": "Was",
+    "intakeStep5Title": "Dokumente",
+    "intakeStep5Subtitle": "Laden Sie alles Relevante hoch. Wir lesen es.",
+    "intakeUploadDocsLabel": "Dokumente hochladen",
+    "intakeSkipDocs": "Überspringen — ich lade später hoch",
+    "intakeNextBtn": "Weiter",
+    "intakeBackBtn": "Zurück",
+    "intakeFinishBtn": "Fertig & Chat öffnen",
+    "intakeUrgentBtn": "Dringend — jetzt fragen",
+    "intakeUrgentDialogTitle": "Chat jetzt öffnen?",
+    "intakeUrgentDialogBody": "Wir speichern Ihre Eingaben als Fallentwurf. Sie können den Assistenten jederzeit auf der Fallseite abschließen.",
+    "intakeUrgentConfirm": "Chat öffnen",
+    "intakeUrgentCancel": "Weiter ausfüllen",
+    "intakePreparingCase": "Ihr Fall wird vorbereitet…",
+    "intakeFallbackGreeting": "Ich sehe Ihren Fall. Sagen Sie mir, was am dringendsten ist — ich arbeite es mit Ihnen durch.",
+    "intakeUrgentGreeting": "Ich sehe, dass es dringend ist. Stellen Sie Ihre Frage — den Rest ergänze ich, während wir vorankommen.",
+    "intakeStepIndicator": "Schritt {current} von {total}",
+    "@intakeStepIndicator": {
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "intakeFieldRequired": "Erforderlich",
+    "intakeUploadProgress": "{done} / {total} werden hochgeladen…",
+    "@intakeUploadProgress": {
+        "placeholders": {
+            "done": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "uplDisclaimerFooter": "Advocat ist keine Anwaltskanzlei. Dies ist eine Information, keine Rechtsberatung.",
+    "parallelActionsHeadline": "Das Consilium empfiehlt {count} parallele Aktionen",
+    "@parallelActionsHeadline": {
+        "description": "Headline at the top of the Parallel Actions card — N>=2 emails the consilium recommends sending in parallel.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsApproveAll": "Alle freigeben & senden",
+    "parallelActionsApproveSelected": "{count} von {total} freigeben",
+    "@parallelActionsApproveSelected": {
+        "description": "Primary button when only a subset of actions is checked.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsConfirmTitle": "{count} E-Mails senden?",
+    "@parallelActionsConfirmTitle": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsConfirmBody": "Advocat versendet {count} vorbereitete Antworten über Ihr verbundenes Gmail. Jede wird unabhängig gesendet — schlägt eine fehl, gehen die anderen trotzdem raus.",
+    "@parallelActionsConfirmBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsSentToast": "{count} gesendet.",
+    "@parallelActionsSentToast": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsPartialFailureToast": "{sent} gesendet, {failed} fehlgeschlagen.",
+    "@parallelActionsPartialFailureToast": {
+        "placeholders": {
+            "sent": {
+                "type": "int"
+            },
+            "failed": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsKindReply": "Antwort",
+    "parallelActionsKindNew": "neu",
+    "parallelActionsCheckboxSelected": "Aktion ausgewählt",
+    "parallelActionsCheckboxUnselected": "Aktion nicht ausgewählt",
+    "parallelActionsCitationCount": "{count} Zit.",
+    "@parallelActionsCitationCount": {
+        "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsRetryFailed": "Fehlgeschlagene erneut versuchen ({count})",
+    "@parallelActionsRetryFailed": {
+        "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "agentApprovalNeedsReviewTitle": "Advocat benötigt Ihre Freigabe",
+    "agentApprovalResolvedTitle": "Aktion erledigt",
+    "agentApprovalStepsLabel": "Schritte",
+    "agentApprovalApproveButton": "Freigeben & senden",
+    "agentApprovalDeclineButton": "Ablehnen",
+    "agentApprovalAttachmentsLabel": "Anhänge",
+    "agentApprovalSentSummary": "In Ihrem Namen gesendet.",
+    "agentApprovalDeclinedSummary": "Abgelehnt — es wurde nichts gesendet.",
+    "agentToolDraftEmailAtt": "E-Mail mit Anhängen senden",
+    "agentToolSendEmail": "E-Mail senden",
+    "agentToolGeneratePdf": "PDF erstellen",
+    "agentToolApproveSend": "Vorbereitete Antwort senden",
+    "inboxErrorTitle": "Posteingang konnte nicht geladen werden",
+    "inboxEditDiscardTitle": "Nicht gespeicherte Änderungen verwerfen?",
+    "inboxEditDiscardBody": "Sie haben nicht gespeicherte Änderungen an diesem Entwurf. Beim Zurückgehen werden sie verworfen.",
+    "inboxEditKeepEditing": "Weiter bearbeiten",
+    "inboxEditDiscard": "Verwerfen",
+    "plannerSettingsTitle": "Dreistufige juristische Argumentation",
+    "plannerSettingsSubtitle": "Planen → antworten → kritisieren. Langsamer, aber gründlicher.",
+    "plannerSettingsProBadge": "Pro",
+    "plannerSettingsProDescription": "Im Pro-Tarif verfügbar",
+    "plannerTrailHeaderPlan": "Plan",
+    "plannerTrailHeaderCritique": "Kritik",
+    "plannerTrailSubQuestions": "Teilfragen",
+    "plannerTrailCounterArgs": "Gegenargumente",
+    "plannerTrailEvidenceGaps": "Beweislücken",
+    "plannerTrailMaterialGapTrue": "Wesentliche Lücke erkannt",
+    "plannerTrailRegeneratedBadge": "Einmal neu generiert",
+    "plannerTrailEmpty": "keine Einträge",
+    "supportTitle": "Hilfe",
+    "supportSubtitle": "Wir antworten in der Regel innerhalb von 1-2 Stunden.",
+    "supportSearchPlaceholder": "Hilfe durchsuchen…",
+    "supportStatusAllOk": "Alle Systeme normal",
+    "supportFaqWhatIs": "Was ist Advocat?",
+    "supportFaqHowSubscribe": "Wie abonniere ich Pro?",
+    "supportFaqExportData": "Kann ich meine Daten exportieren?",
+    "supportFaqCancelAccount": "Konto kündigen oder löschen",
+    "supportFaqTalkHuman": "Mit einem Menschen sprechen",
+    "supportContactEmail": "E-Mail",
+    "supportContactTelegram": "Telegram",
+    "supportContactWhatsapp": "WhatsApp",
+    "supportFooterSla": "Wir antworten innerhalb von 24 Stunden",
+    "supportWhatsapp": "WhatsApp",
+    "supportEmail": "E-Mail",
+    "supportInApp": "Schreiben Sie uns hier",
+    "supportCategoryLabel": "Kategorie",
+    "supportCategoryBug": "Fehler",
+    "supportCategoryPayment": "Zahlungsproblem",
+    "supportCategoryQuestion": "Frage",
+    "supportCategoryFeature": "Funktionswunsch",
+    "supportCategoryOther": "Sonstiges",
+    "supportMessagePlaceholder": "Beschreiben Sie Ihr Problem...",
+    "supportEmailLabel": "E-Mail (optional)",
+    "supportSend": "Senden",
+    "supportSentSuccess": "Nachricht gesendet! Wir antworten bald.",
+    "supportError": "Etwas ist schiefgelaufen. Versuchen Sie es erneut.",
+    "supportErrorTooShort": "Bitte schreiben Sie mindestens 10 Zeichen.",
+    "supportErrorTooLong": "Maximal 2000 Zeichen.",
+    "supportPrivacyNotice": "Ihre Nachricht wird sicher gespeichert.",
+    "referralAntiFraud": "Maximal 12 erfolgreiche Empfehlungen pro Jahr.",
+    "referralEmpty": "Noch keine Empfehlungen. Senden Sie Ihren Link, um zu verdienen.",
+    "referralRecentActivity": "Letzte Aktivität",
+    "referralActivityInvited": "Eingeladen {when}",
+    "@referralActivityInvited": {
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "referralActivityActivated": "aktiviert {when}",
+    "@referralActivityActivated": {
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "referralActivityPending": "noch nicht aktiviert",
+    "referralStatsInvitedCount": "Sie haben {count, plural, =0{noch keine Freunde} =1{1 Freund} other{{count} Freunde}} eingeladen",
+    "@referralStatsInvitedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "referralStatsConvertedCount": "{count, plural, =0{noch keine aktiviert} =1{1 hat aktiviert} other{{count} haben aktiviert}}",
+    "@referralStatsConvertedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "referralStatsEarnedCount": "Ihr Bonus: {months, plural, =0{noch nichts} =1{1 kostenloser Monat} other{{months} kostenlose Monate}}",
+    "@referralStatsEarnedCount": {
+        "placeholders": {
+            "months": {
+                "type": "int"
+            }
+        }
+    },
+    "referralNudgeMessage": "Gefällt Ihnen Advocat? Laden Sie einen Freund ein — beide erhalten einen kostenlosen Monat.",
+    "referralNudgeAction": "Einladen",
+    "referralLandingTitle": "Sie wurden zu Advocat eingeladen",
+    "referralLandingSubtitle": "{inviterName} hat Sie eingeladen — sichern Sie sich Ihren kostenlosen ersten Monat.",
+    "@referralLandingSubtitle": {
+        "placeholders": {
+            "inviterName": {
+                "type": "String"
+            }
+        }
+    },
+    "referralLandingSubtitleGeneric": "Sichern Sie sich Ihren kostenlosen ersten Monat Advocat Pro.",
+    "referralLandingCta": "Kostenlosen Monat aktivieren & registrieren",
+    "referralLandingCtaSecondary": "Oder mehr über Advocat erfahren",
+    "referralLandingFallback": "Dieser Link ist abgelaufen — Sie können Advocat aber trotzdem kostenlos testen.",
+    "referralLandingBenefits": "17 Sprachen • Echtes estnisches, finnisches und EU-Recht • 24/7 — ohne Wartezeit",
+    "sensitiveConsentTitle": "Einwilligung zu sensiblen Daten",
+    "sensitiveConsentBody": "Dokumente, die Sie hochladen möchten, können besondere Kategorien personenbezogener Daten nach Art. 9 DSGVO enthalten — etwa Gesundheitsdaten, Strafregisterdaten, biometrische Daten oder Informationen über Ihre ethnische Herkunft, Religion oder sexuelle Orientierung.\n\nWir verarbeiten diese Daten ausschließlich, um Ihnen KI-gestützte Rechtshilfe zu bieten, speichern sie verschlüsselt in Ihrem privaten Konto und verwenden sie niemals zum Training von Modellen. Sie können Ihre Einwilligung jederzeit widerrufen und die Daten in den Einstellungen löschen.\n\nMit Ihrer Zustimmung erteilen Sie Ihre ausdrückliche Einwilligung nach Art. 9 Abs. 2 lit. a DSGVO zur Verarbeitung besonderer Datenkategorien zu diesem Zweck.",
+    "sensitiveConsentExplicitCheckbox": "Ich erteile meine ausdrückliche Einwilligung zur Verarbeitung besonderer Datenkategorien (Art. 9 Abs. 2 lit. a DSGVO).",
+    "sensitiveConsentRightToShareCheckbox": "Ich bestätige, dass ich berechtigt bin, diese Daten zu teilen (die Daten gehören mir, oder ich habe eine informierte/rechtmäßige Grundlage, Daten Dritter zu teilen).",
+    "sensitiveConsentViewCategories": "Ansehen, was als sensibel gilt →",
+    "sensitiveConsentWithdrawAction": "Einwilligung zu sensiblen Daten widerrufen",
+    "privacyAndData": "DATENSCHUTZ & DATEN",
+    "exportMyDataSubtitle": "Laden Sie eine Kopie all Ihrer personenbezogenen Daten herunter (Art. 15 DSGVO).",
+    "withdrawSensitiveConsent": "Einwilligung zu sensiblen Daten",
+    "withdrawSensitiveConsentSubtitle": "Einwilligung zur Verarbeitung besonderer Datenkategorien verwalten oder widerrufen (Art. 9 Abs. 2 lit. a DSGVO).",
+    "dataProcessingAgreement": "Auftragsverarbeitungsvertrag",
+    "exportingData": "Ihre Daten werden exportiert…",
+    "exportComplete": "Datenexport bereit — auf Ihrem Gerät gespeichert.",
+    "exportFailed": "Export fehlgeschlagen. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support.",
+    "panicCoachmark": "Für Soforthilfe gedrückt halten.",
+    "panicTitle": "Was brauchen Sie gerade jetzt?",
+    "panicCardReadAloud": "Dem Beamten vorlesen",
+    "panicCardRecord": "Dieses Gespräch aufzeichnen",
+    "panicCardCall": "Einen Anwalt anrufen",
+    "panicCardAi": "Jetzt mit Advocat sprechen",
+    "panicClose": "Schließen",
+    "panicBadgeV2": "V2",
+    "panicRecordV1Title": "Kommt in V2",
+    "panicRecordV1Body": "Die Aufzeichnungsfunktion wird derzeit für Estland rechtlich geprüft und kommt in V2. Nutzen Sie vorerst das integrierte Sprachaufnahmegerät Ihres Telefons.",
+    "panicCallFallbackBody": "Schreiben Sie an kiire@advocat.ee mit einer kurzen Beschreibung, und wir rufen Sie zurück.",
+    "softCaseShellBanner": "Wir haben „Unbenannter Fall“ erstellt, um dies zu verfolgen. Tippen, um umzubenennen.",
+    "softCaseShellBannerCta": "Umbenennen"
 }

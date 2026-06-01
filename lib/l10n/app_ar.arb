@@ -1,1357 +1,1954 @@
 {
-    "@@locale": "ar",
-    "about": "حول التطبيق",
-    "aboutSection": "حول",
-    "appearance": "Appearance",
-    "appearanceSystem": "System (auto)",
-    "appearanceLight": "Light",
-    "appearanceDark": "Dark",
-    "appearanceDescription": "Choose how Advocat looks",
-    "accidents": "حوادث",
-    "active": "نشطة",
-    "activeCases": "القضايا النشطة",
-    "addedToAppeal": "تمت الإضافة إلى الاستئناف",
-    "agreeToTerms": "أوافق على ",
-    "aiAnalysis": "تحليل الذكاء الاصطناعي",
-    "aiAssistant": "المساعد القانوني الذكي",
-    "aiChat": "محادثة مع الذكاء الاصطناعي",
-    "all": "الكل",
-    "alreadyHaveAccount": "لديك حساب بالفعل؟ ",
-    "analyzing": "جارٍ التحليل…",
-    "andWord": " و",
-    "appTitle": "Advocat — أداة معلومات قانونية",
-    "appVersion": "إصدار التطبيق",
-    "appealFiled": "تم تقديم الاستئناف",
-    "areYouAbsolutelySure": "هل أنت متأكد تماماً؟",
-    "askAboutCase": "اسأل عن قضيتك",
-    "asylum": "لجوء",
-    "back": "رجوع",
-    "basic": "أساسي",
-    "beforeYouBuy": "قبل الشراء",
-    "beforeYouWork": "قبل التعامل معهم",
-    "camera": "الكاميرا",
-    "cancel": "إلغاء",
-    "caseDescription": "وصف القضية",
-    "caseDetail": "تفاصيل القضية",
-    "caseOverview": "نظرة عامة على القضايا",
-    "caseTitle": "عنوان القضية",
-    "caseUpdated": "تم تحديث القضية",
-    "cases": "القضايا",
-    "checkCompany": "تحقق من الشركة",
-    "checkDeadlines": "تحقق من المواعيد النهائية",
-    "checkVehicle": "تحقق من المركبة",
-    "checkerTitle": "المدقق",
-    "checkingErrors": "جارٍ التحقق من الأخطاء…",
-    "choosePlan": "اختر خطتك",
-    "closed": "مغلقة",
-    "companyName": "اسم الشركة أو رقم التسجيل",
-    "completed": "مكتمل",
-    "confirm": "تأكيد",
-    "confirmPassword": "تأكيد كلمة المرور",
-    "connectEmail": "ربط البريد الإلكتروني",
-    "connectGmail": "ربط Gmail",
-    "connectOutlook": "ربط Outlook",
-    "connected": "متصل",
-    "contactSupport": "تواصل مع الدعم",
-    "continueWithGoogle": "المتابعة باستخدام جوجل",
-    "copyText": "نسخ النص",
-    "correspondence": "المراسلات",
-    "couldNotLoadCases": "تعذر تحميل قضاياك",
-    "country": "البلد",
-    "createAccount": "إنشاء حساب",
-    "createCase": "إنشاء قضية",
-    "criminalCase": "قضية جنائية",
-    "critical": "حرج",
-    "currentPlan": "خطتك الحالية",
-    "dataAndPrivacy": "البيانات والخصوصية",
-    "dataExportRequested": "تم طلب تصدير البيانات. تحقق من بريدك الإلكتروني.",
-    "daysRemaining": "{count, plural, =0{لا توجد أيام متبقية} =1{يوم واحد} other{{count} أيام}}",
-    "@daysRemaining": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineReminders": "تذكيرات المواعيد النهائية",
-    "deadlineRemindersDesc": "تلقي إشعارات قبل المواعيد النهائية المهمة",
-    "deadlines": "المواعيد النهائية",
-    "debtCollection": "تحصيل الديون",
-    "deleteAccount": "حذف الحساب",
-    "deleteAccountDesc": "حذف حسابك وجميع بياناتك نهائياً",
-    "deleteAccountDialogContent": "هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع بياناتك وقضاياك ومستنداتك نهائياً.",
-    "deleteConfirm": "هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع قضاياك ومستنداتك بشكل دائم.",
-    "demoHint": "تجريبي: جرب اللوحة «908FBT»",
-    "demoModeDesc": "استكشف التطبيق بقضية تجريبية دون إنشاء حساب",
-    "deportation": "ترحيل",
-    "disclaimer": "إرشادات ذكاء اصطناعي فقط — وليست استشارة قانونية. استشر محامياً دائماً.",
-    "disclaimerFull": "هذا المستند أُنشئ بمساعدة الذكاء الاصطناعي للإرشاد فقط، ولا يُعدّ استشارة قانونية. يرجى مراجعة محامٍ مختص قبل تقديم أي طعن أو استئناف.",
-    "disconnect": "إلغاء الربط",
-    "discrimination": "تمييز",
-    "doNotBuy": "لا تشتري",
-    "documents": "المستندات",
-    "documentsCount": "{count, plural, =0{لا توجد مستندات} =1{مستند واحد} other{{count} مستندات}}",
-    "@documentsCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "draftAppeal": "مسودة الاستئناف",
-    "editDraft": "تعديل المسودة",
-    "editProfile": "تعديل الملف الشخصي",
-    "email": "البريد الإلكتروني",
-    "emailConnected": "البريد الإلكتروني مرتبط",
-    "emailDisconnected": "تم إلغاء ربط البريد الإلكتروني",
-    "emailIntegration": "تكامل البريد الإلكتروني",
-    "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
-    "emailPrivacyNote": "نقرأ فقط الرسائل المتعلقة بقضيتك القانونية. بياناتك محمية ومشفرة.",
-    "emailRequired": "البريد الإلكتروني مطلوب",
-    "emergencyShield": "درع الطوارئ",
-    "error": "خطأ",
-    "exportDataDesc": "تحميل جميع بياناتك ومستنداتك",
-    "exportDataDialogContent": "سنقوم بإعداد تنزيل لجميع بياناتك بما في ذلك القضايا والمستندات والمراسلات. ستتلقى بريداً إلكترونياً عندما يكون جاهزاً.",
-    "exportMyData": "تصدير بياناتي",
-    "exportPdf": "تصدير PDF",
-    "familyReunification": "لمّ شمل الأسرة",
-    "forgotPassword": "نسيت كلمة المرور؟",
-    "free": "مجاني",
-    "fullDefense": "Advocat Pro",
-    "fullName": "الاسم الكامل",
-    "gallery": "المعرض",
-    "generateAppeal": "إنشاء الاستئناف",
-    "getStarted": "ابدأ الآن",
-    "goodAfternoon": "مساء الخير، {name}",
-    "@goodAfternoon": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodEvening": "مساء الخير، {name}",
-    "@goodEvening": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodMorning": "صباح الخير، {name}",
-    "@goodMorning": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodNight": "تصبح على خير، {name}",
-    "@goodNight": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "home": "الرئيسية",
-    "important": "مهم",
-    "inProgress": "قيد المعالجة",
-    "informational": "معلوماتي",
-    "inspection": "الفحص الفني",
-    "insurance": "التأمين",
-    "issuesFound": "{count, plural, =0{لم يتم العثور على مشاكل} =1{تم العثور على مشكلة واحدة} other{تم العثور على {count} مشاكل}}",
-    "@issuesFound": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "laborDispute": "نزاع عمالي",
-    "langEnglish": "الإنجليزية",
-    "langFinnish": "الفنلندية",
-    "langRussian": "الروسية",
-    "language": "اللغة",
-    "lastActivity": "آخر نشاط: {time}",
-    "@lastActivity": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "legalFighter": "المدافع القانوني",
-    "legalSection": "القانوني",
-    "licensePlate": "لوحة الترخيص",
-    "loading": "جارٍ التحميل…",
-    "logIn": "الدخول",
-    "loginFailed": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.",
-    "lost": "خسارة",
-    "markComplete": "وضع علامة مكتمل",
-    "mileage": "المسافة المقطوعة",
-    "myCases": "قضاياي",
-    "nameRequired": "الاسم الكامل مطلوب",
-    "newCase": "قضية جديدة",
-    "next": "التالي",
-    "noAccount": "ليس لديك حساب؟ ",
-    "noCases": "لا توجد قضايا بعد",
-    "noCasesYet": "لا توجد قضايا بعد",
-    "noDeadlines": "لا توجد مواعيد نهائية",
-    "noRecentActivity": "لا يوجد نشاط حديث",
-    "notifications": "الإشعارات",
-    "onboardingDesc1": "يساعدك Advocat على فهم وضعك القانوني. أدوات الذكاء الاصطناعي تحلل المستندات، وتحدد المشكلات المحتملة، وتُعدّ مسودات مستندات لمراجعتك. ليس مكتب محاماة — بل أداة تقنية لدعم قضيتك.",
-    "onboardingDesc2": "صوّر أي مستند قانوني. يقرأه الذكاء الاصطناعي بعدة لغات، ويستخرج التفاصيل الرئيسية، ويتحقق من التوجيهات الأوروبية والقوانين الوطنية بحثاً عن مشكلات محتملة.",
-    "onboardingDesc3": "تتحقق أدوات الذكاء الاصطناعي لدينا من أكثر من 40 نوعاً من المتطلبات الإجرائية. قد يحدد تحليل الذكاء الاصطناعي مسائل تتطلب الانتباه — مثل لغة التبليغ، والخطوات الإجرائية، والمواعيد القانونية. تحقق دائماً مع محامٍ مؤهل.",
-    "onboardingDesc4": "يُعدّ الذكاء الاصطناعي مسودات طعون وشكاوى ورسائل مع مراجع قانونية لمراجعتك. أنت تقرر ما يتم تقديمه. يجب مراجعة كل مستند من قبل متخصص قانوني مؤهل قبل التقديم.",
-    "onboardingNext": "التالي",
-    "onboardingSkip": "تخطي",
-    "onboardingTitle1": "معلومات قانونية مدعومة بالذكاء الاصطناعي",
-    "onboardingTitle2": "امسح المستندات وحلّلها",
-    "onboardingTitle3": "الذكاء الاصطناعي يتحقق من المشكلات المحتملة",
-    "onboardingTitle4": "مسودات مستندات لمراجعتك",
-    "openACase": "افتح قضية",
-    "optional": "اختياري",
-    "orDivider": "أو",
-    "other": "أخرى",
-    "overdue": "متأخر",
-    "owners": "المالكون السابقون",
-    "password": "كلمة المرور",
-    "passwordRequired": "كلمة المرور مطلوبة",
-    "passwordStrengthMedium": "متوسطة",
-    "passwordStrengthStrong": "قوية",
-    "passwordStrengthWeak": "ضعيفة",
-    "passwordTooShort": "يجب أن تكون كلمة المرور ٨ أحرف على الأقل",
-    "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
-    "pendingDecision": "بانتظار القرار",
-    "perCheck": "لكل فحص",
-    "permanentlyDelete": "حذف نهائي",
-    "policeMisconduct": "سوء سلوك الشرطة",
-    "popular": "الأكثر طلباً",
-    "preferences": "التفضيلات",
-    "preferredLanguage": "اللغة المفضلة",
-    "pricePerCheck": "٤٫٩٩€ لكل فحص",
-    "privacyPolicy": "سياسة الخصوصية",
-    "pro": "احترافي",
-    "pushNotifications": "الإشعارات الفورية",
-    "rateUs": "قيّمنا",
-    "readingDocument": "جارٍ قراءة المستند…",
-    "recentActivity": "النشاط الأخير",
-    "referenceNumber": "الرقم المرجعي",
-    "registerFailed": "فشل إنشاء الحساب. يرجى المحاولة مرة أخرى.",
-    "reportFraud": "الإبلاغ عن احتيال",
-    "requestExport": "طلب التصدير",
-    "researchingLaw": "جارٍ البحث في القانون…",
-    "resetPasswordFailed": "فشل إرسال رابط إعادة التعيين. يرجى المحاولة مرة أخرى.",
-    "resetPasswordSent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.",
-    "residencePermit": "تصريح إقامة",
-    "manageSubscription": "إدارة الاشتراك",
-    "restorePurchases": "استعادة المشتريات",
-    "retry": "إعادة المحاولة",
-    "reviewWarning": "تحذير: راجع المسودة بعناية قبل التقديم",
-    "riskHigh": "خطر عالي — تجنب",
-    "riskLow": "آمن للتعامل",
-    "riskMedium": "تابع بحذر",
-    "safeToBuy": "آمن للشراء",
-    "saveAndAnalyze": "حفظ وتحليل",
-    "saveDraft": "حفظ المسودة",
-    "saveWithAnnual": "وفّر مع الاشتراك السنوي",
-    "scan": "مسح ضوئي",
-    "scanDocument": "مسح مستند ضوئياً",
-    "searchCases": "البحث في القضايا",
-    "selectCountry": "اختر الدولة",
-    "selectLanguage": "اختر اللغة",
-    "sendViaEmail": "إرسال عبر البريد الإلكتروني",
-    "settings": "الإعدادات",
-    "signIn": "تسجيل الدخول",
-    "signInLink": "تسجيل الدخول",
-    "signInSubtitle": "سجّل الدخول للوصول إلى قضاياك",
-    "signOut": "تسجيل الخروج",
-    "signOutConfirm": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
-    "signUp": "إنشاء حساب",
-    "signUpLink": "إنشاء حساب",
-    "socialBenefits": "المزايا الاجتماعية",
-    "someConcerns": "بعض المخاوف",
-    "startFirstCase": "ابدأ بإنشاء قضيتك الأولى",
-    "step": "الخطوة {current} من {total}",
-    "@step": {
-        "placeholders": {
-            "current": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "stolen": "فحص السرقة",
-    "subscription": "الاشتراك",
-    "syncLegalCorrespondence": "مزامنة المراسلات القانونية",
-    "syncNow": "مزامنة الآن",
-    "tenantRights": "حقوق المستأجر",
-    "termsOfService": "شروط الخدمة",
-    "termsRequired": "يجب الموافقة على شروط الخدمة",
-    "timeline": "الجدول الزمني",
-    "tryDemoMode": "تجربة الوضع التجريبي",
-    "typeDeleteToConfirm": "اكتب DELETE لتأكيد حذف الحساب نهائياً.",
-    "typeMessage": "اكتب رسالتك…",
-    "upcoming": "قادم",
-    "uploadDocument": "رفع مستند",
-    "urgentDeadline": "عاجل: {title}",
-    "@urgentDeadline": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "useInAppeal": "استخدام في الاستئناف",
-    "vehicleChecker": "فاحص المركبات",
-    "vehicleChecks": "فحوصات الحالة",
-    "vehicleColor": "اللون",
-    "vehicleMake": "الشركة المصنعة",
-    "vehicleModel": "الطراز",
-    "vehicleYear": "السنة",
-    "version": "الإصدار",
-    "victimSupport": "دعم الضحايا",
-    "viewAll": "عرض الكل",
-    "vinNumber": "رقم الهيكل",
-    "welcomeBack": "مرحباً بعودتك",
-    "whatAreMyOptions": "ما هي خياراتي؟",
-    "won": "ربح",
-    "documentVault": "خزنة المستندات",
-    "secureDocumentStorage": "تخزين آمن للمستندات",
-    "secureDocumentStorageDesc": "قم بتخزين مستنداتك القانونية المهمة بأمان. جميع الملفات مشفرة من طرف إلى طرف.",
-    "addDocument": "إضافة مستند",
-    "chooseHowToAdd": "اختر طريقة إضافة مستندك",
-    "uploadFile": "رفع ملف",
-    "uploadFileDesc": "اختر ملف PDF أو صورة من جهازك",
-    "scanDocumentDesc": "التقط صورة لمستندك",
-    "createNote": "إنشاء ملاحظة",
-    "createNoteDesc": "اكتب ملاحظة أو سجّل تفاصيل مهمة",
-    "knowYourRights": "اعرف حقوقك",
-    "stoppedByPolice": "أوقفتك الشرطة",
-    "stoppedByPoliceDesc": "حقوقك أثناء مواجهة مع الشرطة",
-    "deportationNotice": "إشعار ترحيل",
-    "deportationNoticeDesc": "خطوات الطعن في قرار الإبعاد",
-    "workplaceRights": "حقوق العمل",
-    "workplaceRightsDesc": "حماية قانون العمل في فنلندا",
-    "tenantRightsDesc": "حماية حقوق السكن والإيجار",
-    "immigrationDetention": "الاحتجاز المتعلق بالهجرة",
-    "immigrationDetentionDesc": "حقوقك في حال احتجازك من قبل السلطات",
-    "discriminationDesc": "كيفية الإبلاغ عن التمييز ومكافحته",
-    "scenarioNotFound": "السيناريو غير موجود",
-    "youHaveRightTo": "لديك الحق في:",
-    "youMust": "يجب عليك:",
-    "immediateSteps": "الخطوات الفورية:",
-    "yourRights": "حقوقك:",
-    "basicRights": "الحقوق الأساسية:",
-    "yourRightsAsTenant": "حقوقك كمستأجر:",
-    "yourRightsInDetention": "حقوقك أثناء الاحتجاز:",
-    "howToAct": "كيف تتصرف:",
-    "rightKnowWhyStopped": "معرفة سبب إيقافك",
-    "rightRemainSilent": "التزام الصمت (يجب عليك تعريف هويتك)",
-    "rightAskInterpreter": "طلب مترجم فوري",
-    "rightContactLawyer": "الاتصال بمحامٍ قبل الاستجواب",
-    "rightRecordEncounter": "تسجيل المواجهة (في الأماكن العامة)",
-    "mustProvideName": "تقديم اسمك وتاريخ ميلادك",
-    "mustShowId": "إبراز هويتك إن كانت لديك",
-    "mustNotResist": "عدم المقاومة الجسدية",
-    "doNotIgnoreNotice": "لا تتجاهل الإشعار - المواعيد النهائية صارمة",
-    "noteAppealDeadline": "لاحظ موعد الاستئناف (عادة ٣٠ يوماً)",
-    "contactLawyerImmediately": "اتصل بمحامٍ فوراً",
-    "applyLegalAid": "قدّم طلب مساعدة قانونية إذا لزم الأمر",
-    "rightAppealAdmin": "الحق في الاستئناف أمام المحكمة الإدارية",
-    "rightLegalRep": "الحق في التمثيل القانوني",
-    "rightInterpreter": "الحق في مترجم فوري",
-    "rightStayDuringAppeal": "الحق في البقاء أثناء الاستئناف (في معظم الحالات)",
-    "minimumWage": "الحد الأدنى للأجور وفقاً للاتفاقية الجماعية",
-    "workingTimeLimits": "حدود ساعات العمل (بحد أقصى ٨ ساعات/يوم، ٤٠ ساعة/أسبوع)",
-    "annualLeave": "إجازة سنوية (بحد أدنى يومان عن كل شهر عمل)",
-    "sickLeave": "تعويض الإجازة المرضية",
-    "safeWorkingConditions": "ظروف عمل آمنة",
-    "writtenRentalAgreement": "يجب أن يكون عقد الإيجار مكتوباً",
-    "securityDeposit": "مبلغ التأمين بحد أقصى ٣ أشهر إيجار",
-    "landlordNotice": "يجب على المالك إعطاء إشعار (٣-٦ أشهر)",
-    "rightHabitableDwelling": "الحق في مسكن صالح للسكن",
-    "protectionUnjustEviction": "الحماية من الإخلاء غير العادل",
-    "rightKnowDetentionReason": "الحق في معرفة سبب الاحتجاز",
-    "rightContactLawyerDetention": "الحق في الاتصال بمحامٍ",
-    "rightContactEmbassy": "الحق في الاتصال بسفارتك",
-    "rightChallengeDetention": "الحق في الطعن في الاحتجاز أمام المحكمة",
-    "rightHumaneTreatment": "الحق في معاملة إنسانية ورعاية طبية",
-    "documentIncident": "وثّق الحادثة (التاريخ، الوقت، الشهود)",
-    "fileComplaintOmbudsman": "قدّم شكوى لدى أمين المظالم لعدم التمييز",
-    "contactLegalAidOffice": "اتصل بمكتب المساعدة القانونية",
-    "reportToPolice": "أبلغ الشرطة إذا كان الأمر جنائياً (تهديد، اعتداء)",
-    "legalAidCalculator": "حاسبة المساعدة القانونية",
-    "checkEligibility": "تحقق من أهليتك للمساعدة القانونية: {country}",
-    "estimateDisclaimer": "هذا تقدير فقط. يتم تحديد الأهلية الفعلية من قبل مكتب المساعدة القانونية.",
-    "monthlyIncome": "الدخل الشهري (يورو)",
-    "totalAssets": "إجمالي الأصول (يورو)",
-    "numberOfDependents": "عدد المعالين",
-    "calculateEligibility": "حساب الأهلية",
-    "likelyEligible": "مؤهل على الأرجح",
-    "mayNotQualify": "قد لا تكون مؤهلاً",
-    "fullFreeLegalAid": "من المرجح أنك مؤهل للمساعدة القانونية المجانية الكاملة (بدون مساهمة مالية).",
-    "legalAidWithCopay": "قد تكون مؤهلاً للمساعدة القانونية مع مساهمة مالية بنسبة {percent}%.",
-    "@legalAidWithCopay": {
-        "placeholders": {
-            "percent": {
-                "type": "String"
-            }
-        }
-    },
-    "mayNotQualifyDesc": "بناءً على هذا التقدير، قد لا تكون مؤهلاً للمساعدة القانونية الحكومية. فكّر في استشارة محامٍ خاص أو عيادة قانونية.",
-    "couldNotLoadDeadlines": "تعذر تحميل المواعيد النهائية",
-    "noUpcomingDeadlines": "لا توجد مواعيد نهائية قادمة",
-    "allClearDeadlines": "كل شيء على ما يرام! ستظهر المواعيد النهائية الجديدة هنا عند تحديدها.",
-    "nothingOverdue": "لا يوجد شيء متأخر",
-    "greatJobDeadlines": "عمل رائع في متابعة مواعيدك النهائية.",
-    "noCompletedDeadlines": "لا توجد مواعيد نهائية مكتملة",
-    "completedDeadlinesDesc": "ستظهر المواعيد النهائية المكتملة هنا.",
-    "daysLate": "أيام تأخير",
-    "days": "أيام",
-    "fromDocument": "من المستند",
-    "couldNotLoadCase": "تعذر تحميل تفاصيل القضية",
-    "typeLabel": "النوع",
-    "nationality": "الجنسية",
-    "migriReference": "مرجع Migri",
-    "courtCaseNo": "رقم القضية في المحكمة",
-    "created": "تاريخ الإنشاء",
-    "citizenship": "المواطنة",
-    "workPermit": "تصريح العمل",
-    "noDocumentsYet": "لم يتم رفع أي مستندات بعد",
-    "noUpcomingDeadlinesShort": "لا توجد مواعيد نهائية قادمة",
-    "caseCreated": "تم إنشاء القضية",
-    "decisionReceived": "تم استلام القرار",
-    "appealDeadline": "موعد الاستئناف النهائي",
-    "hearingScheduled": "تم تحديد موعد الجلسة",
-    "late": "متأخر",
-    "pending": "قيد الانتظار",
-    "processing": "قيد المعالجة",
-    "ready": "جاهز",
-    "failed": "فشل",
-    "analyzed": "تم التحليل",
-    "noDocumentsScanHint": "لا توجد مستندات بعد. امسح ضوئياً أو ارفع مستنداً.",
-    "inCourt": "في المحكمة",
-    "appeal": "استئناف",
-    "caseTimeline": "الجدول الزمني للقضية",
-    "couldNotLoadTimeline": "تعذر تحميل الجدول الزمني",
-    "noEventsYet": "لا توجد أحداث بعد",
-    "activityWillAppear": "سيظهر النشاط هنا مع تقدم قضيتك.",
-    "caseCreatedDesc": "تم إنشاء القضية «{title}».",
-    "@caseCreatedDesc": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "decisionReceivedDesc": "تم استلام قرار رسمي لهذه القضية.",
-    "appealDeadlineSet": "تم تحديد موعد الاستئناف النهائي",
-    "appealDeadlineDesc": "يجب تقديم الاستئناف بحلول {date}.",
-    "@appealDeadlineDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "hearingScheduledDesc": "تم تحديد جلسة المحكمة في {date}.",
-    "@hearingScheduledDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "caseInfoUpdated": "تم تحديث معلومات القضية آخر مرة.",
-    "documentAnalysis": "تحليل المستند",
-    "exportAsPdf": "تصدير كـ PDF",
-    "pdfExportComingSoon": "تصدير PDF قريباً",
-    "analysisFailedRetry": "فشل التحليل. يرجى المحاولة مرة أخرى.",
-    "somethingWentWrong": "حدث خطأ ما",
-    "genericError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
-    "retryAnalysis": "إعادة التحليل",
-    "issuesFoundInDocument": "{count, plural, =0{لم يتم العثور على مشاكل في المستند} =1{تم العثور على مشكلة واحدة في المستند} other{تم العثور على {count} مشاكل في المستند}}",
-    "@issuesFoundInDocument": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "severityOverview": "نظرة عامة على الخطورة",
-    "issuesFoundHeader": "المشكلات المكتشفة",
-    "generateAppealWithIssues": "{count, plural, =1{إنشاء طعن (مشكلة واحدة)} other{إنشاء طعن ({count} مشاكل)}}",
-    "@generateAppealWithIssues": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "analyzingContent": "جارٍ تحليل المحتوى…",
-    "documentProcessedOk": "تمت معالجة المستند بنجاح",
-    "noSignificantIssues": "لم يتم اكتشاف مشكلات جوهرية في هذا المستند.",
-    "cameraPermissionRequired": "مطلوب إذن الكاميرا",
-    "cameraPermissionDesc": "امنح إذن الوصول إلى الكاميرا لمسح المستندات ضوئياً، أو استخدم المعرض.",
-    "openSettings": "فتح الإعدادات",
-    "alignDocument": "قم بمحاذاة المستند داخل الإطار",
-    "pageCount": "{count, plural, =0{لا توجد صفحات} =1{صفحة واحدة} other{{count} صفحات}}",
-    "@pageCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "preview": "معاينة",
-    "pageNumber": "صفحة {number}",
-    "@pageNumber": {
-        "placeholders": {
-            "number": {
-                "type": "int"
-            }
-        }
-    },
-    "done": "تم",
-    "retake": "إعادة الالتقاط",
-    "useThisPhoto": "استخدم هذه الصورة",
-    "addPage": "إضافة صفحة",
-    "uploadingPercent": "جارٍ الرفع… {percent}%",
-    "@uploadingPercent": {
-        "placeholders": {
-            "percent": {
-                "type": "int"
-            }
-        }
-    },
-    "preparingUpload": "جارٍ تحضير الرفع…",
-    "documentUploadedSuccess": "تم رفع المستند بنجاح",
-    "pagesUploadedSuccess": "{count, plural, =1{تم تحميل صفحة واحدة بنجاح} other{تم تحميل {count} صفحات بنجاح}}",
-    "@pagesUploadedSuccess": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "uploadFailed": "فشل الرفع. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
-    "capturePhotoFailed": "فشل التقاط الصورة. يرجى المحاولة مرة أخرى.",
-    "readingText": "جارٍ قراءة النص…",
-    "draftDocument": "مسودة المستند",
-    "saveChanges": "حفظ التغييرات",
-    "editDocument": "تعديل المستند",
-    "generatingDraft": "جارٍ إنشاء مسودتك…",
-    "generatingDraftDesc": "يقوم الذكاء الاصطناعي بإعداد مستند قانوني بناءً على تفاصيل قضيتك والمشكلات المحددة.",
-    "failedToGenerateDraft": "فشل إنشاء المسودة. يرجى المحاولة مرة أخرى.",
-    "changesSaved": "تم حفظ التغييرات",
-    "copiedToClipboard": "تم النسخ إلى الحافظة",
-    "emailComingSoon": "إرسال البريد الإلكتروني قريباً",
-    "reviewBeforeSending": "راجع بعناية قبل الإرسال. أنت مسؤول عن محتوى هذا المستند.",
-    "noContentAvailable": "لا يوجد محتوى متاح",
-    "save": "حفظ",
-    "edit": "تعديل",
-    "pdf": "PDF",
-    "copy": "نسخ",
-    "appealDraft": "مسودة الاستئناف",
-    "selected": "{count} محدد",
-    "@selected": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deleteSelected": "حذف المحدد",
-    "deleteDocumentsConfirm": "حذف {count} مستند؟",
-    "@deleteDocumentsConfirm": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "delete": "حذف",
-    "analyzeSelected": "تحليل المحدد",
-    "batchAnalysisStarting": "بدء التحليل الدُفعي…",
-    "switchToList": "التبديل إلى القائمة",
-    "switchToGrid": "التبديل إلى الشبكة",
-    "scanNew": "مسح جديد",
-    "noDocumentsYetScan": "لا توجد مستندات بعد",
-    "scanFirstDocumentHint": "امسح أول مستند ضوئياً ليقوم الذكاء الاصطناعي بتحليله بحثاً عن أخطاء وإنشاء استئنافات.",
-    "failedToLoadDocuments": "فشل تحميل المستندات",
-    "aiDisclaimer": "إخلاء مسؤولية الذكاء الاصطناعي",
-    "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
-    "@aiDisclaimerCompact": {
-        "description": "TODO: native legal review (currently English fallback)"
-    },
-    "aiDisclaimerFullTitle": "Important: how Advocat works",
-    "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
-    "aiDisclaimerExpand": "Learn more",
-    "aiDisclaimerDismiss": "OK, I understand",
-    "annual": "سنوي",
-    "assignToCase": "تعيين للقضية",
-    "basicAiAnalysis": "تحليل أساسي بالذكاء الاصطناعي",
-    "caseCreationComingSoon": "إنشاء القضية بالبيانات المعبأة مسبقاً قريباً",
-    "caseSummaryCopied": "تم نسخ ملخص القضية",
-    "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
-    "checkingPurchases": "جارٍ التحقق من المشتريات السابقة…",
-    "connectYourEmail": "اربط بريدك الإلكتروني",
-    "connectYourEmailDesc": "اربط بريدك الإلكتروني لاكتشاف وتنظيم المراسلات القانونية المتعلقة بقضاياك تلقائياً.",
-    "connectedTo": "متصل بـ {email}",
-    "@connectedTo": {
-        "placeholders": {
-            "email": {
-                "type": "String"
-            }
-        }
-    },
-    "cookiePolicy": "سياسة ملفات تعريف الارتباط",
-    "copySummary": "نسخ الملخص",
-    "dataPrivacyConsent": "موافقة خصوصية البيانات",
-    "decline": "رفض",
-    "deleteCase": "حذف القضية",
-    "deleteCaseConfirm": "هل أنت متأكد من حذف «{title}»؟ لا يمكن التراجع عن هذا.",
-    "@deleteCaseConfirm": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "disconnectEmail": "قطع البريد الإلكتروني",
-    "disconnectEmailConfirm": "ستتوقف المزامنة التلقائية للبريد. ستبقى الرسائل المزامنة سابقاً في قضاياك.",
-    "draftCopiedToClipboard": "تم نسخ المسودة",
-    "draftGeneration": "إنشاء المسودات",
-    "emailIntegrationTitle": "تكامل البريد الإلكتروني",
-    "english": "الإنجليزية",
-    "failedToCreateCaseRetry": "فشل إنشاء القضية. حاول مرة أخرى.",
-    "failedToLoadCases": "فشل تحميل القضايا",
-    "filterByType": "تصفية حسب النوع",
-    "finnish": "الفنلندية",
-    "forever": "للأبد",
-    "fullAiAnalysis": "تحليل كامل بالذكاء الاصطناعي",
-    "gdprChat": "معالجة رسائل المحادثة بالذكاء الاصطناعي",
-    "gdprDelete": "الحق في حذف بياناتك في أي وقت",
-    "gdprDocs": "تحليل المستندات المرفوعة",
-    "gdprFooter": "بياناتك مشفرة ولا تُشارك مع أطراف ثالثة. يمكنك سحب الموافقة وحذف جميع البيانات من الإعدادات.",
-    "gdprIntro": "لتقديم المساعدة القانونية بالذكاء الاصطناعي، نعالج بياناتك وفقاً لـ GDPR (EU 2016/679). بالمتابعة توافق على:",
-    "gdprStorage": "تخزين مشفر لبيانات القضايا",
-    "haveQuestionsAi": "لديك أسئلة؟ اسأل الذكاء الاصطناعي",
-    "iAgree": "أوافق",
-    "iAgreeToThe": "أوافق على ",
-    "lastSynced": "آخر مزامنة: {time}",
-    "@lastSynced": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "legalEmails": "الرسائل القانونية",
-    "legalEmailsWillAppear": "ستظهر هنا الرسائل المصنفة كقانونية.",
-    "monthly": "شهري",
-    "mostPopular": "الأكثر شعبية",
-    "noCasesMatchSearch": "لا توجد قضايا مطابقة",
-    "noLegalEmailsYet": "لا توجد رسائل قانونية بعد",
-    "noPreviousPurchases": "لم يتم العثور على مشتريات سابقة.",
-    "oneCaseActive": "قضية واحدة نشطة",
-    "openCase": "فتح القضية",
-    "orWord": "أو",
-    "paymentFailed": "فشل الدفع: {error}",
-    "@paymentFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String"
-            }
-        }
-    },
-    "perMonth": "/شهر",
-    "perYear": "/سنة",
-    "priorityProcessing": "معالجة ذات أولوية",
-    "reportAndOpenCase": "إبلاغ وفتح قضية",
-    "reportMileageFraud": "الإبلاغ عن تزوير العداد",
-    "reportMileageFraudDesc": "سيتم إنشاء تقرير احتيال بناءً على بيانات فحص المركبة. يمكنك أيضاً فتح قضية قانونية.",
-    "russian": "الروسية",
-    "saveTwentyFivePercent": "وفر 25%",
-    "successSubscribed": "تم الاشتراك في {plan} بنجاح!",
-    "@successSubscribed": {
-        "placeholders": {
-            "plan": {
-                "type": "String"
-            }
-        }
-    },
-    "takePhotoInstead": "التقط صورة بدلاً من ذلك",
-    "threeCasesActive": "3 قضايا نشطة",
-    "threeDocScans": "3 عمليات مسح",
-    "twentyDocScans": "20 عملية مسح",
-    "unlimitedCases": "قضايا غير محدودة",
-    "unlimitedDocScans": "مسح غير محدود للمستندات",
-    "unlinkedEmails": "رسائل غير مرتبطة",
-    "viewFull": "عرض كامل",
-    "whatToDo": "ماذا تفعل",
-    "getHelp": "احصل على المساعدة",
-    "share": "مشاركة",
-    "didYouKnow": "هل تعلم؟",
-    "mustKnow": "يجب أن تعرف",
-    "goodToKnow": "من الجيد أن تعرف",
-    "sentFromAdvocat": "أُرسل من تطبيق Advocat",
-    "policeActionStayCalm": "ابقَ هادئاً واجعل يديك مرئيتين",
-    "policeActionAskWhy": "اسأل الضابط عن سبب إيقافك",
-    "policeActionProvideName": "قدّم اسمك وتاريخ ميلادك",
-    "policeActionWantLawyer": "صرّح بوضوح: «أريد محامياً قبل أي أسئلة»",
-    "policeActionAskInterpreter": "اطلب مترجماً عند الحاجة",
-    "policeActionNoteBadge": "سجّل اسم الضابط ورقم شارته",
-    "policeFactMustTellReason": "في فنلندا، يجب على الشرطة إخبارك بسبب إيقافك. إذا لم يفعلوا، يمكنك السؤال — وهم ملزمون قانونياً بالشرح.",
-    "policeFactCanRecord": "يمكنك تسجيل التفاعلات مع الشرطة في الأماكن العامة في فنلندا. هذا محمي بحرية التعبير.",
-    "contactFinnishLegalAid": "المساعدة القانونية الفنلندية",
-    "contactNonDiscriminationOmbudsman": "أمين المظالم لمكافحة التمييز",
-    "deportationDeadlineAppeal": "الطعن أمام المحكمة الإدارية — عادةً 30 يوماً من الإخطار",
-    "deportationDeadlineLegalAid": "تقدّم بطلب المساعدة القانونية — افعل ذلك فوراً",
-    "deportationFactStayDuringAppeal": "في فنلندا، لديك عادةً الحق في البقاء في البلاد أثناء معالجة طعنك. لا يمكن تنفيذ الترحيل أثناء طعن نشط في معظم الحالات.",
-    "contactRefugeeAdviceCentre": "مركز المشورة الفنلندي للاجئين",
-    "contactAdminCourtHelsinki": "المحكمة الإدارية في هلسنكي",
-    "workplaceActionKeepContract": "احتفظ بنسخ من عقد العمل",
-    "workplaceActionTrackHours": "تتبّع ساعات عملك بشكل مستقل",
-    "workplaceActionReportUnsafe": "أبلغ عن الظروف غير الآمنة لهيئة السلامة المهنية",
-    "workplaceActionJoinUnion": "انضم إلى نقابة عمالية للحماية",
-    "workplaceActionContactAuthority": "تواصل مع هيئة السلامة المهنية عند الحاجة",
-    "workplaceFactCollectiveWage": "في فنلندا، تحدد الاتفاقيات الجماعية الحد الأدنى للأجور حسب القطاع — لا يوجد حد أدنى وطني واحد للأجور. يجب على صاحب العمل الالتزام بالاتفاقية الجماعية لمجالك.",
-    "workplaceFactOralContract": "حتى بدون عقد مكتوب، لديك حقوق كاملة كموظف في فنلندا. الاتفاق الشفهي ملزم قانونياً بنفس القدر.",
-    "contactOccupationalSafety": "هيئة السلامة المهنية",
-    "contactTradeUnionSAK": "استشارات النقابات العمالية (SAK)",
-    "tenantActionWrittenAgreement": "احرص دائماً على وجود عقد إيجار مكتوب",
-    "tenantActionDocumentCondition": "وثّق حالة الشقة عند الانتقال (صور)",
-    "tenantActionReportMaintenance": "أبلغ عن مشاكل الصيانة كتابياً",
-    "tenantActionNoIllegalEviction": "لا توافق أبداً على إخلاء غير قانوني — المحاكم هي من تقرر",
-    "tenantActionContactAdvisory": "تواصل مع خدمات استشارات المستأجرين في حالة النزاعات",
-    "tenantFactNoEvictionWithoutCourt": "لا يمكن للمؤجر في فنلندا إخلائك بدون أمر محكمة، حتى لو انتهى عقد الإيجار. تغيير الأقفال أو قطع المرافق غير قانوني.",
-    "contactTenantsAssociation": "جمعية المستأجرين الفنلندية",
-    "contactConsumerDisputesBoard": "مجلس نزاعات المستهلكين",
-    "detentionActionAskDecision": "اطلب فوراً قرار الاحتجاز المكتوب",
-    "detentionActionRequestLawyer": "اطلب التواصل مع محامٍ",
-    "detentionActionContactEmbassy": "تواصل مع سفارتك أو قنصليتك",
-    "detentionActionAskMedical": "اطلب الرعاية الطبية عند الحاجة",
-    "detentionActionRequestInterpreter": "اطلب مترجماً لجميع الإجراءات",
-    "detentionDeadlineCourtReview": "يجب على المحكمة الجزئية مراجعة الاحتجاز خلال 4 أيام",
-    "detentionDeadlineContinuation": "تراجع المحكمة التمديد كل أسبوعين",
-    "detentionFactCourtReview": "يجب مراجعة احتجاز المهاجرين في فنلندا من قبل محكمة جزئية خلال 4 أيام. إذا لم يتم ذلك، يصبح الاحتجاز غير قانوني.",
-    "contactParliamentaryOmbudsman": "أمين المظالم البرلماني",
-    "discriminationActionWriteDown": "دوّن بالضبط ما حدث (التاريخ، الوقت، المكان)",
-    "discriminationActionSaveEvidence": "احفظ الأدلة: الرسائل، البريد الإلكتروني، الشهود",
-    "discriminationActionFileComplaint": "قدّم شكوى لأمين المظالم لمكافحة التمييز",
-    "discriminationActionContactLegalAid": "تواصل مع مكتب المساعدة القانونية للحصول على استشارة مجانية",
-    "discriminationActionReportPolice": "أبلغ الشرطة إذا كانت هناك تهديدات أو اعتداء",
-    "discriminationFactNonDiscriminationAct": "يغطي قانون مكافحة التمييز الفنلندي التمييز على أساس العمر والأصل والجنسية واللغة والدين والصحة والإعاقة والتوجه الجنسي وغيرها من الخصائص الشخصية.",
-    "contactVictimSupportRIKU": "دعم الضحايا فنلندا (RIKU)",
-    "domesticViolence": "العنف المنزلي",
-    "inheritance": "الميراث",
-    "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
-    "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
-    "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
-    "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
-    "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
-    "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
-    "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
-    "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
-    "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
-    "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
-    "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
-    "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
-    "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
-    "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
-    "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
-    "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
-    "consumerProtection": "حماية المستهلك",
-    "caseTypeStepLabel": "Case Type",
-    "detailsStepLabel": "Details",
-    "documentsStepLabel": "Documents",
-    "whatTypeOfCase": "What type of case is this?",
-    "selectCategoryDescription": "Select the category that best describes your situation.",
-    "tellUsAboutCase": "Tell us about your case",
-    "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
-    "caseTitleHint": "e.g., Residence Permit Appeal 2026",
-    "countryJurisdiction": "Country / Jurisdiction",
-    "selectCountryHint": "Select a country",
-    "referenceNumberHint": "e.g., UMA/12345/2026",
-    "descriptionOptional": "Description (optional)",
-    "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
-    "uploadFirstDocument": "Upload your first document",
-    "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
-    "tapToUploadFile": "Tap to upload a file",
-    "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
-    "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
-    "aiGeneratedDisclaimer": "AI-generated • Not legal advice",
-    "callAI": "Call AI",
-    "comingSoon": "قريبًا",
-    "encrypted": "Encrypted",
-    "typing": "Typing…",
-    "online": "Online",
-    "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
-    "tapMicrophoneToSpeak": "Tap the microphone to speak",
-    "categoryEssential": "Essential",
-    "categoryPolice": "Police",
-    "categoryWork": "Work",
-    "categoryHousing": "Housing",
-    "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count, plural, =0{لا توجد حقوق} =1{حق واحد بالداخل} other{{count} حقوق بالداخل}}",
-    "@rightsInsideCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "freeAidThreshold": "Free aid threshold",
-    "partialAidThreshold": "Partial aid threshold",
-    "assetLimit": "Asset limit",
-    "whereToApplyLabel": "Where to apply",
-    "phoneLabel": "Phone",
-    "websiteLabel": "Website",
-    "disclaimerCollapsed": "AI guidance only",
-    "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
-    "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "chatDisclaimerSubtitle": "AI assistant · not legal advice",
-    "chatDisclaimerBannerFull": "Advocat is an AI legal-information assistant, not a lawyer. Information here does not establish an attorney-client relationship, is not legal advice, and may be incorrect. For binding legal advice, consult a licensed attorney in your jurisdiction. We do not represent you.",
-    "chatDisclaimerFooter": "AI-generated. Verify with a licensed lawyer.",
-    "chatDisclaimerGotIt": "Got it",
-    "guestUser": "ضيف",
-    "howToUse": "كيفية الاستخدام؟",
-    "tutorialStep1Title": "مساعد قانوني بالذكاء الاصطناعي",
-    "tutorialStep1Desc": "اطرح أي سؤال قانوني واحصل على إجابات فورية بناءً على القانون الإستوني.",
-    "tutorialStep2Title": "اعرف حقوقك",
-    "tutorialStep2Desc": "تصفح المعلومات القانونية حسب الموضوع — العمل، السكن، حقوق المستهلك والمزيد.",
-    "tutorialStep3Title": "مسح المستندات",
-    "tutorialStep3Desc": "التقط صور المستندات القانونية لتحليل الذكاء الاصطناعي والتخزين الآمن.",
-    "tutorialStep4Title": "لنبدأ!",
-    "tutorialStep4Desc": "استكشف التطبيق واحمِ حقوقك. جميع البيانات تبقى خاصة على جهازك.",
-    "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "افتح الميزات المتقدمة",
-    "voiceDisclaimer": "المساعد الصوتي يعمل حاليًا فقط على الكمبيوتر (متصفح Chrome). دعم الهاتف قريبًا.",
-    "recommended": "موصى به",
-    "pleaseLogIn": "يرجى تسجيل الدخول",
-    "subscriptionNotFound": "لم يتم العثور على الاشتراك",
-    "errorWithMessage": "خطأ: {message}",
-    "redirectingToPayment": "جارٍ التوجيه إلى صفحة الدفع…",
-    "cheaperAnnually": "€{amount}/شهر أرخص بالاشتراك السنوي",
-    "navigatingTo": "جارٍ فتح",
-    "stayInChat": "البقاء في المحادثة",
-    "backToChat": "العودة إلى المحادثة",
-    "citationStatusVerifiedBadge": "موثَّق",
-    "citationStatusUnverifiedBadge": "غير موثَّق",
-    "citationStatusHistoricalBadge": "نسخة سابقة",
-    "citationStatusVerifiedTooltip": "مُقتبَس من مصدر قانوني تم استرجاعه.",
-    "citationStatusUnverifiedTooltip": "اقتبس الذكاء الاصطناعي هذا دون استرجاع المصدر — تحقَّق قبل الاعتماد عليه.",
-    "citationStatusHistoricalTooltip": "الحكم المُقتبَس لم يعد ساري المفعول.",
-    "citationOpenInRiigiTeataja": "فتح في Riigi Teataja",
-    "citationSnippetExpand": "عرض النص الكامل",
-    "citationSnippetCollapse": "عرض أقل",
-    "citationUnverifiedSheetNote": "اقتبس الذكاء الاصطناعي هذه الفقرة، غير أنه لم يتم استرجاعها من المتن القانوني في هذه الجلسة. تحقَّق من المرجع قبل الاعتماد عليه.",
-    "citationFooterNoneWarning": "لا توجد اقتباسات موثَّقة",
-    "citationFooterSummaryTotal": "{count, plural, =1{اقتباس واحد} other{{count} اقتباسات}}",
-    "citationFooterSummaryVerified": "{count, plural, =1{تم التحقق من واحد} other{تم التحقق من {count}}}",
-    "citationFooterSummaryUnverified": "{count, plural, =1{غير مُتحقق منه واحد} other{{count} غير مُتحقق منها}}",
-    "citationFooterSummaryHistorical": "{count, plural, =1{تاريخي واحد} other{{count} تاريخية}}",
-    "@citationFooterSummaryTotal": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryVerified": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryUnverified": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryHistorical": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineRadarTitle": "Upcoming deadlines",
-    "deadlineRadarEmpty": "No upcoming deadlines",
-    "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "{count, plural, =0{اليوم} =1{خلال يوم واحد} other{خلال {count} أيام}}",
-    "@deadlineCardDaysLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineCardTomorrow": "tomorrow",
-    "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count, plural, =1{متأخر يوم واحد} other{متأخر {count} أيام}}",
-    "@deadlineCardOverdue": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineCardMarkComplete": "Mark complete",
-    "deadlineCardSnooze": "Snooze",
-    "deadlineCardSnooze3d": "Snooze 3 days",
-    "deadlineCardSnooze7d": "Snooze 7 days",
-    "deadlineCardSnoozeCustom": "Pick a date",
-    "deadlineCardEdit": "Edit",
-    "deadlineCardDelete": "Archive",
-    "deadlineCardSourceLabelPdf": "from PDF",
-    "deadlineCardSourceLabelIntake": "from intake",
-    "deadlineCardSourceLabelManual": "added manually",
-    "deadlineCardSourceLabelEmail": "from email",
-    "deadlineCardSourceLabelHaikuExtract": "AI-extracted",
-    "deadlineCardSourceLabelStatutoryTemplate": "statute template",
-    "deadlineBannerCritical": "Critical deadline {title} {when}",
-    "@deadlineBannerCritical": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            },
-            "when": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlineBannerDismiss": "Dismiss",
-    "deadlineBannerOpen": "Open deadline",
-    "deadlineHolidayShifted": "Shifted from {original} due to {reason}",
-    "@deadlineHolidayShifted": {
-        "placeholders": {
-            "original": {
-                "type": "String"
-            },
-            "reason": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlinePermissionAskTitle": "Enable deadline reminders?",
-    "deadlinePermissionAskBody": "We'll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.",
-    "deadlinePermissionAllow": "Allow",
-    "deadlinePermissionLater": "Later",
-    "deadlineSettingsSection": "Deadline reminders",
-    "deadlineSettingsPushChannel": "Push notifications",
-    "deadlineSettingsEmailChannel": "Email (critical only)",
-    "deadlineSettingsInAppChannel": "In-app banners",
-    "deadlineSettingsCriticalBypass": "Critical reminders bypass quiet hours",
-    "deadlineSettingsQuietHours": "Quiet hours",
-    "deadlineSettingsQuietHoursBadge": "Quiet {start}–{end}",
-    "@deadlineSettingsQuietHoursBadge": {
-        "placeholders": {
-            "start": {
-                "type": "String"
-            },
-            "end": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlineCaseScreenTitle": "Case deadlines",
-    "deadlineAddManualCta": "Add deadline",
-    "deadlineFormTitle": "Title",
-    "deadlineFormDescription": "Description (optional)",
-    "deadlineFormStatuteTemplate": "Statute template",
-    "deadlineFormStatuteTemplateNone": "None (manual)",
-    "deadlineFormDeadlineAt": "Deadline date",
-    "deadlineFormPriority": "Priority",
-    "deadlineFormSave": "Save",
-    "deadlineFormCancel": "Cancel",
-    "deadlineCompletedNotePrompt": "Add a note (optional)",
-    "deadlineCompletedNoteSave": "Save",
-    "inboxTitle": "Inbox",
-    "inboxEmptyTitle": "Nothing pending",
-    "inboxEmptyBody": "New email threads will appear here as they get triaged.",
-    "inboxApproveSend": "Approve & send",
-    "inboxEditDraft": "Edit",
-    "inboxSnooze": "Snooze",
-    "inboxArchive": "Archive",
-    "inboxFilterAll": "All",
-    "inboxConfirmSendTitle": "Send the prepared reply?",
-    "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
-    "inboxSendButton": "Send",
-    "inboxSentToast": "Sent.",
-    "inboxAlreadySentToast": "Already sent.",
-    "inboxSendErrorToast": "Could not send the reply. Tap retry.",
-    "inboxSnoozedToast": "Snoozed for 24h.",
-    "inboxArchivedToast": "Archived.",
-    "inboxDraftLoadError": "Could not load draft.",
-    "inboxDeadlineToday": "today",
-    "inboxDeadlineTomorrow": "tomorrow",
-    "inboxDeadlineInDays": "in {days}d",
-    "@inboxDeadlineInDays": {
-        "placeholders": {
-            "days": {
-                "type": "int"
-            }
-        }
-    },
-    "inboxDeadlineOverdue": "overdue {days}d",
-    "@inboxDeadlineOverdue": {
-        "placeholders": {
-            "days": {
-                "type": "int"
-            }
-        }
-    },
-    "workspaceTabOverview": "Overview",
-    "workspaceTabChat": "Chat",
-    "workspaceTabDrafts": "Drafts",
-    "workspaceOverviewEmpty": "Add documents to build a summary.",
-    "workspaceTimelineEmpty": "No events yet.",
-    "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
-    "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email.",
-    "reviewThisContract": "راجع هذا العقد",
-    "contractReviews": "Contract Reviews",
-    "@contractReviews": {},
-    "contractReviewsFreeFeature": "1 contract review (lifetime trial)",
-    "@contractReviewsFreeFeature": {},
-    "contractReviewsCounselFeature": "5 contract reviews per month",
-    "@contractReviewsCounselFeature": {},
-    "contractReviewsProFeature": "20 contract reviews per month",
-    "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "{count, plural, =0{لا توجد مراجعات عقود متبقية هذا الشهر} =1{تبقت مراجعة عقد واحدة هذا الشهر} other{تبقت {count} مراجعات عقود هذا الشهر}}",
-    "@contractReviewsLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "contractReviewsExhausted": "No contract reviews left this month",
-    "@contractReviewsExhausted": {},
-    "contractReviewsFreeTrialLeft": "Free trial: 1 contract review",
-    "@contractReviewsFreeTrialLeft": {},
-    "contractReviewsFreeTrialUsed": "Free trial used — upgrade for more",
-    "@contractReviewsFreeTrialUsed": {},
-    "contractReviewsUpgradeTitle": "Contract reviews used up",
-    "@contractReviewsUpgradeTitle": {},
-    "contractReviewsUpgradeBodyFree": "You used your free contract review. Upgrade for monthly contract reviews.",
-    "@contractReviewsUpgradeBodyFree": {},
-    "contractReviewsUpgradeBodyPaid": "You used {used} of {cap} reviews this month. Upgrade for a higher monthly cap.",
-    "@contractReviewsUpgradeBodyPaid": {
-        "placeholders": {
-            "used": {
-                "type": "int"
-            },
-            "cap": {
-                "type": "int"
-            }
-        }
-    },
-    "contractReviewsUpgradeCounselCta": "Upgrade to Counsel (€19.99/mo) — 5 reviews",
-    "@contractReviewsUpgradeCounselCta": {},
-    "contractReviewsUpgradeProCta": "Upgrade to Pro (€29.99/mo) — 20 reviews",
-    "@contractReviewsUpgradeProCta": {},
-    "contractReviewsUpgradeToProShort": "Upgrade to Pro — 20/mo",
-    "@contractReviewsUpgradeToProShort": {},
-    "notNow": "Not now",
-    "@notNow": {},
-    "referralTitle": "ادعُ الأصدقاء",
-    "@referralTitle": {},
-    "referralSubtitle": "احصل على شهر مجاني. اهدِ شهرًا مجانيًا.",
-    "@referralSubtitle": {},
-    "referralYourLink": "رابطك",
-    "@referralYourLink": {},
-    "referralCopyLink": "نسخ الرابط",
-    "@referralCopyLink": {},
-    "referralShare": "مشاركة",
-    "@referralShare": {},
-    "referralLinkCopied": "تم نسخ الرابط",
-    "@referralLinkCopied": {},
-    "referralStatsInvited": "المدعوون",
-    "@referralStatsInvited": {},
-    "referralStatsConverted": "المشتركون",
-    "@referralStatsConverted": {},
-    "referralStatsEarned": "أشهر مجانية",
-    "@referralStatsEarned": {},
-    "referralShareWhatsApp": "مشاركة عبر واتساب",
-    "@referralShareWhatsApp": {},
-    "referralShareTelegram": "مشاركة عبر تيليجرام",
-    "@referralShareTelegram": {},
-    "referralShareEmail": "مشاركة عبر البريد",
-    "@referralShareEmail": {},
-    "referralEmailSubject": "جرّب Advocat — مساعدك القانوني بالذكاء الاصطناعي",
-    "@referralEmailSubject": {},
-    "referralLoadError": "تعذّر تحميل البيانات. اسحب للتحديث.",
-    "@referralLoadError": {},
-    "referralRetry": "أعد المحاولة",
-    "@referralRetry": {},
-    "referralSettingsTile": "ادعُ الأصدقاء",
-    "@referralSettingsTile": {},
-    "referralAfterReviewCta": "أعجبك؟ ادعُ صديقًا — كلاكما يحصل على شهر مجاني.",
-    "@referralAfterReviewCta": {},
-    "checkerProTagline": "Professional verification tools",
-    "checkerDataSource": "Data from official registries",
-    "companyCheckerHint": "Company name or reg. number",
-    "companyCheckerPriceChip": "€2.99 per check  •  Included in Pro",
-    "companyCheckerEmptyState": "Enter a company name or registration\nnumber to get a full report",
-    "aiMemoryTitle": "AI memory",
-    "aiMemorySubtitle": "Review and forget what the AI remembers about you",
-    "bookLawyerCallTitle": "Book a lawyer call",
-    "bookLawyerCallComingSoonTitle": "Human lawyer calls — opening soon",
-    "bookLawyerCallComingSoonBody": "Pro and Premium include 15-minute calls with a partner lawyer (1/quarter on Pro, 2/quarter on Premium). We are finalising the EE solo-practitioner pool and will email you the moment booking opens.",
-    "bookLawyerCallQuotaAvailable": "You have {remaining} of {total} call(s) left this quarter.",
-    "@bookLawyerCallQuotaAvailable": {
-        "placeholders": {
-            "remaining": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "bookLawyerCallQuotaExhausted": "Quarterly quota used.",
-    "bookLawyerCallQuotaBodyAvailable": "Pro tier includes 1 call/quarter, Premium 2. Calls last 15 minutes, by Google Meet.",
-    "bookLawyerCallQuotaBodyExhausted": "Your quota resets on the first day of next quarter. Need to talk sooner? Upgrade to Premium for an extra call.",
-    "severityCritical": "CRITICAL",
-    "severityHigh": "HIGH",
-    "severityMedium": "MEDIUM",
-    "severityLow": "LOW",
-    "deadlineRequiredFields": "Title and deadline date are required",
-    "acceptTermsRequired": "Please agree to the Terms of Service",
-    "chatLegalCouncilTooltip": "Legal council (4 experts)",
-    "attachFileTooltip": "Attach file",
-    "sendMessage": "Send message",
-    "stopGenerating": "Stop generating",
-    "showPassword": "Show password",
-    "hidePassword": "Hide password",
-    "decreaseDependents": "Decrease",
-    "increaseDependents": "Increase",
-    "consiliumHeader": "مجلس المحامين",
-    "@consiliumHeader": {
-        "description": "Header text for the multi-agent legal consilium panel"
-    },
-    "consiliumProgress": "{count} من {total} جاهز",
-    "@consiliumProgress": {
-        "description": "Progress indicator while consilium experts produce opinions",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumStarting": "يقوم المحامون بمراجعة قضيتك…",
-    "consiliumDisagreement": "الخبراء غير متفقين",
-    "@consiliumDisagreement": {
-        "description": "Banner shown when experts have conflicting positions"
-    },
-    "consiliumSynthesizing": "جارٍ صياغة التوصية…",
-    "consiliumDone": "اكتمل المجلس · {totalRoles} خبراء",
-    "@consiliumDone": {
-        "placeholders": {
-            "totalRoles": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumPositionPush": "اعترض",
-    "consiliumPositionSettle": "تسوية",
-    "consiliumPositionInvestigate": "تحقق",
-    "consiliumPositionOutOfScope": "خارج نطاق الاختصاص",
-    "consiliumConfidence": "الثقة",
-    "consiliumKeyCitation": "المرجع الأساسي",
-    "consiliumAdversarialRound": "جولة جدلية",
-    "consiliumViewFullOpinion": "عرض الرأي كاملاً",
-    "consiliumExpertsAgreed": "{count, plural, =1{خبير واحد موافق} other{{count} خبراء موافقون}}",
-    "@consiliumExpertsAgreed": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumExpertsDisagree": "{count, plural, =1{خبير واحد غير موافق} other{{count} خبراء غير موافقين}}",
-    "@consiliumExpertsDisagree": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumDisclaimer": "وكلاء ذكاء اصطناعي، وليسوا محامين بشريين. تحقق من القرارات الجوهرية مع محامٍ مرخَّص.",
-    "@consiliumDisclaimer": {
-        "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    },
-    "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
-    "draftsTab": "Drafts",
-    "draftingTitle": "Drafting Studio",
-    "draftingEmpty": "Empty draft",
-    "draftingPlaceholder": "Start typing your draft…",
-    "draftingDraftsList": "My drafts",
-    "draftingSave": "Save",
-    "draftingSaved": "Saved",
-    "draftingSavedJustNow": "Saved just now",
-    "draftingAiRevise": "Revise with AI",
-    "draftingExportPdf": "Export PDF",
-    "draftingExportDocx": "Export DOCX",
-    "draftingExportMd": "Export Markdown",
-    "draftingDeleteDraft": "Delete draft",
-    "draftingConfirmDelete": "Delete this draft?",
-    "draftingConfirmDeleteMessage": "This action cannot be undone.",
-    "draftingConfirm": "Delete",
-    "draftingCancel": "Cancel",
-    "draftingDraftReplyTo": "Reply to {name}",
-    "draftingUntitled": "Untitled",
-    "draftingTitleHint": "Title (optional)",
-    "draftingAiReviseTitle": "Revise with AI",
-    "draftingAiReviseSelectionLabel": "Selected text:",
-    "draftingAiReviseInstructionLabel": "Instruction (optional)",
-    "draftingAiReviseInstructionHint": "e.g. \"make it more formal\" or \"shorten\"",
-    "draftingAiReviseRunButton": "Generate revision",
-    "draftingAiReviseSuggestionLabel": "Suggested revision:",
-    "draftingAiReviseChangesLabel": "Changes:",
-    "draftingAiReviseAccept": "Accept",
-    "draftingAiReviseReject": "Reject",
-    "draftingFormatBold": "Bold",
-    "draftingFormatItalic": "Italic",
-    "draftingFormatHeading": "Heading",
-    "draftingFormatBullet": "Bullet list",
-    "draftingFormatNumbered": "Numbered list",
-    "draftingEmptyListMessage": "You have no drafts yet.",
-    "draftingEmptyListAction": "New draft",
-    "draftingExporting": "Exporting…",
-    "draftingExportFailed": "Export failed",
-    "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft",
-    "vaultNoteChip": "Vault note",
-    "saveToVault": "Save to Vault",
-    "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault",
-    "vaultNoteTitlePrefix": "Note: ",
-    "openInVault": "Open in Vault",
-    "saveToVaultFailed": "Save to Vault failed",
-    "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history",
-    "dangerZone": "[en] Danger zone",
-    "deleteAccountConfirmButton": "[en] Delete forever",
-    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
-    "emptyHomeTitle": "Welcome to Advocat",
-    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
-    "intentChip1": "Got a fine",
-    "intentChip2": "Permit denied",
-    "intentChip3": "Contract problem",
-    "emptyCasesTitle": "No cases yet",
-    "emptyCasesCta": "Start a case",
-    "emptyDraftsTitle": "No drafts yet",
-    "emptyDraftsCta": "Create draft",
-    "emptyChatTitle": "Ask Advocat anything",
-    "chatExamplePrompt1": "Help me reply to a fine",
-    "chatExamplePrompt2": "Review my rental contract",
-    "chatExamplePrompt3": "What are my rights at work?",
-    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
-    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
-    "deletingAccount": "[en] Deleting account…",
-    "contractReviewTitle": "Contract Review",
-    "@contractReviewTitle": {
-        "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewUploadCta": "Upload contract",
-    "@contractReviewUploadCta": {
-        "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
-    "@contractReviewQuotaRemaining": {
-        "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewRedFlags": "Red flags",
-    "@contractReviewRedFlags": {
-        "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewReviewPoints": "Review points",
-    "@contractReviewReviewPoints": {
-        "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewNegotiationTips": "Negotiation tips",
-    "@contractReviewNegotiationTips": {
-        "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewSaveToVault": "Save to Vault",
-    "@contractReviewSaveToVault": {
-        "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewContinueChat": "Continue in chat",
-    "@contractReviewContinueChat": {
-        "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "referralInviteFriends": "Invite Friends",
-    "referralYourCode": "Your code",
-    "referralCopiedToast": "Code copied to clipboard",
-    "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
-    "referralInvited": "Friends invited",
-    "referralRewardsEarned": "Free months earned",
-    "deadlineUrgencyToday": "Today & Overdue",
-    "deadlineUrgencyWeek": "This week",
-    "deadlineUrgencyMonth": "This month",
-    "deadlineUrgencyLater": "Later",
-    "deadlineAddManual": "Add deadline",
-    "deadlineSnoozeBy": "Snooze",
-    "deadlineSnooze1d": "Snooze 1 day",
-    "deadlineSnooze3d": "Snooze 3 days",
-    "deadlineSnooze7d": "Snooze 7 days",
-    "deadlineDismiss": "Dismiss",
-    "deadlineExportIcs": "Add to calendar",
-    "deadlineSource": "Source",
-    "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
-    "deadlineNewTitle": "New deadline",
-    "deadlineFieldTitle": "Title",
-    "deadlineFieldDueDate": "Due date",
-    "deadlineFieldNotes": "Notes (optional)",
-    "deadlineSaved": "Deadline saved",
-    "deadlineSaveFailed": "Could not save deadline",
-    "deadlineUrgentBannerSingle": "1 deadline today or overdue",
-    "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
-    "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
-    "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
-    "@deadlineUrgentBannerMany": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@deadlineDaysLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@deadlineDaysOverdue": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "iapPayWithApple": "ادفع باستخدام Apple",
-    "iapRestorePurchases": "استعادة المشتريات",
-    "iapPurchaseFailed": "فشلت عملية الشراء. يرجى المحاولة مرة أخرى أو التواصل مع الدعم.",
-    "iapRestoreSuccess": "تمت استعادة اشتراكك.",
-    "iapRestoreNoActive": "لم يتم العثور على اشتراك نشط للاستعادة.",
-    "deadlineEuRadarTitle": "EU deadline radar (preview)",
-    "@deadlineEuRadarTitle": {"x-todo": "translate to ar"},
-    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
-    "@deadlineEuRadarSubtitle": {"x-todo": "translate to ar"}
+  "@@locale": "ar",
+  "about": "حول التطبيق",
+  "aboutSection": "حول",
+  "appearance": "Appearance",
+  "appearanceSystem": "System (auto)",
+  "appearanceLight": "Light",
+  "appearanceDark": "Dark",
+  "appearanceDescription": "Choose how Advocat looks",
+  "accidents": "حوادث",
+  "active": "نشطة",
+  "activeCases": "القضايا النشطة",
+  "addedToAppeal": "تمت الإضافة إلى الاستئناف",
+  "agreeToTerms": "أوافق على ",
+  "aiAnalysis": "تحليل الذكاء الاصطناعي",
+  "aiAssistant": "المساعد القانوني الذكي",
+  "aiChat": "محادثة مع الذكاء الاصطناعي",
+  "all": "الكل",
+  "alreadyHaveAccount": "لديك حساب بالفعل؟ ",
+  "analyzing": "جارٍ التحليل…",
+  "andWord": " و",
+  "appTitle": "Advocat — أداة معلومات قانونية",
+  "appVersion": "إصدار التطبيق",
+  "appealFiled": "تم تقديم الاستئناف",
+  "areYouAbsolutelySure": "هل أنت متأكد تماماً؟",
+  "askAboutCase": "اسأل عن قضيتك",
+  "asylum": "لجوء",
+  "back": "رجوع",
+  "basic": "أساسي",
+  "beforeYouBuy": "قبل الشراء",
+  "beforeYouWork": "قبل التعامل معهم",
+  "camera": "الكاميرا",
+  "cancel": "إلغاء",
+  "caseDescription": "وصف القضية",
+  "caseDetail": "تفاصيل القضية",
+  "caseOverview": "نظرة عامة على القضايا",
+  "caseTitle": "عنوان القضية",
+  "caseUpdated": "تم تحديث القضية",
+  "cases": "القضايا",
+  "checkCompany": "تحقق من الشركة",
+  "checkDeadlines": "تحقق من المواعيد النهائية",
+  "checkVehicle": "تحقق من المركبة",
+  "checkerTitle": "المدقق",
+  "checkingErrors": "جارٍ التحقق من الأخطاء…",
+  "choosePlan": "اختر خطتك",
+  "closed": "مغلقة",
+  "companyName": "اسم الشركة أو رقم التسجيل",
+  "completed": "مكتمل",
+  "confirm": "تأكيد",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "connectEmail": "ربط البريد الإلكتروني",
+  "connectGmail": "ربط Gmail",
+  "connectOutlook": "ربط Outlook",
+  "connected": "متصل",
+  "contactSupport": "تواصل مع الدعم",
+  "continueWithGoogle": "المتابعة باستخدام جوجل",
+  "copyText": "نسخ النص",
+  "correspondence": "المراسلات",
+  "couldNotLoadCases": "تعذر تحميل قضاياك",
+  "country": "البلد",
+  "createAccount": "إنشاء حساب",
+  "createCase": "إنشاء قضية",
+  "criminalCase": "قضية جنائية",
+  "critical": "حرج",
+  "currentPlan": "خطتك الحالية",
+  "dataAndPrivacy": "البيانات والخصوصية",
+  "dataExportRequested": "تم طلب تصدير البيانات. تحقق من بريدك الإلكتروني.",
+  "daysRemaining": "{count, plural, =0{لا توجد أيام متبقية} =1{يوم واحد} other{{count} أيام}}",
+  "@daysRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineReminders": "تذكيرات المواعيد النهائية",
+  "deadlineRemindersDesc": "تلقي إشعارات قبل المواعيد النهائية المهمة",
+  "deadlines": "المواعيد النهائية",
+  "debtCollection": "تحصيل الديون",
+  "deleteAccount": "حذف الحساب",
+  "deleteAccountDesc": "حذف حسابك وجميع بياناتك نهائياً",
+  "deleteAccountDialogContent": "هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع بياناتك وقضاياك ومستنداتك نهائياً.",
+  "deleteConfirm": "هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع قضاياك ومستنداتك بشكل دائم.",
+  "demoHint": "تجريبي: جرب اللوحة «908FBT»",
+  "demoModeDesc": "استكشف التطبيق بقضية تجريبية دون إنشاء حساب",
+  "deportation": "ترحيل",
+  "disclaimer": "إرشادات ذكاء اصطناعي فقط — وليست استشارة قانونية. استشر محامياً دائماً.",
+  "disclaimerFull": "هذا المستند أُنشئ بمساعدة الذكاء الاصطناعي للإرشاد فقط، ولا يُعدّ استشارة قانونية. يرجى مراجعة محامٍ مختص قبل تقديم أي طعن أو استئناف.",
+  "disconnect": "إلغاء الربط",
+  "discrimination": "تمييز",
+  "doNotBuy": "لا تشتري",
+  "documents": "المستندات",
+  "documentsCount": "{count, plural, =0{لا توجد مستندات} =1{مستند واحد} other{{count} مستندات}}",
+  "@documentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "draftAppeal": "مسودة الاستئناف",
+  "editDraft": "تعديل المسودة",
+  "editProfile": "تعديل الملف الشخصي",
+  "email": "البريد الإلكتروني",
+  "emailConnected": "البريد الإلكتروني مرتبط",
+  "emailDisconnected": "تم إلغاء ربط البريد الإلكتروني",
+  "emailIntegration": "تكامل البريد الإلكتروني",
+  "emailInvalid": "يرجى إدخال بريد إلكتروني صالح",
+  "emailPrivacyNote": "نقرأ فقط الرسائل المتعلقة بقضيتك القانونية. بياناتك محمية ومشفرة.",
+  "emailRequired": "البريد الإلكتروني مطلوب",
+  "emergencyShield": "درع الطوارئ",
+  "error": "خطأ",
+  "exportDataDesc": "تحميل جميع بياناتك ومستنداتك",
+  "exportDataDialogContent": "سنقوم بإعداد تنزيل لجميع بياناتك بما في ذلك القضايا والمستندات والمراسلات. ستتلقى بريداً إلكترونياً عندما يكون جاهزاً.",
+  "exportMyData": "تصدير بياناتي",
+  "exportPdf": "تصدير PDF",
+  "familyReunification": "لمّ شمل الأسرة",
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "free": "مجاني",
+  "fullDefense": "Advocat Pro",
+  "fullName": "الاسم الكامل",
+  "gallery": "المعرض",
+  "generateAppeal": "إنشاء الاستئناف",
+  "getStarted": "ابدأ الآن",
+  "goodAfternoon": "مساء الخير، {name}",
+  "@goodAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodEvening": "مساء الخير، {name}",
+  "@goodEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodMorning": "صباح الخير، {name}",
+  "@goodMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodNight": "تصبح على خير، {name}",
+  "@goodNight": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "home": "الرئيسية",
+  "important": "مهم",
+  "inProgress": "قيد المعالجة",
+  "informational": "معلوماتي",
+  "inspection": "الفحص الفني",
+  "insurance": "التأمين",
+  "issuesFound": "{count, plural, =0{لم يتم العثور على مشاكل} =1{تم العثور على مشكلة واحدة} other{تم العثور على {count} مشاكل}}",
+  "@issuesFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "laborDispute": "نزاع عمالي",
+  "langEnglish": "الإنجليزية",
+  "langFinnish": "الفنلندية",
+  "langRussian": "الروسية",
+  "language": "اللغة",
+  "lastActivity": "آخر نشاط: {time}",
+  "@lastActivity": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "legalFighter": "المدافع القانوني",
+  "legalSection": "القانوني",
+  "licensePlate": "لوحة الترخيص",
+  "loading": "جارٍ التحميل…",
+  "logIn": "الدخول",
+  "loginFailed": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.",
+  "lost": "خسارة",
+  "markComplete": "وضع علامة مكتمل",
+  "mileage": "المسافة المقطوعة",
+  "myCases": "قضاياي",
+  "nameRequired": "الاسم الكامل مطلوب",
+  "newCase": "قضية جديدة",
+  "next": "التالي",
+  "noAccount": "ليس لديك حساب؟ ",
+  "noCases": "لا توجد قضايا بعد",
+  "noCasesYet": "لا توجد قضايا بعد",
+  "noDeadlines": "لا توجد مواعيد نهائية",
+  "noRecentActivity": "لا يوجد نشاط حديث",
+  "notifications": "الإشعارات",
+  "onboardingDesc1": "يساعدك Advocat على فهم وضعك القانوني. أدوات الذكاء الاصطناعي تحلل المستندات، وتحدد المشكلات المحتملة، وتُعدّ مسودات مستندات لمراجعتك. ليس مكتب محاماة — بل أداة تقنية لدعم قضيتك.",
+  "onboardingDesc2": "صوّر أي مستند قانوني. يقرأه الذكاء الاصطناعي بعدة لغات، ويستخرج التفاصيل الرئيسية، ويتحقق من التوجيهات الأوروبية والقوانين الوطنية بحثاً عن مشكلات محتملة.",
+  "onboardingDesc3": "تتحقق أدوات الذكاء الاصطناعي لدينا من أكثر من 40 نوعاً من المتطلبات الإجرائية. قد يحدد تحليل الذكاء الاصطناعي مسائل تتطلب الانتباه — مثل لغة التبليغ، والخطوات الإجرائية، والمواعيد القانونية. تحقق دائماً مع محامٍ مؤهل.",
+  "onboardingDesc4": "يُعدّ الذكاء الاصطناعي مسودات طعون وشكاوى ورسائل مع مراجع قانونية لمراجعتك. أنت تقرر ما يتم تقديمه. يجب مراجعة كل مستند من قبل متخصص قانوني مؤهل قبل التقديم.",
+  "onboardingNext": "التالي",
+  "onboardingSkip": "تخطي",
+  "onboardingTitle1": "معلومات قانونية مدعومة بالذكاء الاصطناعي",
+  "onboardingTitle2": "امسح المستندات وحلّلها",
+  "onboardingTitle3": "الذكاء الاصطناعي يتحقق من المشكلات المحتملة",
+  "onboardingTitle4": "مسودات مستندات لمراجعتك",
+  "openACase": "افتح قضية",
+  "optional": "اختياري",
+  "orDivider": "أو",
+  "other": "أخرى",
+  "overdue": "متأخر",
+  "owners": "المالكون السابقون",
+  "password": "كلمة المرور",
+  "passwordRequired": "كلمة المرور مطلوبة",
+  "passwordStrengthMedium": "متوسطة",
+  "passwordStrengthStrong": "قوية",
+  "passwordStrengthWeak": "ضعيفة",
+  "passwordTooShort": "يجب أن تكون كلمة المرور ٨ أحرف على الأقل",
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "pendingDecision": "بانتظار القرار",
+  "perCheck": "لكل فحص",
+  "permanentlyDelete": "حذف نهائي",
+  "policeMisconduct": "سوء سلوك الشرطة",
+  "popular": "الأكثر طلباً",
+  "preferences": "التفضيلات",
+  "preferredLanguage": "اللغة المفضلة",
+  "pricePerCheck": "٤٫٩٩€ لكل فحص",
+  "privacyPolicy": "سياسة الخصوصية",
+  "pro": "احترافي",
+  "pushNotifications": "الإشعارات الفورية",
+  "rateUs": "قيّمنا",
+  "readingDocument": "جارٍ قراءة المستند…",
+  "recentActivity": "النشاط الأخير",
+  "referenceNumber": "الرقم المرجعي",
+  "registerFailed": "فشل إنشاء الحساب. يرجى المحاولة مرة أخرى.",
+  "reportFraud": "الإبلاغ عن احتيال",
+  "requestExport": "طلب التصدير",
+  "researchingLaw": "جارٍ البحث في القانون…",
+  "resetPasswordFailed": "فشل إرسال رابط إعادة التعيين. يرجى المحاولة مرة أخرى.",
+  "resetPasswordSent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.",
+  "residencePermit": "تصريح إقامة",
+  "manageSubscription": "إدارة الاشتراك",
+  "restorePurchases": "استعادة المشتريات",
+  "retry": "إعادة المحاولة",
+  "reviewWarning": "تحذير: راجع المسودة بعناية قبل التقديم",
+  "riskHigh": "خطر عالي — تجنب",
+  "riskLow": "آمن للتعامل",
+  "riskMedium": "تابع بحذر",
+  "safeToBuy": "آمن للشراء",
+  "saveAndAnalyze": "حفظ وتحليل",
+  "saveDraft": "حفظ المسودة",
+  "saveWithAnnual": "وفّر مع الاشتراك السنوي",
+  "scan": "مسح ضوئي",
+  "scanDocument": "مسح مستند ضوئياً",
+  "searchCases": "البحث في القضايا",
+  "selectCountry": "اختر الدولة",
+  "selectLanguage": "اختر اللغة",
+  "sendViaEmail": "إرسال عبر البريد الإلكتروني",
+  "settings": "الإعدادات",
+  "signIn": "تسجيل الدخول",
+  "signInLink": "تسجيل الدخول",
+  "signInSubtitle": "سجّل الدخول للوصول إلى قضاياك",
+  "signOut": "تسجيل الخروج",
+  "signOutConfirm": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "signUp": "إنشاء حساب",
+  "signUpLink": "إنشاء حساب",
+  "socialBenefits": "المزايا الاجتماعية",
+  "someConcerns": "بعض المخاوف",
+  "startFirstCase": "ابدأ بإنشاء قضيتك الأولى",
+  "step": "الخطوة {current} من {total}",
+  "@step": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stolen": "فحص السرقة",
+  "subscription": "الاشتراك",
+  "syncLegalCorrespondence": "مزامنة المراسلات القانونية",
+  "syncNow": "مزامنة الآن",
+  "tenantRights": "حقوق المستأجر",
+  "termsOfService": "شروط الخدمة",
+  "termsRequired": "يجب الموافقة على شروط الخدمة",
+  "timeline": "الجدول الزمني",
+  "tryDemoMode": "تجربة الوضع التجريبي",
+  "typeDeleteToConfirm": "اكتب DELETE لتأكيد حذف الحساب نهائياً.",
+  "typeMessage": "اكتب رسالتك…",
+  "upcoming": "قادم",
+  "uploadDocument": "رفع مستند",
+  "urgentDeadline": "عاجل: {title}",
+  "@urgentDeadline": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "useInAppeal": "استخدام في الاستئناف",
+  "vehicleChecker": "فاحص المركبات",
+  "vehicleChecks": "فحوصات الحالة",
+  "vehicleColor": "اللون",
+  "vehicleMake": "الشركة المصنعة",
+  "vehicleModel": "الطراز",
+  "vehicleYear": "السنة",
+  "version": "الإصدار",
+  "victimSupport": "دعم الضحايا",
+  "viewAll": "عرض الكل",
+  "vinNumber": "رقم الهيكل",
+  "welcomeBack": "مرحباً بعودتك",
+  "whatAreMyOptions": "ما هي خياراتي؟",
+  "won": "ربح",
+  "documentVault": "خزنة المستندات",
+  "secureDocumentStorage": "تخزين آمن للمستندات",
+  "secureDocumentStorageDesc": "قم بتخزين مستنداتك القانونية المهمة بأمان. جميع الملفات مشفرة من طرف إلى طرف.",
+  "addDocument": "إضافة مستند",
+  "chooseHowToAdd": "اختر طريقة إضافة مستندك",
+  "uploadFile": "رفع ملف",
+  "uploadFileDesc": "اختر ملف PDF أو صورة من جهازك",
+  "scanDocumentDesc": "التقط صورة لمستندك",
+  "createNote": "إنشاء ملاحظة",
+  "createNoteDesc": "اكتب ملاحظة أو سجّل تفاصيل مهمة",
+  "knowYourRights": "اعرف حقوقك",
+  "stoppedByPolice": "أوقفتك الشرطة",
+  "stoppedByPoliceDesc": "حقوقك أثناء مواجهة مع الشرطة",
+  "deportationNotice": "إشعار ترحيل",
+  "deportationNoticeDesc": "خطوات الطعن في قرار الإبعاد",
+  "workplaceRights": "حقوق العمل",
+  "workplaceRightsDesc": "حماية قانون العمل في فنلندا",
+  "tenantRightsDesc": "حماية حقوق السكن والإيجار",
+  "immigrationDetention": "الاحتجاز المتعلق بالهجرة",
+  "immigrationDetentionDesc": "حقوقك في حال احتجازك من قبل السلطات",
+  "discriminationDesc": "كيفية الإبلاغ عن التمييز ومكافحته",
+  "scenarioNotFound": "السيناريو غير موجود",
+  "youHaveRightTo": "لديك الحق في:",
+  "youMust": "يجب عليك:",
+  "immediateSteps": "الخطوات الفورية:",
+  "yourRights": "حقوقك:",
+  "basicRights": "الحقوق الأساسية:",
+  "yourRightsAsTenant": "حقوقك كمستأجر:",
+  "yourRightsInDetention": "حقوقك أثناء الاحتجاز:",
+  "howToAct": "كيف تتصرف:",
+  "rightKnowWhyStopped": "معرفة سبب إيقافك",
+  "rightRemainSilent": "التزام الصمت (يجب عليك تعريف هويتك)",
+  "rightAskInterpreter": "طلب مترجم فوري",
+  "rightContactLawyer": "الاتصال بمحامٍ قبل الاستجواب",
+  "rightRecordEncounter": "تسجيل المواجهة (في الأماكن العامة)",
+  "mustProvideName": "تقديم اسمك وتاريخ ميلادك",
+  "mustShowId": "إبراز هويتك إن كانت لديك",
+  "mustNotResist": "عدم المقاومة الجسدية",
+  "doNotIgnoreNotice": "لا تتجاهل الإشعار - المواعيد النهائية صارمة",
+  "noteAppealDeadline": "لاحظ موعد الاستئناف (عادة ٣٠ يوماً)",
+  "contactLawyerImmediately": "اتصل بمحامٍ فوراً",
+  "applyLegalAid": "قدّم طلب مساعدة قانونية إذا لزم الأمر",
+  "rightAppealAdmin": "الحق في الاستئناف أمام المحكمة الإدارية",
+  "rightLegalRep": "الحق في التمثيل القانوني",
+  "rightInterpreter": "الحق في مترجم فوري",
+  "rightStayDuringAppeal": "الحق في البقاء أثناء الاستئناف (في معظم الحالات)",
+  "minimumWage": "الحد الأدنى للأجور وفقاً للاتفاقية الجماعية",
+  "workingTimeLimits": "حدود ساعات العمل (بحد أقصى ٨ ساعات/يوم، ٤٠ ساعة/أسبوع)",
+  "annualLeave": "إجازة سنوية (بحد أدنى يومان عن كل شهر عمل)",
+  "sickLeave": "تعويض الإجازة المرضية",
+  "safeWorkingConditions": "ظروف عمل آمنة",
+  "writtenRentalAgreement": "يجب أن يكون عقد الإيجار مكتوباً",
+  "securityDeposit": "مبلغ التأمين بحد أقصى ٣ أشهر إيجار",
+  "landlordNotice": "يجب على المالك إعطاء إشعار (٣-٦ أشهر)",
+  "rightHabitableDwelling": "الحق في مسكن صالح للسكن",
+  "protectionUnjustEviction": "الحماية من الإخلاء غير العادل",
+  "rightKnowDetentionReason": "الحق في معرفة سبب الاحتجاز",
+  "rightContactLawyerDetention": "الحق في الاتصال بمحامٍ",
+  "rightContactEmbassy": "الحق في الاتصال بسفارتك",
+  "rightChallengeDetention": "الحق في الطعن في الاحتجاز أمام المحكمة",
+  "rightHumaneTreatment": "الحق في معاملة إنسانية ورعاية طبية",
+  "documentIncident": "وثّق الحادثة (التاريخ، الوقت، الشهود)",
+  "fileComplaintOmbudsman": "قدّم شكوى لدى أمين المظالم لعدم التمييز",
+  "contactLegalAidOffice": "اتصل بمكتب المساعدة القانونية",
+  "reportToPolice": "أبلغ الشرطة إذا كان الأمر جنائياً (تهديد، اعتداء)",
+  "legalAidCalculator": "حاسبة المساعدة القانونية",
+  "checkEligibility": "تحقق من أهليتك للمساعدة القانونية: {country}",
+  "estimateDisclaimer": "هذا تقدير فقط. يتم تحديد الأهلية الفعلية من قبل مكتب المساعدة القانونية.",
+  "monthlyIncome": "الدخل الشهري (يورو)",
+  "totalAssets": "إجمالي الأصول (يورو)",
+  "numberOfDependents": "عدد المعالين",
+  "calculateEligibility": "حساب الأهلية",
+  "likelyEligible": "مؤهل على الأرجح",
+  "mayNotQualify": "قد لا تكون مؤهلاً",
+  "fullFreeLegalAid": "من المرجح أنك مؤهل للمساعدة القانونية المجانية الكاملة (بدون مساهمة مالية).",
+  "legalAidWithCopay": "قد تكون مؤهلاً للمساعدة القانونية مع مساهمة مالية بنسبة {percent}%.",
+  "@legalAidWithCopay": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mayNotQualifyDesc": "بناءً على هذا التقدير، قد لا تكون مؤهلاً للمساعدة القانونية الحكومية. فكّر في استشارة محامٍ خاص أو عيادة قانونية.",
+  "couldNotLoadDeadlines": "تعذر تحميل المواعيد النهائية",
+  "noUpcomingDeadlines": "لا توجد مواعيد نهائية قادمة",
+  "allClearDeadlines": "كل شيء على ما يرام! ستظهر المواعيد النهائية الجديدة هنا عند تحديدها.",
+  "nothingOverdue": "لا يوجد شيء متأخر",
+  "greatJobDeadlines": "عمل رائع في متابعة مواعيدك النهائية.",
+  "noCompletedDeadlines": "لا توجد مواعيد نهائية مكتملة",
+  "completedDeadlinesDesc": "ستظهر المواعيد النهائية المكتملة هنا.",
+  "daysLate": "أيام تأخير",
+  "days": "أيام",
+  "fromDocument": "من المستند",
+  "couldNotLoadCase": "تعذر تحميل تفاصيل القضية",
+  "typeLabel": "النوع",
+  "nationality": "الجنسية",
+  "migriReference": "مرجع Migri",
+  "courtCaseNo": "رقم القضية في المحكمة",
+  "created": "تاريخ الإنشاء",
+  "citizenship": "المواطنة",
+  "workPermit": "تصريح العمل",
+  "noDocumentsYet": "لم يتم رفع أي مستندات بعد",
+  "noUpcomingDeadlinesShort": "لا توجد مواعيد نهائية قادمة",
+  "caseCreated": "تم إنشاء القضية",
+  "decisionReceived": "تم استلام القرار",
+  "appealDeadline": "موعد الاستئناف النهائي",
+  "hearingScheduled": "تم تحديد موعد الجلسة",
+  "late": "متأخر",
+  "pending": "قيد الانتظار",
+  "processing": "قيد المعالجة",
+  "ready": "جاهز",
+  "failed": "فشل",
+  "analyzed": "تم التحليل",
+  "noDocumentsScanHint": "لا توجد مستندات بعد. امسح ضوئياً أو ارفع مستنداً.",
+  "inCourt": "في المحكمة",
+  "appeal": "استئناف",
+  "caseTimeline": "الجدول الزمني للقضية",
+  "couldNotLoadTimeline": "تعذر تحميل الجدول الزمني",
+  "noEventsYet": "لا توجد أحداث بعد",
+  "activityWillAppear": "سيظهر النشاط هنا مع تقدم قضيتك.",
+  "caseCreatedDesc": "تم إنشاء القضية «{title}».",
+  "@caseCreatedDesc": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "decisionReceivedDesc": "تم استلام قرار رسمي لهذه القضية.",
+  "appealDeadlineSet": "تم تحديد موعد الاستئناف النهائي",
+  "appealDeadlineDesc": "يجب تقديم الاستئناف بحلول {date}.",
+  "@appealDeadlineDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "hearingScheduledDesc": "تم تحديد جلسة المحكمة في {date}.",
+  "@hearingScheduledDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "caseInfoUpdated": "تم تحديث معلومات القضية آخر مرة.",
+  "documentAnalysis": "تحليل المستند",
+  "exportAsPdf": "تصدير كـ PDF",
+  "pdfExportComingSoon": "تصدير PDF قريباً",
+  "analysisFailedRetry": "فشل التحليل. يرجى المحاولة مرة أخرى.",
+  "somethingWentWrong": "حدث خطأ ما",
+  "genericError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+  "retryAnalysis": "إعادة التحليل",
+  "issuesFoundInDocument": "{count, plural, =0{لم يتم العثور على مشاكل في المستند} =1{تم العثور على مشكلة واحدة في المستند} other{تم العثور على {count} مشاكل في المستند}}",
+  "@issuesFoundInDocument": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "severityOverview": "نظرة عامة على الخطورة",
+  "issuesFoundHeader": "المشكلات المكتشفة",
+  "generateAppealWithIssues": "{count, plural, =1{إنشاء طعن (مشكلة واحدة)} other{إنشاء طعن ({count} مشاكل)}}",
+  "@generateAppealWithIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "analyzingContent": "جارٍ تحليل المحتوى…",
+  "documentProcessedOk": "تمت معالجة المستند بنجاح",
+  "noSignificantIssues": "لم يتم اكتشاف مشكلات جوهرية في هذا المستند.",
+  "cameraPermissionRequired": "مطلوب إذن الكاميرا",
+  "cameraPermissionDesc": "امنح إذن الوصول إلى الكاميرا لمسح المستندات ضوئياً، أو استخدم المعرض.",
+  "openSettings": "فتح الإعدادات",
+  "alignDocument": "قم بمحاذاة المستند داخل الإطار",
+  "pageCount": "{count, plural, =0{لا توجد صفحات} =1{صفحة واحدة} other{{count} صفحات}}",
+  "@pageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "preview": "معاينة",
+  "pageNumber": "صفحة {number}",
+  "@pageNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "done": "تم",
+  "retake": "إعادة الالتقاط",
+  "useThisPhoto": "استخدم هذه الصورة",
+  "addPage": "إضافة صفحة",
+  "uploadingPercent": "جارٍ الرفع… {percent}%",
+  "@uploadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "preparingUpload": "جارٍ تحضير الرفع…",
+  "documentUploadedSuccess": "تم رفع المستند بنجاح",
+  "pagesUploadedSuccess": "{count, plural, =1{تم تحميل صفحة واحدة بنجاح} other{تم تحميل {count} صفحات بنجاح}}",
+  "@pagesUploadedSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "uploadFailed": "فشل الرفع. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
+  "capturePhotoFailed": "فشل التقاط الصورة. يرجى المحاولة مرة أخرى.",
+  "readingText": "جارٍ قراءة النص…",
+  "draftDocument": "مسودة المستند",
+  "saveChanges": "حفظ التغييرات",
+  "editDocument": "تعديل المستند",
+  "generatingDraft": "جارٍ إنشاء مسودتك…",
+  "generatingDraftDesc": "يقوم الذكاء الاصطناعي بإعداد مستند قانوني بناءً على تفاصيل قضيتك والمشكلات المحددة.",
+  "failedToGenerateDraft": "فشل إنشاء المسودة. يرجى المحاولة مرة أخرى.",
+  "changesSaved": "تم حفظ التغييرات",
+  "copiedToClipboard": "تم النسخ إلى الحافظة",
+  "emailComingSoon": "إرسال البريد الإلكتروني قريباً",
+  "reviewBeforeSending": "راجع بعناية قبل الإرسال. أنت مسؤول عن محتوى هذا المستند.",
+  "noContentAvailable": "لا يوجد محتوى متاح",
+  "save": "حفظ",
+  "edit": "تعديل",
+  "pdf": "PDF",
+  "copy": "نسخ",
+  "appealDraft": "مسودة الاستئناف",
+  "selected": "{count} محدد",
+  "@selected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteSelected": "حذف المحدد",
+  "deleteDocumentsConfirm": "حذف {count} مستند؟",
+  "@deleteDocumentsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "delete": "حذف",
+  "analyzeSelected": "تحليل المحدد",
+  "batchAnalysisStarting": "بدء التحليل الدُفعي…",
+  "switchToList": "التبديل إلى القائمة",
+  "switchToGrid": "التبديل إلى الشبكة",
+  "scanNew": "مسح جديد",
+  "noDocumentsYetScan": "لا توجد مستندات بعد",
+  "scanFirstDocumentHint": "امسح أول مستند ضوئياً ليقوم الذكاء الاصطناعي بتحليله بحثاً عن أخطاء وإنشاء استئنافات.",
+  "failedToLoadDocuments": "فشل تحميل المستندات",
+  "aiDisclaimer": "إخلاء مسؤولية الذكاء الاصطناعي",
+  "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
+  "@aiDisclaimerCompact": {
+    "description": "TODO: native legal review (currently English fallback)"
+  },
+  "aiDisclaimerFullTitle": "Important: how Advocat works",
+  "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
+  "aiDisclaimerExpand": "Learn more",
+  "aiDisclaimerDismiss": "OK, I understand",
+  "annual": "سنوي",
+  "assignToCase": "تعيين للقضية",
+  "basicAiAnalysis": "تحليل أساسي بالذكاء الاصطناعي",
+  "caseCreationComingSoon": "إنشاء القضية بالبيانات المعبأة مسبقاً قريباً",
+  "caseSummaryCopied": "تم نسخ ملخص القضية",
+  "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
+  "checkingPurchases": "جارٍ التحقق من المشتريات السابقة…",
+  "connectYourEmail": "اربط بريدك الإلكتروني",
+  "connectYourEmailDesc": "اربط بريدك الإلكتروني لاكتشاف وتنظيم المراسلات القانونية المتعلقة بقضاياك تلقائياً.",
+  "connectedTo": "متصل بـ {email}",
+  "@connectedTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "cookiePolicy": "سياسة ملفات تعريف الارتباط",
+  "copySummary": "نسخ الملخص",
+  "dataPrivacyConsent": "موافقة خصوصية البيانات",
+  "decline": "رفض",
+  "deleteCase": "حذف القضية",
+  "deleteCaseConfirm": "هل أنت متأكد من حذف «{title}»؟ لا يمكن التراجع عن هذا.",
+  "@deleteCaseConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "disconnectEmail": "قطع البريد الإلكتروني",
+  "disconnectEmailConfirm": "ستتوقف المزامنة التلقائية للبريد. ستبقى الرسائل المزامنة سابقاً في قضاياك.",
+  "draftCopiedToClipboard": "تم نسخ المسودة",
+  "draftGeneration": "إنشاء المسودات",
+  "emailIntegrationTitle": "تكامل البريد الإلكتروني",
+  "english": "الإنجليزية",
+  "failedToCreateCaseRetry": "فشل إنشاء القضية. حاول مرة أخرى.",
+  "failedToLoadCases": "فشل تحميل القضايا",
+  "filterByType": "تصفية حسب النوع",
+  "finnish": "الفنلندية",
+  "forever": "للأبد",
+  "fullAiAnalysis": "تحليل كامل بالذكاء الاصطناعي",
+  "gdprChat": "معالجة رسائل المحادثة بالذكاء الاصطناعي",
+  "gdprDelete": "الحق في حذف بياناتك في أي وقت",
+  "gdprDocs": "تحليل المستندات المرفوعة",
+  "gdprFooter": "بياناتك مشفرة ولا تُشارك مع أطراف ثالثة. يمكنك سحب الموافقة وحذف جميع البيانات من الإعدادات.",
+  "gdprIntro": "لتقديم المساعدة القانونية بالذكاء الاصطناعي، نعالج بياناتك وفقاً لـ GDPR (EU 2016/679). بالمتابعة توافق على:",
+  "gdprStorage": "تخزين مشفر لبيانات القضايا",
+  "haveQuestionsAi": "لديك أسئلة؟ اسأل الذكاء الاصطناعي",
+  "iAgree": "أوافق",
+  "iAgreeToThe": "أوافق على ",
+  "lastSynced": "آخر مزامنة: {time}",
+  "@lastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "legalEmails": "الرسائل القانونية",
+  "legalEmailsWillAppear": "ستظهر هنا الرسائل المصنفة كقانونية.",
+  "monthly": "شهري",
+  "mostPopular": "الأكثر شعبية",
+  "noCasesMatchSearch": "لا توجد قضايا مطابقة",
+  "noLegalEmailsYet": "لا توجد رسائل قانونية بعد",
+  "noPreviousPurchases": "لم يتم العثور على مشتريات سابقة.",
+  "oneCaseActive": "قضية واحدة نشطة",
+  "openCase": "فتح القضية",
+  "orWord": "أو",
+  "paymentFailed": "فشل الدفع: {error}",
+  "@paymentFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "perMonth": "/شهر",
+  "perYear": "/سنة",
+  "priorityProcessing": "معالجة ذات أولوية",
+  "reportAndOpenCase": "إبلاغ وفتح قضية",
+  "reportMileageFraud": "الإبلاغ عن تزوير العداد",
+  "reportMileageFraudDesc": "سيتم إنشاء تقرير احتيال بناءً على بيانات فحص المركبة. يمكنك أيضاً فتح قضية قانونية.",
+  "russian": "الروسية",
+  "saveTwentyFivePercent": "وفر 25%",
+  "successSubscribed": "تم الاشتراك في {plan} بنجاح!",
+  "@successSubscribed": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "takePhotoInstead": "التقط صورة بدلاً من ذلك",
+  "threeCasesActive": "3 قضايا نشطة",
+  "threeDocScans": "3 عمليات مسح",
+  "twentyDocScans": "20 عملية مسح",
+  "unlimitedCases": "قضايا غير محدودة",
+  "unlimitedDocScans": "مسح غير محدود للمستندات",
+  "unlinkedEmails": "رسائل غير مرتبطة",
+  "viewFull": "عرض كامل",
+  "whatToDo": "ماذا تفعل",
+  "getHelp": "احصل على المساعدة",
+  "share": "مشاركة",
+  "didYouKnow": "هل تعلم؟",
+  "mustKnow": "يجب أن تعرف",
+  "goodToKnow": "من الجيد أن تعرف",
+  "sentFromAdvocat": "أُرسل من تطبيق Advocat",
+  "policeActionStayCalm": "ابقَ هادئاً واجعل يديك مرئيتين",
+  "policeActionAskWhy": "اسأل الضابط عن سبب إيقافك",
+  "policeActionProvideName": "قدّم اسمك وتاريخ ميلادك",
+  "policeActionWantLawyer": "صرّح بوضوح: «أريد محامياً قبل أي أسئلة»",
+  "policeActionAskInterpreter": "اطلب مترجماً عند الحاجة",
+  "policeActionNoteBadge": "سجّل اسم الضابط ورقم شارته",
+  "policeFactMustTellReason": "في فنلندا، يجب على الشرطة إخبارك بسبب إيقافك. إذا لم يفعلوا، يمكنك السؤال — وهم ملزمون قانونياً بالشرح.",
+  "policeFactCanRecord": "يمكنك تسجيل التفاعلات مع الشرطة في الأماكن العامة في فنلندا. هذا محمي بحرية التعبير.",
+  "contactFinnishLegalAid": "المساعدة القانونية الفنلندية",
+  "contactNonDiscriminationOmbudsman": "أمين المظالم لمكافحة التمييز",
+  "deportationDeadlineAppeal": "الطعن أمام المحكمة الإدارية — عادةً 30 يوماً من الإخطار",
+  "deportationDeadlineLegalAid": "تقدّم بطلب المساعدة القانونية — افعل ذلك فوراً",
+  "deportationFactStayDuringAppeal": "في فنلندا، لديك عادةً الحق في البقاء في البلاد أثناء معالجة طعنك. لا يمكن تنفيذ الترحيل أثناء طعن نشط في معظم الحالات.",
+  "contactRefugeeAdviceCentre": "مركز المشورة الفنلندي للاجئين",
+  "contactAdminCourtHelsinki": "المحكمة الإدارية في هلسنكي",
+  "workplaceActionKeepContract": "احتفظ بنسخ من عقد العمل",
+  "workplaceActionTrackHours": "تتبّع ساعات عملك بشكل مستقل",
+  "workplaceActionReportUnsafe": "أبلغ عن الظروف غير الآمنة لهيئة السلامة المهنية",
+  "workplaceActionJoinUnion": "انضم إلى نقابة عمالية للحماية",
+  "workplaceActionContactAuthority": "تواصل مع هيئة السلامة المهنية عند الحاجة",
+  "workplaceFactCollectiveWage": "في فنلندا، تحدد الاتفاقيات الجماعية الحد الأدنى للأجور حسب القطاع — لا يوجد حد أدنى وطني واحد للأجور. يجب على صاحب العمل الالتزام بالاتفاقية الجماعية لمجالك.",
+  "workplaceFactOralContract": "حتى بدون عقد مكتوب، لديك حقوق كاملة كموظف في فنلندا. الاتفاق الشفهي ملزم قانونياً بنفس القدر.",
+  "contactOccupationalSafety": "هيئة السلامة المهنية",
+  "contactTradeUnionSAK": "استشارات النقابات العمالية (SAK)",
+  "tenantActionWrittenAgreement": "احرص دائماً على وجود عقد إيجار مكتوب",
+  "tenantActionDocumentCondition": "وثّق حالة الشقة عند الانتقال (صور)",
+  "tenantActionReportMaintenance": "أبلغ عن مشاكل الصيانة كتابياً",
+  "tenantActionNoIllegalEviction": "لا توافق أبداً على إخلاء غير قانوني — المحاكم هي من تقرر",
+  "tenantActionContactAdvisory": "تواصل مع خدمات استشارات المستأجرين في حالة النزاعات",
+  "tenantFactNoEvictionWithoutCourt": "لا يمكن للمؤجر في فنلندا إخلائك بدون أمر محكمة، حتى لو انتهى عقد الإيجار. تغيير الأقفال أو قطع المرافق غير قانوني.",
+  "contactTenantsAssociation": "جمعية المستأجرين الفنلندية",
+  "contactConsumerDisputesBoard": "مجلس نزاعات المستهلكين",
+  "detentionActionAskDecision": "اطلب فوراً قرار الاحتجاز المكتوب",
+  "detentionActionRequestLawyer": "اطلب التواصل مع محامٍ",
+  "detentionActionContactEmbassy": "تواصل مع سفارتك أو قنصليتك",
+  "detentionActionAskMedical": "اطلب الرعاية الطبية عند الحاجة",
+  "detentionActionRequestInterpreter": "اطلب مترجماً لجميع الإجراءات",
+  "detentionDeadlineCourtReview": "يجب على المحكمة الجزئية مراجعة الاحتجاز خلال 4 أيام",
+  "detentionDeadlineContinuation": "تراجع المحكمة التمديد كل أسبوعين",
+  "detentionFactCourtReview": "يجب مراجعة احتجاز المهاجرين في فنلندا من قبل محكمة جزئية خلال 4 أيام. إذا لم يتم ذلك، يصبح الاحتجاز غير قانوني.",
+  "contactParliamentaryOmbudsman": "أمين المظالم البرلماني",
+  "discriminationActionWriteDown": "دوّن بالضبط ما حدث (التاريخ، الوقت، المكان)",
+  "discriminationActionSaveEvidence": "احفظ الأدلة: الرسائل، البريد الإلكتروني، الشهود",
+  "discriminationActionFileComplaint": "قدّم شكوى لأمين المظالم لمكافحة التمييز",
+  "discriminationActionContactLegalAid": "تواصل مع مكتب المساعدة القانونية للحصول على استشارة مجانية",
+  "discriminationActionReportPolice": "أبلغ الشرطة إذا كانت هناك تهديدات أو اعتداء",
+  "discriminationFactNonDiscriminationAct": "يغطي قانون مكافحة التمييز الفنلندي التمييز على أساس العمر والأصل والجنسية واللغة والدين والصحة والإعاقة والتوجه الجنسي وغيرها من الخصائص الشخصية.",
+  "contactVictimSupportRIKU": "دعم الضحايا فنلندا (RIKU)",
+  "domesticViolence": "العنف المنزلي",
+  "inheritance": "الميراث",
+  "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
+  "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
+  "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
+  "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
+  "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
+  "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
+  "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
+  "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
+  "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
+  "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
+  "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
+  "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
+  "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
+  "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
+  "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
+  "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
+  "consumerProtection": "حماية المستهلك",
+  "caseTypeStepLabel": "Case Type",
+  "detailsStepLabel": "Details",
+  "documentsStepLabel": "Documents",
+  "whatTypeOfCase": "What type of case is this?",
+  "selectCategoryDescription": "Select the category that best describes your situation.",
+  "tellUsAboutCase": "Tell us about your case",
+  "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
+  "caseTitleHint": "e.g., Residence Permit Appeal 2026",
+  "countryJurisdiction": "Country / Jurisdiction",
+  "selectCountryHint": "Select a country",
+  "referenceNumberHint": "e.g., UMA/12345/2026",
+  "descriptionOptional": "Description (optional)",
+  "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
+  "uploadFirstDocument": "Upload your first document",
+  "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
+  "tapToUploadFile": "Tap to upload a file",
+  "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
+  "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
+  "aiGeneratedDisclaimer": "AI-generated • Not legal advice",
+  "callAI": "Call AI",
+  "comingSoon": "قريبًا",
+  "encrypted": "Encrypted",
+  "typing": "Typing…",
+  "online": "Online",
+  "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
+  "tapMicrophoneToSpeak": "Tap the microphone to speak",
+  "categoryEssential": "Essential",
+  "categoryPolice": "Police",
+  "categoryWork": "Work",
+  "categoryHousing": "Housing",
+  "categoryConsumer": "Consumer",
+  "rightsInsideCount": "{count, plural, =0{لا توجد حقوق} =1{حق واحد بالداخل} other{{count} حقوق بالداخل}}",
+  "@rightsInsideCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeAidThreshold": "Free aid threshold",
+  "partialAidThreshold": "Partial aid threshold",
+  "assetLimit": "Asset limit",
+  "whereToApplyLabel": "Where to apply",
+  "phoneLabel": "Phone",
+  "websiteLabel": "Website",
+  "disclaimerCollapsed": "AI guidance only",
+  "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
+  "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
+  "chatDisclaimerSubtitle": "AI assistant · not legal advice",
+  "chatDisclaimerBannerFull": "Advocat is an AI legal-information assistant, not a lawyer. Information here does not establish an attorney-client relationship, is not legal advice, and may be incorrect. For binding legal advice, consult a licensed attorney in your jurisdiction. We do not represent you.",
+  "chatDisclaimerFooter": "AI-generated. Verify with a licensed lawyer.",
+  "chatDisclaimerGotIt": "Got it",
+  "guestUser": "ضيف",
+  "howToUse": "كيفية الاستخدام؟",
+  "tutorialStep1Title": "مساعد قانوني بالذكاء الاصطناعي",
+  "tutorialStep1Desc": "اطرح أي سؤال قانوني واحصل على إجابات فورية بناءً على القانون الإستوني.",
+  "tutorialStep2Title": "اعرف حقوقك",
+  "tutorialStep2Desc": "تصفح المعلومات القانونية حسب الموضوع — العمل، السكن، حقوق المستهلك والمزيد.",
+  "tutorialStep3Title": "مسح المستندات",
+  "tutorialStep3Desc": "التقط صور المستندات القانونية لتحليل الذكاء الاصطناعي والتخزين الآمن.",
+  "tutorialStep4Title": "لنبدأ!",
+  "tutorialStep4Desc": "استكشف التطبيق واحمِ حقوقك. جميع البيانات تبقى خاصة على جهازك.",
+  "advocatProTitle": "Advocat Pro",
+  "advocatProSubtitle": "افتح الميزات المتقدمة",
+  "voiceDisclaimer": "المساعد الصوتي يعمل حاليًا فقط على الكمبيوتر (متصفح Chrome). دعم الهاتف قريبًا.",
+  "recommended": "موصى به",
+  "pleaseLogIn": "يرجى تسجيل الدخول",
+  "subscriptionNotFound": "لم يتم العثور على الاشتراك",
+  "errorWithMessage": "خطأ: {message}",
+  "redirectingToPayment": "جارٍ التوجيه إلى صفحة الدفع…",
+  "cheaperAnnually": "€{amount}/شهر أرخص بالاشتراك السنوي",
+  "navigatingTo": "جارٍ فتح",
+  "stayInChat": "البقاء في المحادثة",
+  "backToChat": "العودة إلى المحادثة",
+  "citationStatusVerifiedBadge": "موثَّق",
+  "citationStatusUnverifiedBadge": "غير موثَّق",
+  "citationStatusHistoricalBadge": "نسخة سابقة",
+  "citationStatusVerifiedTooltip": "مُقتبَس من مصدر قانوني تم استرجاعه.",
+  "citationStatusUnverifiedTooltip": "اقتبس الذكاء الاصطناعي هذا دون استرجاع المصدر — تحقَّق قبل الاعتماد عليه.",
+  "citationStatusHistoricalTooltip": "الحكم المُقتبَس لم يعد ساري المفعول.",
+  "citationOpenInRiigiTeataja": "فتح في Riigi Teataja",
+  "citationSnippetExpand": "عرض النص الكامل",
+  "citationSnippetCollapse": "عرض أقل",
+  "citationUnverifiedSheetNote": "اقتبس الذكاء الاصطناعي هذه الفقرة، غير أنه لم يتم استرجاعها من المتن القانوني في هذه الجلسة. تحقَّق من المرجع قبل الاعتماد عليه.",
+  "citationFooterNoneWarning": "لا توجد اقتباسات موثَّقة",
+  "citationFooterSummaryTotal": "{count, plural, =1{اقتباس واحد} other{{count} اقتباسات}}",
+  "citationFooterSummaryVerified": "{count, plural, =1{تم التحقق من واحد} other{تم التحقق من {count}}}",
+  "citationFooterSummaryUnverified": "{count, plural, =1{غير مُتحقق منه واحد} other{{count} غير مُتحقق منها}}",
+  "citationFooterSummaryHistorical": "{count, plural, =1{تاريخي واحد} other{{count} تاريخية}}",
+  "@citationFooterSummaryTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@citationFooterSummaryVerified": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@citationFooterSummaryUnverified": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@citationFooterSummaryHistorical": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineRadarTitle": "Upcoming deadlines",
+  "deadlineRadarEmpty": "No upcoming deadlines",
+  "deadlineRadarViewAll": "View all",
+  "deadlineCardDaysLeft": "{count, plural, =0{اليوم} =1{خلال يوم واحد} other{خلال {count} أيام}}",
+  "@deadlineCardDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineCardTomorrow": "tomorrow",
+  "deadlineCardToday": "today",
+  "deadlineCardOverdue": "{count, plural, =1{متأخر يوم واحد} other{متأخر {count} أيام}}",
+  "@deadlineCardOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineCardMarkComplete": "Mark complete",
+  "deadlineCardSnooze": "Snooze",
+  "deadlineCardSnooze3d": "Snooze 3 days",
+  "deadlineCardSnooze7d": "Snooze 7 days",
+  "deadlineCardSnoozeCustom": "Pick a date",
+  "deadlineCardEdit": "Edit",
+  "deadlineCardDelete": "Archive",
+  "deadlineCardSourceLabelPdf": "from PDF",
+  "deadlineCardSourceLabelIntake": "from intake",
+  "deadlineCardSourceLabelManual": "added manually",
+  "deadlineCardSourceLabelEmail": "from email",
+  "deadlineCardSourceLabelHaikuExtract": "AI-extracted",
+  "deadlineCardSourceLabelStatutoryTemplate": "statute template",
+  "deadlineBannerCritical": "Critical deadline {title} {when}",
+  "@deadlineBannerCritical": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlineBannerDismiss": "Dismiss",
+  "deadlineBannerOpen": "Open deadline",
+  "deadlineHolidayShifted": "Shifted from {original} due to {reason}",
+  "@deadlineHolidayShifted": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlinePermissionAskTitle": "Enable deadline reminders?",
+  "deadlinePermissionAskBody": "We'll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.",
+  "deadlinePermissionAllow": "Allow",
+  "deadlinePermissionLater": "Later",
+  "deadlineSettingsSection": "Deadline reminders",
+  "deadlineSettingsPushChannel": "Push notifications",
+  "deadlineSettingsEmailChannel": "Email (critical only)",
+  "deadlineSettingsInAppChannel": "In-app banners",
+  "deadlineSettingsCriticalBypass": "Critical reminders bypass quiet hours",
+  "deadlineSettingsQuietHours": "Quiet hours",
+  "deadlineSettingsQuietHoursBadge": "Quiet {start}–{end}",
+  "@deadlineSettingsQuietHoursBadge": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlineCaseScreenTitle": "Case deadlines",
+  "deadlineAddManualCta": "Add deadline",
+  "deadlineFormTitle": "Title",
+  "deadlineFormDescription": "Description (optional)",
+  "deadlineFormStatuteTemplate": "Statute template",
+  "deadlineFormStatuteTemplateNone": "None (manual)",
+  "deadlineFormDeadlineAt": "Deadline date",
+  "deadlineFormPriority": "Priority",
+  "deadlineFormSave": "Save",
+  "deadlineFormCancel": "Cancel",
+  "deadlineCompletedNotePrompt": "Add a note (optional)",
+  "deadlineCompletedNoteSave": "Save",
+  "inboxTitle": "Inbox",
+  "inboxEmptyTitle": "Nothing pending",
+  "inboxEmptyBody": "New email threads will appear here as they get triaged.",
+  "inboxApproveSend": "Approve & send",
+  "inboxEditDraft": "Edit",
+  "inboxSnooze": "Snooze",
+  "inboxArchive": "Archive",
+  "inboxFilterAll": "All",
+  "inboxConfirmSendTitle": "Send the prepared reply?",
+  "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
+  "inboxSendButton": "Send",
+  "inboxSentToast": "Sent.",
+  "inboxAlreadySentToast": "Already sent.",
+  "inboxSendErrorToast": "Could not send the reply. Tap retry.",
+  "inboxSnoozedToast": "Snoozed for 24h.",
+  "inboxArchivedToast": "Archived.",
+  "inboxDraftLoadError": "Could not load draft.",
+  "inboxDeadlineToday": "today",
+  "inboxDeadlineTomorrow": "tomorrow",
+  "inboxDeadlineInDays": "in {days}d",
+  "@inboxDeadlineInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "inboxDeadlineOverdue": "overdue {days}d",
+  "@inboxDeadlineOverdue": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "workspaceTabOverview": "Overview",
+  "workspaceTabChat": "Chat",
+  "workspaceTabDrafts": "Drafts",
+  "workspaceOverviewEmpty": "Add documents to build a summary.",
+  "workspaceTimelineEmpty": "No events yet.",
+  "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
+  "workspaceDraftsEmpty": "No drafts yet.",
+  "workspaceInboxEmpty": "No related email.",
+  "reviewThisContract": "راجع هذا العقد",
+  "contractReviews": "Contract Reviews",
+  "@contractReviews": {},
+  "contractReviewsFreeFeature": "1 contract review (lifetime trial)",
+  "@contractReviewsFreeFeature": {},
+  "contractReviewsCounselFeature": "5 contract reviews per month",
+  "@contractReviewsCounselFeature": {},
+  "contractReviewsProFeature": "20 contract reviews per month",
+  "@contractReviewsProFeature": {},
+  "contractReviewsLeft": "{count, plural, =0{لا توجد مراجعات عقود متبقية هذا الشهر} =1{تبقت مراجعة عقد واحدة هذا الشهر} other{تبقت {count} مراجعات عقود هذا الشهر}}",
+  "@contractReviewsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contractReviewsExhausted": "No contract reviews left this month",
+  "@contractReviewsExhausted": {},
+  "contractReviewsFreeTrialLeft": "Free trial: 1 contract review",
+  "@contractReviewsFreeTrialLeft": {},
+  "contractReviewsFreeTrialUsed": "Free trial used — upgrade for more",
+  "@contractReviewsFreeTrialUsed": {},
+  "contractReviewsUpgradeTitle": "Contract reviews used up",
+  "@contractReviewsUpgradeTitle": {},
+  "contractReviewsUpgradeBodyFree": "You used your free contract review. Upgrade for monthly contract reviews.",
+  "@contractReviewsUpgradeBodyFree": {},
+  "contractReviewsUpgradeBodyPaid": "You used {used} of {cap} reviews this month. Upgrade for a higher monthly cap.",
+  "@contractReviewsUpgradeBodyPaid": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "contractReviewsUpgradeCounselCta": "Upgrade to Counsel (€19.99/mo) — 5 reviews",
+  "@contractReviewsUpgradeCounselCta": {},
+  "contractReviewsUpgradeProCta": "Upgrade to Pro (€29.99/mo) — 20 reviews",
+  "@contractReviewsUpgradeProCta": {},
+  "contractReviewsUpgradeToProShort": "Upgrade to Pro — 20/mo",
+  "@contractReviewsUpgradeToProShort": {},
+  "notNow": "Not now",
+  "@notNow": {},
+  "referralTitle": "ادعُ الأصدقاء",
+  "@referralTitle": {},
+  "referralSubtitle": "احصل على شهر مجاني. اهدِ شهرًا مجانيًا.",
+  "@referralSubtitle": {},
+  "referralYourLink": "رابطك",
+  "@referralYourLink": {},
+  "referralCopyLink": "نسخ الرابط",
+  "@referralCopyLink": {},
+  "referralShare": "مشاركة",
+  "@referralShare": {},
+  "referralLinkCopied": "تم نسخ الرابط",
+  "@referralLinkCopied": {},
+  "referralStatsInvited": "المدعوون",
+  "@referralStatsInvited": {},
+  "referralStatsConverted": "المشتركون",
+  "@referralStatsConverted": {},
+  "referralStatsEarned": "أشهر مجانية",
+  "@referralStatsEarned": {},
+  "referralShareWhatsApp": "مشاركة عبر واتساب",
+  "@referralShareWhatsApp": {},
+  "referralShareTelegram": "مشاركة عبر تيليجرام",
+  "@referralShareTelegram": {},
+  "referralShareEmail": "مشاركة عبر البريد",
+  "@referralShareEmail": {},
+  "referralEmailSubject": "جرّب Advocat — مساعدك القانوني بالذكاء الاصطناعي",
+  "@referralEmailSubject": {},
+  "referralLoadError": "تعذّر تحميل البيانات. اسحب للتحديث.",
+  "@referralLoadError": {},
+  "referralRetry": "أعد المحاولة",
+  "@referralRetry": {},
+  "referralSettingsTile": "ادعُ الأصدقاء",
+  "@referralSettingsTile": {},
+  "referralAfterReviewCta": "أعجبك؟ ادعُ صديقًا — كلاكما يحصل على شهر مجاني.",
+  "@referralAfterReviewCta": {},
+  "checkerProTagline": "Professional verification tools",
+  "checkerDataSource": "Data from official registries",
+  "companyCheckerHint": "Company name or reg. number",
+  "companyCheckerPriceChip": "€2.99 per check  •  Included in Pro",
+  "companyCheckerEmptyState": "Enter a company name or registration\nnumber to get a full report",
+  "aiMemoryTitle": "AI memory",
+  "aiMemorySubtitle": "Review and forget what the AI remembers about you",
+  "bookLawyerCallTitle": "Book a lawyer call",
+  "bookLawyerCallComingSoonTitle": "Human lawyer calls — opening soon",
+  "bookLawyerCallComingSoonBody": "Pro and Premium include 15-minute calls with a partner lawyer (1/quarter on Pro, 2/quarter on Premium). We are finalising the EE solo-practitioner pool and will email you the moment booking opens.",
+  "bookLawyerCallQuotaAvailable": "You have {remaining} of {total} call(s) left this quarter.",
+  "@bookLawyerCallQuotaAvailable": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "bookLawyerCallQuotaExhausted": "Quarterly quota used.",
+  "bookLawyerCallQuotaBodyAvailable": "Pro tier includes 1 call/quarter, Premium 2. Calls last 15 minutes, by Google Meet.",
+  "bookLawyerCallQuotaBodyExhausted": "Your quota resets on the first day of next quarter. Need to talk sooner? Upgrade to Premium for an extra call.",
+  "severityCritical": "CRITICAL",
+  "severityHigh": "HIGH",
+  "severityMedium": "MEDIUM",
+  "severityLow": "LOW",
+  "deadlineRequiredFields": "Title and deadline date are required",
+  "acceptTermsRequired": "Please agree to the Terms of Service",
+  "chatLegalCouncilTooltip": "Legal council (4 experts)",
+  "attachFileTooltip": "Attach file",
+  "sendMessage": "Send message",
+  "stopGenerating": "Stop generating",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "decreaseDependents": "Decrease",
+  "increaseDependents": "Increase",
+  "consiliumHeader": "مجلس المحامين",
+  "@consiliumHeader": {
+    "description": "Header text for the multi-agent legal consilium panel"
+  },
+  "consiliumProgress": "{count} من {total} جاهز",
+  "@consiliumProgress": {
+    "description": "Progress indicator while consilium experts produce opinions",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumStarting": "يقوم المحامون بمراجعة قضيتك…",
+  "consiliumDisagreement": "الخبراء غير متفقين",
+  "@consiliumDisagreement": {
+    "description": "Banner shown when experts have conflicting positions"
+  },
+  "consiliumSynthesizing": "جارٍ صياغة التوصية…",
+  "consiliumDone": "اكتمل المجلس · {totalRoles} خبراء",
+  "@consiliumDone": {
+    "placeholders": {
+      "totalRoles": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumPositionPush": "اعترض",
+  "consiliumPositionSettle": "تسوية",
+  "consiliumPositionInvestigate": "تحقق",
+  "consiliumPositionOutOfScope": "خارج نطاق الاختصاص",
+  "consiliumConfidence": "الثقة",
+  "consiliumKeyCitation": "المرجع الأساسي",
+  "consiliumAdversarialRound": "جولة جدلية",
+  "consiliumViewFullOpinion": "عرض الرأي كاملاً",
+  "consiliumExpertsAgreed": "{count, plural, =1{خبير واحد موافق} other{{count} خبراء موافقون}}",
+  "@consiliumExpertsAgreed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumExpertsDisagree": "{count, plural, =1{خبير واحد غير موافق} other{{count} خبراء غير موافقين}}",
+  "@consiliumExpertsDisagree": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumDisclaimer": "وكلاء ذكاء اصطناعي، وليسوا محامين بشريين. تحقق من القرارات الجوهرية مع محامٍ مرخَّص.",
+  "@consiliumDisclaimer": {
+    "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
+  },
+  "draftsTab": "Drafts",
+  "draftingTitle": "Drafting Studio",
+  "draftingEmpty": "Empty draft",
+  "draftingPlaceholder": "Start typing your draft…",
+  "draftingDraftsList": "My drafts",
+  "draftingSave": "Save",
+  "draftingSaved": "Saved",
+  "draftingSavedJustNow": "Saved just now",
+  "draftingAiRevise": "Revise with AI",
+  "draftingExportPdf": "Export PDF",
+  "draftingExportDocx": "Export DOCX",
+  "draftingExportMd": "Export Markdown",
+  "draftingDeleteDraft": "Delete draft",
+  "draftingConfirmDelete": "Delete this draft?",
+  "draftingConfirmDeleteMessage": "This action cannot be undone.",
+  "draftingConfirm": "Delete",
+  "draftingCancel": "Cancel",
+  "draftingDraftReplyTo": "Reply to {name}",
+  "draftingUntitled": "Untitled",
+  "draftingTitleHint": "Title (optional)",
+  "draftingAiReviseTitle": "Revise with AI",
+  "draftingAiReviseSelectionLabel": "Selected text:",
+  "draftingAiReviseInstructionLabel": "Instruction (optional)",
+  "draftingAiReviseInstructionHint": "e.g. \"make it more formal\" or \"shorten\"",
+  "draftingAiReviseRunButton": "Generate revision",
+  "draftingAiReviseSuggestionLabel": "Suggested revision:",
+  "draftingAiReviseChangesLabel": "Changes:",
+  "draftingAiReviseAccept": "Accept",
+  "draftingAiReviseReject": "Reject",
+  "draftingFormatBold": "Bold",
+  "draftingFormatItalic": "Italic",
+  "draftingFormatHeading": "Heading",
+  "draftingFormatBullet": "Bullet list",
+  "draftingFormatNumbered": "Numbered list",
+  "draftingEmptyListMessage": "You have no drafts yet.",
+  "draftingEmptyListAction": "New draft",
+  "draftingExporting": "Exporting…",
+  "draftingExportFailed": "Export failed",
+  "draftingSaveFailed": "Save failed",
+  "draftingNewDraft": "New draft",
+  "vaultNoteChip": "Vault note",
+  "saveToVault": "Save to Vault",
+  "savingToVault": "Saving to Vault…",
+  "savedToVault": "Saved to Vault",
+  "vaultNoteTitlePrefix": "Note: ",
+  "openInVault": "Open in Vault",
+  "saveToVaultFailed": "Save to Vault failed",
+  "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
+  "draftingVersionHistory": "Version history",
+  "dangerZone": "[en] Danger zone",
+  "deleteAccountConfirmButton": "[en] Delete forever",
+  "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+  "emptyHomeTitle": "Welcome to Advocat",
+  "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+  "intentChip1": "Got a fine",
+  "intentChip2": "Permit denied",
+  "intentChip3": "Contract problem",
+  "emptyCasesTitle": "No cases yet",
+  "emptyCasesCta": "Start a case",
+  "emptyDraftsTitle": "No drafts yet",
+  "emptyDraftsCta": "Create draft",
+  "emptyChatTitle": "Ask Advocat anything",
+  "chatExamplePrompt1": "Help me reply to a fine",
+  "chatExamplePrompt2": "Review my rental contract",
+  "chatExamplePrompt3": "What are my rights at work?",
+  "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+  "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+  "deletingAccount": "[en] Deleting account…",
+  "contractReviewTitle": "Contract Review",
+  "@contractReviewTitle": {
+    "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewUploadCta": "Upload contract",
+  "@contractReviewUploadCta": {
+    "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
+  "@contractReviewQuotaRemaining": {
+    "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewRedFlags": "Red flags",
+  "@contractReviewRedFlags": {
+    "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewReviewPoints": "Review points",
+  "@contractReviewReviewPoints": {
+    "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewNegotiationTips": "Negotiation tips",
+  "@contractReviewNegotiationTips": {
+    "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewSaveToVault": "Save to Vault",
+  "@contractReviewSaveToVault": {
+    "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewContinueChat": "Continue in chat",
+  "@contractReviewContinueChat": {
+    "description": "TODO native translation for locale=ar; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "referralInviteFriends": "Invite Friends",
+  "referralYourCode": "Your code",
+  "referralCopiedToast": "Code copied to clipboard",
+  "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
+  "referralInvited": "Friends invited",
+  "referralRewardsEarned": "Free months earned",
+  "deadlineUrgencyToday": "Today & Overdue",
+  "deadlineUrgencyWeek": "This week",
+  "deadlineUrgencyMonth": "This month",
+  "deadlineUrgencyLater": "Later",
+  "deadlineAddManual": "Add deadline",
+  "deadlineSnoozeBy": "Snooze",
+  "deadlineSnooze1d": "Snooze 1 day",
+  "deadlineSnooze3d": "Snooze 3 days",
+  "deadlineSnooze7d": "Snooze 7 days",
+  "deadlineDismiss": "Dismiss",
+  "deadlineExportIcs": "Add to calendar",
+  "deadlineSource": "Source",
+  "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
+  "deadlineNewTitle": "New deadline",
+  "deadlineFieldTitle": "Title",
+  "deadlineFieldDueDate": "Due date",
+  "deadlineFieldNotes": "Notes (optional)",
+  "deadlineSaved": "Deadline saved",
+  "deadlineSaveFailed": "Could not save deadline",
+  "deadlineUrgentBannerSingle": "1 deadline today or overdue",
+  "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
+  "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
+  "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
+  "@deadlineUrgentBannerMany": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@deadlineDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@deadlineDaysOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "iapPayWithApple": "ادفع باستخدام Apple",
+  "iapRestorePurchases": "استعادة المشتريات",
+  "iapPurchaseFailed": "فشلت عملية الشراء. يرجى المحاولة مرة أخرى أو التواصل مع الدعم.",
+  "iapRestoreSuccess": "تمت استعادة اشتراكك.",
+  "iapRestoreNoActive": "لم يتم العثور على اشتراك نشط للاستعادة.",
+  "deadlineEuRadarTitle": "EU deadline radar (preview)",
+  "@deadlineEuRadarTitle": {
+    "x-todo": "translate to ar"
+  },
+  "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+  "@deadlineEuRadarSubtitle": {
+    "x-todo": "translate to ar"
+  },
+  "aiAnalyzing": "يقوم الذكاء الاصطناعي بالتحليل",
+  "speakIntoMicHint": "تحدّث في الميكروفون. تأكد من تفعيل الوصول إلى الميكروفون.",
+  "aiErrorRateLimit": "الخدمة مثقلة مؤقتًا. يرجى المحاولة مرة أخرى خلال دقيقة إلى دقيقتين.",
+  "aiErrorOverload": "الذكاء الاصطناعي مشغول الآن، يرجى المحاولة مرة أخرى بعد دقيقة.",
+  "freeLimitReached": "لقد استخدمت جميع رسائل الذكاء الاصطناعي المجانية الـ{count}. قم بالترقية إلى المستشار القانوني للحصول على مساعدة غير محدودة بالذكاء الاصطناعي!",
+  "@freeLimitReached": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appleComingSoon": "قريبًا",
+  "appleComingSoonMessage": "سيتوفر تسجيل الدخول عبر Apple قريبًا. استخدم Google أو البريد الإلكتروني للمتابعة.",
+  "dpaTitle": "اتفاقية معالجة البيانات",
+  "dpaCheckoutGateTitle": "قبل الترقية",
+  "dpaCheckoutGateBody": "يُلزمنا قانون الاتحاد الأوروبي (المادة 28 من GDPR) بتوقيع اتفاقية معالجة بيانات مع كل عميل يدفع. يرجى المراجعة والقبول.",
+  "dpaViewLink": "عرض اتفاقية معالجة البيانات",
+  "dpaCheckboxLabel": "لقد قرأت اتفاقية معالجة البيانات (الإصدار 1.0) وأوافق عليها.",
+  "dpaCancel": "إلغاء",
+  "dpaAcceptAndContinue": "قبول ومتابعة",
+  "dpaOpenHint": "افتح اتفاقية معالجة البيانات مرة واحدة على الأقل لتفعيل زر القبول.",
+  "rateAppComingSoon": "قريبًا في متاجر التطبيقات!",
+  "dataCopiedToClipboard": "تم نسخ البيانات إلى الحافظة",
+  "noEventsForFilter": "لا توجد أحداث تطابق هذا الفلتر",
+  "timelineFilterAll": "الكل",
+  "timelineFilterEmails": "رسائل البريد الإلكتروني",
+  "timelineFilterConsilium": "قرارات الذكاء الاصطناعي",
+  "timelineFilterDeadlines": "المواعيد النهائية",
+  "timelineFilterNotes": "الملاحظات",
+  "timelineEventEmailIn": "تم استلام بريد إلكتروني",
+  "timelineEventEmailOut": "تم إرسال بريد إلكتروني",
+  "timelineEventConsiliumDecision": "قرار الذكاء الاصطناعي",
+  "timelineEventDeadlineSet": "موعد نهائي",
+  "timelineEventDocUploaded": "مستند",
+  "timelineEventPhaseChange": "تغيير المرحلة",
+  "timelineEventManualNote": "ملاحظة",
+  "timelineJustNow": "الآن",
+  "timelineMinutesAgo": "{count, plural, =1{قبل دقيقة واحدة} other{قبل {count} دقيقة}}",
+  "@timelineMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timelineHoursAgo": "{count, plural, =1{قبل ساعة واحدة} other{قبل {count} ساعة}}",
+  "@timelineHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timelineDaysAgo": "{count, plural, =1{قبل يوم واحد} other{قبل {count} يوم}}",
+  "@timelineDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gmailReauthBannerBody": "يقرأ Advocat الإصدار 2.1 صندوق الوارد الخاص بك لصياغة الردود؛ يمكنك إلغاء الإذن في أي وقت. أعد الاتصال بـ Gmail لتفعيل الفرز الاستباقي.",
+  "gmailReauthBannerCta": "إعادة التفويض",
+  "fiveAiMessagesTotal": "5 رسائل ذكاء اصطناعي (مدى الحياة)",
+  "hundredAiMessagesDay": "100 رسالة ذكاء اصطناعي/اليوم",
+  "unlimitedAiMessages": "رسائل ذكاء اصطناعي غير محدودة",
+  "voiceInput": "الإدخال الصوتي",
+  "strategyRecommendations": "توصيات الاستراتيجية",
+  "foundingMemberNote": "عضو مؤسس: 9.99€/شهريًا لأول 3 أشهر",
+  "saveTwentyPercent": "وفّر 20%",
+  "gdprConsentAiProcessing": "أوافق على معالجة بياناتي للحصول على مساعدة قانونية بالذكاء الاصطناعي (مطلوب)",
+  "gdprConsentAnalytics": "أوافق على التحليلات لتحسين الخدمة (اختياري)",
+  "gdprArt9Intro": "يعالج هذا التطبيق بيانات شخصية من فئة خاصة بموجب المادة 9 من GDPR، بما في ذلك:",
+  "gdprSpecialLegalCases": "تفاصيل قضيتك القانونية ووثائق المحكمة",
+  "gdprSpecialNationality": "الجنسية ووضع الهجرة",
+  "gdprConsentLegalData": "أوافق على معالجة بيانات قضيتي القانونية وجنسيتي ووضع الهجرة الخاص بي بواسطة الذكاء الاصطناعي (مطلوب)",
+  "gdprConsentVoice": "أوافق على معالجة التسجيل الصوتي (اختياري)",
+  "gdprViewPrivacyPolicy": "عرض سياسة الخصوصية",
+  "legalInformation": "المعلومات القانونية",
+  "legalEntityName": "Vorantis OÜ",
+  "legalRegistryCode": "رمز السجل: 17098992",
+  "legalAddress": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145",
+  "legalEmail": "البريد الإلكتروني: support@advocat.ee",
+  "legalRegistry": "مسجّلة في السجل التجاري الإستوني (Äriregister)",
+  "domesticViolenceDesc": "حقوق الضحية، المساعدة الطارئة، أوامر التقييد",
+  "rightCallEmergency": "لديك الحق في الاتصال بالرقم 112 في أي حالة طارئة — الشرطة، الإسعاف، الإطفاء",
+  "rightVictimProtection": "بصفتك ضحية، لديك الحق في الحماية والدعم والمعلومات حول قضيتك",
+  "rightRestrainingOrder": "يمكنك التقدم بطلب للحصول على أمر تقييد (lähestymiskielto) لإبعاد المعتدي عنك",
+  "rightVictimInterpreter": "لديك الحق في الاستعانة بمترجم فوري خلال جميع الإجراءات القانونية",
+  "rightMedicalHelp": "لديك الحق في تلقي العلاج الطبي الفوري وتوثيق الإصابات",
+  "rightShelter": "لديك الحق في مأوى طارئ — تواصل مع مأوى أو الخدمات الاجتماعية",
+  "mustReportDanger": "إذا كان شخص ما في خطر مباشر، فاتصل بالرقم 112 فورًا",
+  "mustDocumentInjuries": "وثّق جميع الإصابات — الصور والسجلات الطبية والملاحظات المكتوبة",
+  "domesticActionCallEmergency": "اتصل بالرقم 112 إذا كنت في خطر مباشر",
+  "domesticActionGoToSafe": "اذهب إلى مكان آمن — مأوى، صديق، مكان عام",
+  "domesticActionDocumentEverything": "وثّق الإصابات: التقط صورًا، واحصل على سجلات طبية",
+  "domesticActionFilePoliceReport": "قدّم بلاغًا للشرطة — يمكنك فعل ذلك لاحقًا أيضًا",
+  "domesticActionContactShelter": "تواصل مع مأوى أو خط مساعدة للأزمات",
+  "domesticActionApplyRestraining": "تقدّم بطلب أمر تقييد عبر الشرطة أو المحكمة",
+  "domesticFactRestrainingOrder": "في فنلندا، يمكن إصدار أمر تقييد (lähestymiskielto) حتى دون وجود قضية جنائية. وهو يمنع الشخص من الاتصال بك أو الاقتراب منك.",
+  "domesticFactVictimDirective": "بموجب توجيه الاتحاد الأوروبي لحقوق الضحايا 2012/29/EU، لديك الحق في أن تُعامَل باحترام، وأن تتلقى المعلومات بلغة تفهمها، وأن تصل إلى خدمات دعم الضحايا — بغض النظر عن وضع إقامتك.",
+  "domesticDeadlinePoliceReport": "تقديم بلاغ للشرطة — لا يوجد موعد نهائي صارم، لكن الأسرع أفضل للأدلة",
+  "domesticDeadlineRestraining": "أمر التقييد — يمكن التقدم بطلبه في أي وقت",
+  "contactEmergency": "رقم الطوارئ",
+  "contactShelter": "خط مساعدة المأوى (Turvakoti)",
+  "contactCrisisHelpline": "خط مساعدة الأزمات (Kriisipuhelin)",
+  "contactNollaLinja": "Nollalinja — خط مساعدة العنف ضد المرأة",
+  "consumerProtectionDesc": "الاحتيال، المنتجات المعيبة، الإرجاع، البائعون المخادعون",
+  "rightReturnOnline": "لديك 14 يومًا لإلغاء المشتريات عبر الإنترنت دون إبداء سبب (حق الانسحاب في الاتحاد الأوروبي)",
+  "rightDefectiveProduct": "إذا كان المنتج معيبًا، فلديك الحق في الإصلاح أو الاستبدال أو استرداد الأموال",
+  "rightClearPricing": "يجب على البائعين عرض أسعار واضحة تشمل جميع الرسوم — التكاليف الخفية غير قانونية",
+  "rightComplainBoard": "يمكنك تقديم شكوى مجانية إلى مجلس نزاعات المستهلكين",
+  "rightProtectionFraud": "أنت محمي ضد الممارسات التجارية غير العادلة والاحتيال",
+  "mustKeepReceipts": "احتفظ بجميع الإيصالات والعقود والمراسلات مع البائعين",
+  "mustActTimely": "أبلغ البائع عن العيوب خلال وقت معقول بعد اكتشافها",
+  "consumerActionKeepEvidence": "احتفظ بالإيصالات ولقطات الشاشة ورسائل البريد الإلكتروني وجميع إثباتات الشراء",
+  "consumerActionContactSeller": "تواصل مع البائع أولًا — اشرح المشكلة كتابيًا",
+  "consumerActionFileComplaint": "قدّم شكوى إلى مجلس نزاعات المستهلكين (kuluttajariitalautakunta)",
+  "consumerActionContactAuthority": "تواصل مع خدمات استشارات المستهلك للحصول على مساعدة مجانية",
+  "consumerActionReportFraud": "أبلغ عن الاحتيال إلى الشرطة وأمين مظالم المستهلك",
+  "consumerFactWithdrawal": "بموجب توجيه حقوق المستهلك في الاتحاد الأوروبي 2011/83/EU، لديك 14 يومًا للانسحاب من أي عملية شراء عبر الإنترنت أو عن بُعد — دون إبداء أسباب. يجب على البائع رد أموالك خلال 14 يومًا.",
+  "consumerFactWarranty": "في فنلندا، يكون البائع مسؤولًا عن عيوب المنتج لفترة معقولة (غالبًا أكثر من سنتين). وهذا منفصل عن أي ضمان من الشركة المصنّعة.",
+  "consumerDeadlineWithdrawal": "الانسحاب من الشراء عبر الإنترنت — 14 يومًا من التسليم",
+  "consumerDeadlineDefect": "الإبلاغ عن العيب للبائع — خلال شهرين من اكتشافه (موصى به)",
+  "contactConsumerAdvisory": "خدمات استشارات المستهلك",
+  "contactConsumerOmbudsman": "أمين مظالم المستهلك (Kuluttaja-asiamies)",
+  "contactConsumerDisputesBoardDirect": "مجلس نزاعات المستهلكين",
+  "categoryChildren": "الأطفال",
+  "categoryDigital": "الرقمي",
+  "childrenRights": "حقوق الأطفال والنفقة",
+  "childrenRightsDesc": "نفقة الطفل، الإعالة، الحماية، ضمانات الدولة",
+  "cyberbullying": "التنمر الإلكتروني والمضايقات عبر الإنترنت",
+  "cyberbullyingDesc": "التهديدات، انتهاكات الخصوصية، التشهير عبر الإنترنت",
+  "rightChildSupport": "كلا الوالدين ملزمان قانونًا بإعالة طفلهما ماليًا (Perekonnaseadus § 100–102)",
+  "rightMinimumAlimony": "الحد الأدنى لنفقة الطفل في إستونيا: المبلغ الأساسي (295.86€) + 3% من متوسط الراتب الإجمالي للعام السابق (PKS § 101). اعتبارًا من 01.04.2026 — 318.62€/شهريًا لكل طفل. يُحدَّث سنويًا في 1 أبريل. الآلة الحاسبة: alimendid.ee",
+  "rightCourtAlimony": "يمكنك التقدم بطلب النفقة عبر محكمة المقاطعة (maakohus) — لا حاجة لمحامٍ للمطالبات حتى 6,400€",
+  "rightBailiffEnforcement": "إذا رفض الوالد الدفع، يمكن لمأمور تنفيذ (kohtutäitur) إنفاذ أمر المحكمة، بما في ذلك الحجز على الأجور",
+  "rightStateAlimonyGuarantee": "إذا لم يدفع الوالد، توفر الدولة elatisabi (بدل الإعالة) عبر Sotsiaalkindlustusamet — حتى 100€/شهريًا لكل طفل",
+  "rightChildEducation": "لكل طفل الحق في التعليم والرعاية الصحية والحماية من الإساءة (Lastekaitseseadus § 4–5)",
+  "rightChildContact": "للطفل الحق في الحفاظ على التواصل مع كلا الوالدين ما لم تقرر المحكمة خلاف ذلك (PKS § 143)",
+  "mustFileCourtClaim": "لتلقي النفقة، يجب عليك تقديم مطالبة في المحكمة أو الاتفاق على المبلغ كتابيًا",
+  "mustNotifyAddressChange": "أبلغ Sotsiaalkindlustusamet بتغييرات العنوان إذا كنت تتلقى elatisabi",
+  "childrenActionGatherDocs": "اجمع شهادة ميلاد الطفل وهويتك وإثبات النفقات",
+  "childrenActionFileCourtClaim": "قدّم مطالبة نفقة في محكمة المقاطعة (maakohus) — يمكن القيام بذلك عبر الإنترنت من خلال e-toimik",
+  "childrenActionApplyElatisabi": "تقدّم بطلب ضمان النفقة الحكومي (elatisabi) لدى Sotsiaalkindlustusamet إذا رفض الوالد الدفع",
+  "childrenActionContactBailiff": "تواصل مع مأمور تنفيذ (kohtutäitur) لإنفاذ أمر المحكمة",
+  "childrenActionCallLasteabi": "اتصل بخط مساعدة الأطفال Lasteabi 116 111 — مجاني، على مدار الساعة",
+  "childrenDeadlineElatisabi": "التقدم بطلب elatisabi — بعد أمر المحكمة، لا يوجد موعد نهائي صارم لكن العملية تستغرق وقتًا",
+  "childrenDeadlineCourt": "يمكن المطالبة بالنفقة بأثر رجعي حتى سنة واحدة قبل تقديم الدعوى للمحكمة",
+  "childrenFactMinimum": "اعتبارًا من 01.04.2026 يبلغ الحد الأدنى لنفقة الطفل 318.62€/شهريًا لكل طفل. المعادلة: المبلغ الأساسي (295.86€) + 3% من متوسط الراتب الإجمالي للعام السابق. يُحدَّث سنويًا في 1 أبريل. لا يمكن لأي والد الاتفاق على دفع أقل. الآلة الحاسبة: alimendid.ee",
+  "childrenFactElatisabi": "تم استحداث ضمان النفقة الحكومي في إستونيا (elatisabi) عام 2017 لحماية الأطفال عندما يرفض أحد الوالدين الدفع. تدفع الدولة المبلغ ثم تستردّه من الوالد المدين.",
+  "rightReportCybercrime": "لديك الحق في الإبلاغ عن التهديدات والمضايقات وسرقة الهوية عبر الإنترنت إلى الشرطة (Karistusseadustik § 120, § 157¹)",
+  "rightContentRemoval": "يمكنك طلب إزالة المحتوى التشهيري أو الخاص من المنصات والمطالبة بحذفه بموجب GDPR",
+  "rightMoralDamageCompensation": "يجوز لك المطالبة بتعويض عن الضرر المعنوي الناجم عن التنمر الإلكتروني (Võlaõigusseadus § 1043–1055)",
+  "rightPrivacyProtection": "حياتك الخاصة محمية — المشاركة غير المصرّح بها لصورك أو رسائلك أو بياناتك الشخصية غير قانونية (KarS § 157)",
+  "rightDataProtection": "أبلغ عن انتهاكات حماية البيانات (الاستخدام غير المصرّح به لبياناتك) إلى Andmekaitse Inspektsioon",
+  "rightDefamationAction": "التشهير (laimamine) جريمة مدنية — يمكنك المقاضاة للحصول على تعويضات والمطالبة بتراجع علني (KarS § 247 (ملغى)، VÕS § 1047)",
+  "mustCollectEvidence": "اجمع جميع الأدلة واحتفظ بها — لقطات الشاشة والروابط والتواريخ ومعلومات الشهود",
+  "mustNotRetaliate": "لا تنتقم أو تنخرط في مضايقات مضادة — فقد يُضعف ذلك قضيتك",
+  "cyberActionScreenshots": "التقط لقطات شاشة لجميع المضايقات — احفظ عناوين URL والتواريخ وأسماء المستخدمين والمحتوى",
+  "cyberActionReportPolice": "قدّم بلاغًا للشرطة في أقرب مركز أو عبر الإنترنت على politsei.ee",
+  "cyberActionReportPlatform": "أبلغ عن المحتوى إلى منصة التواصل الاجتماعي لإزالته",
+  "cyberActionContactDPA": "تواصل مع Andmekaitse Inspektsioon إذا أُسيء استخدام بياناتك الشخصية",
+  "cyberActionConsultLawyer": "استشر محاميًا بشأن التعويضات المدنية — تتوفر مساعدة قانونية مجانية عبر Riigi Õigusabi",
+  "cyberDeadlineCriminal": "الشكوى الجنائية — لا يوجد موعد نهائي صارم، لكن أبلغ فورًا للحصول على أفضل النتائج",
+  "cyberDeadlineCivil": "المطالبة المدنية بالتعويضات — حتى 3 سنوات من تاريخ علمك بالانتهاك (TsÜS § 150)",
+  "cyberFactPrivacy": "في إستونيا، يمكن أن تؤدي المشاركة غير المصرّح بها لصور حميمة لشخص ما إلى السجن حتى 3 سنوات بموجب Karistusseadustik § 157¹ (انتهاك الخصوصية).",
+  "cyberFactGDPR": "بموجب GDPR، لديك “الحق في النسيان” — يجب على المنصات حذف بياناتك الشخصية عند الطلب إذا لم يكن هناك أساس قانوني للاحتفاظ بها.",
+  "upgradeBannerTitle": "قم بالترقية للحصول على استشارات غير محدودة",
+  "upgradeBannerCta": "ترقية",
+  "paymentSuccessTitle": "تم الدفع بنجاح",
+  "paymentSuccessBody": "اشتراكك نشط الآن.",
+  "commonOk": "موافق",
+  "feedbackThumbsUpLabel": "مفيد",
+  "feedbackThumbsDownLabel": "غير مفيد",
+  "feedbackCommentPrompt": "ما الخطأ الذي حدث؟",
+  "feedbackSend": "إرسال",
+  "feedbackCancel": "إلغاء",
+  "reasoningPillIdle": "يفكّر…",
+  "reasoningPillSearchingLaw": "يبحث في القانون الإستوني…",
+  "reasoningPillSearchingWeb": "يبحث على الويب…",
+  "reasoningPillCheckingCompany": "يتحقق من سجل الشركات…",
+  "reasoningPillCheckingVehicle": "يتحقق من سجل المركبات…",
+  "reasoningPillReadingDocument": "يقرأ مستندك…",
+  "reasoningPillDrafting": "يصوغ المستند…",
+  "reasoningPillPreparingEmail": "يُعدّ البريد الإلكتروني…",
+  "reasoningPillFindingLawyer": "يبحث عن محامين…",
+  "reasoningPillThinking": "يفكّر في قضيتك…",
+  "reasoningPillFinalising": "يصوغ إجابتك…",
+  "reasoningCollapsedFormat": "فكّر لمدة {sec} ثانية · {sources} مصدر",
+  "@reasoningCollapsedFormat": {
+    "placeholders": {
+      "sec": {
+        "type": "int"
+      },
+      "sources": {
+        "type": "int"
+      }
+    }
+  },
+  "reasoningExpandHint": "اضغط لرؤية الخطوات",
+  "caseFileTitle": "ملف القضية",
+  "caseFileTimeline": "الجدول الزمني",
+  "caseFileParties": "الأطراف",
+  "caseFileDeadlines": "المواعيد النهائية",
+  "caseFileExportPdf": "تنزيل الملف (PDF)",
+  "caseFileEmpty": "تحدّث مع الذكاء الاصطناعي حول قضيتك — سيُبنى جدولك الزمني تلقائيًا.",
+  "caseFileDisclaimer": "تم استخراج هذا الملف تلقائيًا من محادثتك. وهو ليس استشارة قانونية.",
+  "caseFileTabLabel": "القضية",
+  "refresh": "تحديث",
+  "demoLimitReached": "تم بلوغ حد النسخة التجريبية. سجّل مجانًا للمتابعة.",
+  "demoLimitSignUpCta": "إنشاء حساب",
+  "freeQuotaExhausted": "لقد استخدمت جميع الرسائل المجانية الـ10 هذا الشهر.",
+  "upgradeForUnlimited": "قم بالترقية إلى Pro للاستخدام غير المحدود",
+  "upgradeCta": "ترقية",
+  "rateLimitTryAgain": "الإرسال سريع جدًا. حاول مرة أخرى خلال بضع ثوانٍ.",
+  "quickProfilePrompt": "كي أتمكن من مساعدتك بدقة أكبر، ما هو وضعك القانوني: هل أنت مواطن إستوني، أو مواطن من دولة أخرى في الاتحاد الأوروبي، أم لديك تصريح إقامة؟",
+  "quickProfileChipEstonianCitizen": "مواطن إستوني",
+  "quickProfileChipEuCitizen": "مواطن أوروبي (آخر)",
+  "quickProfileChipResidencePermit": "تصريح إقامة",
+  "quickProfileSkipBtn": "تخطّي",
+  "quickProfileSavedAck": "فهمت. والآن، ما هو سؤالك؟",
+  "caseTitleLabel": "عنوان القضية",
+  "jurisdictionLabel": "الاختصاص القضائي",
+  "caseTypeLabel": "نوع القضية",
+  "caseLanguageLabel": "اللغة",
+  "caseNumbersSection": "أرقام القضية",
+  "partiesSection": "الأطراف",
+  "authoritiesSection": "السلطات",
+  "timelineSection": "الجدول الزمني",
+  "openQuestionsSection": "الأسئلة المفتوحة",
+  "nextActionsSection": "الإجراءات التالية",
+  "summarySection": "الملخّص",
+  "addRow": "إضافة صف",
+  "removeRow": "إزالة",
+  "archiveCase": "أرشفة القضية",
+  "closeCase": "إغلاق القضية",
+  "continueChatAboutCase": "متابعة المحادثة حول هذه القضية",
+  "linkChatToCase": "ربط بالقضية",
+  "clearActiveCase": "مسح القضية النشطة",
+  "caseSavedAck": "تم حفظ القضية",
+  "caseArchivedAck": "تمت أرشفة القضية",
+  "intakeStep1Title": "أين توجد القضية؟",
+  "intakeStep1Subtitle": "الدولة والسلطة التي تتعامل معها.",
+  "intakeJurisdictionLabel": "الدولة / الاختصاص القضائي",
+  "intakeAuthorityLabel": "نوع السلطة",
+  "intakeAuthorityNameLabel": "اسم السلطة (اختياري)",
+  "intakeAuthorityPolice": "الشرطة",
+  "intakeAuthorityCourt": "المحكمة",
+  "intakeAuthoritySocial": "الخدمات الاجتماعية",
+  "intakeAuthorityEmployer": "صاحب العمل",
+  "intakeAuthorityLandlord": "المالك",
+  "intakeAuthorityOpposingParty": "الطرف الخصم",
+  "intakeAuthorityOther": "أخرى",
+  "intakeStep2Title": "ما نوع القضية؟",
+  "intakeStep2Subtitle": "اختر النوع الأقرب — يمكنك تحسينه لاحقًا.",
+  "intakeCaseTypeCriminal": "جنائية",
+  "intakeCaseTypeCivil": "مدنية",
+  "intakeCaseTypeFamily": "أسرية",
+  "intakeCaseTypeAdmin": "إدارية",
+  "intakeCaseTypeImmigration": "هجرة",
+  "intakeCaseTypeLabor": "عمالية",
+  "intakeCaseTypeConsumer": "استهلاكية",
+  "intakeCaseTypeInheritance": "ميراث",
+  "intakeCaseTypeOther": "أخرى",
+  "intakeStep3Title": "من المعنيّون؟",
+  "intakeStep3Subtitle": "دورك والطرف الآخر.",
+  "intakeRoleLabel": "دورك",
+  "intakeRolePlaintiff": "المدّعي",
+  "intakeRoleDefendant": "المدّعى عليه",
+  "intakeRoleVictim": "الضحية",
+  "intakeRoleAccused": "المتهم",
+  "intakeRoleWitness": "الشاهد",
+  "intakeRoleFamily": "أحد أفراد الأسرة",
+  "intakeRoleOther": "أخرى",
+  "intakeOpposingSideLabel": "الطرف الخصم (اختياري)",
+  "intakeWitnessesLabel": "الشهود (اختياري)",
+  "intakeAddWitness": "إضافة شاهد",
+  "intakeWitnessHint": "الاسم أو جهة الاتصال",
+  "intakeStep4Title": "الأرقام والتواريخ",
+  "intakeStep4Subtitle": "ما لديك بالفعل. تخطَّ ما لا تملكه.",
+  "intakeCaseNumberLabel": "رقم القضية (اختياري)",
+  "intakeIncidentDateLabel": "تاريخ الحادثة (اختياري)",
+  "intakeIncidentDatePick": "اختر التاريخ",
+  "intakeDeadlinesLabel": "المواعيد النهائية المعروفة",
+  "intakeAddDeadline": "إضافة موعد نهائي",
+  "intakeDeadlineWhatHint": "ماذا",
+  "intakeStep5Title": "المستندات",
+  "intakeStep5Subtitle": "ارفع أي شيء ذي صلة. سنقرأه.",
+  "intakeUploadDocsLabel": "رفع المستندات",
+  "intakeSkipDocs": "تخطّي — سأرفعها لاحقًا",
+  "intakeNextBtn": "التالي",
+  "intakeBackBtn": "رجوع",
+  "intakeFinishBtn": "إنهاء وفتح المحادثة",
+  "intakeUrgentBtn": "عاجل — اسأل الآن",
+  "intakeUrgentDialogTitle": "فتح المحادثة الآن؟",
+  "intakeUrgentDialogBody": "سنحفظ ما أدخلته كقضية مسودّة. يمكنك إكمال المعالج من صفحة القضية في أي وقت.",
+  "intakeUrgentConfirm": "فتح المحادثة",
+  "intakeUrgentCancel": "متابعة التعبئة",
+  "intakePreparingCase": "يتم تجهيز قضيتك…",
+  "intakeFallbackGreeting": "أرى قضيتك. أخبرني بما هو الأكثر إلحاحًا — سأعمل عليه معك.",
+  "intakeUrgentGreeting": "أرى أن هذا أمر عاجل. اطرح سؤالك — سأكمل الباقي أثناء تقدّمنا.",
+  "intakeStepIndicator": "الخطوة {current} من {total}",
+  "@intakeStepIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "intakeFieldRequired": "مطلوب",
+  "intakeUploadProgress": "جارٍ الرفع {done} / {total}…",
+  "@intakeUploadProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "uplDisclaimerFooter": "Advocat ليست مكتب محاماة. هذه معلومات، وليست استشارة قانونية.",
+  "parallelActionsHeadline": "يوصي المجلس بـ{count} إجراءات متوازية",
+  "@parallelActionsHeadline": {
+    "description": "Headline at the top of the Parallel Actions card — N>=2 emails the consilium recommends sending in parallel.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsApproveAll": "الموافقة على الكل وإرسال",
+  "parallelActionsApproveSelected": "الموافقة على {count} من {total}",
+  "@parallelActionsApproveSelected": {
+    "description": "Primary button when only a subset of actions is checked.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsConfirmTitle": "إرسال {count} رسالة بريد إلكتروني؟",
+  "@parallelActionsConfirmTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsConfirmBody": "سيرسل Advocat {count} ردًا مُعدًّا عبر Gmail المتصل بك. كل رد يُرسَل بشكل مستقل — إذا فشل أحدها، تُرسَل البقية مع ذلك.",
+  "@parallelActionsConfirmBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsSentToast": "تم إرسال {count}.",
+  "@parallelActionsSentToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsPartialFailureToast": "تم إرسال {sent}، وفشل {failed}.",
+  "@parallelActionsPartialFailureToast": {
+    "placeholders": {
+      "sent": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsKindReply": "رد",
+  "parallelActionsKindNew": "جديد",
+  "parallelActionsCheckboxSelected": "تم تحديد الإجراء",
+  "parallelActionsCheckboxUnselected": "لم يتم تحديد الإجراء",
+  "parallelActionsCitationCount": "{count} اقتباس",
+  "@parallelActionsCitationCount": {
+    "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsRetryFailed": "إعادة محاولة الفاشلة ({count})",
+  "@parallelActionsRetryFailed": {
+    "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agentApprovalNeedsReviewTitle": "يحتاج Advocat إلى موافقتك",
+  "agentApprovalResolvedTitle": "تم حلّ الإجراء",
+  "agentApprovalStepsLabel": "خطوات",
+  "agentApprovalApproveButton": "الموافقة والإرسال",
+  "agentApprovalDeclineButton": "رفض",
+  "agentApprovalAttachmentsLabel": "المرفقات",
+  "agentApprovalSentSummary": "تم الإرسال نيابةً عنك.",
+  "agentApprovalDeclinedSummary": "تم الرفض — لم يُرسَل أي شيء.",
+  "agentToolDraftEmailAtt": "إرسال بريد إلكتروني مع مرفقات",
+  "agentToolSendEmail": "إرسال بريد إلكتروني",
+  "agentToolGeneratePdf": "إنشاء PDF",
+  "agentToolApproveSend": "إرسال الرد المُعدّ",
+  "inboxErrorTitle": "تعذّر تحميل صندوق الوارد",
+  "inboxEditDiscardTitle": "تجاهل التعديلات غير المحفوظة؟",
+  "inboxEditDiscardBody": "لديك تغييرات غير محفوظة على هذه المسودة. الرجوع سيؤدي إلى تجاهلها.",
+  "inboxEditKeepEditing": "متابعة التعديل",
+  "inboxEditDiscard": "تجاهل",
+  "plannerSettingsTitle": "التفكير القانوني بثلاث مراحل",
+  "plannerSettingsSubtitle": "تخطيط ← إجابة ← نقد. أبطأ لكنه أكثر شمولًا.",
+  "plannerSettingsProBadge": "Pro",
+  "plannerSettingsProDescription": "متاح في خطة Pro",
+  "plannerTrailHeaderPlan": "الخطة",
+  "plannerTrailHeaderCritique": "النقد",
+  "plannerTrailSubQuestions": "الأسئلة الفرعية",
+  "plannerTrailCounterArgs": "الحجج المضادة",
+  "plannerTrailEvidenceGaps": "ثغرات الأدلة",
+  "plannerTrailMaterialGapTrue": "تم اكتشاف ثغرة جوهرية",
+  "plannerTrailRegeneratedBadge": "أُعيد التوليد مرة واحدة",
+  "plannerTrailEmpty": "لا عناصر",
+  "supportTitle": "المساعدة",
+  "supportSubtitle": "نرد عادةً خلال ساعة إلى ساعتين.",
+  "supportSearchPlaceholder": "البحث في المساعدة…",
+  "supportStatusAllOk": "جميع الأنظمة طبيعية",
+  "supportFaqWhatIs": "ما هو Advocat؟",
+  "supportFaqHowSubscribe": "كيف أشترك في Pro؟",
+  "supportFaqExportData": "هل يمكنني تصدير بياناتي؟",
+  "supportFaqCancelAccount": "إلغاء أو حذف الحساب",
+  "supportFaqTalkHuman": "التحدث إلى شخص",
+  "supportContactEmail": "البريد الإلكتروني",
+  "supportContactTelegram": "Telegram",
+  "supportContactWhatsapp": "WhatsApp",
+  "supportFooterSla": "نرد خلال 24 ساعة",
+  "supportWhatsapp": "WhatsApp",
+  "supportEmail": "البريد الإلكتروني",
+  "supportInApp": "راسلنا هنا",
+  "supportCategoryLabel": "الفئة",
+  "supportCategoryBug": "خلل",
+  "supportCategoryPayment": "مشكلة في الدفع",
+  "supportCategoryQuestion": "سؤال",
+  "supportCategoryFeature": "طلب ميزة",
+  "supportCategoryOther": "أخرى",
+  "supportMessagePlaceholder": "صِف مشكلتك...",
+  "supportEmailLabel": "البريد الإلكتروني (اختياري)",
+  "supportSend": "إرسال",
+  "supportSentSuccess": "تم إرسال الرسالة! سنرد قريبًا.",
+  "supportError": "حدث خطأ ما. حاول مرة أخرى.",
+  "supportErrorTooShort": "يرجى كتابة 10 أحرف على الأقل.",
+  "supportErrorTooLong": "بحد أقصى 2000 حرف.",
+  "supportPrivacyNotice": "تُخزَّن رسالتك بشكل آمن.",
+  "referralAntiFraud": "بحد أقصى 12 إحالة ناجحة سنويًا.",
+  "referralEmpty": "لا توجد إحالات بعد. أرسل رابطك لتبدأ في الكسب.",
+  "referralRecentActivity": "النشاط الأخير",
+  "referralActivityInvited": "تمت الدعوة {when}",
+  "@referralActivityInvited": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "referralActivityActivated": "تم التفعيل {when}",
+  "@referralActivityActivated": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "referralActivityPending": "لم يتم التفعيل بعد",
+  "referralStatsInvitedCount": "لقد دعوت {count, plural, =0{لا أصدقاء بعد} =1{صديقًا واحدًا} other{{count} أصدقاء}}",
+  "@referralStatsInvitedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "referralStatsConvertedCount": "{count, plural, =0{لم يُفعّل أحد بعد} =1{فعّل واحد} other{فعّل {count}}}",
+  "@referralStatsConvertedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "referralStatsEarnedCount": "مكافأتك: {months, plural, =0{لا شيء بعد} =1{شهر مجاني واحد} other{{months} أشهر مجانية}}",
+  "@referralStatsEarnedCount": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "referralNudgeMessage": "هل أعجبك Advocat؟ ادعُ صديقًا — يحصل كلاكما على شهر مجاني.",
+  "referralNudgeAction": "دعوة",
+  "referralLandingTitle": "لقد تمت دعوتك إلى Advocat",
+  "referralLandingSubtitle": "دعاك {inviterName} — احصل على شهرك الأول مجانًا.",
+  "@referralLandingSubtitle": {
+    "placeholders": {
+      "inviterName": {
+        "type": "String"
+      }
+    }
+  },
+  "referralLandingSubtitleGeneric": "احصل على شهرك الأول مجانًا من Advocat Pro.",
+  "referralLandingCta": "تفعيل الشهر المجاني والتسجيل",
+  "referralLandingCtaSecondary": "أو تعرّف على المزيد حول Advocat",
+  "referralLandingFallback": "انتهت صلاحية هذا الرابط — لكن لا يزال بإمكانك تجربة Advocat مجانًا.",
+  "referralLandingBenefits": "17 لغة • قانون إستوني وفنلندي وأوروبي حقيقي • على مدار الساعة — دون انتظار",
+  "sensitiveConsentTitle": "موافقة على البيانات الحساسة",
+  "sensitiveConsentBody": "قد تحتوي المستندات التي توشك على رفعها على بيانات شخصية من فئة خاصة بموجب المادة 9 من GDPR — مثل السجلات الصحية والسجلات الجنائية والبيانات البيومترية أو معلومات حول أصلك العرقي أو دينك أو ميولك الجنسية.\n\nنحن نعالج هذه البيانات فقط لتزويدك بمساعدة قانونية بالذكاء الاصطناعي، ونخزّنها مشفّرة في حسابك الخاص، ولا نستخدمها أبدًا لتدريب النماذج. يمكنك سحب الموافقة وحذف البيانات في أي وقت من الإعدادات.\n\nبقبولك، فإنك تمنح موافقة صريحة بموجب المادة 9(2)(أ) من GDPR لمعالجة بيانات الفئة الخاصة لهذا الغرض.",
+  "sensitiveConsentExplicitCheckbox": "أمنح موافقة صريحة على معالجة بيانات الفئة الخاصة (المادة 9(2)(أ) من GDPR).",
+  "sensitiveConsentRightToShareCheckbox": "أؤكّد أن لديّ الحق في مشاركة هذه البيانات (البيانات تخصّني، أو لديّ أساس قانوني/إعلامي لمشاركة بيانات طرف ثالث).",
+  "sensitiveConsentViewCategories": "اعرض ما يُعدّ حساسًا ←",
+  "sensitiveConsentWithdrawAction": "سحب الموافقة على البيانات الحساسة",
+  "privacyAndData": "الخصوصية والبيانات",
+  "exportMyDataSubtitle": "نزّل نسخة من جميع بياناتك الشخصية (المادة 15 من GDPR).",
+  "withdrawSensitiveConsent": "موافقة على البيانات الحساسة",
+  "withdrawSensitiveConsentSubtitle": "إدارة أو سحب الموافقة على معالجة بيانات الفئة الخاصة (المادة 9(2)(أ) من GDPR).",
+  "dataProcessingAgreement": "اتفاقية معالجة البيانات",
+  "exportingData": "يتم تصدير بياناتك…",
+  "exportComplete": "تصدير البيانات جاهز — تم الحفظ على جهازك.",
+  "exportFailed": "فشل التصدير. يرجى المحاولة مرة أخرى أو التواصل مع الدعم.",
+  "quotaExhaustedTitle": "تم بلوغ حد الرسائل المجانية",
+  "quotaExhaustedBody": "لقد استخدمت جميع الرسائل المجانية الـ{count}. قم بالترقية إلى Advocat Counsel مقابل 19.99€/شهريًا واحصل على استشارات قانونية غير محدودة بالذكاء الاصطناعي.",
+  "@quotaExhaustedBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quotaExhaustedLater": "لاحقًا",
+  "quotaExhaustedUpgrade": "Advocat Counsel — 19.99€/شهريًا",
+  "quotaCtaMessage": "لقد استخدمت جميع الرسائل المجانية الـ{count}. قم بالترقية إلى Advocat Counsel مقابل 19.99€/شهريًا.",
+  "@quotaCtaMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quotaCtaButton": "احصل على Advocat Counsel — 19.99€/شهريًا",
+  "aiErrorQuota": "تم بلوغ حد الرسائل المجانية. اشترك لمتابعة استخدام الذكاء الاصطناعي.",
+  "aiErrorAuth": "تسجيل الدخول مطلوب لاستخدام الذكاء الاصطناعي. يرجى التسجيل أو تسجيل الدخول.",
+  "aiErrorGeneric": "خطأ مؤقت في الذكاء الاصطناعي. يرجى المحاولة مرة أخرى بعد دقيقة. إذا استمرت المشكلة، تواصل مع الدعم.",
+  "tooltipShareCase": "مشاركة ملخّص القضية",
+  "tooltipMuteVoice": "كتم الصوت",
+  "tooltipUnmuteVoice": "إلغاء كتم الصوت",
+  "tooltipAttachDoc": "إرفاق مستند",
+  "aiTypingHint": "الذكاء الاصطناعي…",
+  "error404Title": "الصفحة غير موجودة",
+  "error404Body": "تعذّر علينا العثور على: {path}",
+  "@error404Body": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "goToHome": "الذهاب إلى الصفحة الرئيسية",
+  "emailAlreadyRegistered": "هذا البريد الإلكتروني مسجّل بالفعل. هل تريد تسجيل الدخول؟",
+  "actionSignIn": "تسجيل الدخول",
+  "actionUndo": "تراجع",
+  "intakeUrgentOpened": "تم فتح المحادثة — تم حفظ مسودتك.",
+  "panicCoachmark": "اضغط مطوّلًا للحصول على مساعدة طارئة.",
+  "panicTitle": "ماذا تحتاج الآن؟",
+  "panicCardReadAloud": "اقرأ بصوت عالٍ للضابط",
+  "panicCardRecord": "سجّل هذه المحادثة",
+  "panicCardCall": "اتصل بمحامٍ",
+  "panicCardAi": "تحدّث مع Advocat الآن",
+  "panicClose": "إغلاق",
+  "panicBadgeV2": "V2",
+  "panicRecordV1Title": "قريبًا في V2",
+  "panicRecordV1Body": "تخضع ميزة التسجيل للتحقق القانوني في إستونيا وستُطرح في V2. في الوقت الحالي، استخدم مسجّل الصوت المدمج في هاتفك.",
+  "panicCallFallbackBody": "أرسل بريدًا إلكترونيًا إلى kiire@advocat.ee مع وصف موجز وسنعاود الاتصال بك.",
+  "softCaseShellBanner": "أنشأنا “قضية بلا عنوان” لتتبّع هذا. اضغط لإعادة التسمية.",
+  "softCaseShellBannerCta": "إعادة التسمية"
 }

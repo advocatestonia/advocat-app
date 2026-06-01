@@ -71,11 +71,11 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get aiErrorRateLimit =>
-      'The service is temporarily overloaded. Please try again in 1-2 minutes.';
+      'Paslauga laikinai perkrauta. Bandykite dar kartą po 1–2 minučių.';
 
   @override
   String get aiErrorOverload =>
-      'The AI is busy right now, please try again in a minute.';
+      'DI šiuo metu užimtas, bandykite dar kartą po minutės.';
 
   @override
   String freeLimitReached(int count) {
@@ -191,11 +191,11 @@ class AppLocalizationsLt extends AppLocalizations {
   String get continueWithGoogle => 'Tęsti su Google';
 
   @override
-  String get appleComingSoon => 'Coming soon';
+  String get appleComingSoon => 'Netrukus';
 
   @override
   String get appleComingSoonMessage =>
-      'Apple Sign-In becomes available soon. Use Google or email to continue.';
+      'Prisijungimas su Apple netrukus bus prieinamas. Tęskite naudodami Google arba el. paštą.';
 
   @override
   String get copyText => 'Kopijuoti tekstą';
@@ -620,31 +620,31 @@ class AppLocalizationsLt extends AppLocalizations {
   String get privacyPolicy => 'Privatumo politika';
 
   @override
-  String get dpaTitle => 'Data Processing Agreement';
+  String get dpaTitle => 'Duomenų tvarkymo sutartis';
 
   @override
-  String get dpaCheckoutGateTitle => 'Before you upgrade';
+  String get dpaCheckoutGateTitle => 'Prieš atnaujinant planą';
 
   @override
   String get dpaCheckoutGateBody =>
-      'EU law (GDPR Art. 28) requires us to sign a Data Processing Agreement with every paying customer. Please review and accept.';
+      'ES teisė (BDAR 28 str.) reikalauja pasirašyti duomenų tvarkymo sutartį su kiekvienu mokančiu klientu. Peržiūrėkite ir sutikite.';
 
   @override
-  String get dpaViewLink => 'View Data Processing Agreement';
+  String get dpaViewLink => 'Peržiūrėti duomenų tvarkymo sutartį';
 
   @override
   String get dpaCheckboxLabel =>
-      'I have read and accept the Data Processing Agreement (v1.0).';
+      'Perskaičiau ir sutinku su duomenų tvarkymo sutartimi (v1.0).';
 
   @override
-  String get dpaCancel => 'Cancel';
+  String get dpaCancel => 'Atšaukti';
 
   @override
-  String get dpaAcceptAndContinue => 'Accept and continue';
+  String get dpaAcceptAndContinue => 'Sutikti ir tęsti';
 
   @override
   String get dpaOpenHint =>
-      'Open the DPA at least once to enable the Accept button.';
+      'Atverkite DTS bent kartą, kad aktyvintumėte mygtuką „Sutikti“.';
 
   @override
   String get pro => 'Pro';
@@ -1265,54 +1265,56 @@ class AppLocalizationsLt extends AppLocalizations {
   String get caseInfoUpdated => 'Bylos informacija paskutinį kartą atnaujinta.';
 
   @override
-  String get noEventsForFilter => 'No events match this filter';
+  String get noEventsForFilter => 'Nė vienas įvykis neatitinka šio filtro';
 
   @override
-  String get timelineFilterAll => 'All';
+  String get timelineFilterAll => 'Visi';
 
   @override
-  String get timelineFilterEmails => 'Emails';
+  String get timelineFilterEmails => 'El. laiškai';
 
   @override
-  String get timelineFilterConsilium => 'AI decisions';
+  String get timelineFilterConsilium => 'DI sprendimai';
 
   @override
-  String get timelineFilterDeadlines => 'Deadlines';
+  String get timelineFilterDeadlines => 'Terminai';
 
   @override
-  String get timelineFilterNotes => 'Notes';
+  String get timelineFilterNotes => 'Pastabos';
 
   @override
-  String get timelineEventEmailIn => 'Email received';
+  String get timelineEventEmailIn => 'Gautas el. laiškas';
 
   @override
-  String get timelineEventEmailOut => 'Email sent';
+  String get timelineEventEmailOut => 'Išsiųstas el. laiškas';
 
   @override
-  String get timelineEventConsiliumDecision => 'AI decision';
+  String get timelineEventConsiliumDecision => 'DI sprendimas';
 
   @override
-  String get timelineEventDeadlineSet => 'Deadline';
+  String get timelineEventDeadlineSet => 'Terminas';
 
   @override
-  String get timelineEventDocUploaded => 'Document';
+  String get timelineEventDocUploaded => 'Dokumentas';
 
   @override
-  String get timelineEventPhaseChange => 'Phase change';
+  String get timelineEventPhaseChange => 'Etapo pakeitimas';
 
   @override
-  String get timelineEventManualNote => 'Note';
+  String get timelineEventManualNote => 'Pastaba';
 
   @override
-  String get timelineJustNow => 'Just now';
+  String get timelineJustNow => 'Ką tik';
 
   @override
   String timelineMinutesAgo(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count minutes ago',
-      one: '1 minute ago',
+      other: 'prieš $count minučių',
+      many: 'prieš $count minutės',
+      few: 'prieš $count minutes',
+      one: 'prieš $count minutę',
     );
     return '$_temp0';
   }
@@ -1322,8 +1324,10 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count hours ago',
-      one: '1 hour ago',
+      other: 'prieš $count valandų',
+      many: 'prieš $count valandos',
+      few: 'prieš $count valandas',
+      one: 'prieš $count valandą',
     );
     return '$_temp0';
   }
@@ -1333,8 +1337,10 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days ago',
-      one: '1 day ago',
+      other: 'prieš $count dienų',
+      many: 'prieš $count dienos',
+      few: 'prieš $count dienas',
+      one: 'prieš $count dieną',
     );
     return '$_temp0';
   }
@@ -1612,10 +1618,10 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get gmailReauthBannerBody =>
-      'Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.';
+      'Advocat v2.1 skaito jūsų pašto dėžutę, kad parengtų atsakymus; galite atšaukti bet kada. Iš naujo prijunkite Gmail, kad įjungtumėte aktyvų rūšiavimą.';
 
   @override
-  String get gmailReauthBannerCta => 'Reauthorize';
+  String get gmailReauthBannerCta => 'Iš naujo autorizuoti';
 
   @override
   String connectedTo(String email) {
@@ -2727,408 +2733,410 @@ class AppLocalizationsLt extends AppLocalizations {
   String get backToChat => 'Grįžti į pokalbį';
 
   @override
-  String get upgradeBannerTitle => 'Upgrade for unlimited consultations';
+  String get upgradeBannerTitle =>
+      'Atnaujinkite planą neribotoms konsultacijoms';
 
   @override
-  String get upgradeBannerCta => 'Upgrade';
+  String get upgradeBannerCta => 'Atnaujinti';
 
   @override
-  String get paymentSuccessTitle => 'Payment successful';
+  String get paymentSuccessTitle => 'Mokėjimas sėkmingas';
 
   @override
-  String get paymentSuccessBody => 'Your subscription is now active.';
+  String get paymentSuccessBody => 'Jūsų prenumerata dabar aktyvi.';
 
   @override
-  String get commonOk => 'OK';
+  String get commonOk => 'Gerai';
 
   @override
-  String get feedbackThumbsUpLabel => 'Helpful';
+  String get feedbackThumbsUpLabel => 'Naudinga';
 
   @override
-  String get feedbackThumbsDownLabel => 'Not helpful';
+  String get feedbackThumbsDownLabel => 'Nenaudinga';
 
   @override
-  String get feedbackCommentPrompt => 'What was wrong?';
+  String get feedbackCommentPrompt => 'Kas buvo ne taip?';
 
   @override
-  String get feedbackSend => 'Send';
+  String get feedbackSend => 'Siųsti';
 
   @override
-  String get feedbackCancel => 'Cancel';
+  String get feedbackCancel => 'Atšaukti';
 
   @override
-  String get reasoningPillIdle => 'Thinking…';
+  String get reasoningPillIdle => 'Mąstoma…';
 
   @override
-  String get reasoningPillSearchingLaw => 'Searching Estonian law…';
+  String get reasoningPillSearchingLaw => 'Ieškoma Estijos teisės aktų…';
 
   @override
-  String get reasoningPillSearchingWeb => 'Searching the web…';
+  String get reasoningPillSearchingWeb => 'Ieškoma internete…';
 
   @override
-  String get reasoningPillCheckingCompany => 'Checking company registry…';
+  String get reasoningPillCheckingCompany => 'Tikrinamas įmonių registras…';
 
   @override
-  String get reasoningPillCheckingVehicle => 'Checking vehicle registry…';
+  String get reasoningPillCheckingVehicle =>
+      'Tikrinamas transporto priemonių registras…';
 
   @override
-  String get reasoningPillReadingDocument => 'Reading your document…';
+  String get reasoningPillReadingDocument => 'Skaitomas jūsų dokumentas…';
 
   @override
-  String get reasoningPillDrafting => 'Drafting the document…';
+  String get reasoningPillDrafting => 'Rengiamas dokumentas…';
 
   @override
-  String get reasoningPillPreparingEmail => 'Preparing email…';
+  String get reasoningPillPreparingEmail => 'Ruošiamas el. laiškas…';
 
   @override
-  String get reasoningPillFindingLawyer => 'Looking up lawyers…';
+  String get reasoningPillFindingLawyer => 'Ieškoma advokatų…';
 
   @override
-  String get reasoningPillThinking => 'Reasoning through your case…';
+  String get reasoningPillThinking => 'Analizuojama jūsų byla…';
 
   @override
-  String get reasoningPillFinalising => 'Composing your answer…';
+  String get reasoningPillFinalising => 'Rengiamas atsakymas…';
 
   @override
   String reasoningCollapsedFormat(int sec, int sources) {
-    return 'Reasoned for ${sec}s · $sources sources';
+    return 'Mąstyta $sec s · $sources šaltinių';
   }
 
   @override
-  String get reasoningExpandHint => 'tap to see steps';
+  String get reasoningExpandHint => 'bakstelėkite, kad pamatytumėte žingsnius';
 
   @override
-  String get caseFileTitle => 'Case File';
+  String get caseFileTitle => 'Bylos byla';
 
   @override
-  String get caseFileTimeline => 'Timeline';
+  String get caseFileTimeline => 'Įvykių juosta';
 
   @override
-  String get caseFileParties => 'Parties';
+  String get caseFileParties => 'Šalys';
 
   @override
-  String get caseFileDeadlines => 'Deadlines';
+  String get caseFileDeadlines => 'Terminai';
 
   @override
-  String get caseFileExportPdf => 'Download dossier (PDF)';
+  String get caseFileExportPdf => 'Atsisiųsti bylą (PDF)';
 
   @override
   String get caseFileEmpty =>
-      'Chat with the AI about your case — your timeline will build itself.';
+      'Pasikalbėkite su DI apie savo bylą — įvykių juosta susikurs pati.';
 
   @override
   String get caseFileDisclaimer =>
-      'This dossier is auto-extracted from your chat. It is not legal advice.';
+      'Ši byla automatiškai sudaryta iš jūsų pokalbio. Tai nėra teisinė konsultacija.';
 
   @override
-  String get caseFileTabLabel => 'Case';
+  String get caseFileTabLabel => 'Byla';
 
   @override
-  String get refresh => 'Refresh';
+  String get refresh => 'Atnaujinti';
 
   @override
   String get demoLimitReached =>
-      'Demo limit reached. Sign up for free to continue.';
+      'Pasiektas demonstracinės versijos limitas. Užsiregistruokite nemokamai, kad tęstumėte.';
 
   @override
-  String get demoLimitSignUpCta => 'Sign up';
+  String get demoLimitSignUpCta => 'Užsiregistruoti';
 
   @override
   String get freeQuotaExhausted =>
-      'You\'ve used all 10 free messages this month.';
+      'Šį mėnesį panaudojote visus 10 nemokamų pranešimų.';
 
   @override
-  String get upgradeForUnlimited => 'Upgrade to Pro for unlimited';
+  String get upgradeForUnlimited => 'Atnaujinkite į Pro neribotam naudojimui';
 
   @override
-  String get upgradeCta => 'Upgrade';
+  String get upgradeCta => 'Atnaujinti';
 
   @override
   String get rateLimitTryAgain =>
-      'Sending too fast. Try again in a few seconds.';
+      'Siunčiate per greitai. Bandykite dar kartą po kelių sekundžių.';
 
   @override
   String get quickProfilePrompt =>
-      'So I can help more precisely, what is your legal status: are you an Estonian citizen, an EU citizen from another country, or do you have a residence permit?';
+      'Kad galėčiau padėti tiksliau, koks jūsų teisinis statusas: ar esate Estijos pilietis, ES pilietis iš kitos šalies, ar turite leidimą gyventi?';
 
   @override
-  String get quickProfileChipEstonianCitizen => 'Estonian citizen';
+  String get quickProfileChipEstonianCitizen => 'Estijos pilietis';
 
   @override
-  String get quickProfileChipEuCitizen => 'EU citizen (other)';
+  String get quickProfileChipEuCitizen => 'ES pilietis (kita šalis)';
 
   @override
-  String get quickProfileChipResidencePermit => 'Residence permit';
+  String get quickProfileChipResidencePermit => 'Leidimas gyventi';
 
   @override
-  String get quickProfileSkipBtn => 'Skip';
+  String get quickProfileSkipBtn => 'Praleisti';
 
   @override
-  String get quickProfileSavedAck => 'Got it. Now, what\'s your question?';
+  String get quickProfileSavedAck => 'Supratau. Koks jūsų klausimas?';
 
   @override
-  String get caseTitleLabel => 'Case title';
+  String get caseTitleLabel => 'Bylos pavadinimas';
 
   @override
-  String get jurisdictionLabel => 'Jurisdiction';
+  String get jurisdictionLabel => 'Jurisdikcija';
 
   @override
-  String get caseTypeLabel => 'Case type';
+  String get caseTypeLabel => 'Bylos tipas';
 
   @override
-  String get caseLanguageLabel => 'Language';
+  String get caseLanguageLabel => 'Kalba';
 
   @override
-  String get caseNumbersSection => 'Case numbers';
+  String get caseNumbersSection => 'Bylos numeriai';
 
   @override
-  String get partiesSection => 'Parties';
+  String get partiesSection => 'Šalys';
 
   @override
-  String get authoritiesSection => 'Authorities';
+  String get authoritiesSection => 'Institucijos';
 
   @override
-  String get timelineSection => 'Timeline';
+  String get timelineSection => 'Įvykių juosta';
 
   @override
-  String get openQuestionsSection => 'Open questions';
+  String get openQuestionsSection => 'Atviri klausimai';
 
   @override
-  String get nextActionsSection => 'Next actions';
+  String get nextActionsSection => 'Tolesni veiksmai';
 
   @override
-  String get summarySection => 'Summary';
+  String get summarySection => 'Santrauka';
 
   @override
-  String get addRow => 'Add row';
+  String get addRow => 'Pridėti eilutę';
 
   @override
-  String get removeRow => 'Remove';
+  String get removeRow => 'Pašalinti';
 
   @override
-  String get archiveCase => 'Archive case';
+  String get archiveCase => 'Archyvuoti bylą';
 
   @override
-  String get closeCase => 'Close case';
+  String get closeCase => 'Uždaryti bylą';
 
   @override
-  String get continueChatAboutCase => 'Continue chat about this case';
+  String get continueChatAboutCase => 'Tęsti pokalbį apie šią bylą';
 
   @override
-  String get linkChatToCase => 'Link to case';
+  String get linkChatToCase => 'Susieti su byla';
 
   @override
-  String get clearActiveCase => 'Clear active case';
+  String get clearActiveCase => 'Išvalyti aktyvią bylą';
 
   @override
-  String get caseSavedAck => 'Case saved';
+  String get caseSavedAck => 'Byla išsaugota';
 
   @override
-  String get caseArchivedAck => 'Case archived';
+  String get caseArchivedAck => 'Byla archyvuota';
 
   @override
-  String get intakeStep1Title => 'Where is the case?';
+  String get intakeStep1Title => 'Kur yra byla?';
 
   @override
   String get intakeStep1Subtitle =>
-      'Country and authority you are dealing with.';
+      'Šalis ir institucija, su kuria turite reikalų.';
 
   @override
-  String get intakeJurisdictionLabel => 'Country / jurisdiction';
+  String get intakeJurisdictionLabel => 'Šalis / jurisdikcija';
 
   @override
-  String get intakeAuthorityLabel => 'Authority type';
+  String get intakeAuthorityLabel => 'Institucijos tipas';
 
   @override
-  String get intakeAuthorityNameLabel => 'Authority name (optional)';
+  String get intakeAuthorityNameLabel => 'Institucijos pavadinimas (nebūtina)';
 
   @override
-  String get intakeAuthorityPolice => 'Police';
+  String get intakeAuthorityPolice => 'Policija';
 
   @override
-  String get intakeAuthorityCourt => 'Court';
+  String get intakeAuthorityCourt => 'Teismas';
 
   @override
-  String get intakeAuthoritySocial => 'Social services';
+  String get intakeAuthoritySocial => 'Socialinės tarnybos';
 
   @override
-  String get intakeAuthorityEmployer => 'Employer';
+  String get intakeAuthorityEmployer => 'Darbdavys';
 
   @override
-  String get intakeAuthorityLandlord => 'Landlord';
+  String get intakeAuthorityLandlord => 'Nuomotojas';
 
   @override
-  String get intakeAuthorityOpposingParty => 'Opposing party';
+  String get intakeAuthorityOpposingParty => 'Priešinga šalis';
 
   @override
-  String get intakeAuthorityOther => 'Other';
+  String get intakeAuthorityOther => 'Kita';
 
   @override
-  String get intakeStep2Title => 'What kind of case?';
+  String get intakeStep2Title => 'Kokio tipo byla?';
 
   @override
   String get intakeStep2Subtitle =>
-      'Pick the closest type — you can refine later.';
+      'Pasirinkite artimiausią tipą — vėliau galėsite patikslinti.';
 
   @override
-  String get intakeCaseTypeCriminal => 'Criminal';
+  String get intakeCaseTypeCriminal => 'Baudžiamoji';
 
   @override
-  String get intakeCaseTypeCivil => 'Civil';
+  String get intakeCaseTypeCivil => 'Civilinė';
 
   @override
-  String get intakeCaseTypeFamily => 'Family';
+  String get intakeCaseTypeFamily => 'Šeimos';
 
   @override
-  String get intakeCaseTypeAdmin => 'Administrative';
+  String get intakeCaseTypeAdmin => 'Administracinė';
 
   @override
-  String get intakeCaseTypeImmigration => 'Immigration';
+  String get intakeCaseTypeImmigration => 'Imigracijos';
 
   @override
-  String get intakeCaseTypeLabor => 'Labor';
+  String get intakeCaseTypeLabor => 'Darbo';
 
   @override
-  String get intakeCaseTypeConsumer => 'Consumer';
+  String get intakeCaseTypeConsumer => 'Vartotojų';
 
   @override
-  String get intakeCaseTypeInheritance => 'Inheritance';
+  String get intakeCaseTypeInheritance => 'Paveldėjimo';
 
   @override
-  String get intakeCaseTypeOther => 'Other';
+  String get intakeCaseTypeOther => 'Kita';
 
   @override
-  String get intakeStep3Title => 'Who is involved?';
+  String get intakeStep3Title => 'Kas dalyvauja?';
 
   @override
-  String get intakeStep3Subtitle => 'Your role and the other side.';
+  String get intakeStep3Subtitle => 'Jūsų vaidmuo ir kita šalis.';
 
   @override
-  String get intakeRoleLabel => 'Your role';
+  String get intakeRoleLabel => 'Jūsų vaidmuo';
 
   @override
-  String get intakeRolePlaintiff => 'Plaintiff';
+  String get intakeRolePlaintiff => 'Ieškovas';
 
   @override
-  String get intakeRoleDefendant => 'Defendant';
+  String get intakeRoleDefendant => 'Atsakovas';
 
   @override
-  String get intakeRoleVictim => 'Victim';
+  String get intakeRoleVictim => 'Nukentėjusysis';
 
   @override
-  String get intakeRoleAccused => 'Accused';
+  String get intakeRoleAccused => 'Kaltinamasis';
 
   @override
-  String get intakeRoleWitness => 'Witness';
+  String get intakeRoleWitness => 'Liudytojas';
 
   @override
-  String get intakeRoleFamily => 'Family member';
+  String get intakeRoleFamily => 'Šeimos narys';
 
   @override
-  String get intakeRoleOther => 'Other';
+  String get intakeRoleOther => 'Kita';
 
   @override
-  String get intakeOpposingSideLabel => 'Opposing side (optional)';
+  String get intakeOpposingSideLabel => 'Priešinga šalis (nebūtina)';
 
   @override
-  String get intakeWitnessesLabel => 'Witnesses (optional)';
+  String get intakeWitnessesLabel => 'Liudytojai (nebūtina)';
 
   @override
-  String get intakeAddWitness => 'Add witness';
+  String get intakeAddWitness => 'Pridėti liudytoją';
 
   @override
-  String get intakeWitnessHint => 'Name or contact';
+  String get intakeWitnessHint => 'Vardas arba kontaktas';
 
   @override
-  String get intakeStep4Title => 'Numbers & dates';
+  String get intakeStep4Title => 'Numeriai ir datos';
 
   @override
   String get intakeStep4Subtitle =>
-      'Whatever you already have. Skip what you don\'t.';
+      'Įveskite tai, ką turite. Praleiskite, ko neturite.';
 
   @override
-  String get intakeCaseNumberLabel => 'Case number (optional)';
+  String get intakeCaseNumberLabel => 'Bylos numeris (nebūtina)';
 
   @override
-  String get intakeIncidentDateLabel => 'Incident date (optional)';
+  String get intakeIncidentDateLabel => 'Įvykio data (nebūtina)';
 
   @override
-  String get intakeIncidentDatePick => 'Pick date';
+  String get intakeIncidentDatePick => 'Pasirinkti datą';
 
   @override
-  String get intakeDeadlinesLabel => 'Known deadlines';
+  String get intakeDeadlinesLabel => 'Žinomi terminai';
 
   @override
-  String get intakeAddDeadline => 'Add deadline';
+  String get intakeAddDeadline => 'Pridėti terminą';
 
   @override
-  String get intakeDeadlineWhatHint => 'What';
+  String get intakeDeadlineWhatHint => 'Kas';
 
   @override
-  String get intakeStep5Title => 'Documents';
+  String get intakeStep5Title => 'Dokumentai';
 
   @override
   String get intakeStep5Subtitle =>
-      'Upload anything relevant. We will read it.';
+      'Įkelkite viską, kas svarbu. Mes tai perskaitysime.';
 
   @override
-  String get intakeUploadDocsLabel => 'Upload documents';
+  String get intakeUploadDocsLabel => 'Įkelti dokumentus';
 
   @override
-  String get intakeSkipDocs => 'Skip — I\'ll upload later';
+  String get intakeSkipDocs => 'Praleisti — įkelsiu vėliau';
 
   @override
-  String get intakeNextBtn => 'Next';
+  String get intakeNextBtn => 'Toliau';
 
   @override
-  String get intakeBackBtn => 'Back';
+  String get intakeBackBtn => 'Atgal';
 
   @override
-  String get intakeFinishBtn => 'Finish & open chat';
+  String get intakeFinishBtn => 'Baigti ir atverti pokalbį';
 
   @override
-  String get intakeUrgentBtn => 'Urgent — ask now';
+  String get intakeUrgentBtn => 'Skubu — klausti dabar';
 
   @override
-  String get intakeUrgentDialogTitle => 'Open chat now?';
+  String get intakeUrgentDialogTitle => 'Atverti pokalbį dabar?';
 
   @override
   String get intakeUrgentDialogBody =>
-      'We\'ll save what you\'ve entered as a draft case. You can finish the wizard from the case page anytime.';
+      'Tai, ką įvedėte, išsaugosime kaip bylos juodraštį. Vediklį galėsite baigti bylos puslapyje bet kada.';
 
   @override
-  String get intakeUrgentConfirm => 'Open chat';
+  String get intakeUrgentConfirm => 'Atverti pokalbį';
 
   @override
-  String get intakeUrgentCancel => 'Keep filling';
+  String get intakeUrgentCancel => 'Tęsti pildymą';
 
   @override
-  String get intakePreparingCase => 'Preparing your case…';
+  String get intakePreparingCase => 'Ruošiama jūsų byla…';
 
   @override
   String get intakeFallbackGreeting =>
-      'I see your case. Tell me what\'s most pressing — I\'ll work through it with you.';
+      'Matau jūsų bylą. Pasakykite, kas svarbiausia — kartu viską išspręsime.';
 
   @override
   String get intakeUrgentGreeting =>
-      'I see this is urgent. Ask your question — I\'ll fill in the rest as we go.';
+      'Matau, kad tai skubu. Užduokite klausimą — likusią informaciją papildysiu eigoje.';
 
   @override
   String intakeStepIndicator(int current, int total) {
-    return 'Step $current of $total';
+    return '$current žingsnis iš $total';
   }
 
   @override
-  String get intakeFieldRequired => 'Required';
+  String get intakeFieldRequired => 'Privaloma';
 
   @override
   String intakeUploadProgress(int done, int total) {
-    return 'Uploading $done / $total…';
+    return 'Įkeliama $done / $total…';
   }
 
   @override
   String get uplDisclaimerFooter =>
-      'Advocat is not a law firm. This is information, not legal advice.';
+      'Advocat nėra advokatų kontora. Tai informacija, o ne teisinė konsultacija.';
 
   @override
   String get citationStatusVerifiedBadge => 'Patvirtinta';
@@ -3460,110 +3468,111 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String parallelActionsHeadline(int count) {
-    return 'Consilium recommends $count parallel actions';
+    return 'Konsiliumas rekomenduoja $count lygiagrečius veiksmus';
   }
 
   @override
-  String get parallelActionsApproveAll => 'Approve All & Send';
+  String get parallelActionsApproveAll => 'Patvirtinti visus ir siųsti';
 
   @override
   String parallelActionsApproveSelected(int count, int total) {
-    return 'Approve $count of $total';
+    return 'Patvirtinti $count iš $total';
   }
 
   @override
   String parallelActionsConfirmTitle(int count) {
-    return 'Send $count emails?';
+    return 'Siųsti $count el. laiškus?';
   }
 
   @override
   String parallelActionsConfirmBody(int count) {
-    return 'Advocat will dispatch $count prepared replies via your connected Gmail. Each one is sent independently — if any one fails, the others still go.';
+    return 'Advocat išsiųs $count parengtus atsakymus per jūsų prijungtą Gmail. Kiekvienas siunčiamas atskirai — jei vienas nepavyks, kiti vis tiek bus išsiųsti.';
   }
 
   @override
   String parallelActionsSentToast(int count) {
-    return '$count sent.';
+    return '$count išsiųsta.';
   }
 
   @override
   String parallelActionsPartialFailureToast(int sent, int failed) {
-    return '$sent sent, $failed failed.';
+    return '$sent išsiųsta, $failed nepavyko.';
   }
 
   @override
-  String get parallelActionsKindReply => 'reply';
+  String get parallelActionsKindReply => 'atsakymas';
 
   @override
-  String get parallelActionsKindNew => 'new';
+  String get parallelActionsKindNew => 'naujas';
 
   @override
-  String get parallelActionsCheckboxSelected => 'Action selected';
+  String get parallelActionsCheckboxSelected => 'Veiksmas pasirinktas';
 
   @override
-  String get parallelActionsCheckboxUnselected => 'Action not selected';
+  String get parallelActionsCheckboxUnselected => 'Veiksmas nepasirinktas';
 
   @override
   String parallelActionsCitationCount(int count) {
-    return '$count cit';
+    return '$count cit.';
   }
 
   @override
   String parallelActionsRetryFailed(int count) {
-    return 'Retry failed ($count)';
+    return 'Kartoti nepavykusius ($count)';
   }
 
   @override
-  String get agentApprovalNeedsReviewTitle => 'Advocat needs your approval';
+  String get agentApprovalNeedsReviewTitle =>
+      'Advocat reikia jūsų patvirtinimo';
 
   @override
-  String get agentApprovalResolvedTitle => 'Action resolved';
+  String get agentApprovalResolvedTitle => 'Veiksmas išspręstas';
 
   @override
-  String get agentApprovalStepsLabel => 'steps';
+  String get agentApprovalStepsLabel => 'žingsniai';
 
   @override
-  String get agentApprovalApproveButton => 'Approve & Send';
+  String get agentApprovalApproveButton => 'Patvirtinti ir siųsti';
 
   @override
-  String get agentApprovalDeclineButton => 'Decline';
+  String get agentApprovalDeclineButton => 'Atmesti';
 
   @override
-  String get agentApprovalAttachmentsLabel => 'Attachments';
+  String get agentApprovalAttachmentsLabel => 'Priedai';
 
   @override
-  String get agentApprovalSentSummary => 'Sent on your behalf.';
+  String get agentApprovalSentSummary => 'Išsiųsta jūsų vardu.';
 
   @override
-  String get agentApprovalDeclinedSummary => 'Declined — nothing was sent.';
+  String get agentApprovalDeclinedSummary => 'Atmesta — niekas neišsiųsta.';
 
   @override
-  String get agentToolDraftEmailAtt => 'Send email with attachments';
+  String get agentToolDraftEmailAtt => 'Siųsti el. laišką su priedais';
 
   @override
-  String get agentToolSendEmail => 'Send email';
+  String get agentToolSendEmail => 'Siųsti el. laišką';
 
   @override
-  String get agentToolGeneratePdf => 'Generate PDF';
+  String get agentToolGeneratePdf => 'Generuoti PDF';
 
   @override
-  String get agentToolApproveSend => 'Send prepared reply';
+  String get agentToolApproveSend => 'Siųsti parengtą atsakymą';
 
   @override
-  String get inboxErrorTitle => 'Could not load inbox';
+  String get inboxErrorTitle => 'Nepavyko įkelti pašto dėžutės';
 
   @override
-  String get inboxEditDiscardTitle => 'Discard unsaved edits?';
+  String get inboxEditDiscardTitle => 'Atmesti neišsaugotus pakeitimus?';
 
   @override
   String get inboxEditDiscardBody =>
-      'You have unsaved changes to this draft. Going back will discard them.';
+      'Turite neišsaugotų šio juodraščio pakeitimų. Grįžus atgal jie bus atmesti.';
 
   @override
-  String get inboxEditKeepEditing => 'Keep editing';
+  String get inboxEditKeepEditing => 'Tęsti redagavimą';
 
   @override
-  String get inboxEditDiscard => 'Discard';
+  String get inboxEditDiscard => 'Atmesti';
 
   @override
   String get workspaceTabOverview => 'Overview';
@@ -3590,71 +3599,71 @@ class AppLocalizationsLt extends AppLocalizations {
   String get workspaceInboxEmpty => 'No related email.';
 
   @override
-  String get plannerSettingsTitle => 'Three-pass legal reasoning';
+  String get plannerSettingsTitle => 'Trijų etapų teisinis samprotavimas';
 
   @override
   String get plannerSettingsSubtitle =>
-      'Plan → answer → critique. Slower but more thorough.';
+      'Planas → atsakymas → kritika. Lėčiau, bet kruopščiau.';
 
   @override
   String get plannerSettingsProBadge => 'Pro';
 
   @override
-  String get plannerSettingsProDescription => 'Available on Pro plan';
+  String get plannerSettingsProDescription => 'Prieinama su Pro planu';
 
   @override
-  String get plannerTrailHeaderPlan => 'Plan';
+  String get plannerTrailHeaderPlan => 'Planas';
 
   @override
-  String get plannerTrailHeaderCritique => 'Critique';
+  String get plannerTrailHeaderCritique => 'Kritika';
 
   @override
-  String get plannerTrailSubQuestions => 'Sub-questions';
+  String get plannerTrailSubQuestions => 'Papildomi klausimai';
 
   @override
-  String get plannerTrailCounterArgs => 'Counter-arguments';
+  String get plannerTrailCounterArgs => 'Kontrargumentai';
 
   @override
-  String get plannerTrailEvidenceGaps => 'Evidence gaps';
+  String get plannerTrailEvidenceGaps => 'Įrodymų spragos';
 
   @override
-  String get plannerTrailMaterialGapTrue => 'Material gap detected';
+  String get plannerTrailMaterialGapTrue => 'Aptikta esminė spraga';
 
   @override
-  String get plannerTrailRegeneratedBadge => 'Regenerated once';
+  String get plannerTrailRegeneratedBadge => 'Sugeneruota iš naujo kartą';
 
   @override
-  String get plannerTrailEmpty => 'no items';
+  String get plannerTrailEmpty => 'nėra elementų';
 
   @override
-  String get supportTitle => 'Help';
+  String get supportTitle => 'Pagalba';
 
   @override
-  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+  String get supportSubtitle => 'Paprastai atsakome per 1–2 valandas.';
 
   @override
-  String get supportSearchPlaceholder => 'Search help…';
+  String get supportSearchPlaceholder => 'Ieškoti pagalbos…';
 
   @override
-  String get supportStatusAllOk => 'All systems normal';
+  String get supportStatusAllOk => 'Visos sistemos veikia normaliai';
 
   @override
-  String get supportFaqWhatIs => 'What is Advocat?';
+  String get supportFaqWhatIs => 'Kas yra Advocat?';
 
   @override
-  String get supportFaqHowSubscribe => 'How do I subscribe to Pro?';
+  String get supportFaqHowSubscribe => 'Kaip užsisakyti Pro?';
 
   @override
-  String get supportFaqExportData => 'Can I export my data?';
+  String get supportFaqExportData => 'Ar galiu eksportuoti savo duomenis?';
 
   @override
-  String get supportFaqCancelAccount => 'Cancel or delete account';
+  String get supportFaqCancelAccount => 'Atšaukti arba ištrinti paskyrą';
 
   @override
-  String get supportFaqTalkHuman => 'Talk to a human';
+  String get supportFaqTalkHuman => 'Susisiekti su žmogumi';
 
   @override
-  String get supportContactEmail => 'Email';
+  String get supportContactEmail => 'El. paštas';
 
   @override
   String get supportContactTelegram => 'Telegram';
@@ -3663,58 +3672,58 @@ class AppLocalizationsLt extends AppLocalizations {
   String get supportContactWhatsapp => 'WhatsApp';
 
   @override
-  String get supportFooterSla => 'We respond within 24h';
+  String get supportFooterSla => 'Atsakome per 24 val.';
 
   @override
   String get supportWhatsapp => 'WhatsApp';
 
   @override
-  String get supportEmail => 'Email';
+  String get supportEmail => 'El. paštas';
 
   @override
-  String get supportInApp => 'Message us here';
+  String get supportInApp => 'Parašykite mums čia';
 
   @override
-  String get supportCategoryLabel => 'Category';
+  String get supportCategoryLabel => 'Kategorija';
 
   @override
-  String get supportCategoryBug => 'Bug';
+  String get supportCategoryBug => 'Klaida';
 
   @override
-  String get supportCategoryPayment => 'Payment issue';
+  String get supportCategoryPayment => 'Mokėjimo problema';
 
   @override
-  String get supportCategoryQuestion => 'Question';
+  String get supportCategoryQuestion => 'Klausimas';
 
   @override
-  String get supportCategoryFeature => 'Feature request';
+  String get supportCategoryFeature => 'Funkcijos pageidavimas';
 
   @override
-  String get supportCategoryOther => 'Other';
+  String get supportCategoryOther => 'Kita';
 
   @override
-  String get supportMessagePlaceholder => 'Describe your problem...';
+  String get supportMessagePlaceholder => 'Aprašykite savo problemą...';
 
   @override
-  String get supportEmailLabel => 'Email (optional)';
+  String get supportEmailLabel => 'El. paštas (nebūtina)';
 
   @override
-  String get supportSend => 'Send';
+  String get supportSend => 'Siųsti';
 
   @override
-  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+  String get supportSentSuccess => 'Pranešimas išsiųstas! Netrukus atsakysime.';
 
   @override
-  String get supportError => 'Something went wrong. Try again.';
+  String get supportError => 'Kažkas nepavyko. Bandykite dar kartą.';
 
   @override
-  String get supportErrorTooShort => 'Please write at least 10 characters.';
+  String get supportErrorTooShort => 'Parašykite bent 10 simbolių.';
 
   @override
-  String get supportErrorTooLong => 'Maximum 2000 characters.';
+  String get supportErrorTooLong => 'Daugiausia 2000 simbolių.';
 
   @override
-  String get supportPrivacyNotice => 'Your message is stored securely.';
+  String get supportPrivacyNotice => 'Jūsų pranešimas saugomas saugiai.';
 
   @override
   String get reviewThisContract => 'Peržiūrėti sutartį';
@@ -3839,38 +3848,41 @@ class AppLocalizationsLt extends AppLocalizations {
       'Patiko? Pakviesk draugą — abu gausite nemokamą mėnesį.';
 
   @override
-  String get referralAntiFraud => 'Maximum 12 successful referrals per year.';
+  String get referralAntiFraud =>
+      'Daugiausia 12 sėkmingų rekomendacijų per metus.';
 
   @override
   String get referralEmpty =>
-      'No referrals yet. Send your link to start earning.';
+      'Rekomendacijų dar nėra. Išsiųskite savo nuorodą, kad pradėtumėte uždirbti.';
 
   @override
-  String get referralRecentActivity => 'Recent activity';
+  String get referralRecentActivity => 'Naujausia veikla';
 
   @override
   String referralActivityInvited(String when) {
-    return 'Invited $when';
+    return 'Pakviesta $when';
   }
 
   @override
   String referralActivityActivated(String when) {
-    return 'activated $when';
+    return 'aktyvuota $when';
   }
 
   @override
-  String get referralActivityPending => 'not activated yet';
+  String get referralActivityPending => 'dar neaktyvuota';
 
   @override
   String referralStatsInvitedCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count friends',
-      one: '1 friend',
-      zero: 'no friends yet',
+      other: '$count draugų',
+      many: '$count draugo',
+      few: '$count draugus',
+      one: '$count draugą',
+      zero: 'dar nė vieno draugo',
     );
-    return 'You\'ve invited $_temp0';
+    return 'Pakvietėte $_temp0';
   }
 
   @override
@@ -3878,9 +3890,11 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count have activated',
-      one: '1 has activated',
-      zero: 'none activated yet',
+      other: '$count aktyvavo',
+      many: '$count aktyvavo',
+      few: '$count aktyvavo',
+      one: '$count aktyvavo',
+      zero: 'dar nė vienas neaktyvavo',
     );
     return '$_temp0';
   }
@@ -3890,45 +3904,49 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       months,
       locale: localeName,
-      other: '$months free months',
-      one: '1 free month',
-      zero: 'nothing yet',
+      other: '$months nemokamų mėnesių',
+      many: '$months nemokamo mėnesio',
+      few: '$months nemokami mėnesiai',
+      one: '$months nemokamas mėnuo',
+      zero: 'dar nieko',
     );
-    return 'Your bonus: $_temp0';
+    return 'Jūsų premija: $_temp0';
   }
 
   @override
   String get referralNudgeMessage =>
-      'Like Advocat? Invite a friend — both get a free month.';
+      'Patinka Advocat? Pakvieskite draugą — abu gausite nemokamą mėnesį.';
 
   @override
-  String get referralNudgeAction => 'Invite';
+  String get referralNudgeAction => 'Pakviesti';
 
   @override
-  String get referralLandingTitle => 'You\'ve been invited to Advocat';
+  String get referralLandingTitle => 'Esate pakviestas į Advocat';
 
   @override
   String referralLandingSubtitle(String inviterName) {
-    return '$inviterName invited you — claim your free first month.';
+    return '$inviterName jus pakvietė — atsiimkite nemokamą pirmąjį mėnesį.';
   }
 
   @override
   String get referralLandingSubtitleGeneric =>
-      'Claim your free first month of Advocat Pro.';
+      'Atsiimkite nemokamą pirmąjį Advocat Pro mėnesį.';
 
   @override
-  String get referralLandingCta => 'Activate free month & sign up';
+  String get referralLandingCta =>
+      'Aktyvuoti nemokamą mėnesį ir užsiregistruoti';
 
   @override
-  String get referralLandingCtaSecondary => 'Or learn more about Advocat';
+  String get referralLandingCtaSecondary =>
+      'Arba sužinokite daugiau apie Advocat';
 
   @override
   String get referralLandingFallback =>
-      'This link has expired — but you can still try Advocat free.';
+      'Šios nuorodos galiojimas baigėsi — bet vis tiek galite išbandyti Advocat nemokamai.';
 
   @override
   String get referralLandingBenefits =>
-      '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+      '17 kalbų • Tikra Estijos, Suomijos ir ES teisė • 24/7 — be laukimo';
 
   @override
   String get checkerProTagline => 'Profesionalūs tikrinimo įrankiai';
@@ -4025,162 +4043,164 @@ class AppLocalizationsLt extends AppLocalizations {
   String get increaseDependents => 'Padidinti';
 
   @override
-  String get sensitiveConsentTitle => 'Sensitive data consent';
+  String get sensitiveConsentTitle => 'Sutikimas dėl jautrių duomenų';
 
   @override
   String get sensitiveConsentBody =>
-      'Documents you\'re about to upload may contain special-category personal data under GDPR Art. 9 — such as health records, criminal records, biometric data, or information about your racial origin, religion, or sexual orientation.\n\nWe process this data only to provide you with AI legal assistance, store it encrypted in your private account, and never use it to train models. You can withdraw consent and delete the data at any time from Settings.\n\nBy accepting, you give explicit consent under Art. 9(2)(a) GDPR to process special-category data for this purpose.';
+      'Dokumentuose, kuriuos ketinate įkelti, gali būti specialių kategorijų asmens duomenų pagal BDAR 9 str. — pavyzdžiui, sveikatos įrašų, teistumo duomenų, biometrinių duomenų arba informacijos apie jūsų rasinę kilmę, religiją ar seksualinę orientaciją.\n\nŠiuos duomenis tvarkome tik tam, kad suteiktume jums DI teisinę pagalbą, saugome juos užšifruotus jūsų privačioje paskyroje ir niekada nenaudojame jų modeliams mokyti. Sutikimą galite atšaukti ir duomenis ištrinti bet kada Nustatymuose.\n\nSutikdami suteikiate aiškų sutikimą pagal BDAR 9 str. 2 d. a punktą tvarkyti specialių kategorijų duomenis šiuo tikslu.';
 
   @override
   String get sensitiveConsentExplicitCheckbox =>
-      'I give explicit consent to process special-category data (Art. 9(2)(a) GDPR).';
+      'Suteikiu aiškų sutikimą tvarkyti specialių kategorijų duomenis (BDAR 9 str. 2 d. a p.).';
 
   @override
   String get sensitiveConsentRightToShareCheckbox =>
-      'I confirm I have the right to share this data (the data is mine, or I have informed/lawful basis to share third-party data).';
+      'Patvirtinu, kad turiu teisę dalytis šiais duomenimis (duomenys yra mano arba turiu informuotą / teisėtą pagrindą dalytis trečiųjų šalių duomenimis).';
 
   @override
   String get sensitiveConsentViewCategories =>
-      'View what counts as sensitive →';
+      'Peržiūrėti, kas laikoma jautriais duomenimis →';
 
   @override
   String get sensitiveConsentWithdrawAction =>
-      'Withdraw sensitive data consent';
+      'Atšaukti sutikimą dėl jautrių duomenų';
 
   @override
-  String get privacyAndData => 'PRIVACY & DATA';
+  String get privacyAndData => 'PRIVATUMAS IR DUOMENYS';
 
   @override
   String get exportMyDataSubtitle =>
-      'Download a copy of all your personal data (GDPR Art. 15).';
+      'Atsisiųskite visų savo asmens duomenų kopiją (BDAR 15 str.).';
 
   @override
-  String get withdrawSensitiveConsent => 'Sensitive data consent';
+  String get withdrawSensitiveConsent => 'Sutikimas dėl jautrių duomenų';
 
   @override
   String get withdrawSensitiveConsentSubtitle =>
-      'Manage or withdraw consent to process special-category data (GDPR Art. 9(2)(a)).';
+      'Tvarkykite arba atšaukite sutikimą tvarkyti specialių kategorijų duomenis (BDAR 9 str. 2 d. a p.).';
 
   @override
-  String get dataProcessingAgreement => 'Data Processing Agreement';
+  String get dataProcessingAgreement => 'Duomenų tvarkymo sutartis';
 
   @override
-  String get exportingData => 'Exporting your data…';
+  String get exportingData => 'Eksportuojami jūsų duomenys…';
 
   @override
-  String get exportComplete => 'Data export ready — saved to your device.';
+  String get exportComplete =>
+      'Duomenų eksportas paruoštas — išsaugotas jūsų įrenginyje.';
 
   @override
   String get exportFailed =>
-      'Export failed. Please try again or contact support.';
+      'Eksportas nepavyko. Bandykite dar kartą arba susisiekite su pagalba.';
 
   @override
-  String get quotaExhaustedTitle => 'Free message limit reached';
+  String get quotaExhaustedTitle => 'Pasiektas nemokamų pranešimų limitas';
 
   @override
   String quotaExhaustedBody(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month and get unlimited AI legal consultations.';
+    return 'Panaudojote visus $count nemokamus pranešimus. Atnaujinkite į Advocat Counsel už 19,99 €/mėn. ir gaukite neribotas DI teisines konsultacijas.';
   }
 
   @override
-  String get quotaExhaustedLater => 'Later';
+  String get quotaExhaustedLater => 'Vėliau';
 
   @override
-  String get quotaExhaustedUpgrade => 'Advocat Counsel — €19.99/mo';
+  String get quotaExhaustedUpgrade => 'Advocat Counsel — 19,99 €/mėn.';
 
   @override
   String quotaCtaMessage(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month.';
+    return 'Panaudojote visus $count nemokamus pranešimus. Atnaujinkite į Advocat Counsel už 19,99 €/mėn.';
   }
 
   @override
-  String get quotaCtaButton => 'Get Advocat Counsel — €19.99/mo';
+  String get quotaCtaButton => 'Gauti Advocat Counsel — 19,99 €/mėn.';
 
   @override
   String get aiErrorQuota =>
-      'Free message limit reached. Subscribe to continue using AI.';
+      'Pasiektas nemokamų pranešimų limitas. Užsiprenumeruokite, kad tęstumėte DI naudojimą.';
 
   @override
   String get aiErrorAuth =>
-      'Sign-in required to use the AI. Please register or log in.';
+      'Norint naudoti DI, reikia prisijungti. Užsiregistruokite arba prisijunkite.';
 
   @override
   String get aiErrorGeneric =>
-      'Temporary AI error. Please try again in a minute. If it persists, contact support.';
+      'Laikina DI klaida. Bandykite dar kartą po minutės. Jei kartojasi, susisiekite su pagalba.';
 
   @override
-  String get tooltipShareCase => 'Share case summary';
+  String get tooltipShareCase => 'Bendrinti bylos santrauką';
 
   @override
-  String get tooltipMuteVoice => 'Mute voice';
+  String get tooltipMuteVoice => 'Nutildyti balsą';
 
   @override
-  String get tooltipUnmuteVoice => 'Unmute voice';
+  String get tooltipUnmuteVoice => 'Įjungti balsą';
 
   @override
-  String get tooltipAttachDoc => 'Attach document';
+  String get tooltipAttachDoc => 'Pridėti dokumentą';
 
   @override
-  String get aiTypingHint => 'AI…';
+  String get aiTypingHint => 'DI…';
 
   @override
-  String get error404Title => 'Page not found';
+  String get error404Title => 'Puslapis nerastas';
 
   @override
   String error404Body(String path) {
-    return 'We couldn\'t find: $path';
+    return 'Nepavyko rasti: $path';
   }
 
   @override
-  String get goToHome => 'Go to home';
+  String get goToHome => 'Eiti į pradžią';
 
   @override
   String get emailAlreadyRegistered =>
-      'This email is already registered. Want to sign in?';
+      'Šis el. paštas jau užregistruotas. Norite prisijungti?';
 
   @override
-  String get actionSignIn => 'Sign in';
+  String get actionSignIn => 'Prisijungti';
 
   @override
-  String get actionUndo => 'Undo';
+  String get actionUndo => 'Anuliuoti';
 
   @override
-  String get intakeUrgentOpened => 'Chat opened — your draft is saved.';
+  String get intakeUrgentOpened =>
+      'Pokalbis atvertas — jūsų juodraštis išsaugotas.';
 
   @override
-  String get panicCoachmark => 'Hold for emergency help.';
+  String get panicCoachmark => 'Laikykite pagalbai skubos atveju.';
 
   @override
-  String get panicTitle => 'What do you need right now?';
+  String get panicTitle => 'Ko jums reikia dabar?';
 
   @override
-  String get panicCardReadAloud => 'Read aloud to the officer';
+  String get panicCardReadAloud => 'Perskaityti pareigūnui balsu';
 
   @override
-  String get panicCardRecord => 'Record this conversation';
+  String get panicCardRecord => 'Įrašyti šį pokalbį';
 
   @override
-  String get panicCardCall => 'Call a lawyer';
+  String get panicCardCall => 'Skambinti advokatui';
 
   @override
-  String get panicCardAi => 'Talk to Advocat now';
+  String get panicCardAi => 'Kalbėtis su Advocat dabar';
 
   @override
-  String get panicClose => 'Close';
+  String get panicClose => 'Uždaryti';
 
   @override
   String get panicBadgeV2 => 'V2';
 
   @override
-  String get panicRecordV1Title => 'Coming in V2';
+  String get panicRecordV1Title => 'Bus V2 versijoje';
 
   @override
   String get panicRecordV1Body =>
-      'The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone\'s built-in voice recorder.';
+      'Įrašymo funkcija teisiškai tikrinama Estijai ir bus įdiegta V2 versijoje. Kol kas naudokite telefono integruotą balso įrašymo įrenginį.';
 
   @override
   String get panicCallFallbackBody =>
-      'Email kiire@advocat.ee with a short description and we will call you back.';
+      'Parašykite el. laišką kiire@advocat.ee su trumpu aprašymu ir mes jums perskambinsime.';
 
   @override
   String get consiliumHeader => 'Teisininkų konsiliumas';
@@ -4260,10 +4280,10 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get softCaseShellBanner =>
-      'We created \"Untitled case\" to track this. Tap to rename.';
+      'Sukūrėme „Bylą be pavadinimo“, kad galėtume tai sekti. Bakstelėkite, kad pervadintumėte.';
 
   @override
-  String get softCaseShellBannerCta => 'Rename';
+  String get softCaseShellBannerCta => 'Pervadinti';
 
   @override
   String get draftsTab => 'Drafts';

@@ -1194,7 +1194,6 @@
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
     },
-    "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
     "draftingEmpty": "Empty draft",
@@ -1351,7 +1350,605 @@
     "iapRestoreSuccess": "Il tuo abbonamento è stato ripristinato.",
     "iapRestoreNoActive": "Nessun abbonamento attivo da ripristinare.",
     "deadlineEuRadarTitle": "EU deadline radar (preview)",
-    "@deadlineEuRadarTitle": {"x-todo": "translate to it"},
+    "@deadlineEuRadarTitle": {
+        "x-todo": "translate to it"
+    },
     "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
-    "@deadlineEuRadarSubtitle": {"x-todo": "translate to it"}
+    "@deadlineEuRadarSubtitle": {
+        "x-todo": "translate to it"
+    },
+    "aiAnalyzing": "L'IA sta analizzando",
+    "speakIntoMicHint": "Parli nel microfono. Si assicuri che l'accesso al microfono sia abilitato.",
+    "aiErrorRateLimit": "Il servizio è temporaneamente sovraccarico. Riprovi tra 1-2 minuti.",
+    "aiErrorOverload": "L'IA è occupata in questo momento, riprovi tra un minuto.",
+    "freeLimitReached": "Ha utilizzato tutti i {count} messaggi IA gratuiti. Passi a Legal Counsel per un'assistenza IA illimitata!",
+    "@freeLimitReached": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "appleComingSoon": "Disponibile a breve",
+    "appleComingSoonMessage": "L'accesso con Apple sarà disponibile a breve. Usi Google o l'email per continuare.",
+    "dpaTitle": "Accordo sul trattamento dei dati",
+    "dpaCheckoutGateTitle": "Prima di effettuare l'upgrade",
+    "dpaCheckoutGateBody": "La normativa UE (art. 28 GDPR) ci impone di firmare un accordo sul trattamento dei dati con ogni cliente pagante. La preghiamo di leggerlo e accettarlo.",
+    "dpaViewLink": "Visualizza l'accordo sul trattamento dei dati",
+    "dpaCheckboxLabel": "Ho letto e accetto l'accordo sul trattamento dei dati (v1.0).",
+    "dpaCancel": "Annulla",
+    "dpaAcceptAndContinue": "Accetta e continua",
+    "dpaOpenHint": "Apra l'accordo (DPA) almeno una volta per abilitare il pulsante Accetta.",
+    "rateAppComingSoon": "Disponibile a breve negli app store!",
+    "dataCopiedToClipboard": "Dati copiati negli appunti",
+    "noEventsForFilter": "Nessun evento corrisponde a questo filtro",
+    "timelineFilterAll": "Tutti",
+    "timelineFilterEmails": "Email",
+    "timelineFilterConsilium": "Decisioni IA",
+    "timelineFilterDeadlines": "Scadenze",
+    "timelineFilterNotes": "Note",
+    "timelineEventEmailIn": "Email ricevuta",
+    "timelineEventEmailOut": "Email inviata",
+    "timelineEventConsiliumDecision": "Decisione IA",
+    "timelineEventDeadlineSet": "Scadenza",
+    "timelineEventDocUploaded": "Documento",
+    "timelineEventPhaseChange": "Cambio di fase",
+    "timelineEventManualNote": "Nota",
+    "timelineJustNow": "Proprio ora",
+    "timelineMinutesAgo": "{count, plural, =1{1 minuto fa} other{{count} minuti fa}}",
+    "@timelineMinutesAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "timelineHoursAgo": "{count, plural, =1{1 ora fa} other{{count} ore fa}}",
+    "@timelineHoursAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "timelineDaysAgo": "{count, plural, =1{1 giorno fa} other{{count} giorni fa}}",
+    "@timelineDaysAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "gmailReauthBannerBody": "Advocat v2.1 legge la sua casella di posta per redigere le risposte; può revocare l'accesso in qualsiasi momento. Riconnetta Gmail per abilitare la classificazione proattiva.",
+    "gmailReauthBannerCta": "Riautorizza",
+    "fiveAiMessagesTotal": "5 messaggi IA (a vita)",
+    "hundredAiMessagesDay": "100 messaggi IA/giorno",
+    "unlimitedAiMessages": "Messaggi IA illimitati",
+    "voiceInput": "Input vocale",
+    "strategyRecommendations": "Raccomandazioni strategiche",
+    "foundingMemberNote": "Membro fondatore: 9,99 €/mese per i primi 3 mesi",
+    "saveTwentyPercent": "Risparmia il 20%",
+    "gdprConsentAiProcessing": "Acconsento al trattamento dei miei dati per l'assistenza legale IA (obbligatorio)",
+    "gdprConsentAnalytics": "Acconsento all'analisi dei dati per migliorare il servizio (facoltativo)",
+    "gdprArt9Intro": "Questa app tratta categorie particolari di dati personali ai sensi dell'articolo 9 del GDPR, tra cui:",
+    "gdprSpecialLegalCases": "I dettagli del suo caso legale e i documenti giudiziari",
+    "gdprSpecialNationality": "Nazionalità e status di immigrazione",
+    "gdprConsentLegalData": "Acconsento al trattamento da parte dell'IA dei dati del mio caso legale, della nazionalità e dello status di immigrazione (obbligatorio)",
+    "gdprConsentVoice": "Acconsento al trattamento delle registrazioni vocali (facoltativo)",
+    "gdprViewPrivacyPolicy": "Visualizza l'informativa sulla privacy",
+    "legalInformation": "Informazioni legali",
+    "legalEntityName": "Vorantis OÜ",
+    "legalRegistryCode": "Codice di registro: 17098992",
+    "legalAddress": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145",
+    "legalEmail": "Email: support@advocat.ee",
+    "legalRegistry": "Iscritta al Registro delle imprese estone (Äriregister)",
+    "domesticViolenceDesc": "Diritti delle vittime, aiuto d'emergenza, ordini restrittivi",
+    "rightCallEmergency": "Ha il diritto di chiamare il 112 in qualsiasi emergenza — polizia, ambulanza, vigili del fuoco",
+    "rightVictimProtection": "In quanto vittima, ha diritto a protezione, sostegno e informazioni sul suo caso",
+    "rightRestrainingOrder": "Può richiedere un ordine restrittivo (lähestymiskielto) per tenere lontano l'aggressore",
+    "rightVictimInterpreter": "Ha diritto a un interprete durante tutti i procedimenti legali",
+    "rightMedicalHelp": "Ha diritto a cure mediche immediate e alla documentazione delle lesioni",
+    "rightShelter": "Ha diritto a un rifugio d'emergenza — contatti una casa rifugio o i servizi sociali",
+    "mustReportDanger": "Se qualcuno è in pericolo immediato, chiami subito il 112",
+    "mustDocumentInjuries": "Documenti tutte le lesioni — foto, referti medici, annotazioni scritte",
+    "domesticActionCallEmergency": "Chiami il 112 se è in pericolo immediato",
+    "domesticActionGoToSafe": "Si rechi in un luogo sicuro — rifugio, amico, luogo pubblico",
+    "domesticActionDocumentEverything": "Documenti le lesioni: scatti foto, ottenga referti medici",
+    "domesticActionFilePoliceReport": "Presenti una denuncia alla polizia — può farlo anche in seguito",
+    "domesticActionContactShelter": "Contatti una casa rifugio o una linea di assistenza per le crisi",
+    "domesticActionApplyRestraining": "Richieda un ordine restrittivo tramite la polizia o il tribunale",
+    "domesticFactRestrainingOrder": "In Finlandia, un ordine restrittivo (lähestymiskielto) può essere emesso anche senza un procedimento penale. Vieta alla persona di contattarla o di avvicinarsi a lei.",
+    "domesticFactVictimDirective": "Ai sensi della direttiva UE sulle vittime 2012/29/UE, ha il diritto di essere trattata con rispetto, di ricevere informazioni in una lingua che comprende e di accedere ai servizi di assistenza alle vittime — indipendentemente dal suo status di residenza.",
+    "domesticDeadlinePoliceReport": "Presentazione della denuncia alla polizia — nessun termine perentorio, ma prima è meglio per le prove",
+    "domesticDeadlineRestraining": "Ordine restrittivo — può essere richiesto in qualsiasi momento",
+    "contactEmergency": "Numero d'emergenza",
+    "contactShelter": "Linea di assistenza Turvakoti (casa rifugio)",
+    "contactCrisisHelpline": "Linea di assistenza per le crisi (Kriisipuhelin)",
+    "contactNollaLinja": "Nollalinja — Linea di assistenza per la violenza contro le donne",
+    "consumerProtectionDesc": "Frodi, prodotti difettosi, resi, venditori ingannevoli",
+    "rightReturnOnline": "Ha 14 giorni per annullare gli acquisti online senza motivazione (diritto di recesso UE)",
+    "rightDefectiveProduct": "Se un prodotto è difettoso, ha diritto alla riparazione, alla sostituzione o al rimborso",
+    "rightClearPricing": "I venditori devono indicare prezzi chiari comprensivi di tutti i costi — i costi nascosti sono illegali",
+    "rightComplainBoard": "Può presentare un reclamo gratuito alla Commissione per le controversie dei consumatori",
+    "rightProtectionFraud": "È tutelato contro le pratiche commerciali scorrette e le frodi",
+    "mustKeepReceipts": "Conservi tutte le ricevute, i contratti e le comunicazioni con i venditori",
+    "mustActTimely": "Segnali i difetti al venditore entro un tempo ragionevole dalla scoperta",
+    "consumerActionKeepEvidence": "Conservi ricevute, screenshot, email e ogni prova d'acquisto",
+    "consumerActionContactSeller": "Contatti prima il venditore — spieghi il problema per iscritto",
+    "consumerActionFileComplaint": "Presenti un reclamo alla Commissione per le controversie dei consumatori (kuluttajariitalautakunta)",
+    "consumerActionContactAuthority": "Contatti i Servizi di consulenza ai consumatori per assistenza gratuita",
+    "consumerActionReportFraud": "Segnali la frode alla polizia e al Difensore civico dei consumatori",
+    "consumerFactWithdrawal": "Ai sensi della direttiva UE sui diritti dei consumatori 2011/83/UE, ha 14 giorni per recedere da qualsiasi acquisto online o a distanza — senza dover fornire spiegazioni. Il venditore deve rimborsarla entro 14 giorni.",
+    "consumerFactWarranty": "In Finlandia, il venditore è responsabile dei difetti del prodotto per un periodo ragionevole (spesso 2 anni o più). Ciò è distinto da qualsiasi garanzia del produttore.",
+    "consumerDeadlineWithdrawal": "Recesso dall'acquisto online — 14 giorni dalla consegna",
+    "consumerDeadlineDefect": "Segnalazione del difetto al venditore — entro 2 mesi dalla scoperta (consigliato)",
+    "contactConsumerAdvisory": "Servizi di consulenza ai consumatori",
+    "contactConsumerOmbudsman": "Difensore civico dei consumatori (Kuluttaja-asiamies)",
+    "contactConsumerDisputesBoardDirect": "Commissione per le controversie dei consumatori",
+    "categoryChildren": "Minori",
+    "categoryDigital": "Digitale",
+    "childrenRights": "Diritti dei minori e mantenimento",
+    "childrenRightsDesc": "Mantenimento dei figli, alimenti, protezione, garanzie statali",
+    "cyberbullying": "Cyberbullismo e molestie online",
+    "cyberbullyingDesc": "Minacce, violazioni della privacy, diffamazione online",
+    "rightChildSupport": "Entrambi i genitori sono giuridicamente obbligati a mantenere economicamente il figlio (Perekonnaseadus § 100–102)",
+    "rightMinimumAlimony": "Mantenimento minimo dei figli in Estonia: importo base (295,86 €) + 3% dello stipendio lordo medio dell'anno precedente (PKS § 101). Dal 01.04.2026 — 318,62 €/mese per figlio. Aggiornato annualmente il 1° aprile. Calcolatore: alimendid.ee",
+    "rightCourtAlimony": "Può richiedere gli alimenti presso il tribunale di contea (maakohus) — non è richiesto un avvocato per le domande fino a 6.400 €",
+    "rightBailiffEnforcement": "Se il genitore si rifiuta di pagare, un ufficiale giudiziario (kohtutäitur) può eseguire l'ordine del tribunale, incluso il pignoramento dello stipendio",
+    "rightStateAlimonyGuarantee": "Se il genitore non paga, lo Stato fornisce l'elatisabi (assegno di mantenimento) tramite il Sotsiaalkindlustusamet — fino a 100 €/mese per figlio",
+    "rightChildEducation": "Ogni minore ha diritto all'istruzione, all'assistenza sanitaria e alla protezione dagli abusi (Lastekaitseseadus § 4–5)",
+    "rightChildContact": "Un minore ha diritto a mantenere i contatti con entrambi i genitori, salvo diversa decisione del tribunale (PKS § 143)",
+    "mustFileCourtClaim": "Per ricevere gli alimenti, deve presentare una domanda al tribunale o concordare l'importo per iscritto",
+    "mustNotifyAddressChange": "Comunichi al Sotsiaalkindlustusamet i cambi di indirizzo se riceve l'elatisabi",
+    "childrenActionGatherDocs": "Raccolga il certificato di nascita del minore, il suo documento d'identità e le prove delle spese",
+    "childrenActionFileCourtClaim": "Presenti una domanda di alimenti al tribunale di contea (maakohus) — è possibile farlo online tramite e-toimik",
+    "childrenActionApplyElatisabi": "Richieda la garanzia statale per gli alimenti (elatisabi) al Sotsiaalkindlustusamet se il genitore non paga",
+    "childrenActionContactBailiff": "Contatti un ufficiale giudiziario (kohtutäitur) per eseguire l'ordine del tribunale",
+    "childrenActionCallLasteabi": "Chiami Lasteabi 116 111 per la linea di assistenza ai minori — gratuita, 24 ore su 24, 7 giorni su 7",
+    "childrenDeadlineElatisabi": "Richiesta di elatisabi — dopo l'ordine del tribunale, nessun termine perentorio ma la procedura richiede tempo",
+    "childrenDeadlineCourt": "Gli alimenti possono essere richiesti retroattivamente fino a 1 anno prima del deposito della domanda in tribunale",
+    "childrenFactMinimum": "Dal 01.04.2026 il mantenimento minimo dei figli è di 318,62 €/mese per figlio. Formula: importo base (295,86 €) + 3% dello stipendio lordo medio dell'anno precedente. Aggiornato annualmente il 1° aprile. Un genitore non può accordarsi per pagare meno. Calcolatore: alimendid.ee",
+    "childrenFactElatisabi": "La garanzia statale estone per gli alimenti (elatisabi) è stata introdotta nel 2017 per tutelare i minori quando un genitore si rifiuta di pagare. Lo Stato paga e poi recupera l'importo dal genitore debitore.",
+    "rightReportCybercrime": "Ha il diritto di denunciare alla polizia minacce online, molestie e furti d'identità (Karistusseadustik § 120, § 157¹)",
+    "rightContentRemoval": "Può richiedere la rimozione di contenuti diffamatori o privati dalle piattaforme ed esigerne la cancellazione ai sensi del GDPR",
+    "rightMoralDamageCompensation": "Può richiedere il risarcimento del danno morale causato dal cyberbullismo (Võlaõigusseadus § 1043–1055)",
+    "rightPrivacyProtection": "La sua vita privata è tutelata — la condivisione non autorizzata delle sue foto, dei suoi messaggi o dei suoi dati personali è illegale (KarS § 157)",
+    "rightDataProtection": "Segnali le violazioni della protezione dei dati (uso non autorizzato dei suoi dati) all'Andmekaitse Inspektsioon",
+    "rightDefamationAction": "La diffamazione (laimamine) è un illecito civile — può citare in giudizio per i danni ed esigere una ritrattazione pubblica (KarS § 247 (abrogato), VÕS § 1047)",
+    "mustCollectEvidence": "Raccolga e conservi tutte le prove — screenshot, link, date e informazioni sui testimoni",
+    "mustNotRetaliate": "Non reagisca né si dedichi a contro-molestie — ciò potrebbe indebolire il suo caso",
+    "cyberActionScreenshots": "Faccia screenshot di tutte le molestie — salvi URL, date, nomi utente e contenuti",
+    "cyberActionReportPolice": "Presenti una denuncia alla polizia presso la stazione più vicina o online su politsei.ee",
+    "cyberActionReportPlatform": "Segnali il contenuto alla piattaforma di social media per la rimozione",
+    "cyberActionContactDPA": "Contatti l'Andmekaitse Inspektsioon se i suoi dati personali sono stati utilizzati impropriamente",
+    "cyberActionConsultLawyer": "Si rivolga a un avvocato per i danni civili — l'assistenza legale gratuita è disponibile tramite Riigi Õigusabi",
+    "cyberDeadlineCriminal": "Denuncia penale — nessun termine perentorio, ma denunci tempestivamente per ottenere i migliori risultati",
+    "cyberDeadlineCivil": "Domanda civile di risarcimento — fino a 3 anni da quando è venuto a conoscenza della violazione (TsÜS § 150)",
+    "cyberFactPrivacy": "In Estonia, la condivisione non autorizzata di immagini intime di una persona può comportare fino a 3 anni di reclusione ai sensi del Karistusseadustik § 157¹ (violazione della privacy).",
+    "cyberFactGDPR": "Ai sensi del GDPR, ha il “diritto all'oblio” — le piattaforme devono cancellare i suoi dati personali su richiesta se non vi è alcuna base giuridica per conservarli.",
+    "upgradeBannerTitle": "Effettui l'upgrade per consulenze illimitate",
+    "upgradeBannerCta": "Effettua l'upgrade",
+    "paymentSuccessTitle": "Pagamento riuscito",
+    "paymentSuccessBody": "Il suo abbonamento è ora attivo.",
+    "commonOk": "OK",
+    "feedbackThumbsUpLabel": "Utile",
+    "feedbackThumbsDownLabel": "Non utile",
+    "feedbackCommentPrompt": "Cosa non andava?",
+    "feedbackSend": "Invia",
+    "feedbackCancel": "Annulla",
+    "reasoningPillIdle": "Sto pensando…",
+    "reasoningPillSearchingLaw": "Ricerca nella legge estone…",
+    "reasoningPillSearchingWeb": "Ricerca sul web…",
+    "reasoningPillCheckingCompany": "Verifica nel registro delle imprese…",
+    "reasoningPillCheckingVehicle": "Verifica nel registro dei veicoli…",
+    "reasoningPillReadingDocument": "Lettura del suo documento…",
+    "reasoningPillDrafting": "Redazione del documento…",
+    "reasoningPillPreparingEmail": "Preparazione dell'email…",
+    "reasoningPillFindingLawyer": "Ricerca di avvocati…",
+    "reasoningPillThinking": "Analisi del suo caso…",
+    "reasoningPillFinalising": "Composizione della sua risposta…",
+    "reasoningCollapsedFormat": "Ragionamento per {sec}s · {sources} fonti",
+    "@reasoningCollapsedFormat": {
+        "placeholders": {
+            "sec": {
+                "type": "int"
+            },
+            "sources": {
+                "type": "int"
+            }
+        }
+    },
+    "reasoningExpandHint": "tocca per vedere i passaggi",
+    "caseFileTitle": "Fascicolo del caso",
+    "caseFileTimeline": "Cronologia",
+    "caseFileParties": "Parti",
+    "caseFileDeadlines": "Scadenze",
+    "caseFileExportPdf": "Scarica il fascicolo (PDF)",
+    "caseFileEmpty": "Parli con l'IA del suo caso — la sua cronologia si costruirà da sola.",
+    "caseFileDisclaimer": "Questo fascicolo è estratto automaticamente dalla sua chat. Non costituisce consulenza legale.",
+    "caseFileTabLabel": "Caso",
+    "refresh": "Aggiorna",
+    "demoLimitReached": "Limite della demo raggiunto. Si registri gratuitamente per continuare.",
+    "demoLimitSignUpCta": "Registrati",
+    "freeQuotaExhausted": "Ha utilizzato tutti i 10 messaggi gratuiti di questo mese.",
+    "upgradeForUnlimited": "Passi a Pro per messaggi illimitati",
+    "upgradeCta": "Effettua l'upgrade",
+    "rateLimitTryAgain": "Invio troppo rapido. Riprovi tra qualche secondo.",
+    "quickProfilePrompt": "Per poterla aiutare in modo più preciso, qual è il suo status giuridico: è un cittadino estone, un cittadino UE di un altro Paese o è titolare di un permesso di soggiorno?",
+    "quickProfileChipEstonianCitizen": "Cittadino estone",
+    "quickProfileChipEuCitizen": "Cittadino UE (altro)",
+    "quickProfileChipResidencePermit": "Permesso di soggiorno",
+    "quickProfileSkipBtn": "Salta",
+    "quickProfileSavedAck": "Ricevuto. Ora, qual è la sua domanda?",
+    "caseTitleLabel": "Titolo del caso",
+    "jurisdictionLabel": "Giurisdizione",
+    "caseTypeLabel": "Tipo di caso",
+    "caseLanguageLabel": "Lingua",
+    "caseNumbersSection": "Numeri di causa",
+    "partiesSection": "Parti",
+    "authoritiesSection": "Autorità",
+    "timelineSection": "Cronologia",
+    "openQuestionsSection": "Questioni aperte",
+    "nextActionsSection": "Azioni successive",
+    "summarySection": "Riepilogo",
+    "addRow": "Aggiungi riga",
+    "removeRow": "Rimuovi",
+    "archiveCase": "Archivia caso",
+    "closeCase": "Chiudi caso",
+    "continueChatAboutCase": "Continua la chat su questo caso",
+    "linkChatToCase": "Collega al caso",
+    "clearActiveCase": "Cancella caso attivo",
+    "caseSavedAck": "Caso salvato",
+    "caseArchivedAck": "Caso archiviato",
+    "intakeStep1Title": "Dove si trova il caso?",
+    "intakeStep1Subtitle": "Paese e autorità con cui ha a che fare.",
+    "intakeJurisdictionLabel": "Paese / giurisdizione",
+    "intakeAuthorityLabel": "Tipo di autorità",
+    "intakeAuthorityNameLabel": "Nome dell'autorità (facoltativo)",
+    "intakeAuthorityPolice": "Polizia",
+    "intakeAuthorityCourt": "Tribunale",
+    "intakeAuthoritySocial": "Servizi sociali",
+    "intakeAuthorityEmployer": "Datore di lavoro",
+    "intakeAuthorityLandlord": "Locatore",
+    "intakeAuthorityOpposingParty": "Controparte",
+    "intakeAuthorityOther": "Altro",
+    "intakeStep2Title": "Che tipo di caso?",
+    "intakeStep2Subtitle": "Scelga il tipo più simile — potrà precisarlo in seguito.",
+    "intakeCaseTypeCriminal": "Penale",
+    "intakeCaseTypeCivil": "Civile",
+    "intakeCaseTypeFamily": "Famiglia",
+    "intakeCaseTypeAdmin": "Amministrativo",
+    "intakeCaseTypeImmigration": "Immigrazione",
+    "intakeCaseTypeLabor": "Lavoro",
+    "intakeCaseTypeConsumer": "Consumatori",
+    "intakeCaseTypeInheritance": "Successioni",
+    "intakeCaseTypeOther": "Altro",
+    "intakeStep3Title": "Chi è coinvolto?",
+    "intakeStep3Subtitle": "Il suo ruolo e la controparte.",
+    "intakeRoleLabel": "Il suo ruolo",
+    "intakeRolePlaintiff": "Attore",
+    "intakeRoleDefendant": "Convenuto",
+    "intakeRoleVictim": "Vittima",
+    "intakeRoleAccused": "Imputato",
+    "intakeRoleWitness": "Testimone",
+    "intakeRoleFamily": "Familiare",
+    "intakeRoleOther": "Altro",
+    "intakeOpposingSideLabel": "Controparte (facoltativo)",
+    "intakeWitnessesLabel": "Testimoni (facoltativo)",
+    "intakeAddWitness": "Aggiungi testimone",
+    "intakeWitnessHint": "Nome o contatto",
+    "intakeStep4Title": "Numeri e date",
+    "intakeStep4Subtitle": "Tutto ciò che ha già a disposizione. Salti ciò che non ha.",
+    "intakeCaseNumberLabel": "Numero di causa (facoltativo)",
+    "intakeIncidentDateLabel": "Data dell'incidente (facoltativo)",
+    "intakeIncidentDatePick": "Scegli data",
+    "intakeDeadlinesLabel": "Scadenze note",
+    "intakeAddDeadline": "Aggiungi scadenza",
+    "intakeDeadlineWhatHint": "Cosa",
+    "intakeStep5Title": "Documenti",
+    "intakeStep5Subtitle": "Carichi tutto ciò che è rilevante. Lo leggeremo.",
+    "intakeUploadDocsLabel": "Carica documenti",
+    "intakeSkipDocs": "Salta — caricherò in seguito",
+    "intakeNextBtn": "Avanti",
+    "intakeBackBtn": "Indietro",
+    "intakeFinishBtn": "Termina e apri la chat",
+    "intakeUrgentBtn": "Urgente — chiedi ora",
+    "intakeUrgentDialogTitle": "Aprire la chat ora?",
+    "intakeUrgentDialogBody": "Salveremo quanto ha inserito come caso in bozza. Potrà completare la procedura guidata dalla pagina del caso in qualsiasi momento.",
+    "intakeUrgentConfirm": "Apri la chat",
+    "intakeUrgentCancel": "Continua a compilare",
+    "intakePreparingCase": "Preparazione del suo caso…",
+    "intakeFallbackGreeting": "Vedo il suo caso. Mi dica qual è la questione più urgente — la affronteremo insieme.",
+    "intakeUrgentGreeting": "Vedo che è urgente. Faccia la sua domanda — compilerò il resto man mano.",
+    "intakeStepIndicator": "Passaggio {current} di {total}",
+    "@intakeStepIndicator": {
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "intakeFieldRequired": "Obbligatorio",
+    "intakeUploadProgress": "Caricamento {done} / {total}…",
+    "@intakeUploadProgress": {
+        "placeholders": {
+            "done": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "uplDisclaimerFooter": "Advocat non è uno studio legale. Queste sono informazioni, non consulenza legale.",
+    "parallelActionsHeadline": "Il consilium raccomanda {count} azioni parallele",
+    "@parallelActionsHeadline": {
+        "description": "Headline at the top of the Parallel Actions card — N>=2 emails the consilium recommends sending in parallel.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsApproveAll": "Approva tutte e invia",
+    "parallelActionsApproveSelected": "Approva {count} di {total}",
+    "@parallelActionsApproveSelected": {
+        "description": "Primary button when only a subset of actions is checked.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsConfirmTitle": "Inviare {count} email?",
+    "@parallelActionsConfirmTitle": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsConfirmBody": "Advocat invierà {count} risposte preparate tramite il suo Gmail collegato. Ciascuna viene inviata in modo indipendente — se una non va a buon fine, le altre vengono comunque inviate.",
+    "@parallelActionsConfirmBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsSentToast": "{count} inviate.",
+    "@parallelActionsSentToast": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsPartialFailureToast": "{sent} inviate, {failed} non riuscite.",
+    "@parallelActionsPartialFailureToast": {
+        "placeholders": {
+            "sent": {
+                "type": "int"
+            },
+            "failed": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsKindReply": "risposta",
+    "parallelActionsKindNew": "nuova",
+    "parallelActionsCheckboxSelected": "Azione selezionata",
+    "parallelActionsCheckboxUnselected": "Azione non selezionata",
+    "parallelActionsCitationCount": "{count} cit.",
+    "@parallelActionsCitationCount": {
+        "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsRetryFailed": "Riprova le non riuscite ({count})",
+    "@parallelActionsRetryFailed": {
+        "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "agentApprovalNeedsReviewTitle": "Advocat necessita della sua approvazione",
+    "agentApprovalResolvedTitle": "Azione risolta",
+    "agentApprovalStepsLabel": "passaggi",
+    "agentApprovalApproveButton": "Approva e invia",
+    "agentApprovalDeclineButton": "Rifiuta",
+    "agentApprovalAttachmentsLabel": "Allegati",
+    "agentApprovalSentSummary": "Inviato per suo conto.",
+    "agentApprovalDeclinedSummary": "Rifiutato — non è stato inviato nulla.",
+    "agentToolDraftEmailAtt": "Invia email con allegati",
+    "agentToolSendEmail": "Invia email",
+    "agentToolGeneratePdf": "Genera PDF",
+    "agentToolApproveSend": "Invia la risposta preparata",
+    "inboxErrorTitle": "Impossibile caricare la casella di posta",
+    "inboxEditDiscardTitle": "Eliminare le modifiche non salvate?",
+    "inboxEditDiscardBody": "Ha modifiche non salvate a questa bozza. Tornando indietro andranno perse.",
+    "inboxEditKeepEditing": "Continua a modificare",
+    "inboxEditDiscard": "Elimina",
+    "plannerSettingsTitle": "Ragionamento legale in tre passaggi",
+    "plannerSettingsSubtitle": "Pianifica → rispondi → critica. Più lento ma più approfondito.",
+    "plannerSettingsProBadge": "Pro",
+    "plannerSettingsProDescription": "Disponibile con il piano Pro",
+    "plannerTrailHeaderPlan": "Piano",
+    "plannerTrailHeaderCritique": "Critica",
+    "plannerTrailSubQuestions": "Sotto-domande",
+    "plannerTrailCounterArgs": "Controargomentazioni",
+    "plannerTrailEvidenceGaps": "Lacune probatorie",
+    "plannerTrailMaterialGapTrue": "Rilevata lacuna sostanziale",
+    "plannerTrailRegeneratedBadge": "Rigenerato una volta",
+    "plannerTrailEmpty": "nessun elemento",
+    "supportTitle": "Aiuto",
+    "supportSubtitle": "Di solito rispondiamo entro 1-2 ore.",
+    "supportSearchPlaceholder": "Cerca aiuto…",
+    "supportStatusAllOk": "Tutti i sistemi funzionano normalmente",
+    "supportFaqWhatIs": "Cos'è Advocat?",
+    "supportFaqHowSubscribe": "Come mi abbono a Pro?",
+    "supportFaqExportData": "Posso esportare i miei dati?",
+    "supportFaqCancelAccount": "Annulla o elimina account",
+    "supportFaqTalkHuman": "Parla con un operatore",
+    "supportContactEmail": "Email",
+    "supportContactTelegram": "Telegram",
+    "supportContactWhatsapp": "WhatsApp",
+    "supportFooterSla": "Rispondiamo entro 24 ore",
+    "supportWhatsapp": "WhatsApp",
+    "supportEmail": "Email",
+    "supportInApp": "Scrivici qui",
+    "supportCategoryLabel": "Categoria",
+    "supportCategoryBug": "Bug",
+    "supportCategoryPayment": "Problema di pagamento",
+    "supportCategoryQuestion": "Domanda",
+    "supportCategoryFeature": "Richiesta di funzionalità",
+    "supportCategoryOther": "Altro",
+    "supportMessagePlaceholder": "Descriva il suo problema...",
+    "supportEmailLabel": "Email (facoltativa)",
+    "supportSend": "Invia",
+    "supportSentSuccess": "Messaggio inviato! Risponderemo a breve.",
+    "supportError": "Qualcosa è andato storto. Riprovi.",
+    "supportErrorTooShort": "Scriva almeno 10 caratteri.",
+    "supportErrorTooLong": "Massimo 2000 caratteri.",
+    "supportPrivacyNotice": "Il suo messaggio è archiviato in modo sicuro.",
+    "referralAntiFraud": "Massimo 12 inviti andati a buon fine all'anno.",
+    "referralEmpty": "Ancora nessun invito. Invii il suo link per iniziare a guadagnare.",
+    "referralRecentActivity": "Attività recente",
+    "referralActivityInvited": "Invitato {when}",
+    "@referralActivityInvited": {
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "referralActivityActivated": "attivato {when}",
+    "@referralActivityActivated": {
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "referralActivityPending": "non ancora attivato",
+    "referralStatsInvitedCount": "Ha invitato {count, plural, =0{ancora nessun amico} =1{1 amico} other{{count} amici}}",
+    "@referralStatsInvitedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "referralStatsConvertedCount": "{count, plural, =0{ancora nessuno attivato} =1{1 ha attivato} other{{count} hanno attivato}}",
+    "@referralStatsConvertedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "referralStatsEarnedCount": "Il suo bonus: {months, plural, =0{ancora niente} =1{1 mese gratuito} other{{months} mesi gratuiti}}",
+    "@referralStatsEarnedCount": {
+        "placeholders": {
+            "months": {
+                "type": "int"
+            }
+        }
+    },
+    "referralNudgeMessage": "Le piace Advocat? Inviti un amico — entrambi ricevete un mese gratuito.",
+    "referralNudgeAction": "Invita",
+    "referralLandingTitle": "È stato invitato su Advocat",
+    "referralLandingSubtitle": "{inviterName} l'ha invitato — riscatti il suo primo mese gratuito.",
+    "@referralLandingSubtitle": {
+        "placeholders": {
+            "inviterName": {
+                "type": "String"
+            }
+        }
+    },
+    "referralLandingSubtitleGeneric": "Riscatti il suo primo mese gratuito di Advocat Pro.",
+    "referralLandingCta": "Attiva il mese gratuito e registrati",
+    "referralLandingCtaSecondary": "Oppure scopri di più su Advocat",
+    "referralLandingFallback": "Questo link è scaduto — ma può comunque provare Advocat gratuitamente.",
+    "referralLandingBenefits": "17 lingue • Diritto estone, finlandese e UE reale • 24 ore su 24, 7 giorni su 7 — senza attese",
+    "sensitiveConsentTitle": "Consenso ai dati sensibili",
+    "sensitiveConsentBody": "I documenti che sta per caricare possono contenere categorie particolari di dati personali ai sensi dell'art. 9 del GDPR — come dati sanitari, dati giudiziari, dati biometrici o informazioni sulla sua origine razziale, religione o orientamento sessuale.\n\nTrattiamo questi dati esclusivamente per fornirle assistenza legale IA, li conserviamo cifrati nel suo account privato e non li usiamo mai per addestrare i modelli. Può revocare il consenso ed eliminare i dati in qualsiasi momento dalle Impostazioni.\n\nAccettando, fornisce il consenso esplicito ai sensi dell'art. 9(2)(a) del GDPR al trattamento di categorie particolari di dati per questa finalità.",
+    "sensitiveConsentExplicitCheckbox": "Fornisco il consenso esplicito al trattamento di categorie particolari di dati (art. 9(2)(a) GDPR).",
+    "sensitiveConsentRightToShareCheckbox": "Confermo di avere il diritto di condividere questi dati (i dati sono miei, oppure dispongo di una base informata/lecita per condividere dati di terzi).",
+    "sensitiveConsentViewCategories": "Visualizza cosa è considerato sensibile →",
+    "sensitiveConsentWithdrawAction": "Revoca il consenso ai dati sensibili",
+    "privacyAndData": "PRIVACY E DATI",
+    "exportMyDataSubtitle": "Scarichi una copia di tutti i suoi dati personali (art. 15 GDPR).",
+    "withdrawSensitiveConsent": "Consenso ai dati sensibili",
+    "withdrawSensitiveConsentSubtitle": "Gestisci o revoca il consenso al trattamento di categorie particolari di dati (art. 9(2)(a) GDPR).",
+    "dataProcessingAgreement": "Accordo sul trattamento dei dati",
+    "exportingData": "Esportazione dei suoi dati…",
+    "exportComplete": "Esportazione dei dati pronta — salvata sul suo dispositivo.",
+    "exportFailed": "Esportazione non riuscita. Riprovi o contatti l'assistenza.",
+    "quotaExhaustedTitle": "Limite di messaggi gratuiti raggiunto",
+    "quotaExhaustedBody": "Ha utilizzato tutti i {count} messaggi gratuiti. Passi ad Advocat Counsel per 19,99 €/mese e ottenga consulenze legali IA illimitate.",
+    "@quotaExhaustedBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaExhaustedLater": "Più tardi",
+    "quotaExhaustedUpgrade": "Advocat Counsel — 19,99 €/mese",
+    "quotaCtaMessage": "Ha utilizzato tutti i {count} messaggi gratuiti. Passi ad Advocat Counsel per 19,99 €/mese.",
+    "@quotaCtaMessage": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaCtaButton": "Ottieni Advocat Counsel — 19,99 €/mese",
+    "aiErrorQuota": "Limite di messaggi gratuiti raggiunto. Si abboni per continuare a usare l'IA.",
+    "aiErrorAuth": "È necessario l'accesso per usare l'IA. La preghiamo di registrarsi o accedere.",
+    "aiErrorGeneric": "Errore temporaneo dell'IA. Riprovi tra un minuto. Se persiste, contatti l'assistenza.",
+    "tooltipShareCase": "Condividi il riepilogo del caso",
+    "tooltipMuteVoice": "Disattiva la voce",
+    "tooltipUnmuteVoice": "Attiva la voce",
+    "tooltipAttachDoc": "Allega documento",
+    "aiTypingHint": "IA…",
+    "error404Title": "Pagina non trovata",
+    "error404Body": "Non siamo riusciti a trovare: {path}",
+    "@error404Body": {
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "goToHome": "Vai alla home",
+    "emailAlreadyRegistered": "Questa email è già registrata. Desidera accedere?",
+    "actionSignIn": "Accedi",
+    "actionUndo": "Annulla",
+    "intakeUrgentOpened": "Chat aperta — la sua bozza è salvata.",
+    "panicCoachmark": "Tieni premuto per l'aiuto d'emergenza.",
+    "panicTitle": "Di cosa ha bisogno in questo momento?",
+    "panicCardReadAloud": "Leggi ad alta voce all'agente",
+    "panicCardRecord": "Registra questa conversazione",
+    "panicCardCall": "Chiama un avvocato",
+    "panicCardAi": "Parla con Advocat ora",
+    "panicClose": "Chiudi",
+    "panicBadgeV2": "V2",
+    "panicRecordV1Title": "In arrivo nella V2",
+    "panicRecordV1Body": "La funzione di registrazione è in fase di validazione legale per l'Estonia e sarà disponibile nella V2. Per ora, usi il registratore vocale integrato del suo telefono.",
+    "panicCallFallbackBody": "Scriva a kiire@advocat.ee con una breve descrizione e la richiameremo.",
+    "softCaseShellBanner": "Abbiamo creato \"Caso senza titolo\" per tenerne traccia. Tocchi per rinominarlo.",
+    "softCaseShellBannerCta": "Rinomina"
 }

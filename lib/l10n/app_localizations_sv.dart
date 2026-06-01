@@ -71,11 +71,11 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get aiErrorRateLimit =>
-      'The service is temporarily overloaded. Please try again in 1-2 minutes.';
+      'Tjänsten är tillfälligt överbelastad. Försök igen om 1–2 minuter.';
 
   @override
   String get aiErrorOverload =>
-      'The AI is busy right now, please try again in a minute.';
+      'AI:n är upptagen just nu, försök igen om en minut.';
 
   @override
   String freeLimitReached(int count) {
@@ -191,11 +191,11 @@ class AppLocalizationsSv extends AppLocalizations {
   String get continueWithGoogle => 'Fortsätt med Google';
 
   @override
-  String get appleComingSoon => 'Coming soon';
+  String get appleComingSoon => 'Kommer snart';
 
   @override
   String get appleComingSoonMessage =>
-      'Apple Sign-In becomes available soon. Use Google or email to continue.';
+      'Logga in med Apple blir tillgängligt snart. Använd Google eller e-post för att fortsätta.';
 
   @override
   String get copyText => 'Kopiera text';
@@ -615,31 +615,31 @@ class AppLocalizationsSv extends AppLocalizations {
   String get privacyPolicy => 'Integritetspolicy';
 
   @override
-  String get dpaTitle => 'Data Processing Agreement';
+  String get dpaTitle => 'Personuppgiftsbiträdesavtal';
 
   @override
-  String get dpaCheckoutGateTitle => 'Before you upgrade';
+  String get dpaCheckoutGateTitle => 'Innan du uppgraderar';
 
   @override
   String get dpaCheckoutGateBody =>
-      'EU law (GDPR Art. 28) requires us to sign a Data Processing Agreement with every paying customer. Please review and accept.';
+      'EU-rätten (GDPR art. 28) kräver att vi tecknar ett personuppgiftsbiträdesavtal med varje betalande kund. Läs igenom och godkänn.';
 
   @override
-  String get dpaViewLink => 'View Data Processing Agreement';
+  String get dpaViewLink => 'Visa personuppgiftsbiträdesavtal';
 
   @override
   String get dpaCheckboxLabel =>
-      'I have read and accept the Data Processing Agreement (v1.0).';
+      'Jag har läst och godkänner personuppgiftsbiträdesavtalet (v1.0).';
 
   @override
-  String get dpaCancel => 'Cancel';
+  String get dpaCancel => 'Avbryt';
 
   @override
-  String get dpaAcceptAndContinue => 'Accept and continue';
+  String get dpaAcceptAndContinue => 'Godkänn och fortsätt';
 
   @override
   String get dpaOpenHint =>
-      'Open the DPA at least once to enable the Accept button.';
+      'Öppna personuppgiftsbiträdesavtalet minst en gång för att aktivera knappen Godkänn.';
 
   @override
   String get pro => 'Pro';
@@ -1255,54 +1255,54 @@ class AppLocalizationsSv extends AppLocalizations {
   String get caseInfoUpdated => 'Ärendeinformation senast uppdaterad.';
 
   @override
-  String get noEventsForFilter => 'No events match this filter';
+  String get noEventsForFilter => 'Inga händelser matchar detta filter';
 
   @override
-  String get timelineFilterAll => 'All';
+  String get timelineFilterAll => 'Alla';
 
   @override
-  String get timelineFilterEmails => 'Emails';
+  String get timelineFilterEmails => 'E-post';
 
   @override
-  String get timelineFilterConsilium => 'AI decisions';
+  String get timelineFilterConsilium => 'AI-beslut';
 
   @override
-  String get timelineFilterDeadlines => 'Deadlines';
+  String get timelineFilterDeadlines => 'Tidsfrister';
 
   @override
-  String get timelineFilterNotes => 'Notes';
+  String get timelineFilterNotes => 'Anteckningar';
 
   @override
-  String get timelineEventEmailIn => 'Email received';
+  String get timelineEventEmailIn => 'E-post mottagen';
 
   @override
-  String get timelineEventEmailOut => 'Email sent';
+  String get timelineEventEmailOut => 'E-post skickad';
 
   @override
-  String get timelineEventConsiliumDecision => 'AI decision';
+  String get timelineEventConsiliumDecision => 'AI-beslut';
 
   @override
-  String get timelineEventDeadlineSet => 'Deadline';
+  String get timelineEventDeadlineSet => 'Tidsfrist';
 
   @override
-  String get timelineEventDocUploaded => 'Document';
+  String get timelineEventDocUploaded => 'Dokument';
 
   @override
-  String get timelineEventPhaseChange => 'Phase change';
+  String get timelineEventPhaseChange => 'Fasändring';
 
   @override
-  String get timelineEventManualNote => 'Note';
+  String get timelineEventManualNote => 'Anteckning';
 
   @override
-  String get timelineJustNow => 'Just now';
+  String get timelineJustNow => 'Just nu';
 
   @override
   String timelineMinutesAgo(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count minutes ago',
-      one: '1 minute ago',
+      other: '$count minuter sedan',
+      one: '1 minut sedan',
     );
     return '$_temp0';
   }
@@ -1312,8 +1312,8 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count hours ago',
-      one: '1 hour ago',
+      other: '$count timmar sedan',
+      one: '1 timme sedan',
     );
     return '$_temp0';
   }
@@ -1323,8 +1323,8 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days ago',
-      one: '1 day ago',
+      other: '$count dagar sedan',
+      one: '1 dag sedan',
     );
     return '$_temp0';
   }
@@ -1592,10 +1592,10 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get gmailReauthBannerBody =>
-      'Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.';
+      'Advocat v2.1 läser din inkorg för att skriva utkast till svar; du kan återkalla åtkomsten när som helst. Återanslut Gmail för att aktivera proaktiv sortering.';
 
   @override
-  String get gmailReauthBannerCta => 'Reauthorize';
+  String get gmailReauthBannerCta => 'Auktorisera på nytt';
 
   @override
   String connectedTo(String email) {
@@ -2697,408 +2697,406 @@ class AppLocalizationsSv extends AppLocalizations {
   String get backToChat => 'Tillbaka till chatten';
 
   @override
-  String get upgradeBannerTitle => 'Upgrade for unlimited consultations';
+  String get upgradeBannerTitle => 'Uppgradera för obegränsade konsultationer';
 
   @override
-  String get upgradeBannerCta => 'Upgrade';
+  String get upgradeBannerCta => 'Uppgradera';
 
   @override
-  String get paymentSuccessTitle => 'Payment successful';
+  String get paymentSuccessTitle => 'Betalningen lyckades';
 
   @override
-  String get paymentSuccessBody => 'Your subscription is now active.';
+  String get paymentSuccessBody => 'Din prenumeration är nu aktiv.';
 
   @override
   String get commonOk => 'OK';
 
   @override
-  String get feedbackThumbsUpLabel => 'Helpful';
+  String get feedbackThumbsUpLabel => 'Hjälpsamt';
 
   @override
-  String get feedbackThumbsDownLabel => 'Not helpful';
+  String get feedbackThumbsDownLabel => 'Inte hjälpsamt';
 
   @override
-  String get feedbackCommentPrompt => 'What was wrong?';
+  String get feedbackCommentPrompt => 'Vad var fel?';
 
   @override
-  String get feedbackSend => 'Send';
+  String get feedbackSend => 'Skicka';
 
   @override
-  String get feedbackCancel => 'Cancel';
+  String get feedbackCancel => 'Avbryt';
 
   @override
-  String get reasoningPillIdle => 'Thinking…';
+  String get reasoningPillIdle => 'Tänker…';
 
   @override
-  String get reasoningPillSearchingLaw => 'Searching Estonian law…';
+  String get reasoningPillSearchingLaw => 'Söker i estnisk lag…';
 
   @override
-  String get reasoningPillSearchingWeb => 'Searching the web…';
+  String get reasoningPillSearchingWeb => 'Söker på webben…';
 
   @override
-  String get reasoningPillCheckingCompany => 'Checking company registry…';
+  String get reasoningPillCheckingCompany => 'Kontrollerar företagsregistret…';
 
   @override
-  String get reasoningPillCheckingVehicle => 'Checking vehicle registry…';
+  String get reasoningPillCheckingVehicle => 'Kontrollerar fordonsregistret…';
 
   @override
-  String get reasoningPillReadingDocument => 'Reading your document…';
+  String get reasoningPillReadingDocument => 'Läser ditt dokument…';
 
   @override
-  String get reasoningPillDrafting => 'Drafting the document…';
+  String get reasoningPillDrafting => 'Skriver dokumentet…';
 
   @override
-  String get reasoningPillPreparingEmail => 'Preparing email…';
+  String get reasoningPillPreparingEmail => 'Förbereder e-post…';
 
   @override
-  String get reasoningPillFindingLawyer => 'Looking up lawyers…';
+  String get reasoningPillFindingLawyer => 'Söker efter jurister…';
 
   @override
-  String get reasoningPillThinking => 'Reasoning through your case…';
+  String get reasoningPillThinking => 'Resonerar kring ditt ärende…';
 
   @override
-  String get reasoningPillFinalising => 'Composing your answer…';
+  String get reasoningPillFinalising => 'Sammanställer ditt svar…';
 
   @override
   String reasoningCollapsedFormat(int sec, int sources) {
-    return 'Reasoned for ${sec}s · $sources sources';
+    return 'Resonerade i $sec s · $sources källor';
   }
 
   @override
-  String get reasoningExpandHint => 'tap to see steps';
+  String get reasoningExpandHint => 'tryck för att se steg';
 
   @override
-  String get caseFileTitle => 'Case File';
+  String get caseFileTitle => 'Ärendeakt';
 
   @override
-  String get caseFileTimeline => 'Timeline';
+  String get caseFileTimeline => 'Tidslinje';
 
   @override
-  String get caseFileParties => 'Parties';
+  String get caseFileParties => 'Parter';
 
   @override
-  String get caseFileDeadlines => 'Deadlines';
+  String get caseFileDeadlines => 'Tidsfrister';
 
   @override
-  String get caseFileExportPdf => 'Download dossier (PDF)';
+  String get caseFileExportPdf => 'Ladda ner akt (PDF)';
 
   @override
   String get caseFileEmpty =>
-      'Chat with the AI about your case — your timeline will build itself.';
+      'Chatta med AI:n om ditt ärende — din tidslinje byggs upp av sig själv.';
 
   @override
   String get caseFileDisclaimer =>
-      'This dossier is auto-extracted from your chat. It is not legal advice.';
+      'Denna akt extraheras automatiskt från din chatt. Det är inte juridisk rådgivning.';
 
   @override
-  String get caseFileTabLabel => 'Case';
+  String get caseFileTabLabel => 'Ärende';
 
   @override
-  String get refresh => 'Refresh';
+  String get refresh => 'Uppdatera';
 
   @override
   String get demoLimitReached =>
-      'Demo limit reached. Sign up for free to continue.';
+      'Demogräns nådd. Registrera dig gratis för att fortsätta.';
 
   @override
-  String get demoLimitSignUpCta => 'Sign up';
+  String get demoLimitSignUpCta => 'Registrera dig';
 
   @override
   String get freeQuotaExhausted =>
-      'You\'ve used all 10 free messages this month.';
+      'Du har använt alla 10 gratismeddelanden den här månaden.';
 
   @override
-  String get upgradeForUnlimited => 'Upgrade to Pro for unlimited';
+  String get upgradeForUnlimited => 'Uppgradera till Pro för obegränsat';
 
   @override
-  String get upgradeCta => 'Upgrade';
+  String get upgradeCta => 'Uppgradera';
 
   @override
   String get rateLimitTryAgain =>
-      'Sending too fast. Try again in a few seconds.';
+      'Du skickar för snabbt. Försök igen om några sekunder.';
 
   @override
   String get quickProfilePrompt =>
-      'So I can help more precisely, what is your legal status: are you an Estonian citizen, an EU citizen from another country, or do you have a residence permit?';
+      'För att jag ska kunna hjälpa dig mer precist, vad är din rättsliga status: är du estnisk medborgare, EU-medborgare från ett annat land, eller har du uppehållstillstånd?';
 
   @override
-  String get quickProfileChipEstonianCitizen => 'Estonian citizen';
+  String get quickProfileChipEstonianCitizen => 'Estnisk medborgare';
 
   @override
-  String get quickProfileChipEuCitizen => 'EU citizen (other)';
+  String get quickProfileChipEuCitizen => 'EU-medborgare (annat land)';
 
   @override
-  String get quickProfileChipResidencePermit => 'Residence permit';
+  String get quickProfileChipResidencePermit => 'Uppehållstillstånd';
 
   @override
-  String get quickProfileSkipBtn => 'Skip';
+  String get quickProfileSkipBtn => 'Hoppa över';
 
   @override
-  String get quickProfileSavedAck => 'Got it. Now, what\'s your question?';
+  String get quickProfileSavedAck => 'Uppfattat. Vad är din fråga?';
 
   @override
-  String get caseTitleLabel => 'Case title';
+  String get caseTitleLabel => 'Ärendetitel';
 
   @override
-  String get jurisdictionLabel => 'Jurisdiction';
+  String get jurisdictionLabel => 'Jurisdiktion';
 
   @override
-  String get caseTypeLabel => 'Case type';
+  String get caseTypeLabel => 'Ärendetyp';
 
   @override
-  String get caseLanguageLabel => 'Language';
+  String get caseLanguageLabel => 'Språk';
 
   @override
-  String get caseNumbersSection => 'Case numbers';
+  String get caseNumbersSection => 'Ärendenummer';
 
   @override
-  String get partiesSection => 'Parties';
+  String get partiesSection => 'Parter';
 
   @override
-  String get authoritiesSection => 'Authorities';
+  String get authoritiesSection => 'Myndigheter';
 
   @override
-  String get timelineSection => 'Timeline';
+  String get timelineSection => 'Tidslinje';
 
   @override
-  String get openQuestionsSection => 'Open questions';
+  String get openQuestionsSection => 'Öppna frågor';
 
   @override
-  String get nextActionsSection => 'Next actions';
+  String get nextActionsSection => 'Nästa åtgärder';
 
   @override
-  String get summarySection => 'Summary';
+  String get summarySection => 'Sammanfattning';
 
   @override
-  String get addRow => 'Add row';
+  String get addRow => 'Lägg till rad';
 
   @override
-  String get removeRow => 'Remove';
+  String get removeRow => 'Ta bort';
 
   @override
-  String get archiveCase => 'Archive case';
+  String get archiveCase => 'Arkivera ärende';
 
   @override
-  String get closeCase => 'Close case';
+  String get closeCase => 'Stäng ärende';
 
   @override
-  String get continueChatAboutCase => 'Continue chat about this case';
+  String get continueChatAboutCase => 'Fortsätt chatten om detta ärende';
 
   @override
-  String get linkChatToCase => 'Link to case';
+  String get linkChatToCase => 'Koppla till ärende';
 
   @override
-  String get clearActiveCase => 'Clear active case';
+  String get clearActiveCase => 'Rensa aktivt ärende';
 
   @override
-  String get caseSavedAck => 'Case saved';
+  String get caseSavedAck => 'Ärendet sparat';
 
   @override
-  String get caseArchivedAck => 'Case archived';
+  String get caseArchivedAck => 'Ärendet arkiverat';
 
   @override
-  String get intakeStep1Title => 'Where is the case?';
+  String get intakeStep1Title => 'Var ligger ärendet?';
 
   @override
-  String get intakeStep1Subtitle =>
-      'Country and authority you are dealing with.';
+  String get intakeStep1Subtitle => 'Land och myndighet du har att göra med.';
 
   @override
-  String get intakeJurisdictionLabel => 'Country / jurisdiction';
+  String get intakeJurisdictionLabel => 'Land / jurisdiktion';
 
   @override
-  String get intakeAuthorityLabel => 'Authority type';
+  String get intakeAuthorityLabel => 'Typ av myndighet';
 
   @override
-  String get intakeAuthorityNameLabel => 'Authority name (optional)';
+  String get intakeAuthorityNameLabel => 'Myndighetens namn (valfritt)';
 
   @override
-  String get intakeAuthorityPolice => 'Police';
+  String get intakeAuthorityPolice => 'Polis';
 
   @override
-  String get intakeAuthorityCourt => 'Court';
+  String get intakeAuthorityCourt => 'Domstol';
 
   @override
-  String get intakeAuthoritySocial => 'Social services';
+  String get intakeAuthoritySocial => 'Socialtjänst';
 
   @override
-  String get intakeAuthorityEmployer => 'Employer';
+  String get intakeAuthorityEmployer => 'Arbetsgivare';
 
   @override
-  String get intakeAuthorityLandlord => 'Landlord';
+  String get intakeAuthorityLandlord => 'Hyresvärd';
 
   @override
-  String get intakeAuthorityOpposingParty => 'Opposing party';
+  String get intakeAuthorityOpposingParty => 'Motpart';
 
   @override
-  String get intakeAuthorityOther => 'Other';
+  String get intakeAuthorityOther => 'Annat';
 
   @override
-  String get intakeStep2Title => 'What kind of case?';
+  String get intakeStep2Title => 'Vilken typ av ärende?';
 
   @override
   String get intakeStep2Subtitle =>
-      'Pick the closest type — you can refine later.';
+      'Välj den närmaste typen — du kan precisera senare.';
 
   @override
-  String get intakeCaseTypeCriminal => 'Criminal';
+  String get intakeCaseTypeCriminal => 'Brottmål';
 
   @override
-  String get intakeCaseTypeCivil => 'Civil';
+  String get intakeCaseTypeCivil => 'Tvistemål';
 
   @override
-  String get intakeCaseTypeFamily => 'Family';
+  String get intakeCaseTypeFamily => 'Familjerätt';
 
   @override
-  String get intakeCaseTypeAdmin => 'Administrative';
+  String get intakeCaseTypeAdmin => 'Förvaltningsrätt';
 
   @override
-  String get intakeCaseTypeImmigration => 'Immigration';
+  String get intakeCaseTypeImmigration => 'Migration';
 
   @override
-  String get intakeCaseTypeLabor => 'Labor';
+  String get intakeCaseTypeLabor => 'Arbetsrätt';
 
   @override
-  String get intakeCaseTypeConsumer => 'Consumer';
+  String get intakeCaseTypeConsumer => 'Konsumenträtt';
 
   @override
-  String get intakeCaseTypeInheritance => 'Inheritance';
+  String get intakeCaseTypeInheritance => 'Arvsrätt';
 
   @override
-  String get intakeCaseTypeOther => 'Other';
+  String get intakeCaseTypeOther => 'Annat';
 
   @override
-  String get intakeStep3Title => 'Who is involved?';
+  String get intakeStep3Title => 'Vilka är inblandade?';
 
   @override
-  String get intakeStep3Subtitle => 'Your role and the other side.';
+  String get intakeStep3Subtitle => 'Din roll och motparten.';
 
   @override
-  String get intakeRoleLabel => 'Your role';
+  String get intakeRoleLabel => 'Din roll';
 
   @override
-  String get intakeRolePlaintiff => 'Plaintiff';
+  String get intakeRolePlaintiff => 'Kärande';
 
   @override
-  String get intakeRoleDefendant => 'Defendant';
+  String get intakeRoleDefendant => 'Svarande';
 
   @override
-  String get intakeRoleVictim => 'Victim';
+  String get intakeRoleVictim => 'Målsägande';
 
   @override
-  String get intakeRoleAccused => 'Accused';
+  String get intakeRoleAccused => 'Tilltalad';
 
   @override
-  String get intakeRoleWitness => 'Witness';
+  String get intakeRoleWitness => 'Vittne';
 
   @override
-  String get intakeRoleFamily => 'Family member';
+  String get intakeRoleFamily => 'Familjemedlem';
 
   @override
-  String get intakeRoleOther => 'Other';
+  String get intakeRoleOther => 'Annat';
 
   @override
-  String get intakeOpposingSideLabel => 'Opposing side (optional)';
+  String get intakeOpposingSideLabel => 'Motpart (valfritt)';
 
   @override
-  String get intakeWitnessesLabel => 'Witnesses (optional)';
+  String get intakeWitnessesLabel => 'Vittnen (valfritt)';
 
   @override
-  String get intakeAddWitness => 'Add witness';
+  String get intakeAddWitness => 'Lägg till vittne';
 
   @override
-  String get intakeWitnessHint => 'Name or contact';
+  String get intakeWitnessHint => 'Namn eller kontakt';
 
   @override
-  String get intakeStep4Title => 'Numbers & dates';
+  String get intakeStep4Title => 'Nummer och datum';
 
   @override
   String get intakeStep4Subtitle =>
-      'Whatever you already have. Skip what you don\'t.';
+      'Det du redan har. Hoppa över det du inte har.';
 
   @override
-  String get intakeCaseNumberLabel => 'Case number (optional)';
+  String get intakeCaseNumberLabel => 'Ärendenummer (valfritt)';
 
   @override
-  String get intakeIncidentDateLabel => 'Incident date (optional)';
+  String get intakeIncidentDateLabel => 'Datum för händelsen (valfritt)';
 
   @override
-  String get intakeIncidentDatePick => 'Pick date';
+  String get intakeIncidentDatePick => 'Välj datum';
 
   @override
-  String get intakeDeadlinesLabel => 'Known deadlines';
+  String get intakeDeadlinesLabel => 'Kända tidsfrister';
 
   @override
-  String get intakeAddDeadline => 'Add deadline';
+  String get intakeAddDeadline => 'Lägg till tidsfrist';
 
   @override
-  String get intakeDeadlineWhatHint => 'What';
+  String get intakeDeadlineWhatHint => 'Vad';
 
   @override
-  String get intakeStep5Title => 'Documents';
+  String get intakeStep5Title => 'Dokument';
 
   @override
-  String get intakeStep5Subtitle =>
-      'Upload anything relevant. We will read it.';
+  String get intakeStep5Subtitle => 'Ladda upp allt relevant. Vi läser det.';
 
   @override
-  String get intakeUploadDocsLabel => 'Upload documents';
+  String get intakeUploadDocsLabel => 'Ladda upp dokument';
 
   @override
-  String get intakeSkipDocs => 'Skip — I\'ll upload later';
+  String get intakeSkipDocs => 'Hoppa över — jag laddar upp senare';
 
   @override
-  String get intakeNextBtn => 'Next';
+  String get intakeNextBtn => 'Nästa';
 
   @override
-  String get intakeBackBtn => 'Back';
+  String get intakeBackBtn => 'Tillbaka';
 
   @override
-  String get intakeFinishBtn => 'Finish & open chat';
+  String get intakeFinishBtn => 'Slutför och öppna chatt';
 
   @override
-  String get intakeUrgentBtn => 'Urgent — ask now';
+  String get intakeUrgentBtn => 'Brådskande — fråga nu';
 
   @override
-  String get intakeUrgentDialogTitle => 'Open chat now?';
+  String get intakeUrgentDialogTitle => 'Öppna chatten nu?';
 
   @override
   String get intakeUrgentDialogBody =>
-      'We\'ll save what you\'ve entered as a draft case. You can finish the wizard from the case page anytime.';
+      'Vi sparar det du har angett som ett utkast till ärende. Du kan slutföra guiden från ärendesidan när som helst.';
 
   @override
-  String get intakeUrgentConfirm => 'Open chat';
+  String get intakeUrgentConfirm => 'Öppna chatt';
 
   @override
-  String get intakeUrgentCancel => 'Keep filling';
+  String get intakeUrgentCancel => 'Fortsätt fylla i';
 
   @override
-  String get intakePreparingCase => 'Preparing your case…';
+  String get intakePreparingCase => 'Förbereder ditt ärende…';
 
   @override
   String get intakeFallbackGreeting =>
-      'I see your case. Tell me what\'s most pressing — I\'ll work through it with you.';
+      'Jag ser ditt ärende. Berätta vad som är mest brådskande — så går vi igenom det tillsammans.';
 
   @override
   String get intakeUrgentGreeting =>
-      'I see this is urgent. Ask your question — I\'ll fill in the rest as we go.';
+      'Jag ser att detta är brådskande. Ställ din fråga — jag fyller i resten allteftersom.';
 
   @override
   String intakeStepIndicator(int current, int total) {
-    return 'Step $current of $total';
+    return 'Steg $current av $total';
   }
 
   @override
-  String get intakeFieldRequired => 'Required';
+  String get intakeFieldRequired => 'Obligatoriskt';
 
   @override
   String intakeUploadProgress(int done, int total) {
-    return 'Uploading $done / $total…';
+    return 'Laddar upp $done / $total…';
   }
 
   @override
   String get uplDisclaimerFooter =>
-      'Advocat is not a law firm. This is information, not legal advice.';
+      'Advocat är inte en advokatbyrå. Detta är information, inte juridisk rådgivning.';
 
   @override
   String get citationStatusVerifiedBadge => 'Verifierad';
@@ -3418,110 +3416,111 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String parallelActionsHeadline(int count) {
-    return 'Consilium recommends $count parallel actions';
+    return 'Konsiliet rekommenderar $count parallella åtgärder';
   }
 
   @override
-  String get parallelActionsApproveAll => 'Approve All & Send';
+  String get parallelActionsApproveAll => 'Godkänn alla och skicka';
 
   @override
   String parallelActionsApproveSelected(int count, int total) {
-    return 'Approve $count of $total';
+    return 'Godkänn $count av $total';
   }
 
   @override
   String parallelActionsConfirmTitle(int count) {
-    return 'Send $count emails?';
+    return 'Skicka $count e-postmeddelanden?';
   }
 
   @override
   String parallelActionsConfirmBody(int count) {
-    return 'Advocat will dispatch $count prepared replies via your connected Gmail. Each one is sent independently — if any one fails, the others still go.';
+    return 'Advocat skickar $count förberedda svar via din anslutna Gmail. Varje meddelande skickas oberoende — om något misslyckas går de andra ändå iväg.';
   }
 
   @override
   String parallelActionsSentToast(int count) {
-    return '$count sent.';
+    return '$count skickade.';
   }
 
   @override
   String parallelActionsPartialFailureToast(int sent, int failed) {
-    return '$sent sent, $failed failed.';
+    return '$sent skickade, $failed misslyckades.';
   }
 
   @override
-  String get parallelActionsKindReply => 'reply';
+  String get parallelActionsKindReply => 'svar';
 
   @override
-  String get parallelActionsKindNew => 'new';
+  String get parallelActionsKindNew => 'nytt';
 
   @override
-  String get parallelActionsCheckboxSelected => 'Action selected';
+  String get parallelActionsCheckboxSelected => 'Åtgärd vald';
 
   @override
-  String get parallelActionsCheckboxUnselected => 'Action not selected';
+  String get parallelActionsCheckboxUnselected => 'Åtgärd inte vald';
 
   @override
   String parallelActionsCitationCount(int count) {
-    return '$count cit';
+    return '$count hänv.';
   }
 
   @override
   String parallelActionsRetryFailed(int count) {
-    return 'Retry failed ($count)';
+    return 'Försök misslyckade igen ($count)';
   }
 
   @override
-  String get agentApprovalNeedsReviewTitle => 'Advocat needs your approval';
+  String get agentApprovalNeedsReviewTitle =>
+      'Advocat behöver ditt godkännande';
 
   @override
-  String get agentApprovalResolvedTitle => 'Action resolved';
+  String get agentApprovalResolvedTitle => 'Åtgärden hanterad';
 
   @override
-  String get agentApprovalStepsLabel => 'steps';
+  String get agentApprovalStepsLabel => 'steg';
 
   @override
-  String get agentApprovalApproveButton => 'Approve & Send';
+  String get agentApprovalApproveButton => 'Godkänn och skicka';
 
   @override
-  String get agentApprovalDeclineButton => 'Decline';
+  String get agentApprovalDeclineButton => 'Avböj';
 
   @override
-  String get agentApprovalAttachmentsLabel => 'Attachments';
+  String get agentApprovalAttachmentsLabel => 'Bilagor';
 
   @override
-  String get agentApprovalSentSummary => 'Sent on your behalf.';
+  String get agentApprovalSentSummary => 'Skickat för din räkning.';
 
   @override
-  String get agentApprovalDeclinedSummary => 'Declined — nothing was sent.';
+  String get agentApprovalDeclinedSummary => 'Avböjt — inget skickades.';
 
   @override
-  String get agentToolDraftEmailAtt => 'Send email with attachments';
+  String get agentToolDraftEmailAtt => 'Skicka e-post med bilagor';
 
   @override
-  String get agentToolSendEmail => 'Send email';
+  String get agentToolSendEmail => 'Skicka e-post';
 
   @override
-  String get agentToolGeneratePdf => 'Generate PDF';
+  String get agentToolGeneratePdf => 'Generera PDF';
 
   @override
-  String get agentToolApproveSend => 'Send prepared reply';
+  String get agentToolApproveSend => 'Skicka förberett svar';
 
   @override
-  String get inboxErrorTitle => 'Could not load inbox';
+  String get inboxErrorTitle => 'Kunde inte läsa in inkorgen';
 
   @override
-  String get inboxEditDiscardTitle => 'Discard unsaved edits?';
+  String get inboxEditDiscardTitle => 'Kassera osparade ändringar?';
 
   @override
   String get inboxEditDiscardBody =>
-      'You have unsaved changes to this draft. Going back will discard them.';
+      'Du har osparade ändringar i detta utkast. Om du går tillbaka kasseras de.';
 
   @override
-  String get inboxEditKeepEditing => 'Keep editing';
+  String get inboxEditKeepEditing => 'Fortsätt redigera';
 
   @override
-  String get inboxEditDiscard => 'Discard';
+  String get inboxEditDiscard => 'Kassera';
 
   @override
   String get workspaceTabOverview => 'Overview';
@@ -3548,71 +3547,71 @@ class AppLocalizationsSv extends AppLocalizations {
   String get workspaceInboxEmpty => 'No related email.';
 
   @override
-  String get plannerSettingsTitle => 'Three-pass legal reasoning';
+  String get plannerSettingsTitle => 'Juridiskt resonemang i tre steg';
 
   @override
   String get plannerSettingsSubtitle =>
-      'Plan → answer → critique. Slower but more thorough.';
+      'Planera → svara → granska. Långsammare men mer grundligt.';
 
   @override
   String get plannerSettingsProBadge => 'Pro';
 
   @override
-  String get plannerSettingsProDescription => 'Available on Pro plan';
+  String get plannerSettingsProDescription => 'Tillgängligt med Pro-abonnemang';
 
   @override
   String get plannerTrailHeaderPlan => 'Plan';
 
   @override
-  String get plannerTrailHeaderCritique => 'Critique';
+  String get plannerTrailHeaderCritique => 'Granskning';
 
   @override
-  String get plannerTrailSubQuestions => 'Sub-questions';
+  String get plannerTrailSubQuestions => 'Delfrågor';
 
   @override
-  String get plannerTrailCounterArgs => 'Counter-arguments';
+  String get plannerTrailCounterArgs => 'Motargument';
 
   @override
-  String get plannerTrailEvidenceGaps => 'Evidence gaps';
+  String get plannerTrailEvidenceGaps => 'Bevisluckor';
 
   @override
-  String get plannerTrailMaterialGapTrue => 'Material gap detected';
+  String get plannerTrailMaterialGapTrue => 'Väsentlig lucka upptäckt';
 
   @override
-  String get plannerTrailRegeneratedBadge => 'Regenerated once';
+  String get plannerTrailRegeneratedBadge => 'Omgenererat en gång';
 
   @override
-  String get plannerTrailEmpty => 'no items';
+  String get plannerTrailEmpty => 'inga poster';
 
   @override
-  String get supportTitle => 'Help';
+  String get supportTitle => 'Hjälp';
 
   @override
-  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+  String get supportSubtitle => 'Vi svarar vanligtvis inom 1–2 timmar.';
 
   @override
-  String get supportSearchPlaceholder => 'Search help…';
+  String get supportSearchPlaceholder => 'Sök i hjälpen…';
 
   @override
-  String get supportStatusAllOk => 'All systems normal';
+  String get supportStatusAllOk => 'Alla system fungerar normalt';
 
   @override
-  String get supportFaqWhatIs => 'What is Advocat?';
+  String get supportFaqWhatIs => 'Vad är Advocat?';
 
   @override
-  String get supportFaqHowSubscribe => 'How do I subscribe to Pro?';
+  String get supportFaqHowSubscribe => 'Hur prenumererar jag på Pro?';
 
   @override
-  String get supportFaqExportData => 'Can I export my data?';
+  String get supportFaqExportData => 'Kan jag exportera mina data?';
 
   @override
-  String get supportFaqCancelAccount => 'Cancel or delete account';
+  String get supportFaqCancelAccount => 'Avsluta eller radera konto';
 
   @override
-  String get supportFaqTalkHuman => 'Talk to a human';
+  String get supportFaqTalkHuman => 'Prata med en människa';
 
   @override
-  String get supportContactEmail => 'Email';
+  String get supportContactEmail => 'E-post';
 
   @override
   String get supportContactTelegram => 'Telegram';
@@ -3621,58 +3620,58 @@ class AppLocalizationsSv extends AppLocalizations {
   String get supportContactWhatsapp => 'WhatsApp';
 
   @override
-  String get supportFooterSla => 'We respond within 24h';
+  String get supportFooterSla => 'Vi svarar inom 24 h';
 
   @override
   String get supportWhatsapp => 'WhatsApp';
 
   @override
-  String get supportEmail => 'Email';
+  String get supportEmail => 'E-post';
 
   @override
-  String get supportInApp => 'Message us here';
+  String get supportInApp => 'Skriv till oss här';
 
   @override
-  String get supportCategoryLabel => 'Category';
+  String get supportCategoryLabel => 'Kategori';
 
   @override
-  String get supportCategoryBug => 'Bug';
+  String get supportCategoryBug => 'Bugg';
 
   @override
-  String get supportCategoryPayment => 'Payment issue';
+  String get supportCategoryPayment => 'Betalningsproblem';
 
   @override
-  String get supportCategoryQuestion => 'Question';
+  String get supportCategoryQuestion => 'Fråga';
 
   @override
-  String get supportCategoryFeature => 'Feature request';
+  String get supportCategoryFeature => 'Funktionsförslag';
 
   @override
-  String get supportCategoryOther => 'Other';
+  String get supportCategoryOther => 'Annat';
 
   @override
-  String get supportMessagePlaceholder => 'Describe your problem...';
+  String get supportMessagePlaceholder => 'Beskriv ditt problem...';
 
   @override
-  String get supportEmailLabel => 'Email (optional)';
+  String get supportEmailLabel => 'E-post (valfritt)';
 
   @override
-  String get supportSend => 'Send';
+  String get supportSend => 'Skicka';
 
   @override
-  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+  String get supportSentSuccess => 'Meddelandet skickat! Vi svarar snart.';
 
   @override
-  String get supportError => 'Something went wrong. Try again.';
+  String get supportError => 'Något gick fel. Försök igen.';
 
   @override
-  String get supportErrorTooShort => 'Please write at least 10 characters.';
+  String get supportErrorTooShort => 'Skriv minst 10 tecken.';
 
   @override
-  String get supportErrorTooLong => 'Maximum 2000 characters.';
+  String get supportErrorTooLong => 'Högst 2000 tecken.';
 
   @override
-  String get supportPrivacyNotice => 'Your message is stored securely.';
+  String get supportPrivacyNotice => 'Ditt meddelande lagras säkert.';
 
   @override
   String get reviewThisContract => 'Granska kontraktet';
@@ -3795,38 +3794,38 @@ class AppLocalizationsSv extends AppLocalizations {
       'Gillade du det? Bjud in en vän — båda får en gratis månad.';
 
   @override
-  String get referralAntiFraud => 'Maximum 12 successful referrals per year.';
+  String get referralAntiFraud => 'Högst 12 lyckade värvningar per år.';
 
   @override
   String get referralEmpty =>
-      'No referrals yet. Send your link to start earning.';
+      'Inga värvningar ännu. Skicka din länk för att börja tjäna.';
 
   @override
-  String get referralRecentActivity => 'Recent activity';
+  String get referralRecentActivity => 'Senaste aktivitet';
 
   @override
   String referralActivityInvited(String when) {
-    return 'Invited $when';
+    return 'Bjöd in $when';
   }
 
   @override
   String referralActivityActivated(String when) {
-    return 'activated $when';
+    return 'aktiverade $when';
   }
 
   @override
-  String get referralActivityPending => 'not activated yet';
+  String get referralActivityPending => 'inte aktiverad ännu';
 
   @override
   String referralStatsInvitedCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count friends',
-      one: '1 friend',
-      zero: 'no friends yet',
+      other: '$count vänner',
+      one: '1 vän',
+      zero: 'inga vänner ännu',
     );
-    return 'You\'ve invited $_temp0';
+    return 'Du har bjudit in $_temp0';
   }
 
   @override
@@ -3834,9 +3833,9 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count have activated',
-      one: '1 has activated',
-      zero: 'none activated yet',
+      other: '$count har aktiverat',
+      one: '1 har aktiverat',
+      zero: 'ingen har aktiverat ännu',
     );
     return '$_temp0';
   }
@@ -3846,45 +3845,45 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       months,
       locale: localeName,
-      other: '$months free months',
-      one: '1 free month',
-      zero: 'nothing yet',
+      other: '$months gratis månader',
+      one: '1 gratis månad',
+      zero: 'inget ännu',
     );
-    return 'Your bonus: $_temp0';
+    return 'Din bonus: $_temp0';
   }
 
   @override
   String get referralNudgeMessage =>
-      'Like Advocat? Invite a friend — both get a free month.';
+      'Gillar du Advocat? Bjud in en vän — båda får en gratis månad.';
 
   @override
-  String get referralNudgeAction => 'Invite';
+  String get referralNudgeAction => 'Bjud in';
 
   @override
-  String get referralLandingTitle => 'You\'ve been invited to Advocat';
+  String get referralLandingTitle => 'Du har blivit inbjuden till Advocat';
 
   @override
   String referralLandingSubtitle(String inviterName) {
-    return '$inviterName invited you — claim your free first month.';
+    return '$inviterName bjöd in dig — hämta din gratis första månad.';
   }
 
   @override
   String get referralLandingSubtitleGeneric =>
-      'Claim your free first month of Advocat Pro.';
+      'Hämta din gratis första månad av Advocat Pro.';
 
   @override
-  String get referralLandingCta => 'Activate free month & sign up';
+  String get referralLandingCta => 'Aktivera gratis månad och registrera dig';
 
   @override
-  String get referralLandingCtaSecondary => 'Or learn more about Advocat';
+  String get referralLandingCtaSecondary => 'Eller läs mer om Advocat';
 
   @override
   String get referralLandingFallback =>
-      'This link has expired — but you can still try Advocat free.';
+      'Den här länken har gått ut — men du kan ändå prova Advocat gratis.';
 
   @override
   String get referralLandingBenefits =>
-      '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+      '17 språk • Verklig estnisk, finsk och EU-rätt • Dygnet runt — ingen väntan';
 
   @override
   String get checkerProTagline => 'Professionella verifieringsverktyg';
@@ -3978,162 +3977,162 @@ class AppLocalizationsSv extends AppLocalizations {
   String get increaseDependents => 'Öka';
 
   @override
-  String get sensitiveConsentTitle => 'Sensitive data consent';
+  String get sensitiveConsentTitle => 'Samtycke till känsliga uppgifter';
 
   @override
   String get sensitiveConsentBody =>
-      'Documents you\'re about to upload may contain special-category personal data under GDPR Art. 9 — such as health records, criminal records, biometric data, or information about your racial origin, religion, or sexual orientation.\n\nWe process this data only to provide you with AI legal assistance, store it encrypted in your private account, and never use it to train models. You can withdraw consent and delete the data at any time from Settings.\n\nBy accepting, you give explicit consent under Art. 9(2)(a) GDPR to process special-category data for this purpose.';
+      'Dokument du är på väg att ladda upp kan innehålla särskilda kategorier av personuppgifter enligt GDPR art. 9 — såsom hälsouppgifter, uppgifter om brott, biometriska uppgifter eller uppgifter om ditt etniska ursprung, din religion eller sexuella läggning.\n\nVi behandlar dessa uppgifter enbart för att ge dig juridisk AI-hjälp, lagrar dem krypterat på ditt privata konto och använder dem aldrig för att träna modeller. Du kan återkalla samtycket och radera uppgifterna när som helst i Inställningar.\n\nGenom att godkänna ger du ditt uttryckliga samtycke enligt art. 9.2 a GDPR till att behandla särskilda kategorier av uppgifter för detta ändamål.';
 
   @override
   String get sensitiveConsentExplicitCheckbox =>
-      'I give explicit consent to process special-category data (Art. 9(2)(a) GDPR).';
+      'Jag ger mitt uttryckliga samtycke till att behandla särskilda kategorier av uppgifter (art. 9.2 a GDPR).';
 
   @override
   String get sensitiveConsentRightToShareCheckbox =>
-      'I confirm I have the right to share this data (the data is mine, or I have informed/lawful basis to share third-party data).';
+      'Jag bekräftar att jag har rätt att dela dessa uppgifter (uppgifterna är mina, eller jag har informerat/lagligt stöd för att dela tredje parts uppgifter).';
 
   @override
   String get sensitiveConsentViewCategories =>
-      'View what counts as sensitive →';
+      'Se vad som räknas som känsligt →';
 
   @override
   String get sensitiveConsentWithdrawAction =>
-      'Withdraw sensitive data consent';
+      'Återkalla samtycke till känsliga uppgifter';
 
   @override
-  String get privacyAndData => 'PRIVACY & DATA';
+  String get privacyAndData => 'INTEGRITET OCH DATA';
 
   @override
   String get exportMyDataSubtitle =>
-      'Download a copy of all your personal data (GDPR Art. 15).';
+      'Ladda ner en kopia av alla dina personuppgifter (GDPR art. 15).';
 
   @override
-  String get withdrawSensitiveConsent => 'Sensitive data consent';
+  String get withdrawSensitiveConsent => 'Samtycke till känsliga uppgifter';
 
   @override
   String get withdrawSensitiveConsentSubtitle =>
-      'Manage or withdraw consent to process special-category data (GDPR Art. 9(2)(a)).';
+      'Hantera eller återkalla samtycke till att behandla särskilda kategorier av uppgifter (GDPR art. 9.2 a).';
 
   @override
-  String get dataProcessingAgreement => 'Data Processing Agreement';
+  String get dataProcessingAgreement => 'Personuppgiftsbiträdesavtal';
 
   @override
-  String get exportingData => 'Exporting your data…';
+  String get exportingData => 'Exporterar dina data…';
 
   @override
-  String get exportComplete => 'Data export ready — saved to your device.';
+  String get exportComplete => 'Dataexporten är klar — sparad på din enhet.';
 
   @override
   String get exportFailed =>
-      'Export failed. Please try again or contact support.';
+      'Exporten misslyckades. Försök igen eller kontakta supporten.';
 
   @override
-  String get quotaExhaustedTitle => 'Free message limit reached';
+  String get quotaExhaustedTitle => 'Gräns för gratismeddelanden nådd';
 
   @override
   String quotaExhaustedBody(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month and get unlimited AI legal consultations.';
+    return 'Du har använt alla $count gratismeddelanden. Uppgradera till Advocat Counsel för 19,99 €/månad och få obegränsade juridiska AI-konsultationer.';
   }
 
   @override
-  String get quotaExhaustedLater => 'Later';
+  String get quotaExhaustedLater => 'Senare';
 
   @override
-  String get quotaExhaustedUpgrade => 'Advocat Counsel — €19.99/mo';
+  String get quotaExhaustedUpgrade => 'Advocat Counsel — 19,99 €/mån';
 
   @override
   String quotaCtaMessage(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month.';
+    return 'Du har använt alla $count gratismeddelanden. Uppgradera till Advocat Counsel för 19,99 €/månad.';
   }
 
   @override
-  String get quotaCtaButton => 'Get Advocat Counsel — €19.99/mo';
+  String get quotaCtaButton => 'Skaffa Advocat Counsel — 19,99 €/mån';
 
   @override
   String get aiErrorQuota =>
-      'Free message limit reached. Subscribe to continue using AI.';
+      'Gräns för gratismeddelanden nådd. Prenumerera för att fortsätta använda AI:n.';
 
   @override
   String get aiErrorAuth =>
-      'Sign-in required to use the AI. Please register or log in.';
+      'Inloggning krävs för att använda AI:n. Registrera dig eller logga in.';
 
   @override
   String get aiErrorGeneric =>
-      'Temporary AI error. Please try again in a minute. If it persists, contact support.';
+      'Tillfälligt AI-fel. Försök igen om en minut. Kontakta supporten om det kvarstår.';
 
   @override
-  String get tooltipShareCase => 'Share case summary';
+  String get tooltipShareCase => 'Dela ärendesammanfattning';
 
   @override
-  String get tooltipMuteVoice => 'Mute voice';
+  String get tooltipMuteVoice => 'Stäng av röst';
 
   @override
-  String get tooltipUnmuteVoice => 'Unmute voice';
+  String get tooltipUnmuteVoice => 'Slå på röst';
 
   @override
-  String get tooltipAttachDoc => 'Attach document';
+  String get tooltipAttachDoc => 'Bifoga dokument';
 
   @override
   String get aiTypingHint => 'AI…';
 
   @override
-  String get error404Title => 'Page not found';
+  String get error404Title => 'Sidan hittades inte';
 
   @override
   String error404Body(String path) {
-    return 'We couldn\'t find: $path';
+    return 'Vi kunde inte hitta: $path';
   }
 
   @override
-  String get goToHome => 'Go to home';
+  String get goToHome => 'Gå till startsidan';
 
   @override
   String get emailAlreadyRegistered =>
-      'This email is already registered. Want to sign in?';
+      'Den här e-postadressen är redan registrerad. Vill du logga in?';
 
   @override
-  String get actionSignIn => 'Sign in';
+  String get actionSignIn => 'Logga in';
 
   @override
-  String get actionUndo => 'Undo';
+  String get actionUndo => 'Ångra';
 
   @override
-  String get intakeUrgentOpened => 'Chat opened — your draft is saved.';
+  String get intakeUrgentOpened => 'Chatten öppnad — ditt utkast är sparat.';
 
   @override
-  String get panicCoachmark => 'Hold for emergency help.';
+  String get panicCoachmark => 'Håll inne för akut hjälp.';
 
   @override
-  String get panicTitle => 'What do you need right now?';
+  String get panicTitle => 'Vad behöver du just nu?';
 
   @override
-  String get panicCardReadAloud => 'Read aloud to the officer';
+  String get panicCardReadAloud => 'Läs upp för polisen';
 
   @override
-  String get panicCardRecord => 'Record this conversation';
+  String get panicCardRecord => 'Spela in det här samtalet';
 
   @override
-  String get panicCardCall => 'Call a lawyer';
+  String get panicCardCall => 'Ring en jurist';
 
   @override
-  String get panicCardAi => 'Talk to Advocat now';
+  String get panicCardAi => 'Prata med Advocat nu';
 
   @override
-  String get panicClose => 'Close';
+  String get panicClose => 'Stäng';
 
   @override
   String get panicBadgeV2 => 'V2';
 
   @override
-  String get panicRecordV1Title => 'Coming in V2';
+  String get panicRecordV1Title => 'Kommer i V2';
 
   @override
   String get panicRecordV1Body =>
-      'The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone\'s built-in voice recorder.';
+      'Inspelningsfunktionen genomgår en juridisk validering för Estland och lanseras i V2. Använd tills vidare din telefons inbyggda röstinspelare.';
 
   @override
   String get panicCallFallbackBody =>
-      'Email kiire@advocat.ee with a short description and we will call you back.';
+      'Mejla kiire@advocat.ee med en kort beskrivning så ringer vi tillbaka.';
 
   @override
   String get consiliumHeader => 'Juridiskt konsilium';
@@ -4209,10 +4208,10 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get softCaseShellBanner =>
-      'We created \"Untitled case\" to track this. Tap to rename.';
+      'Vi skapade \"Namnlöst ärende\" för att spåra detta. Tryck för att byta namn.';
 
   @override
-  String get softCaseShellBannerCta => 'Rename';
+  String get softCaseShellBannerCta => 'Byt namn';
 
   @override
   String get draftsTab => 'Drafts';

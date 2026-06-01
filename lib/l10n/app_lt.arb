@@ -1795,7 +1795,6 @@
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
     },
-    "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
     "draftingEmpty": "Empty draft",
@@ -1952,7 +1951,488 @@
     "iapRestoreSuccess": "Jūsų prenumerata atkurta.",
     "iapRestoreNoActive": "Atkurtinos aktyvios prenumeratos nerasta.",
     "deadlineEuRadarTitle": "EU deadline radar (preview)",
-    "@deadlineEuRadarTitle": {"x-todo": "translate to lt"},
+    "@deadlineEuRadarTitle": {
+        "x-todo": "translate to lt"
+    },
     "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
-    "@deadlineEuRadarSubtitle": {"x-todo": "translate to lt"}
+    "@deadlineEuRadarSubtitle": {
+        "x-todo": "translate to lt"
+    },
+    "aiErrorRateLimit": "Paslauga laikinai perkrauta. Bandykite dar kartą po 1–2 minučių.",
+    "aiErrorOverload": "DI šiuo metu užimtas, bandykite dar kartą po minutės.",
+    "appleComingSoon": "Netrukus",
+    "appleComingSoonMessage": "Prisijungimas su Apple netrukus bus prieinamas. Tęskite naudodami Google arba el. paštą.",
+    "dpaTitle": "Duomenų tvarkymo sutartis",
+    "dpaCheckoutGateTitle": "Prieš atnaujinant planą",
+    "dpaCheckoutGateBody": "ES teisė (BDAR 28 str.) reikalauja pasirašyti duomenų tvarkymo sutartį su kiekvienu mokančiu klientu. Peržiūrėkite ir sutikite.",
+    "dpaViewLink": "Peržiūrėti duomenų tvarkymo sutartį",
+    "dpaCheckboxLabel": "Perskaičiau ir sutinku su duomenų tvarkymo sutartimi (v1.0).",
+    "dpaCancel": "Atšaukti",
+    "dpaAcceptAndContinue": "Sutikti ir tęsti",
+    "dpaOpenHint": "Atverkite DTS bent kartą, kad aktyvintumėte mygtuką „Sutikti“.",
+    "noEventsForFilter": "Nė vienas įvykis neatitinka šio filtro",
+    "timelineFilterAll": "Visi",
+    "timelineFilterEmails": "El. laiškai",
+    "timelineFilterConsilium": "DI sprendimai",
+    "timelineFilterDeadlines": "Terminai",
+    "timelineFilterNotes": "Pastabos",
+    "timelineEventEmailIn": "Gautas el. laiškas",
+    "timelineEventEmailOut": "Išsiųstas el. laiškas",
+    "timelineEventConsiliumDecision": "DI sprendimas",
+    "timelineEventDeadlineSet": "Terminas",
+    "timelineEventDocUploaded": "Dokumentas",
+    "timelineEventPhaseChange": "Etapo pakeitimas",
+    "timelineEventManualNote": "Pastaba",
+    "timelineJustNow": "Ką tik",
+    "timelineMinutesAgo": "{count, plural, one{prieš {count} minutę} few{prieš {count} minutes} many{prieš {count} minutės} other{prieš {count} minučių}}",
+    "@timelineMinutesAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "timelineHoursAgo": "{count, plural, one{prieš {count} valandą} few{prieš {count} valandas} many{prieš {count} valandos} other{prieš {count} valandų}}",
+    "@timelineHoursAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "timelineDaysAgo": "{count, plural, one{prieš {count} dieną} few{prieš {count} dienas} many{prieš {count} dienos} other{prieš {count} dienų}}",
+    "@timelineDaysAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "gmailReauthBannerBody": "Advocat v2.1 skaito jūsų pašto dėžutę, kad parengtų atsakymus; galite atšaukti bet kada. Iš naujo prijunkite Gmail, kad įjungtumėte aktyvų rūšiavimą.",
+    "gmailReauthBannerCta": "Iš naujo autorizuoti",
+    "upgradeBannerTitle": "Atnaujinkite planą neribotoms konsultacijoms",
+    "upgradeBannerCta": "Atnaujinti",
+    "paymentSuccessTitle": "Mokėjimas sėkmingas",
+    "paymentSuccessBody": "Jūsų prenumerata dabar aktyvi.",
+    "commonOk": "Gerai",
+    "feedbackThumbsUpLabel": "Naudinga",
+    "feedbackThumbsDownLabel": "Nenaudinga",
+    "feedbackCommentPrompt": "Kas buvo ne taip?",
+    "feedbackSend": "Siųsti",
+    "feedbackCancel": "Atšaukti",
+    "reasoningPillIdle": "Mąstoma…",
+    "reasoningPillSearchingLaw": "Ieškoma Estijos teisės aktų…",
+    "reasoningPillSearchingWeb": "Ieškoma internete…",
+    "reasoningPillCheckingCompany": "Tikrinamas įmonių registras…",
+    "reasoningPillCheckingVehicle": "Tikrinamas transporto priemonių registras…",
+    "reasoningPillReadingDocument": "Skaitomas jūsų dokumentas…",
+    "reasoningPillDrafting": "Rengiamas dokumentas…",
+    "reasoningPillPreparingEmail": "Ruošiamas el. laiškas…",
+    "reasoningPillFindingLawyer": "Ieškoma advokatų…",
+    "reasoningPillThinking": "Analizuojama jūsų byla…",
+    "reasoningPillFinalising": "Rengiamas atsakymas…",
+    "reasoningCollapsedFormat": "Mąstyta {sec} s · {sources} šaltinių",
+    "@reasoningCollapsedFormat": {
+        "placeholders": {
+            "sec": {
+                "type": "int"
+            },
+            "sources": {
+                "type": "int"
+            }
+        }
+    },
+    "reasoningExpandHint": "bakstelėkite, kad pamatytumėte žingsnius",
+    "caseFileTitle": "Bylos byla",
+    "caseFileTimeline": "Įvykių juosta",
+    "caseFileParties": "Šalys",
+    "caseFileDeadlines": "Terminai",
+    "caseFileExportPdf": "Atsisiųsti bylą (PDF)",
+    "caseFileEmpty": "Pasikalbėkite su DI apie savo bylą — įvykių juosta susikurs pati.",
+    "caseFileDisclaimer": "Ši byla automatiškai sudaryta iš jūsų pokalbio. Tai nėra teisinė konsultacija.",
+    "caseFileTabLabel": "Byla",
+    "refresh": "Atnaujinti",
+    "demoLimitReached": "Pasiektas demonstracinės versijos limitas. Užsiregistruokite nemokamai, kad tęstumėte.",
+    "demoLimitSignUpCta": "Užsiregistruoti",
+    "freeQuotaExhausted": "Šį mėnesį panaudojote visus 10 nemokamų pranešimų.",
+    "upgradeForUnlimited": "Atnaujinkite į Pro neribotam naudojimui",
+    "upgradeCta": "Atnaujinti",
+    "rateLimitTryAgain": "Siunčiate per greitai. Bandykite dar kartą po kelių sekundžių.",
+    "quickProfilePrompt": "Kad galėčiau padėti tiksliau, koks jūsų teisinis statusas: ar esate Estijos pilietis, ES pilietis iš kitos šalies, ar turite leidimą gyventi?",
+    "quickProfileChipEstonianCitizen": "Estijos pilietis",
+    "quickProfileChipEuCitizen": "ES pilietis (kita šalis)",
+    "quickProfileChipResidencePermit": "Leidimas gyventi",
+    "quickProfileSkipBtn": "Praleisti",
+    "quickProfileSavedAck": "Supratau. Koks jūsų klausimas?",
+    "caseTitleLabel": "Bylos pavadinimas",
+    "jurisdictionLabel": "Jurisdikcija",
+    "caseTypeLabel": "Bylos tipas",
+    "caseLanguageLabel": "Kalba",
+    "caseNumbersSection": "Bylos numeriai",
+    "partiesSection": "Šalys",
+    "authoritiesSection": "Institucijos",
+    "timelineSection": "Įvykių juosta",
+    "openQuestionsSection": "Atviri klausimai",
+    "nextActionsSection": "Tolesni veiksmai",
+    "summarySection": "Santrauka",
+    "addRow": "Pridėti eilutę",
+    "removeRow": "Pašalinti",
+    "archiveCase": "Archyvuoti bylą",
+    "closeCase": "Uždaryti bylą",
+    "continueChatAboutCase": "Tęsti pokalbį apie šią bylą",
+    "linkChatToCase": "Susieti su byla",
+    "clearActiveCase": "Išvalyti aktyvią bylą",
+    "caseSavedAck": "Byla išsaugota",
+    "caseArchivedAck": "Byla archyvuota",
+    "intakeStep1Title": "Kur yra byla?",
+    "intakeStep1Subtitle": "Šalis ir institucija, su kuria turite reikalų.",
+    "intakeJurisdictionLabel": "Šalis / jurisdikcija",
+    "intakeAuthorityLabel": "Institucijos tipas",
+    "intakeAuthorityNameLabel": "Institucijos pavadinimas (nebūtina)",
+    "intakeAuthorityPolice": "Policija",
+    "intakeAuthorityCourt": "Teismas",
+    "intakeAuthoritySocial": "Socialinės tarnybos",
+    "intakeAuthorityEmployer": "Darbdavys",
+    "intakeAuthorityLandlord": "Nuomotojas",
+    "intakeAuthorityOpposingParty": "Priešinga šalis",
+    "intakeAuthorityOther": "Kita",
+    "intakeStep2Title": "Kokio tipo byla?",
+    "intakeStep2Subtitle": "Pasirinkite artimiausią tipą — vėliau galėsite patikslinti.",
+    "intakeCaseTypeCriminal": "Baudžiamoji",
+    "intakeCaseTypeCivil": "Civilinė",
+    "intakeCaseTypeFamily": "Šeimos",
+    "intakeCaseTypeAdmin": "Administracinė",
+    "intakeCaseTypeImmigration": "Imigracijos",
+    "intakeCaseTypeLabor": "Darbo",
+    "intakeCaseTypeConsumer": "Vartotojų",
+    "intakeCaseTypeInheritance": "Paveldėjimo",
+    "intakeCaseTypeOther": "Kita",
+    "intakeStep3Title": "Kas dalyvauja?",
+    "intakeStep3Subtitle": "Jūsų vaidmuo ir kita šalis.",
+    "intakeRoleLabel": "Jūsų vaidmuo",
+    "intakeRolePlaintiff": "Ieškovas",
+    "intakeRoleDefendant": "Atsakovas",
+    "intakeRoleVictim": "Nukentėjusysis",
+    "intakeRoleAccused": "Kaltinamasis",
+    "intakeRoleWitness": "Liudytojas",
+    "intakeRoleFamily": "Šeimos narys",
+    "intakeRoleOther": "Kita",
+    "intakeOpposingSideLabel": "Priešinga šalis (nebūtina)",
+    "intakeWitnessesLabel": "Liudytojai (nebūtina)",
+    "intakeAddWitness": "Pridėti liudytoją",
+    "intakeWitnessHint": "Vardas arba kontaktas",
+    "intakeStep4Title": "Numeriai ir datos",
+    "intakeStep4Subtitle": "Įveskite tai, ką turite. Praleiskite, ko neturite.",
+    "intakeCaseNumberLabel": "Bylos numeris (nebūtina)",
+    "intakeIncidentDateLabel": "Įvykio data (nebūtina)",
+    "intakeIncidentDatePick": "Pasirinkti datą",
+    "intakeDeadlinesLabel": "Žinomi terminai",
+    "intakeAddDeadline": "Pridėti terminą",
+    "intakeDeadlineWhatHint": "Kas",
+    "intakeStep5Title": "Dokumentai",
+    "intakeStep5Subtitle": "Įkelkite viską, kas svarbu. Mes tai perskaitysime.",
+    "intakeUploadDocsLabel": "Įkelti dokumentus",
+    "intakeSkipDocs": "Praleisti — įkelsiu vėliau",
+    "intakeNextBtn": "Toliau",
+    "intakeBackBtn": "Atgal",
+    "intakeFinishBtn": "Baigti ir atverti pokalbį",
+    "intakeUrgentBtn": "Skubu — klausti dabar",
+    "intakeUrgentDialogTitle": "Atverti pokalbį dabar?",
+    "intakeUrgentDialogBody": "Tai, ką įvedėte, išsaugosime kaip bylos juodraštį. Vediklį galėsite baigti bylos puslapyje bet kada.",
+    "intakeUrgentConfirm": "Atverti pokalbį",
+    "intakeUrgentCancel": "Tęsti pildymą",
+    "intakePreparingCase": "Ruošiama jūsų byla…",
+    "intakeFallbackGreeting": "Matau jūsų bylą. Pasakykite, kas svarbiausia — kartu viską išspręsime.",
+    "intakeUrgentGreeting": "Matau, kad tai skubu. Užduokite klausimą — likusią informaciją papildysiu eigoje.",
+    "intakeStepIndicator": "{current} žingsnis iš {total}",
+    "@intakeStepIndicator": {
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "intakeFieldRequired": "Privaloma",
+    "intakeUploadProgress": "Įkeliama {done} / {total}…",
+    "@intakeUploadProgress": {
+        "placeholders": {
+            "done": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "uplDisclaimerFooter": "Advocat nėra advokatų kontora. Tai informacija, o ne teisinė konsultacija.",
+    "parallelActionsHeadline": "Konsiliumas rekomenduoja {count} lygiagrečius veiksmus",
+    "@parallelActionsHeadline": {
+        "description": "Headline at the top of the Parallel Actions card — N>=2 emails the consilium recommends sending in parallel.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsApproveAll": "Patvirtinti visus ir siųsti",
+    "parallelActionsApproveSelected": "Patvirtinti {count} iš {total}",
+    "@parallelActionsApproveSelected": {
+        "description": "Primary button when only a subset of actions is checked.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsConfirmTitle": "Siųsti {count} el. laiškus?",
+    "@parallelActionsConfirmTitle": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsConfirmBody": "Advocat išsiųs {count} parengtus atsakymus per jūsų prijungtą Gmail. Kiekvienas siunčiamas atskirai — jei vienas nepavyks, kiti vis tiek bus išsiųsti.",
+    "@parallelActionsConfirmBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsSentToast": "{count} išsiųsta.",
+    "@parallelActionsSentToast": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsPartialFailureToast": "{sent} išsiųsta, {failed} nepavyko.",
+    "@parallelActionsPartialFailureToast": {
+        "placeholders": {
+            "sent": {
+                "type": "int"
+            },
+            "failed": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsKindReply": "atsakymas",
+    "parallelActionsKindNew": "naujas",
+    "parallelActionsCheckboxSelected": "Veiksmas pasirinktas",
+    "parallelActionsCheckboxUnselected": "Veiksmas nepasirinktas",
+    "parallelActionsCitationCount": "{count} cit.",
+    "@parallelActionsCitationCount": {
+        "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsRetryFailed": "Kartoti nepavykusius ({count})",
+    "@parallelActionsRetryFailed": {
+        "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "agentApprovalNeedsReviewTitle": "Advocat reikia jūsų patvirtinimo",
+    "agentApprovalResolvedTitle": "Veiksmas išspręstas",
+    "agentApprovalStepsLabel": "žingsniai",
+    "agentApprovalApproveButton": "Patvirtinti ir siųsti",
+    "agentApprovalDeclineButton": "Atmesti",
+    "agentApprovalAttachmentsLabel": "Priedai",
+    "agentApprovalSentSummary": "Išsiųsta jūsų vardu.",
+    "agentApprovalDeclinedSummary": "Atmesta — niekas neišsiųsta.",
+    "agentToolDraftEmailAtt": "Siųsti el. laišką su priedais",
+    "agentToolSendEmail": "Siųsti el. laišką",
+    "agentToolGeneratePdf": "Generuoti PDF",
+    "agentToolApproveSend": "Siųsti parengtą atsakymą",
+    "inboxErrorTitle": "Nepavyko įkelti pašto dėžutės",
+    "inboxEditDiscardTitle": "Atmesti neišsaugotus pakeitimus?",
+    "inboxEditDiscardBody": "Turite neišsaugotų šio juodraščio pakeitimų. Grįžus atgal jie bus atmesti.",
+    "inboxEditKeepEditing": "Tęsti redagavimą",
+    "inboxEditDiscard": "Atmesti",
+    "plannerSettingsTitle": "Trijų etapų teisinis samprotavimas",
+    "plannerSettingsSubtitle": "Planas → atsakymas → kritika. Lėčiau, bet kruopščiau.",
+    "plannerSettingsProBadge": "Pro",
+    "plannerSettingsProDescription": "Prieinama su Pro planu",
+    "plannerTrailHeaderPlan": "Planas",
+    "plannerTrailHeaderCritique": "Kritika",
+    "plannerTrailSubQuestions": "Papildomi klausimai",
+    "plannerTrailCounterArgs": "Kontrargumentai",
+    "plannerTrailEvidenceGaps": "Įrodymų spragos",
+    "plannerTrailMaterialGapTrue": "Aptikta esminė spraga",
+    "plannerTrailRegeneratedBadge": "Sugeneruota iš naujo kartą",
+    "plannerTrailEmpty": "nėra elementų",
+    "supportTitle": "Pagalba",
+    "supportSubtitle": "Paprastai atsakome per 1–2 valandas.",
+    "supportSearchPlaceholder": "Ieškoti pagalbos…",
+    "supportStatusAllOk": "Visos sistemos veikia normaliai",
+    "supportFaqWhatIs": "Kas yra Advocat?",
+    "supportFaqHowSubscribe": "Kaip užsisakyti Pro?",
+    "supportFaqExportData": "Ar galiu eksportuoti savo duomenis?",
+    "supportFaqCancelAccount": "Atšaukti arba ištrinti paskyrą",
+    "supportFaqTalkHuman": "Susisiekti su žmogumi",
+    "supportContactEmail": "El. paštas",
+    "supportContactTelegram": "Telegram",
+    "supportContactWhatsapp": "WhatsApp",
+    "supportFooterSla": "Atsakome per 24 val.",
+    "supportWhatsapp": "WhatsApp",
+    "supportEmail": "El. paštas",
+    "supportInApp": "Parašykite mums čia",
+    "supportCategoryLabel": "Kategorija",
+    "supportCategoryBug": "Klaida",
+    "supportCategoryPayment": "Mokėjimo problema",
+    "supportCategoryQuestion": "Klausimas",
+    "supportCategoryFeature": "Funkcijos pageidavimas",
+    "supportCategoryOther": "Kita",
+    "supportMessagePlaceholder": "Aprašykite savo problemą...",
+    "supportEmailLabel": "El. paštas (nebūtina)",
+    "supportSend": "Siųsti",
+    "supportSentSuccess": "Pranešimas išsiųstas! Netrukus atsakysime.",
+    "supportError": "Kažkas nepavyko. Bandykite dar kartą.",
+    "supportErrorTooShort": "Parašykite bent 10 simbolių.",
+    "supportErrorTooLong": "Daugiausia 2000 simbolių.",
+    "supportPrivacyNotice": "Jūsų pranešimas saugomas saugiai.",
+    "referralAntiFraud": "Daugiausia 12 sėkmingų rekomendacijų per metus.",
+    "referralEmpty": "Rekomendacijų dar nėra. Išsiųskite savo nuorodą, kad pradėtumėte uždirbti.",
+    "referralRecentActivity": "Naujausia veikla",
+    "referralActivityInvited": "Pakviesta {when}",
+    "@referralActivityInvited": {
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "referralActivityActivated": "aktyvuota {when}",
+    "@referralActivityActivated": {
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "referralActivityPending": "dar neaktyvuota",
+    "referralStatsInvitedCount": "Pakvietėte {count, plural, =0{dar nė vieno draugo} one{{count} draugą} few{{count} draugus} many{{count} draugo} other{{count} draugų}}",
+    "@referralStatsInvitedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "referralStatsConvertedCount": "{count, plural, =0{dar nė vienas neaktyvavo} one{{count} aktyvavo} few{{count} aktyvavo} many{{count} aktyvavo} other{{count} aktyvavo}}",
+    "@referralStatsConvertedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "referralStatsEarnedCount": "Jūsų premija: {months, plural, =0{dar nieko} one{{months} nemokamas mėnuo} few{{months} nemokami mėnesiai} many{{months} nemokamo mėnesio} other{{months} nemokamų mėnesių}}",
+    "@referralStatsEarnedCount": {
+        "placeholders": {
+            "months": {
+                "type": "int"
+            }
+        }
+    },
+    "referralNudgeMessage": "Patinka Advocat? Pakvieskite draugą — abu gausite nemokamą mėnesį.",
+    "referralNudgeAction": "Pakviesti",
+    "referralLandingTitle": "Esate pakviestas į Advocat",
+    "referralLandingSubtitle": "{inviterName} jus pakvietė — atsiimkite nemokamą pirmąjį mėnesį.",
+    "@referralLandingSubtitle": {
+        "placeholders": {
+            "inviterName": {
+                "type": "String"
+            }
+        }
+    },
+    "referralLandingSubtitleGeneric": "Atsiimkite nemokamą pirmąjį Advocat Pro mėnesį.",
+    "referralLandingCta": "Aktyvuoti nemokamą mėnesį ir užsiregistruoti",
+    "referralLandingCtaSecondary": "Arba sužinokite daugiau apie Advocat",
+    "referralLandingFallback": "Šios nuorodos galiojimas baigėsi — bet vis tiek galite išbandyti Advocat nemokamai.",
+    "referralLandingBenefits": "17 kalbų • Tikra Estijos, Suomijos ir ES teisė • 24/7 — be laukimo",
+    "sensitiveConsentTitle": "Sutikimas dėl jautrių duomenų",
+    "sensitiveConsentBody": "Dokumentuose, kuriuos ketinate įkelti, gali būti specialių kategorijų asmens duomenų pagal BDAR 9 str. — pavyzdžiui, sveikatos įrašų, teistumo duomenų, biometrinių duomenų arba informacijos apie jūsų rasinę kilmę, religiją ar seksualinę orientaciją.\n\nŠiuos duomenis tvarkome tik tam, kad suteiktume jums DI teisinę pagalbą, saugome juos užšifruotus jūsų privačioje paskyroje ir niekada nenaudojame jų modeliams mokyti. Sutikimą galite atšaukti ir duomenis ištrinti bet kada Nustatymuose.\n\nSutikdami suteikiate aiškų sutikimą pagal BDAR 9 str. 2 d. a punktą tvarkyti specialių kategorijų duomenis šiuo tikslu.",
+    "sensitiveConsentExplicitCheckbox": "Suteikiu aiškų sutikimą tvarkyti specialių kategorijų duomenis (BDAR 9 str. 2 d. a p.).",
+    "sensitiveConsentRightToShareCheckbox": "Patvirtinu, kad turiu teisę dalytis šiais duomenimis (duomenys yra mano arba turiu informuotą / teisėtą pagrindą dalytis trečiųjų šalių duomenimis).",
+    "sensitiveConsentViewCategories": "Peržiūrėti, kas laikoma jautriais duomenimis →",
+    "sensitiveConsentWithdrawAction": "Atšaukti sutikimą dėl jautrių duomenų",
+    "privacyAndData": "PRIVATUMAS IR DUOMENYS",
+    "exportMyDataSubtitle": "Atsisiųskite visų savo asmens duomenų kopiją (BDAR 15 str.).",
+    "withdrawSensitiveConsent": "Sutikimas dėl jautrių duomenų",
+    "withdrawSensitiveConsentSubtitle": "Tvarkykite arba atšaukite sutikimą tvarkyti specialių kategorijų duomenis (BDAR 9 str. 2 d. a p.).",
+    "dataProcessingAgreement": "Duomenų tvarkymo sutartis",
+    "exportingData": "Eksportuojami jūsų duomenys…",
+    "exportComplete": "Duomenų eksportas paruoštas — išsaugotas jūsų įrenginyje.",
+    "exportFailed": "Eksportas nepavyko. Bandykite dar kartą arba susisiekite su pagalba.",
+    "quotaExhaustedTitle": "Pasiektas nemokamų pranešimų limitas",
+    "quotaExhaustedBody": "Panaudojote visus {count} nemokamus pranešimus. Atnaujinkite į Advocat Counsel už 19,99 €/mėn. ir gaukite neribotas DI teisines konsultacijas.",
+    "@quotaExhaustedBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaExhaustedLater": "Vėliau",
+    "quotaExhaustedUpgrade": "Advocat Counsel — 19,99 €/mėn.",
+    "quotaCtaMessage": "Panaudojote visus {count} nemokamus pranešimus. Atnaujinkite į Advocat Counsel už 19,99 €/mėn.",
+    "@quotaCtaMessage": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaCtaButton": "Gauti Advocat Counsel — 19,99 €/mėn.",
+    "aiErrorQuota": "Pasiektas nemokamų pranešimų limitas. Užsiprenumeruokite, kad tęstumėte DI naudojimą.",
+    "aiErrorAuth": "Norint naudoti DI, reikia prisijungti. Užsiregistruokite arba prisijunkite.",
+    "aiErrorGeneric": "Laikina DI klaida. Bandykite dar kartą po minutės. Jei kartojasi, susisiekite su pagalba.",
+    "tooltipShareCase": "Bendrinti bylos santrauką",
+    "tooltipMuteVoice": "Nutildyti balsą",
+    "tooltipUnmuteVoice": "Įjungti balsą",
+    "tooltipAttachDoc": "Pridėti dokumentą",
+    "aiTypingHint": "DI…",
+    "error404Title": "Puslapis nerastas",
+    "error404Body": "Nepavyko rasti: {path}",
+    "@error404Body": {
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "goToHome": "Eiti į pradžią",
+    "emailAlreadyRegistered": "Šis el. paštas jau užregistruotas. Norite prisijungti?",
+    "actionSignIn": "Prisijungti",
+    "actionUndo": "Anuliuoti",
+    "intakeUrgentOpened": "Pokalbis atvertas — jūsų juodraštis išsaugotas.",
+    "panicCoachmark": "Laikykite pagalbai skubos atveju.",
+    "panicTitle": "Ko jums reikia dabar?",
+    "panicCardReadAloud": "Perskaityti pareigūnui balsu",
+    "panicCardRecord": "Įrašyti šį pokalbį",
+    "panicCardCall": "Skambinti advokatui",
+    "panicCardAi": "Kalbėtis su Advocat dabar",
+    "panicClose": "Uždaryti",
+    "panicBadgeV2": "V2",
+    "panicRecordV1Title": "Bus V2 versijoje",
+    "panicRecordV1Body": "Įrašymo funkcija teisiškai tikrinama Estijai ir bus įdiegta V2 versijoje. Kol kas naudokite telefono integruotą balso įrašymo įrenginį.",
+    "panicCallFallbackBody": "Parašykite el. laišką kiire@advocat.ee su trumpu aprašymu ir mes jums perskambinsime.",
+    "softCaseShellBanner": "Sukūrėme „Bylą be pavadinimo“, kad galėtume tai sekti. Bakstelėkite, kad pervadintumėte.",
+    "softCaseShellBannerCta": "Pervadinti"
 }

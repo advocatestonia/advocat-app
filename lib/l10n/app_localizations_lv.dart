@@ -71,11 +71,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get aiErrorRateLimit =>
-      'The service is temporarily overloaded. Please try again in 1-2 minutes.';
+      'Pakalpojums uz brīdi ir pārslogots. Lūdzu, mēģiniet vēlreiz pēc 1–2 minūtēm.';
 
   @override
   String get aiErrorOverload =>
-      'The AI is busy right now, please try again in a minute.';
+      'MI šobrīd ir aizņemts, lūdzu, mēģiniet vēlreiz pēc minūtes.';
 
   @override
   String freeLimitReached(int count) {
@@ -191,11 +191,11 @@ class AppLocalizationsLv extends AppLocalizations {
   String get continueWithGoogle => 'Turpināt ar Google';
 
   @override
-  String get appleComingSoon => 'Coming soon';
+  String get appleComingSoon => 'Drīzumā';
 
   @override
   String get appleComingSoonMessage =>
-      'Apple Sign-In becomes available soon. Use Google or email to continue.';
+      'Apple pieteikšanās būs pieejama drīzumā. Turpiniet ar Google vai e-pastu.';
 
   @override
   String get copyText => 'Kopēt tekstu';
@@ -614,31 +614,31 @@ class AppLocalizationsLv extends AppLocalizations {
   String get privacyPolicy => 'Privātuma politikai';
 
   @override
-  String get dpaTitle => 'Data Processing Agreement';
+  String get dpaTitle => 'Datu apstrādes līgums';
 
   @override
-  String get dpaCheckoutGateTitle => 'Before you upgrade';
+  String get dpaCheckoutGateTitle => 'Pirms jaunināšanas';
 
   @override
   String get dpaCheckoutGateBody =>
-      'EU law (GDPR Art. 28) requires us to sign a Data Processing Agreement with every paying customer. Please review and accept.';
+      'ES tiesību akti (VDAR 28. pants) nosaka, ka mums ir jāparaksta datu apstrādes līgums ar katru maksājošo klientu. Lūdzu, iepazīstieties ar to un piekrītiet.';
 
   @override
-  String get dpaViewLink => 'View Data Processing Agreement';
+  String get dpaViewLink => 'Skatīt datu apstrādes līgumu';
 
   @override
   String get dpaCheckboxLabel =>
-      'I have read and accept the Data Processing Agreement (v1.0).';
+      'Esmu izlasījis un piekrītu datu apstrādes līgumam (v1.0).';
 
   @override
-  String get dpaCancel => 'Cancel';
+  String get dpaCancel => 'Atcelt';
 
   @override
-  String get dpaAcceptAndContinue => 'Accept and continue';
+  String get dpaAcceptAndContinue => 'Piekrist un turpināt';
 
   @override
   String get dpaOpenHint =>
-      'Open the DPA at least once to enable the Accept button.';
+      'Atveriet DAL vismaz vienu reizi, lai aktivizētu pogu “Piekrist”.';
 
   @override
   String get pro => 'Pro';
@@ -1259,54 +1259,54 @@ class AppLocalizationsLv extends AppLocalizations {
   String get caseInfoUpdated => 'Lietas informācija pēdējo reizi atjaunināta.';
 
   @override
-  String get noEventsForFilter => 'No events match this filter';
+  String get noEventsForFilter => 'Šim filtram neatbilst neviens notikums';
 
   @override
-  String get timelineFilterAll => 'All';
+  String get timelineFilterAll => 'Visi';
 
   @override
-  String get timelineFilterEmails => 'Emails';
+  String get timelineFilterEmails => 'E-pasti';
 
   @override
-  String get timelineFilterConsilium => 'AI decisions';
+  String get timelineFilterConsilium => 'MI lēmumi';
 
   @override
-  String get timelineFilterDeadlines => 'Deadlines';
+  String get timelineFilterDeadlines => 'Termiņi';
 
   @override
-  String get timelineFilterNotes => 'Notes';
+  String get timelineFilterNotes => 'Piezīmes';
 
   @override
-  String get timelineEventEmailIn => 'Email received';
+  String get timelineEventEmailIn => 'Saņemts e-pasts';
 
   @override
-  String get timelineEventEmailOut => 'Email sent';
+  String get timelineEventEmailOut => 'Nosūtīts e-pasts';
 
   @override
-  String get timelineEventConsiliumDecision => 'AI decision';
+  String get timelineEventConsiliumDecision => 'MI lēmums';
 
   @override
-  String get timelineEventDeadlineSet => 'Deadline';
+  String get timelineEventDeadlineSet => 'Termiņš';
 
   @override
-  String get timelineEventDocUploaded => 'Document';
+  String get timelineEventDocUploaded => 'Dokuments';
 
   @override
-  String get timelineEventPhaseChange => 'Phase change';
+  String get timelineEventPhaseChange => 'Posma maiņa';
 
   @override
-  String get timelineEventManualNote => 'Note';
+  String get timelineEventManualNote => 'Piezīme';
 
   @override
-  String get timelineJustNow => 'Just now';
+  String get timelineJustNow => 'Tikko';
 
   @override
   String timelineMinutesAgo(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count minutes ago',
-      one: '1 minute ago',
+      other: 'pirms $count minūtēm',
+      one: 'pirms 1 minūtes',
     );
     return '$_temp0';
   }
@@ -1316,8 +1316,8 @@ class AppLocalizationsLv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count hours ago',
-      one: '1 hour ago',
+      other: 'pirms $count stundām',
+      one: 'pirms 1 stundas',
     );
     return '$_temp0';
   }
@@ -1327,8 +1327,8 @@ class AppLocalizationsLv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days ago',
-      one: '1 day ago',
+      other: 'pirms $count dienām',
+      one: 'pirms 1 dienas',
     );
     return '$_temp0';
   }
@@ -1601,10 +1601,10 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get gmailReauthBannerBody =>
-      'Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.';
+      'Advocat v2.1 lasa jūsu iesūtni, lai sagatavotu atbildes; piekļuvi varat atsaukt jebkurā laikā. Atkārtoti savienojiet Gmail, lai iespējotu proaktīvu šķirošanu.';
 
   @override
-  String get gmailReauthBannerCta => 'Reauthorize';
+  String get gmailReauthBannerCta => 'Atkārtoti autorizēt';
 
   @override
   String connectedTo(String email) {
@@ -2712,408 +2712,411 @@ class AppLocalizationsLv extends AppLocalizations {
   String get backToChat => 'Atpakaļ uz čatu';
 
   @override
-  String get upgradeBannerTitle => 'Upgrade for unlimited consultations';
+  String get upgradeBannerTitle =>
+      'Jauniniet, lai saņemtu neierobežotas konsultācijas';
 
   @override
-  String get upgradeBannerCta => 'Upgrade';
+  String get upgradeBannerCta => 'Jaunināt';
 
   @override
-  String get paymentSuccessTitle => 'Payment successful';
+  String get paymentSuccessTitle => 'Maksājums veiksmīgs';
 
   @override
-  String get paymentSuccessBody => 'Your subscription is now active.';
+  String get paymentSuccessBody => 'Jūsu abonements tagad ir aktīvs.';
 
   @override
-  String get commonOk => 'OK';
+  String get commonOk => 'Labi';
 
   @override
-  String get feedbackThumbsUpLabel => 'Helpful';
+  String get feedbackThumbsUpLabel => 'Noderīgi';
 
   @override
-  String get feedbackThumbsDownLabel => 'Not helpful';
+  String get feedbackThumbsDownLabel => 'Nav noderīgi';
 
   @override
-  String get feedbackCommentPrompt => 'What was wrong?';
+  String get feedbackCommentPrompt => 'Kas bija nepareizi?';
 
   @override
-  String get feedbackSend => 'Send';
+  String get feedbackSend => 'Sūtīt';
 
   @override
-  String get feedbackCancel => 'Cancel';
+  String get feedbackCancel => 'Atcelt';
 
   @override
-  String get reasoningPillIdle => 'Thinking…';
+  String get reasoningPillIdle => 'Domāju…';
 
   @override
-  String get reasoningPillSearchingLaw => 'Searching Estonian law…';
+  String get reasoningPillSearchingLaw => 'Meklēju Igaunijas tiesību aktos…';
 
   @override
-  String get reasoningPillSearchingWeb => 'Searching the web…';
+  String get reasoningPillSearchingWeb => 'Meklēju tīmeklī…';
 
   @override
-  String get reasoningPillCheckingCompany => 'Checking company registry…';
+  String get reasoningPillCheckingCompany => 'Pārbaudu uzņēmumu reģistrā…';
 
   @override
-  String get reasoningPillCheckingVehicle => 'Checking vehicle registry…';
+  String get reasoningPillCheckingVehicle =>
+      'Pārbaudu transportlīdzekļu reģistrā…';
 
   @override
-  String get reasoningPillReadingDocument => 'Reading your document…';
+  String get reasoningPillReadingDocument => 'Lasu jūsu dokumentu…';
 
   @override
-  String get reasoningPillDrafting => 'Drafting the document…';
+  String get reasoningPillDrafting => 'Sagatavoju dokumentu…';
 
   @override
-  String get reasoningPillPreparingEmail => 'Preparing email…';
+  String get reasoningPillPreparingEmail => 'Gatavoju e-pastu…';
 
   @override
-  String get reasoningPillFindingLawyer => 'Looking up lawyers…';
+  String get reasoningPillFindingLawyer => 'Meklēju juristus…';
 
   @override
-  String get reasoningPillThinking => 'Reasoning through your case…';
+  String get reasoningPillThinking => 'Analizēju jūsu lietu…';
 
   @override
-  String get reasoningPillFinalising => 'Composing your answer…';
+  String get reasoningPillFinalising => 'Sastādu jūsu atbildi…';
 
   @override
   String reasoningCollapsedFormat(int sec, int sources) {
-    return 'Reasoned for ${sec}s · $sources sources';
+    return 'Analizēts $sec s · $sources avoti';
   }
 
   @override
-  String get reasoningExpandHint => 'tap to see steps';
+  String get reasoningExpandHint => 'pieskarieties, lai redzētu soļus';
 
   @override
-  String get caseFileTitle => 'Case File';
+  String get caseFileTitle => 'Lietas materiāli';
 
   @override
-  String get caseFileTimeline => 'Timeline';
+  String get caseFileTimeline => 'Laika līnija';
 
   @override
-  String get caseFileParties => 'Parties';
+  String get caseFileParties => 'Puses';
 
   @override
-  String get caseFileDeadlines => 'Deadlines';
+  String get caseFileDeadlines => 'Termiņi';
 
   @override
-  String get caseFileExportPdf => 'Download dossier (PDF)';
+  String get caseFileExportPdf => 'Lejupielādēt lietas materiālus (PDF)';
 
   @override
   String get caseFileEmpty =>
-      'Chat with the AI about your case — your timeline will build itself.';
+      'Tērzējiet ar MI par savu lietu — jūsu laika līnija izveidosies pati.';
 
   @override
   String get caseFileDisclaimer =>
-      'This dossier is auto-extracted from your chat. It is not legal advice.';
+      'Šie lietas materiāli ir automātiski iegūti no jūsu sarakstes. Tā nav juridiska konsultācija.';
 
   @override
-  String get caseFileTabLabel => 'Case';
+  String get caseFileTabLabel => 'Lieta';
 
   @override
-  String get refresh => 'Refresh';
+  String get refresh => 'Atsvaidzināt';
 
   @override
   String get demoLimitReached =>
-      'Demo limit reached. Sign up for free to continue.';
+      'Sasniegts demonstrācijas ierobežojums. Reģistrējieties bez maksas, lai turpinātu.';
 
   @override
-  String get demoLimitSignUpCta => 'Sign up';
+  String get demoLimitSignUpCta => 'Reģistrēties';
 
   @override
   String get freeQuotaExhausted =>
-      'You\'ve used all 10 free messages this month.';
+      'Šomēnes esat izmantojis visus 10 bezmaksas ziņojumus.';
 
   @override
-  String get upgradeForUnlimited => 'Upgrade to Pro for unlimited';
+  String get upgradeForUnlimited =>
+      'Jauniniet uz Pro, lai saņemtu neierobežoti';
 
   @override
-  String get upgradeCta => 'Upgrade';
+  String get upgradeCta => 'Jaunināt';
 
   @override
   String get rateLimitTryAgain =>
-      'Sending too fast. Try again in a few seconds.';
+      'Sūtāt pārāk ātri. Mēģiniet vēlreiz pēc dažām sekundēm.';
 
   @override
   String get quickProfilePrompt =>
-      'So I can help more precisely, what is your legal status: are you an Estonian citizen, an EU citizen from another country, or do you have a residence permit?';
+      'Lai es varētu palīdzēt precīzāk, kāds ir jūsu juridiskais statuss: vai esat Igaunijas pilsonis, ES pilsonis no citas valsts, vai jums ir uzturēšanās atļauja?';
 
   @override
-  String get quickProfileChipEstonianCitizen => 'Estonian citizen';
+  String get quickProfileChipEstonianCitizen => 'Igaunijas pilsonis';
 
   @override
-  String get quickProfileChipEuCitizen => 'EU citizen (other)';
+  String get quickProfileChipEuCitizen => 'ES pilsonis (cits)';
 
   @override
-  String get quickProfileChipResidencePermit => 'Residence permit';
+  String get quickProfileChipResidencePermit => 'Uzturēšanās atļauja';
 
   @override
-  String get quickProfileSkipBtn => 'Skip';
+  String get quickProfileSkipBtn => 'Izlaist';
 
   @override
-  String get quickProfileSavedAck => 'Got it. Now, what\'s your question?';
+  String get quickProfileSavedAck => 'Sapratu. Kāds ir jūsu jautājums?';
 
   @override
-  String get caseTitleLabel => 'Case title';
+  String get caseTitleLabel => 'Lietas nosaukums';
 
   @override
-  String get jurisdictionLabel => 'Jurisdiction';
+  String get jurisdictionLabel => 'Jurisdikcija';
 
   @override
-  String get caseTypeLabel => 'Case type';
+  String get caseTypeLabel => 'Lietas veids';
 
   @override
-  String get caseLanguageLabel => 'Language';
+  String get caseLanguageLabel => 'Valoda';
 
   @override
-  String get caseNumbersSection => 'Case numbers';
+  String get caseNumbersSection => 'Lietas numuri';
 
   @override
-  String get partiesSection => 'Parties';
+  String get partiesSection => 'Puses';
 
   @override
-  String get authoritiesSection => 'Authorities';
+  String get authoritiesSection => 'Iestādes';
 
   @override
-  String get timelineSection => 'Timeline';
+  String get timelineSection => 'Laika līnija';
 
   @override
-  String get openQuestionsSection => 'Open questions';
+  String get openQuestionsSection => 'Atklātie jautājumi';
 
   @override
-  String get nextActionsSection => 'Next actions';
+  String get nextActionsSection => 'Nākamās darbības';
 
   @override
-  String get summarySection => 'Summary';
+  String get summarySection => 'Kopsavilkums';
 
   @override
-  String get addRow => 'Add row';
+  String get addRow => 'Pievienot rindu';
 
   @override
-  String get removeRow => 'Remove';
+  String get removeRow => 'Noņemt';
 
   @override
-  String get archiveCase => 'Archive case';
+  String get archiveCase => 'Arhivēt lietu';
 
   @override
-  String get closeCase => 'Close case';
+  String get closeCase => 'Slēgt lietu';
 
   @override
-  String get continueChatAboutCase => 'Continue chat about this case';
+  String get continueChatAboutCase => 'Turpināt sarunu par šo lietu';
 
   @override
-  String get linkChatToCase => 'Link to case';
+  String get linkChatToCase => 'Saistīt ar lietu';
 
   @override
-  String get clearActiveCase => 'Clear active case';
+  String get clearActiveCase => 'Notīrīt aktīvo lietu';
 
   @override
-  String get caseSavedAck => 'Case saved';
+  String get caseSavedAck => 'Lieta saglabāta';
 
   @override
-  String get caseArchivedAck => 'Case archived';
+  String get caseArchivedAck => 'Lieta arhivēta';
 
   @override
-  String get intakeStep1Title => 'Where is the case?';
+  String get intakeStep1Title => 'Kur ir lieta?';
 
   @override
   String get intakeStep1Subtitle =>
-      'Country and authority you are dealing with.';
+      'Valsts un iestāde, ar kuru jums ir darīšana.';
 
   @override
-  String get intakeJurisdictionLabel => 'Country / jurisdiction';
+  String get intakeJurisdictionLabel => 'Valsts / jurisdikcija';
 
   @override
-  String get intakeAuthorityLabel => 'Authority type';
+  String get intakeAuthorityLabel => 'Iestādes veids';
 
   @override
-  String get intakeAuthorityNameLabel => 'Authority name (optional)';
+  String get intakeAuthorityNameLabel => 'Iestādes nosaukums (neobligāti)';
 
   @override
-  String get intakeAuthorityPolice => 'Police';
+  String get intakeAuthorityPolice => 'Policija';
 
   @override
-  String get intakeAuthorityCourt => 'Court';
+  String get intakeAuthorityCourt => 'Tiesa';
 
   @override
-  String get intakeAuthoritySocial => 'Social services';
+  String get intakeAuthoritySocial => 'Sociālie dienesti';
 
   @override
-  String get intakeAuthorityEmployer => 'Employer';
+  String get intakeAuthorityEmployer => 'Darba devējs';
 
   @override
-  String get intakeAuthorityLandlord => 'Landlord';
+  String get intakeAuthorityLandlord => 'Izīrētājs';
 
   @override
-  String get intakeAuthorityOpposingParty => 'Opposing party';
+  String get intakeAuthorityOpposingParty => 'Pretējā puse';
 
   @override
-  String get intakeAuthorityOther => 'Other';
+  String get intakeAuthorityOther => 'Cits';
 
   @override
-  String get intakeStep2Title => 'What kind of case?';
+  String get intakeStep2Title => 'Kāda veida lieta?';
 
   @override
   String get intakeStep2Subtitle =>
-      'Pick the closest type — you can refine later.';
+      'Izvēlieties tuvāko veidu — vēlāk varēsiet precizēt.';
 
   @override
-  String get intakeCaseTypeCriminal => 'Criminal';
+  String get intakeCaseTypeCriminal => 'Krimināllieta';
 
   @override
-  String get intakeCaseTypeCivil => 'Civil';
+  String get intakeCaseTypeCivil => 'Civillieta';
 
   @override
-  String get intakeCaseTypeFamily => 'Family';
+  String get intakeCaseTypeFamily => 'Ģimenes lieta';
 
   @override
-  String get intakeCaseTypeAdmin => 'Administrative';
+  String get intakeCaseTypeAdmin => 'Administratīvā lieta';
 
   @override
-  String get intakeCaseTypeImmigration => 'Immigration';
+  String get intakeCaseTypeImmigration => 'Imigrācija';
 
   @override
-  String get intakeCaseTypeLabor => 'Labor';
+  String get intakeCaseTypeLabor => 'Darba tiesības';
 
   @override
-  String get intakeCaseTypeConsumer => 'Consumer';
+  String get intakeCaseTypeConsumer => 'Patērētāju tiesības';
 
   @override
-  String get intakeCaseTypeInheritance => 'Inheritance';
+  String get intakeCaseTypeInheritance => 'Mantojums';
 
   @override
-  String get intakeCaseTypeOther => 'Other';
+  String get intakeCaseTypeOther => 'Cits';
 
   @override
-  String get intakeStep3Title => 'Who is involved?';
+  String get intakeStep3Title => 'Kas ir iesaistīts?';
 
   @override
-  String get intakeStep3Subtitle => 'Your role and the other side.';
+  String get intakeStep3Subtitle => 'Jūsu loma un otra puse.';
 
   @override
-  String get intakeRoleLabel => 'Your role';
+  String get intakeRoleLabel => 'Jūsu loma';
 
   @override
-  String get intakeRolePlaintiff => 'Plaintiff';
+  String get intakeRolePlaintiff => 'Prasītājs';
 
   @override
-  String get intakeRoleDefendant => 'Defendant';
+  String get intakeRoleDefendant => 'Atbildētājs';
 
   @override
-  String get intakeRoleVictim => 'Victim';
+  String get intakeRoleVictim => 'Cietušais';
 
   @override
-  String get intakeRoleAccused => 'Accused';
+  String get intakeRoleAccused => 'Apsūdzētais';
 
   @override
-  String get intakeRoleWitness => 'Witness';
+  String get intakeRoleWitness => 'Liecinieks';
 
   @override
-  String get intakeRoleFamily => 'Family member';
+  String get intakeRoleFamily => 'Ģimenes loceklis';
 
   @override
-  String get intakeRoleOther => 'Other';
+  String get intakeRoleOther => 'Cits';
 
   @override
-  String get intakeOpposingSideLabel => 'Opposing side (optional)';
+  String get intakeOpposingSideLabel => 'Pretējā puse (neobligāti)';
 
   @override
-  String get intakeWitnessesLabel => 'Witnesses (optional)';
+  String get intakeWitnessesLabel => 'Liecinieki (neobligāti)';
 
   @override
-  String get intakeAddWitness => 'Add witness';
+  String get intakeAddWitness => 'Pievienot liecinieku';
 
   @override
-  String get intakeWitnessHint => 'Name or contact';
+  String get intakeWitnessHint => 'Vārds vai kontaktinformācija';
 
   @override
-  String get intakeStep4Title => 'Numbers & dates';
+  String get intakeStep4Title => 'Numuri un datumi';
 
   @override
   String get intakeStep4Subtitle =>
-      'Whatever you already have. Skip what you don\'t.';
+      'Viss, kas jums jau ir. Izlaidiet to, kā jums nav.';
 
   @override
-  String get intakeCaseNumberLabel => 'Case number (optional)';
+  String get intakeCaseNumberLabel => 'Lietas numurs (neobligāti)';
 
   @override
-  String get intakeIncidentDateLabel => 'Incident date (optional)';
+  String get intakeIncidentDateLabel => 'Notikuma datums (neobligāti)';
 
   @override
-  String get intakeIncidentDatePick => 'Pick date';
+  String get intakeIncidentDatePick => 'Izvēlēties datumu';
 
   @override
-  String get intakeDeadlinesLabel => 'Known deadlines';
+  String get intakeDeadlinesLabel => 'Zināmie termiņi';
 
   @override
-  String get intakeAddDeadline => 'Add deadline';
+  String get intakeAddDeadline => 'Pievienot termiņu';
 
   @override
-  String get intakeDeadlineWhatHint => 'What';
+  String get intakeDeadlineWhatHint => 'Kas';
 
   @override
-  String get intakeStep5Title => 'Documents';
+  String get intakeStep5Title => 'Dokumenti';
 
   @override
   String get intakeStep5Subtitle =>
-      'Upload anything relevant. We will read it.';
+      'Augšupielādējiet visu būtisko. Mēs to izlasīsim.';
 
   @override
-  String get intakeUploadDocsLabel => 'Upload documents';
+  String get intakeUploadDocsLabel => 'Augšupielādēt dokumentus';
 
   @override
-  String get intakeSkipDocs => 'Skip — I\'ll upload later';
+  String get intakeSkipDocs => 'Izlaist — augšupielādēšu vēlāk';
 
   @override
-  String get intakeNextBtn => 'Next';
+  String get intakeNextBtn => 'Tālāk';
 
   @override
-  String get intakeBackBtn => 'Back';
+  String get intakeBackBtn => 'Atpakaļ';
 
   @override
-  String get intakeFinishBtn => 'Finish & open chat';
+  String get intakeFinishBtn => 'Pabeigt un atvērt sarunu';
 
   @override
-  String get intakeUrgentBtn => 'Urgent — ask now';
+  String get intakeUrgentBtn => 'Steidzami — jautāt tagad';
 
   @override
-  String get intakeUrgentDialogTitle => 'Open chat now?';
+  String get intakeUrgentDialogTitle => 'Atvērt sarunu tagad?';
 
   @override
   String get intakeUrgentDialogBody =>
-      'We\'ll save what you\'ve entered as a draft case. You can finish the wizard from the case page anytime.';
+      'Mēs saglabāsim ievadīto kā lietas melnrakstu. Vedni varat pabeigt no lietas lapas jebkurā laikā.';
 
   @override
-  String get intakeUrgentConfirm => 'Open chat';
+  String get intakeUrgentConfirm => 'Atvērt sarunu';
 
   @override
-  String get intakeUrgentCancel => 'Keep filling';
+  String get intakeUrgentCancel => 'Turpināt aizpildīšanu';
 
   @override
-  String get intakePreparingCase => 'Preparing your case…';
+  String get intakePreparingCase => 'Gatavoju jūsu lietu…';
 
   @override
   String get intakeFallbackGreeting =>
-      'I see your case. Tell me what\'s most pressing — I\'ll work through it with you.';
+      'Es redzu jūsu lietu. Pastāstiet, kas ir vissteidzamākais — kopā to atrisināsim.';
 
   @override
   String get intakeUrgentGreeting =>
-      'I see this is urgent. Ask your question — I\'ll fill in the rest as we go.';
+      'Es redzu, ka tas ir steidzami. Uzdodiet savu jautājumu — pārējo aizpildīsim ceļā.';
 
   @override
   String intakeStepIndicator(int current, int total) {
-    return 'Step $current of $total';
+    return '$current. solis no $total';
   }
 
   @override
-  String get intakeFieldRequired => 'Required';
+  String get intakeFieldRequired => 'Obligāts';
 
   @override
   String intakeUploadProgress(int done, int total) {
-    return 'Uploading $done / $total…';
+    return 'Augšupielādē $done / $total…';
   }
 
   @override
   String get uplDisclaimerFooter =>
-      'Advocat is not a law firm. This is information, not legal advice.';
+      'Advocat nav advokātu birojs. Šī ir informācija, nevis juridiska konsultācija.';
 
   @override
   String get citationStatusVerifiedBadge => 'Pārbaudīts';
@@ -3436,110 +3439,112 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String parallelActionsHeadline(int count) {
-    return 'Consilium recommends $count parallel actions';
+    return 'Konsilijs iesaka $count paralēlas darbības';
   }
 
   @override
-  String get parallelActionsApproveAll => 'Approve All & Send';
+  String get parallelActionsApproveAll => 'Apstiprināt visas un sūtīt';
 
   @override
   String parallelActionsApproveSelected(int count, int total) {
-    return 'Approve $count of $total';
+    return 'Apstiprināt $count no $total';
   }
 
   @override
   String parallelActionsConfirmTitle(int count) {
-    return 'Send $count emails?';
+    return 'Sūtīt $count e-pastus?';
   }
 
   @override
   String parallelActionsConfirmBody(int count) {
-    return 'Advocat will dispatch $count prepared replies via your connected Gmail. Each one is sent independently — if any one fails, the others still go.';
+    return 'Advocat nosūtīs $count sagatavotās atbildes, izmantojot jūsu savienoto Gmail. Katra tiek nosūtīta atsevišķi — ja kāda neizdodas, pārējās tomēr tiek nosūtītas.';
   }
 
   @override
   String parallelActionsSentToast(int count) {
-    return '$count sent.';
+    return 'Nosūtīts: $count.';
   }
 
   @override
   String parallelActionsPartialFailureToast(int sent, int failed) {
-    return '$sent sent, $failed failed.';
+    return '$sent nosūtīts, $failed neizdevās.';
   }
 
   @override
-  String get parallelActionsKindReply => 'reply';
+  String get parallelActionsKindReply => 'atbilde';
 
   @override
-  String get parallelActionsKindNew => 'new';
+  String get parallelActionsKindNew => 'jauns';
 
   @override
-  String get parallelActionsCheckboxSelected => 'Action selected';
+  String get parallelActionsCheckboxSelected => 'Darbība atlasīta';
 
   @override
-  String get parallelActionsCheckboxUnselected => 'Action not selected';
+  String get parallelActionsCheckboxUnselected => 'Darbība nav atlasīta';
 
   @override
   String parallelActionsCitationCount(int count) {
-    return '$count cit';
+    return '$count cit.';
   }
 
   @override
   String parallelActionsRetryFailed(int count) {
-    return 'Retry failed ($count)';
+    return 'Atkārtot neizdevušās ($count)';
   }
 
   @override
-  String get agentApprovalNeedsReviewTitle => 'Advocat needs your approval';
+  String get agentApprovalNeedsReviewTitle =>
+      'Advocat nepieciešams jūsu apstiprinājums';
 
   @override
-  String get agentApprovalResolvedTitle => 'Action resolved';
+  String get agentApprovalResolvedTitle => 'Darbība atrisināta';
 
   @override
-  String get agentApprovalStepsLabel => 'steps';
+  String get agentApprovalStepsLabel => 'soļi';
 
   @override
-  String get agentApprovalApproveButton => 'Approve & Send';
+  String get agentApprovalApproveButton => 'Apstiprināt un sūtīt';
 
   @override
-  String get agentApprovalDeclineButton => 'Decline';
+  String get agentApprovalDeclineButton => 'Noraidīt';
 
   @override
-  String get agentApprovalAttachmentsLabel => 'Attachments';
+  String get agentApprovalAttachmentsLabel => 'Pielikumi';
 
   @override
-  String get agentApprovalSentSummary => 'Sent on your behalf.';
+  String get agentApprovalSentSummary => 'Nosūtīts jūsu vārdā.';
 
   @override
-  String get agentApprovalDeclinedSummary => 'Declined — nothing was sent.';
+  String get agentApprovalDeclinedSummary =>
+      'Noraidīts — nekas netika nosūtīts.';
 
   @override
-  String get agentToolDraftEmailAtt => 'Send email with attachments';
+  String get agentToolDraftEmailAtt => 'Sūtīt e-pastu ar pielikumiem';
 
   @override
-  String get agentToolSendEmail => 'Send email';
+  String get agentToolSendEmail => 'Sūtīt e-pastu';
 
   @override
-  String get agentToolGeneratePdf => 'Generate PDF';
+  String get agentToolGeneratePdf => 'Ģenerēt PDF';
 
   @override
-  String get agentToolApproveSend => 'Send prepared reply';
+  String get agentToolApproveSend => 'Sūtīt sagatavoto atbildi';
 
   @override
-  String get inboxErrorTitle => 'Could not load inbox';
+  String get inboxErrorTitle => 'Neizdevās ielādēt iesūtni';
 
   @override
-  String get inboxEditDiscardTitle => 'Discard unsaved edits?';
+  String get inboxEditDiscardTitle => 'Atmest nesaglabātās izmaiņas?';
 
   @override
   String get inboxEditDiscardBody =>
-      'You have unsaved changes to this draft. Going back will discard them.';
+      'Šajā melnrakstā ir nesaglabātas izmaiņas. Dodoties atpakaļ, tās tiks atmestas.';
 
   @override
-  String get inboxEditKeepEditing => 'Keep editing';
+  String get inboxEditKeepEditing => 'Turpināt rediģēšanu';
 
   @override
-  String get inboxEditDiscard => 'Discard';
+  String get inboxEditDiscard => 'Atmest';
 
   @override
   String get workspaceTabOverview => 'Overview';
@@ -3566,71 +3571,71 @@ class AppLocalizationsLv extends AppLocalizations {
   String get workspaceInboxEmpty => 'No related email.';
 
   @override
-  String get plannerSettingsTitle => 'Three-pass legal reasoning';
+  String get plannerSettingsTitle => 'Trīspakāpju juridiskā argumentācija';
 
   @override
   String get plannerSettingsSubtitle =>
-      'Plan → answer → critique. Slower but more thorough.';
+      'Plāns → atbilde → kritika. Lēnāk, bet rūpīgāk.';
 
   @override
   String get plannerSettingsProBadge => 'Pro';
 
   @override
-  String get plannerSettingsProDescription => 'Available on Pro plan';
+  String get plannerSettingsProDescription => 'Pieejams Pro plānā';
 
   @override
-  String get plannerTrailHeaderPlan => 'Plan';
+  String get plannerTrailHeaderPlan => 'Plāns';
 
   @override
-  String get plannerTrailHeaderCritique => 'Critique';
+  String get plannerTrailHeaderCritique => 'Kritika';
 
   @override
-  String get plannerTrailSubQuestions => 'Sub-questions';
+  String get plannerTrailSubQuestions => 'Apakšjautājumi';
 
   @override
-  String get plannerTrailCounterArgs => 'Counter-arguments';
+  String get plannerTrailCounterArgs => 'Pretargumenti';
 
   @override
-  String get plannerTrailEvidenceGaps => 'Evidence gaps';
+  String get plannerTrailEvidenceGaps => 'Pierādījumu trūkumi';
 
   @override
-  String get plannerTrailMaterialGapTrue => 'Material gap detected';
+  String get plannerTrailMaterialGapTrue => 'Konstatēts būtisks trūkums';
 
   @override
-  String get plannerTrailRegeneratedBadge => 'Regenerated once';
+  String get plannerTrailRegeneratedBadge => 'Vienreiz pārģenerēts';
 
   @override
-  String get plannerTrailEmpty => 'no items';
+  String get plannerTrailEmpty => 'nav vienumu';
 
   @override
-  String get supportTitle => 'Help';
+  String get supportTitle => 'Palīdzība';
 
   @override
-  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+  String get supportSubtitle => 'Parasti atbildam 1–2 stundu laikā.';
 
   @override
-  String get supportSearchPlaceholder => 'Search help…';
+  String get supportSearchPlaceholder => 'Meklēt palīdzību…';
 
   @override
-  String get supportStatusAllOk => 'All systems normal';
+  String get supportStatusAllOk => 'Visas sistēmas darbojas normāli';
 
   @override
-  String get supportFaqWhatIs => 'What is Advocat?';
+  String get supportFaqWhatIs => 'Kas ir Advocat?';
 
   @override
-  String get supportFaqHowSubscribe => 'How do I subscribe to Pro?';
+  String get supportFaqHowSubscribe => 'Kā abonēt Pro?';
 
   @override
-  String get supportFaqExportData => 'Can I export my data?';
+  String get supportFaqExportData => 'Vai varu eksportēt savus datus?';
 
   @override
-  String get supportFaqCancelAccount => 'Cancel or delete account';
+  String get supportFaqCancelAccount => 'Atcelt vai dzēst kontu';
 
   @override
-  String get supportFaqTalkHuman => 'Talk to a human';
+  String get supportFaqTalkHuman => 'Runāt ar cilvēku';
 
   @override
-  String get supportContactEmail => 'Email';
+  String get supportContactEmail => 'E-pasts';
 
   @override
   String get supportContactTelegram => 'Telegram';
@@ -3639,58 +3644,58 @@ class AppLocalizationsLv extends AppLocalizations {
   String get supportContactWhatsapp => 'WhatsApp';
 
   @override
-  String get supportFooterSla => 'We respond within 24h';
+  String get supportFooterSla => 'Atbildam 24 stundu laikā';
 
   @override
   String get supportWhatsapp => 'WhatsApp';
 
   @override
-  String get supportEmail => 'Email';
+  String get supportEmail => 'E-pasts';
 
   @override
-  String get supportInApp => 'Message us here';
+  String get supportInApp => 'Rakstiet mums šeit';
 
   @override
-  String get supportCategoryLabel => 'Category';
+  String get supportCategoryLabel => 'Kategorija';
 
   @override
-  String get supportCategoryBug => 'Bug';
+  String get supportCategoryBug => 'Kļūda';
 
   @override
-  String get supportCategoryPayment => 'Payment issue';
+  String get supportCategoryPayment => 'Maksājuma problēma';
 
   @override
-  String get supportCategoryQuestion => 'Question';
+  String get supportCategoryQuestion => 'Jautājums';
 
   @override
-  String get supportCategoryFeature => 'Feature request';
+  String get supportCategoryFeature => 'Funkcijas pieprasījums';
 
   @override
-  String get supportCategoryOther => 'Other';
+  String get supportCategoryOther => 'Cits';
 
   @override
-  String get supportMessagePlaceholder => 'Describe your problem...';
+  String get supportMessagePlaceholder => 'Aprakstiet savu problēmu...';
 
   @override
-  String get supportEmailLabel => 'Email (optional)';
+  String get supportEmailLabel => 'E-pasts (neobligāti)';
 
   @override
-  String get supportSend => 'Send';
+  String get supportSend => 'Sūtīt';
 
   @override
-  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+  String get supportSentSuccess => 'Ziņojums nosūtīts! Drīz atbildēsim.';
 
   @override
-  String get supportError => 'Something went wrong. Try again.';
+  String get supportError => 'Kaut kas nogāja greizi. Mēģiniet vēlreiz.';
 
   @override
-  String get supportErrorTooShort => 'Please write at least 10 characters.';
+  String get supportErrorTooShort => 'Lūdzu, ierakstiet vismaz 10 rakstzīmes.';
 
   @override
-  String get supportErrorTooLong => 'Maximum 2000 characters.';
+  String get supportErrorTooLong => 'Maksimums 2000 rakstzīmes.';
 
   @override
-  String get supportPrivacyNotice => 'Your message is stored securely.';
+  String get supportPrivacyNotice => 'Jūsu ziņojums tiek glabāts droši.';
 
   @override
   String get reviewThisContract => 'Pārskatīt līgumu';
@@ -3812,38 +3817,38 @@ class AppLocalizationsLv extends AppLocalizations {
       'Patika? Uzaicini draugu — abi saņemsiet bezmaksas mēnesi.';
 
   @override
-  String get referralAntiFraud => 'Maximum 12 successful referrals per year.';
+  String get referralAntiFraud => 'Maksimums 12 veiksmīgi ieteikumi gadā.';
 
   @override
   String get referralEmpty =>
-      'No referrals yet. Send your link to start earning.';
+      'Vēl nav ieteikumu. Nosūtiet savu saiti, lai sāktu pelnīt.';
 
   @override
-  String get referralRecentActivity => 'Recent activity';
+  String get referralRecentActivity => 'Nesenā aktivitāte';
 
   @override
   String referralActivityInvited(String when) {
-    return 'Invited $when';
+    return 'Uzaicināts $when';
   }
 
   @override
   String referralActivityActivated(String when) {
-    return 'activated $when';
+    return 'aktivizēts $when';
   }
 
   @override
-  String get referralActivityPending => 'not activated yet';
+  String get referralActivityPending => 'vēl nav aktivizēts';
 
   @override
   String referralStatsInvitedCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count friends',
-      one: '1 friend',
-      zero: 'no friends yet',
+      other: '$count draugus',
+      one: '1 draugu',
+      zero: 'vēl nevienu draugu',
     );
-    return 'You\'ve invited $_temp0';
+    return 'Jūs esat uzaicinājis $_temp0';
   }
 
   @override
@@ -3851,9 +3856,9 @@ class AppLocalizationsLv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count have activated',
-      one: '1 has activated',
-      zero: 'none activated yet',
+      other: '$count ir aktivizējuši',
+      one: '1 ir aktivizējis',
+      zero: 'vēl neviens nav aktivizējis',
     );
     return '$_temp0';
   }
@@ -3863,45 +3868,45 @@ class AppLocalizationsLv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       months,
       locale: localeName,
-      other: '$months free months',
-      one: '1 free month',
-      zero: 'nothing yet',
+      other: '$months bezmaksas mēneši',
+      one: '1 bezmaksas mēnesis',
+      zero: 'vēl nekas',
     );
-    return 'Your bonus: $_temp0';
+    return 'Jūsu bonuss: $_temp0';
   }
 
   @override
   String get referralNudgeMessage =>
-      'Like Advocat? Invite a friend — both get a free month.';
+      'Patīk Advocat? Uzaiciniet draugu — abi saņemsiet bezmaksas mēnesi.';
 
   @override
-  String get referralNudgeAction => 'Invite';
+  String get referralNudgeAction => 'Uzaicināt';
 
   @override
-  String get referralLandingTitle => 'You\'ve been invited to Advocat';
+  String get referralLandingTitle => 'Jūs esat uzaicināts uz Advocat';
 
   @override
   String referralLandingSubtitle(String inviterName) {
-    return '$inviterName invited you — claim your free first month.';
+    return '$inviterName jūs uzaicināja — saņemiet savu bezmaksas pirmo mēnesi.';
   }
 
   @override
   String get referralLandingSubtitleGeneric =>
-      'Claim your free first month of Advocat Pro.';
+      'Saņemiet savu bezmaksas pirmo Advocat Pro mēnesi.';
 
   @override
-  String get referralLandingCta => 'Activate free month & sign up';
+  String get referralLandingCta => 'Aktivizēt bezmaksas mēnesi un reģistrēties';
 
   @override
-  String get referralLandingCtaSecondary => 'Or learn more about Advocat';
+  String get referralLandingCtaSecondary => 'Vai uzziniet vairāk par Advocat';
 
   @override
   String get referralLandingFallback =>
-      'This link has expired — but you can still try Advocat free.';
+      'Šīs saites derīguma termiņš ir beidzies — bet jūs joprojām varat izmēģināt Advocat bez maksas.';
 
   @override
   String get referralLandingBenefits =>
-      '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+      '17 valodas • Reāli Igaunijas, Somijas un ES tiesību akti • 24/7 — bez gaidīšanas';
 
   @override
   String get checkerProTagline => 'Profesionāli pārbaudes rīki';
@@ -3997,162 +4002,165 @@ class AppLocalizationsLv extends AppLocalizations {
   String get increaseDependents => 'Palielināt';
 
   @override
-  String get sensitiveConsentTitle => 'Sensitive data consent';
+  String get sensitiveConsentTitle => 'Piekrišana sensitīvu datu apstrādei';
 
   @override
   String get sensitiveConsentBody =>
-      'Documents you\'re about to upload may contain special-category personal data under GDPR Art. 9 — such as health records, criminal records, biometric data, or information about your racial origin, religion, or sexual orientation.\n\nWe process this data only to provide you with AI legal assistance, store it encrypted in your private account, and never use it to train models. You can withdraw consent and delete the data at any time from Settings.\n\nBy accepting, you give explicit consent under Art. 9(2)(a) GDPR to process special-category data for this purpose.';
+      'Dokumenti, kurus gatavojaties augšupielādēt, var saturēt īpašu kategoriju personas datus saskaņā ar VDAR 9. pantu — piemēram, veselības ierakstus, sodāmības reģistra datus, biometriskos datus vai informāciju par jūsu rases izcelsmi, reliģiju vai seksuālo orientāciju.\n\nMēs apstrādājam šos datus tikai, lai sniegtu jums MI juridisko palīdzību, glabājam tos šifrētus jūsu privātajā kontā un nekad neizmantojam tos modeļu apmācībai. Piekrišanu varat atsaukt un datus dzēst jebkurā laikā sadaļā “Iestatījumi”.\n\nPiekrītot, jūs sniedzat skaidri paustu piekrišanu saskaņā ar VDAR 9. panta 2. punkta a) apakšpunktu apstrādāt īpašu kategoriju datus šim mērķim.';
 
   @override
   String get sensitiveConsentExplicitCheckbox =>
-      'I give explicit consent to process special-category data (Art. 9(2)(a) GDPR).';
+      'Es sniedzu skaidri paustu piekrišanu apstrādāt īpašu kategoriju datus (VDAR 9. panta 2. punkta a) apakšpunkts).';
 
   @override
   String get sensitiveConsentRightToShareCheckbox =>
-      'I confirm I have the right to share this data (the data is mine, or I have informed/lawful basis to share third-party data).';
+      'Apliecinu, ka man ir tiesības koplietot šos datus (dati ir mani vai man ir informēts/likumīgs pamats koplietot trešo personu datus).';
 
   @override
   String get sensitiveConsentViewCategories =>
-      'View what counts as sensitive →';
+      'Skatīt, kas tiek uzskatīts par sensitīvu →';
 
   @override
   String get sensitiveConsentWithdrawAction =>
-      'Withdraw sensitive data consent';
+      'Atsaukt piekrišanu sensitīvu datu apstrādei';
 
   @override
-  String get privacyAndData => 'PRIVACY & DATA';
+  String get privacyAndData => 'KONFIDENCIALITĀTE UN DATI';
 
   @override
   String get exportMyDataSubtitle =>
-      'Download a copy of all your personal data (GDPR Art. 15).';
+      'Lejupielādējiet visu savu personas datu kopiju (VDAR 15. pants).';
 
   @override
-  String get withdrawSensitiveConsent => 'Sensitive data consent';
+  String get withdrawSensitiveConsent => 'Piekrišana sensitīvu datu apstrādei';
 
   @override
   String get withdrawSensitiveConsentSubtitle =>
-      'Manage or withdraw consent to process special-category data (GDPR Art. 9(2)(a)).';
+      'Pārvaldiet vai atsauciet piekrišanu īpašu kategoriju datu apstrādei (VDAR 9. panta 2. punkta a) apakšpunkts).';
 
   @override
-  String get dataProcessingAgreement => 'Data Processing Agreement';
+  String get dataProcessingAgreement => 'Datu apstrādes līgums';
 
   @override
-  String get exportingData => 'Exporting your data…';
+  String get exportingData => 'Eksportē jūsu datus…';
 
   @override
-  String get exportComplete => 'Data export ready — saved to your device.';
+  String get exportComplete =>
+      'Datu eksports ir gatavs — saglabāts jūsu ierīcē.';
 
   @override
   String get exportFailed =>
-      'Export failed. Please try again or contact support.';
+      'Eksports neizdevās. Lūdzu, mēģiniet vēlreiz vai sazinieties ar atbalsta dienestu.';
 
   @override
-  String get quotaExhaustedTitle => 'Free message limit reached';
+  String get quotaExhaustedTitle => 'Sasniegts bezmaksas ziņojumu ierobežojums';
 
   @override
   String quotaExhaustedBody(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month and get unlimited AI legal consultations.';
+    return 'Esat izmantojis visus $count bezmaksas ziņojumus. Jauniniet uz Advocat Counsel par €19.99 mēnesī un saņemiet neierobežotas MI juridiskās konsultācijas.';
   }
 
   @override
-  String get quotaExhaustedLater => 'Later';
+  String get quotaExhaustedLater => 'Vēlāk';
 
   @override
-  String get quotaExhaustedUpgrade => 'Advocat Counsel — €19.99/mo';
+  String get quotaExhaustedUpgrade => 'Advocat Counsel — €19.99/mēn.';
 
   @override
   String quotaCtaMessage(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month.';
+    return 'Esat izmantojis visus $count bezmaksas ziņojumus. Jauniniet uz Advocat Counsel par €19.99 mēnesī.';
   }
 
   @override
-  String get quotaCtaButton => 'Get Advocat Counsel — €19.99/mo';
+  String get quotaCtaButton => 'Iegūt Advocat Counsel — €19.99/mēn.';
 
   @override
   String get aiErrorQuota =>
-      'Free message limit reached. Subscribe to continue using AI.';
+      'Sasniegts bezmaksas ziņojumu ierobežojums. Abonējiet, lai turpinātu lietot MI.';
 
   @override
   String get aiErrorAuth =>
-      'Sign-in required to use the AI. Please register or log in.';
+      'Lai lietotu MI, nepieciešama pieteikšanās. Lūdzu, reģistrējieties vai pierakstieties.';
 
   @override
   String get aiErrorGeneric =>
-      'Temporary AI error. Please try again in a minute. If it persists, contact support.';
+      'Īslaicīga MI kļūda. Lūdzu, mēģiniet vēlreiz pēc minūtes. Ja tā saglabājas, sazinieties ar atbalsta dienestu.';
 
   @override
-  String get tooltipShareCase => 'Share case summary';
+  String get tooltipShareCase => 'Kopīgot lietas kopsavilkumu';
 
   @override
-  String get tooltipMuteVoice => 'Mute voice';
+  String get tooltipMuteVoice => 'Izslēgt balsi';
 
   @override
-  String get tooltipUnmuteVoice => 'Unmute voice';
+  String get tooltipUnmuteVoice => 'Ieslēgt balsi';
 
   @override
-  String get tooltipAttachDoc => 'Attach document';
+  String get tooltipAttachDoc => 'Pievienot dokumentu';
 
   @override
-  String get aiTypingHint => 'AI…';
+  String get aiTypingHint => 'MI…';
 
   @override
-  String get error404Title => 'Page not found';
+  String get error404Title => 'Lapa nav atrasta';
 
   @override
   String error404Body(String path) {
-    return 'We couldn\'t find: $path';
+    return 'Mēs nevarējām atrast: $path';
   }
 
   @override
-  String get goToHome => 'Go to home';
+  String get goToHome => 'Doties uz sākumu';
 
   @override
   String get emailAlreadyRegistered =>
-      'This email is already registered. Want to sign in?';
+      'Šis e-pasts jau ir reģistrēts. Vai vēlaties pierakstīties?';
 
   @override
-  String get actionSignIn => 'Sign in';
+  String get actionSignIn => 'Pierakstīties';
 
   @override
-  String get actionUndo => 'Undo';
+  String get actionUndo => 'Atsaukt';
 
   @override
-  String get intakeUrgentOpened => 'Chat opened — your draft is saved.';
+  String get intakeUrgentOpened =>
+      'Saruna atvērta — jūsu melnraksts ir saglabāts.';
 
   @override
-  String get panicCoachmark => 'Hold for emergency help.';
+  String get panicCoachmark =>
+      'Turiet nospiestu, lai saņemtu ārkārtas palīdzību.';
 
   @override
-  String get panicTitle => 'What do you need right now?';
+  String get panicTitle => 'Kas jums ir nepieciešams tieši tagad?';
 
   @override
-  String get panicCardReadAloud => 'Read aloud to the officer';
+  String get panicCardReadAloud => 'Nolasīt skaļi ierēdnim';
 
   @override
-  String get panicCardRecord => 'Record this conversation';
+  String get panicCardRecord => 'Ierakstīt šo sarunu';
 
   @override
-  String get panicCardCall => 'Call a lawyer';
+  String get panicCardCall => 'Zvanīt juristam';
 
   @override
-  String get panicCardAi => 'Talk to Advocat now';
+  String get panicCardAi => 'Runāt ar Advocat tagad';
 
   @override
-  String get panicClose => 'Close';
+  String get panicClose => 'Aizvērt';
 
   @override
   String get panicBadgeV2 => 'V2';
 
   @override
-  String get panicRecordV1Title => 'Coming in V2';
+  String get panicRecordV1Title => 'Drīzumā V2 versijā';
 
   @override
   String get panicRecordV1Body =>
-      'The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone\'s built-in voice recorder.';
+      'Ierakstīšanas funkcija tiek juridiski validēta Igaunijai un būs pieejama V2 versijā. Pagaidām izmantojiet tālruņa iebūvēto balss ierakstītāju.';
 
   @override
   String get panicCallFallbackBody =>
-      'Email kiire@advocat.ee with a short description and we will call you back.';
+      'Rakstiet uz kiire@advocat.ee ar īsu aprakstu, un mēs jums atzvanīsim.';
 
   @override
   String get consiliumHeader => 'Juristu konsīlijs';
@@ -4230,10 +4238,10 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get softCaseShellBanner =>
-      'We created \"Untitled case\" to track this. Tap to rename.';
+      'Mēs izveidojām “Lietu bez nosaukuma”, lai to izsekotu. Pieskarieties, lai pārdēvētu.';
 
   @override
-  String get softCaseShellBannerCta => 'Rename';
+  String get softCaseShellBannerCta => 'Pārdēvēt';
 
   @override
   String get draftsTab => 'Drafts';

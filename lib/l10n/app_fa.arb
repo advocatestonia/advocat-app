@@ -1,1357 +1,1954 @@
 {
-    "@@locale": "fa",
-    "about": "درباره",
-    "aboutSection": "درباره",
-    "appearance": "Appearance",
-    "appearanceSystem": "System (auto)",
-    "appearanceLight": "Light",
-    "appearanceDark": "Dark",
-    "appearanceDescription": "Choose how Advocat looks",
-    "accidents": "تصادفات",
-    "active": "فعال",
-    "activeCases": "پرونده‌های فعال",
-    "addedToAppeal": "به تجدیدنظر اضافه شد",
-    "agreeToTerms": "موافقم با ",
-    "aiAnalysis": "تحلیل هوش مصنوعی",
-    "aiAssistant": "دستیار حقوقی هوش مصنوعی",
-    "aiChat": "گفتگوی هوش مصنوعی",
-    "all": "همه",
-    "alreadyHaveAccount": "قبلاً حساب دارید؟ ",
-    "analyzing": "در حال تحلیل…",
-    "andWord": " و ",
-    "appTitle": "Advocat — ابزار اطلاعات حقوقی",
-    "appVersion": "نسخه برنامه",
-    "appealFiled": "تجدیدنظر ثبت شد",
-    "areYouAbsolutelySure": "آیا کاملاً مطمئن هستید؟",
-    "askAboutCase": "تحلیل پرونده من",
-    "asylum": "پناهندگی",
-    "back": "قبلی",
-    "basic": "پایه",
-    "beforeYouBuy": "قبل از خرید",
-    "beforeYouWork": "قبل از همکاری با آن‌ها",
-    "camera": "دوربین",
-    "cancel": "لغو",
-    "caseDescription": "وضعیت خود را توضیح دهید",
-    "caseDetail": "جزئیات پرونده",
-    "caseOverview": "خلاصه پرونده‌های شما",
-    "caseTitle": "عنوان پرونده",
-    "caseUpdated": "پرونده به‌روز شد",
-    "cases": "پرونده‌ها",
-    "checkCompany": "بررسی شرکت",
-    "checkDeadlines": "بررسی مهلت‌ها",
-    "checkVehicle": "بررسی خودرو",
-    "checkerTitle": "بررسی‌کننده",
-    "checkingErrors": "بررسی خطاها…",
-    "choosePlan": "انتخاب طرح",
-    "closed": "بسته شده",
-    "companyName": "نام شرکت یا شماره ثبت",
-    "completed": "تکمیل شده",
-    "confirm": "تأیید",
-    "confirmPassword": "تأیید رمز عبور",
-    "connectEmail": "اتصال ایمیل",
-    "connectGmail": "اتصال Gmail",
-    "connectOutlook": "اتصال Outlook",
-    "connected": "متصل",
-    "contactSupport": "تماس با پشتیبانی",
-    "continueWithGoogle": "ادامه با Google",
-    "copyText": "کپی متن",
-    "correspondence": "مکاتبات",
-    "couldNotLoadCases": "بارگذاری پرونده‌ها ممکن نشد",
-    "country": "کشور",
-    "createAccount": "ایجاد حساب",
-    "createCase": "ایجاد پرونده",
-    "criminalCase": "پرونده کیفری",
-    "critical": "بحرانی",
-    "currentPlan": "طرح فعلی",
-    "dataAndPrivacy": "داده‌ها و حریم خصوصی",
-    "dataExportRequested": "خروجی داده‌ها درخواست شد. ایمیل خود را بررسی کنید.",
-    "daysRemaining": "{count, plural, =0{روزی باقی نمانده} =1{۱ روز} other{{count} روز}}",
-    "@daysRemaining": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineReminders": "یادآوری مهلت‌ها",
-    "deadlineRemindersDesc": "قبل از مهلت‌ها اعلان دریافت کنید",
-    "deadlines": "مهلت‌ها",
-    "debtCollection": "وصول مطالبات",
-    "deleteAccount": "حذف حساب",
-    "deleteAccountDesc": "حذف دائمی حساب شما",
-    "deleteAccountDialogContent": "این عمل دائمی و غیرقابل بازگشت است. تمام داده‌ها، پرونده‌ها و اسناد شما برای همیشه حذف خواهد شد.",
-    "deleteConfirm": "آیا مطمئن هستید؟ تمام داده‌های شما برای همیشه حذف خواهد شد.",
-    "demoHint": "نسخه نمایشی: پلاک «908FBT» را امتحان کنید",
-    "demoModeDesc": "برنامه را با داده‌های نمونه از یک پرونده واقعی کاوش کنید",
-    "deportation": "اخراج",
-    "disclaimer": "فقط راهنمایی هوش مصنوعی — مشاوره حقوقی نیست. همیشه با وکیل مشورت کنید.",
-    "disclaimerFull": "این یک دستیار هوش مصنوعی است، نه وکیل. تحلیل هوش مصنوعی ممکن است حاوی خطا باشد. همیشه با یک متخصص حقوقی واجد شرایط بررسی کنید.",
-    "disconnect": "قطع اتصال",
-    "discrimination": "تبعیض",
-    "doNotBuy": "نخرید",
-    "documents": "اسناد",
-    "documentsCount": "{count, plural, =0{بدون سند} =1{۱ سند} other{{count} سند}}",
-    "@documentsCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "draftAppeal": "پیش‌نویس تجدیدنظر",
-    "editDraft": "ویرایش",
-    "editProfile": "ویرایش پروفایل",
-    "email": "ایمیل",
-    "emailConnected": "ایمیل متصل شد",
-    "emailDisconnected": "ایمیل قطع شد",
-    "emailIntegration": "یکپارچه‌سازی ایمیل",
-    "emailInvalid": "لطفاً یک آدرس ایمیل معتبر وارد کنید",
-    "emailPrivacyNote": "ما فقط ایمیل‌های مربوط به مسائل حقوقی را می‌خوانیم. ایمیل‌های شخصی شما خصوصی می‌مانند.",
-    "emailRequired": "ایمیل الزامی است",
-    "emergencyShield": "سپر اضطراری",
-    "error": "خطا",
-    "exportDataDesc": "دانلود تمام داده‌های پرونده",
-    "exportDataDialogContent": "ما یک فایل دانلود از تمام داده‌های شما شامل پرونده‌ها، اسناد و مکاتبات آماده می‌کنیم. وقتی آماده شد ایمیلی دریافت خواهید کرد.",
-    "exportMyData": "خروجی داده‌های من",
-    "exportPdf": "خروجی PDF",
-    "familyReunification": "پیوستن خانواده",
-    "forgotPassword": "رمز عبور را فراموش کرده‌اید؟",
-    "free": "رایگان",
-    "fullDefense": "Advocat Pro",
-    "fullName": "نام کامل",
-    "gallery": "گالری",
-    "generateAppeal": "تولید تجدیدنظر",
-    "getStarted": "شروع",
-    "goodAfternoon": "عصر بخیر، {name}",
-    "@goodAfternoon": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodEvening": "شب بخیر، {name}",
-    "@goodEvening": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodMorning": "صبح بخیر، {name}",
-    "@goodMorning": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodNight": "شب بخیر، {name}",
-    "@goodNight": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "home": "خانه",
-    "important": "مهم",
-    "inProgress": "در حال انجام",
-    "informational": "اطلاع‌رسانی",
-    "inspection": "بازرسی فنی",
-    "insurance": "بیمه",
-    "issuesFound": "{count, plural, =0{مشکلی یافت نشد} =1{۱ مشکل یافت شد} other{{count} مشکل یافت شد}}",
-    "@issuesFound": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "laborDispute": "اختلاف کارگری",
-    "langEnglish": "انگلیسی",
-    "langFinnish": "فنلاندی",
-    "langRussian": "روسی",
-    "language": "زبان",
-    "lastActivity": "آخرین فعالیت: {time}",
-    "@lastActivity": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "legalFighter": "مبارز حقوقی",
-    "legalSection": "حقوقی",
-    "licensePlate": "پلاک",
-    "loading": "در حال بارگذاری…",
-    "logIn": "ورود",
-    "loginFailed": "ایمیل یا رمز عبور نامعتبر است. لطفاً دوباره تلاش کنید.",
-    "lost": "بازنده",
-    "markComplete": "علامت‌گذاری به عنوان تکمیل شده",
-    "mileage": "کیلومتر",
-    "myCases": "پرونده‌های من",
-    "nameRequired": "نام کامل الزامی است",
-    "newCase": "پرونده جدید",
-    "next": "بعدی",
-    "noAccount": "حساب ندارید؟ ",
-    "noCases": "هنوز پرونده‌ای نیست",
-    "noCasesYet": "هنوز پرونده‌ای نیست",
-    "noDeadlines": "مهلتی نیست — همه چیز مرتب است!",
-    "noRecentActivity": "فعالیت اخیری نیست",
-    "notifications": "اعلان‌ها",
-    "onboardingDesc1": "Advocat به شما کمک می‌کند وضعیت حقوقی خود را درک کنید. ابزارهای هوش مصنوعی اسناد را تحلیل می‌کنند، مشکلات احتمالی را شناسایی می‌کنند و پیش‌نویس اسناد را برای بررسی شما آماده می‌کنند. این یک دفتر وکالت نیست — یک ابزار فناوری برای پشتیبانی از پرونده شماست.",
-    "onboardingDesc2": "از هر سند حقوقی عکس بگیرید. هوش مصنوعی آن را به چندین زبان می‌خواند، داده‌های کلیدی را استخراج می‌کند و انطباق با دستورالعمل‌های اتحادیه اروپا و قوانین ملی را بررسی می‌کند.",
-    "onboardingDesc3": "ابزارهای هوش مصنوعی ما بیش از ۴۰ نوع الزامات آیین دادرسی را بررسی می‌کنند. تحلیل هوش مصنوعی ممکن است مشکلاتی را شناسایی کند که نیاز به توجه دارند — مانند زبان ابلاغ، مراحل دادرسی و مهلت‌های قانونی. همیشه با یک وکیل واجد شرایط بررسی کنید.",
-    "onboardingDesc4": "هوش مصنوعی پیش‌نویس تجدیدنظر، شکایات و نامه‌ها را با ارجاعات حقوقی برای بررسی شما آماده می‌کند. شما تصمیم می‌گیرید چه چیزی ارسال شود. هر سند باید توسط یک متخصص حقوقی واجد شرایط پیش از تقدیم بررسی شود.",
-    "onboardingNext": "بعدی",
-    "onboardingSkip": "رد شدن",
-    "onboardingTitle1": "اطلاعات حقوقی مبتنی بر هوش مصنوعی",
-    "onboardingTitle2": "اسکن و تحلیل اسناد",
-    "onboardingTitle3": "هوش مصنوعی مشکلات احتمالی را بررسی می‌کند",
-    "onboardingTitle4": "پیش‌نویس اسناد برای بررسی شما",
-    "openACase": "باز کردن پرونده",
-    "optional": "(اختیاری)",
-    "orDivider": "یا",
-    "other": "سایر",
-    "overdue": "عقب افتاده",
-    "owners": "مالکان قبلی",
-    "password": "رمز عبور",
-    "passwordRequired": "رمز عبور الزامی است",
-    "passwordStrengthMedium": "متوسط",
-    "passwordStrengthStrong": "قوی",
-    "passwordStrengthWeak": "ضعیف",
-    "passwordTooShort": "رمز عبور باید حداقل ۸ کاراکتر باشد",
-    "passwordsDoNotMatch": "رمزهای عبور مطابقت ندارند",
-    "pendingDecision": "در انتظار تصمیم",
-    "perCheck": "به ازای هر بررسی",
-    "permanentlyDelete": "حذف دائمی",
-    "policeMisconduct": "سوءرفتار پلیس",
-    "popular": "محبوب",
-    "preferences": "ترجیحات",
-    "preferredLanguage": "زبان ترجیحی",
-    "pricePerCheck": "€۴٫۹۹ به ازای هر بررسی",
-    "privacyPolicy": "سیاست حفظ حریم خصوصی",
-    "pro": "حرفه‌ای",
-    "pushNotifications": "اعلان‌های فشاری",
-    "rateUs": "به ما امتیاز دهید",
-    "readingDocument": "در حال خواندن سند…",
-    "recentActivity": "فعالیت اخیر",
-    "referenceNumber": "شماره مرجع",
-    "registerFailed": "ثبت‌نام ناموفق بود. لطفاً دوباره تلاش کنید.",
-    "reportFraud": "گزارش کلاهبرداری",
-    "requestExport": "درخواست خروجی",
-    "researchingLaw": "تحقیق قانون قابل اعمال…",
-    "resetPasswordFailed": "ارسال لینک ناموفق بود. لطفاً دوباره تلاش کنید.",
-    "resetPasswordSent": "لینک بازنشانی رمز عبور به ایمیل شما ارسال شد.",
-    "residencePermit": "اجازه اقامت",
-    "manageSubscription": "مدیریت اشتراک",
-    "restorePurchases": "بازیابی خریدها",
-    "retry": "تلاش مجدد",
-    "reviewWarning": "قبل از ارسال با دقت بررسی کنید. شما مسئول محتوا هستید.",
-    "riskHigh": "ریسک بالا — اجتناب کنید",
-    "riskLow": "امن برای همکاری",
-    "riskMedium": "با احتیاط پیش بروید",
-    "safeToBuy": "امن برای خرید",
-    "saveAndAnalyze": "ذخیره و تحلیل",
-    "saveDraft": "ذخیره",
-    "saveWithAnnual": "۲۵٪ با پرداخت سالانه صرفه‌جویی کنید",
-    "scan": "اسکن",
-    "scanDocument": "اسکن سند",
-    "searchCases": "جستجوی پرونده‌ها…",
-    "selectCountry": "انتخاب کشور",
-    "selectLanguage": "انتخاب زبان",
-    "sendViaEmail": "ارسال از طریق ایمیل",
-    "settings": "تنظیمات",
-    "signIn": "ورود",
-    "signInLink": "ورود",
-    "signInSubtitle": "برای دسترسی به پرونده‌های خود وارد شوید",
-    "signOut": "خروج",
-    "signOutConfirm": "آیا مطمئن هستید که می‌خواهید خارج شوید؟",
-    "signUp": "ایجاد حساب",
-    "signUpLink": "ثبت‌نام",
-    "socialBenefits": "مزایای اجتماعی",
-    "someConcerns": "برخی نگرانی‌ها",
-    "startFirstCase": "اولین پرونده خود را شروع کنید",
-    "step": "مرحله {current} از {total}",
-    "@step": {
-        "placeholders": {
-            "current": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "stolen": "بررسی سرقت",
-    "subscription": "اشتراک",
-    "syncLegalCorrespondence": "همگام‌سازی مکاتبات حقوقی",
-    "syncNow": "همگام‌سازی اکنون",
-    "tenantRights": "حقوق مستأجر",
-    "termsOfService": "شرایط خدمات",
-    "termsRequired": "باید شرایط خدمات را بپذیرید",
-    "timeline": "جدول زمانی",
-    "tryDemoMode": "حالت آزمایشی را امتحان کنید",
-    "typeDeleteToConfirm": "برای تأیید حذف دائمی حساب، DELETE را تایپ کنید.",
-    "typeMessage": "پیام بنویسید…",
-    "upcoming": "آینده",
-    "uploadDocument": "بارگذاری سند",
-    "urgentDeadline": "فوری: {title}",
-    "@urgentDeadline": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "useInAppeal": "استفاده در تجدیدنظر",
-    "vehicleChecker": "بررسی‌کننده خودرو",
-    "vehicleChecks": "بررسی‌های وضعیت",
-    "vehicleColor": "رنگ",
-    "vehicleMake": "سازنده",
-    "vehicleModel": "مدل",
-    "vehicleYear": "سال",
-    "version": "نسخه",
-    "victimSupport": "حمایت از قربانیان",
-    "viewAll": "مشاهده همه",
-    "vinNumber": "شماره شناسایی خودرو (VIN)",
-    "welcomeBack": "خوش آمدید",
-    "whatAreMyOptions": "گزینه‌های من چیست؟",
-    "won": "برنده",
-    "documentVault": "صندوق اسناد",
-    "secureDocumentStorage": "ذخیره‌سازی امن اسناد",
-    "secureDocumentStorageDesc": "اسناد حقوقی مهم خود را به صورت امن ذخیره کنید. تمام فایل‌ها به صورت سرتاسری رمزنگاری شده‌اند.",
-    "addDocument": "افزودن سند",
-    "chooseHowToAdd": "نحوه افزودن سند خود را انتخاب کنید",
-    "uploadFile": "بارگذاری فایل",
-    "uploadFileDesc": "یک فایل PDF یا تصویر از دستگاه خود انتخاب کنید",
-    "scanDocumentDesc": "از سند خود عکس بگیرید",
-    "createNote": "ایجاد یادداشت",
-    "createNoteDesc": "یادداشتی بنویسید یا جزئیات مهم را ثبت کنید",
-    "knowYourRights": "حقوق خود را بشناسید",
-    "stoppedByPolice": "توقف توسط پلیس",
-    "stoppedByPoliceDesc": "حقوق شما در هنگام مواجهه با پلیس",
-    "deportationNotice": "اخطار اخراج",
-    "deportationNoticeDesc": "مراحل اعتراض به حکم اخراج",
-    "workplaceRights": "حقوق محل کار",
-    "workplaceRightsDesc": "حمایت‌های قانون کار در فنلاند",
-    "tenantRightsDesc": "حمایت‌های مسکن و اجاره",
-    "immigrationDetention": "بازداشت مهاجرتی",
-    "immigrationDetentionDesc": "حقوق شما در صورت بازداشت توسط مقامات",
-    "discriminationDesc": "نحوه گزارش و مبارزه با تبعیض",
-    "scenarioNotFound": "سناریو یافت نشد",
-    "youHaveRightTo": "شما حق دارید:",
-    "youMust": "شما باید:",
-    "immediateSteps": "اقدامات فوری:",
-    "yourRights": "حقوق شما:",
-    "basicRights": "حقوق اساسی:",
-    "yourRightsAsTenant": "حقوق شما به عنوان مستأجر:",
-    "yourRightsInDetention": "حقوق شما در بازداشت:",
-    "howToAct": "نحوه عمل:",
-    "rightKnowWhyStopped": "دانستن دلیل توقف",
-    "rightRemainSilent": "سکوت کردن (باید هویت خود را اعلام کنید)",
-    "rightAskInterpreter": "درخواست مترجم",
-    "rightContactLawyer": "تماس با وکیل قبل از بازجویی",
-    "rightRecordEncounter": "ضبط مواجهه (در اماکن عمومی)",
-    "mustProvideName": "ارائه نام و تاریخ تولد",
-    "mustShowId": "نشان دادن کارت شناسایی در صورت داشتن",
-    "mustNotResist": "مقاومت فیزیکی نکردن",
-    "doNotIgnoreNotice": "اخطار را نادیده نگیرید - مهلت‌ها سختگیرانه هستند",
-    "noteAppealDeadline": "مهلت تجدیدنظر را یادداشت کنید (معمولاً ۳۰ روز)",
-    "contactLawyerImmediately": "فوراً با وکیل تماس بگیرید",
-    "applyLegalAid": "در صورت نیاز درخواست کمک حقوقی دهید",
-    "rightAppealAdmin": "حق تجدیدنظر در دادگاه اداری",
-    "rightLegalRep": "حق داشتن نماینده حقوقی",
-    "rightInterpreter": "حق داشتن مترجم",
-    "rightStayDuringAppeal": "حق ماندن در طول تجدیدنظر (در اکثر موارد)",
-    "minimumWage": "حداقل دستمزد طبق قرارداد جمعی",
-    "workingTimeLimits": "محدودیت ساعت کار (حداکثر ۸ ساعت/روز، ۴۰ ساعت/هفته)",
-    "annualLeave": "مرخصی سالانه (حداقل ۲ روز به ازای هر ماه کار)",
-    "sickLeave": "غرامت مرخصی استعلاجی",
-    "safeWorkingConditions": "شرایط کاری ایمن",
-    "writtenRentalAgreement": "قرارداد اجاره کتبی الزامی است",
-    "securityDeposit": "ودیعه حداکثر ۳ ماه اجاره",
-    "landlordNotice": "موجر باید اخطار دهد (۳ تا ۶ ماه)",
-    "rightHabitableDwelling": "حق داشتن مسکن مناسب",
-    "protectionUnjustEviction": "حمایت در برابر تخلیه ناعادلانه",
-    "rightKnowDetentionReason": "حق دانستن دلیل بازداشت",
-    "rightContactLawyerDetention": "حق تماس با وکیل",
-    "rightContactEmbassy": "حق تماس با سفارت خود",
-    "rightChallengeDetention": "حق اعتراض به بازداشت در دادگاه",
-    "rightHumaneTreatment": "حق برخورد انسانی و مراقبت پزشکی",
-    "documentIncident": "حادثه را مستند کنید (تاریخ، زمان، شاهدان)",
-    "fileComplaintOmbudsman": "شکایت نزد آمبودزمان عدم تبعیض تسلیم کنید",
-    "contactLegalAidOffice": "با دفتر کمک حقوقی تماس بگیرید",
-    "reportToPolice": "در صورت جنایی بودن به پلیس گزارش دهید (تهدید، حمله)",
-    "legalAidCalculator": "محاسبه‌گر کمک حقوقی",
-    "checkEligibility": "واجد شرایط بودن خود برای کمک حقوقی {country} را بررسی کنید",
-    "estimateDisclaimer": "این فقط یک تخمین است. واجد شرایط بودن واقعی توسط دفتر کمک حقوقی تعیین می‌شود.",
-    "monthlyIncome": "درآمد ماهانه (یورو)",
-    "totalAssets": "کل دارایی‌ها (یورو)",
-    "numberOfDependents": "تعداد افراد تحت تکفل",
-    "calculateEligibility": "محاسبه واجد شرایط بودن",
-    "likelyEligible": "احتمالاً واجد شرایط",
-    "mayNotQualify": "ممکن است واجد شرایط نباشید",
-    "fullFreeLegalAid": "شما احتمالاً واجد شرایط کمک حقوقی رایگان کامل هستید (بدون پرداخت سهم).",
-    "legalAidWithCopay": "ممکن است واجد شرایط کمک حقوقی با پرداخت سهم {percent}% باشید.",
-    "@legalAidWithCopay": {
-        "placeholders": {
-            "percent": {
-                "type": "String"
-            }
-        }
-    },
-    "mayNotQualifyDesc": "بر اساس این تخمین، ممکن است واجد شرایط کمک حقوقی دولتی نباشید. با یک وکیل خصوصی یا کلینیک حقوقی مشورت کنید.",
-    "couldNotLoadDeadlines": "بارگذاری مهلت‌ها ممکن نشد",
-    "noUpcomingDeadlines": "مهلت آینده‌ای نیست",
-    "allClearDeadlines": "همه چیز مرتب است! مهلت‌های جدید در اینجا نمایش داده می‌شوند.",
-    "nothingOverdue": "چیزی عقب نیفتاده",
-    "greatJobDeadlines": "کار عالی در پیگیری مهلت‌هایتان.",
-    "noCompletedDeadlines": "مهلت تکمیل شده‌ای نیست",
-    "completedDeadlinesDesc": "مهلت‌هایی که تکمیل می‌کنید در اینجا نمایش داده می‌شوند.",
-    "daysLate": "روز تأخیر",
-    "days": "روز",
-    "fromDocument": "از سند",
-    "couldNotLoadCase": "بارگذاری جزئیات پرونده ممکن نشد",
-    "typeLabel": "نوع",
-    "nationality": "ملیت",
-    "migriReference": "شماره مرجع Migri",
-    "courtCaseNo": "شماره پرونده دادگاه",
-    "created": "ایجاد شده",
-    "citizenship": "تابعیت",
-    "workPermit": "مجوز کار",
-    "noDocumentsYet": "هنوز سندی بارگذاری نشده",
-    "noUpcomingDeadlinesShort": "مهلت آینده‌ای نیست",
-    "caseCreated": "پرونده ایجاد شد",
-    "decisionReceived": "تصمیم دریافت شد",
-    "appealDeadline": "مهلت تجدیدنظر",
-    "hearingScheduled": "جلسه دادرسی تعیین شد",
-    "late": "دیرکرد",
-    "pending": "در انتظار",
-    "processing": "در حال پردازش",
-    "ready": "آماده",
-    "failed": "ناموفق",
-    "analyzed": "تحلیل شده",
-    "noDocumentsScanHint": "هنوز سندی نیست. اسکن کنید یا بارگذاری کنید.",
-    "inCourt": "در دادگاه",
-    "appeal": "تجدیدنظر",
-    "caseTimeline": "جدول زمانی پرونده",
-    "couldNotLoadTimeline": "بارگذاری جدول زمانی ممکن نشد",
-    "noEventsYet": "هنوز رویدادی نیست",
-    "activityWillAppear": "فعالیت‌ها با پیشرفت پرونده شما در اینجا نمایش داده می‌شوند.",
-    "caseCreatedDesc": "پرونده «{title}» ایجاد شد.",
-    "@caseCreatedDesc": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "decisionReceivedDesc": "یک تصمیم رسمی برای این پرونده دریافت شد.",
-    "appealDeadlineSet": "مهلت تجدیدنظر تعیین شد",
-    "appealDeadlineDesc": "تجدیدنظر باید تا {date} تسلیم شود.",
-    "@appealDeadlineDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "hearingScheduledDesc": "جلسه دادگاه برای {date} تعیین شده است.",
-    "@hearingScheduledDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "caseInfoUpdated": "اطلاعات پرونده آخرین بار به‌روزرسانی شد.",
-    "documentAnalysis": "تحلیل سند",
-    "exportAsPdf": "خروجی به صورت PDF",
-    "pdfExportComingSoon": "خروجی PDF به زودی",
-    "analysisFailedRetry": "تحلیل ناموفق بود. لطفاً دوباره تلاش کنید.",
-    "somethingWentWrong": "مشکلی پیش آمد",
-    "genericError": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
-    "retryAnalysis": "تلاش مجدد تحلیل",
-    "issuesFoundInDocument": "{count, plural, =0{مشکلی در سند یافت نشد} =1{۱ مشکل در سند یافت شد} other{{count} مشکل در سند یافت شد}}",
-    "@issuesFoundInDocument": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "severityOverview": "نمای کلی شدت",
-    "issuesFoundHeader": "مشکلات یافت شده",
-    "generateAppealWithIssues": "{count, plural, =1{ایجاد دادخواست (۱ مشکل)} other{ایجاد دادخواست ({count} مشکل)}}",
-    "@generateAppealWithIssues": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "analyzingContent": "در حال تحلیل محتوا…",
-    "documentProcessedOk": "سند با موفقیت پردازش شد",
-    "noSignificantIssues": "مشکل قابل توجهی در این سند شناسایی نشد.",
-    "cameraPermissionRequired": "مجوز دوربین لازم است",
-    "cameraPermissionDesc": "برای اسکن اسناد دسترسی دوربین را اعطا کنید، یا از گالری استفاده کنید.",
-    "openSettings": "باز کردن تنظیمات",
-    "alignDocument": "سند را در کادر تنظیم کنید",
-    "pageCount": "{count, plural, =0{بدون صفحه} =1{۱ صفحه} other{{count} صفحه}}",
-    "@pageCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "preview": "پیش‌نمایش",
-    "pageNumber": "صفحه {number}",
-    "@pageNumber": {
-        "placeholders": {
-            "number": {
-                "type": "int"
-            }
-        }
-    },
-    "done": "انجام شد",
-    "retake": "عکس مجدد",
-    "useThisPhoto": "استفاده از این عکس",
-    "addPage": "افزودن صفحه",
-    "uploadingPercent": "در حال بارگذاری… {percent}%",
-    "@uploadingPercent": {
-        "placeholders": {
-            "percent": {
-                "type": "int"
-            }
-        }
-    },
-    "preparingUpload": "آماده‌سازی بارگذاری…",
-    "documentUploadedSuccess": "سند با موفقیت بارگذاری شد",
-    "pagesUploadedSuccess": "{count, plural, =1{۱ صفحه با موفقیت بارگذاری شد} other{{count} صفحه با موفقیت بارگذاری شد}}",
-    "@pagesUploadedSuccess": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "uploadFailed": "بارگذاری ناموفق بود. لطفاً اتصال خود را بررسی کنید و دوباره تلاش کنید.",
-    "capturePhotoFailed": "گرفتن عکس ناموفق بود. لطفاً دوباره تلاش کنید.",
-    "readingText": "در حال خواندن متن…",
-    "draftDocument": "پیش‌نویس سند",
-    "saveChanges": "ذخیره تغییرات",
-    "editDocument": "ویرایش سند",
-    "generatingDraft": "در حال تولید پیش‌نویس شما…",
-    "generatingDraftDesc": "هوش مصنوعی در حال تهیه یک سند حقوقی بر اساس جزئیات پرونده و مشکلات انتخاب شده شماست.",
-    "failedToGenerateDraft": "تولید پیش‌نویس ناموفق بود. لطفاً دوباره تلاش کنید.",
-    "changesSaved": "تغییرات ذخیره شد",
-    "copiedToClipboard": "در کلیپ‌بورد کپی شد",
-    "emailComingSoon": "ارسال ایمیل به زودی",
-    "reviewBeforeSending": "قبل از ارسال با دقت بررسی کنید. شما مسئول محتوای این سند هستید.",
-    "noContentAvailable": "محتوایی در دسترس نیست",
-    "save": "ذخیره",
-    "edit": "ویرایش",
-    "pdf": "PDF",
-    "copy": "کپی",
-    "appealDraft": "پیش‌نویس تجدیدنظر",
-    "selected": "{count} انتخاب شده",
-    "@selected": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deleteSelected": "حذف انتخاب شده‌ها",
-    "deleteDocumentsConfirm": "{count} سند حذف شود؟",
-    "@deleteDocumentsConfirm": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "delete": "حذف",
-    "analyzeSelected": "تحلیل انتخاب شده‌ها",
-    "batchAnalysisStarting": "شروع تحلیل دسته‌ای…",
-    "switchToList": "تغییر به فهرست",
-    "switchToGrid": "تغییر به شبکه",
-    "scanNew": "اسکن جدید",
-    "noDocumentsYetScan": "هنوز سندی نیست",
-    "scanFirstDocumentHint": "اولین سند خود را اسکن کنید تا هوش مصنوعی آن را برای خطاها تحلیل کند و تجدیدنظر تولید کند.",
-    "failedToLoadDocuments": "بارگذاری اسناد ناموفق بود",
-    "aiDisclaimer": "سلب مسئولیت هوش مصنوعی",
-    "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
-    "@aiDisclaimerCompact": {
-        "description": "TODO: native legal review (currently English fallback)"
-    },
-    "aiDisclaimerFullTitle": "Important: how Advocat works",
-    "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
-    "aiDisclaimerExpand": "Learn more",
-    "aiDisclaimerDismiss": "OK, I understand",
-    "annual": "سالانه",
-    "assignToCase": "اختصاص به پرونده",
-    "basicAiAnalysis": "تحلیل پایه هوش مصنوعی",
-    "caseCreationComingSoon": "ایجاد پرونده با داده‌های از پیش پر شده به زودی",
-    "caseSummaryCopied": "خلاصه پرونده کپی شد",
-    "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
-    "checkingPurchases": "بررسی خریدهای قبلی…",
-    "connectYourEmail": "ایمیل خود را متصل کنید",
-    "connectYourEmailDesc": "ایمیل خود را متصل کنید تا مکاتبات حقوقی مرتبط با پرونده‌هایتان به طور خودکار شناسایی شود.",
-    "connectedTo": "متصل به {email}",
-    "@connectedTo": {
-        "placeholders": {
-            "email": {
-                "type": "String"
-            }
-        }
-    },
-    "cookiePolicy": "سیاست کوکی",
-    "copySummary": "کپی خلاصه",
-    "dataPrivacyConsent": "رضایت حریم خصوصی",
-    "decline": "رد کردن",
-    "deleteCase": "حذف پرونده",
-    "deleteCaseConfirm": "آیا مطمئنید که می‌خواهید «{title}» را حذف کنید؟ این عمل قابل بازگشت نیست.",
-    "@deleteCaseConfirm": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "disconnectEmail": "قطع ایمیل",
-    "disconnectEmailConfirm": "همگام‌سازی خودکار ایمیل متوقف می‌شود. ایمیل‌های قبلاً همگام‌سازی شده باقی می‌مانند.",
-    "draftCopiedToClipboard": "پیش‌نویس کپی شد",
-    "draftGeneration": "تولید پیش‌نویس",
-    "emailIntegrationTitle": "یکپارچه‌سازی ایمیل",
-    "english": "انگلیسی",
-    "failedToCreateCaseRetry": "ایجاد پرونده ناموفق بود. دوباره تلاش کنید.",
-    "failedToLoadCases": "بارگذاری پرونده‌ها ناموفق بود",
-    "filterByType": "فیلتر بر اساس نوع",
-    "finnish": "فنلاندی",
-    "forever": "برای همیشه",
-    "fullAiAnalysis": "تحلیل کامل هوش مصنوعی",
-    "gdprChat": "پردازش پیام‌های چت توسط هوش مصنوعی",
-    "gdprDelete": "حق حذف داده‌ها در هر زمان",
-    "gdprDocs": "تحلیل اسناد بارگذاری شده",
-    "gdprFooter": "داده‌های شما رمزگذاری شده و هرگز با اشخاص ثالث به اشتراک گذاشته نمی‌شود. می‌توانید رضایت را لغو کرده و تمام داده‌ها را از تنظیمات حذف کنید.",
-    "gdprIntro": "برای ارائه کمک حقوقی مبتنی بر هوش مصنوعی، داده‌های شما مطابق GDPR (EU 2016/679) پردازش می‌شود. با ادامه موافقت می‌کنید با:",
-    "gdprStorage": "ذخیره‌سازی رمزگذاری شده داده‌های پرونده",
-    "haveQuestionsAi": "سؤالی دارید؟ از هوش مصنوعی بپرسید",
-    "iAgree": "موافقم",
-    "iAgreeToThe": "موافقت می‌کنم با ",
-    "lastSynced": "آخرین همگام‌سازی: {time}",
-    "@lastSynced": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "legalEmails": "ایمیل‌های حقوقی",
-    "legalEmailsWillAppear": "ایمیل‌های طبقه‌بندی شده به عنوان حقوقی اینجا نمایش داده می‌شوند.",
-    "monthly": "ماهانه",
-    "mostPopular": "محبوب‌ترین",
-    "noCasesMatchSearch": "پرونده‌ای مطابق جستجو یافت نشد",
-    "noLegalEmailsYet": "هنوز ایمیل حقوقی وجود ندارد",
-    "noPreviousPurchases": "خرید قبلی یافت نشد.",
-    "oneCaseActive": "۱ پرونده فعال",
-    "openCase": "باز کردن پرونده",
-    "orWord": "یا",
-    "paymentFailed": "پرداخت ناموفق: {error}",
-    "@paymentFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String"
-            }
-        }
-    },
-    "perMonth": "/ماه",
-    "perYear": "/سال",
-    "priorityProcessing": "پردازش اولویت‌دار",
-    "reportAndOpenCase": "گزارش و باز کردن پرونده",
-    "reportMileageFraud": "گزارش تقلب در کیلومتر",
-    "reportMileageFraudDesc": "گزارش تقلب بر اساس داده‌های بررسی خودرو ایجاد می‌شود. همچنین می‌توانید پرونده حقوقی باز کنید.",
-    "russian": "روسی",
-    "saveTwentyFivePercent": "۲۵٪ تخفیف",
-    "successSubscribed": "اشتراک {plan} با موفقیت فعال شد!",
-    "@successSubscribed": {
-        "placeholders": {
-            "plan": {
-                "type": "String"
-            }
-        }
-    },
-    "takePhotoInstead": "عکس بگیرید",
-    "threeCasesActive": "۳ پرونده فعال",
-    "threeDocScans": "۳ اسکن سند",
-    "twentyDocScans": "۲۰ اسکن سند",
-    "unlimitedCases": "پرونده‌های نامحدود",
-    "unlimitedDocScans": "اسکن نامحدود اسناد",
-    "unlinkedEmails": "ایمیل‌های متصل نشده",
-    "viewFull": "نمایش کامل",
-    "whatToDo": "چه باید کرد",
-    "getHelp": "دریافت کمک",
-    "share": "اشتراک‌گذاری",
-    "didYouKnow": "آیا می‌دانستید؟",
-    "mustKnow": "باید بدانید",
-    "goodToKnow": "خوب است بدانید",
-    "sentFromAdvocat": "ارسال شده از اپلیکیشن Advocat",
-    "policeActionStayCalm": "آرام بمانید و دست‌هایتان را قابل مشاهده نگه دارید",
-    "policeActionAskWhy": "از مأمور بپرسید چرا متوقف شده‌اید",
-    "policeActionProvideName": "نام و تاریخ تولد خود را ارائه دهید",
-    "policeActionWantLawyer": "واضح بگویید: «من قبل از هر سؤالی وکیل می‌خواهم»",
-    "policeActionAskInterpreter": "در صورت نیاز مترجم بخواهید",
-    "policeActionNoteBadge": "نام و شماره شناسایی مأمور را یادداشت کنید",
-    "policeFactMustTellReason": "در فنلاند، پلیس باید دلیل توقف شما را بگوید. اگر نگویند، می‌توانید بپرسید — و قانوناً موظف به توضیح هستند.",
-    "policeFactCanRecord": "شما می‌توانید تعاملات پلیس را در مکان‌های عمومی در فنلاند ضبط کنید. این تحت آزادی بیان محافظت می‌شود.",
-    "contactFinnishLegalAid": "کمک حقوقی فنلاند",
-    "contactNonDiscriminationOmbudsman": "بازرس مبارزه با تبعیض",
-    "deportationDeadlineAppeal": "اعتراض به دادگاه اداری — معمولاً ۳۰ روز پس از ابلاغ",
-    "deportationDeadlineLegalAid": "درخواست کمک حقوقی بدهید — فوراً این کار را انجام دهید",
-    "deportationFactStayDuringAppeal": "در فنلاند، شما معمولاً حق دارید در حالی که اعتراض شما در حال بررسی است در کشور بمانید. اخراج در اکثر موارد در طول اعتراض فعال امکان‌پذیر نیست.",
-    "contactRefugeeAdviceCentre": "مرکز مشاوره پناهندگان فنلاند",
-    "contactAdminCourtHelsinki": "دادگاه اداری هلسینکی",
-    "workplaceActionKeepContract": "نسخه‌هایی از قرارداد کار خود را نگه دارید",
-    "workplaceActionTrackHours": "ساعات کاری خود را به طور مستقل پیگیری کنید",
-    "workplaceActionReportUnsafe": "شرایط ناامن را به مرجع ایمنی شغلی گزارش دهید",
-    "workplaceActionJoinUnion": "برای حمایت به یک اتحادیه کارگری بپیوندید",
-    "workplaceActionContactAuthority": "در صورت نیاز با مرجع ایمنی شغلی تماس بگیرید",
-    "workplaceFactCollectiveWage": "در فنلاند، قراردادهای جمعی حداقل دستمزد را بر اساس صنعت تعیین می‌کنند — حداقل دستمزد ملی واحدی وجود ندارد. کارفرمای شما باید از قرارداد جمعی حوزه شما پیروی کند.",
-    "workplaceFactOralContract": "حتی بدون قرارداد کتبی، در فنلاند حقوق کامل کارمندی دارید. توافق شفاهی به همان اندازه از نظر قانونی الزام‌آور است.",
-    "contactOccupationalSafety": "مرجع ایمنی شغلی",
-    "contactTradeUnionSAK": "مشاوره اتحادیه کارگری (SAK)",
-    "tenantActionWrittenAgreement": "همیشه قرارداد اجاره کتبی داشته باشید",
-    "tenantActionDocumentCondition": "وضعیت آپارتمان را هنگام نقل مکان مستند کنید (عکس)",
-    "tenantActionReportMaintenance": "مشکلات تعمیر و نگهداری را کتباً گزارش دهید",
-    "tenantActionNoIllegalEviction": "هرگز با تخلیه غیرقانونی موافقت نکنید — دادگاه‌ها باید تصمیم بگیرند",
-    "tenantActionContactAdvisory": "در صورت اختلاف با خدمات مشاوره مستأجران تماس بگیرید",
-    "tenantFactNoEvictionWithoutCourt": "موجر در فنلاند نمی‌تواند بدون حکم دادگاه شما را تخلیه کند، حتی اگر اجاره‌نامه منقضی شده باشد. تعویض قفل یا قطع خدمات غیرقانونی است.",
-    "contactTenantsAssociation": "انجمن مستأجران فنلاند",
-    "contactConsumerDisputesBoard": "هیئت حل اختلاف مصرف‌کننده",
-    "detentionActionAskDecision": "فوراً تصمیم کتبی بازداشت را بخواهید",
-    "detentionActionRequestLawyer": "درخواست تماس با وکیل کنید",
-    "detentionActionContactEmbassy": "با سفارت یا کنسولگری خود تماس بگیرید",
-    "detentionActionAskMedical": "در صورت نیاز درخواست مراقبت پزشکی کنید",
-    "detentionActionRequestInterpreter": "برای تمام جلسات مترجم بخواهید",
-    "detentionDeadlineCourtReview": "دادگاه بخش باید بازداشت را ظرف ۴ روز بررسی کند",
-    "detentionDeadlineContinuation": "دادگاه تمدید را هر ۲ هفته بررسی می‌کند",
-    "detentionFactCourtReview": "بازداشت مهاجرتی در فنلاند باید ظرف ۴ روز توسط دادگاه بخش بررسی شود. اگر انجام نشود، بازداشت غیرقانونی می‌شود.",
-    "contactParliamentaryOmbudsman": "بازرس پارلمانی",
-    "discriminationActionWriteDown": "دقیقاً بنویسید چه اتفاقی افتاد (تاریخ، زمان، مکان)",
-    "discriminationActionSaveEvidence": "مدارک را نگه دارید: پیام‌ها، ایمیل‌ها، شاهدان",
-    "discriminationActionFileComplaint": "شکایت به بازرس مبارزه با تبعیض ارائه دهید",
-    "discriminationActionContactLegalAid": "برای مشاوره رایگان با دفتر کمک حقوقی تماس بگیرید",
-    "discriminationActionReportPolice": "اگر تهدید یا حمله بود به پلیس گزارش دهید",
-    "discriminationFactNonDiscriminationAct": "قانون عدم تبعیض فنلاند تبعیض بر اساس سن، خاستگاه، تابعیت، زبان، مذهب، سلامت، معلولیت، گرایش جنسی و سایر ویژگی‌های شخصی را پوشش می‌دهد.",
-    "contactVictimSupportRIKU": "حمایت از قربانیان فنلاند (RIKU)",
-    "domesticViolence": "خشونت خانگی",
-    "inheritance": "ارث",
-    "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
-    "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
-    "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
-    "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
-    "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
-    "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
-    "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
-    "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
-    "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
-    "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
-    "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
-    "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
-    "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
-    "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
-    "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
-    "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
-    "consumerProtection": "حمایت از مصرف‌کننده",
-    "caseTypeStepLabel": "Case Type",
-    "detailsStepLabel": "Details",
-    "documentsStepLabel": "Documents",
-    "whatTypeOfCase": "What type of case is this?",
-    "selectCategoryDescription": "Select the category that best describes your situation.",
-    "tellUsAboutCase": "Tell us about your case",
-    "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
-    "caseTitleHint": "e.g., Residence Permit Appeal 2026",
-    "countryJurisdiction": "Country / Jurisdiction",
-    "selectCountryHint": "Select a country",
-    "referenceNumberHint": "e.g., UMA/12345/2026",
-    "descriptionOptional": "Description (optional)",
-    "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
-    "uploadFirstDocument": "Upload your first document",
-    "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
-    "tapToUploadFile": "Tap to upload a file",
-    "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
-    "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
-    "aiGeneratedDisclaimer": "AI-generated • Not legal advice",
-    "callAI": "Call AI",
-    "comingSoon": "به زودی",
-    "encrypted": "Encrypted",
-    "typing": "Typing…",
-    "online": "Online",
-    "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
-    "tapMicrophoneToSpeak": "Tap the microphone to speak",
-    "categoryEssential": "Essential",
-    "categoryPolice": "Police",
-    "categoryWork": "Work",
-    "categoryHousing": "Housing",
-    "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count, plural, =0{بدون حق} =1{۱ حق در داخل} other{{count} حق در داخل}}",
-    "@rightsInsideCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "freeAidThreshold": "Free aid threshold",
-    "partialAidThreshold": "Partial aid threshold",
-    "assetLimit": "Asset limit",
-    "whereToApplyLabel": "Where to apply",
-    "phoneLabel": "Phone",
-    "websiteLabel": "Website",
-    "disclaimerCollapsed": "AI guidance only",
-    "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
-    "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "chatDisclaimerSubtitle": "AI assistant · not legal advice",
-    "chatDisclaimerBannerFull": "Advocat is an AI legal-information assistant, not a lawyer. Information here does not establish an attorney-client relationship, is not legal advice, and may be incorrect. For binding legal advice, consult a licensed attorney in your jurisdiction. We do not represent you.",
-    "chatDisclaimerFooter": "AI-generated. Verify with a licensed lawyer.",
-    "chatDisclaimerGotIt": "Got it",
-    "guestUser": "مهمان",
-    "howToUse": "چگونه استفاده کنیم؟",
-    "tutorialStep1Title": "دستیار حقوقی هوش مصنوعی",
-    "tutorialStep1Desc": "هر سوال حقوقی بپرسید و پاسخ‌های فوری بر اساس قوانین استونی دریافت کنید.",
-    "tutorialStep2Title": "حقوق خود را بشناسید",
-    "tutorialStep2Desc": "اطلاعات حقوقی را بر اساس موضوع مرور کنید — کار، مسکن، حقوق مصرف‌کننده و بیشتر.",
-    "tutorialStep3Title": "اسکن اسناد",
-    "tutorialStep3Desc": "از اسناد حقوقی عکس بگیرید برای تحلیل هوش مصنوعی و ذخیره‌سازی امن.",
-    "tutorialStep4Title": "شروع کنیم!",
-    "tutorialStep4Desc": "برنامه را کاوش کنید و از حقوق خود محافظت کنید. همه داده‌ها خصوصی در دستگاه شما باقی می‌مانند.",
-    "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "ویژگی‌های ویژه را باز کنید",
-    "voiceDisclaimer": "دستیار صوتی فعلاً فقط روی دسکتاپ کار می‌کند (مرورگر Chrome). پشتیبانی موبایل به زودی.",
-    "recommended": "پیشنهادی",
-    "pleaseLogIn": "لطفاً وارد شوید",
-    "subscriptionNotFound": "اشتراک یافت نشد",
-    "errorWithMessage": "خطا: {message}",
-    "redirectingToPayment": "در حال انتقال به صفحه پرداخت…",
-    "cheaperAnnually": "€{amount}/ماه ارزان‌تر با اشتراک سالانه",
-    "navigatingTo": "در حال باز کردن",
-    "stayInChat": "ماندن در چت",
-    "backToChat": "بازگشت به چت",
-    "citationStatusVerifiedBadge": "تأییدشده",
-    "citationStatusUnverifiedBadge": "تأییدنشده",
-    "citationStatusHistoricalBadge": "نسخهٔ پیشین",
-    "citationStatusVerifiedTooltip": "از یک منبع حقوقی بازیابی‌شده نقل شده است.",
-    "citationStatusUnverifiedTooltip": "هوش مصنوعی این متن را بدون بازیابی منبع نقل کرده است — پیش از اتکا، بازبینی کنید.",
-    "citationStatusHistoricalTooltip": "حکم نقل‌شده دیگر لازم‌الاجرا نیست.",
-    "citationOpenInRiigiTeataja": "گشودن در Riigi Teataja",
-    "citationSnippetExpand": "نمایش متن کامل",
-    "citationSnippetCollapse": "نمایش کمتر",
-    "citationUnverifiedSheetNote": "هوش مصنوعی این بند را نقل کرد، اما در این گفت‌وگو از پیکرهٔ حقوقی بازیابی نشده است. پیش از اتکا، ارجاع را راستی‌آزمایی کنید.",
-    "citationFooterNoneWarning": "هیچ ارجاع مستندی موجود نیست",
-    "citationFooterSummaryTotal": "{count, plural, =1{۱ نقل قول} other{{count} نقل قول}}",
-    "citationFooterSummaryVerified": "{count, plural, =1{۱ تأیید شده} other{{count} تأیید شده}}",
-    "citationFooterSummaryUnverified": "{count, plural, =1{۱ تأیید نشده} other{{count} تأیید نشده}}",
-    "citationFooterSummaryHistorical": "{count, plural, =1{۱ تاریخی} other{{count} تاریخی}}",
-    "@citationFooterSummaryTotal": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryVerified": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryUnverified": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryHistorical": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineRadarTitle": "Upcoming deadlines",
-    "deadlineRadarEmpty": "No upcoming deadlines",
-    "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "{count, plural, =0{امروز} =1{۱ روز دیگر} other{{count} روز دیگر}}",
-    "@deadlineCardDaysLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineCardTomorrow": "tomorrow",
-    "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count, plural, =1{۱ روز تأخیر} other{{count} روز تأخیر}}",
-    "@deadlineCardOverdue": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineCardMarkComplete": "Mark complete",
-    "deadlineCardSnooze": "Snooze",
-    "deadlineCardSnooze3d": "Snooze 3 days",
-    "deadlineCardSnooze7d": "Snooze 7 days",
-    "deadlineCardSnoozeCustom": "Pick a date",
-    "deadlineCardEdit": "Edit",
-    "deadlineCardDelete": "Archive",
-    "deadlineCardSourceLabelPdf": "from PDF",
-    "deadlineCardSourceLabelIntake": "from intake",
-    "deadlineCardSourceLabelManual": "added manually",
-    "deadlineCardSourceLabelEmail": "from email",
-    "deadlineCardSourceLabelHaikuExtract": "AI-extracted",
-    "deadlineCardSourceLabelStatutoryTemplate": "statute template",
-    "deadlineBannerCritical": "Critical deadline {title} {when}",
-    "@deadlineBannerCritical": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            },
-            "when": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlineBannerDismiss": "Dismiss",
-    "deadlineBannerOpen": "Open deadline",
-    "deadlineHolidayShifted": "Shifted from {original} due to {reason}",
-    "@deadlineHolidayShifted": {
-        "placeholders": {
-            "original": {
-                "type": "String"
-            },
-            "reason": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlinePermissionAskTitle": "Enable deadline reminders?",
-    "deadlinePermissionAskBody": "We'll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.",
-    "deadlinePermissionAllow": "Allow",
-    "deadlinePermissionLater": "Later",
-    "deadlineSettingsSection": "Deadline reminders",
-    "deadlineSettingsPushChannel": "Push notifications",
-    "deadlineSettingsEmailChannel": "Email (critical only)",
-    "deadlineSettingsInAppChannel": "In-app banners",
-    "deadlineSettingsCriticalBypass": "Critical reminders bypass quiet hours",
-    "deadlineSettingsQuietHours": "Quiet hours",
-    "deadlineSettingsQuietHoursBadge": "Quiet {start}–{end}",
-    "@deadlineSettingsQuietHoursBadge": {
-        "placeholders": {
-            "start": {
-                "type": "String"
-            },
-            "end": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlineCaseScreenTitle": "Case deadlines",
-    "deadlineAddManualCta": "Add deadline",
-    "deadlineFormTitle": "Title",
-    "deadlineFormDescription": "Description (optional)",
-    "deadlineFormStatuteTemplate": "Statute template",
-    "deadlineFormStatuteTemplateNone": "None (manual)",
-    "deadlineFormDeadlineAt": "Deadline date",
-    "deadlineFormPriority": "Priority",
-    "deadlineFormSave": "Save",
-    "deadlineFormCancel": "Cancel",
-    "deadlineCompletedNotePrompt": "Add a note (optional)",
-    "deadlineCompletedNoteSave": "Save",
-    "inboxTitle": "Inbox",
-    "inboxEmptyTitle": "Nothing pending",
-    "inboxEmptyBody": "New email threads will appear here as they get triaged.",
-    "inboxApproveSend": "Approve & send",
-    "inboxEditDraft": "Edit",
-    "inboxSnooze": "Snooze",
-    "inboxArchive": "Archive",
-    "inboxFilterAll": "All",
-    "inboxConfirmSendTitle": "Send the prepared reply?",
-    "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
-    "inboxSendButton": "Send",
-    "inboxSentToast": "Sent.",
-    "inboxAlreadySentToast": "Already sent.",
-    "inboxSendErrorToast": "Could not send the reply. Tap retry.",
-    "inboxSnoozedToast": "Snoozed for 24h.",
-    "inboxArchivedToast": "Archived.",
-    "inboxDraftLoadError": "Could not load draft.",
-    "inboxDeadlineToday": "today",
-    "inboxDeadlineTomorrow": "tomorrow",
-    "inboxDeadlineInDays": "in {days}d",
-    "@inboxDeadlineInDays": {
-        "placeholders": {
-            "days": {
-                "type": "int"
-            }
-        }
-    },
-    "inboxDeadlineOverdue": "overdue {days}d",
-    "@inboxDeadlineOverdue": {
-        "placeholders": {
-            "days": {
-                "type": "int"
-            }
-        }
-    },
-    "workspaceTabOverview": "Overview",
-    "workspaceTabChat": "Chat",
-    "workspaceTabDrafts": "Drafts",
-    "workspaceOverviewEmpty": "Add documents to build a summary.",
-    "workspaceTimelineEmpty": "No events yet.",
-    "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
-    "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email.",
-    "reviewThisContract": "بررسی این قرارداد",
-    "contractReviews": "Contract Reviews",
-    "@contractReviews": {},
-    "contractReviewsFreeFeature": "1 contract review (lifetime trial)",
-    "@contractReviewsFreeFeature": {},
-    "contractReviewsCounselFeature": "5 contract reviews per month",
-    "@contractReviewsCounselFeature": {},
-    "contractReviewsProFeature": "20 contract reviews per month",
-    "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "{count, plural, =0{این ماه بررسی قراردادی باقی نمانده} =1{۱ بررسی قرارداد این ماه باقی مانده} other{{count} بررسی قرارداد این ماه باقی مانده}}",
-    "@contractReviewsLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "contractReviewsExhausted": "No contract reviews left this month",
-    "@contractReviewsExhausted": {},
-    "contractReviewsFreeTrialLeft": "Free trial: 1 contract review",
-    "@contractReviewsFreeTrialLeft": {},
-    "contractReviewsFreeTrialUsed": "Free trial used — upgrade for more",
-    "@contractReviewsFreeTrialUsed": {},
-    "contractReviewsUpgradeTitle": "Contract reviews used up",
-    "@contractReviewsUpgradeTitle": {},
-    "contractReviewsUpgradeBodyFree": "You used your free contract review. Upgrade for monthly contract reviews.",
-    "@contractReviewsUpgradeBodyFree": {},
-    "contractReviewsUpgradeBodyPaid": "You used {used} of {cap} reviews this month. Upgrade for a higher monthly cap.",
-    "@contractReviewsUpgradeBodyPaid": {
-        "placeholders": {
-            "used": {
-                "type": "int"
-            },
-            "cap": {
-                "type": "int"
-            }
-        }
-    },
-    "contractReviewsUpgradeCounselCta": "Upgrade to Counsel (€19.99/mo) — 5 reviews",
-    "@contractReviewsUpgradeCounselCta": {},
-    "contractReviewsUpgradeProCta": "Upgrade to Pro (€29.99/mo) — 20 reviews",
-    "@contractReviewsUpgradeProCta": {},
-    "contractReviewsUpgradeToProShort": "Upgrade to Pro — 20/mo",
-    "@contractReviewsUpgradeToProShort": {},
-    "notNow": "Not now",
-    "@notNow": {},
-    "referralTitle": "دعوت از دوستان",
-    "@referralTitle": {},
-    "referralSubtitle": "یک ماه رایگان بگیر. یک ماه رایگان هدیه بده.",
-    "@referralSubtitle": {},
-    "referralYourLink": "لینک شما",
-    "@referralYourLink": {},
-    "referralCopyLink": "کپی لینک",
-    "@referralCopyLink": {},
-    "referralShare": "اشتراک‌گذاری",
-    "@referralShare": {},
-    "referralLinkCopied": "لینک کپی شد",
-    "@referralLinkCopied": {},
-    "referralStatsInvited": "دعوت‌شده",
-    "@referralStatsInvited": {},
-    "referralStatsConverted": "عضو شده",
-    "@referralStatsConverted": {},
-    "referralStatsEarned": "ماه‌های رایگان",
-    "@referralStatsEarned": {},
-    "referralShareWhatsApp": "اشتراک در واتساپ",
-    "@referralShareWhatsApp": {},
-    "referralShareTelegram": "اشتراک در تلگرام",
-    "@referralShareTelegram": {},
-    "referralShareEmail": "اشتراک با ایمیل",
-    "@referralShareEmail": {},
-    "referralEmailSubject": "Advocat را امتحان کن — دستیار حقوقی هوش مصنوعی تو",
-    "@referralEmailSubject": {},
-    "referralLoadError": "بارگذاری اطلاعات ممکن نشد. برای تازه‌سازی بکشید.",
-    "@referralLoadError": {},
-    "referralRetry": "تلاش دوباره",
-    "@referralRetry": {},
-    "referralSettingsTile": "دعوت از دوستان",
-    "@referralSettingsTile": {},
-    "referralAfterReviewCta": "خوشت آمد؟ یک دوست را دعوت کن — هر دو یک ماه رایگان می‌گیرید.",
-    "@referralAfterReviewCta": {},
-    "checkerProTagline": "Professional verification tools",
-    "checkerDataSource": "Data from official registries",
-    "companyCheckerHint": "Company name or reg. number",
-    "companyCheckerPriceChip": "€2.99 per check  •  Included in Pro",
-    "companyCheckerEmptyState": "Enter a company name or registration\nnumber to get a full report",
-    "aiMemoryTitle": "AI memory",
-    "aiMemorySubtitle": "Review and forget what the AI remembers about you",
-    "bookLawyerCallTitle": "Book a lawyer call",
-    "bookLawyerCallComingSoonTitle": "Human lawyer calls — opening soon",
-    "bookLawyerCallComingSoonBody": "Pro and Premium include 15-minute calls with a partner lawyer (1/quarter on Pro, 2/quarter on Premium). We are finalising the EE solo-practitioner pool and will email you the moment booking opens.",
-    "bookLawyerCallQuotaAvailable": "You have {remaining} of {total} call(s) left this quarter.",
-    "@bookLawyerCallQuotaAvailable": {
-        "placeholders": {
-            "remaining": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "bookLawyerCallQuotaExhausted": "Quarterly quota used.",
-    "bookLawyerCallQuotaBodyAvailable": "Pro tier includes 1 call/quarter, Premium 2. Calls last 15 minutes, by Google Meet.",
-    "bookLawyerCallQuotaBodyExhausted": "Your quota resets on the first day of next quarter. Need to talk sooner? Upgrade to Premium for an extra call.",
-    "severityCritical": "CRITICAL",
-    "severityHigh": "HIGH",
-    "severityMedium": "MEDIUM",
-    "severityLow": "LOW",
-    "deadlineRequiredFields": "Title and deadline date are required",
-    "acceptTermsRequired": "Please agree to the Terms of Service",
-    "chatLegalCouncilTooltip": "Legal council (4 experts)",
-    "attachFileTooltip": "Attach file",
-    "sendMessage": "Send message",
-    "stopGenerating": "Stop generating",
-    "showPassword": "Show password",
-    "hidePassword": "Hide password",
-    "decreaseDependents": "Decrease",
-    "increaseDependents": "Increase",
-    "consiliumHeader": "کنسولیوم وکلا",
-    "@consiliumHeader": {
-        "description": "Header text for the multi-agent legal consilium panel"
-    },
-    "consiliumProgress": "{count} از {total} آماده",
-    "@consiliumProgress": {
-        "description": "Progress indicator while consilium experts produce opinions",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumStarting": "وکلا در حال بررسی پرونده شما هستند…",
-    "consiliumDisagreement": "کارشناسان اختلاف نظر دارند",
-    "@consiliumDisagreement": {
-        "description": "Banner shown when experts have conflicting positions"
-    },
-    "consiliumSynthesizing": "در حال تدوین توصیه…",
-    "consiliumDone": "کنسولیوم پایان یافت · {totalRoles} کارشناس",
-    "@consiliumDone": {
-        "placeholders": {
-            "totalRoles": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumPositionPush": "اعتراض کن",
-    "consiliumPositionSettle": "سازش کن",
-    "consiliumPositionInvestigate": "بررسی کن",
-    "consiliumPositionOutOfScope": "خارج از صلاحیت",
-    "consiliumConfidence": "اطمینان",
-    "consiliumKeyCitation": "ارجاع کلیدی",
-    "consiliumAdversarialRound": "دور تقابلی",
-    "consiliumViewFullOpinion": "مشاهده نظر کامل",
-    "consiliumExpertsAgreed": "{count, plural, =1{۱ کارشناس موافق} other{{count} کارشناس موافق}}",
-    "@consiliumExpertsAgreed": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumExpertsDisagree": "{count, plural, =1{۱ کارشناس مخالف} other{{count} کارشناس مخالف}}",
-    "@consiliumExpertsDisagree": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumDisclaimer": "عامل‌های هوش مصنوعی، نه وکلای انسانی. تصمیمات مهم را با وکیل دارای پروانه بررسی کنید.",
-    "@consiliumDisclaimer": {
-        "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    },
-    "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
-    "draftsTab": "Drafts",
-    "draftingTitle": "Drafting Studio",
-    "draftingEmpty": "Empty draft",
-    "draftingPlaceholder": "Start typing your draft…",
-    "draftingDraftsList": "My drafts",
-    "draftingSave": "Save",
-    "draftingSaved": "Saved",
-    "draftingSavedJustNow": "Saved just now",
-    "draftingAiRevise": "Revise with AI",
-    "draftingExportPdf": "Export PDF",
-    "draftingExportDocx": "Export DOCX",
-    "draftingExportMd": "Export Markdown",
-    "draftingDeleteDraft": "Delete draft",
-    "draftingConfirmDelete": "Delete this draft?",
-    "draftingConfirmDeleteMessage": "This action cannot be undone.",
-    "draftingConfirm": "Delete",
-    "draftingCancel": "Cancel",
-    "draftingDraftReplyTo": "Reply to {name}",
-    "draftingUntitled": "Untitled",
-    "draftingTitleHint": "Title (optional)",
-    "draftingAiReviseTitle": "Revise with AI",
-    "draftingAiReviseSelectionLabel": "Selected text:",
-    "draftingAiReviseInstructionLabel": "Instruction (optional)",
-    "draftingAiReviseInstructionHint": "e.g. \"make it more formal\" or \"shorten\"",
-    "draftingAiReviseRunButton": "Generate revision",
-    "draftingAiReviseSuggestionLabel": "Suggested revision:",
-    "draftingAiReviseChangesLabel": "Changes:",
-    "draftingAiReviseAccept": "Accept",
-    "draftingAiReviseReject": "Reject",
-    "draftingFormatBold": "Bold",
-    "draftingFormatItalic": "Italic",
-    "draftingFormatHeading": "Heading",
-    "draftingFormatBullet": "Bullet list",
-    "draftingFormatNumbered": "Numbered list",
-    "draftingEmptyListMessage": "You have no drafts yet.",
-    "draftingEmptyListAction": "New draft",
-    "draftingExporting": "Exporting…",
-    "draftingExportFailed": "Export failed",
-    "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft",
-    "vaultNoteChip": "Vault note",
-    "saveToVault": "Save to Vault",
-    "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault",
-    "vaultNoteTitlePrefix": "Note: ",
-    "openInVault": "Open in Vault",
-    "saveToVaultFailed": "Save to Vault failed",
-    "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history",
-    "dangerZone": "[en] Danger zone",
-    "deleteAccountConfirmButton": "[en] Delete forever",
-    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
-    "emptyHomeTitle": "Welcome to Advocat",
-    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
-    "intentChip1": "Got a fine",
-    "intentChip2": "Permit denied",
-    "intentChip3": "Contract problem",
-    "emptyCasesTitle": "No cases yet",
-    "emptyCasesCta": "Start a case",
-    "emptyDraftsTitle": "No drafts yet",
-    "emptyDraftsCta": "Create draft",
-    "emptyChatTitle": "Ask Advocat anything",
-    "chatExamplePrompt1": "Help me reply to a fine",
-    "chatExamplePrompt2": "Review my rental contract",
-    "chatExamplePrompt3": "What are my rights at work?",
-    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
-    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
-    "deletingAccount": "[en] Deleting account…",
-    "contractReviewTitle": "Contract Review",
-    "@contractReviewTitle": {
-        "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewUploadCta": "Upload contract",
-    "@contractReviewUploadCta": {
-        "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
-    "@contractReviewQuotaRemaining": {
-        "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewRedFlags": "Red flags",
-    "@contractReviewRedFlags": {
-        "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewReviewPoints": "Review points",
-    "@contractReviewReviewPoints": {
-        "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewNegotiationTips": "Negotiation tips",
-    "@contractReviewNegotiationTips": {
-        "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewSaveToVault": "Save to Vault",
-    "@contractReviewSaveToVault": {
-        "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewContinueChat": "Continue in chat",
-    "@contractReviewContinueChat": {
-        "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "referralInviteFriends": "Invite Friends",
-    "referralYourCode": "Your code",
-    "referralCopiedToast": "Code copied to clipboard",
-    "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
-    "referralInvited": "Friends invited",
-    "referralRewardsEarned": "Free months earned",
-    "deadlineUrgencyToday": "Today & Overdue",
-    "deadlineUrgencyWeek": "This week",
-    "deadlineUrgencyMonth": "This month",
-    "deadlineUrgencyLater": "Later",
-    "deadlineAddManual": "Add deadline",
-    "deadlineSnoozeBy": "Snooze",
-    "deadlineSnooze1d": "Snooze 1 day",
-    "deadlineSnooze3d": "Snooze 3 days",
-    "deadlineSnooze7d": "Snooze 7 days",
-    "deadlineDismiss": "Dismiss",
-    "deadlineExportIcs": "Add to calendar",
-    "deadlineSource": "Source",
-    "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
-    "deadlineNewTitle": "New deadline",
-    "deadlineFieldTitle": "Title",
-    "deadlineFieldDueDate": "Due date",
-    "deadlineFieldNotes": "Notes (optional)",
-    "deadlineSaved": "Deadline saved",
-    "deadlineSaveFailed": "Could not save deadline",
-    "deadlineUrgentBannerSingle": "1 deadline today or overdue",
-    "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
-    "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
-    "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
-    "@deadlineUrgentBannerMany": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@deadlineDaysLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@deadlineDaysOverdue": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "iapPayWithApple": "پرداخت با Apple",
-    "iapRestorePurchases": "بازیابی خریدها",
-    "iapPurchaseFailed": "خرید ناموفق بود. لطفاً دوباره تلاش کنید یا با پشتیبانی تماس بگیرید.",
-    "iapRestoreSuccess": "اشتراک شما بازیابی شد.",
-    "iapRestoreNoActive": "هیچ اشتراک فعالی برای بازیابی یافت نشد.",
-    "deadlineEuRadarTitle": "EU deadline radar (preview)",
-    "@deadlineEuRadarTitle": {"x-todo": "translate to fa"},
-    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
-    "@deadlineEuRadarSubtitle": {"x-todo": "translate to fa"}
+  "@@locale": "fa",
+  "about": "درباره",
+  "aboutSection": "درباره",
+  "appearance": "Appearance",
+  "appearanceSystem": "System (auto)",
+  "appearanceLight": "Light",
+  "appearanceDark": "Dark",
+  "appearanceDescription": "Choose how Advocat looks",
+  "accidents": "تصادفات",
+  "active": "فعال",
+  "activeCases": "پرونده‌های فعال",
+  "addedToAppeal": "به تجدیدنظر اضافه شد",
+  "agreeToTerms": "موافقم با ",
+  "aiAnalysis": "تحلیل هوش مصنوعی",
+  "aiAssistant": "دستیار حقوقی هوش مصنوعی",
+  "aiChat": "گفتگوی هوش مصنوعی",
+  "all": "همه",
+  "alreadyHaveAccount": "قبلاً حساب دارید؟ ",
+  "analyzing": "در حال تحلیل…",
+  "andWord": " و ",
+  "appTitle": "Advocat — ابزار اطلاعات حقوقی",
+  "appVersion": "نسخه برنامه",
+  "appealFiled": "تجدیدنظر ثبت شد",
+  "areYouAbsolutelySure": "آیا کاملاً مطمئن هستید؟",
+  "askAboutCase": "تحلیل پرونده من",
+  "asylum": "پناهندگی",
+  "back": "قبلی",
+  "basic": "پایه",
+  "beforeYouBuy": "قبل از خرید",
+  "beforeYouWork": "قبل از همکاری با آن‌ها",
+  "camera": "دوربین",
+  "cancel": "لغو",
+  "caseDescription": "وضعیت خود را توضیح دهید",
+  "caseDetail": "جزئیات پرونده",
+  "caseOverview": "خلاصه پرونده‌های شما",
+  "caseTitle": "عنوان پرونده",
+  "caseUpdated": "پرونده به‌روز شد",
+  "cases": "پرونده‌ها",
+  "checkCompany": "بررسی شرکت",
+  "checkDeadlines": "بررسی مهلت‌ها",
+  "checkVehicle": "بررسی خودرو",
+  "checkerTitle": "بررسی‌کننده",
+  "checkingErrors": "بررسی خطاها…",
+  "choosePlan": "انتخاب طرح",
+  "closed": "بسته شده",
+  "companyName": "نام شرکت یا شماره ثبت",
+  "completed": "تکمیل شده",
+  "confirm": "تأیید",
+  "confirmPassword": "تأیید رمز عبور",
+  "connectEmail": "اتصال ایمیل",
+  "connectGmail": "اتصال Gmail",
+  "connectOutlook": "اتصال Outlook",
+  "connected": "متصل",
+  "contactSupport": "تماس با پشتیبانی",
+  "continueWithGoogle": "ادامه با Google",
+  "copyText": "کپی متن",
+  "correspondence": "مکاتبات",
+  "couldNotLoadCases": "بارگذاری پرونده‌ها ممکن نشد",
+  "country": "کشور",
+  "createAccount": "ایجاد حساب",
+  "createCase": "ایجاد پرونده",
+  "criminalCase": "پرونده کیفری",
+  "critical": "بحرانی",
+  "currentPlan": "طرح فعلی",
+  "dataAndPrivacy": "داده‌ها و حریم خصوصی",
+  "dataExportRequested": "خروجی داده‌ها درخواست شد. ایمیل خود را بررسی کنید.",
+  "daysRemaining": "{count, plural, =0{روزی باقی نمانده} =1{۱ روز} other{{count} روز}}",
+  "@daysRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineReminders": "یادآوری مهلت‌ها",
+  "deadlineRemindersDesc": "قبل از مهلت‌ها اعلان دریافت کنید",
+  "deadlines": "مهلت‌ها",
+  "debtCollection": "وصول مطالبات",
+  "deleteAccount": "حذف حساب",
+  "deleteAccountDesc": "حذف دائمی حساب شما",
+  "deleteAccountDialogContent": "این عمل دائمی و غیرقابل بازگشت است. تمام داده‌ها، پرونده‌ها و اسناد شما برای همیشه حذف خواهد شد.",
+  "deleteConfirm": "آیا مطمئن هستید؟ تمام داده‌های شما برای همیشه حذف خواهد شد.",
+  "demoHint": "نسخه نمایشی: پلاک «908FBT» را امتحان کنید",
+  "demoModeDesc": "برنامه را با داده‌های نمونه از یک پرونده واقعی کاوش کنید",
+  "deportation": "اخراج",
+  "disclaimer": "فقط راهنمایی هوش مصنوعی — مشاوره حقوقی نیست. همیشه با وکیل مشورت کنید.",
+  "disclaimerFull": "این یک دستیار هوش مصنوعی است، نه وکیل. تحلیل هوش مصنوعی ممکن است حاوی خطا باشد. همیشه با یک متخصص حقوقی واجد شرایط بررسی کنید.",
+  "disconnect": "قطع اتصال",
+  "discrimination": "تبعیض",
+  "doNotBuy": "نخرید",
+  "documents": "اسناد",
+  "documentsCount": "{count, plural, =0{بدون سند} =1{۱ سند} other{{count} سند}}",
+  "@documentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "draftAppeal": "پیش‌نویس تجدیدنظر",
+  "editDraft": "ویرایش",
+  "editProfile": "ویرایش پروفایل",
+  "email": "ایمیل",
+  "emailConnected": "ایمیل متصل شد",
+  "emailDisconnected": "ایمیل قطع شد",
+  "emailIntegration": "یکپارچه‌سازی ایمیل",
+  "emailInvalid": "لطفاً یک آدرس ایمیل معتبر وارد کنید",
+  "emailPrivacyNote": "ما فقط ایمیل‌های مربوط به مسائل حقوقی را می‌خوانیم. ایمیل‌های شخصی شما خصوصی می‌مانند.",
+  "emailRequired": "ایمیل الزامی است",
+  "emergencyShield": "سپر اضطراری",
+  "error": "خطا",
+  "exportDataDesc": "دانلود تمام داده‌های پرونده",
+  "exportDataDialogContent": "ما یک فایل دانلود از تمام داده‌های شما شامل پرونده‌ها، اسناد و مکاتبات آماده می‌کنیم. وقتی آماده شد ایمیلی دریافت خواهید کرد.",
+  "exportMyData": "خروجی داده‌های من",
+  "exportPdf": "خروجی PDF",
+  "familyReunification": "پیوستن خانواده",
+  "forgotPassword": "رمز عبور را فراموش کرده‌اید؟",
+  "free": "رایگان",
+  "fullDefense": "Advocat Pro",
+  "fullName": "نام کامل",
+  "gallery": "گالری",
+  "generateAppeal": "تولید تجدیدنظر",
+  "getStarted": "شروع",
+  "goodAfternoon": "عصر بخیر، {name}",
+  "@goodAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodEvening": "شب بخیر، {name}",
+  "@goodEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodMorning": "صبح بخیر، {name}",
+  "@goodMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodNight": "شب بخیر، {name}",
+  "@goodNight": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "home": "خانه",
+  "important": "مهم",
+  "inProgress": "در حال انجام",
+  "informational": "اطلاع‌رسانی",
+  "inspection": "بازرسی فنی",
+  "insurance": "بیمه",
+  "issuesFound": "{count, plural, =0{مشکلی یافت نشد} =1{۱ مشکل یافت شد} other{{count} مشکل یافت شد}}",
+  "@issuesFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "laborDispute": "اختلاف کارگری",
+  "langEnglish": "انگلیسی",
+  "langFinnish": "فنلاندی",
+  "langRussian": "روسی",
+  "language": "زبان",
+  "lastActivity": "آخرین فعالیت: {time}",
+  "@lastActivity": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "legalFighter": "مبارز حقوقی",
+  "legalSection": "حقوقی",
+  "licensePlate": "پلاک",
+  "loading": "در حال بارگذاری…",
+  "logIn": "ورود",
+  "loginFailed": "ایمیل یا رمز عبور نامعتبر است. لطفاً دوباره تلاش کنید.",
+  "lost": "بازنده",
+  "markComplete": "علامت‌گذاری به عنوان تکمیل شده",
+  "mileage": "کیلومتر",
+  "myCases": "پرونده‌های من",
+  "nameRequired": "نام کامل الزامی است",
+  "newCase": "پرونده جدید",
+  "next": "بعدی",
+  "noAccount": "حساب ندارید؟ ",
+  "noCases": "هنوز پرونده‌ای نیست",
+  "noCasesYet": "هنوز پرونده‌ای نیست",
+  "noDeadlines": "مهلتی نیست — همه چیز مرتب است!",
+  "noRecentActivity": "فعالیت اخیری نیست",
+  "notifications": "اعلان‌ها",
+  "onboardingDesc1": "Advocat به شما کمک می‌کند وضعیت حقوقی خود را درک کنید. ابزارهای هوش مصنوعی اسناد را تحلیل می‌کنند، مشکلات احتمالی را شناسایی می‌کنند و پیش‌نویس اسناد را برای بررسی شما آماده می‌کنند. این یک دفتر وکالت نیست — یک ابزار فناوری برای پشتیبانی از پرونده شماست.",
+  "onboardingDesc2": "از هر سند حقوقی عکس بگیرید. هوش مصنوعی آن را به چندین زبان می‌خواند، داده‌های کلیدی را استخراج می‌کند و انطباق با دستورالعمل‌های اتحادیه اروپا و قوانین ملی را بررسی می‌کند.",
+  "onboardingDesc3": "ابزارهای هوش مصنوعی ما بیش از ۴۰ نوع الزامات آیین دادرسی را بررسی می‌کنند. تحلیل هوش مصنوعی ممکن است مشکلاتی را شناسایی کند که نیاز به توجه دارند — مانند زبان ابلاغ، مراحل دادرسی و مهلت‌های قانونی. همیشه با یک وکیل واجد شرایط بررسی کنید.",
+  "onboardingDesc4": "هوش مصنوعی پیش‌نویس تجدیدنظر، شکایات و نامه‌ها را با ارجاعات حقوقی برای بررسی شما آماده می‌کند. شما تصمیم می‌گیرید چه چیزی ارسال شود. هر سند باید توسط یک متخصص حقوقی واجد شرایط پیش از تقدیم بررسی شود.",
+  "onboardingNext": "بعدی",
+  "onboardingSkip": "رد شدن",
+  "onboardingTitle1": "اطلاعات حقوقی مبتنی بر هوش مصنوعی",
+  "onboardingTitle2": "اسکن و تحلیل اسناد",
+  "onboardingTitle3": "هوش مصنوعی مشکلات احتمالی را بررسی می‌کند",
+  "onboardingTitle4": "پیش‌نویس اسناد برای بررسی شما",
+  "openACase": "باز کردن پرونده",
+  "optional": "(اختیاری)",
+  "orDivider": "یا",
+  "other": "سایر",
+  "overdue": "عقب افتاده",
+  "owners": "مالکان قبلی",
+  "password": "رمز عبور",
+  "passwordRequired": "رمز عبور الزامی است",
+  "passwordStrengthMedium": "متوسط",
+  "passwordStrengthStrong": "قوی",
+  "passwordStrengthWeak": "ضعیف",
+  "passwordTooShort": "رمز عبور باید حداقل ۸ کاراکتر باشد",
+  "passwordsDoNotMatch": "رمزهای عبور مطابقت ندارند",
+  "pendingDecision": "در انتظار تصمیم",
+  "perCheck": "به ازای هر بررسی",
+  "permanentlyDelete": "حذف دائمی",
+  "policeMisconduct": "سوءرفتار پلیس",
+  "popular": "محبوب",
+  "preferences": "ترجیحات",
+  "preferredLanguage": "زبان ترجیحی",
+  "pricePerCheck": "€۴٫۹۹ به ازای هر بررسی",
+  "privacyPolicy": "سیاست حفظ حریم خصوصی",
+  "pro": "حرفه‌ای",
+  "pushNotifications": "اعلان‌های فشاری",
+  "rateUs": "به ما امتیاز دهید",
+  "readingDocument": "در حال خواندن سند…",
+  "recentActivity": "فعالیت اخیر",
+  "referenceNumber": "شماره مرجع",
+  "registerFailed": "ثبت‌نام ناموفق بود. لطفاً دوباره تلاش کنید.",
+  "reportFraud": "گزارش کلاهبرداری",
+  "requestExport": "درخواست خروجی",
+  "researchingLaw": "تحقیق قانون قابل اعمال…",
+  "resetPasswordFailed": "ارسال لینک ناموفق بود. لطفاً دوباره تلاش کنید.",
+  "resetPasswordSent": "لینک بازنشانی رمز عبور به ایمیل شما ارسال شد.",
+  "residencePermit": "اجازه اقامت",
+  "manageSubscription": "مدیریت اشتراک",
+  "restorePurchases": "بازیابی خریدها",
+  "retry": "تلاش مجدد",
+  "reviewWarning": "قبل از ارسال با دقت بررسی کنید. شما مسئول محتوا هستید.",
+  "riskHigh": "ریسک بالا — اجتناب کنید",
+  "riskLow": "امن برای همکاری",
+  "riskMedium": "با احتیاط پیش بروید",
+  "safeToBuy": "امن برای خرید",
+  "saveAndAnalyze": "ذخیره و تحلیل",
+  "saveDraft": "ذخیره",
+  "saveWithAnnual": "۲۵٪ با پرداخت سالانه صرفه‌جویی کنید",
+  "scan": "اسکن",
+  "scanDocument": "اسکن سند",
+  "searchCases": "جستجوی پرونده‌ها…",
+  "selectCountry": "انتخاب کشور",
+  "selectLanguage": "انتخاب زبان",
+  "sendViaEmail": "ارسال از طریق ایمیل",
+  "settings": "تنظیمات",
+  "signIn": "ورود",
+  "signInLink": "ورود",
+  "signInSubtitle": "برای دسترسی به پرونده‌های خود وارد شوید",
+  "signOut": "خروج",
+  "signOutConfirm": "آیا مطمئن هستید که می‌خواهید خارج شوید؟",
+  "signUp": "ایجاد حساب",
+  "signUpLink": "ثبت‌نام",
+  "socialBenefits": "مزایای اجتماعی",
+  "someConcerns": "برخی نگرانی‌ها",
+  "startFirstCase": "اولین پرونده خود را شروع کنید",
+  "step": "مرحله {current} از {total}",
+  "@step": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stolen": "بررسی سرقت",
+  "subscription": "اشتراک",
+  "syncLegalCorrespondence": "همگام‌سازی مکاتبات حقوقی",
+  "syncNow": "همگام‌سازی اکنون",
+  "tenantRights": "حقوق مستأجر",
+  "termsOfService": "شرایط خدمات",
+  "termsRequired": "باید شرایط خدمات را بپذیرید",
+  "timeline": "جدول زمانی",
+  "tryDemoMode": "حالت آزمایشی را امتحان کنید",
+  "typeDeleteToConfirm": "برای تأیید حذف دائمی حساب، DELETE را تایپ کنید.",
+  "typeMessage": "پیام بنویسید…",
+  "upcoming": "آینده",
+  "uploadDocument": "بارگذاری سند",
+  "urgentDeadline": "فوری: {title}",
+  "@urgentDeadline": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "useInAppeal": "استفاده در تجدیدنظر",
+  "vehicleChecker": "بررسی‌کننده خودرو",
+  "vehicleChecks": "بررسی‌های وضعیت",
+  "vehicleColor": "رنگ",
+  "vehicleMake": "سازنده",
+  "vehicleModel": "مدل",
+  "vehicleYear": "سال",
+  "version": "نسخه",
+  "victimSupport": "حمایت از قربانیان",
+  "viewAll": "مشاهده همه",
+  "vinNumber": "شماره شناسایی خودرو (VIN)",
+  "welcomeBack": "خوش آمدید",
+  "whatAreMyOptions": "گزینه‌های من چیست؟",
+  "won": "برنده",
+  "documentVault": "صندوق اسناد",
+  "secureDocumentStorage": "ذخیره‌سازی امن اسناد",
+  "secureDocumentStorageDesc": "اسناد حقوقی مهم خود را به صورت امن ذخیره کنید. تمام فایل‌ها به صورت سرتاسری رمزنگاری شده‌اند.",
+  "addDocument": "افزودن سند",
+  "chooseHowToAdd": "نحوه افزودن سند خود را انتخاب کنید",
+  "uploadFile": "بارگذاری فایل",
+  "uploadFileDesc": "یک فایل PDF یا تصویر از دستگاه خود انتخاب کنید",
+  "scanDocumentDesc": "از سند خود عکس بگیرید",
+  "createNote": "ایجاد یادداشت",
+  "createNoteDesc": "یادداشتی بنویسید یا جزئیات مهم را ثبت کنید",
+  "knowYourRights": "حقوق خود را بشناسید",
+  "stoppedByPolice": "توقف توسط پلیس",
+  "stoppedByPoliceDesc": "حقوق شما در هنگام مواجهه با پلیس",
+  "deportationNotice": "اخطار اخراج",
+  "deportationNoticeDesc": "مراحل اعتراض به حکم اخراج",
+  "workplaceRights": "حقوق محل کار",
+  "workplaceRightsDesc": "حمایت‌های قانون کار در فنلاند",
+  "tenantRightsDesc": "حمایت‌های مسکن و اجاره",
+  "immigrationDetention": "بازداشت مهاجرتی",
+  "immigrationDetentionDesc": "حقوق شما در صورت بازداشت توسط مقامات",
+  "discriminationDesc": "نحوه گزارش و مبارزه با تبعیض",
+  "scenarioNotFound": "سناریو یافت نشد",
+  "youHaveRightTo": "شما حق دارید:",
+  "youMust": "شما باید:",
+  "immediateSteps": "اقدامات فوری:",
+  "yourRights": "حقوق شما:",
+  "basicRights": "حقوق اساسی:",
+  "yourRightsAsTenant": "حقوق شما به عنوان مستأجر:",
+  "yourRightsInDetention": "حقوق شما در بازداشت:",
+  "howToAct": "نحوه عمل:",
+  "rightKnowWhyStopped": "دانستن دلیل توقف",
+  "rightRemainSilent": "سکوت کردن (باید هویت خود را اعلام کنید)",
+  "rightAskInterpreter": "درخواست مترجم",
+  "rightContactLawyer": "تماس با وکیل قبل از بازجویی",
+  "rightRecordEncounter": "ضبط مواجهه (در اماکن عمومی)",
+  "mustProvideName": "ارائه نام و تاریخ تولد",
+  "mustShowId": "نشان دادن کارت شناسایی در صورت داشتن",
+  "mustNotResist": "مقاومت فیزیکی نکردن",
+  "doNotIgnoreNotice": "اخطار را نادیده نگیرید - مهلت‌ها سختگیرانه هستند",
+  "noteAppealDeadline": "مهلت تجدیدنظر را یادداشت کنید (معمولاً ۳۰ روز)",
+  "contactLawyerImmediately": "فوراً با وکیل تماس بگیرید",
+  "applyLegalAid": "در صورت نیاز درخواست کمک حقوقی دهید",
+  "rightAppealAdmin": "حق تجدیدنظر در دادگاه اداری",
+  "rightLegalRep": "حق داشتن نماینده حقوقی",
+  "rightInterpreter": "حق داشتن مترجم",
+  "rightStayDuringAppeal": "حق ماندن در طول تجدیدنظر (در اکثر موارد)",
+  "minimumWage": "حداقل دستمزد طبق قرارداد جمعی",
+  "workingTimeLimits": "محدودیت ساعت کار (حداکثر ۸ ساعت/روز، ۴۰ ساعت/هفته)",
+  "annualLeave": "مرخصی سالانه (حداقل ۲ روز به ازای هر ماه کار)",
+  "sickLeave": "غرامت مرخصی استعلاجی",
+  "safeWorkingConditions": "شرایط کاری ایمن",
+  "writtenRentalAgreement": "قرارداد اجاره کتبی الزامی است",
+  "securityDeposit": "ودیعه حداکثر ۳ ماه اجاره",
+  "landlordNotice": "موجر باید اخطار دهد (۳ تا ۶ ماه)",
+  "rightHabitableDwelling": "حق داشتن مسکن مناسب",
+  "protectionUnjustEviction": "حمایت در برابر تخلیه ناعادلانه",
+  "rightKnowDetentionReason": "حق دانستن دلیل بازداشت",
+  "rightContactLawyerDetention": "حق تماس با وکیل",
+  "rightContactEmbassy": "حق تماس با سفارت خود",
+  "rightChallengeDetention": "حق اعتراض به بازداشت در دادگاه",
+  "rightHumaneTreatment": "حق برخورد انسانی و مراقبت پزشکی",
+  "documentIncident": "حادثه را مستند کنید (تاریخ، زمان، شاهدان)",
+  "fileComplaintOmbudsman": "شکایت نزد آمبودزمان عدم تبعیض تسلیم کنید",
+  "contactLegalAidOffice": "با دفتر کمک حقوقی تماس بگیرید",
+  "reportToPolice": "در صورت جنایی بودن به پلیس گزارش دهید (تهدید، حمله)",
+  "legalAidCalculator": "محاسبه‌گر کمک حقوقی",
+  "checkEligibility": "واجد شرایط بودن خود برای کمک حقوقی {country} را بررسی کنید",
+  "estimateDisclaimer": "این فقط یک تخمین است. واجد شرایط بودن واقعی توسط دفتر کمک حقوقی تعیین می‌شود.",
+  "monthlyIncome": "درآمد ماهانه (یورو)",
+  "totalAssets": "کل دارایی‌ها (یورو)",
+  "numberOfDependents": "تعداد افراد تحت تکفل",
+  "calculateEligibility": "محاسبه واجد شرایط بودن",
+  "likelyEligible": "احتمالاً واجد شرایط",
+  "mayNotQualify": "ممکن است واجد شرایط نباشید",
+  "fullFreeLegalAid": "شما احتمالاً واجد شرایط کمک حقوقی رایگان کامل هستید (بدون پرداخت سهم).",
+  "legalAidWithCopay": "ممکن است واجد شرایط کمک حقوقی با پرداخت سهم {percent}% باشید.",
+  "@legalAidWithCopay": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mayNotQualifyDesc": "بر اساس این تخمین، ممکن است واجد شرایط کمک حقوقی دولتی نباشید. با یک وکیل خصوصی یا کلینیک حقوقی مشورت کنید.",
+  "couldNotLoadDeadlines": "بارگذاری مهلت‌ها ممکن نشد",
+  "noUpcomingDeadlines": "مهلت آینده‌ای نیست",
+  "allClearDeadlines": "همه چیز مرتب است! مهلت‌های جدید در اینجا نمایش داده می‌شوند.",
+  "nothingOverdue": "چیزی عقب نیفتاده",
+  "greatJobDeadlines": "کار عالی در پیگیری مهلت‌هایتان.",
+  "noCompletedDeadlines": "مهلت تکمیل شده‌ای نیست",
+  "completedDeadlinesDesc": "مهلت‌هایی که تکمیل می‌کنید در اینجا نمایش داده می‌شوند.",
+  "daysLate": "روز تأخیر",
+  "days": "روز",
+  "fromDocument": "از سند",
+  "couldNotLoadCase": "بارگذاری جزئیات پرونده ممکن نشد",
+  "typeLabel": "نوع",
+  "nationality": "ملیت",
+  "migriReference": "شماره مرجع Migri",
+  "courtCaseNo": "شماره پرونده دادگاه",
+  "created": "ایجاد شده",
+  "citizenship": "تابعیت",
+  "workPermit": "مجوز کار",
+  "noDocumentsYet": "هنوز سندی بارگذاری نشده",
+  "noUpcomingDeadlinesShort": "مهلت آینده‌ای نیست",
+  "caseCreated": "پرونده ایجاد شد",
+  "decisionReceived": "تصمیم دریافت شد",
+  "appealDeadline": "مهلت تجدیدنظر",
+  "hearingScheduled": "جلسه دادرسی تعیین شد",
+  "late": "دیرکرد",
+  "pending": "در انتظار",
+  "processing": "در حال پردازش",
+  "ready": "آماده",
+  "failed": "ناموفق",
+  "analyzed": "تحلیل شده",
+  "noDocumentsScanHint": "هنوز سندی نیست. اسکن کنید یا بارگذاری کنید.",
+  "inCourt": "در دادگاه",
+  "appeal": "تجدیدنظر",
+  "caseTimeline": "جدول زمانی پرونده",
+  "couldNotLoadTimeline": "بارگذاری جدول زمانی ممکن نشد",
+  "noEventsYet": "هنوز رویدادی نیست",
+  "activityWillAppear": "فعالیت‌ها با پیشرفت پرونده شما در اینجا نمایش داده می‌شوند.",
+  "caseCreatedDesc": "پرونده «{title}» ایجاد شد.",
+  "@caseCreatedDesc": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "decisionReceivedDesc": "یک تصمیم رسمی برای این پرونده دریافت شد.",
+  "appealDeadlineSet": "مهلت تجدیدنظر تعیین شد",
+  "appealDeadlineDesc": "تجدیدنظر باید تا {date} تسلیم شود.",
+  "@appealDeadlineDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "hearingScheduledDesc": "جلسه دادگاه برای {date} تعیین شده است.",
+  "@hearingScheduledDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "caseInfoUpdated": "اطلاعات پرونده آخرین بار به‌روزرسانی شد.",
+  "documentAnalysis": "تحلیل سند",
+  "exportAsPdf": "خروجی به صورت PDF",
+  "pdfExportComingSoon": "خروجی PDF به زودی",
+  "analysisFailedRetry": "تحلیل ناموفق بود. لطفاً دوباره تلاش کنید.",
+  "somethingWentWrong": "مشکلی پیش آمد",
+  "genericError": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
+  "retryAnalysis": "تلاش مجدد تحلیل",
+  "issuesFoundInDocument": "{count, plural, =0{مشکلی در سند یافت نشد} =1{۱ مشکل در سند یافت شد} other{{count} مشکل در سند یافت شد}}",
+  "@issuesFoundInDocument": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "severityOverview": "نمای کلی شدت",
+  "issuesFoundHeader": "مشکلات یافت شده",
+  "generateAppealWithIssues": "{count, plural, =1{ایجاد دادخواست (۱ مشکل)} other{ایجاد دادخواست ({count} مشکل)}}",
+  "@generateAppealWithIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "analyzingContent": "در حال تحلیل محتوا…",
+  "documentProcessedOk": "سند با موفقیت پردازش شد",
+  "noSignificantIssues": "مشکل قابل توجهی در این سند شناسایی نشد.",
+  "cameraPermissionRequired": "مجوز دوربین لازم است",
+  "cameraPermissionDesc": "برای اسکن اسناد دسترسی دوربین را اعطا کنید، یا از گالری استفاده کنید.",
+  "openSettings": "باز کردن تنظیمات",
+  "alignDocument": "سند را در کادر تنظیم کنید",
+  "pageCount": "{count, plural, =0{بدون صفحه} =1{۱ صفحه} other{{count} صفحه}}",
+  "@pageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "preview": "پیش‌نمایش",
+  "pageNumber": "صفحه {number}",
+  "@pageNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "done": "انجام شد",
+  "retake": "عکس مجدد",
+  "useThisPhoto": "استفاده از این عکس",
+  "addPage": "افزودن صفحه",
+  "uploadingPercent": "در حال بارگذاری… {percent}%",
+  "@uploadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "preparingUpload": "آماده‌سازی بارگذاری…",
+  "documentUploadedSuccess": "سند با موفقیت بارگذاری شد",
+  "pagesUploadedSuccess": "{count, plural, =1{۱ صفحه با موفقیت بارگذاری شد} other{{count} صفحه با موفقیت بارگذاری شد}}",
+  "@pagesUploadedSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "uploadFailed": "بارگذاری ناموفق بود. لطفاً اتصال خود را بررسی کنید و دوباره تلاش کنید.",
+  "capturePhotoFailed": "گرفتن عکس ناموفق بود. لطفاً دوباره تلاش کنید.",
+  "readingText": "در حال خواندن متن…",
+  "draftDocument": "پیش‌نویس سند",
+  "saveChanges": "ذخیره تغییرات",
+  "editDocument": "ویرایش سند",
+  "generatingDraft": "در حال تولید پیش‌نویس شما…",
+  "generatingDraftDesc": "هوش مصنوعی در حال تهیه یک سند حقوقی بر اساس جزئیات پرونده و مشکلات انتخاب شده شماست.",
+  "failedToGenerateDraft": "تولید پیش‌نویس ناموفق بود. لطفاً دوباره تلاش کنید.",
+  "changesSaved": "تغییرات ذخیره شد",
+  "copiedToClipboard": "در کلیپ‌بورد کپی شد",
+  "emailComingSoon": "ارسال ایمیل به زودی",
+  "reviewBeforeSending": "قبل از ارسال با دقت بررسی کنید. شما مسئول محتوای این سند هستید.",
+  "noContentAvailable": "محتوایی در دسترس نیست",
+  "save": "ذخیره",
+  "edit": "ویرایش",
+  "pdf": "PDF",
+  "copy": "کپی",
+  "appealDraft": "پیش‌نویس تجدیدنظر",
+  "selected": "{count} انتخاب شده",
+  "@selected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteSelected": "حذف انتخاب شده‌ها",
+  "deleteDocumentsConfirm": "{count} سند حذف شود؟",
+  "@deleteDocumentsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "delete": "حذف",
+  "analyzeSelected": "تحلیل انتخاب شده‌ها",
+  "batchAnalysisStarting": "شروع تحلیل دسته‌ای…",
+  "switchToList": "تغییر به فهرست",
+  "switchToGrid": "تغییر به شبکه",
+  "scanNew": "اسکن جدید",
+  "noDocumentsYetScan": "هنوز سندی نیست",
+  "scanFirstDocumentHint": "اولین سند خود را اسکن کنید تا هوش مصنوعی آن را برای خطاها تحلیل کند و تجدیدنظر تولید کند.",
+  "failedToLoadDocuments": "بارگذاری اسناد ناموفق بود",
+  "aiDisclaimer": "سلب مسئولیت هوش مصنوعی",
+  "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
+  "@aiDisclaimerCompact": {
+    "description": "TODO: native legal review (currently English fallback)"
+  },
+  "aiDisclaimerFullTitle": "Important: how Advocat works",
+  "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
+  "aiDisclaimerExpand": "Learn more",
+  "aiDisclaimerDismiss": "OK, I understand",
+  "annual": "سالانه",
+  "assignToCase": "اختصاص به پرونده",
+  "basicAiAnalysis": "تحلیل پایه هوش مصنوعی",
+  "caseCreationComingSoon": "ایجاد پرونده با داده‌های از پیش پر شده به زودی",
+  "caseSummaryCopied": "خلاصه پرونده کپی شد",
+  "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
+  "checkingPurchases": "بررسی خریدهای قبلی…",
+  "connectYourEmail": "ایمیل خود را متصل کنید",
+  "connectYourEmailDesc": "ایمیل خود را متصل کنید تا مکاتبات حقوقی مرتبط با پرونده‌هایتان به طور خودکار شناسایی شود.",
+  "connectedTo": "متصل به {email}",
+  "@connectedTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "cookiePolicy": "سیاست کوکی",
+  "copySummary": "کپی خلاصه",
+  "dataPrivacyConsent": "رضایت حریم خصوصی",
+  "decline": "رد کردن",
+  "deleteCase": "حذف پرونده",
+  "deleteCaseConfirm": "آیا مطمئنید که می‌خواهید «{title}» را حذف کنید؟ این عمل قابل بازگشت نیست.",
+  "@deleteCaseConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "disconnectEmail": "قطع ایمیل",
+  "disconnectEmailConfirm": "همگام‌سازی خودکار ایمیل متوقف می‌شود. ایمیل‌های قبلاً همگام‌سازی شده باقی می‌مانند.",
+  "draftCopiedToClipboard": "پیش‌نویس کپی شد",
+  "draftGeneration": "تولید پیش‌نویس",
+  "emailIntegrationTitle": "یکپارچه‌سازی ایمیل",
+  "english": "انگلیسی",
+  "failedToCreateCaseRetry": "ایجاد پرونده ناموفق بود. دوباره تلاش کنید.",
+  "failedToLoadCases": "بارگذاری پرونده‌ها ناموفق بود",
+  "filterByType": "فیلتر بر اساس نوع",
+  "finnish": "فنلاندی",
+  "forever": "برای همیشه",
+  "fullAiAnalysis": "تحلیل کامل هوش مصنوعی",
+  "gdprChat": "پردازش پیام‌های چت توسط هوش مصنوعی",
+  "gdprDelete": "حق حذف داده‌ها در هر زمان",
+  "gdprDocs": "تحلیل اسناد بارگذاری شده",
+  "gdprFooter": "داده‌های شما رمزگذاری شده و هرگز با اشخاص ثالث به اشتراک گذاشته نمی‌شود. می‌توانید رضایت را لغو کرده و تمام داده‌ها را از تنظیمات حذف کنید.",
+  "gdprIntro": "برای ارائه کمک حقوقی مبتنی بر هوش مصنوعی، داده‌های شما مطابق GDPR (EU 2016/679) پردازش می‌شود. با ادامه موافقت می‌کنید با:",
+  "gdprStorage": "ذخیره‌سازی رمزگذاری شده داده‌های پرونده",
+  "haveQuestionsAi": "سؤالی دارید؟ از هوش مصنوعی بپرسید",
+  "iAgree": "موافقم",
+  "iAgreeToThe": "موافقت می‌کنم با ",
+  "lastSynced": "آخرین همگام‌سازی: {time}",
+  "@lastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "legalEmails": "ایمیل‌های حقوقی",
+  "legalEmailsWillAppear": "ایمیل‌های طبقه‌بندی شده به عنوان حقوقی اینجا نمایش داده می‌شوند.",
+  "monthly": "ماهانه",
+  "mostPopular": "محبوب‌ترین",
+  "noCasesMatchSearch": "پرونده‌ای مطابق جستجو یافت نشد",
+  "noLegalEmailsYet": "هنوز ایمیل حقوقی وجود ندارد",
+  "noPreviousPurchases": "خرید قبلی یافت نشد.",
+  "oneCaseActive": "۱ پرونده فعال",
+  "openCase": "باز کردن پرونده",
+  "orWord": "یا",
+  "paymentFailed": "پرداخت ناموفق: {error}",
+  "@paymentFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "perMonth": "/ماه",
+  "perYear": "/سال",
+  "priorityProcessing": "پردازش اولویت‌دار",
+  "reportAndOpenCase": "گزارش و باز کردن پرونده",
+  "reportMileageFraud": "گزارش تقلب در کیلومتر",
+  "reportMileageFraudDesc": "گزارش تقلب بر اساس داده‌های بررسی خودرو ایجاد می‌شود. همچنین می‌توانید پرونده حقوقی باز کنید.",
+  "russian": "روسی",
+  "saveTwentyFivePercent": "۲۵٪ تخفیف",
+  "successSubscribed": "اشتراک {plan} با موفقیت فعال شد!",
+  "@successSubscribed": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "takePhotoInstead": "عکس بگیرید",
+  "threeCasesActive": "۳ پرونده فعال",
+  "threeDocScans": "۳ اسکن سند",
+  "twentyDocScans": "۲۰ اسکن سند",
+  "unlimitedCases": "پرونده‌های نامحدود",
+  "unlimitedDocScans": "اسکن نامحدود اسناد",
+  "unlinkedEmails": "ایمیل‌های متصل نشده",
+  "viewFull": "نمایش کامل",
+  "whatToDo": "چه باید کرد",
+  "getHelp": "دریافت کمک",
+  "share": "اشتراک‌گذاری",
+  "didYouKnow": "آیا می‌دانستید؟",
+  "mustKnow": "باید بدانید",
+  "goodToKnow": "خوب است بدانید",
+  "sentFromAdvocat": "ارسال شده از اپلیکیشن Advocat",
+  "policeActionStayCalm": "آرام بمانید و دست‌هایتان را قابل مشاهده نگه دارید",
+  "policeActionAskWhy": "از مأمور بپرسید چرا متوقف شده‌اید",
+  "policeActionProvideName": "نام و تاریخ تولد خود را ارائه دهید",
+  "policeActionWantLawyer": "واضح بگویید: «من قبل از هر سؤالی وکیل می‌خواهم»",
+  "policeActionAskInterpreter": "در صورت نیاز مترجم بخواهید",
+  "policeActionNoteBadge": "نام و شماره شناسایی مأمور را یادداشت کنید",
+  "policeFactMustTellReason": "در فنلاند، پلیس باید دلیل توقف شما را بگوید. اگر نگویند، می‌توانید بپرسید — و قانوناً موظف به توضیح هستند.",
+  "policeFactCanRecord": "شما می‌توانید تعاملات پلیس را در مکان‌های عمومی در فنلاند ضبط کنید. این تحت آزادی بیان محافظت می‌شود.",
+  "contactFinnishLegalAid": "کمک حقوقی فنلاند",
+  "contactNonDiscriminationOmbudsman": "بازرس مبارزه با تبعیض",
+  "deportationDeadlineAppeal": "اعتراض به دادگاه اداری — معمولاً ۳۰ روز پس از ابلاغ",
+  "deportationDeadlineLegalAid": "درخواست کمک حقوقی بدهید — فوراً این کار را انجام دهید",
+  "deportationFactStayDuringAppeal": "در فنلاند، شما معمولاً حق دارید در حالی که اعتراض شما در حال بررسی است در کشور بمانید. اخراج در اکثر موارد در طول اعتراض فعال امکان‌پذیر نیست.",
+  "contactRefugeeAdviceCentre": "مرکز مشاوره پناهندگان فنلاند",
+  "contactAdminCourtHelsinki": "دادگاه اداری هلسینکی",
+  "workplaceActionKeepContract": "نسخه‌هایی از قرارداد کار خود را نگه دارید",
+  "workplaceActionTrackHours": "ساعات کاری خود را به طور مستقل پیگیری کنید",
+  "workplaceActionReportUnsafe": "شرایط ناامن را به مرجع ایمنی شغلی گزارش دهید",
+  "workplaceActionJoinUnion": "برای حمایت به یک اتحادیه کارگری بپیوندید",
+  "workplaceActionContactAuthority": "در صورت نیاز با مرجع ایمنی شغلی تماس بگیرید",
+  "workplaceFactCollectiveWage": "در فنلاند، قراردادهای جمعی حداقل دستمزد را بر اساس صنعت تعیین می‌کنند — حداقل دستمزد ملی واحدی وجود ندارد. کارفرمای شما باید از قرارداد جمعی حوزه شما پیروی کند.",
+  "workplaceFactOralContract": "حتی بدون قرارداد کتبی، در فنلاند حقوق کامل کارمندی دارید. توافق شفاهی به همان اندازه از نظر قانونی الزام‌آور است.",
+  "contactOccupationalSafety": "مرجع ایمنی شغلی",
+  "contactTradeUnionSAK": "مشاوره اتحادیه کارگری (SAK)",
+  "tenantActionWrittenAgreement": "همیشه قرارداد اجاره کتبی داشته باشید",
+  "tenantActionDocumentCondition": "وضعیت آپارتمان را هنگام نقل مکان مستند کنید (عکس)",
+  "tenantActionReportMaintenance": "مشکلات تعمیر و نگهداری را کتباً گزارش دهید",
+  "tenantActionNoIllegalEviction": "هرگز با تخلیه غیرقانونی موافقت نکنید — دادگاه‌ها باید تصمیم بگیرند",
+  "tenantActionContactAdvisory": "در صورت اختلاف با خدمات مشاوره مستأجران تماس بگیرید",
+  "tenantFactNoEvictionWithoutCourt": "موجر در فنلاند نمی‌تواند بدون حکم دادگاه شما را تخلیه کند، حتی اگر اجاره‌نامه منقضی شده باشد. تعویض قفل یا قطع خدمات غیرقانونی است.",
+  "contactTenantsAssociation": "انجمن مستأجران فنلاند",
+  "contactConsumerDisputesBoard": "هیئت حل اختلاف مصرف‌کننده",
+  "detentionActionAskDecision": "فوراً تصمیم کتبی بازداشت را بخواهید",
+  "detentionActionRequestLawyer": "درخواست تماس با وکیل کنید",
+  "detentionActionContactEmbassy": "با سفارت یا کنسولگری خود تماس بگیرید",
+  "detentionActionAskMedical": "در صورت نیاز درخواست مراقبت پزشکی کنید",
+  "detentionActionRequestInterpreter": "برای تمام جلسات مترجم بخواهید",
+  "detentionDeadlineCourtReview": "دادگاه بخش باید بازداشت را ظرف ۴ روز بررسی کند",
+  "detentionDeadlineContinuation": "دادگاه تمدید را هر ۲ هفته بررسی می‌کند",
+  "detentionFactCourtReview": "بازداشت مهاجرتی در فنلاند باید ظرف ۴ روز توسط دادگاه بخش بررسی شود. اگر انجام نشود، بازداشت غیرقانونی می‌شود.",
+  "contactParliamentaryOmbudsman": "بازرس پارلمانی",
+  "discriminationActionWriteDown": "دقیقاً بنویسید چه اتفاقی افتاد (تاریخ، زمان، مکان)",
+  "discriminationActionSaveEvidence": "مدارک را نگه دارید: پیام‌ها، ایمیل‌ها، شاهدان",
+  "discriminationActionFileComplaint": "شکایت به بازرس مبارزه با تبعیض ارائه دهید",
+  "discriminationActionContactLegalAid": "برای مشاوره رایگان با دفتر کمک حقوقی تماس بگیرید",
+  "discriminationActionReportPolice": "اگر تهدید یا حمله بود به پلیس گزارش دهید",
+  "discriminationFactNonDiscriminationAct": "قانون عدم تبعیض فنلاند تبعیض بر اساس سن، خاستگاه، تابعیت، زبان، مذهب، سلامت، معلولیت، گرایش جنسی و سایر ویژگی‌های شخصی را پوشش می‌دهد.",
+  "contactVictimSupportRIKU": "حمایت از قربانیان فنلاند (RIKU)",
+  "domesticViolence": "خشونت خانگی",
+  "inheritance": "ارث",
+  "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
+  "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
+  "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
+  "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
+  "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
+  "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
+  "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
+  "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
+  "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
+  "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
+  "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
+  "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
+  "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
+  "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
+  "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
+  "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
+  "consumerProtection": "حمایت از مصرف‌کننده",
+  "caseTypeStepLabel": "Case Type",
+  "detailsStepLabel": "Details",
+  "documentsStepLabel": "Documents",
+  "whatTypeOfCase": "What type of case is this?",
+  "selectCategoryDescription": "Select the category that best describes your situation.",
+  "tellUsAboutCase": "Tell us about your case",
+  "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
+  "caseTitleHint": "e.g., Residence Permit Appeal 2026",
+  "countryJurisdiction": "Country / Jurisdiction",
+  "selectCountryHint": "Select a country",
+  "referenceNumberHint": "e.g., UMA/12345/2026",
+  "descriptionOptional": "Description (optional)",
+  "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
+  "uploadFirstDocument": "Upload your first document",
+  "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
+  "tapToUploadFile": "Tap to upload a file",
+  "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
+  "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
+  "aiGeneratedDisclaimer": "AI-generated • Not legal advice",
+  "callAI": "Call AI",
+  "comingSoon": "به زودی",
+  "encrypted": "Encrypted",
+  "typing": "Typing…",
+  "online": "Online",
+  "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
+  "tapMicrophoneToSpeak": "Tap the microphone to speak",
+  "categoryEssential": "Essential",
+  "categoryPolice": "Police",
+  "categoryWork": "Work",
+  "categoryHousing": "Housing",
+  "categoryConsumer": "Consumer",
+  "rightsInsideCount": "{count, plural, =0{بدون حق} =1{۱ حق در داخل} other{{count} حق در داخل}}",
+  "@rightsInsideCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeAidThreshold": "Free aid threshold",
+  "partialAidThreshold": "Partial aid threshold",
+  "assetLimit": "Asset limit",
+  "whereToApplyLabel": "Where to apply",
+  "phoneLabel": "Phone",
+  "websiteLabel": "Website",
+  "disclaimerCollapsed": "AI guidance only",
+  "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
+  "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
+  "chatDisclaimerSubtitle": "AI assistant · not legal advice",
+  "chatDisclaimerBannerFull": "Advocat is an AI legal-information assistant, not a lawyer. Information here does not establish an attorney-client relationship, is not legal advice, and may be incorrect. For binding legal advice, consult a licensed attorney in your jurisdiction. We do not represent you.",
+  "chatDisclaimerFooter": "AI-generated. Verify with a licensed lawyer.",
+  "chatDisclaimerGotIt": "Got it",
+  "guestUser": "مهمان",
+  "howToUse": "چگونه استفاده کنیم؟",
+  "tutorialStep1Title": "دستیار حقوقی هوش مصنوعی",
+  "tutorialStep1Desc": "هر سوال حقوقی بپرسید و پاسخ‌های فوری بر اساس قوانین استونی دریافت کنید.",
+  "tutorialStep2Title": "حقوق خود را بشناسید",
+  "tutorialStep2Desc": "اطلاعات حقوقی را بر اساس موضوع مرور کنید — کار، مسکن، حقوق مصرف‌کننده و بیشتر.",
+  "tutorialStep3Title": "اسکن اسناد",
+  "tutorialStep3Desc": "از اسناد حقوقی عکس بگیرید برای تحلیل هوش مصنوعی و ذخیره‌سازی امن.",
+  "tutorialStep4Title": "شروع کنیم!",
+  "tutorialStep4Desc": "برنامه را کاوش کنید و از حقوق خود محافظت کنید. همه داده‌ها خصوصی در دستگاه شما باقی می‌مانند.",
+  "advocatProTitle": "Advocat Pro",
+  "advocatProSubtitle": "ویژگی‌های ویژه را باز کنید",
+  "voiceDisclaimer": "دستیار صوتی فعلاً فقط روی دسکتاپ کار می‌کند (مرورگر Chrome). پشتیبانی موبایل به زودی.",
+  "recommended": "پیشنهادی",
+  "pleaseLogIn": "لطفاً وارد شوید",
+  "subscriptionNotFound": "اشتراک یافت نشد",
+  "errorWithMessage": "خطا: {message}",
+  "redirectingToPayment": "در حال انتقال به صفحه پرداخت…",
+  "cheaperAnnually": "€{amount}/ماه ارزان‌تر با اشتراک سالانه",
+  "navigatingTo": "در حال باز کردن",
+  "stayInChat": "ماندن در چت",
+  "backToChat": "بازگشت به چت",
+  "citationStatusVerifiedBadge": "تأییدشده",
+  "citationStatusUnverifiedBadge": "تأییدنشده",
+  "citationStatusHistoricalBadge": "نسخهٔ پیشین",
+  "citationStatusVerifiedTooltip": "از یک منبع حقوقی بازیابی‌شده نقل شده است.",
+  "citationStatusUnverifiedTooltip": "هوش مصنوعی این متن را بدون بازیابی منبع نقل کرده است — پیش از اتکا، بازبینی کنید.",
+  "citationStatusHistoricalTooltip": "حکم نقل‌شده دیگر لازم‌الاجرا نیست.",
+  "citationOpenInRiigiTeataja": "گشودن در Riigi Teataja",
+  "citationSnippetExpand": "نمایش متن کامل",
+  "citationSnippetCollapse": "نمایش کمتر",
+  "citationUnverifiedSheetNote": "هوش مصنوعی این بند را نقل کرد، اما در این گفت‌وگو از پیکرهٔ حقوقی بازیابی نشده است. پیش از اتکا، ارجاع را راستی‌آزمایی کنید.",
+  "citationFooterNoneWarning": "هیچ ارجاع مستندی موجود نیست",
+  "citationFooterSummaryTotal": "{count, plural, =1{۱ نقل قول} other{{count} نقل قول}}",
+  "citationFooterSummaryVerified": "{count, plural, =1{۱ تأیید شده} other{{count} تأیید شده}}",
+  "citationFooterSummaryUnverified": "{count, plural, =1{۱ تأیید نشده} other{{count} تأیید نشده}}",
+  "citationFooterSummaryHistorical": "{count, plural, =1{۱ تاریخی} other{{count} تاریخی}}",
+  "@citationFooterSummaryTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@citationFooterSummaryVerified": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@citationFooterSummaryUnverified": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@citationFooterSummaryHistorical": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineRadarTitle": "Upcoming deadlines",
+  "deadlineRadarEmpty": "No upcoming deadlines",
+  "deadlineRadarViewAll": "View all",
+  "deadlineCardDaysLeft": "{count, plural, =0{امروز} =1{۱ روز دیگر} other{{count} روز دیگر}}",
+  "@deadlineCardDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineCardTomorrow": "tomorrow",
+  "deadlineCardToday": "today",
+  "deadlineCardOverdue": "{count, plural, =1{۱ روز تأخیر} other{{count} روز تأخیر}}",
+  "@deadlineCardOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineCardMarkComplete": "Mark complete",
+  "deadlineCardSnooze": "Snooze",
+  "deadlineCardSnooze3d": "Snooze 3 days",
+  "deadlineCardSnooze7d": "Snooze 7 days",
+  "deadlineCardSnoozeCustom": "Pick a date",
+  "deadlineCardEdit": "Edit",
+  "deadlineCardDelete": "Archive",
+  "deadlineCardSourceLabelPdf": "from PDF",
+  "deadlineCardSourceLabelIntake": "from intake",
+  "deadlineCardSourceLabelManual": "added manually",
+  "deadlineCardSourceLabelEmail": "from email",
+  "deadlineCardSourceLabelHaikuExtract": "AI-extracted",
+  "deadlineCardSourceLabelStatutoryTemplate": "statute template",
+  "deadlineBannerCritical": "Critical deadline {title} {when}",
+  "@deadlineBannerCritical": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlineBannerDismiss": "Dismiss",
+  "deadlineBannerOpen": "Open deadline",
+  "deadlineHolidayShifted": "Shifted from {original} due to {reason}",
+  "@deadlineHolidayShifted": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlinePermissionAskTitle": "Enable deadline reminders?",
+  "deadlinePermissionAskBody": "We'll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.",
+  "deadlinePermissionAllow": "Allow",
+  "deadlinePermissionLater": "Later",
+  "deadlineSettingsSection": "Deadline reminders",
+  "deadlineSettingsPushChannel": "Push notifications",
+  "deadlineSettingsEmailChannel": "Email (critical only)",
+  "deadlineSettingsInAppChannel": "In-app banners",
+  "deadlineSettingsCriticalBypass": "Critical reminders bypass quiet hours",
+  "deadlineSettingsQuietHours": "Quiet hours",
+  "deadlineSettingsQuietHoursBadge": "Quiet {start}–{end}",
+  "@deadlineSettingsQuietHoursBadge": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlineCaseScreenTitle": "Case deadlines",
+  "deadlineAddManualCta": "Add deadline",
+  "deadlineFormTitle": "Title",
+  "deadlineFormDescription": "Description (optional)",
+  "deadlineFormStatuteTemplate": "Statute template",
+  "deadlineFormStatuteTemplateNone": "None (manual)",
+  "deadlineFormDeadlineAt": "Deadline date",
+  "deadlineFormPriority": "Priority",
+  "deadlineFormSave": "Save",
+  "deadlineFormCancel": "Cancel",
+  "deadlineCompletedNotePrompt": "Add a note (optional)",
+  "deadlineCompletedNoteSave": "Save",
+  "inboxTitle": "Inbox",
+  "inboxEmptyTitle": "Nothing pending",
+  "inboxEmptyBody": "New email threads will appear here as they get triaged.",
+  "inboxApproveSend": "Approve & send",
+  "inboxEditDraft": "Edit",
+  "inboxSnooze": "Snooze",
+  "inboxArchive": "Archive",
+  "inboxFilterAll": "All",
+  "inboxConfirmSendTitle": "Send the prepared reply?",
+  "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
+  "inboxSendButton": "Send",
+  "inboxSentToast": "Sent.",
+  "inboxAlreadySentToast": "Already sent.",
+  "inboxSendErrorToast": "Could not send the reply. Tap retry.",
+  "inboxSnoozedToast": "Snoozed for 24h.",
+  "inboxArchivedToast": "Archived.",
+  "inboxDraftLoadError": "Could not load draft.",
+  "inboxDeadlineToday": "today",
+  "inboxDeadlineTomorrow": "tomorrow",
+  "inboxDeadlineInDays": "in {days}d",
+  "@inboxDeadlineInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "inboxDeadlineOverdue": "overdue {days}d",
+  "@inboxDeadlineOverdue": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "workspaceTabOverview": "Overview",
+  "workspaceTabChat": "Chat",
+  "workspaceTabDrafts": "Drafts",
+  "workspaceOverviewEmpty": "Add documents to build a summary.",
+  "workspaceTimelineEmpty": "No events yet.",
+  "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
+  "workspaceDraftsEmpty": "No drafts yet.",
+  "workspaceInboxEmpty": "No related email.",
+  "reviewThisContract": "بررسی این قرارداد",
+  "contractReviews": "Contract Reviews",
+  "@contractReviews": {},
+  "contractReviewsFreeFeature": "1 contract review (lifetime trial)",
+  "@contractReviewsFreeFeature": {},
+  "contractReviewsCounselFeature": "5 contract reviews per month",
+  "@contractReviewsCounselFeature": {},
+  "contractReviewsProFeature": "20 contract reviews per month",
+  "@contractReviewsProFeature": {},
+  "contractReviewsLeft": "{count, plural, =0{این ماه بررسی قراردادی باقی نمانده} =1{۱ بررسی قرارداد این ماه باقی مانده} other{{count} بررسی قرارداد این ماه باقی مانده}}",
+  "@contractReviewsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contractReviewsExhausted": "No contract reviews left this month",
+  "@contractReviewsExhausted": {},
+  "contractReviewsFreeTrialLeft": "Free trial: 1 contract review",
+  "@contractReviewsFreeTrialLeft": {},
+  "contractReviewsFreeTrialUsed": "Free trial used — upgrade for more",
+  "@contractReviewsFreeTrialUsed": {},
+  "contractReviewsUpgradeTitle": "Contract reviews used up",
+  "@contractReviewsUpgradeTitle": {},
+  "contractReviewsUpgradeBodyFree": "You used your free contract review. Upgrade for monthly contract reviews.",
+  "@contractReviewsUpgradeBodyFree": {},
+  "contractReviewsUpgradeBodyPaid": "You used {used} of {cap} reviews this month. Upgrade for a higher monthly cap.",
+  "@contractReviewsUpgradeBodyPaid": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "contractReviewsUpgradeCounselCta": "Upgrade to Counsel (€19.99/mo) — 5 reviews",
+  "@contractReviewsUpgradeCounselCta": {},
+  "contractReviewsUpgradeProCta": "Upgrade to Pro (€29.99/mo) — 20 reviews",
+  "@contractReviewsUpgradeProCta": {},
+  "contractReviewsUpgradeToProShort": "Upgrade to Pro — 20/mo",
+  "@contractReviewsUpgradeToProShort": {},
+  "notNow": "Not now",
+  "@notNow": {},
+  "referralTitle": "دعوت از دوستان",
+  "@referralTitle": {},
+  "referralSubtitle": "یک ماه رایگان بگیر. یک ماه رایگان هدیه بده.",
+  "@referralSubtitle": {},
+  "referralYourLink": "لینک شما",
+  "@referralYourLink": {},
+  "referralCopyLink": "کپی لینک",
+  "@referralCopyLink": {},
+  "referralShare": "اشتراک‌گذاری",
+  "@referralShare": {},
+  "referralLinkCopied": "لینک کپی شد",
+  "@referralLinkCopied": {},
+  "referralStatsInvited": "دعوت‌شده",
+  "@referralStatsInvited": {},
+  "referralStatsConverted": "عضو شده",
+  "@referralStatsConverted": {},
+  "referralStatsEarned": "ماه‌های رایگان",
+  "@referralStatsEarned": {},
+  "referralShareWhatsApp": "اشتراک در واتساپ",
+  "@referralShareWhatsApp": {},
+  "referralShareTelegram": "اشتراک در تلگرام",
+  "@referralShareTelegram": {},
+  "referralShareEmail": "اشتراک با ایمیل",
+  "@referralShareEmail": {},
+  "referralEmailSubject": "Advocat را امتحان کن — دستیار حقوقی هوش مصنوعی تو",
+  "@referralEmailSubject": {},
+  "referralLoadError": "بارگذاری اطلاعات ممکن نشد. برای تازه‌سازی بکشید.",
+  "@referralLoadError": {},
+  "referralRetry": "تلاش دوباره",
+  "@referralRetry": {},
+  "referralSettingsTile": "دعوت از دوستان",
+  "@referralSettingsTile": {},
+  "referralAfterReviewCta": "خوشت آمد؟ یک دوست را دعوت کن — هر دو یک ماه رایگان می‌گیرید.",
+  "@referralAfterReviewCta": {},
+  "checkerProTagline": "Professional verification tools",
+  "checkerDataSource": "Data from official registries",
+  "companyCheckerHint": "Company name or reg. number",
+  "companyCheckerPriceChip": "€2.99 per check  •  Included in Pro",
+  "companyCheckerEmptyState": "Enter a company name or registration\nnumber to get a full report",
+  "aiMemoryTitle": "AI memory",
+  "aiMemorySubtitle": "Review and forget what the AI remembers about you",
+  "bookLawyerCallTitle": "Book a lawyer call",
+  "bookLawyerCallComingSoonTitle": "Human lawyer calls — opening soon",
+  "bookLawyerCallComingSoonBody": "Pro and Premium include 15-minute calls with a partner lawyer (1/quarter on Pro, 2/quarter on Premium). We are finalising the EE solo-practitioner pool and will email you the moment booking opens.",
+  "bookLawyerCallQuotaAvailable": "You have {remaining} of {total} call(s) left this quarter.",
+  "@bookLawyerCallQuotaAvailable": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "bookLawyerCallQuotaExhausted": "Quarterly quota used.",
+  "bookLawyerCallQuotaBodyAvailable": "Pro tier includes 1 call/quarter, Premium 2. Calls last 15 minutes, by Google Meet.",
+  "bookLawyerCallQuotaBodyExhausted": "Your quota resets on the first day of next quarter. Need to talk sooner? Upgrade to Premium for an extra call.",
+  "severityCritical": "CRITICAL",
+  "severityHigh": "HIGH",
+  "severityMedium": "MEDIUM",
+  "severityLow": "LOW",
+  "deadlineRequiredFields": "Title and deadline date are required",
+  "acceptTermsRequired": "Please agree to the Terms of Service",
+  "chatLegalCouncilTooltip": "Legal council (4 experts)",
+  "attachFileTooltip": "Attach file",
+  "sendMessage": "Send message",
+  "stopGenerating": "Stop generating",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "decreaseDependents": "Decrease",
+  "increaseDependents": "Increase",
+  "consiliumHeader": "کنسولیوم وکلا",
+  "@consiliumHeader": {
+    "description": "Header text for the multi-agent legal consilium panel"
+  },
+  "consiliumProgress": "{count} از {total} آماده",
+  "@consiliumProgress": {
+    "description": "Progress indicator while consilium experts produce opinions",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumStarting": "وکلا در حال بررسی پرونده شما هستند…",
+  "consiliumDisagreement": "کارشناسان اختلاف نظر دارند",
+  "@consiliumDisagreement": {
+    "description": "Banner shown when experts have conflicting positions"
+  },
+  "consiliumSynthesizing": "در حال تدوین توصیه…",
+  "consiliumDone": "کنسولیوم پایان یافت · {totalRoles} کارشناس",
+  "@consiliumDone": {
+    "placeholders": {
+      "totalRoles": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumPositionPush": "اعتراض کن",
+  "consiliumPositionSettle": "سازش کن",
+  "consiliumPositionInvestigate": "بررسی کن",
+  "consiliumPositionOutOfScope": "خارج از صلاحیت",
+  "consiliumConfidence": "اطمینان",
+  "consiliumKeyCitation": "ارجاع کلیدی",
+  "consiliumAdversarialRound": "دور تقابلی",
+  "consiliumViewFullOpinion": "مشاهده نظر کامل",
+  "consiliumExpertsAgreed": "{count, plural, =1{۱ کارشناس موافق} other{{count} کارشناس موافق}}",
+  "@consiliumExpertsAgreed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumExpertsDisagree": "{count, plural, =1{۱ کارشناس مخالف} other{{count} کارشناس مخالف}}",
+  "@consiliumExpertsDisagree": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumDisclaimer": "عامل‌های هوش مصنوعی، نه وکلای انسانی. تصمیمات مهم را با وکیل دارای پروانه بررسی کنید.",
+  "@consiliumDisclaimer": {
+    "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
+  },
+  "draftsTab": "Drafts",
+  "draftingTitle": "Drafting Studio",
+  "draftingEmpty": "Empty draft",
+  "draftingPlaceholder": "Start typing your draft…",
+  "draftingDraftsList": "My drafts",
+  "draftingSave": "Save",
+  "draftingSaved": "Saved",
+  "draftingSavedJustNow": "Saved just now",
+  "draftingAiRevise": "Revise with AI",
+  "draftingExportPdf": "Export PDF",
+  "draftingExportDocx": "Export DOCX",
+  "draftingExportMd": "Export Markdown",
+  "draftingDeleteDraft": "Delete draft",
+  "draftingConfirmDelete": "Delete this draft?",
+  "draftingConfirmDeleteMessage": "This action cannot be undone.",
+  "draftingConfirm": "Delete",
+  "draftingCancel": "Cancel",
+  "draftingDraftReplyTo": "Reply to {name}",
+  "draftingUntitled": "Untitled",
+  "draftingTitleHint": "Title (optional)",
+  "draftingAiReviseTitle": "Revise with AI",
+  "draftingAiReviseSelectionLabel": "Selected text:",
+  "draftingAiReviseInstructionLabel": "Instruction (optional)",
+  "draftingAiReviseInstructionHint": "e.g. \"make it more formal\" or \"shorten\"",
+  "draftingAiReviseRunButton": "Generate revision",
+  "draftingAiReviseSuggestionLabel": "Suggested revision:",
+  "draftingAiReviseChangesLabel": "Changes:",
+  "draftingAiReviseAccept": "Accept",
+  "draftingAiReviseReject": "Reject",
+  "draftingFormatBold": "Bold",
+  "draftingFormatItalic": "Italic",
+  "draftingFormatHeading": "Heading",
+  "draftingFormatBullet": "Bullet list",
+  "draftingFormatNumbered": "Numbered list",
+  "draftingEmptyListMessage": "You have no drafts yet.",
+  "draftingEmptyListAction": "New draft",
+  "draftingExporting": "Exporting…",
+  "draftingExportFailed": "Export failed",
+  "draftingSaveFailed": "Save failed",
+  "draftingNewDraft": "New draft",
+  "vaultNoteChip": "Vault note",
+  "saveToVault": "Save to Vault",
+  "savingToVault": "Saving to Vault…",
+  "savedToVault": "Saved to Vault",
+  "vaultNoteTitlePrefix": "Note: ",
+  "openInVault": "Open in Vault",
+  "saveToVaultFailed": "Save to Vault failed",
+  "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
+  "draftingVersionHistory": "Version history",
+  "dangerZone": "[en] Danger zone",
+  "deleteAccountConfirmButton": "[en] Delete forever",
+  "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+  "emptyHomeTitle": "Welcome to Advocat",
+  "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+  "intentChip1": "Got a fine",
+  "intentChip2": "Permit denied",
+  "intentChip3": "Contract problem",
+  "emptyCasesTitle": "No cases yet",
+  "emptyCasesCta": "Start a case",
+  "emptyDraftsTitle": "No drafts yet",
+  "emptyDraftsCta": "Create draft",
+  "emptyChatTitle": "Ask Advocat anything",
+  "chatExamplePrompt1": "Help me reply to a fine",
+  "chatExamplePrompt2": "Review my rental contract",
+  "chatExamplePrompt3": "What are my rights at work?",
+  "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+  "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+  "deletingAccount": "[en] Deleting account…",
+  "contractReviewTitle": "Contract Review",
+  "@contractReviewTitle": {
+    "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewUploadCta": "Upload contract",
+  "@contractReviewUploadCta": {
+    "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
+  "@contractReviewQuotaRemaining": {
+    "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewRedFlags": "Red flags",
+  "@contractReviewRedFlags": {
+    "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewReviewPoints": "Review points",
+  "@contractReviewReviewPoints": {
+    "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewNegotiationTips": "Negotiation tips",
+  "@contractReviewNegotiationTips": {
+    "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewSaveToVault": "Save to Vault",
+  "@contractReviewSaveToVault": {
+    "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewContinueChat": "Continue in chat",
+  "@contractReviewContinueChat": {
+    "description": "TODO native translation for locale=fa; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "referralInviteFriends": "Invite Friends",
+  "referralYourCode": "Your code",
+  "referralCopiedToast": "Code copied to clipboard",
+  "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
+  "referralInvited": "Friends invited",
+  "referralRewardsEarned": "Free months earned",
+  "deadlineUrgencyToday": "Today & Overdue",
+  "deadlineUrgencyWeek": "This week",
+  "deadlineUrgencyMonth": "This month",
+  "deadlineUrgencyLater": "Later",
+  "deadlineAddManual": "Add deadline",
+  "deadlineSnoozeBy": "Snooze",
+  "deadlineSnooze1d": "Snooze 1 day",
+  "deadlineSnooze3d": "Snooze 3 days",
+  "deadlineSnooze7d": "Snooze 7 days",
+  "deadlineDismiss": "Dismiss",
+  "deadlineExportIcs": "Add to calendar",
+  "deadlineSource": "Source",
+  "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
+  "deadlineNewTitle": "New deadline",
+  "deadlineFieldTitle": "Title",
+  "deadlineFieldDueDate": "Due date",
+  "deadlineFieldNotes": "Notes (optional)",
+  "deadlineSaved": "Deadline saved",
+  "deadlineSaveFailed": "Could not save deadline",
+  "deadlineUrgentBannerSingle": "1 deadline today or overdue",
+  "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
+  "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
+  "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
+  "@deadlineUrgentBannerMany": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@deadlineDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@deadlineDaysOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "iapPayWithApple": "پرداخت با Apple",
+  "iapRestorePurchases": "بازیابی خریدها",
+  "iapPurchaseFailed": "خرید ناموفق بود. لطفاً دوباره تلاش کنید یا با پشتیبانی تماس بگیرید.",
+  "iapRestoreSuccess": "اشتراک شما بازیابی شد.",
+  "iapRestoreNoActive": "هیچ اشتراک فعالی برای بازیابی یافت نشد.",
+  "deadlineEuRadarTitle": "EU deadline radar (preview)",
+  "@deadlineEuRadarTitle": {
+    "x-todo": "translate to fa"
+  },
+  "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+  "@deadlineEuRadarSubtitle": {
+    "x-todo": "translate to fa"
+  },
+  "aiAnalyzing": "هوش مصنوعی در حال تحلیل است",
+  "speakIntoMicHint": "در میکروفون صحبت کنید. مطمئن شوید دسترسی به میکروفون فعال است.",
+  "aiErrorRateLimit": "سرویس موقتاً بیش از حد بارگذاری شده است. لطفاً ۱ تا ۲ دقیقه دیگر دوباره تلاش کنید.",
+  "aiErrorOverload": "هوش مصنوعی هم‌اکنون مشغول است، لطفاً یک دقیقه دیگر دوباره تلاش کنید.",
+  "freeLimitReached": "شما از تمام {count} پیام رایگان هوش مصنوعی استفاده کرده‌اید. برای دستیار حقوقی نامحدود به Legal Counsel ارتقا دهید!",
+  "@freeLimitReached": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appleComingSoon": "به‌زودی",
+  "appleComingSoonMessage": "ورود با Apple به‌زودی در دسترس خواهد بود. برای ادامه از Google یا ایمیل استفاده کنید.",
+  "dpaTitle": "قرارداد پردازش داده‌ها",
+  "dpaCheckoutGateTitle": "پیش از ارتقا",
+  "dpaCheckoutGateBody": "قانون اتحادیه اروپا (ماده ۲۸ GDPR) ما را ملزم می‌کند که با هر مشتری پرداخت‌کننده یک قرارداد پردازش داده‌ها امضا کنیم. لطفاً آن را بررسی و بپذیرید.",
+  "dpaViewLink": "مشاهده قرارداد پردازش داده‌ها",
+  "dpaCheckboxLabel": "قرارداد پردازش داده‌ها (نسخه ۱.۰) را خوانده‌ام و می‌پذیرم.",
+  "dpaCancel": "لغو",
+  "dpaAcceptAndContinue": "پذیرفتن و ادامه",
+  "dpaOpenHint": "برای فعال شدن دکمه پذیرش، حداقل یک بار DPA را باز کنید.",
+  "rateAppComingSoon": "به‌زودی در فروشگاه‌های برنامه!",
+  "dataCopiedToClipboard": "داده‌ها در کلیپ‌بورد کپی شد",
+  "noEventsForFilter": "هیچ رویدادی با این فیلتر مطابقت ندارد",
+  "timelineFilterAll": "همه",
+  "timelineFilterEmails": "ایمیل‌ها",
+  "timelineFilterConsilium": "تصمیمات هوش مصنوعی",
+  "timelineFilterDeadlines": "مهلت‌ها",
+  "timelineFilterNotes": "یادداشت‌ها",
+  "timelineEventEmailIn": "ایمیل دریافت شد",
+  "timelineEventEmailOut": "ایمیل ارسال شد",
+  "timelineEventConsiliumDecision": "تصمیم هوش مصنوعی",
+  "timelineEventDeadlineSet": "مهلت",
+  "timelineEventDocUploaded": "سند",
+  "timelineEventPhaseChange": "تغییر مرحله",
+  "timelineEventManualNote": "یادداشت",
+  "timelineJustNow": "همین حالا",
+  "timelineMinutesAgo": "{count, plural, =1{۱ دقیقه پیش} other{{count} دقیقه پیش}}",
+  "@timelineMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timelineHoursAgo": "{count, plural, =1{۱ ساعت پیش} other{{count} ساعت پیش}}",
+  "@timelineHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timelineDaysAgo": "{count, plural, =1{۱ روز پیش} other{{count} روز پیش}}",
+  "@timelineDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gmailReauthBannerBody": "Advocat نسخه ۲.۱ صندوق ورودی شما را برای پیش‌نویس پاسخ‌ها می‌خواند؛ هر زمان می‌توانید دسترسی را لغو کنید. برای فعال‌سازی غربالگری فعال، Gmail را دوباره وصل کنید.",
+  "gmailReauthBannerCta": "تأیید مجدد دسترسی",
+  "fiveAiMessagesTotal": "۵ پیام هوش مصنوعی (مادام‌العمر)",
+  "hundredAiMessagesDay": "۱۰۰ پیام هوش مصنوعی در روز",
+  "unlimitedAiMessages": "پیام‌های نامحدود هوش مصنوعی",
+  "voiceInput": "ورودی صوتی",
+  "strategyRecommendations": "توصیه‌های راهبردی",
+  "foundingMemberNote": "عضو مؤسس: ۹.۹۹ یورو در ماه برای ۳ ماه نخست",
+  "saveTwentyPercent": "۲۰٪ صرفه‌جویی",
+  "gdprConsentAiProcessing": "با پردازش داده‌هایم برای دستیار حقوقی هوش مصنوعی موافقم (الزامی)",
+  "gdprConsentAnalytics": "با تحلیل داده‌ها برای بهبود سرویس موافقم (اختیاری)",
+  "gdprArt9Intro": "این برنامه داده‌های شخصی دسته‌های ویژه را طبق ماده ۹ GDPR پردازش می‌کند، از جمله:",
+  "gdprSpecialLegalCases": "جزئیات پرونده حقوقی و اسناد دادگاهی شما",
+  "gdprSpecialNationality": "ملیت و وضعیت مهاجرتی",
+  "gdprConsentLegalData": "با پردازش داده‌های پرونده حقوقی، ملیت و وضعیت مهاجرتی‌ام توسط هوش مصنوعی موافقم (الزامی)",
+  "gdprConsentVoice": "با پردازش ضبط صدا موافقم (اختیاری)",
+  "gdprViewPrivacyPolicy": "مشاهده سیاست حریم خصوصی",
+  "legalInformation": "اطلاعات حقوقی",
+  "legalEntityName": "Vorantis OÜ",
+  "legalRegistryCode": "کد ثبت: 17098992",
+  "legalAddress": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145",
+  "legalEmail": "ایمیل: support@advocat.ee",
+  "legalRegistry": "ثبت‌شده در دفتر ثبت تجاری استونی (Äriregister)",
+  "domesticViolenceDesc": "حقوق قربانی، کمک اضطراری، احکام منع نزدیکی",
+  "rightCallEmergency": "شما حق دارید در هر شرایط اضطراری با ۱۱۲ تماس بگیرید — پلیس، آمبولانس، آتش‌نشانی",
+  "rightVictimProtection": "به‌عنوان قربانی، شما حق محافظت، حمایت و دریافت اطلاعات درباره پرونده خود را دارید",
+  "rightRestrainingOrder": "می‌توانید برای دور نگه داشتن آزاردهنده درخواست حکم منع نزدیکی (lähestymiskielto) دهید",
+  "rightVictimInterpreter": "شما در تمام مراحل قانونی حق داشتن مترجم را دارید",
+  "rightMedicalHelp": "شما حق درمان فوری پزشکی و مستندسازی آسیب‌ها را دارید",
+  "rightShelter": "شما حق سرپناه اضطراری را دارید — با یک پناهگاه یا خدمات اجتماعی تماس بگیرید",
+  "mustReportDanger": "اگر کسی در خطر فوری است، بلافاصله با ۱۱۲ تماس بگیرید",
+  "mustDocumentInjuries": "تمام آسیب‌ها را مستند کنید — عکس، سوابق پزشکی، یادداشت‌های کتبی",
+  "domesticActionCallEmergency": "اگر در خطر فوری هستید با ۱۱۲ تماس بگیرید",
+  "domesticActionGoToSafe": "به مکانی امن بروید — پناهگاه، دوست، مکان عمومی",
+  "domesticActionDocumentEverything": "آسیب‌ها را مستند کنید: عکس بگیرید، سوابق پزشکی تهیه کنید",
+  "domesticActionFilePoliceReport": "شکایت پلیسی ثبت کنید — می‌توانید این کار را بعداً هم انجام دهید",
+  "domesticActionContactShelter": "با یک پناهگاه یا خط تلفن بحران تماس بگیرید",
+  "domesticActionApplyRestraining": "از طریق پلیس یا دادگاه درخواست حکم منع نزدیکی دهید",
+  "domesticFactRestrainingOrder": "در فنلاند، حکم منع نزدیکی (lähestymiskielto) می‌تواند حتی بدون پرونده کیفری صادر شود. این حکم فرد را از تماس یا نزدیک شدن به شما منع می‌کند.",
+  "domesticFactVictimDirective": "طبق دستورالعمل قربانیان اتحادیه اروپا 2012/29/EU، شما حق دارید با احترام با شما رفتار شود، اطلاعات را به زبانی که می‌فهمید دریافت کنید و به خدمات حمایت از قربانیان دسترسی داشته باشید — صرف‌نظر از وضعیت اقامت شما.",
+  "domesticDeadlinePoliceReport": "ثبت شکایت پلیسی — مهلت سختگیرانه‌ای ندارد، اما هرچه زودتر برای حفظ شواهد بهتر است",
+  "domesticDeadlineRestraining": "حکم منع نزدیکی — در هر زمان قابل درخواست است",
+  "contactEmergency": "شماره اضطراری",
+  "contactShelter": "خط تلفن پناهگاه (Turvakoti)",
+  "contactCrisisHelpline": "خط تلفن بحران (Kriisipuhelin)",
+  "contactNollaLinja": "Nollalinja — خط تلفن خشونت علیه زنان",
+  "consumerProtectionDesc": "کلاهبرداری، محصولات معیوب، مرجوعی، فروشندگان فریبکار",
+  "rightReturnOnline": "شما ۱۴ روز فرصت دارید خریدهای آنلاین را بدون دلیل لغو کنید (حق انصراف اتحادیه اروپا)",
+  "rightDefectiveProduct": "اگر محصولی معیوب است، شما حق تعمیر، تعویض یا بازپرداخت را دارید",
+  "rightClearPricing": "فروشندگان باید قیمت‌های شفاف شامل تمام هزینه‌ها را نمایش دهند — هزینه‌های پنهان غیرقانونی هستند",
+  "rightComplainBoard": "می‌توانید به‌صورت رایگان شکایتی به هیئت اختلافات مصرف‌کننده ثبت کنید",
+  "rightProtectionFraud": "شما در برابر شیوه‌های تجاری ناعادلانه و کلاهبرداری محافظت می‌شوید",
+  "mustKeepReceipts": "تمام رسیدها، قراردادها و مکاتبات با فروشندگان را نگه دارید",
+  "mustActTimely": "نقص‌ها را در زمان معقولی پس از کشف به فروشنده گزارش دهید",
+  "consumerActionKeepEvidence": "رسیدها، تصاویر صفحه، ایمیل‌ها و تمام مدارک خرید را نگه دارید",
+  "consumerActionContactSeller": "ابتدا با فروشنده تماس بگیرید — مشکل را به‌صورت کتبی توضیح دهید",
+  "consumerActionFileComplaint": "شکایتی به هیئت اختلافات مصرف‌کننده (kuluttajariitalautakunta) ثبت کنید",
+  "consumerActionContactAuthority": "برای کمک رایگان با خدمات مشاوره مصرف‌کننده تماس بگیرید",
+  "consumerActionReportFraud": "کلاهبرداری را به پلیس و دادستان مصرف‌کننده گزارش دهید",
+  "consumerFactWithdrawal": "طبق دستورالعمل حقوق مصرف‌کننده اتحادیه اروپا 2011/83/EU، شما ۱۴ روز فرصت دارید از هر خرید آنلاین یا از راه دور انصراف دهید — بدون هیچ پرسشی. فروشنده باید ظرف ۱۴ روز مبلغ را بازپرداخت کند.",
+  "consumerFactWarranty": "در فنلاند، فروشنده برای مدت معقولی (اغلب ۲ سال یا بیشتر) مسئول نقص‌های محصول است. این مستقل از هرگونه گارانتی سازنده است.",
+  "consumerDeadlineWithdrawal": "انصراف از خرید آنلاین — ۱۴ روز از زمان تحویل",
+  "consumerDeadlineDefect": "گزارش نقص به فروشنده — ظرف ۲ ماه از کشف (توصیه‌شده)",
+  "contactConsumerAdvisory": "خدمات مشاوره مصرف‌کننده",
+  "contactConsumerOmbudsman": "دادستان مصرف‌کننده (Kuluttaja-asiamies)",
+  "contactConsumerDisputesBoardDirect": "هیئت اختلافات مصرف‌کننده",
+  "categoryChildren": "کودکان",
+  "categoryDigital": "دیجیتال",
+  "childrenRights": "حقوق کودکان و نفقه",
+  "childrenRightsDesc": "نفقه فرزند، نفقه، حمایت، تضمین‌های دولتی",
+  "cyberbullying": "قلدری سایبری و آزار آنلاین",
+  "cyberbullyingDesc": "تهدید، نقض حریم خصوصی، افترا در فضای آنلاین",
+  "rightChildSupport": "هر دو والد از نظر قانونی موظف به حمایت مالی از فرزند خود هستند (Perekonnaseadus § 100–102)",
+  "rightMinimumAlimony": "حداقل نفقه فرزند در استونی: مبلغ پایه (€295.86) + ۳٪ میانگین حقوق ناخالص سال گذشته (PKS § 101). از 01.04.2026 — €318.62 در ماه برای هر فرزند. هر سال در اول آوریل به‌روزرسانی می‌شود. ماشین‌حساب: alimendid.ee",
+  "rightCourtAlimony": "می‌توانید از طریق دادگاه شهرستان (maakohus) درخواست نفقه دهید — برای ادعاهای تا €6,400 نیازی به وکیل نیست",
+  "rightBailiffEnforcement": "اگر والد از پرداخت خودداری کند، یک مأمور اجرا (kohtutäitur) می‌تواند حکم دادگاه را اجرا کند، از جمله توقیف حقوق",
+  "rightStateAlimonyGuarantee": "اگر والد پرداخت نکند، دولت از طریق Sotsiaalkindlustusamet کمک‌هزینه نفقه (elatisabi) ارائه می‌دهد — تا €100 در ماه برای هر فرزند",
+  "rightChildEducation": "هر کودکی حق آموزش، مراقبت بهداشتی و محافظت در برابر سوءاستفاده را دارد (Lastekaitseseadus § 4–5)",
+  "rightChildContact": "کودک حق دارد ارتباط خود را با هر دو والد حفظ کند مگر اینکه دادگاه طور دیگری تصمیم بگیرد (PKS § 143)",
+  "mustFileCourtClaim": "برای دریافت نفقه، باید در دادگاه دعوا اقامه کنید یا مبلغ را به‌صورت کتبی توافق کنید",
+  "mustNotifyAddressChange": "اگر elatisabi دریافت می‌کنید، تغییرات آدرس را به Sotsiaalkindlustusamet اطلاع دهید",
+  "childrenActionGatherDocs": "گواهی تولد فرزند، کارت شناسایی خود و مدارک هزینه‌ها را جمع‌آوری کنید",
+  "childrenActionFileCourtClaim": "دعوای نفقه را در دادگاه شهرستان (maakohus) اقامه کنید — می‌تواند آنلاین از طریق e-toimik انجام شود",
+  "childrenActionApplyElatisabi": "اگر والد پرداخت نکند، در Sotsiaalkindlustusamet برای تضمین نفقه دولتی (elatisabi) درخواست دهید",
+  "childrenActionContactBailiff": "برای اجرای حکم دادگاه با یک مأمور اجرا (kohtutäitur) تماس بگیرید",
+  "childrenActionCallLasteabi": "با خط تلفن کودکان Lasteabi 116 111 تماس بگیرید — رایگان، ۲۴ ساعته",
+  "childrenDeadlineElatisabi": "درخواست elatisabi — پس از حکم دادگاه، مهلت سختگیرانه‌ای ندارد اما فرایند زمان‌بر است",
+  "childrenDeadlineCourt": "نفقه را می‌توان به‌صورت گذشته‌نگر تا ۱ سال پیش از ثبت در دادگاه مطالبه کرد",
+  "childrenFactMinimum": "از 01.04.2026 حداقل نفقه فرزند €318.62 در ماه برای هر فرزند است. فرمول: مبلغ پایه (€295.86) + ۳٪ میانگین حقوق ناخالص سال گذشته. هر سال در اول آوریل به‌روزرسانی می‌شود. یک والد نمی‌تواند توافق کند کمتر بپردازد. ماشین‌حساب: alimendid.ee",
+  "childrenFactElatisabi": "تضمین نفقه دولتی استونی (elatisabi) در سال ۲۰۱۷ برای محافظت از کودکان هنگامی که یک والد از پرداخت خودداری می‌کند، معرفی شد. دولت پرداخت می‌کند و سپس مبلغ را از والد بدهکار بازپس می‌گیرد.",
+  "rightReportCybercrime": "شما حق دارید تهدیدهای آنلاین، آزار و سرقت هویت را به پلیس گزارش دهید (Karistusseadustik § 120, § 157¹)",
+  "rightContentRemoval": "می‌توانید درخواست حذف محتوای افتراآمیز یا خصوصی از پلتفرم‌ها را داشته باشید و طبق GDPR خواستار حذف آن شوید",
+  "rightMoralDamageCompensation": "می‌توانید برای خسارت معنوی ناشی از قلدری سایبری مطالبه غرامت کنید (Võlaõigusseadus § 1043–1055)",
+  "rightPrivacyProtection": "حریم خصوصی شما محافظت می‌شود — اشتراک‌گذاری غیرمجاز عکس‌ها، پیام‌ها یا داده‌های شخصی شما غیرقانونی است (KarS § 157)",
+  "rightDataProtection": "نقض حفاظت از داده‌ها (استفاده غیرمجاز از داده‌های شما) را به Andmekaitse Inspektsioon گزارش دهید",
+  "rightDefamationAction": "افترا (laimamine) یک تخلف مدنی است — می‌توانید برای خسارت شکایت کنید و خواستار عذرخواهی عمومی شوید (KarS § 247 (لغوشده)، VÕS § 1047)",
+  "mustCollectEvidence": "تمام شواهد را جمع‌آوری و حفظ کنید — تصاویر صفحه، لینک‌ها، تاریخ‌ها و اطلاعات شاهدان",
+  "mustNotRetaliate": "تلافی نکنید یا در آزار متقابل شرکت نکنید — ممکن است پرونده شما را تضعیف کند",
+  "cyberActionScreenshots": "از تمام موارد آزار تصویر صفحه بگیرید — نشانی‌های اینترنتی، تاریخ‌ها، نام‌های کاربری و محتوا را ذخیره کنید",
+  "cyberActionReportPolice": "در نزدیک‌ترین کلانتری یا به‌صورت آنلاین در politsei.ee شکایت پلیسی ثبت کنید",
+  "cyberActionReportPlatform": "محتوا را برای حذف به پلتفرم رسانه اجتماعی گزارش دهید",
+  "cyberActionContactDPA": "اگر از داده‌های شخصی شما سوءاستفاده شده است، با Andmekaitse Inspektsioon تماس بگیرید",
+  "cyberActionConsultLawyer": "درباره خسارات مدنی با یک وکیل مشورت کنید — کمک حقوقی رایگان از طریق Riigi Õigusabi در دسترس است",
+  "cyberDeadlineCriminal": "شکایت کیفری — مهلت سختگیرانه‌ای ندارد، اما برای بهترین نتیجه سریع گزارش دهید",
+  "cyberDeadlineCivil": "دعوای مدنی برای خسارت — تا ۳ سال از زمانی که از تخلف مطلع شدید (TsÜS § 150)",
+  "cyberFactPrivacy": "در استونی، اشتراک‌گذاری غیرمجاز تصاویر خصوصی فرد می‌تواند طبق Karistusseadustik § 157¹ (نقض حریم خصوصی) تا ۳ سال زندان در پی داشته باشد.",
+  "cyberFactGDPR": "طبق GDPR، شما «حق فراموش شدن» را دارید — پلتفرم‌ها باید در صورت درخواست، داده‌های شخصی شما را حذف کنند، مگر اینکه مبنای قانونی برای نگه‌داشتن آن وجود داشته باشد.",
+  "upgradeBannerTitle": "برای مشاوره‌های نامحدود ارتقا دهید",
+  "upgradeBannerCta": "ارتقا",
+  "paymentSuccessTitle": "پرداخت موفق",
+  "paymentSuccessBody": "اشتراک شما اکنون فعال است.",
+  "commonOk": "تأیید",
+  "feedbackThumbsUpLabel": "مفید",
+  "feedbackThumbsDownLabel": "غیرمفید",
+  "feedbackCommentPrompt": "چه چیزی اشتباه بود؟",
+  "feedbackSend": "ارسال",
+  "feedbackCancel": "لغو",
+  "reasoningPillIdle": "در حال فکر کردن…",
+  "reasoningPillSearchingLaw": "در حال جستجوی قانون استونی…",
+  "reasoningPillSearchingWeb": "در حال جستجوی وب…",
+  "reasoningPillCheckingCompany": "در حال بررسی دفتر ثبت شرکت‌ها…",
+  "reasoningPillCheckingVehicle": "در حال بررسی دفتر ثبت خودرو…",
+  "reasoningPillReadingDocument": "در حال خواندن سند شما…",
+  "reasoningPillDrafting": "در حال تنظیم پیش‌نویس سند…",
+  "reasoningPillPreparingEmail": "در حال آماده‌سازی ایمیل…",
+  "reasoningPillFindingLawyer": "در حال جستجوی وکلا…",
+  "reasoningPillThinking": "در حال تحلیل پرونده شما…",
+  "reasoningPillFinalising": "در حال نگارش پاسخ شما…",
+  "reasoningCollapsedFormat": "{sec} ثانیه استدلال · {sources} منبع",
+  "@reasoningCollapsedFormat": {
+    "placeholders": {
+      "sec": {
+        "type": "int"
+      },
+      "sources": {
+        "type": "int"
+      }
+    }
+  },
+  "reasoningExpandHint": "برای دیدن مراحل ضربه بزنید",
+  "caseFileTitle": "پرونده",
+  "caseFileTimeline": "خط زمانی",
+  "caseFileParties": "طرف‌ها",
+  "caseFileDeadlines": "مهلت‌ها",
+  "caseFileExportPdf": "دانلود پرونده (PDF)",
+  "caseFileEmpty": "درباره پرونده‌تان با هوش مصنوعی گفتگو کنید — خط زمانی شما خودبه‌خود ساخته می‌شود.",
+  "caseFileDisclaimer": "این پرونده به‌صورت خودکار از گفتگوی شما استخراج شده است. این مشاوره حقوقی نیست.",
+  "caseFileTabLabel": "پرونده",
+  "refresh": "بازخوانی",
+  "demoLimitReached": "محدودیت نسخه نمایشی به پایان رسید. برای ادامه به‌صورت رایگان ثبت‌نام کنید.",
+  "demoLimitSignUpCta": "ثبت‌نام",
+  "freeQuotaExhausted": "شما از تمام ۱۰ پیام رایگان این ماه استفاده کرده‌اید.",
+  "upgradeForUnlimited": "برای نامحدود به Pro ارتقا دهید",
+  "upgradeCta": "ارتقا",
+  "rateLimitTryAgain": "ارسال بیش از حد سریع است. چند ثانیه دیگر دوباره تلاش کنید.",
+  "quickProfilePrompt": "تا بتوانم دقیق‌تر کمک کنم، وضعیت حقوقی شما چیست: شهروند استونی هستید، شهروند اتحادیه اروپا از کشوری دیگر، یا اجازه اقامت دارید؟",
+  "quickProfileChipEstonianCitizen": "شهروند استونی",
+  "quickProfileChipEuCitizen": "شهروند اتحادیه اروپا (دیگر)",
+  "quickProfileChipResidencePermit": "اجازه اقامت",
+  "quickProfileSkipBtn": "رد کردن",
+  "quickProfileSavedAck": "متوجه شدم. حالا، سؤال شما چیست؟",
+  "caseTitleLabel": "عنوان پرونده",
+  "jurisdictionLabel": "حوزه قضایی",
+  "caseTypeLabel": "نوع پرونده",
+  "caseLanguageLabel": "زبان",
+  "caseNumbersSection": "شماره‌های پرونده",
+  "partiesSection": "طرف‌ها",
+  "authoritiesSection": "مراجع",
+  "timelineSection": "خط زمانی",
+  "openQuestionsSection": "پرسش‌های باز",
+  "nextActionsSection": "اقدامات بعدی",
+  "summarySection": "خلاصه",
+  "addRow": "افزودن ردیف",
+  "removeRow": "حذف",
+  "archiveCase": "بایگانی پرونده",
+  "closeCase": "بستن پرونده",
+  "continueChatAboutCase": "ادامه گفتگو درباره این پرونده",
+  "linkChatToCase": "پیوند به پرونده",
+  "clearActiveCase": "پاک کردن پرونده فعال",
+  "caseSavedAck": "پرونده ذخیره شد",
+  "caseArchivedAck": "پرونده بایگانی شد",
+  "intakeStep1Title": "پرونده کجاست؟",
+  "intakeStep1Subtitle": "کشور و مرجعی که با آن سروکار دارید.",
+  "intakeJurisdictionLabel": "کشور / حوزه قضایی",
+  "intakeAuthorityLabel": "نوع مرجع",
+  "intakeAuthorityNameLabel": "نام مرجع (اختیاری)",
+  "intakeAuthorityPolice": "پلیس",
+  "intakeAuthorityCourt": "دادگاه",
+  "intakeAuthoritySocial": "خدمات اجتماعی",
+  "intakeAuthorityEmployer": "کارفرما",
+  "intakeAuthorityLandlord": "صاحب‌خانه",
+  "intakeAuthorityOpposingParty": "طرف مقابل",
+  "intakeAuthorityOther": "سایر",
+  "intakeStep2Title": "چه نوع پرونده‌ای؟",
+  "intakeStep2Subtitle": "نزدیک‌ترین نوع را انتخاب کنید — بعداً می‌توانید آن را اصلاح کنید.",
+  "intakeCaseTypeCriminal": "کیفری",
+  "intakeCaseTypeCivil": "مدنی",
+  "intakeCaseTypeFamily": "خانواده",
+  "intakeCaseTypeAdmin": "اداری",
+  "intakeCaseTypeImmigration": "مهاجرت",
+  "intakeCaseTypeLabor": "کار",
+  "intakeCaseTypeConsumer": "مصرف‌کننده",
+  "intakeCaseTypeInheritance": "ارث",
+  "intakeCaseTypeOther": "سایر",
+  "intakeStep3Title": "چه کسانی درگیر هستند؟",
+  "intakeStep3Subtitle": "نقش شما و طرف مقابل.",
+  "intakeRoleLabel": "نقش شما",
+  "intakeRolePlaintiff": "خواهان",
+  "intakeRoleDefendant": "خوانده",
+  "intakeRoleVictim": "قربانی",
+  "intakeRoleAccused": "متهم",
+  "intakeRoleWitness": "شاهد",
+  "intakeRoleFamily": "عضو خانواده",
+  "intakeRoleOther": "سایر",
+  "intakeOpposingSideLabel": "طرف مقابل (اختیاری)",
+  "intakeWitnessesLabel": "شاهدان (اختیاری)",
+  "intakeAddWitness": "افزودن شاهد",
+  "intakeWitnessHint": "نام یا اطلاعات تماس",
+  "intakeStep4Title": "شماره‌ها و تاریخ‌ها",
+  "intakeStep4Subtitle": "هرچه دارید. آنچه ندارید را رد کنید.",
+  "intakeCaseNumberLabel": "شماره پرونده (اختیاری)",
+  "intakeIncidentDateLabel": "تاریخ رخداد (اختیاری)",
+  "intakeIncidentDatePick": "انتخاب تاریخ",
+  "intakeDeadlinesLabel": "مهلت‌های شناخته‌شده",
+  "intakeAddDeadline": "افزودن مهلت",
+  "intakeDeadlineWhatHint": "چه چیزی",
+  "intakeStep5Title": "اسناد",
+  "intakeStep5Subtitle": "هر چیز مرتبطی را بارگذاری کنید. ما آن را خواهیم خواند.",
+  "intakeUploadDocsLabel": "بارگذاری اسناد",
+  "intakeSkipDocs": "رد کردن — بعداً بارگذاری می‌کنم",
+  "intakeNextBtn": "بعدی",
+  "intakeBackBtn": "بازگشت",
+  "intakeFinishBtn": "پایان و باز کردن گفتگو",
+  "intakeUrgentBtn": "فوری — همین حالا بپرسید",
+  "intakeUrgentDialogTitle": "گفتگو را همین حالا باز کنم؟",
+  "intakeUrgentDialogBody": "آنچه وارد کرده‌اید را به‌عنوان پرونده پیش‌نویس ذخیره می‌کنیم. می‌توانید هر زمان از صفحه پرونده، راهنمای گام‌به‌گام را تکمیل کنید.",
+  "intakeUrgentConfirm": "باز کردن گفتگو",
+  "intakeUrgentCancel": "ادامه پر کردن",
+  "intakePreparingCase": "در حال آماده‌سازی پرونده شما…",
+  "intakeFallbackGreeting": "پرونده شما را می‌بینم. مهم‌ترین موضوع را بگویید — همراه شما به آن رسیدگی می‌کنم.",
+  "intakeUrgentGreeting": "می‌بینم که این موضوع فوری است. سؤال خود را بپرسید — بقیه را در ادامه تکمیل می‌کنم.",
+  "intakeStepIndicator": "گام {current} از {total}",
+  "@intakeStepIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "intakeFieldRequired": "الزامی",
+  "intakeUploadProgress": "در حال بارگذاری {done} / {total}…",
+  "@intakeUploadProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "uplDisclaimerFooter": "Advocat یک مؤسسه حقوقی نیست. این اطلاعات است، نه مشاوره حقوقی.",
+  "parallelActionsHeadline": "Consilium {count} اقدام موازی را توصیه می‌کند",
+  "@parallelActionsHeadline": {
+    "description": "Headline at the top of the Parallel Actions card — N>=2 emails the consilium recommends sending in parallel.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsApproveAll": "تأیید همه و ارسال",
+  "parallelActionsApproveSelected": "تأیید {count} از {total}",
+  "@parallelActionsApproveSelected": {
+    "description": "Primary button when only a subset of actions is checked.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsConfirmTitle": "{count} ایمیل ارسال شود؟",
+  "@parallelActionsConfirmTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsConfirmBody": "Advocat {count} پاسخ آماده‌شده را از طریق Gmail متصل شما ارسال می‌کند. هر یک مستقل ارسال می‌شود — اگر هرکدام ناموفق باشد، بقیه همچنان ارسال می‌شوند.",
+  "@parallelActionsConfirmBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsSentToast": "{count} ارسال شد.",
+  "@parallelActionsSentToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsPartialFailureToast": "{sent} ارسال شد، {failed} ناموفق.",
+  "@parallelActionsPartialFailureToast": {
+    "placeholders": {
+      "sent": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsKindReply": "پاسخ",
+  "parallelActionsKindNew": "جدید",
+  "parallelActionsCheckboxSelected": "اقدام انتخاب شد",
+  "parallelActionsCheckboxUnselected": "اقدام انتخاب نشد",
+  "parallelActionsCitationCount": "{count} استناد",
+  "@parallelActionsCitationCount": {
+    "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsRetryFailed": "تلاش مجدد برای ناموفق‌ها ({count})",
+  "@parallelActionsRetryFailed": {
+    "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agentApprovalNeedsReviewTitle": "Advocat به تأیید شما نیاز دارد",
+  "agentApprovalResolvedTitle": "اقدام تعیین‌تکلیف شد",
+  "agentApprovalStepsLabel": "گام",
+  "agentApprovalApproveButton": "تأیید و ارسال",
+  "agentApprovalDeclineButton": "رد کردن",
+  "agentApprovalAttachmentsLabel": "پیوست‌ها",
+  "agentApprovalSentSummary": "از طرف شما ارسال شد.",
+  "agentApprovalDeclinedSummary": "رد شد — چیزی ارسال نشد.",
+  "agentToolDraftEmailAtt": "ارسال ایمیل با پیوست",
+  "agentToolSendEmail": "ارسال ایمیل",
+  "agentToolGeneratePdf": "تولید PDF",
+  "agentToolApproveSend": "ارسال پاسخ آماده‌شده",
+  "inboxErrorTitle": "بارگذاری صندوق ورودی ممکن نشد",
+  "inboxEditDiscardTitle": "تغییرات ذخیره‌نشده را نادیده بگیرم؟",
+  "inboxEditDiscardBody": "تغییرات ذخیره‌نشده‌ای در این پیش‌نویس دارید. بازگشت آن‌ها را نادیده می‌گیرد.",
+  "inboxEditKeepEditing": "ادامه ویرایش",
+  "inboxEditDiscard": "نادیده گرفتن",
+  "plannerSettingsTitle": "استدلال حقوقی سه‌مرحله‌ای",
+  "plannerSettingsSubtitle": "برنامه‌ریزی ← پاسخ ← نقد. کندتر اما دقیق‌تر.",
+  "plannerSettingsProBadge": "Pro",
+  "plannerSettingsProDescription": "در طرح Pro در دسترس است",
+  "plannerTrailHeaderPlan": "برنامه",
+  "plannerTrailHeaderCritique": "نقد",
+  "plannerTrailSubQuestions": "پرسش‌های فرعی",
+  "plannerTrailCounterArgs": "استدلال‌های متقابل",
+  "plannerTrailEvidenceGaps": "خلأهای شواهد",
+  "plannerTrailMaterialGapTrue": "خلأ اساسی شناسایی شد",
+  "plannerTrailRegeneratedBadge": "یک‌بار بازتولید شد",
+  "plannerTrailEmpty": "موردی نیست",
+  "supportTitle": "راهنما",
+  "supportSubtitle": "معمولاً ظرف ۱ تا ۲ ساعت پاسخ می‌دهیم.",
+  "supportSearchPlaceholder": "جستجوی راهنما…",
+  "supportStatusAllOk": "همه سیستم‌ها عادی",
+  "supportFaqWhatIs": "Advocat چیست؟",
+  "supportFaqHowSubscribe": "چگونه در Pro مشترک شوم؟",
+  "supportFaqExportData": "آیا می‌توانم داده‌هایم را خروجی بگیرم؟",
+  "supportFaqCancelAccount": "لغو یا حذف حساب",
+  "supportFaqTalkHuman": "گفتگو با یک انسان",
+  "supportContactEmail": "ایمیل",
+  "supportContactTelegram": "Telegram",
+  "supportContactWhatsapp": "WhatsApp",
+  "supportFooterSla": "ظرف ۲۴ ساعت پاسخ می‌دهیم",
+  "supportWhatsapp": "WhatsApp",
+  "supportEmail": "ایمیل",
+  "supportInApp": "اینجا برای ما پیام بگذارید",
+  "supportCategoryLabel": "دسته",
+  "supportCategoryBug": "اشکال",
+  "supportCategoryPayment": "مشکل پرداخت",
+  "supportCategoryQuestion": "پرسش",
+  "supportCategoryFeature": "درخواست قابلیت",
+  "supportCategoryOther": "سایر",
+  "supportMessagePlaceholder": "مشکل خود را شرح دهید...",
+  "supportEmailLabel": "ایمیل (اختیاری)",
+  "supportSend": "ارسال",
+  "supportSentSuccess": "پیام ارسال شد! به‌زودی پاسخ می‌دهیم.",
+  "supportError": "مشکلی پیش آمد. دوباره تلاش کنید.",
+  "supportErrorTooShort": "لطفاً حداقل ۱۰ نویسه بنویسید.",
+  "supportErrorTooLong": "حداکثر ۲۰۰۰ نویسه.",
+  "supportPrivacyNotice": "پیام شما به‌صورت امن ذخیره می‌شود.",
+  "referralAntiFraud": "حداکثر ۱۲ معرفی موفق در سال.",
+  "referralEmpty": "هنوز معرفی‌ای نیست. لینک خود را ارسال کنید تا کسب درآمد را آغاز کنید.",
+  "referralRecentActivity": "فعالیت اخیر",
+  "referralActivityInvited": "دعوت‌شده {when}",
+  "@referralActivityInvited": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "referralActivityActivated": "فعال شد {when}",
+  "@referralActivityActivated": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "referralActivityPending": "هنوز فعال نشده",
+  "referralStatsInvitedCount": "شما {count, plural, =0{هنوز هیچ دوستی} =1{۱ دوست} other{{count} دوست}} دعوت کرده‌اید",
+  "@referralStatsInvitedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "referralStatsConvertedCount": "{count, plural, =0{هنوز هیچ‌کدام فعال نشده} =1{۱ نفر فعال شده} other{{count} نفر فعال شده‌اند}}",
+  "@referralStatsConvertedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "referralStatsEarnedCount": "پاداش شما: {months, plural, =0{هنوز هیچ} =1{۱ ماه رایگان} other{{months} ماه رایگان}}",
+  "@referralStatsEarnedCount": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "referralNudgeMessage": "از Advocat خوشتان آمد؟ یک دوست را دعوت کنید — هر دو یک ماه رایگان دریافت می‌کنید.",
+  "referralNudgeAction": "دعوت",
+  "referralLandingTitle": "شما به Advocat دعوت شده‌اید",
+  "referralLandingSubtitle": "{inviterName} شما را دعوت کرد — ماه اول رایگان خود را دریافت کنید.",
+  "@referralLandingSubtitle": {
+    "placeholders": {
+      "inviterName": {
+        "type": "String"
+      }
+    }
+  },
+  "referralLandingSubtitleGeneric": "ماه اول رایگان Advocat Pro خود را دریافت کنید.",
+  "referralLandingCta": "فعال‌سازی ماه رایگان و ثبت‌نام",
+  "referralLandingCtaSecondary": "یا درباره Advocat بیشتر بدانید",
+  "referralLandingFallback": "این لینک منقضی شده است — اما همچنان می‌توانید Advocat را رایگان امتحان کنید.",
+  "referralLandingBenefits": "۱۷ زبان • قانون واقعی استونی، فنلاند و اتحادیه اروپا • ۲۴/۷ — بدون انتظار",
+  "sensitiveConsentTitle": "رضایت برای داده‌های حساس",
+  "sensitiveConsentBody": "اسنادی که قرار است بارگذاری کنید ممکن است حاوی داده‌های شخصی دسته‌های ویژه طبق ماده ۹ GDPR باشند — مانند سوابق پزشکی، سوابق کیفری، داده‌های زیست‌سنجی، یا اطلاعات مربوط به منشأ نژادی، مذهب یا گرایش جنسی شما.\n\nما این داده‌ها را تنها برای ارائه دستیار حقوقی هوش مصنوعی به شما پردازش می‌کنیم، آن‌ها را رمزگذاری‌شده در حساب خصوصی شما ذخیره می‌کنیم و هرگز از آن‌ها برای آموزش مدل‌ها استفاده نمی‌کنیم. می‌توانید هر زمان رضایت را پس بگیرید و داده‌ها را از بخش تنظیمات حذف کنید.\n\nبا پذیرفتن، شما طبق ماده ۹(۲)(الف) GDPR رضایت صریح خود را برای پردازش داده‌های دسته ویژه برای این منظور اعلام می‌کنید.",
+  "sensitiveConsentExplicitCheckbox": "من رضایت صریح خود را برای پردازش داده‌های دسته ویژه اعلام می‌کنم (ماده ۹(۲)(الف) GDPR).",
+  "sensitiveConsentRightToShareCheckbox": "تأیید می‌کنم که حق اشتراک‌گذاری این داده‌ها را دارم (داده‌ها از آن من است، یا مبنای قانونی/اطلاع‌رسانی برای اشتراک‌گذاری داده‌های شخص ثالث دارم).",
+  "sensitiveConsentViewCategories": "ببینید چه چیزی حساس محسوب می‌شود ←",
+  "sensitiveConsentWithdrawAction": "پس گرفتن رضایت برای داده‌های حساس",
+  "privacyAndData": "حریم خصوصی و داده‌ها",
+  "exportMyDataSubtitle": "یک نسخه از تمام داده‌های شخصی خود را دانلود کنید (ماده ۱۵ GDPR).",
+  "withdrawSensitiveConsent": "رضایت برای داده‌های حساس",
+  "withdrawSensitiveConsentSubtitle": "رضایت برای پردازش داده‌های دسته ویژه را مدیریت یا پس بگیرید (ماده ۹(۲)(الف) GDPR).",
+  "dataProcessingAgreement": "قرارداد پردازش داده‌ها",
+  "exportingData": "در حال خروجی گرفتن از داده‌های شما…",
+  "exportComplete": "خروجی داده‌ها آماده است — در دستگاه شما ذخیره شد.",
+  "exportFailed": "خروجی گرفتن ناموفق بود. لطفاً دوباره تلاش کنید یا با پشتیبانی تماس بگیرید.",
+  "quotaExhaustedTitle": "محدودیت پیام رایگان به پایان رسید",
+  "quotaExhaustedBody": "شما از تمام {count} پیام رایگان استفاده کرده‌اید. به Advocat Counsel با ۱۹.۹۹ یورو در ماه ارتقا دهید و مشاوره‌های حقوقی نامحدود هوش مصنوعی دریافت کنید.",
+  "@quotaExhaustedBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quotaExhaustedLater": "بعداً",
+  "quotaExhaustedUpgrade": "Advocat Counsel — ۱۹.۹۹ یورو در ماه",
+  "quotaCtaMessage": "شما از تمام {count} پیام رایگان استفاده کرده‌اید. به Advocat Counsel با ۱۹.۹۹ یورو در ماه ارتقا دهید.",
+  "@quotaCtaMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quotaCtaButton": "دریافت Advocat Counsel — ۱۹.۹۹ یورو در ماه",
+  "aiErrorQuota": "محدودیت پیام رایگان به پایان رسید. برای ادامه استفاده از هوش مصنوعی مشترک شوید.",
+  "aiErrorAuth": "برای استفاده از هوش مصنوعی ورود لازم است. لطفاً ثبت‌نام یا وارد شوید.",
+  "aiErrorGeneric": "خطای موقت هوش مصنوعی. لطفاً یک دقیقه دیگر دوباره تلاش کنید. اگر ادامه یافت، با پشتیبانی تماس بگیرید.",
+  "tooltipShareCase": "اشتراک‌گذاری خلاصه پرونده",
+  "tooltipMuteVoice": "بی‌صدا کردن صدا",
+  "tooltipUnmuteVoice": "باصدا کردن صدا",
+  "tooltipAttachDoc": "پیوست سند",
+  "aiTypingHint": "هوش مصنوعی…",
+  "error404Title": "صفحه یافت نشد",
+  "error404Body": "نتوانستیم این را پیدا کنیم: {path}",
+  "@error404Body": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "goToHome": "رفتن به خانه",
+  "emailAlreadyRegistered": "این ایمیل قبلاً ثبت شده است. می‌خواهید وارد شوید؟",
+  "actionSignIn": "ورود",
+  "actionUndo": "واگرد",
+  "intakeUrgentOpened": "گفتگو باز شد — پیش‌نویس شما ذخیره شد.",
+  "panicCoachmark": "برای کمک اضطراری نگه دارید.",
+  "panicTitle": "همین حالا به چه چیزی نیاز دارید؟",
+  "panicCardReadAloud": "برای مأمور با صدای بلند بخوانید",
+  "panicCardRecord": "این گفتگو را ضبط کنید",
+  "panicCardCall": "با یک وکیل تماس بگیرید",
+  "panicCardAi": "همین حالا با Advocat صحبت کنید",
+  "panicClose": "بستن",
+  "panicBadgeV2": "V2",
+  "panicRecordV1Title": "در V2 می‌آید",
+  "panicRecordV1Body": "قابلیت ضبط در حال اعتبارسنجی حقوقی برای استونی است و در V2 عرضه می‌شود. فعلاً از ضبط‌کننده صدای داخلی تلفن خود استفاده کنید.",
+  "panicCallFallbackBody": "به kiire@advocat.ee یک توضیح کوتاه ایمیل کنید و ما با شما تماس می‌گیریم.",
+  "softCaseShellBanner": "برای پیگیری این مورد «پرونده بدون عنوان» ایجاد کردیم. برای تغییر نام ضربه بزنید.",
+  "softCaseShellBannerCta": "تغییر نام"
 }

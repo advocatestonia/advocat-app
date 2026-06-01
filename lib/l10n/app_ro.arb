@@ -1194,7 +1194,6 @@
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
     },
-    "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
     "draftingEmpty": "Empty draft",
@@ -1351,7 +1350,605 @@
     "iapRestoreSuccess": "Abonamentul tău a fost restaurat.",
     "iapRestoreNoActive": "Nu există abonament activ de restaurat.",
     "deadlineEuRadarTitle": "EU deadline radar (preview)",
-    "@deadlineEuRadarTitle": {"x-todo": "translate to ro"},
+    "@deadlineEuRadarTitle": {
+        "x-todo": "translate to ro"
+    },
     "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
-    "@deadlineEuRadarSubtitle": {"x-todo": "translate to ro"}
+    "@deadlineEuRadarSubtitle": {
+        "x-todo": "translate to ro"
+    },
+    "aiAnalyzing": "IA analizează",
+    "speakIntoMicHint": "Vorbiți în microfon. Asigurați-vă că accesul la microfon este activat.",
+    "aiErrorRateLimit": "Serviciul este temporar supraîncărcat. Vă rugăm să încercați din nou peste 1-2 minute.",
+    "aiErrorOverload": "IA este ocupată în acest moment, vă rugăm să încercați din nou într-un minut.",
+    "freeLimitReached": "Ați folosit toate cele {count} mesaje IA gratuite. Treceți la Legal Counsel pentru asistență IA nelimitată!",
+    "@freeLimitReached": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "appleComingSoon": "În curând",
+    "appleComingSoonMessage": "Autentificarea cu Apple va fi disponibilă în curând. Folosiți Google sau e-mailul pentru a continua.",
+    "dpaTitle": "Acord de prelucrare a datelor",
+    "dpaCheckoutGateTitle": "Înainte de a face upgrade",
+    "dpaCheckoutGateBody": "Legislația UE (GDPR Art. 28) ne obligă să semnăm un Acord de prelucrare a datelor cu fiecare client plătitor. Vă rugăm să îl analizați și să îl acceptați.",
+    "dpaViewLink": "Vizualizați Acordul de prelucrare a datelor",
+    "dpaCheckboxLabel": "Am citit și accept Acordul de prelucrare a datelor (v1.0).",
+    "dpaCancel": "Anulează",
+    "dpaAcceptAndContinue": "Acceptă și continuă",
+    "dpaOpenHint": "Deschideți Acordul de prelucrare a datelor cel puțin o dată pentru a activa butonul Acceptă.",
+    "rateAppComingSoon": "În curând în magazinele de aplicații!",
+    "dataCopiedToClipboard": "Datele au fost copiate în clipboard",
+    "noEventsForFilter": "Niciun eveniment nu corespunde acestui filtru",
+    "timelineFilterAll": "Toate",
+    "timelineFilterEmails": "E-mailuri",
+    "timelineFilterConsilium": "Decizii IA",
+    "timelineFilterDeadlines": "Termene",
+    "timelineFilterNotes": "Note",
+    "timelineEventEmailIn": "E-mail primit",
+    "timelineEventEmailOut": "E-mail trimis",
+    "timelineEventConsiliumDecision": "Decizie IA",
+    "timelineEventDeadlineSet": "Termen",
+    "timelineEventDocUploaded": "Document",
+    "timelineEventPhaseChange": "Schimbare de fază",
+    "timelineEventManualNote": "Notă",
+    "timelineJustNow": "Chiar acum",
+    "timelineMinutesAgo": "{count, plural, =1{acum 1 minut} other{acum {count} minute}}",
+    "@timelineMinutesAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "timelineHoursAgo": "{count, plural, =1{acum 1 oră} other{acum {count} ore}}",
+    "@timelineHoursAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "timelineDaysAgo": "{count, plural, =1{acum 1 zi} other{acum {count} zile}}",
+    "@timelineDaysAgo": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "gmailReauthBannerBody": "Advocat v2.1 vă citește căsuța de e-mail pentru a redacta răspunsuri; puteți revoca oricând. Reconectați Gmail pentru a activa trierea proactivă.",
+    "gmailReauthBannerCta": "Reautorizează",
+    "fiveAiMessagesTotal": "5 mesaje IA (pe viață)",
+    "hundredAiMessagesDay": "100 mesaje IA/zi",
+    "unlimitedAiMessages": "Mesaje IA nelimitate",
+    "voiceInput": "Introducere vocală",
+    "strategyRecommendations": "Recomandări de strategie",
+    "foundingMemberNote": "Membru fondator: 9,99 €/lună pentru primele 3 luni",
+    "saveTwentyPercent": "Economisiți 20%",
+    "gdprConsentAiProcessing": "Sunt de acord cu prelucrarea datelor mele pentru asistență juridică IA (obligatoriu)",
+    "gdprConsentAnalytics": "Sunt de acord cu analiza datelor pentru îmbunătățirea serviciului (opțional)",
+    "gdprArt9Intro": "Această aplicație prelucrează date cu caracter personal din categorii speciale conform articolului 9 GDPR, inclusiv:",
+    "gdprSpecialLegalCases": "Detaliile cazului dumneavoastră juridic și documentele de instanță",
+    "gdprSpecialNationality": "Naționalitatea și statutul de imigrare",
+    "gdprConsentLegalData": "Consimt la prelucrarea datelor cazului meu juridic, a naționalității și a statutului de imigrare de către IA (obligatoriu)",
+    "gdprConsentVoice": "Consimt la prelucrarea înregistrărilor vocale (opțional)",
+    "gdprViewPrivacyPolicy": "Vizualizați Politica de confidențialitate",
+    "legalInformation": "Informații juridice",
+    "legalEntityName": "Vorantis OÜ",
+    "legalRegistryCode": "Cod de înregistrare: 17098992",
+    "legalAddress": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145",
+    "legalEmail": "E-mail: support@advocat.ee",
+    "legalRegistry": "Înregistrată în Registrul Comercial Eston (Äriregister)",
+    "domesticViolenceDesc": "Drepturile victimei, ajutor de urgență, ordine de restricție",
+    "rightCallEmergency": "Aveți dreptul să sunați la 112 în orice urgență — poliție, ambulanță, pompieri",
+    "rightVictimProtection": "În calitate de victimă, aveți dreptul la protecție, sprijin și informații despre cazul dumneavoastră",
+    "rightRestrainingOrder": "Puteți solicita un ordin de restricție (lähestymiskielto) pentru a ține agresorul la distanță",
+    "rightVictimInterpreter": "Aveți dreptul la un interpret pe parcursul tuturor procedurilor judiciare",
+    "rightMedicalHelp": "Aveți dreptul la tratament medical imediat și la documentarea leziunilor",
+    "rightShelter": "Aveți dreptul la adăpost de urgență — contactați un adăpost sau serviciile sociale",
+    "mustReportDanger": "Dacă cineva se află în pericol imediat, sunați imediat la 112",
+    "mustDocumentInjuries": "Documentați toate leziunile — fotografii, dosare medicale, note scrise",
+    "domesticActionCallEmergency": "Sunați la 112 dacă vă aflați în pericol imediat",
+    "domesticActionGoToSafe": "Mergeți într-un loc sigur — adăpost, prieten, loc public",
+    "domesticActionDocumentEverything": "Documentați leziunile: faceți fotografii, obțineți dosare medicale",
+    "domesticActionFilePoliceReport": "Depuneți o plângere la poliție — puteți face acest lucru și mai târziu",
+    "domesticActionContactShelter": "Contactați un adăpost sau o linie de criză",
+    "domesticActionApplyRestraining": "Solicitați un ordin de restricție prin poliție sau instanță",
+    "domesticFactRestrainingOrder": "În Finlanda, un ordin de restricție (lähestymiskielto) poate fi emis chiar și fără un dosar penal. Acesta interzice persoanei să vă contacteze sau să se apropie de dumneavoastră.",
+    "domesticFactVictimDirective": "Conform Directivei UE privind victimele 2012/29/UE, aveți dreptul de a fi tratat cu respect, de a primi informații într-o limbă pe care o înțelegeți și de a accesa servicii de sprijin pentru victime — indiferent de statutul dumneavoastră de rezidență.",
+    "domesticDeadlinePoliceReport": "Depunerea plângerii la poliție — fără termen strict, dar mai devreme este mai bine pentru probe",
+    "domesticDeadlineRestraining": "Ordinul de restricție — poate fi solicitat în orice moment",
+    "contactEmergency": "Număr de urgență",
+    "contactShelter": "Linie de asistență Turvakoti (Adăpost)",
+    "contactCrisisHelpline": "Linie de criză (Kriisipuhelin)",
+    "contactNollaLinja": "Nollalinja — Linie de asistență pentru violența împotriva femeilor",
+    "consumerProtectionDesc": "Fraudă, produse defecte, returnări, vânzători înșelători",
+    "rightReturnOnline": "Aveți 14 zile pentru a anula achizițiile online fără motiv (dreptul de retragere al UE)",
+    "rightDefectiveProduct": "Dacă un produs este defect, aveți dreptul la reparare, înlocuire sau rambursare",
+    "rightClearPricing": "Vânzătorii trebuie să afișeze prețuri clare, inclusiv toate taxele — costurile ascunse sunt ilegale",
+    "rightComplainBoard": "Puteți depune o plângere gratuită la Comisia pentru litigiile consumatorilor",
+    "rightProtectionFraud": "Sunteți protejat împotriva practicilor comerciale neloiale și a fraudei",
+    "mustKeepReceipts": "Păstrați toate chitanțele, contractele și comunicările cu vânzătorii",
+    "mustActTimely": "Raportați defectele vânzătorului într-un timp rezonabil după descoperire",
+    "consumerActionKeepEvidence": "Păstrați chitanțele, capturile de ecran, e-mailurile și toate dovezile de achiziție",
+    "consumerActionContactSeller": "Contactați mai întâi vânzătorul — explicați problema în scris",
+    "consumerActionFileComplaint": "Depuneți o plângere la Comisia pentru litigiile consumatorilor (kuluttajariitalautakunta)",
+    "consumerActionContactAuthority": "Contactați Serviciile de consiliere a consumatorilor pentru ajutor gratuit",
+    "consumerActionReportFraud": "Raportați frauda la poliție și la Ombudsmanul consumatorilor",
+    "consumerFactWithdrawal": "Conform Directivei UE privind drepturile consumatorilor 2011/83/UE, aveți 14 zile pentru a vă retrage din orice achiziție online sau la distanță — fără a fi nevoie de justificare. Vânzătorul trebuie să vă ramburseze în termen de 14 zile.",
+    "consumerFactWarranty": "În Finlanda, vânzătorul este responsabil pentru defectele produsului pentru o perioadă rezonabilă (adesea 2+ ani). Aceasta este separată de orice garanție a producătorului.",
+    "consumerDeadlineWithdrawal": "Retragerea din achiziția online — 14 zile de la livrare",
+    "consumerDeadlineDefect": "Raportarea defectului către vânzător — în termen de 2 luni de la descoperire (recomandat)",
+    "contactConsumerAdvisory": "Servicii de consiliere a consumatorilor",
+    "contactConsumerOmbudsman": "Ombudsmanul consumatorilor (Kuluttaja-asiamies)",
+    "contactConsumerDisputesBoardDirect": "Comisia pentru litigiile consumatorilor",
+    "categoryChildren": "Copii",
+    "categoryDigital": "Digital",
+    "childrenRights": "Drepturile copilului și pensia alimentară",
+    "childrenRightsDesc": "Pensie de întreținere, pensie alimentară, protecție, garanții de stat",
+    "cyberbullying": "Hărțuire cibernetică și hărțuire online",
+    "cyberbullyingDesc": "Amenințări, încălcări ale confidențialității, defăimare online",
+    "rightChildSupport": "Ambii părinți sunt obligați prin lege să își susțină financiar copilul (Perekonnaseadus § 100–102)",
+    "rightMinimumAlimony": "Pensia minimă de întreținere a copilului în Estonia: suma de bază (295,86 €) + 3% din salariul brut mediu al anului precedent (PKS § 101). De la 01.04.2026 — 318,62 €/lună per copil. Actualizată anual la 1 aprilie. Calculator: alimendid.ee",
+    "rightCourtAlimony": "Puteți solicita pensie alimentară prin tribunalul județean (maakohus) — nu este necesar avocat pentru pretenții de până la 6.400 €",
+    "rightBailiffEnforcement": "Dacă părintele refuză să plătească, un executor judecătoresc (kohtutäitur) poate pune în aplicare hotărârea instanței, inclusiv prin poprire pe salariu",
+    "rightStateAlimonyGuarantee": "Dacă părintele nu plătește, statul oferă elatisabi (indemnizație de întreținere) prin Sotsiaalkindlustusamet — până la 100 €/lună per copil",
+    "rightChildEducation": "Fiecare copil are dreptul la educație, asistență medicală și protecție împotriva abuzurilor (Lastekaitseseadus § 4–5)",
+    "rightChildContact": "Un copil are dreptul de a menține contactul cu ambii părinți, cu excepția cazului în care instanța decide altfel (PKS § 143)",
+    "mustFileCourtClaim": "Pentru a primi pensie alimentară, trebuie să depuneți o cerere la instanță sau să conveniți suma în scris",
+    "mustNotifyAddressChange": "Notificați Sotsiaalkindlustusamet cu privire la schimbările de adresă dacă primiți elatisabi",
+    "childrenActionGatherDocs": "Adunați certificatul de naștere al copilului, actul dumneavoastră de identitate și dovada cheltuielilor",
+    "childrenActionFileCourtClaim": "Depuneți o cerere de pensie alimentară la tribunalul județean (maakohus) — se poate face online prin e-toimik",
+    "childrenActionApplyElatisabi": "Solicitați garanția de stat pentru pensia alimentară (elatisabi) la Sotsiaalkindlustusamet dacă părintele nu plătește",
+    "childrenActionContactBailiff": "Contactați un executor judecătoresc (kohtutäitur) pentru a pune în aplicare hotărârea instanței",
+    "childrenActionCallLasteabi": "Sunați la Lasteabi 116 111 pentru linia de asistență pentru copii — gratuit, 24/7",
+    "childrenDeadlineElatisabi": "Solicitarea elatisabi — după hotărârea instanței, fără termen strict, dar procesul durează",
+    "childrenDeadlineCourt": "Pensia alimentară poate fi solicitată retroactiv pentru până la 1 an înainte de depunerea cererii la instanță",
+    "childrenFactMinimum": "De la 01.04.2026, pensia minimă de întreținere a copilului este de 318,62 €/lună per copil. Formula: suma de bază (295,86 €) + 3% din salariul brut mediu al anului precedent. Actualizată anual la 1 aprilie. Un părinte nu poate conveni să plătească mai puțin. Calculator: alimendid.ee",
+    "childrenFactElatisabi": "Garanția de stat pentru pensia alimentară din Estonia (elatisabi) a fost introdusă în 2017 pentru a proteja copiii atunci când un părinte refuză să plătească. Statul plătește și apoi recuperează suma de la părintele debitor.",
+    "rightReportCybercrime": "Aveți dreptul să raportați amenințările online, hărțuirea și furtul de identitate la poliție (Karistusseadustik § 120, § 157¹)",
+    "rightContentRemoval": "Puteți solicita eliminarea conținutului defăimător sau privat de pe platforme și puteți cere retragerea acestuia conform GDPR",
+    "rightMoralDamageCompensation": "Puteți solicita despăgubiri pentru prejudiciul moral cauzat de hărțuirea cibernetică (Võlaõigusseadus § 1043–1055)",
+    "rightPrivacyProtection": "Viața dumneavoastră privată este protejată — partajarea neautorizată a fotografiilor, mesajelor sau datelor dumneavoastră cu caracter personal este ilegală (KarS § 157)",
+    "rightDataProtection": "Raportați încălcările protecției datelor (utilizarea neautorizată a datelor dumneavoastră) la Andmekaitse Inspektsioon",
+    "rightDefamationAction": "Defăimarea (laimamine) este o faptă civilă — puteți da în judecată pentru daune și puteți cere o retractare publică (KarS § 247 (abrogat), VÕS § 1047)",
+    "mustCollectEvidence": "Colectați și păstrați toate probele — capturi de ecran, linkuri, date și informații despre martori",
+    "mustNotRetaliate": "Nu vă răzbunați și nu vă angajați în contra-hărțuire — acest lucru vă poate slăbi cazul",
+    "cyberActionScreenshots": "Faceți capturi de ecran ale întregii hărțuiri — salvați URL-uri, date, nume de utilizator și conținut",
+    "cyberActionReportPolice": "Depuneți o plângere la poliție la cea mai apropiată secție sau online la politsei.ee",
+    "cyberActionReportPlatform": "Raportați conținutul către platforma de socializare pentru eliminare",
+    "cyberActionContactDPA": "Contactați Andmekaitse Inspektsioon dacă datele dumneavoastră cu caracter personal au fost utilizate abuziv",
+    "cyberActionConsultLawyer": "Consultați un avocat cu privire la daunele civile — asistența juridică gratuită este disponibilă prin Riigi Õigusabi",
+    "cyberDeadlineCriminal": "Plângerea penală — fără termen strict, dar raportați prompt pentru cele mai bune rezultate",
+    "cyberDeadlineCivil": "Acțiunea civilă pentru daune — până la 3 ani de la momentul în care ați aflat despre încălcare (TsÜS § 150)",
+    "cyberFactPrivacy": "În Estonia, partajarea neautorizată a imaginilor intime ale unei persoane poate duce la până la 3 ani de închisoare conform Karistusseadustik § 157¹ (încălcarea confidențialității).",
+    "cyberFactGDPR": "Conform GDPR, aveți „dreptul de a fi uitat” — platformele trebuie să vă șteargă datele cu caracter personal la cerere dacă nu există un temei juridic pentru a le păstra.",
+    "upgradeBannerTitle": "Faceți upgrade pentru consultații nelimitate",
+    "upgradeBannerCta": "Upgrade",
+    "paymentSuccessTitle": "Plată reușită",
+    "paymentSuccessBody": "Abonamentul dumneavoastră este acum activ.",
+    "commonOk": "OK",
+    "feedbackThumbsUpLabel": "Util",
+    "feedbackThumbsDownLabel": "Inutil",
+    "feedbackCommentPrompt": "Ce a fost greșit?",
+    "feedbackSend": "Trimite",
+    "feedbackCancel": "Anulează",
+    "reasoningPillIdle": "Se gândește…",
+    "reasoningPillSearchingLaw": "Se caută în legislația estonă…",
+    "reasoningPillSearchingWeb": "Se caută pe web…",
+    "reasoningPillCheckingCompany": "Se verifică registrul societăților…",
+    "reasoningPillCheckingVehicle": "Se verifică registrul vehiculelor…",
+    "reasoningPillReadingDocument": "Se citește documentul dumneavoastră…",
+    "reasoningPillDrafting": "Se redactează documentul…",
+    "reasoningPillPreparingEmail": "Se pregătește e-mailul…",
+    "reasoningPillFindingLawyer": "Se caută avocați…",
+    "reasoningPillThinking": "Se analizează cazul dumneavoastră…",
+    "reasoningPillFinalising": "Se compune răspunsul dumneavoastră…",
+    "reasoningCollapsedFormat": "A raționat {sec}s · {sources} surse",
+    "@reasoningCollapsedFormat": {
+        "placeholders": {
+            "sec": {
+                "type": "int"
+            },
+            "sources": {
+                "type": "int"
+            }
+        }
+    },
+    "reasoningExpandHint": "atingeți pentru a vedea pașii",
+    "caseFileTitle": "Dosarul cazului",
+    "caseFileTimeline": "Cronologie",
+    "caseFileParties": "Părți",
+    "caseFileDeadlines": "Termene",
+    "caseFileExportPdf": "Descarcă dosarul (PDF)",
+    "caseFileEmpty": "Discutați cu IA despre cazul dumneavoastră — cronologia se va construi singură.",
+    "caseFileDisclaimer": "Acest dosar este extras automat din conversația dumneavoastră. Nu constituie consultanță juridică.",
+    "caseFileTabLabel": "Caz",
+    "refresh": "Reîmprospătează",
+    "demoLimitReached": "Limita demo a fost atinsă. Înregistrați-vă gratuit pentru a continua.",
+    "demoLimitSignUpCta": "Înregistrare",
+    "freeQuotaExhausted": "Ați folosit toate cele 10 mesaje gratuite din această lună.",
+    "upgradeForUnlimited": "Treceți la Pro pentru acces nelimitat",
+    "upgradeCta": "Upgrade",
+    "rateLimitTryAgain": "Trimiteți prea repede. Încercați din nou peste câteva secunde.",
+    "quickProfilePrompt": "Pentru a vă putea ajuta mai precis, care este statutul dumneavoastră juridic: sunteți cetățean eston, cetățean UE dintr-o altă țară sau aveți un permis de ședere?",
+    "quickProfileChipEstonianCitizen": "Cetățean eston",
+    "quickProfileChipEuCitizen": "Cetățean UE (altă țară)",
+    "quickProfileChipResidencePermit": "Permis de ședere",
+    "quickProfileSkipBtn": "Omite",
+    "quickProfileSavedAck": "Am înțeles. Acum, care este întrebarea dumneavoastră?",
+    "caseTitleLabel": "Titlul cazului",
+    "jurisdictionLabel": "Jurisdicție",
+    "caseTypeLabel": "Tipul cazului",
+    "caseLanguageLabel": "Limbă",
+    "caseNumbersSection": "Numerele cazului",
+    "partiesSection": "Părți",
+    "authoritiesSection": "Autorități",
+    "timelineSection": "Cronologie",
+    "openQuestionsSection": "Întrebări deschise",
+    "nextActionsSection": "Acțiuni următoare",
+    "summarySection": "Rezumat",
+    "addRow": "Adaugă rând",
+    "removeRow": "Elimină",
+    "archiveCase": "Arhivează cazul",
+    "closeCase": "Închide cazul",
+    "continueChatAboutCase": "Continuă conversația despre acest caz",
+    "linkChatToCase": "Asociază cu cazul",
+    "clearActiveCase": "Șterge cazul activ",
+    "caseSavedAck": "Cazul a fost salvat",
+    "caseArchivedAck": "Cazul a fost arhivat",
+    "intakeStep1Title": "Unde este cazul?",
+    "intakeStep1Subtitle": "Țara și autoritatea cu care aveți de-a face.",
+    "intakeJurisdictionLabel": "Țară / jurisdicție",
+    "intakeAuthorityLabel": "Tipul autorității",
+    "intakeAuthorityNameLabel": "Numele autorității (opțional)",
+    "intakeAuthorityPolice": "Poliție",
+    "intakeAuthorityCourt": "Instanță",
+    "intakeAuthoritySocial": "Servicii sociale",
+    "intakeAuthorityEmployer": "Angajator",
+    "intakeAuthorityLandlord": "Proprietar",
+    "intakeAuthorityOpposingParty": "Parte adversă",
+    "intakeAuthorityOther": "Altele",
+    "intakeStep2Title": "Ce fel de caz?",
+    "intakeStep2Subtitle": "Alegeți tipul cel mai apropiat — îl puteți rafina mai târziu.",
+    "intakeCaseTypeCriminal": "Penal",
+    "intakeCaseTypeCivil": "Civil",
+    "intakeCaseTypeFamily": "Familie",
+    "intakeCaseTypeAdmin": "Administrativ",
+    "intakeCaseTypeImmigration": "Imigrare",
+    "intakeCaseTypeLabor": "Muncă",
+    "intakeCaseTypeConsumer": "Consumator",
+    "intakeCaseTypeInheritance": "Moștenire",
+    "intakeCaseTypeOther": "Altele",
+    "intakeStep3Title": "Cine este implicat?",
+    "intakeStep3Subtitle": "Rolul dumneavoastră și cealaltă parte.",
+    "intakeRoleLabel": "Rolul dumneavoastră",
+    "intakeRolePlaintiff": "Reclamant",
+    "intakeRoleDefendant": "Pârât",
+    "intakeRoleVictim": "Victimă",
+    "intakeRoleAccused": "Acuzat",
+    "intakeRoleWitness": "Martor",
+    "intakeRoleFamily": "Membru al familiei",
+    "intakeRoleOther": "Altele",
+    "intakeOpposingSideLabel": "Partea adversă (opțional)",
+    "intakeWitnessesLabel": "Martori (opțional)",
+    "intakeAddWitness": "Adaugă martor",
+    "intakeWitnessHint": "Nume sau contact",
+    "intakeStep4Title": "Numere și date",
+    "intakeStep4Subtitle": "Orice aveți deja. Săriți peste ce nu aveți.",
+    "intakeCaseNumberLabel": "Numărul cazului (opțional)",
+    "intakeIncidentDateLabel": "Data incidentului (opțional)",
+    "intakeIncidentDatePick": "Alege data",
+    "intakeDeadlinesLabel": "Termene cunoscute",
+    "intakeAddDeadline": "Adaugă termen",
+    "intakeDeadlineWhatHint": "Ce",
+    "intakeStep5Title": "Documente",
+    "intakeStep5Subtitle": "Încărcați orice este relevant. Le vom citi.",
+    "intakeUploadDocsLabel": "Încarcă documente",
+    "intakeSkipDocs": "Omite — voi încărca mai târziu",
+    "intakeNextBtn": "Înainte",
+    "intakeBackBtn": "Înapoi",
+    "intakeFinishBtn": "Finalizează și deschide conversația",
+    "intakeUrgentBtn": "Urgent — întreabă acum",
+    "intakeUrgentDialogTitle": "Deschideți conversația acum?",
+    "intakeUrgentDialogBody": "Vom salva ceea ce ați introdus ca un caz în ciornă. Puteți finaliza asistentul din pagina cazului oricând.",
+    "intakeUrgentConfirm": "Deschide conversația",
+    "intakeUrgentCancel": "Continuă completarea",
+    "intakePreparingCase": "Se pregătește cazul dumneavoastră…",
+    "intakeFallbackGreeting": "Văd cazul dumneavoastră. Spuneți-mi ce este cel mai presant — îl voi rezolva împreună cu dumneavoastră.",
+    "intakeUrgentGreeting": "Văd că este urgent. Adresați-vă întrebarea — voi completa restul pe parcurs.",
+    "intakeStepIndicator": "Pasul {current} din {total}",
+    "@intakeStepIndicator": {
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "intakeFieldRequired": "Obligatoriu",
+    "intakeUploadProgress": "Se încarcă {done} / {total}…",
+    "@intakeUploadProgress": {
+        "placeholders": {
+            "done": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "uplDisclaimerFooter": "Advocat nu este o firmă de avocatură. Acestea sunt informații, nu consultanță juridică.",
+    "parallelActionsHeadline": "Consilium recomandă {count} acțiuni paralele",
+    "@parallelActionsHeadline": {
+        "description": "Headline at the top of the Parallel Actions card — N>=2 emails the consilium recommends sending in parallel.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsApproveAll": "Aprobă tot și trimite",
+    "parallelActionsApproveSelected": "Aprobă {count} din {total}",
+    "@parallelActionsApproveSelected": {
+        "description": "Primary button when only a subset of actions is checked.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsConfirmTitle": "Trimiteți {count} e-mailuri?",
+    "@parallelActionsConfirmTitle": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsConfirmBody": "Advocat va expedia {count} răspunsuri pregătite prin Gmail-ul dumneavoastră conectat. Fiecare este trimis independent — dacă unul eșuează, celelalte sunt trimise în continuare.",
+    "@parallelActionsConfirmBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsSentToast": "{count} trimise.",
+    "@parallelActionsSentToast": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsPartialFailureToast": "{sent} trimise, {failed} eșuate.",
+    "@parallelActionsPartialFailureToast": {
+        "placeholders": {
+            "sent": {
+                "type": "int"
+            },
+            "failed": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsKindReply": "răspuns",
+    "parallelActionsKindNew": "nou",
+    "parallelActionsCheckboxSelected": "Acțiune selectată",
+    "parallelActionsCheckboxUnselected": "Acțiune neselectată",
+    "parallelActionsCitationCount": "{count} cit",
+    "@parallelActionsCitationCount": {
+        "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsRetryFailed": "Reîncearcă eșuate ({count})",
+    "@parallelActionsRetryFailed": {
+        "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "agentApprovalNeedsReviewTitle": "Advocat are nevoie de aprobarea dumneavoastră",
+    "agentApprovalResolvedTitle": "Acțiune soluționată",
+    "agentApprovalStepsLabel": "pași",
+    "agentApprovalApproveButton": "Aprobă și trimite",
+    "agentApprovalDeclineButton": "Refuză",
+    "agentApprovalAttachmentsLabel": "Atașamente",
+    "agentApprovalSentSummary": "Trimis în numele dumneavoastră.",
+    "agentApprovalDeclinedSummary": "Refuzat — nu s-a trimis nimic.",
+    "agentToolDraftEmailAtt": "Trimite e-mail cu atașamente",
+    "agentToolSendEmail": "Trimite e-mail",
+    "agentToolGeneratePdf": "Generează PDF",
+    "agentToolApproveSend": "Trimite răspunsul pregătit",
+    "inboxErrorTitle": "Nu s-a putut încărca căsuța de e-mail",
+    "inboxEditDiscardTitle": "Renunțați la modificările nesalvate?",
+    "inboxEditDiscardBody": "Aveți modificări nesalvate la această ciornă. Revenirea înapoi le va elimina.",
+    "inboxEditKeepEditing": "Continuă editarea",
+    "inboxEditDiscard": "Renunță",
+    "plannerSettingsTitle": "Raționament juridic în trei etape",
+    "plannerSettingsSubtitle": "Planificare → răspuns → critică. Mai lent, dar mai amănunțit.",
+    "plannerSettingsProBadge": "Pro",
+    "plannerSettingsProDescription": "Disponibil în planul Pro",
+    "plannerTrailHeaderPlan": "Plan",
+    "plannerTrailHeaderCritique": "Critică",
+    "plannerTrailSubQuestions": "Sub-întrebări",
+    "plannerTrailCounterArgs": "Contraargumente",
+    "plannerTrailEvidenceGaps": "Lacune în probe",
+    "plannerTrailMaterialGapTrue": "Lacună materială detectată",
+    "plannerTrailRegeneratedBadge": "Regenerat o dată",
+    "plannerTrailEmpty": "niciun element",
+    "supportTitle": "Ajutor",
+    "supportSubtitle": "De obicei răspundem în 1-2 ore.",
+    "supportSearchPlaceholder": "Caută în ajutor…",
+    "supportStatusAllOk": "Toate sistemele funcționează normal",
+    "supportFaqWhatIs": "Ce este Advocat?",
+    "supportFaqHowSubscribe": "Cum mă abonez la Pro?",
+    "supportFaqExportData": "Îmi pot exporta datele?",
+    "supportFaqCancelAccount": "Anulează sau șterge contul",
+    "supportFaqTalkHuman": "Vorbește cu o persoană",
+    "supportContactEmail": "E-mail",
+    "supportContactTelegram": "Telegram",
+    "supportContactWhatsapp": "WhatsApp",
+    "supportFooterSla": "Răspundem în 24 de ore",
+    "supportWhatsapp": "WhatsApp",
+    "supportEmail": "E-mail",
+    "supportInApp": "Scrieți-ne aici",
+    "supportCategoryLabel": "Categorie",
+    "supportCategoryBug": "Eroare",
+    "supportCategoryPayment": "Problemă de plată",
+    "supportCategoryQuestion": "Întrebare",
+    "supportCategoryFeature": "Cerere de funcționalitate",
+    "supportCategoryOther": "Altele",
+    "supportMessagePlaceholder": "Descrieți problema dumneavoastră...",
+    "supportEmailLabel": "E-mail (opțional)",
+    "supportSend": "Trimite",
+    "supportSentSuccess": "Mesaj trimis! Vom răspunde în curând.",
+    "supportError": "Ceva nu a mers bine. Încercați din nou.",
+    "supportErrorTooShort": "Vă rugăm să scrieți cel puțin 10 caractere.",
+    "supportErrorTooLong": "Maximum 2000 de caractere.",
+    "supportPrivacyNotice": "Mesajul dumneavoastră este stocat în siguranță.",
+    "referralAntiFraud": "Maximum 12 recomandări reușite pe an.",
+    "referralEmpty": "Încă nicio recomandare. Trimiteți linkul dumneavoastră pentru a începe să câștigați.",
+    "referralRecentActivity": "Activitate recentă",
+    "referralActivityInvited": "Invitat {when}",
+    "@referralActivityInvited": {
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "referralActivityActivated": "activat {when}",
+    "@referralActivityActivated": {
+        "placeholders": {
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "referralActivityPending": "neactivat încă",
+    "referralStatsInvitedCount": "Ați invitat {count, plural, =0{încă niciun prieten} =1{1 prieten} other{{count} prieteni}}",
+    "@referralStatsInvitedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "referralStatsConvertedCount": "{count, plural, =0{încă niciunul activat} =1{1 a activat} other{{count} au activat}}",
+    "@referralStatsConvertedCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "referralStatsEarnedCount": "Bonusul dumneavoastră: {months, plural, =0{încă nimic} =1{1 lună gratuită} other{{months} luni gratuite}}",
+    "@referralStatsEarnedCount": {
+        "placeholders": {
+            "months": {
+                "type": "int"
+            }
+        }
+    },
+    "referralNudgeMessage": "Vă place Advocat? Invitați un prieten — amândoi primiți o lună gratuită.",
+    "referralNudgeAction": "Invită",
+    "referralLandingTitle": "Ați fost invitat la Advocat",
+    "referralLandingSubtitle": "{inviterName} v-a invitat — revendicați prima lună gratuită.",
+    "@referralLandingSubtitle": {
+        "placeholders": {
+            "inviterName": {
+                "type": "String"
+            }
+        }
+    },
+    "referralLandingSubtitleGeneric": "Revendicați prima lună gratuită de Advocat Pro.",
+    "referralLandingCta": "Activează luna gratuită și înregistrează-te",
+    "referralLandingCtaSecondary": "Sau aflați mai multe despre Advocat",
+    "referralLandingFallback": "Acest link a expirat — dar puteți încerca în continuare Advocat gratuit.",
+    "referralLandingBenefits": "17 limbi • Legislație reală estonă, finlandeză și UE • 24/7 — fără așteptare",
+    "sensitiveConsentTitle": "Consimțământ pentru date sensibile",
+    "sensitiveConsentBody": "Documentele pe care urmează să le încărcați pot conține date cu caracter personal din categorii speciale conform articolului 9 GDPR — cum ar fi dosare medicale, cazier judiciar, date biometrice sau informații despre originea dumneavoastră rasială, religia sau orientarea sexuală.\n\nPrelucrăm aceste date numai pentru a vă oferi asistență juridică IA, le stocăm criptate în contul dumneavoastră privat și nu le folosim niciodată pentru antrenarea modelelor. Vă puteți retrage consimțământul și puteți șterge datele oricând din Setări.\n\nPrin acceptare, oferiți consimțământul explicit conform articolului 9(2)(a) GDPR pentru prelucrarea datelor din categorii speciale în acest scop.",
+    "sensitiveConsentExplicitCheckbox": "Ofer consimțământul explicit pentru prelucrarea datelor din categorii speciale (Art. 9(2)(a) GDPR).",
+    "sensitiveConsentRightToShareCheckbox": "Confirm că am dreptul de a partaja aceste date (datele îmi aparțin sau am un temei informat/legal pentru a partaja datele unor terți).",
+    "sensitiveConsentViewCategories": "Vedeți ce este considerat sensibil →",
+    "sensitiveConsentWithdrawAction": "Retrage consimțământul pentru date sensibile",
+    "privacyAndData": "CONFIDENȚIALITATE ȘI DATE",
+    "exportMyDataSubtitle": "Descărcați o copie a tuturor datelor dumneavoastră cu caracter personal (GDPR Art. 15).",
+    "withdrawSensitiveConsent": "Consimțământ pentru date sensibile",
+    "withdrawSensitiveConsentSubtitle": "Gestionați sau retrageți consimțământul pentru prelucrarea datelor din categorii speciale (GDPR Art. 9(2)(a)).",
+    "dataProcessingAgreement": "Acord de prelucrare a datelor",
+    "exportingData": "Se exportă datele dumneavoastră…",
+    "exportComplete": "Exportul datelor este gata — salvat pe dispozitivul dumneavoastră.",
+    "exportFailed": "Exportul a eșuat. Vă rugăm să încercați din nou sau să contactați asistența.",
+    "quotaExhaustedTitle": "Limita de mesaje gratuite a fost atinsă",
+    "quotaExhaustedBody": "Ați folosit toate cele {count} mesaje gratuite. Treceți la Advocat Counsel pentru 19,99 €/lună și beneficiați de consultații juridice IA nelimitate.",
+    "@quotaExhaustedBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaExhaustedLater": "Mai târziu",
+    "quotaExhaustedUpgrade": "Advocat Counsel — 19,99 €/lună",
+    "quotaCtaMessage": "Ați folosit toate cele {count} mesaje gratuite. Treceți la Advocat Counsel pentru 19,99 €/lună.",
+    "@quotaCtaMessage": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaCtaButton": "Obține Advocat Counsel — 19,99 €/lună",
+    "aiErrorQuota": "Limita de mesaje gratuite a fost atinsă. Abonați-vă pentru a continua să folosiți IA.",
+    "aiErrorAuth": "Este necesară autentificarea pentru a folosi IA. Vă rugăm să vă înregistrați sau să vă conectați.",
+    "aiErrorGeneric": "Eroare temporară a IA. Vă rugăm să încercați din nou într-un minut. Dacă persistă, contactați asistența.",
+    "tooltipShareCase": "Partajează rezumatul cazului",
+    "tooltipMuteVoice": "Dezactivează vocea",
+    "tooltipUnmuteVoice": "Activează vocea",
+    "tooltipAttachDoc": "Atașează document",
+    "aiTypingHint": "IA…",
+    "error404Title": "Pagină negăsită",
+    "error404Body": "Nu am putut găsi: {path}",
+    "@error404Body": {
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "goToHome": "Mergi la pagina principală",
+    "emailAlreadyRegistered": "Acest e-mail este deja înregistrat. Doriți să vă conectați?",
+    "actionSignIn": "Conectare",
+    "actionUndo": "Anulează",
+    "intakeUrgentOpened": "Conversația a fost deschisă — ciorna dumneavoastră este salvată.",
+    "panicCoachmark": "Țineți apăsat pentru ajutor de urgență.",
+    "panicTitle": "De ce aveți nevoie chiar acum?",
+    "panicCardReadAloud": "Citește cu voce tare ofițerului",
+    "panicCardRecord": "Înregistrează această conversație",
+    "panicCardCall": "Sună un avocat",
+    "panicCardAi": "Vorbește cu Advocat acum",
+    "panicClose": "Închide",
+    "panicBadgeV2": "V2",
+    "panicRecordV1Title": "În curând în V2",
+    "panicRecordV1Body": "Funcția de înregistrare este în curs de validare juridică pentru Estonia și va fi lansată în V2. Deocamdată, folosiți reportofonul încorporat al telefonului dumneavoastră.",
+    "panicCallFallbackBody": "Trimiteți un e-mail la kiire@advocat.ee cu o scurtă descriere și vă vom suna înapoi.",
+    "softCaseShellBanner": "Am creat „Caz fără titlu” pentru a-l urmări. Atingeți pentru a redenumi.",
+    "softCaseShellBannerCta": "Redenumește"
 }

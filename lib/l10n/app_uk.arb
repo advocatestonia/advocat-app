@@ -1,1406 +1,2059 @@
 {
-    "@@locale": "uk",
-    "about": "Про додаток",
-    "aboutSection": "ПРО ДОДАТОК",
-    "appearance": "Appearance",
-    "appearanceSystem": "System (auto)",
-    "appearanceLight": "Light",
-    "appearanceDark": "Dark",
-    "appearanceDescription": "Choose how Advocat looks",
-    "accidents": "Аварії",
-    "active": "Активні",
-    "activeCases": "Активні справи",
-    "addedToAppeal": "Додано до апеляції",
-    "agreeToTerms": "Я погоджуюся з ",
-    "aiAnalysis": "Аналіз ШІ",
-    "aiAssistant": "ШІ юридичний помічник",
-    "aiChat": "Чат з ШІ",
-    "aiErrorRateLimit": "Сервіс тимчасово перевантажений. Спробуйте через 1-2 хвилини.",
-    "aiErrorOverload": "ШІ зараз зайнятий, спробуйте через хвилину.",
-    "all": "Усі",
-    "alreadyHaveAccount": "Вже є обліковий запис? ",
-    "analyzing": "Аналізується…",
-    "andWord": " та ",
-    "appTitle": "Advocat — Інструмент юридичної інформації",
-    "appVersion": "Версія додатку",
-    "appealFiled": "Апеляцію подано",
-    "areYouAbsolutelySure": "Ви абсолютно впевнені?",
-    "askAboutCase": "Проаналізувати мою справу",
-    "asylum": "Притулок",
-    "back": "Назад",
-    "basic": "Базовий",
-    "beforeYouBuy": "Перед покупкою",
-    "beforeYouWork": "Перед співпрацею з ними",
-    "camera": "Камера",
-    "cancel": "Скасувати",
-    "caseDescription": "Опишіть вашу ситуацію",
-    "caseDetail": "Деталі справи",
-    "caseOverview": "Огляд справ",
-    "caseTitle": "Назва справи",
-    "caseUpdated": "Справу оновлено",
-    "cases": "Справи",
-    "checkCompany": "Перевірити компанію",
-    "checkDeadlines": "Перевірити строки",
-    "checkVehicle": "Перевірити транспорт",
-    "checkerTitle": "Перевірка",
-    "checkingErrors": "Перевірка помилок…",
-    "choosePlan": "Обрати план",
-    "closed": "Закриті",
-    "companyName": "Назва компанії або реєстр. номер",
-    "completed": "Завершено",
-    "confirm": "Підтвердити",
-    "confirmPassword": "Підтвердити пароль",
-    "connectEmail": "Підключити пошту",
-    "connectGmail": "Підключити Gmail",
-    "connectOutlook": "Підключити Outlook",
-    "connected": "Підключено",
-    "contactSupport": "Зв'язатися з підтримкою",
-    "continueWithGoogle": "Продовжити з Google",
-    "copyText": "Копіювати текст",
-    "correspondence": "Кореспонденція",
-    "couldNotLoadCases": "Не вдалося завантажити ваші справи",
-    "country": "Країна",
-    "createAccount": "Створити обліковий запис",
-    "createCase": "Створити справу",
-    "criminalCase": "Кримінальна справа",
-    "critical": "Критичне",
-    "currentPlan": "Поточний план",
-    "dataAndPrivacy": "ДАНІ ТА КОНФІДЕНЦІЙНІСТЬ",
-    "dataExportRequested": "Запит на експорт даних надіслано. Перевірте пошту.",
-    "daysRemaining": "{count, plural, =0{днів не залишилось} one{{count} день} few{{count} дні} many{{count} днів} other{{count} днів}}",
-    "@daysRemaining": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineReminders": "Нагадування про строки",
-    "deadlineRemindersDesc": "Отримуйте сповіщення перед закінченням строків",
-    "deadlines": "Строки",
-    "debtCollection": "Стягнення боргу",
-    "deleteAccount": "Видалити обліковий запис",
-    "deleteAccountDesc": "Назавжди видалити ваш обліковий запис",
-    "deleteAccountDialogContent": "Ця дія є остаточною і не може бути скасована. Усі ваші дані, справи та документи будуть назавжди видалені.",
-    "deleteConfirm": "Ви впевнені? Це назавжди видалить усі ваші дані.",
-    "demoHint": "Демо: спробуйте номер «908FBT»",
-    "demoModeDesc": "Ознайомтеся з додатком на прикладі реальної справи",
-    "deportation": "Депортація",
-    "disclaimer": "Лише інформація від ШІ — не юридична консультація. Завжди консультуйтеся з юристом.",
-    "disclaimerFull": "Це ШІ-помічник, а не юрист. Аналіз ШІ може містити помилки. Завжди перевіряйте з кваліфікованим юристом.",
-    "disconnect": "Відключити",
-    "discrimination": "Дискримінація",
-    "doNotBuy": "Не купуйте",
-    "documents": "Документи",
-    "documentsCount": "{count, plural, =0{немає документів} one{{count} документ} few{{count} документи} many{{count} документів} other{{count} документів}}",
-    "@documentsCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "draftAppeal": "Проект апеляції",
-    "editDraft": "Редагувати",
-    "editProfile": "Редагувати профіль",
-    "email": "Електронна пошта",
-    "emailConnected": "Пошту підключено",
-    "emailDisconnected": "Пошту відключено",
-    "emailIntegration": "ІНТЕГРАЦІЯ ПОШТИ",
-    "emailInvalid": "Введіть дійсну адресу електронної пошти",
-    "emailPrivacyNote": "Ми читаємо лише юридичні листи. Ваша особиста пошта залишається приватною.",
-    "emailRequired": "Електронна пошта обов'язкова",
-    "emergencyShield": "Екстрений захист",
-    "error": "Помилка",
-    "exportDataDesc": "Завантажити всі ваші дані про справи",
-    "exportDataDialogContent": "Ми підготуємо завантаження всіх ваших даних, включаючи справи, документи та кореспонденцію. Ви отримаєте електронний лист, коли все буде готово.",
-    "exportMyData": "Експортувати мої дані",
-    "exportPdf": "Експорт PDF",
-    "familyReunification": "Возз'єднання сім'ї",
-    "forgotPassword": "Забули пароль?",
-    "free": "Безкоштовно",
-    "fullDefense": "Advocat Pro",
-    "fullName": "Повне ім'я",
-    "gallery": "Галерея",
-    "generateAppeal": "Створити апеляцію",
-    "getStarted": "Розпочати",
-    "goodAfternoon": "Добрий день, {name}",
-    "@goodAfternoon": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodEvening": "Добрий вечір, {name}",
-    "@goodEvening": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodMorning": "Доброго ранку, {name}",
-    "@goodMorning": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodNight": "Доброї ночі, {name}",
-    "@goodNight": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "home": "Головна",
-    "important": "Важливе",
-    "inProgress": "В процесі",
-    "informational": "Інформаційне",
-    "inspection": "Технічний огляд",
-    "insurance": "Страхування",
-    "issuesFound": "{count, plural, =0{проблем не знайдено} one{Знайдено {count} проблему} few{Знайдено {count} проблеми} many{Знайдено {count} проблем} other{Знайдено {count} проблем}}",
-    "@issuesFound": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "laborDispute": "Трудовий спір",
-    "langEnglish": "Англійська",
-    "langFinnish": "Фінська",
-    "langRussian": "Російська",
-    "language": "Мова",
-    "lastActivity": "Остання активність: {time}",
-    "@lastActivity": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "legalFighter": "Юридичний радник",
-    "legalSection": "ЮРИДИЧНЕ",
-    "licensePlate": "Номерний знак",
-    "loading": "Завантаження…",
-    "logIn": "Увійти",
-    "loginFailed": "Невірна електронна пошта або пароль. Спробуйте ще раз.",
-    "lost": "Програно",
-    "markComplete": "Позначити як завершене",
-    "mileage": "Пробіг",
-    "myCases": "Мої справи",
-    "nameRequired": "Повне ім'я обов'язкове",
-    "newCase": "Нова справа",
-    "next": "Далі",
-    "noAccount": "Немає облікового запису? ",
-    "noCases": "Справ ще немає",
-    "noCasesYet": "Справ ще немає",
-    "noDeadlines": "Строків немає — усе в порядку.",
-    "noRecentActivity": "Немає останньої активності",
-    "notifications": "СПОВІЩЕННЯ",
-    "onboardingDesc1": "Advocat допомагає вам зрозуміти вашу правову ситуацію. Інструменти ШІ аналізують документи, визначають потенційні проблеми та готують проекти документів для вашого перегляду. Не юридична фірма — технологічний інструмент для підтримки вашої справи.",
-    "onboardingDesc2": "Сфотографуйте будь-який юридичний документ. ШІ прочитає його кількома мовами, витягне ключові деталі та перевірить на відповідність директивам ЄС та національному законодавству.",
-    "onboardingDesc3": "Наші інструменти ШІ перевіряють понад 40 типів процесуальних вимог. Аналіз ШІ може виявити питання, що потребують уваги — такі як мова повідомлення, процесуальні кроки та правові строки. Завжди перевіряйте з кваліфікованим юристом.",
-    "onboardingDesc4": "ШІ готує проекти апеляцій, скарг та листів із правовими посиланнями для вашого перегляду. Ви вирішуєте, що подавати. Кожен документ має бути перевірений кваліфікованим юристом перед поданням.",
-    "onboardingNext": "Далі",
-    "onboardingSkip": "Пропустити",
-    "onboardingTitle1": "Юридична інформація на базі ШІ",
-    "onboardingTitle2": "Скануйте та аналізуйте документи",
-    "onboardingTitle3": "ШІ перевіряє потенційні проблеми",
-    "onboardingTitle4": "Проекти документів для вашого перегляду",
-    "openACase": "Відкрити справу",
-    "optional": "(необов'язково)",
-    "orDivider": "або",
-    "other": "Інше",
-    "overdue": "Прострочено",
-    "owners": "Попередні власники",
-    "password": "Пароль",
-    "passwordRequired": "Пароль обов'язковий",
-    "passwordStrengthMedium": "Середній",
-    "passwordStrengthStrong": "Сильний",
-    "passwordStrengthWeak": "Слабкий",
-    "passwordTooShort": "Пароль повинен містити щонайменше 8 символів",
-    "passwordsDoNotMatch": "Паролі не збігаються",
-    "pendingDecision": "Очікування рішення",
-    "perCheck": "за перевірку",
-    "permanentlyDelete": "Видалити назавжди",
-    "policeMisconduct": "Неправомірні дії поліції",
-    "popular": "ПОПУЛЯРНИЙ",
-    "preferences": "НАЛАШТУВАННЯ",
-    "preferredLanguage": "Бажана мова",
-    "pricePerCheck": "4,99 € за перевірку",
-    "privacyPolicy": "Політикою конфіденційності",
-    "pro": "Професійний",
-    "pushNotifications": "Push-сповіщення",
-    "rateUs": "Оцінити нас",
-    "readingDocument": "Читання документа…",
-    "recentActivity": "Остання активність",
-    "referenceNumber": "Номер довідки",
-    "registerFailed": "Реєстрація не вдалася. Спробуйте ще раз.",
-    "reportFraud": "Повідомити про шахрайство",
-    "requestExport": "Запит на експорт",
-    "researchingLaw": "Дослідження законодавства…",
-    "resetPasswordFailed": "Не вдалося надіслати посилання для скидання. Спробуйте ще раз.",
-    "resetPasswordSent": "Посилання для скидання пароля надіслано на вашу пошту.",
-    "residencePermit": "Дозвіл на проживання",
-    "manageSubscription": "Керування підпискою",
-    "restorePurchases": "Відновити покупки",
-    "retry": "Повторити",
-    "reviewWarning": "Уважно перегляньте перед відправкою. Ви відповідаєте за зміст.",
-    "riskHigh": "Високий ризик — уникайте",
-    "riskLow": "Безпечна співпраця",
-    "riskMedium": "Діяти обережно",
-    "safeToBuy": "Безпечно купувати",
-    "saveAndAnalyze": "Зберегти та аналізувати",
-    "saveDraft": "Зберегти",
-    "saveWithAnnual": "Заощаджуйте 25% з річною підпискою",
-    "scan": "Сканувати",
-    "scanDocument": "Сканувати документ",
-    "searchCases": "Пошук справ…",
-    "selectCountry": "Оберіть країну",
-    "selectLanguage": "Оберіть мову",
-    "sendViaEmail": "Надіслати електронною поштою",
-    "settings": "Налаштування",
-    "signIn": "Увійти",
-    "signInLink": "Увійти",
-    "signInSubtitle": "Увійдіть, щоб отримати доступ до ваших справ",
-    "signOut": "Вийти",
-    "signOutConfirm": "Ви впевнені, що хочете вийти?",
-    "signUp": "Створити обліковий запис",
-    "signUpLink": "Зареєструватися",
-    "socialBenefits": "Соціальні виплати",
-    "someConcerns": "Деякі занепокоєння",
-    "startFirstCase": "Розпочніть вашу першу справу",
-    "step": "Крок {current} з {total}",
-    "@step": {
-        "placeholders": {
-            "current": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "stolen": "Перевірка на викрадення",
-    "subscription": "Підписка",
-    "syncLegalCorrespondence": "Синхронізувати юридичну кореспонденцію",
-    "syncNow": "Синхронізувати зараз",
-    "tenantRights": "Права орендаря",
-    "termsOfService": "Умовами використання",
-    "termsRequired": "Ви повинні погодитися з Умовами використання",
-    "timeline": "Хронологія",
-    "tryDemoMode": "Спробувати демо-режим",
-    "typeDeleteToConfirm": "Введіть DELETE для підтвердження видалення облікового запису.",
-    "typeMessage": "Введіть повідомлення…",
-    "upcoming": "Найближчі",
-    "uploadDocument": "Завантажити документ",
-    "urgentDeadline": "Терміново: {title}",
-    "@urgentDeadline": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "useInAppeal": "Використати в апеляції",
-    "vehicleChecker": "Перевірка транспорту",
-    "vehicleChecks": "Перевірки стану",
-    "vehicleColor": "Колір",
-    "vehicleMake": "Марка",
-    "vehicleModel": "Модель",
-    "vehicleYear": "Рік",
-    "version": "Версія",
-    "victimSupport": "Підтримка постраждалих",
-    "viewAll": "Переглянути все",
-    "vinNumber": "VIN-код",
-    "welcomeBack": "З поверненням",
-    "whatAreMyOptions": "Які мої варіанти?",
-    "won": "Виграно",
-    "activityWillAppear": "Активність з'явиться тут у міру просування справи.",
-    "addDocument": "Додати документ",
-    "addPage": "Додати сторінку",
-    "aiDisclaimer": "Застереження щодо ШІ",
-    "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
-    "@aiDisclaimerCompact": {
-        "description": "TODO: native legal review (currently English fallback)"
-    },
-    "aiDisclaimerFullTitle": "Important: how Advocat works",
-    "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
-    "aiDisclaimerExpand": "Learn more",
-    "aiDisclaimerDismiss": "OK, I understand",
-    "alignDocument": "Вирівняйте документ у рамці",
-    "allClearDeadlines": "Все гаразд! Нові терміни з'являться тут.",
-    "analysisFailedRetry": "Аналіз не вдався. Спробуйте знову.",
-    "analyzeSelected": "Аналізувати вибрані",
-    "analyzed": "Проаналізовано",
-    "analyzingContent": "Аналіз вмісту…",
-    "annual": "Річний",
-    "annualLeave": "Щорічна відпустка (мінімум 2 дні за відпрацьований місяць)",
-    "appeal": "Оскарження",
-    "appealDeadline": "Термін оскарження",
-    "appealDeadlineDesc": "Оскарження має бути подано до {date}.",
-    "@appealDeadlineDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "appealDeadlineSet": "Термін оскарження встановлено",
-    "appealDraft": "Чернетка оскарження",
-    "applyLegalAid": "Подайте заяву на правову допомогу за потреби",
-    "assignToCase": "Призначити до справи",
-    "basicAiAnalysis": "Базовий аналіз ШІ",
-    "basicRights": "Основні права:",
-    "batchAnalysisStarting": "Пакетний аналіз починається…",
-    "calculateEligibility": "Розрахувати право",
-    "cameraPermissionDesc": "Надайте доступ до камери для сканування документів або скористайтеся галереєю.",
-    "cameraPermissionRequired": "Потрібен дозвіл камери",
-    "capturePhotoFailed": "Не вдалося зробити фото. Спробуйте знову.",
-    "caseCreated": "Справу створено",
-    "caseCreatedDesc": "Справу «{title}» створено.",
-    "@caseCreatedDesc": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "caseCreationComingSoon": "Створення справи з попередньо заповненими даними незабаром",
-    "caseInfoUpdated": "Інформація справи оновлена.",
-    "caseSummaryCopied": "Зведення справи скопійовано",
-    "caseTimeline": "Хронологія справи",
-    "changesSaved": "Зміни збережено",
-    "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
-    "checkEligibility": "Перевірте право на правову допомогу: {country}",
-    "checkingPurchases": "Перевірка попередніх покупок…",
-    "chooseHowToAdd": "Оберіть спосіб додавання документа",
-    "citizenship": "Громадянство",
-    "completedDeadlinesDesc": "Виконані терміни відображатимуться тут.",
-    "connectYourEmail": "Підключіть вашу пошту",
-    "connectYourEmailDesc": "Підключіть email для автоматичного виявлення юридичного листування.",
-    "connectedTo": "Підключено до {email}",
-    "@connectedTo": {
-        "placeholders": {
-            "email": {
-                "type": "String"
-            }
-        }
-    },
-    "contactLawyerImmediately": "Негайно зверніться до адвоката",
-    "contactLegalAidOffice": "Зверніться до бюро правової допомоги",
-    "cookiePolicy": "Політика файлів cookie",
-    "copiedToClipboard": "Скопійовано до буфера",
-    "copy": "Копіювати",
-    "copySummary": "Копіювати зведення",
-    "couldNotLoadCase": "Не вдалося завантажити деталі справи",
-    "couldNotLoadDeadlines": "Не вдалося завантажити терміни",
-    "couldNotLoadTimeline": "Не вдалося завантажити хронологію",
-    "courtCaseNo": "Номер судової справи",
-    "createNote": "Створити нотатку",
-    "createNoteDesc": "Напишіть нотатку або зафіксуйте важливі деталі",
-    "created": "Створено",
-    "dataPrivacyConsent": "Згода на обробку даних",
-    "days": "днів",
-    "daysLate": "днів затримки",
-    "decisionReceived": "Рішення отримано",
-    "decisionReceivedDesc": "Отримано офіційне рішення у цій справі.",
-    "decline": "Відхилити",
-    "delete": "Видалити",
-    "deleteCase": "Видалити справу",
-    "deleteCaseConfirm": "Ви впевнені, що хочете видалити \"{title}\"? Цю дію не можна скасувати.",
-    "@deleteCaseConfirm": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "deleteDocumentsConfirm": "Видалити {count} документів?",
-    "@deleteDocumentsConfirm": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deleteSelected": "Видалити вибрані",
-    "deportationNotice": "Повідомлення про депортацію",
-    "deportationNoticeDesc": "Кроки для оскарження наказу про видалення",
-    "disconnectEmail": "Від'єднати email",
-    "disconnectEmailConfirm": "Автоматична синхронізація email буде припинена. Раніше синхронізовані листи залишаться.",
-    "discriminationDesc": "Як повідомити про дискримінацію та боротися з нею",
-    "doNotIgnoreNotice": "НЕ ігноруйте повідомлення - терміни суворі",
-    "documentAnalysis": "Аналіз документа",
-    "documentIncident": "Задокументуйте інцидент (дата, час, свідки)",
-    "documentProcessedOk": "Документ успішно оброблено",
-    "documentUploadedSuccess": "Документ успішно завантажено",
-    "documentVault": "Сховище документів",
-    "done": "Готово",
-    "draftCopiedToClipboard": "Чернетку скопійовано до буфера",
-    "draftDocument": "Чернетка документа",
-    "draftGeneration": "Створення чернеток",
-    "edit": "Редагувати",
-    "editDocument": "Редагувати документ",
-    "emailComingSoon": "Надсилання email незабаром",
-    "emailIntegrationTitle": "Інтеграція email",
-    "english": "Англійська",
-    "estimateDisclaimer": "Це лише оцінка. Фактичне право визначає Бюро правової допомоги.",
-    "exportAsPdf": "Експортувати як PDF",
-    "failed": "Не вдалося",
-    "failedToCreateCaseRetry": "Не вдалося створити справу. Спробуйте знову.",
-    "failedToGenerateDraft": "Не вдалося створити чернетку. Спробуйте знову.",
-    "failedToLoadCases": "Не вдалося завантажити справи",
-    "failedToLoadDocuments": "Не вдалося завантажити документи",
-    "fileComplaintOmbudsman": "Подайте скаргу омбудсмену з питань недискримінації",
-    "filterByType": "Фільтрувати за типом",
-    "finnish": "Фінська",
-    "forever": "назавжди",
-    "fromDocument": "З документа",
-    "fullAiAnalysis": "Повний аналіз ШІ",
-    "fullFreeLegalAid": "Ви, ймовірно, маєте право на безкоштовну правову допомогу.",
-    "gdprChat": "Обробка повідомлень чату ШІ",
-    "gdprDelete": "Право видалити свої дані в будь-який час",
-    "gdprDocs": "Аналіз завантажених документів",
-    "gdprFooter": "Ваші дані зашифровані і ніколи не передаються третім особам. Ви можете відкликати згоду та видалити всі дані в Налаштуваннях.",
-    "gdprIntro": "Для надання правової допомоги з ШІ ми обробляємо ваші дані відповідно до GDPR (ЄС 2016/679). Продовжуючи, ви погоджуєтесь з:",
-    "gdprStorage": "Зашифроване зберігання даних справ",
-    "generateAppealWithIssues": "{count, plural, one{Створити оскарження ({count} проблема)} few{Створити оскарження ({count} проблеми)} many{Створити оскарження ({count} проблем)} other{Створити оскарження ({count} проблем)}}",
-    "@generateAppealWithIssues": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "generatingDraft": "Створення чернетки…",
-    "generatingDraftDesc": "ШІ готує юридичний документ на основі деталей справи.",
-    "greatJobDeadlines": "Чудова робота з дотриманням термінів.",
-    "haveQuestionsAi": "Є питання? Запитайте ШІ",
-    "hearingScheduled": "Слухання заплановано",
-    "hearingScheduledDesc": "Судове слухання заплановано на {date}.",
-    "@hearingScheduledDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "howToAct": "Як діяти:",
-    "iAgree": "Погоджуюсь",
-    "iAgreeToThe": "Я приймаю ",
-    "immediateSteps": "Негайні кроки:",
-    "immigrationDetention": "Імміграційне затримання",
-    "immigrationDetentionDesc": "Права при затриманні владою",
-    "inCourt": "У суді",
-    "issuesFoundHeader": "Знайдені проблеми",
-    "issuesFoundInDocument": "{count, plural, =0{У документі проблем не знайдено} one{У документі знайдено {count} проблему} few{У документі знайдено {count} проблеми} many{У документі знайдено {count} проблем} other{У документі знайдено {count} проблем}}",
-    "@issuesFoundInDocument": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "knowYourRights": "Знай свої права",
-    "landlordNotice": "Орендодавець має попередити (3–6 місяців)",
-    "lastSynced": "Остання синхронізація: {time}",
-    "@lastSynced": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "late": "прострочено",
-    "legalAidCalculator": "Калькулятор правової допомоги",
-    "legalAidWithCopay": "Ви можете мати право на правову допомогу зі співоплатою {percent}%.",
-    "@legalAidWithCopay": {
-        "placeholders": {
-            "percent": {
-                "type": "String"
-            }
-        }
-    },
-    "legalEmails": "Юридичні листи",
-    "legalEmailsWillAppear": "Листи, класифіковані як юридичні, з'являться тут.",
-    "likelyEligible": "Ймовірно має право",
-    "mayNotQualify": "Може не мати права",
-    "mayNotQualifyDesc": "За цією оцінкою ви можете не мати права на державну правову допомогу.",
-    "migriReference": "Посилання Migri",
-    "minimumWage": "Мінімальна зарплата за колективним договором",
-    "monthly": "Щомісячний",
-    "monthlyIncome": "Місячний дохід (EUR)",
-    "mostPopular": "НАЙПОПУЛЯРНІШИЙ",
-    "mustNotResist": "Не чинити фізичний опір",
-    "mustProvideName": "Назвіть ім'я та дату народження",
-    "mustShowId": "Покажіть документ, якщо є",
-    "nationality": "Національність",
-    "noCasesMatchSearch": "Жодна справа не відповідає пошуку",
-    "noCompletedDeadlines": "Виконаних термінів немає",
-    "noContentAvailable": "Вміст недоступний",
-    "noDocumentsScanHint": "Документів ще немає. Скануйте або завантажте.",
-    "noDocumentsYet": "Документів ще не завантажено",
-    "noDocumentsYetScan": "Документів ще немає",
-    "noEventsYet": "Подій ще немає",
-    "noLegalEmailsYet": "Юридичних листів ще немає",
-    "noPreviousPurchases": "Попередні покупки не знайдено.",
-    "noSignificantIssues": "Суттєвих проблем у документі не виявлено.",
-    "noUpcomingDeadlines": "Найближчих термінів немає",
-    "noUpcomingDeadlinesShort": "Найближчих термінів немає",
-    "noteAppealDeadline": "Зверніть увагу на термін оскарження (зазвичай 30 днів)",
-    "nothingOverdue": "Нічого не прострочено",
-    "numberOfDependents": "Кількість утриманців",
-    "oneCaseActive": "1 активна справа",
-    "openCase": "Відкрити справу",
-    "openSettings": "Відкрити налаштування",
-    "orWord": "або",
-    "pageCount": "{count, plural, =0{немає сторінок} one{{count} сторінка} few{{count} сторінки} many{{count} сторінок} other{{count} сторінок}}",
-    "@pageCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "pageNumber": "Сторінка {number}",
-    "@pageNumber": {
-        "placeholders": {
-            "number": {
-                "type": "int"
-            }
-        }
-    },
-    "pagesUploadedSuccess": "{count, plural, one{{count} сторінка успішно завантажена} few{{count} сторінки успішно завантажено} many{{count} сторінок успішно завантажено} other{{count} сторінок успішно завантажено}}",
-    "@pagesUploadedSuccess": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "paymentFailed": "Помилка оплати: {error}",
-    "@paymentFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String"
-            }
-        }
-    },
-    "pdf": "PDF",
-    "pdfExportComingSoon": "Експорт PDF незабаром",
-    "pending": "Очікує",
-    "perMonth": "/міс",
-    "perYear": "/рік",
-    "preparingUpload": "Підготовка завантаження…",
-    "preview": "Попередній перегляд",
-    "priorityProcessing": "Пріоритетна обробка",
-    "processing": "Обробка",
-    "protectionUnjustEviction": "Захист від несправедливого виселення",
-    "readingText": "Читання тексту…",
-    "ready": "Готово",
-    "reportAndOpenCase": "Повідомити та відкрити справу",
-    "reportMileageFraud": "Повідомити про шахрайство з пробігом",
-    "reportMileageFraudDesc": "Буде створено звіт про шахрайство на основі даних перевірки.",
-    "reportToPolice": "Повідомте поліцію, якщо злочин (погроза, напад)",
-    "retake": "Зробити знову",
-    "retryAnalysis": "Повторити аналіз",
-    "reviewBeforeSending": "Уважно перегляньте перед надсиланням. Ви відповідаєте за зміст документа.",
-    "rightAppealAdmin": "Право оскарження в Адміністративному суді",
-    "rightAskInterpreter": "Попросіть перекладача",
-    "rightChallengeDetention": "Право оскаржити затримання в суді",
-    "rightContactEmbassy": "Право зв'язатися з посольством",
-    "rightContactLawyer": "Зв'яжіться з адвокатом до допиту",
-    "rightContactLawyerDetention": "Право зв'язатися з адвокатом",
-    "rightHabitableDwelling": "Право на придатне для проживання житло",
-    "rightHumaneTreatment": "Право на гуманне поводження та медичну допомогу",
-    "rightInterpreter": "Право на перекладача",
-    "rightKnowDetentionReason": "Право знати причину затримання",
-    "rightKnowWhyStopped": "Знати, чому вас зупинили",
-    "rightLegalRep": "Право на юридичне представництво",
-    "rightRecordEncounter": "Записати зустріч (у публічних місцях)",
-    "rightRemainSilent": "Мовчати (необхідно назвати себе)",
-    "rightStayDuringAppeal": "Право залишитися під час оскарження (у більшості випадків)",
-    "russian": "Російська",
-    "safeWorkingConditions": "Безпечні умови праці",
-    "save": "Зберегти",
-    "saveChanges": "Зберегти зміни",
-    "saveTwentyFivePercent": "Заощадьте 25%",
-    "scanDocumentDesc": "Сфотографуйте документ",
-    "scanFirstDocumentHint": "Скануйте перший документ, щоб ШІ проаналізував його.",
-    "scanNew": "Нове сканування",
-    "scenarioNotFound": "Сценарій не знайдено",
-    "secureDocumentStorage": "Безпечне сховище документів",
-    "secureDocumentStorageDesc": "Зберігайте важливі юридичні документи в одному місці.",
-    "securityDeposit": "Застава макс. 3 місяці оренди",
-    "selected": "{count} вибрано",
-    "@selected": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "severityOverview": "Огляд серйозності",
-    "sickLeave": "Компенсація лікарняного",
-    "somethingWentWrong": "Щось пішло не так",
-    "genericError": "Щось пішло не так. Спробуйте ще раз.",
-    "stoppedByPolice": "Зупинений поліцією",
-    "stoppedByPoliceDesc": "Ваші права під час поліцейського контролю",
-    "successSubscribed": "Підписка на {plan} успішна!",
-    "@successSubscribed": {
-        "placeholders": {
-            "plan": {
-                "type": "String"
-            }
-        }
-    },
-    "switchToGrid": "Перемкнути на сітку",
-    "switchToList": "Перемкнути на список",
-    "takePhotoInstead": "Зробити фото",
-    "tenantRightsDesc": "Захист житла та орендарів",
-    "threeCasesActive": "3 активні справи",
-    "threeDocScans": "3 сканування документів",
-    "totalAssets": "Загальні активи (EUR)",
-    "twentyDocScans": "20 сканувань документів",
-    "typeLabel": "Тип",
-    "unlimitedCases": "Необмежені справи",
-    "unlimitedDocScans": "Необмежене сканування",
-    "unlinkedEmails": "Непов'язані листи",
-    "uploadFailed": "Завантаження не вдалося. Перевірте з'єднання.",
-    "uploadFile": "Завантажити файл",
-    "uploadFileDesc": "Виберіть PDF або зображення з пристрою",
-    "uploadingPercent": "Завантаження… {percent}%",
-    "@uploadingPercent": {
-        "placeholders": {
-            "percent": {
-                "type": "int"
-            }
-        }
-    },
-    "useThisPhoto": "Використати це фото",
-    "viewFull": "Переглянути повністю",
-    "workPermit": "Дозвіл на роботу",
-    "workingTimeLimits": "Обмеження робочого часу (макс 8г/день, 40г/тиждень)",
-    "workplaceRights": "Права на робочому місці",
-    "workplaceRightsDesc": "Захист трудового права в Естонії",
-    "writtenRentalAgreement": "Потрібен письмовий договір оренди",
-    "youHaveRightTo": "Ви маєте право на:",
-    "youMust": "Ви повинні:",
-    "yourRights": "Ваші права:",
-    "yourRightsAsTenant": "Ваші права як орендаря:",
-    "yourRightsInDetention": "Ваші права при затриманні:",
-    "whatToDo": "Що робити",
-    "getHelp": "Отримати допомогу",
-    "share": "Поділитися",
-    "didYouKnow": "Чи знали ви?",
-    "mustKnow": "Обов'язково знати",
-    "goodToKnow": "Корисно знати",
-    "sentFromAdvocat": "Надіслано з додатку Advocat",
-    "policeActionStayCalm": "Зберігайте спокій і тримайте руки на виду",
-    "policeActionAskWhy": "Запитайте поліцейського, чому вас зупинили",
-    "policeActionProvideName": "Назвіть своє ім'я та дату народження",
-    "policeActionWantLawyer": "Чітко заявіть: \"Я хочу адвоката перед будь-якими питаннями\"",
-    "policeActionAskInterpreter": "За потреби попросіть перекладача",
-    "policeActionNoteBadge": "Запишіть ім'я та номер жетона поліцейського",
-    "policeFactMustTellReason": "В Естонії поліція зобов'язана повідомити причину зупинки. Якщо вони цього не роблять, ви можете запитати — і вони зобов'язані за законом пояснити.",
-    "policeFactCanRecord": "В Естонії ви можете записувати взаємодію з поліцією в громадських місцях. Це захищено свободою слова.",
-    "contactFinnishLegalAid": "Державна правова допомога Естонії",
-    "contactNonDiscriminationOmbudsman": "Уповноважений з питань недискримінації",
-    "deportationDeadlineAppeal": "Оскарження до Адміністративного суду — зазвичай 30 днів з моменту повідомлення",
-    "deportationDeadlineLegalAid": "Подайте заявку на правову допомогу — зробіть це НЕГАЙНО",
-    "deportationFactStayDuringAppeal": "В Естонії ви зазвичай маєте право залишатися в країні під час розгляду вашого оскарження. Депортація не може бути здійснена під час активного оскарження у більшості випадків.",
-    "contactRefugeeAdviceCentre": "Фінський центр консультування біженців",
-    "contactAdminCourtHelsinki": "Адміністративний суд Гельсінкі",
-    "workplaceActionKeepContract": "Зберігайте копії трудового договору",
-    "workplaceActionTrackHours": "Самостійно відстежуйте робочий час",
-    "workplaceActionReportUnsafe": "Повідомляйте про небезпечні умови до інспекції праці",
-    "workplaceActionJoinUnion": "Вступіть до профспілки для захисту",
-    "workplaceActionContactAuthority": "За потреби зверніться до Управління з охорони праці",
-    "workplaceFactCollectiveWage": "В Естонії уряд встановлює державну мінімальну заробітну плату. Роботодавець зобов'язаний платити не менше встановленого мінімуму.",
-    "workplaceFactOralContract": "Навіть без письмового договору ви маєте повні трудові права в Естонії. Усна угода є однаково обов'язковою за законом.",
-    "contactOccupationalSafety": "Управління з охорони праці",
-    "contactTradeUnionSAK": "Профспілкова консультація (SAK)",
-    "tenantActionWrittenAgreement": "Завжди укладайте письмовий договір оренди",
-    "tenantActionDocumentCondition": "Задокументуйте стан квартири при заселенні (фото)",
-    "tenantActionReportMaintenance": "Повідомляйте про проблеми з обслуговуванням письмово",
-    "tenantActionNoIllegalEviction": "Ніколи не погоджуйтесь на незаконне виселення — рішення приймає суд",
-    "tenantActionContactAdvisory": "У разі спорів зверніться до консультаційної служби для орендарів",
-    "tenantFactNoEvictionWithoutCourt": "Орендодавець в Естонії не може виселити вас без рішення суду, навіть якщо термін оренди закінчився. Заміна замків або відключення комунальних послуг є незаконним.",
-    "contactTenantsAssociation": "Фінська асоціація орендарів",
-    "contactConsumerDisputesBoard": "Комісія зі споживчих спорів",
-    "detentionActionAskDecision": "Негайно вимагайте письмове рішення про затримання",
-    "detentionActionRequestLawyer": "Вимагайте зв'язку з адвокатом",
-    "detentionActionContactEmbassy": "Зв'яжіться зі своїм посольством або консульством",
-    "detentionActionAskMedical": "За потреби вимагайте медичну допомогу",
-    "detentionActionRequestInterpreter": "Вимагайте перекладача на всі засідання",
-    "detentionDeadlineCourtReview": "Районний суд повинен переглянути затримання протягом 4 днів",
-    "detentionDeadlineContinuation": "Суд переглядає продовження кожні 2 тижні",
-    "detentionFactCourtReview": "Імміграційне затримання в Естонії повинно бути переглянуте районним судом протягом 4 днів. Якщо цього не відбувається, затримання стає незаконним.",
-    "contactParliamentaryOmbudsman": "Парламентський омбудсмен",
-    "discriminationActionWriteDown": "Запишіть точно, що сталося (дата, час, місце)",
-    "discriminationActionSaveEvidence": "Збережіть докази: повідомлення, електронні листи, свідків",
-    "discriminationActionFileComplaint": "Подайте скаргу Уповноваженому з питань недискримінації",
-    "discriminationActionContactLegalAid": "Зверніться до бюро правової допомоги за безкоштовною консультацією",
-    "discriminationActionReportPolice": "Зверніться до поліції, якщо мали місце погрози або напад",
-    "discriminationFactNonDiscriminationAct": "Фінський Закон про недискримінацію охоплює дискримінацію за віком, походженням, громадянством, мовою, релігією, станом здоров'я, інвалідністю, сексуальною орієнтацією та іншими особистими характеристиками.",
-    "contactVictimSupportRIKU": "Служба допомоги жертвам (116 006)",
-    "domesticViolence": "Домашнє насильство",
-    "inheritance": "Спадщина",
-    "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
-    "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
-    "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
-    "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
-    "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
-    "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
-    "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
-    "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
-    "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
-    "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
-    "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
-    "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
-    "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
-    "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
-    "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
-    "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
-    "consumerProtection": "Захист споживачів",
-    "caseTypeStepLabel": "Тип справи",
-    "detailsStepLabel": "Деталі",
-    "documentsStepLabel": "Документи",
-    "whatTypeOfCase": "Який тип справи?",
-    "selectCategoryDescription": "Select the category that best describes your situation.",
-    "tellUsAboutCase": "Розкажіть про вашу справу",
-    "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
-    "caseTitleHint": "e.g., Residence Permit Appeal 2026",
-    "countryJurisdiction": "Країна / Юрисдикція",
-    "selectCountryHint": "Оберіть країну",
-    "referenceNumberHint": "e.g., UMA/12345/2026",
-    "descriptionOptional": "Description (optional)",
-    "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
-    "uploadFirstDocument": "Завантажте перший документ",
-    "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
-    "tapToUploadFile": "Натисніть щоб завантажити файл",
-    "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
-    "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
-    "aiGeneratedDisclaimer": "Згенеровано ШІ • Не є юридичною консультацією",
-    "callAI": "Зателефонувати ШІ",
-    "comingSoon": "Незабаром",
-    "encrypted": "Зашифровано",
-    "typing": "Друкує…",
-    "online": "Онлайн",
-    "chatWelcomeSubtitle": "Я проаналізую вашу ситуацію та допоможу зрозуміти ваші права",
-    "tapMicrophoneToSpeak": "Натисніть мікрофон щоб говорити",
-    "categoryEssential": "Основне",
-    "categoryPolice": "Поліція",
-    "categoryWork": "Робота",
-    "categoryHousing": "Житло",
-    "categoryConsumer": "Споживач",
-    "rightsInsideCount": "{count, plural, =0{немає прав всередині} one{{count} право всередині} few{{count} права всередині} many{{count} прав всередині} other{{count} прав всередині}}",
-    "@rightsInsideCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "freeAidThreshold": "Поріг безкоштовної допомоги",
-    "partialAidThreshold": "Поріг часткової допомоги",
-    "assetLimit": "Ліміт активів",
-    "whereToApplyLabel": "Куди звертатися",
-    "phoneLabel": "Телефон",
-    "websiteLabel": "Вебсайт",
-    "disclaimerCollapsed": "ШІ-помічник — не юридична консультація",
-    "disclaimerExpanded": "ШІ-помічник надає правову інформацію, а не юридичну консультацію. Завжди перевіряйте у кваліфікованого юриста.",
-    "chatDisclaimerBanner": "ШІ-помічник надає загальну правову інформацію. Це не замінює кваліфіковану юридичну консультацію.",
-    "chatDisclaimerSubtitle": "ШІ-помічник · не юридична консультація",
-    "chatDisclaimerBannerFull": "Advocat — це ШІ-помічник із правової інформації, а не юрист. Ця інформація не створює відносин адвокат–клієнт, не є юридичною консультацією та може містити помилки. Для отримання обов'язкової юридичної поради зверніться до ліцензованого адвоката у вашій юрисдикції. Ми вас не представляємо.",
-    "chatDisclaimerFooter": "Створено ШІ. Перевірте у ліцензованого адвоката.",
-    "chatDisclaimerGotIt": "Зрозуміло",
-    "guestUser": "Гість",
-    "howToUse": "Як користуватися?",
-    "tutorialStep1Title": "ШІ-помічник із права",
-    "tutorialStep1Desc": "Задайте будь-яке правове питання та отримайте миттєві відповіді на основі законів Естонії.",
-    "tutorialStep2Title": "Знайте свої права",
-    "tutorialStep2Desc": "Переглядайте правову інформацію за темами — робота, житло, права споживача та інше.",
-    "tutorialStep3Title": "Сканування документів",
-    "tutorialStep3Desc": "Фотографуйте юридичні документи для аналізу ШІ та безпечного зберігання.",
-    "tutorialStep4Title": "Почнімо!",
-    "tutorialStep4Desc": "Досліджуйте додаток та захищайте свої права. Усі дані залишаються на вашому пристрої.",
-    "advocatProTitle": "Підписка Pro",
-    "advocatProSubtitle": "Відкрийте всі можливості",
-    "voiceDisclaimer": "Голосовий помічник наразі працює лише на комп'ютері (браузер Chrome). Мобільна підтримка незабаром.",
-    "recommended": "Рекомендовано",
-    "pleaseLogIn": "Будь ласка, увійдіть",
-    "subscriptionNotFound": "Підписку не знайдено",
-    "errorWithMessage": "Помилка: {message}",
-    "redirectingToPayment": "Перенаправлення на сторінку оплати…",
-    "cheaperAnnually": "€{amount}/міс. дешевше з річною підпискою",
-    "navigatingTo": "Відкриваю",
-    "stayInChat": "Залишитися в чаті",
-    "backToChat": "Назад до чату",
-    "feedbackThumbsUpLabel": "Корисно",
-    "feedbackThumbsDownLabel": "Не корисно",
-    "feedbackCommentPrompt": "Що не так?",
-    "feedbackSend": "Надіслати",
-    "feedbackCancel": "Скасувати",
-    "citationStatusVerifiedBadge": "Перевірено",
-    "citationStatusUnverifiedBadge": "Не перевірено",
-    "citationStatusHistoricalBadge": "Історична редакція",
-    "citationStatusVerifiedTooltip": "Цитата з відновленого правового джерела.",
-    "citationStatusUnverifiedTooltip": "ШІ навів цей фрагмент без відновлення джерела — перевірте перед використанням.",
-    "citationStatusHistoricalTooltip": "Цитоване положення вже не чинне.",
-    "citationOpenInRiigiTeataja": "Відкрити в Riigi Teataja",
-    "citationSnippetExpand": "Показати повний текст",
-    "citationSnippetCollapse": "Згорнути",
-    "citationUnverifiedSheetNote": "ШІ навів цей пункт, проте у цій сесії його не було відновлено з правового корпусу. Перевірте посилання, перш ніж на нього спиратися.",
-    "citationFooterNoneWarning": "Немає підтверджених посилань",
-    "citationFooterSummaryTotal": "{count, plural, one{{count} посилання} few{{count} посилання} many{{count} посилань} other{{count} посилань}}",
-    "citationFooterSummaryVerified": "{count, plural, one{{count} перевірено} few{{count} перевірено} many{{count} перевірено} other{{count} перевірено}}",
-    "citationFooterSummaryUnverified": "{count, plural, one{{count} не перевірено} few{{count} не перевірено} many{{count} не перевірено} other{{count} не перевірено}}",
-    "citationFooterSummaryHistorical": "{count, plural, one{{count} історичне} few{{count} історичні} many{{count} історичних} other{{count} історичних}}",
-    "@citationFooterSummaryTotal": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryVerified": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryUnverified": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryHistorical": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineRadarTitle": "Upcoming deadlines",
-    "deadlineRadarEmpty": "No upcoming deadlines",
-    "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "{count, plural, =0{сьогодні} one{через {count} день} few{через {count} дні} many{через {count} днів} other{через {count} днів}}",
-    "@deadlineCardDaysLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineCardTomorrow": "tomorrow",
-    "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count, plural, one{прострочено на {count} день} few{прострочено на {count} дні} many{прострочено на {count} днів} other{прострочено на {count} днів}}",
-    "@deadlineCardOverdue": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineCardMarkComplete": "Mark complete",
-    "deadlineCardSnooze": "Snooze",
-    "deadlineCardSnooze3d": "Snooze 3 days",
-    "deadlineCardSnooze7d": "Snooze 7 days",
-    "deadlineCardSnoozeCustom": "Pick a date",
-    "deadlineCardEdit": "Edit",
-    "deadlineCardDelete": "Archive",
-    "deadlineCardSourceLabelPdf": "from PDF",
-    "deadlineCardSourceLabelIntake": "from intake",
-    "deadlineCardSourceLabelManual": "added manually",
-    "deadlineCardSourceLabelEmail": "from email",
-    "deadlineCardSourceLabelHaikuExtract": "AI-extracted",
-    "deadlineCardSourceLabelStatutoryTemplate": "statute template",
-    "deadlineBannerCritical": "Critical deadline {title} {when}",
-    "@deadlineBannerCritical": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            },
-            "when": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlineBannerDismiss": "Dismiss",
-    "deadlineBannerOpen": "Open deadline",
-    "deadlineHolidayShifted": "Shifted from {original} due to {reason}",
-    "@deadlineHolidayShifted": {
-        "placeholders": {
-            "original": {
-                "type": "String"
-            },
-            "reason": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlinePermissionAskTitle": "Enable deadline reminders?",
-    "deadlinePermissionAskBody": "We'll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.",
-    "deadlinePermissionAllow": "Allow",
-    "deadlinePermissionLater": "Later",
-    "deadlineSettingsSection": "Deadline reminders",
-    "deadlineSettingsPushChannel": "Push notifications",
-    "deadlineSettingsEmailChannel": "Email (critical only)",
-    "deadlineSettingsInAppChannel": "In-app banners",
-    "deadlineSettingsCriticalBypass": "Critical reminders bypass quiet hours",
-    "deadlineSettingsQuietHours": "Quiet hours",
-    "deadlineSettingsQuietHoursBadge": "Quiet {start}–{end}",
-    "@deadlineSettingsQuietHoursBadge": {
-        "placeholders": {
-            "start": {
-                "type": "String"
-            },
-            "end": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlineCaseScreenTitle": "Case deadlines",
-    "deadlineAddManualCta": "Add deadline",
-    "deadlineFormTitle": "Title",
-    "deadlineFormDescription": "Description (optional)",
-    "deadlineFormStatuteTemplate": "Statute template",
-    "deadlineFormStatuteTemplateNone": "None (manual)",
-    "deadlineFormDeadlineAt": "Deadline date",
-    "deadlineFormPriority": "Priority",
-    "deadlineFormSave": "Save",
-    "deadlineFormCancel": "Cancel",
-    "deadlineCompletedNotePrompt": "Add a note (optional)",
-    "deadlineCompletedNoteSave": "Save",
-    "inboxTitle": "Inbox",
-    "inboxEmptyTitle": "Nothing pending",
-    "inboxEmptyBody": "New email threads will appear here as they get triaged.",
-    "inboxApproveSend": "Approve & send",
-    "inboxEditDraft": "Edit",
-    "inboxSnooze": "Snooze",
-    "inboxArchive": "Archive",
-    "inboxFilterAll": "All",
-    "inboxConfirmSendTitle": "Send the prepared reply?",
-    "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
-    "inboxSendButton": "Send",
-    "inboxSentToast": "Sent.",
-    "inboxAlreadySentToast": "Already sent.",
-    "inboxSendErrorToast": "Could not send the reply. Tap retry.",
-    "inboxSnoozedToast": "Snoozed for 24h.",
-    "inboxArchivedToast": "Archived.",
-    "inboxDraftLoadError": "Could not load draft.",
-    "inboxDeadlineToday": "today",
-    "inboxDeadlineTomorrow": "tomorrow",
-    "inboxDeadlineInDays": "in {days}d",
-    "@inboxDeadlineInDays": {
-        "placeholders": {
-            "days": {
-                "type": "int"
-            }
-        }
-    },
-    "inboxDeadlineOverdue": "overdue {days}d",
-    "@inboxDeadlineOverdue": {
-        "placeholders": {
-            "days": {
-                "type": "int"
-            }
-        }
-    },
-    "workspaceTabOverview": "Overview",
-    "workspaceTabChat": "Chat",
-    "workspaceTabDrafts": "Drafts",
-    "workspaceOverviewEmpty": "Add documents to build a summary.",
-    "workspaceTimelineEmpty": "No events yet.",
-    "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
-    "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email.",
-    "reviewThisContract": "Розібрати договір",
-    "contractReviews": "Перевірки договорів",
-    "@contractReviews": {},
-    "contractReviewsFreeFeature": "1 перевірка договору (пробна назавжди)",
-    "@contractReviewsFreeFeature": {},
-    "contractReviewsCounselFeature": "5 перевірок договорів на місяць",
-    "@contractReviewsCounselFeature": {},
-    "contractReviewsProFeature": "20 перевірок договорів на місяць",
-    "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "{count, plural, =0{Цього місяця перевірок договорів не залишилось} one{Залишилась {count} перевірка договорів цього місяця} few{Залишилось {count} перевірки договорів цього місяця} many{Залишилось {count} перевірок договорів цього місяця} other{Залишилось {count} перевірок договорів цього місяця}}",
-    "@contractReviewsLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "contractReviewsExhausted": "Цього місяця перевірок договорів не залишилось",
-    "@contractReviewsExhausted": {},
-    "contractReviewsFreeTrialLeft": "Пробна версія: 1 перевірка договору",
-    "@contractReviewsFreeTrialLeft": {},
-    "contractReviewsFreeTrialUsed": "Пробну версію використано — оновіть план",
-    "@contractReviewsFreeTrialUsed": {},
-    "contractReviewsUpgradeTitle": "Перевірки договорів вичерпано",
-    "@contractReviewsUpgradeTitle": {},
-    "contractReviewsUpgradeBodyFree": "Ви використали безкоштовну перевірку договору. Оновіть план для щомісячних перевірок.",
-    "@contractReviewsUpgradeBodyFree": {},
-    "contractReviewsUpgradeBodyPaid": "Ви використали {used} з {cap} перевірок цього місяця. Оновіть план для більшого ліміту.",
-    "@contractReviewsUpgradeBodyPaid": {
-        "placeholders": {
-            "used": {
-                "type": "int"
-            },
-            "cap": {
-                "type": "int"
-            }
-        }
-    },
-    "contractReviewsUpgradeCounselCta": "Перейти на Counsel (€19,99/міс) — 5 перевірок",
-    "@contractReviewsUpgradeCounselCta": {},
-    "contractReviewsUpgradeProCta": "Перейти на Pro (€29,99/міс) — 20 перевірок",
-    "@contractReviewsUpgradeProCta": {},
-    "contractReviewsUpgradeToProShort": "Перейти на Pro — 20/міс",
-    "@contractReviewsUpgradeToProShort": {},
-    "notNow": "Не зараз",
-    "@notNow": {},
-    "referralTitle": "Запросити друзів",
-    "@referralTitle": {},
-    "referralSubtitle": "Отримай безплатний місяць. Подаруй безплатний місяць.",
-    "@referralSubtitle": {},
-    "referralYourLink": "ВАШЕ ПОСИЛАННЯ",
-    "@referralYourLink": {},
-    "referralCopyLink": "Копіювати посилання",
-    "@referralCopyLink": {},
-    "referralShare": "Поділитися",
-    "@referralShare": {},
-    "referralLinkCopied": "Посилання скопійоване",
-    "@referralLinkCopied": {},
-    "referralStatsInvited": "Запрошено",
-    "@referralStatsInvited": {},
-    "referralStatsConverted": "Приєдналося",
-    "@referralStatsConverted": {},
-    "referralStatsEarned": "Безплатних місяців",
-    "@referralStatsEarned": {},
-    "referralShareWhatsApp": "Поділитися у WhatsApp",
-    "@referralShareWhatsApp": {},
-    "referralShareTelegram": "Поділитися в Telegram",
-    "@referralShareTelegram": {},
-    "referralShareEmail": "Надіслати email",
-    "@referralShareEmail": {},
-    "referralEmailSubject": "Спробуй Advocat — твій ШІ-юрист",
-    "@referralEmailSubject": {},
-    "referralLoadError": "Не вдалося завантажити дані. Потягніть униз.",
-    "@referralLoadError": {},
-    "referralRetry": "Повторити",
-    "@referralRetry": {},
-    "referralSettingsTile": "Запросити друзів",
-    "@referralSettingsTile": {},
-    "referralAfterReviewCta": "Сподобалось? Запроси друга — обидва отримаєте безплатний місяць.",
-    "@referralAfterReviewCta": {},
-    "checkerProTagline": "Професійні інструменти перевірки",
-    "checkerDataSource": "Дані з офіційних реєстрів",
-    "companyCheckerHint": "Назва компанії або реєстр. номер",
-    "companyCheckerPriceChip": "€2.99 за перевірку  •  Входить у Pro",
-    "companyCheckerEmptyState": "Введіть назву компанії або реєстраційний\nномер, щоб отримати повний звіт",
-    "aiMemoryTitle": "Пам'ять ШІ",
-    "aiMemorySubtitle": "Перегляньте та видаліть те, що ШІ пам'ятає про вас",
-    "bookLawyerCallTitle": "Замовити дзвінок з юристом",
-    "bookLawyerCallComingSoonTitle": "Дзвінки з живим юристом — скоро",
-    "bookLawyerCallComingSoonBody": "Pro та Premium включають 15-хвилинні дзвінки з юристом-партнером (1/квартал у Pro, 2/квартал у Premium). Завершуємо формування мережі естонських приватнопрактикуючих юристів і надішлемо листа, щойно бронювання відкриється.",
-    "bookLawyerCallQuotaAvailable": "У вас залишилось {remaining} з {total} дзвінків цього кварталу.",
-    "@bookLawyerCallQuotaAvailable": {
-        "placeholders": {
-            "remaining": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "bookLawyerCallQuotaExhausted": "Квартальну квоту вичерпано.",
-    "bookLawyerCallQuotaBodyAvailable": "Тариф Pro включає 1 дзвінок на квартал, Premium — 2. Дзвінки тривають 15 хвилин у Google Meet.",
-    "bookLawyerCallQuotaBodyExhausted": "Ваша квота оновиться в перший день наступного кварталу. Потрібно поговорити раніше? Перейдіть на Premium для додаткового дзвінка.",
-    "severityCritical": "КРИТИЧНО",
-    "severityHigh": "ВИСОКИЙ",
-    "severityMedium": "СЕРЕДНІЙ",
-    "severityLow": "НИЗЬКИЙ",
-    "deadlineRequiredFields": "Заголовок і дата дедлайну є обов'язковими",
-    "acceptTermsRequired": "Будь ласка, прийміть Умови надання послуг",
-    "chatLegalCouncilTooltip": "Юридичний консиліум (4 експерти)",
-    "attachFileTooltip": "Прикріпити файл",
-    "sendMessage": "Надіслати повідомлення",
-    "stopGenerating": "Зупинити генерацію",
-    "showPassword": "Показати пароль",
-    "hidePassword": "Сховати пароль",
-    "decreaseDependents": "Зменшити",
-    "increaseDependents": "Збільшити",
-    "quotaExhaustedTitle": "Ліміт безкоштовних повідомлень",
-    "quotaExhaustedBody": "Ви використали всі {count} безкоштовних повідомлень. Оформіть Advocat Pro за 19,99 €/міс для необмеженого доступу до AI-консультацій.",
-    "@quotaExhaustedBody": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "quotaExhaustedLater": "Пізніше",
-    "quotaExhaustedUpgrade": "Advocat Pro — 19,99 €/міс",
-    "quotaCtaMessage": "Ви використали всі {count} безкоштовних повідомлень. Оформіть Advocat Pro за 19,99 €/міс.",
-    "@quotaCtaMessage": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "quotaCtaButton": "Оформити Advocat Pro — 19,99 €/міс",
-    "aiErrorQuota": "Досягнуто ліміт безкоштовних повідомлень. Оформіть підписку, щоб продовжити.",
-    "aiErrorAuth": "Для використання AI потрібен вхід в акаунт. Зареєструйтеся або увійдіть.",
-    "aiErrorGeneric": "Тимчасова помилка AI. Спробуйте ще раз за хвилину. Якщо не працює — напишіть у підтримку.",
-    "tooltipShareCase": "Поділитися підсумком справи",
-    "tooltipMuteVoice": "Вимкнути голос",
-    "tooltipUnmuteVoice": "Увімкнути голос",
-    "tooltipAttachDoc": "Прикріпити документ",
-    "aiTypingHint": "AI…",
-    "error404Title": "Сторінку не знайдено",
-    "error404Body": "Не вдалося знайти: {path}",
-    "@error404Body": {
-        "placeholders": {
-            "path": {
-                "type": "String"
-            }
-        }
-    },
-    "goToHome": "На головну",
-    "emailAlreadyRegistered": "Ця електронна пошта вже зареєстрована. Увійти?",
-    "actionSignIn": "Увійти",
-    "actionUndo": "Скасувати",
-    "intakeUrgentOpened": "Чат відкрито — ваш чернетку збережено.",
-    "consiliumHeader": "Консиліум юристів",
-    "@consiliumHeader": {
-        "description": "Header text for the multi-agent legal consilium panel"
-    },
-    "consiliumProgress": "{count} з {total} готові",
-    "@consiliumProgress": {
-        "description": "Progress indicator while consilium experts produce opinions",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumStarting": "Юристи вивчають вашу справу…",
-    "consiliumDisagreement": "Експерти не згодні",
-    "@consiliumDisagreement": {
-        "description": "Banner shown when experts have conflicting positions"
-    },
-    "consiliumSynthesizing": "Формується рекомендація…",
-    "consiliumDone": "Консиліум завершено · {totalRoles} експертів",
-    "@consiliumDone": {
-        "placeholders": {
-            "totalRoles": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumPositionPush": "Оскаржити",
-    "consiliumPositionSettle": "Домовитися",
-    "consiliumPositionInvestigate": "Дослідити",
-    "consiliumPositionOutOfScope": "Поза компетенцією",
-    "consiliumConfidence": "Впевненість",
-    "consiliumKeyCitation": "Ключове посилання",
-    "consiliumAdversarialRound": "Змагальний раунд",
-    "consiliumViewFullOpinion": "Повний висновок",
-    "consiliumExpertsAgreed": "{count, plural, one{{count} експерт згоден} few{{count} експерти згодні} many{{count} експертів згодні} other{{count} експертів згодні}}",
-    "@consiliumExpertsAgreed": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumExpertsDisagree": "{count, plural, one{{count} експерт не згоден} few{{count} експерти не згодні} many{{count} експертів не згодні} other{{count} експертів не згодні}}",
-    "@consiliumExpertsDisagree": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumDisclaimer": "ШІ-агенти, а не люди-юристи. Важливі рішення перевіряйте з ліцензованим адвокатом.",
-    "@consiliumDisclaimer": {
-        "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    },
-    "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
-    "draftsTab": "Drafts",
-    "draftingTitle": "Drafting Studio",
-    "draftingEmpty": "Empty draft",
-    "draftingPlaceholder": "Start typing your draft…",
-    "draftingDraftsList": "My drafts",
-    "draftingSave": "Save",
-    "draftingSaved": "Saved",
-    "draftingSavedJustNow": "Saved just now",
-    "draftingAiRevise": "Revise with AI",
-    "draftingExportPdf": "Export PDF",
-    "draftingExportDocx": "Export DOCX",
-    "draftingExportMd": "Export Markdown",
-    "draftingDeleteDraft": "Delete draft",
-    "draftingConfirmDelete": "Delete this draft?",
-    "draftingConfirmDeleteMessage": "This action cannot be undone.",
-    "draftingConfirm": "Delete",
-    "draftingCancel": "Cancel",
-    "draftingDraftReplyTo": "Reply to {name}",
-    "draftingUntitled": "Untitled",
-    "draftingTitleHint": "Title (optional)",
-    "draftingAiReviseTitle": "Revise with AI",
-    "draftingAiReviseSelectionLabel": "Selected text:",
-    "draftingAiReviseInstructionLabel": "Instruction (optional)",
-    "draftingAiReviseInstructionHint": "e.g. \"make it more formal\" or \"shorten\"",
-    "draftingAiReviseRunButton": "Generate revision",
-    "draftingAiReviseSuggestionLabel": "Suggested revision:",
-    "draftingAiReviseChangesLabel": "Changes:",
-    "draftingAiReviseAccept": "Accept",
-    "draftingAiReviseReject": "Reject",
-    "draftingFormatBold": "Bold",
-    "draftingFormatItalic": "Italic",
-    "draftingFormatHeading": "Heading",
-    "draftingFormatBullet": "Bullet list",
-    "draftingFormatNumbered": "Numbered list",
-    "draftingEmptyListMessage": "You have no drafts yet.",
-    "draftingEmptyListAction": "New draft",
-    "draftingExporting": "Exporting…",
-    "draftingExportFailed": "Export failed",
-    "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft",
-    "vaultNoteChip": "Vault note",
-    "saveToVault": "Save to Vault",
-    "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault",
-    "vaultNoteTitlePrefix": "Note: ",
-    "openInVault": "Open in Vault",
-    "saveToVaultFailed": "Save to Vault failed",
-    "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history",
-    "dangerZone": "[en] Danger zone",
-    "deleteAccountConfirmButton": "[en] Delete forever",
-    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
-    "emptyHomeTitle": "Welcome to Advocat",
-    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
-    "intentChip1": "Got a fine",
-    "intentChip2": "Permit denied",
-    "intentChip3": "Contract problem",
-    "emptyCasesTitle": "No cases yet",
-    "emptyCasesCta": "Start a case",
-    "emptyDraftsTitle": "No drafts yet",
-    "emptyDraftsCta": "Create draft",
-    "emptyChatTitle": "Ask Advocat anything",
-    "chatExamplePrompt1": "Help me reply to a fine",
-    "chatExamplePrompt2": "Review my rental contract",
-    "chatExamplePrompt3": "What are my rights at work?",
-    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
-    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
-    "deletingAccount": "[en] Deleting account…",
-    "contractReviewTitle": "Contract Review",
-    "@contractReviewTitle": {
-        "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewUploadCta": "Upload contract",
-    "@contractReviewUploadCta": {
-        "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
-    "@contractReviewQuotaRemaining": {
-        "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewRedFlags": "Red flags",
-    "@contractReviewRedFlags": {
-        "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewReviewPoints": "Review points",
-    "@contractReviewReviewPoints": {
-        "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewNegotiationTips": "Negotiation tips",
-    "@contractReviewNegotiationTips": {
-        "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewSaveToVault": "Save to Vault",
-    "@contractReviewSaveToVault": {
-        "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewContinueChat": "Continue in chat",
-    "@contractReviewContinueChat": {
-        "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "referralInviteFriends": "Invite Friends",
-    "referralYourCode": "Your code",
-    "referralCopiedToast": "Code copied to clipboard",
-    "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
-    "referralInvited": "Friends invited",
-    "referralRewardsEarned": "Free months earned",
-    "deadlineUrgencyToday": "Today & Overdue",
-    "deadlineUrgencyWeek": "This week",
-    "deadlineUrgencyMonth": "This month",
-    "deadlineUrgencyLater": "Later",
-    "deadlineAddManual": "Add deadline",
-    "deadlineSnoozeBy": "Snooze",
-    "deadlineSnooze1d": "Snooze 1 day",
-    "deadlineSnooze3d": "Snooze 3 days",
-    "deadlineSnooze7d": "Snooze 7 days",
-    "deadlineDismiss": "Dismiss",
-    "deadlineExportIcs": "Add to calendar",
-    "deadlineSource": "Source",
-    "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
-    "deadlineNewTitle": "New deadline",
-    "deadlineFieldTitle": "Title",
-    "deadlineFieldDueDate": "Due date",
-    "deadlineFieldNotes": "Notes (optional)",
-    "deadlineSaved": "Deadline saved",
-    "deadlineSaveFailed": "Could not save deadline",
-    "deadlineUrgentBannerSingle": "1 deadline today or overdue",
-    "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
-    "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
-    "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
-    "@deadlineUrgentBannerMany": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@deadlineDaysLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@deadlineDaysOverdue": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "iapPayWithApple": "Сплатити через Apple",
-    "iapRestorePurchases": "Відновити покупки",
-    "iapPurchaseFailed": "Не вдалося здійснити покупку. Спробуйте ще раз або зверніться до підтримки.",
-    "iapRestoreSuccess": "Вашу підписку відновлено.",
-    "iapRestoreNoActive": "Активну підписку для відновлення не знайдено.",
-    "deadlineEuRadarTitle": "EU deadline radar (preview)",
-    "@deadlineEuRadarTitle": {"x-todo": "translate to uk"},
-    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
-    "@deadlineEuRadarSubtitle": {"x-todo": "translate to uk"}
+ "@@locale": "uk",
+ "about": "Про додаток",
+ "aboutSection": "ПРО ДОДАТОК",
+ "appearance": "Appearance",
+ "appearanceSystem": "System (auto)",
+ "appearanceLight": "Light",
+ "appearanceDark": "Dark",
+ "appearanceDescription": "Choose how Advocat looks",
+ "accidents": "Аварії",
+ "active": "Активні",
+ "activeCases": "Активні справи",
+ "addedToAppeal": "Додано до апеляції",
+ "agreeToTerms": "Я погоджуюся з ",
+ "aiAnalysis": "Аналіз ШІ",
+ "aiAssistant": "ШІ юридичний помічник",
+ "aiChat": "Чат з ШІ",
+ "aiErrorRateLimit": "Сервіс тимчасово перевантажений. Спробуйте через 1-2 хвилини.",
+ "aiErrorOverload": "ШІ зараз зайнятий, спробуйте через хвилину.",
+ "all": "Усі",
+ "alreadyHaveAccount": "Вже є обліковий запис? ",
+ "analyzing": "Аналізується…",
+ "andWord": " та ",
+ "appTitle": "Advocat — Інструмент юридичної інформації",
+ "appVersion": "Версія додатку",
+ "appealFiled": "Апеляцію подано",
+ "areYouAbsolutelySure": "Ви абсолютно впевнені?",
+ "askAboutCase": "Проаналізувати мою справу",
+ "asylum": "Притулок",
+ "back": "Назад",
+ "basic": "Базовий",
+ "beforeYouBuy": "Перед покупкою",
+ "beforeYouWork": "Перед співпрацею з ними",
+ "camera": "Камера",
+ "cancel": "Скасувати",
+ "caseDescription": "Опишіть вашу ситуацію",
+ "caseDetail": "Деталі справи",
+ "caseOverview": "Огляд справ",
+ "caseTitle": "Назва справи",
+ "caseUpdated": "Справу оновлено",
+ "cases": "Справи",
+ "checkCompany": "Перевірити компанію",
+ "checkDeadlines": "Перевірити строки",
+ "checkVehicle": "Перевірити транспорт",
+ "checkerTitle": "Перевірка",
+ "checkingErrors": "Перевірка помилок…",
+ "choosePlan": "Обрати план",
+ "closed": "Закриті",
+ "companyName": "Назва компанії або реєстр. номер",
+ "completed": "Завершено",
+ "confirm": "Підтвердити",
+ "confirmPassword": "Підтвердити пароль",
+ "connectEmail": "Підключити пошту",
+ "connectGmail": "Підключити Gmail",
+ "connectOutlook": "Підключити Outlook",
+ "connected": "Підключено",
+ "contactSupport": "Зв'язатися з підтримкою",
+ "continueWithGoogle": "Продовжити з Google",
+ "copyText": "Копіювати текст",
+ "correspondence": "Кореспонденція",
+ "couldNotLoadCases": "Не вдалося завантажити ваші справи",
+ "country": "Країна",
+ "createAccount": "Створити обліковий запис",
+ "createCase": "Створити справу",
+ "criminalCase": "Кримінальна справа",
+ "critical": "Критичне",
+ "currentPlan": "Поточний план",
+ "dataAndPrivacy": "ДАНІ ТА КОНФІДЕНЦІЙНІСТЬ",
+ "dataExportRequested": "Запит на експорт даних надіслано. Перевірте пошту.",
+ "daysRemaining": "{count, plural, =0{днів не залишилось} one{{count} день} few{{count} дні} many{{count} днів} other{{count} днів}}",
+ "@daysRemaining": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "deadlineReminders": "Нагадування про строки",
+ "deadlineRemindersDesc": "Отримуйте сповіщення перед закінченням строків",
+ "deadlines": "Строки",
+ "debtCollection": "Стягнення боргу",
+ "deleteAccount": "Видалити обліковий запис",
+ "deleteAccountDesc": "Назавжди видалити ваш обліковий запис",
+ "deleteAccountDialogContent": "Ця дія є остаточною і не може бути скасована. Усі ваші дані, справи та документи будуть назавжди видалені.",
+ "deleteConfirm": "Ви впевнені? Це назавжди видалить усі ваші дані.",
+ "demoHint": "Демо: спробуйте номер «908FBT»",
+ "demoModeDesc": "Ознайомтеся з додатком на прикладі реальної справи",
+ "deportation": "Депортація",
+ "disclaimer": "Лише інформація від ШІ — не юридична консультація. Завжди консультуйтеся з юристом.",
+ "disclaimerFull": "Це ШІ-помічник, а не юрист. Аналіз ШІ може містити помилки. Завжди перевіряйте з кваліфікованим юристом.",
+ "disconnect": "Відключити",
+ "discrimination": "Дискримінація",
+ "doNotBuy": "Не купуйте",
+ "documents": "Документи",
+ "documentsCount": "{count, plural, =0{немає документів} one{{count} документ} few{{count} документи} many{{count} документів} other{{count} документів}}",
+ "@documentsCount": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "draftAppeal": "Проект апеляції",
+ "editDraft": "Редагувати",
+ "editProfile": "Редагувати профіль",
+ "email": "Електронна пошта",
+ "emailConnected": "Пошту підключено",
+ "emailDisconnected": "Пошту відключено",
+ "emailIntegration": "ІНТЕГРАЦІЯ ПОШТИ",
+ "emailInvalid": "Введіть дійсну адресу електронної пошти",
+ "emailPrivacyNote": "Ми читаємо лише юридичні листи. Ваша особиста пошта залишається приватною.",
+ "emailRequired": "Електронна пошта обов'язкова",
+ "emergencyShield": "Екстрений захист",
+ "error": "Помилка",
+ "exportDataDesc": "Завантажити всі ваші дані про справи",
+ "exportDataDialogContent": "Ми підготуємо завантаження всіх ваших даних, включаючи справи, документи та кореспонденцію. Ви отримаєте електронний лист, коли все буде готово.",
+ "exportMyData": "Експортувати мої дані",
+ "exportPdf": "Експорт PDF",
+ "familyReunification": "Возз'єднання сім'ї",
+ "forgotPassword": "Забули пароль?",
+ "free": "Безкоштовно",
+ "fullDefense": "Advocat Pro",
+ "fullName": "Повне ім'я",
+ "gallery": "Галерея",
+ "generateAppeal": "Створити апеляцію",
+ "getStarted": "Розпочати",
+ "goodAfternoon": "Добрий день, {name}",
+ "@goodAfternoon": {
+  "placeholders": {
+   "name": {
+    "type": "String"
+   }
+  }
+ },
+ "goodEvening": "Добрий вечір, {name}",
+ "@goodEvening": {
+  "placeholders": {
+   "name": {
+    "type": "String"
+   }
+  }
+ },
+ "goodMorning": "Доброго ранку, {name}",
+ "@goodMorning": {
+  "placeholders": {
+   "name": {
+    "type": "String"
+   }
+  }
+ },
+ "goodNight": "Доброї ночі, {name}",
+ "@goodNight": {
+  "placeholders": {
+   "name": {
+    "type": "String"
+   }
+  }
+ },
+ "home": "Головна",
+ "important": "Важливе",
+ "inProgress": "В процесі",
+ "informational": "Інформаційне",
+ "inspection": "Технічний огляд",
+ "insurance": "Страхування",
+ "issuesFound": "{count, plural, =0{проблем не знайдено} one{Знайдено {count} проблему} few{Знайдено {count} проблеми} many{Знайдено {count} проблем} other{Знайдено {count} проблем}}",
+ "@issuesFound": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "laborDispute": "Трудовий спір",
+ "langEnglish": "Англійська",
+ "langFinnish": "Фінська",
+ "langRussian": "Російська",
+ "language": "Мова",
+ "lastActivity": "Остання активність: {time}",
+ "@lastActivity": {
+  "placeholders": {
+   "time": {
+    "type": "String"
+   }
+  }
+ },
+ "legalFighter": "Юридичний радник",
+ "legalSection": "ЮРИДИЧНЕ",
+ "licensePlate": "Номерний знак",
+ "loading": "Завантаження…",
+ "logIn": "Увійти",
+ "loginFailed": "Невірна електронна пошта або пароль. Спробуйте ще раз.",
+ "lost": "Програно",
+ "markComplete": "Позначити як завершене",
+ "mileage": "Пробіг",
+ "myCases": "Мої справи",
+ "nameRequired": "Повне ім'я обов'язкове",
+ "newCase": "Нова справа",
+ "next": "Далі",
+ "noAccount": "Немає облікового запису? ",
+ "noCases": "Справ ще немає",
+ "noCasesYet": "Справ ще немає",
+ "noDeadlines": "Строків немає — усе в порядку.",
+ "noRecentActivity": "Немає останньої активності",
+ "notifications": "СПОВІЩЕННЯ",
+ "onboardingDesc1": "Advocat допомагає вам зрозуміти вашу правову ситуацію. Інструменти ШІ аналізують документи, визначають потенційні проблеми та готують проекти документів для вашого перегляду. Не юридична фірма — технологічний інструмент для підтримки вашої справи.",
+ "onboardingDesc2": "Сфотографуйте будь-який юридичний документ. ШІ прочитає його кількома мовами, витягне ключові деталі та перевірить на відповідність директивам ЄС та національному законодавству.",
+ "onboardingDesc3": "Наші інструменти ШІ перевіряють понад 40 типів процесуальних вимог. Аналіз ШІ може виявити питання, що потребують уваги — такі як мова повідомлення, процесуальні кроки та правові строки. Завжди перевіряйте з кваліфікованим юристом.",
+ "onboardingDesc4": "ШІ готує проекти апеляцій, скарг та листів із правовими посиланнями для вашого перегляду. Ви вирішуєте, що подавати. Кожен документ має бути перевірений кваліфікованим юристом перед поданням.",
+ "onboardingNext": "Далі",
+ "onboardingSkip": "Пропустити",
+ "onboardingTitle1": "Юридична інформація на базі ШІ",
+ "onboardingTitle2": "Скануйте та аналізуйте документи",
+ "onboardingTitle3": "ШІ перевіряє потенційні проблеми",
+ "onboardingTitle4": "Проекти документів для вашого перегляду",
+ "openACase": "Відкрити справу",
+ "optional": "(необов'язково)",
+ "orDivider": "або",
+ "other": "Інше",
+ "overdue": "Прострочено",
+ "owners": "Попередні власники",
+ "password": "Пароль",
+ "passwordRequired": "Пароль обов'язковий",
+ "passwordStrengthMedium": "Середній",
+ "passwordStrengthStrong": "Сильний",
+ "passwordStrengthWeak": "Слабкий",
+ "passwordTooShort": "Пароль повинен містити щонайменше 8 символів",
+ "passwordsDoNotMatch": "Паролі не збігаються",
+ "pendingDecision": "Очікування рішення",
+ "perCheck": "за перевірку",
+ "permanentlyDelete": "Видалити назавжди",
+ "policeMisconduct": "Неправомірні дії поліції",
+ "popular": "ПОПУЛЯРНИЙ",
+ "preferences": "НАЛАШТУВАННЯ",
+ "preferredLanguage": "Бажана мова",
+ "pricePerCheck": "4,99 € за перевірку",
+ "privacyPolicy": "Політикою конфіденційності",
+ "pro": "Професійний",
+ "pushNotifications": "Push-сповіщення",
+ "rateUs": "Оцінити нас",
+ "readingDocument": "Читання документа…",
+ "recentActivity": "Остання активність",
+ "referenceNumber": "Номер довідки",
+ "registerFailed": "Реєстрація не вдалася. Спробуйте ще раз.",
+ "reportFraud": "Повідомити про шахрайство",
+ "requestExport": "Запит на експорт",
+ "researchingLaw": "Дослідження законодавства…",
+ "resetPasswordFailed": "Не вдалося надіслати посилання для скидання. Спробуйте ще раз.",
+ "resetPasswordSent": "Посилання для скидання пароля надіслано на вашу пошту.",
+ "residencePermit": "Дозвіл на проживання",
+ "manageSubscription": "Керування підпискою",
+ "restorePurchases": "Відновити покупки",
+ "retry": "Повторити",
+ "reviewWarning": "Уважно перегляньте перед відправкою. Ви відповідаєте за зміст.",
+ "riskHigh": "Високий ризик — уникайте",
+ "riskLow": "Безпечна співпраця",
+ "riskMedium": "Діяти обережно",
+ "safeToBuy": "Безпечно купувати",
+ "saveAndAnalyze": "Зберегти та аналізувати",
+ "saveDraft": "Зберегти",
+ "saveWithAnnual": "Заощаджуйте 25% з річною підпискою",
+ "scan": "Сканувати",
+ "scanDocument": "Сканувати документ",
+ "searchCases": "Пошук справ…",
+ "selectCountry": "Оберіть країну",
+ "selectLanguage": "Оберіть мову",
+ "sendViaEmail": "Надіслати електронною поштою",
+ "settings": "Налаштування",
+ "signIn": "Увійти",
+ "signInLink": "Увійти",
+ "signInSubtitle": "Увійдіть, щоб отримати доступ до ваших справ",
+ "signOut": "Вийти",
+ "signOutConfirm": "Ви впевнені, що хочете вийти?",
+ "signUp": "Створити обліковий запис",
+ "signUpLink": "Зареєструватися",
+ "socialBenefits": "Соціальні виплати",
+ "someConcerns": "Деякі занепокоєння",
+ "startFirstCase": "Розпочніть вашу першу справу",
+ "step": "Крок {current} з {total}",
+ "@step": {
+  "placeholders": {
+   "current": {
+    "type": "int"
+   },
+   "total": {
+    "type": "int"
+   }
+  }
+ },
+ "stolen": "Перевірка на викрадення",
+ "subscription": "Підписка",
+ "syncLegalCorrespondence": "Синхронізувати юридичну кореспонденцію",
+ "syncNow": "Синхронізувати зараз",
+ "tenantRights": "Права орендаря",
+ "termsOfService": "Умовами використання",
+ "termsRequired": "Ви повинні погодитися з Умовами використання",
+ "timeline": "Хронологія",
+ "tryDemoMode": "Спробувати демо-режим",
+ "typeDeleteToConfirm": "Введіть DELETE для підтвердження видалення облікового запису.",
+ "typeMessage": "Введіть повідомлення…",
+ "upcoming": "Найближчі",
+ "uploadDocument": "Завантажити документ",
+ "urgentDeadline": "Терміново: {title}",
+ "@urgentDeadline": {
+  "placeholders": {
+   "title": {
+    "type": "String"
+   }
+  }
+ },
+ "useInAppeal": "Використати в апеляції",
+ "vehicleChecker": "Перевірка транспорту",
+ "vehicleChecks": "Перевірки стану",
+ "vehicleColor": "Колір",
+ "vehicleMake": "Марка",
+ "vehicleModel": "Модель",
+ "vehicleYear": "Рік",
+ "version": "Версія",
+ "victimSupport": "Підтримка постраждалих",
+ "viewAll": "Переглянути все",
+ "vinNumber": "VIN-код",
+ "welcomeBack": "З поверненням",
+ "whatAreMyOptions": "Які мої варіанти?",
+ "won": "Виграно",
+ "activityWillAppear": "Активність з'явиться тут у міру просування справи.",
+ "addDocument": "Додати документ",
+ "addPage": "Додати сторінку",
+ "aiDisclaimer": "Застереження щодо ШІ",
+ "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
+ "@aiDisclaimerCompact": {
+  "description": "TODO: native legal review (currently English fallback)"
+ },
+ "aiDisclaimerFullTitle": "Important: how Advocat works",
+ "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
+ "aiDisclaimerExpand": "Learn more",
+ "aiDisclaimerDismiss": "OK, I understand",
+ "alignDocument": "Вирівняйте документ у рамці",
+ "allClearDeadlines": "Все гаразд! Нові терміни з'являться тут.",
+ "analysisFailedRetry": "Аналіз не вдався. Спробуйте знову.",
+ "analyzeSelected": "Аналізувати вибрані",
+ "analyzed": "Проаналізовано",
+ "analyzingContent": "Аналіз вмісту…",
+ "annual": "Річний",
+ "annualLeave": "Щорічна відпустка (мінімум 2 дні за відпрацьований місяць)",
+ "appeal": "Оскарження",
+ "appealDeadline": "Термін оскарження",
+ "appealDeadlineDesc": "Оскарження має бути подано до {date}.",
+ "@appealDeadlineDesc": {
+  "placeholders": {
+   "date": {
+    "type": "String"
+   }
+  }
+ },
+ "appealDeadlineSet": "Термін оскарження встановлено",
+ "appealDraft": "Чернетка оскарження",
+ "applyLegalAid": "Подайте заяву на правову допомогу за потреби",
+ "assignToCase": "Призначити до справи",
+ "basicAiAnalysis": "Базовий аналіз ШІ",
+ "basicRights": "Основні права:",
+ "batchAnalysisStarting": "Пакетний аналіз починається…",
+ "calculateEligibility": "Розрахувати право",
+ "cameraPermissionDesc": "Надайте доступ до камери для сканування документів або скористайтеся галереєю.",
+ "cameraPermissionRequired": "Потрібен дозвіл камери",
+ "capturePhotoFailed": "Не вдалося зробити фото. Спробуйте знову.",
+ "caseCreated": "Справу створено",
+ "caseCreatedDesc": "Справу «{title}» створено.",
+ "@caseCreatedDesc": {
+  "placeholders": {
+   "title": {
+    "type": "String"
+   }
+  }
+ },
+ "caseCreationComingSoon": "Створення справи з попередньо заповненими даними незабаром",
+ "caseInfoUpdated": "Інформація справи оновлена.",
+ "caseSummaryCopied": "Зведення справи скопійовано",
+ "caseTimeline": "Хронологія справи",
+ "changesSaved": "Зміни збережено",
+ "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
+ "checkEligibility": "Перевірте право на правову допомогу: {country}",
+ "checkingPurchases": "Перевірка попередніх покупок…",
+ "chooseHowToAdd": "Оберіть спосіб додавання документа",
+ "citizenship": "Громадянство",
+ "completedDeadlinesDesc": "Виконані терміни відображатимуться тут.",
+ "connectYourEmail": "Підключіть вашу пошту",
+ "connectYourEmailDesc": "Підключіть email для автоматичного виявлення юридичного листування.",
+ "connectedTo": "Підключено до {email}",
+ "@connectedTo": {
+  "placeholders": {
+   "email": {
+    "type": "String"
+   }
+  }
+ },
+ "contactLawyerImmediately": "Негайно зверніться до адвоката",
+ "contactLegalAidOffice": "Зверніться до бюро правової допомоги",
+ "cookiePolicy": "Політика файлів cookie",
+ "copiedToClipboard": "Скопійовано до буфера",
+ "copy": "Копіювати",
+ "copySummary": "Копіювати зведення",
+ "couldNotLoadCase": "Не вдалося завантажити деталі справи",
+ "couldNotLoadDeadlines": "Не вдалося завантажити терміни",
+ "couldNotLoadTimeline": "Не вдалося завантажити хронологію",
+ "courtCaseNo": "Номер судової справи",
+ "createNote": "Створити нотатку",
+ "createNoteDesc": "Напишіть нотатку або зафіксуйте важливі деталі",
+ "created": "Створено",
+ "dataPrivacyConsent": "Згода на обробку даних",
+ "days": "днів",
+ "daysLate": "днів затримки",
+ "decisionReceived": "Рішення отримано",
+ "decisionReceivedDesc": "Отримано офіційне рішення у цій справі.",
+ "decline": "Відхилити",
+ "delete": "Видалити",
+ "deleteCase": "Видалити справу",
+ "deleteCaseConfirm": "Ви впевнені, що хочете видалити \"{title}\"? Цю дію не можна скасувати.",
+ "@deleteCaseConfirm": {
+  "placeholders": {
+   "title": {
+    "type": "String"
+   }
+  }
+ },
+ "deleteDocumentsConfirm": "Видалити {count} документів?",
+ "@deleteDocumentsConfirm": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "deleteSelected": "Видалити вибрані",
+ "deportationNotice": "Повідомлення про депортацію",
+ "deportationNoticeDesc": "Кроки для оскарження наказу про видалення",
+ "disconnectEmail": "Від'єднати email",
+ "disconnectEmailConfirm": "Автоматична синхронізація email буде припинена. Раніше синхронізовані листи залишаться.",
+ "discriminationDesc": "Як повідомити про дискримінацію та боротися з нею",
+ "doNotIgnoreNotice": "НЕ ігноруйте повідомлення - терміни суворі",
+ "documentAnalysis": "Аналіз документа",
+ "documentIncident": "Задокументуйте інцидент (дата, час, свідки)",
+ "documentProcessedOk": "Документ успішно оброблено",
+ "documentUploadedSuccess": "Документ успішно завантажено",
+ "documentVault": "Сховище документів",
+ "done": "Готово",
+ "draftCopiedToClipboard": "Чернетку скопійовано до буфера",
+ "draftDocument": "Чернетка документа",
+ "draftGeneration": "Створення чернеток",
+ "edit": "Редагувати",
+ "editDocument": "Редагувати документ",
+ "emailComingSoon": "Надсилання email незабаром",
+ "emailIntegrationTitle": "Інтеграція email",
+ "english": "Англійська",
+ "estimateDisclaimer": "Це лише оцінка. Фактичне право визначає Бюро правової допомоги.",
+ "exportAsPdf": "Експортувати як PDF",
+ "failed": "Не вдалося",
+ "failedToCreateCaseRetry": "Не вдалося створити справу. Спробуйте знову.",
+ "failedToGenerateDraft": "Не вдалося створити чернетку. Спробуйте знову.",
+ "failedToLoadCases": "Не вдалося завантажити справи",
+ "failedToLoadDocuments": "Не вдалося завантажити документи",
+ "fileComplaintOmbudsman": "Подайте скаргу омбудсмену з питань недискримінації",
+ "filterByType": "Фільтрувати за типом",
+ "finnish": "Фінська",
+ "forever": "назавжди",
+ "fromDocument": "З документа",
+ "fullAiAnalysis": "Повний аналіз ШІ",
+ "fullFreeLegalAid": "Ви, ймовірно, маєте право на безкоштовну правову допомогу.",
+ "gdprChat": "Обробка повідомлень чату ШІ",
+ "gdprDelete": "Право видалити свої дані в будь-який час",
+ "gdprDocs": "Аналіз завантажених документів",
+ "gdprFooter": "Ваші дані зашифровані і ніколи не передаються третім особам. Ви можете відкликати згоду та видалити всі дані в Налаштуваннях.",
+ "gdprIntro": "Для надання правової допомоги з ШІ ми обробляємо ваші дані відповідно до GDPR (ЄС 2016/679). Продовжуючи, ви погоджуєтесь з:",
+ "gdprStorage": "Зашифроване зберігання даних справ",
+ "generateAppealWithIssues": "{count, plural, one{Створити оскарження ({count} проблема)} few{Створити оскарження ({count} проблеми)} many{Створити оскарження ({count} проблем)} other{Створити оскарження ({count} проблем)}}",
+ "@generateAppealWithIssues": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "generatingDraft": "Створення чернетки…",
+ "generatingDraftDesc": "ШІ готує юридичний документ на основі деталей справи.",
+ "greatJobDeadlines": "Чудова робота з дотриманням термінів.",
+ "haveQuestionsAi": "Є питання? Запитайте ШІ",
+ "hearingScheduled": "Слухання заплановано",
+ "hearingScheduledDesc": "Судове слухання заплановано на {date}.",
+ "@hearingScheduledDesc": {
+  "placeholders": {
+   "date": {
+    "type": "String"
+   }
+  }
+ },
+ "howToAct": "Як діяти:",
+ "iAgree": "Погоджуюсь",
+ "iAgreeToThe": "Я приймаю ",
+ "immediateSteps": "Негайні кроки:",
+ "immigrationDetention": "Імміграційне затримання",
+ "immigrationDetentionDesc": "Права при затриманні владою",
+ "inCourt": "У суді",
+ "issuesFoundHeader": "Знайдені проблеми",
+ "issuesFoundInDocument": "{count, plural, =0{У документі проблем не знайдено} one{У документі знайдено {count} проблему} few{У документі знайдено {count} проблеми} many{У документі знайдено {count} проблем} other{У документі знайдено {count} проблем}}",
+ "@issuesFoundInDocument": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "knowYourRights": "Знай свої права",
+ "landlordNotice": "Орендодавець має попередити (3–6 місяців)",
+ "lastSynced": "Остання синхронізація: {time}",
+ "@lastSynced": {
+  "placeholders": {
+   "time": {
+    "type": "String"
+   }
+  }
+ },
+ "late": "прострочено",
+ "legalAidCalculator": "Калькулятор правової допомоги",
+ "legalAidWithCopay": "Ви можете мати право на правову допомогу зі співоплатою {percent}%.",
+ "@legalAidWithCopay": {
+  "placeholders": {
+   "percent": {
+    "type": "String"
+   }
+  }
+ },
+ "legalEmails": "Юридичні листи",
+ "legalEmailsWillAppear": "Листи, класифіковані як юридичні, з'являться тут.",
+ "likelyEligible": "Ймовірно має право",
+ "mayNotQualify": "Може не мати права",
+ "mayNotQualifyDesc": "За цією оцінкою ви можете не мати права на державну правову допомогу.",
+ "migriReference": "Посилання Migri",
+ "minimumWage": "Мінімальна зарплата за колективним договором",
+ "monthly": "Щомісячний",
+ "monthlyIncome": "Місячний дохід (EUR)",
+ "mostPopular": "НАЙПОПУЛЯРНІШИЙ",
+ "mustNotResist": "Не чинити фізичний опір",
+ "mustProvideName": "Назвіть ім'я та дату народження",
+ "mustShowId": "Покажіть документ, якщо є",
+ "nationality": "Національність",
+ "noCasesMatchSearch": "Жодна справа не відповідає пошуку",
+ "noCompletedDeadlines": "Виконаних термінів немає",
+ "noContentAvailable": "Вміст недоступний",
+ "noDocumentsScanHint": "Документів ще немає. Скануйте або завантажте.",
+ "noDocumentsYet": "Документів ще не завантажено",
+ "noDocumentsYetScan": "Документів ще немає",
+ "noEventsYet": "Подій ще немає",
+ "noLegalEmailsYet": "Юридичних листів ще немає",
+ "noPreviousPurchases": "Попередні покупки не знайдено.",
+ "noSignificantIssues": "Суттєвих проблем у документі не виявлено.",
+ "noUpcomingDeadlines": "Найближчих термінів немає",
+ "noUpcomingDeadlinesShort": "Найближчих термінів немає",
+ "noteAppealDeadline": "Зверніть увагу на термін оскарження (зазвичай 30 днів)",
+ "nothingOverdue": "Нічого не прострочено",
+ "numberOfDependents": "Кількість утриманців",
+ "oneCaseActive": "1 активна справа",
+ "openCase": "Відкрити справу",
+ "openSettings": "Відкрити налаштування",
+ "orWord": "або",
+ "pageCount": "{count, plural, =0{немає сторінок} one{{count} сторінка} few{{count} сторінки} many{{count} сторінок} other{{count} сторінок}}",
+ "@pageCount": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "pageNumber": "Сторінка {number}",
+ "@pageNumber": {
+  "placeholders": {
+   "number": {
+    "type": "int"
+   }
+  }
+ },
+ "pagesUploadedSuccess": "{count, plural, one{{count} сторінка успішно завантажена} few{{count} сторінки успішно завантажено} many{{count} сторінок успішно завантажено} other{{count} сторінок успішно завантажено}}",
+ "@pagesUploadedSuccess": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "paymentFailed": "Помилка оплати: {error}",
+ "@paymentFailed": {
+  "placeholders": {
+   "error": {
+    "type": "String"
+   }
+  }
+ },
+ "pdf": "PDF",
+ "pdfExportComingSoon": "Експорт PDF незабаром",
+ "pending": "Очікує",
+ "perMonth": "/міс",
+ "perYear": "/рік",
+ "preparingUpload": "Підготовка завантаження…",
+ "preview": "Попередній перегляд",
+ "priorityProcessing": "Пріоритетна обробка",
+ "processing": "Обробка",
+ "protectionUnjustEviction": "Захист від несправедливого виселення",
+ "readingText": "Читання тексту…",
+ "ready": "Готово",
+ "reportAndOpenCase": "Повідомити та відкрити справу",
+ "reportMileageFraud": "Повідомити про шахрайство з пробігом",
+ "reportMileageFraudDesc": "Буде створено звіт про шахрайство на основі даних перевірки.",
+ "reportToPolice": "Повідомте поліцію, якщо злочин (погроза, напад)",
+ "retake": "Зробити знову",
+ "retryAnalysis": "Повторити аналіз",
+ "reviewBeforeSending": "Уважно перегляньте перед надсиланням. Ви відповідаєте за зміст документа.",
+ "rightAppealAdmin": "Право оскарження в Адміністративному суді",
+ "rightAskInterpreter": "Попросіть перекладача",
+ "rightChallengeDetention": "Право оскаржити затримання в суді",
+ "rightContactEmbassy": "Право зв'язатися з посольством",
+ "rightContactLawyer": "Зв'яжіться з адвокатом до допиту",
+ "rightContactLawyerDetention": "Право зв'язатися з адвокатом",
+ "rightHabitableDwelling": "Право на придатне для проживання житло",
+ "rightHumaneTreatment": "Право на гуманне поводження та медичну допомогу",
+ "rightInterpreter": "Право на перекладача",
+ "rightKnowDetentionReason": "Право знати причину затримання",
+ "rightKnowWhyStopped": "Знати, чому вас зупинили",
+ "rightLegalRep": "Право на юридичне представництво",
+ "rightRecordEncounter": "Записати зустріч (у публічних місцях)",
+ "rightRemainSilent": "Мовчати (необхідно назвати себе)",
+ "rightStayDuringAppeal": "Право залишитися під час оскарження (у більшості випадків)",
+ "russian": "Російська",
+ "safeWorkingConditions": "Безпечні умови праці",
+ "save": "Зберегти",
+ "saveChanges": "Зберегти зміни",
+ "saveTwentyFivePercent": "Заощадьте 25%",
+ "scanDocumentDesc": "Сфотографуйте документ",
+ "scanFirstDocumentHint": "Скануйте перший документ, щоб ШІ проаналізував його.",
+ "scanNew": "Нове сканування",
+ "scenarioNotFound": "Сценарій не знайдено",
+ "secureDocumentStorage": "Безпечне сховище документів",
+ "secureDocumentStorageDesc": "Зберігайте важливі юридичні документи в одному місці.",
+ "securityDeposit": "Застава макс. 3 місяці оренди",
+ "selected": "{count} вибрано",
+ "@selected": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "severityOverview": "Огляд серйозності",
+ "sickLeave": "Компенсація лікарняного",
+ "somethingWentWrong": "Щось пішло не так",
+ "genericError": "Щось пішло не так. Спробуйте ще раз.",
+ "stoppedByPolice": "Зупинений поліцією",
+ "stoppedByPoliceDesc": "Ваші права під час поліцейського контролю",
+ "successSubscribed": "Підписка на {plan} успішна!",
+ "@successSubscribed": {
+  "placeholders": {
+   "plan": {
+    "type": "String"
+   }
+  }
+ },
+ "switchToGrid": "Перемкнути на сітку",
+ "switchToList": "Перемкнути на список",
+ "takePhotoInstead": "Зробити фото",
+ "tenantRightsDesc": "Захист житла та орендарів",
+ "threeCasesActive": "3 активні справи",
+ "threeDocScans": "3 сканування документів",
+ "totalAssets": "Загальні активи (EUR)",
+ "twentyDocScans": "20 сканувань документів",
+ "typeLabel": "Тип",
+ "unlimitedCases": "Необмежені справи",
+ "unlimitedDocScans": "Необмежене сканування",
+ "unlinkedEmails": "Непов'язані листи",
+ "uploadFailed": "Завантаження не вдалося. Перевірте з'єднання.",
+ "uploadFile": "Завантажити файл",
+ "uploadFileDesc": "Виберіть PDF або зображення з пристрою",
+ "uploadingPercent": "Завантаження… {percent}%",
+ "@uploadingPercent": {
+  "placeholders": {
+   "percent": {
+    "type": "int"
+   }
+  }
+ },
+ "useThisPhoto": "Використати це фото",
+ "viewFull": "Переглянути повністю",
+ "workPermit": "Дозвіл на роботу",
+ "workingTimeLimits": "Обмеження робочого часу (макс 8г/день, 40г/тиждень)",
+ "workplaceRights": "Права на робочому місці",
+ "workplaceRightsDesc": "Захист трудового права в Естонії",
+ "writtenRentalAgreement": "Потрібен письмовий договір оренди",
+ "youHaveRightTo": "Ви маєте право на:",
+ "youMust": "Ви повинні:",
+ "yourRights": "Ваші права:",
+ "yourRightsAsTenant": "Ваші права як орендаря:",
+ "yourRightsInDetention": "Ваші права при затриманні:",
+ "whatToDo": "Що робити",
+ "getHelp": "Отримати допомогу",
+ "share": "Поділитися",
+ "didYouKnow": "Чи знали ви?",
+ "mustKnow": "Обов'язково знати",
+ "goodToKnow": "Корисно знати",
+ "sentFromAdvocat": "Надіслано з додатку Advocat",
+ "policeActionStayCalm": "Зберігайте спокій і тримайте руки на виду",
+ "policeActionAskWhy": "Запитайте поліцейського, чому вас зупинили",
+ "policeActionProvideName": "Назвіть своє ім'я та дату народження",
+ "policeActionWantLawyer": "Чітко заявіть: \"Я хочу адвоката перед будь-якими питаннями\"",
+ "policeActionAskInterpreter": "За потреби попросіть перекладача",
+ "policeActionNoteBadge": "Запишіть ім'я та номер жетона поліцейського",
+ "policeFactMustTellReason": "В Естонії поліція зобов'язана повідомити причину зупинки. Якщо вони цього не роблять, ви можете запитати — і вони зобов'язані за законом пояснити.",
+ "policeFactCanRecord": "В Естонії ви можете записувати взаємодію з поліцією в громадських місцях. Це захищено свободою слова.",
+ "contactFinnishLegalAid": "Державна правова допомога Естонії",
+ "contactNonDiscriminationOmbudsman": "Уповноважений з питань недискримінації",
+ "deportationDeadlineAppeal": "Оскарження до Адміністративного суду — зазвичай 30 днів з моменту повідомлення",
+ "deportationDeadlineLegalAid": "Подайте заявку на правову допомогу — зробіть це НЕГАЙНО",
+ "deportationFactStayDuringAppeal": "В Естонії ви зазвичай маєте право залишатися в країні під час розгляду вашого оскарження. Депортація не може бути здійснена під час активного оскарження у більшості випадків.",
+ "contactRefugeeAdviceCentre": "Фінський центр консультування біженців",
+ "contactAdminCourtHelsinki": "Адміністративний суд Гельсінкі",
+ "workplaceActionKeepContract": "Зберігайте копії трудового договору",
+ "workplaceActionTrackHours": "Самостійно відстежуйте робочий час",
+ "workplaceActionReportUnsafe": "Повідомляйте про небезпечні умови до інспекції праці",
+ "workplaceActionJoinUnion": "Вступіть до профспілки для захисту",
+ "workplaceActionContactAuthority": "За потреби зверніться до Управління з охорони праці",
+ "workplaceFactCollectiveWage": "В Естонії уряд встановлює державну мінімальну заробітну плату. Роботодавець зобов'язаний платити не менше встановленого мінімуму.",
+ "workplaceFactOralContract": "Навіть без письмового договору ви маєте повні трудові права в Естонії. Усна угода є однаково обов'язковою за законом.",
+ "contactOccupationalSafety": "Управління з охорони праці",
+ "contactTradeUnionSAK": "Профспілкова консультація (SAK)",
+ "tenantActionWrittenAgreement": "Завжди укладайте письмовий договір оренди",
+ "tenantActionDocumentCondition": "Задокументуйте стан квартири при заселенні (фото)",
+ "tenantActionReportMaintenance": "Повідомляйте про проблеми з обслуговуванням письмово",
+ "tenantActionNoIllegalEviction": "Ніколи не погоджуйтесь на незаконне виселення — рішення приймає суд",
+ "tenantActionContactAdvisory": "У разі спорів зверніться до консультаційної служби для орендарів",
+ "tenantFactNoEvictionWithoutCourt": "Орендодавець в Естонії не може виселити вас без рішення суду, навіть якщо термін оренди закінчився. Заміна замків або відключення комунальних послуг є незаконним.",
+ "contactTenantsAssociation": "Фінська асоціація орендарів",
+ "contactConsumerDisputesBoard": "Комісія зі споживчих спорів",
+ "detentionActionAskDecision": "Негайно вимагайте письмове рішення про затримання",
+ "detentionActionRequestLawyer": "Вимагайте зв'язку з адвокатом",
+ "detentionActionContactEmbassy": "Зв'яжіться зі своїм посольством або консульством",
+ "detentionActionAskMedical": "За потреби вимагайте медичну допомогу",
+ "detentionActionRequestInterpreter": "Вимагайте перекладача на всі засідання",
+ "detentionDeadlineCourtReview": "Районний суд повинен переглянути затримання протягом 4 днів",
+ "detentionDeadlineContinuation": "Суд переглядає продовження кожні 2 тижні",
+ "detentionFactCourtReview": "Імміграційне затримання в Естонії повинно бути переглянуте районним судом протягом 4 днів. Якщо цього не відбувається, затримання стає незаконним.",
+ "contactParliamentaryOmbudsman": "Парламентський омбудсмен",
+ "discriminationActionWriteDown": "Запишіть точно, що сталося (дата, час, місце)",
+ "discriminationActionSaveEvidence": "Збережіть докази: повідомлення, електронні листи, свідків",
+ "discriminationActionFileComplaint": "Подайте скаргу Уповноваженому з питань недискримінації",
+ "discriminationActionContactLegalAid": "Зверніться до бюро правової допомоги за безкоштовною консультацією",
+ "discriminationActionReportPolice": "Зверніться до поліції, якщо мали місце погрози або напад",
+ "discriminationFactNonDiscriminationAct": "Фінський Закон про недискримінацію охоплює дискримінацію за віком, походженням, громадянством, мовою, релігією, станом здоров'я, інвалідністю, сексуальною орієнтацією та іншими особистими характеристиками.",
+ "contactVictimSupportRIKU": "Служба допомоги жертвам (116 006)",
+ "domesticViolence": "Домашнє насильство",
+ "inheritance": "Спадщина",
+ "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
+ "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
+ "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
+ "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
+ "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
+ "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
+ "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
+ "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
+ "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
+ "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
+ "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
+ "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
+ "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
+ "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
+ "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
+ "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
+ "consumerProtection": "Захист споживачів",
+ "caseTypeStepLabel": "Тип справи",
+ "detailsStepLabel": "Деталі",
+ "documentsStepLabel": "Документи",
+ "whatTypeOfCase": "Який тип справи?",
+ "selectCategoryDescription": "Select the category that best describes your situation.",
+ "tellUsAboutCase": "Розкажіть про вашу справу",
+ "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
+ "caseTitleHint": "e.g., Residence Permit Appeal 2026",
+ "countryJurisdiction": "Країна / Юрисдикція",
+ "selectCountryHint": "Оберіть країну",
+ "referenceNumberHint": "e.g., UMA/12345/2026",
+ "descriptionOptional": "Description (optional)",
+ "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
+ "uploadFirstDocument": "Завантажте перший документ",
+ "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
+ "tapToUploadFile": "Натисніть щоб завантажити файл",
+ "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
+ "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
+ "aiGeneratedDisclaimer": "Згенеровано ШІ • Не є юридичною консультацією",
+ "callAI": "Зателефонувати ШІ",
+ "comingSoon": "Незабаром",
+ "encrypted": "Зашифровано",
+ "typing": "Друкує…",
+ "online": "Онлайн",
+ "chatWelcomeSubtitle": "Я проаналізую вашу ситуацію та допоможу зрозуміти ваші права",
+ "tapMicrophoneToSpeak": "Натисніть мікрофон щоб говорити",
+ "categoryEssential": "Основне",
+ "categoryPolice": "Поліція",
+ "categoryWork": "Робота",
+ "categoryHousing": "Житло",
+ "categoryConsumer": "Споживач",
+ "rightsInsideCount": "{count, plural, =0{немає прав всередині} one{{count} право всередині} few{{count} права всередині} many{{count} прав всередині} other{{count} прав всередині}}",
+ "@rightsInsideCount": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "freeAidThreshold": "Поріг безкоштовної допомоги",
+ "partialAidThreshold": "Поріг часткової допомоги",
+ "assetLimit": "Ліміт активів",
+ "whereToApplyLabel": "Куди звертатися",
+ "phoneLabel": "Телефон",
+ "websiteLabel": "Вебсайт",
+ "disclaimerCollapsed": "ШІ-помічник — не юридична консультація",
+ "disclaimerExpanded": "ШІ-помічник надає правову інформацію, а не юридичну консультацію. Завжди перевіряйте у кваліфікованого юриста.",
+ "chatDisclaimerBanner": "ШІ-помічник надає загальну правову інформацію. Це не замінює кваліфіковану юридичну консультацію.",
+ "chatDisclaimerSubtitle": "ШІ-помічник · не юридична консультація",
+ "chatDisclaimerBannerFull": "Advocat — це ШІ-помічник із правової інформації, а не юрист. Ця інформація не створює відносин адвокат–клієнт, не є юридичною консультацією та може містити помилки. Для отримання обов'язкової юридичної поради зверніться до ліцензованого адвоката у вашій юрисдикції. Ми вас не представляємо.",
+ "chatDisclaimerFooter": "Створено ШІ. Перевірте у ліцензованого адвоката.",
+ "chatDisclaimerGotIt": "Зрозуміло",
+ "guestUser": "Гість",
+ "howToUse": "Як користуватися?",
+ "tutorialStep1Title": "ШІ-помічник із права",
+ "tutorialStep1Desc": "Задайте будь-яке правове питання та отримайте миттєві відповіді на основі законів Естонії.",
+ "tutorialStep2Title": "Знайте свої права",
+ "tutorialStep2Desc": "Переглядайте правову інформацію за темами — робота, житло, права споживача та інше.",
+ "tutorialStep3Title": "Сканування документів",
+ "tutorialStep3Desc": "Фотографуйте юридичні документи для аналізу ШІ та безпечного зберігання.",
+ "tutorialStep4Title": "Почнімо!",
+ "tutorialStep4Desc": "Досліджуйте додаток та захищайте свої права. Усі дані залишаються на вашому пристрої.",
+ "advocatProTitle": "Підписка Pro",
+ "advocatProSubtitle": "Відкрийте всі можливості",
+ "voiceDisclaimer": "Голосовий помічник наразі працює лише на комп'ютері (браузер Chrome). Мобільна підтримка незабаром.",
+ "recommended": "Рекомендовано",
+ "pleaseLogIn": "Будь ласка, увійдіть",
+ "subscriptionNotFound": "Підписку не знайдено",
+ "errorWithMessage": "Помилка: {message}",
+ "redirectingToPayment": "Перенаправлення на сторінку оплати…",
+ "cheaperAnnually": "€{amount}/міс. дешевше з річною підпискою",
+ "navigatingTo": "Відкриваю",
+ "stayInChat": "Залишитися в чаті",
+ "backToChat": "Назад до чату",
+ "feedbackThumbsUpLabel": "Корисно",
+ "feedbackThumbsDownLabel": "Не корисно",
+ "feedbackCommentPrompt": "Що не так?",
+ "feedbackSend": "Надіслати",
+ "feedbackCancel": "Скасувати",
+ "citationStatusVerifiedBadge": "Перевірено",
+ "citationStatusUnverifiedBadge": "Не перевірено",
+ "citationStatusHistoricalBadge": "Історична редакція",
+ "citationStatusVerifiedTooltip": "Цитата з відновленого правового джерела.",
+ "citationStatusUnverifiedTooltip": "ШІ навів цей фрагмент без відновлення джерела — перевірте перед використанням.",
+ "citationStatusHistoricalTooltip": "Цитоване положення вже не чинне.",
+ "citationOpenInRiigiTeataja": "Відкрити в Riigi Teataja",
+ "citationSnippetExpand": "Показати повний текст",
+ "citationSnippetCollapse": "Згорнути",
+ "citationUnverifiedSheetNote": "ШІ навів цей пункт, проте у цій сесії його не було відновлено з правового корпусу. Перевірте посилання, перш ніж на нього спиратися.",
+ "citationFooterNoneWarning": "Немає підтверджених посилань",
+ "citationFooterSummaryTotal": "{count, plural, one{{count} посилання} few{{count} посилання} many{{count} посилань} other{{count} посилань}}",
+ "citationFooterSummaryVerified": "{count, plural, one{{count} перевірено} few{{count} перевірено} many{{count} перевірено} other{{count} перевірено}}",
+ "citationFooterSummaryUnverified": "{count, plural, one{{count} не перевірено} few{{count} не перевірено} many{{count} не перевірено} other{{count} не перевірено}}",
+ "citationFooterSummaryHistorical": "{count, plural, one{{count} історичне} few{{count} історичні} many{{count} історичних} other{{count} історичних}}",
+ "@citationFooterSummaryTotal": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "@citationFooterSummaryVerified": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "@citationFooterSummaryUnverified": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "@citationFooterSummaryHistorical": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "deadlineRadarTitle": "Upcoming deadlines",
+ "deadlineRadarEmpty": "No upcoming deadlines",
+ "deadlineRadarViewAll": "View all",
+ "deadlineCardDaysLeft": "{count, plural, =0{сьогодні} one{через {count} день} few{через {count} дні} many{через {count} днів} other{через {count} днів}}",
+ "@deadlineCardDaysLeft": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "deadlineCardTomorrow": "tomorrow",
+ "deadlineCardToday": "today",
+ "deadlineCardOverdue": "{count, plural, one{прострочено на {count} день} few{прострочено на {count} дні} many{прострочено на {count} днів} other{прострочено на {count} днів}}",
+ "@deadlineCardOverdue": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "deadlineCardMarkComplete": "Mark complete",
+ "deadlineCardSnooze": "Snooze",
+ "deadlineCardSnooze3d": "Snooze 3 days",
+ "deadlineCardSnooze7d": "Snooze 7 days",
+ "deadlineCardSnoozeCustom": "Pick a date",
+ "deadlineCardEdit": "Edit",
+ "deadlineCardDelete": "Archive",
+ "deadlineCardSourceLabelPdf": "from PDF",
+ "deadlineCardSourceLabelIntake": "from intake",
+ "deadlineCardSourceLabelManual": "added manually",
+ "deadlineCardSourceLabelEmail": "from email",
+ "deadlineCardSourceLabelHaikuExtract": "AI-extracted",
+ "deadlineCardSourceLabelStatutoryTemplate": "statute template",
+ "deadlineBannerCritical": "Critical deadline {title} {when}",
+ "@deadlineBannerCritical": {
+  "placeholders": {
+   "title": {
+    "type": "String"
+   },
+   "when": {
+    "type": "String"
+   }
+  }
+ },
+ "deadlineBannerDismiss": "Dismiss",
+ "deadlineBannerOpen": "Open deadline",
+ "deadlineHolidayShifted": "Shifted from {original} due to {reason}",
+ "@deadlineHolidayShifted": {
+  "placeholders": {
+   "original": {
+    "type": "String"
+   },
+   "reason": {
+    "type": "String"
+   }
+  }
+ },
+ "deadlinePermissionAskTitle": "Enable deadline reminders?",
+ "deadlinePermissionAskBody": "We'll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.",
+ "deadlinePermissionAllow": "Allow",
+ "deadlinePermissionLater": "Later",
+ "deadlineSettingsSection": "Deadline reminders",
+ "deadlineSettingsPushChannel": "Push notifications",
+ "deadlineSettingsEmailChannel": "Email (critical only)",
+ "deadlineSettingsInAppChannel": "In-app banners",
+ "deadlineSettingsCriticalBypass": "Critical reminders bypass quiet hours",
+ "deadlineSettingsQuietHours": "Quiet hours",
+ "deadlineSettingsQuietHoursBadge": "Quiet {start}–{end}",
+ "@deadlineSettingsQuietHoursBadge": {
+  "placeholders": {
+   "start": {
+    "type": "String"
+   },
+   "end": {
+    "type": "String"
+   }
+  }
+ },
+ "deadlineCaseScreenTitle": "Case deadlines",
+ "deadlineAddManualCta": "Add deadline",
+ "deadlineFormTitle": "Title",
+ "deadlineFormDescription": "Description (optional)",
+ "deadlineFormStatuteTemplate": "Statute template",
+ "deadlineFormStatuteTemplateNone": "None (manual)",
+ "deadlineFormDeadlineAt": "Deadline date",
+ "deadlineFormPriority": "Priority",
+ "deadlineFormSave": "Save",
+ "deadlineFormCancel": "Cancel",
+ "deadlineCompletedNotePrompt": "Add a note (optional)",
+ "deadlineCompletedNoteSave": "Save",
+ "inboxTitle": "Inbox",
+ "inboxEmptyTitle": "Nothing pending",
+ "inboxEmptyBody": "New email threads will appear here as they get triaged.",
+ "inboxApproveSend": "Approve & send",
+ "inboxEditDraft": "Edit",
+ "inboxSnooze": "Snooze",
+ "inboxArchive": "Archive",
+ "inboxFilterAll": "All",
+ "inboxConfirmSendTitle": "Send the prepared reply?",
+ "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
+ "inboxSendButton": "Send",
+ "inboxSentToast": "Sent.",
+ "inboxAlreadySentToast": "Already sent.",
+ "inboxSendErrorToast": "Could not send the reply. Tap retry.",
+ "inboxSnoozedToast": "Snoozed for 24h.",
+ "inboxArchivedToast": "Archived.",
+ "inboxDraftLoadError": "Could not load draft.",
+ "inboxDeadlineToday": "today",
+ "inboxDeadlineTomorrow": "tomorrow",
+ "inboxDeadlineInDays": "in {days}d",
+ "@inboxDeadlineInDays": {
+  "placeholders": {
+   "days": {
+    "type": "int"
+   }
+  }
+ },
+ "inboxDeadlineOverdue": "overdue {days}d",
+ "@inboxDeadlineOverdue": {
+  "placeholders": {
+   "days": {
+    "type": "int"
+   }
+  }
+ },
+ "workspaceTabOverview": "Overview",
+ "workspaceTabChat": "Chat",
+ "workspaceTabDrafts": "Drafts",
+ "workspaceOverviewEmpty": "Add documents to build a summary.",
+ "workspaceTimelineEmpty": "No events yet.",
+ "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
+ "workspaceDraftsEmpty": "No drafts yet.",
+ "workspaceInboxEmpty": "No related email.",
+ "reviewThisContract": "Розібрати договір",
+ "contractReviews": "Перевірки договорів",
+ "@contractReviews": {},
+ "contractReviewsFreeFeature": "1 перевірка договору (пробна назавжди)",
+ "@contractReviewsFreeFeature": {},
+ "contractReviewsCounselFeature": "5 перевірок договорів на місяць",
+ "@contractReviewsCounselFeature": {},
+ "contractReviewsProFeature": "20 перевірок договорів на місяць",
+ "@contractReviewsProFeature": {},
+ "contractReviewsLeft": "{count, plural, =0{Цього місяця перевірок договорів не залишилось} one{Залишилась {count} перевірка договорів цього місяця} few{Залишилось {count} перевірки договорів цього місяця} many{Залишилось {count} перевірок договорів цього місяця} other{Залишилось {count} перевірок договорів цього місяця}}",
+ "@contractReviewsLeft": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "contractReviewsExhausted": "Цього місяця перевірок договорів не залишилось",
+ "@contractReviewsExhausted": {},
+ "contractReviewsFreeTrialLeft": "Пробна версія: 1 перевірка договору",
+ "@contractReviewsFreeTrialLeft": {},
+ "contractReviewsFreeTrialUsed": "Пробну версію використано — оновіть план",
+ "@contractReviewsFreeTrialUsed": {},
+ "contractReviewsUpgradeTitle": "Перевірки договорів вичерпано",
+ "@contractReviewsUpgradeTitle": {},
+ "contractReviewsUpgradeBodyFree": "Ви використали безкоштовну перевірку договору. Оновіть план для щомісячних перевірок.",
+ "@contractReviewsUpgradeBodyFree": {},
+ "contractReviewsUpgradeBodyPaid": "Ви використали {used} з {cap} перевірок цього місяця. Оновіть план для більшого ліміту.",
+ "@contractReviewsUpgradeBodyPaid": {
+  "placeholders": {
+   "used": {
+    "type": "int"
+   },
+   "cap": {
+    "type": "int"
+   }
+  }
+ },
+ "contractReviewsUpgradeCounselCta": "Перейти на Counsel (€19,99/міс) — 5 перевірок",
+ "@contractReviewsUpgradeCounselCta": {},
+ "contractReviewsUpgradeProCta": "Перейти на Pro (€29,99/міс) — 20 перевірок",
+ "@contractReviewsUpgradeProCta": {},
+ "contractReviewsUpgradeToProShort": "Перейти на Pro — 20/міс",
+ "@contractReviewsUpgradeToProShort": {},
+ "notNow": "Не зараз",
+ "@notNow": {},
+ "referralTitle": "Запросити друзів",
+ "@referralTitle": {},
+ "referralSubtitle": "Отримай безплатний місяць. Подаруй безплатний місяць.",
+ "@referralSubtitle": {},
+ "referralYourLink": "ВАШЕ ПОСИЛАННЯ",
+ "@referralYourLink": {},
+ "referralCopyLink": "Копіювати посилання",
+ "@referralCopyLink": {},
+ "referralShare": "Поділитися",
+ "@referralShare": {},
+ "referralLinkCopied": "Посилання скопійоване",
+ "@referralLinkCopied": {},
+ "referralStatsInvited": "Запрошено",
+ "@referralStatsInvited": {},
+ "referralStatsConverted": "Приєдналося",
+ "@referralStatsConverted": {},
+ "referralStatsEarned": "Безплатних місяців",
+ "@referralStatsEarned": {},
+ "referralShareWhatsApp": "Поділитися у WhatsApp",
+ "@referralShareWhatsApp": {},
+ "referralShareTelegram": "Поділитися в Telegram",
+ "@referralShareTelegram": {},
+ "referralShareEmail": "Надіслати email",
+ "@referralShareEmail": {},
+ "referralEmailSubject": "Спробуй Advocat — твій ШІ-юрист",
+ "@referralEmailSubject": {},
+ "referralLoadError": "Не вдалося завантажити дані. Потягніть униз.",
+ "@referralLoadError": {},
+ "referralRetry": "Повторити",
+ "@referralRetry": {},
+ "referralSettingsTile": "Запросити друзів",
+ "@referralSettingsTile": {},
+ "referralAfterReviewCta": "Сподобалось? Запроси друга — обидва отримаєте безплатний місяць.",
+ "@referralAfterReviewCta": {},
+ "checkerProTagline": "Професійні інструменти перевірки",
+ "checkerDataSource": "Дані з офіційних реєстрів",
+ "companyCheckerHint": "Назва компанії або реєстр. номер",
+ "companyCheckerPriceChip": "€2.99 за перевірку  •  Входить у Pro",
+ "companyCheckerEmptyState": "Введіть назву компанії або реєстраційний\nномер, щоб отримати повний звіт",
+ "aiMemoryTitle": "Пам'ять ШІ",
+ "aiMemorySubtitle": "Перегляньте та видаліть те, що ШІ пам'ятає про вас",
+ "bookLawyerCallTitle": "Замовити дзвінок з юристом",
+ "bookLawyerCallComingSoonTitle": "Дзвінки з живим юристом — скоро",
+ "bookLawyerCallComingSoonBody": "Pro та Premium включають 15-хвилинні дзвінки з юристом-партнером (1/квартал у Pro, 2/квартал у Premium). Завершуємо формування мережі естонських приватнопрактикуючих юристів і надішлемо листа, щойно бронювання відкриється.",
+ "bookLawyerCallQuotaAvailable": "У вас залишилось {remaining} з {total} дзвінків цього кварталу.",
+ "@bookLawyerCallQuotaAvailable": {
+  "placeholders": {
+   "remaining": {
+    "type": "int"
+   },
+   "total": {
+    "type": "int"
+   }
+  }
+ },
+ "bookLawyerCallQuotaExhausted": "Квартальну квоту вичерпано.",
+ "bookLawyerCallQuotaBodyAvailable": "Тариф Pro включає 1 дзвінок на квартал, Premium — 2. Дзвінки тривають 15 хвилин у Google Meet.",
+ "bookLawyerCallQuotaBodyExhausted": "Ваша квота оновиться в перший день наступного кварталу. Потрібно поговорити раніше? Перейдіть на Premium для додаткового дзвінка.",
+ "severityCritical": "КРИТИЧНО",
+ "severityHigh": "ВИСОКИЙ",
+ "severityMedium": "СЕРЕДНІЙ",
+ "severityLow": "НИЗЬКИЙ",
+ "deadlineRequiredFields": "Заголовок і дата дедлайну є обов'язковими",
+ "acceptTermsRequired": "Будь ласка, прийміть Умови надання послуг",
+ "chatLegalCouncilTooltip": "Юридичний консиліум (4 експерти)",
+ "attachFileTooltip": "Прикріпити файл",
+ "sendMessage": "Надіслати повідомлення",
+ "stopGenerating": "Зупинити генерацію",
+ "showPassword": "Показати пароль",
+ "hidePassword": "Сховати пароль",
+ "decreaseDependents": "Зменшити",
+ "increaseDependents": "Збільшити",
+ "quotaExhaustedTitle": "Ліміт безкоштовних повідомлень",
+ "quotaExhaustedBody": "Ви використали всі {count} безкоштовних повідомлень. Оформіть Advocat Pro за 19,99 €/міс для необмеженого доступу до AI-консультацій.",
+ "@quotaExhaustedBody": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "quotaExhaustedLater": "Пізніше",
+ "quotaExhaustedUpgrade": "Advocat Pro — 19,99 €/міс",
+ "quotaCtaMessage": "Ви використали всі {count} безкоштовних повідомлень. Оформіть Advocat Pro за 19,99 €/міс.",
+ "@quotaCtaMessage": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "quotaCtaButton": "Оформити Advocat Pro — 19,99 €/міс",
+ "aiErrorQuota": "Досягнуто ліміт безкоштовних повідомлень. Оформіть підписку, щоб продовжити.",
+ "aiErrorAuth": "Для використання AI потрібен вхід в акаунт. Зареєструйтеся або увійдіть.",
+ "aiErrorGeneric": "Тимчасова помилка AI. Спробуйте ще раз за хвилину. Якщо не працює — напишіть у підтримку.",
+ "tooltipShareCase": "Поділитися підсумком справи",
+ "tooltipMuteVoice": "Вимкнути голос",
+ "tooltipUnmuteVoice": "Увімкнути голос",
+ "tooltipAttachDoc": "Прикріпити документ",
+ "aiTypingHint": "AI…",
+ "error404Title": "Сторінку не знайдено",
+ "error404Body": "Не вдалося знайти: {path}",
+ "@error404Body": {
+  "placeholders": {
+   "path": {
+    "type": "String"
+   }
+  }
+ },
+ "goToHome": "На головну",
+ "emailAlreadyRegistered": "Ця електронна пошта вже зареєстрована. Увійти?",
+ "actionSignIn": "Увійти",
+ "actionUndo": "Скасувати",
+ "intakeUrgentOpened": "Чат відкрито — ваш чернетку збережено.",
+ "consiliumHeader": "Консиліум юристів",
+ "@consiliumHeader": {
+  "description": "Header text for the multi-agent legal consilium panel"
+ },
+ "consiliumProgress": "{count} з {total} готові",
+ "@consiliumProgress": {
+  "description": "Progress indicator while consilium experts produce opinions",
+  "placeholders": {
+   "count": {
+    "type": "int"
+   },
+   "total": {
+    "type": "int"
+   }
+  }
+ },
+ "consiliumStarting": "Юристи вивчають вашу справу…",
+ "consiliumDisagreement": "Експерти не згодні",
+ "@consiliumDisagreement": {
+  "description": "Banner shown when experts have conflicting positions"
+ },
+ "consiliumSynthesizing": "Формується рекомендація…",
+ "consiliumDone": "Консиліум завершено · {totalRoles} експертів",
+ "@consiliumDone": {
+  "placeholders": {
+   "totalRoles": {
+    "type": "int"
+   }
+  }
+ },
+ "consiliumPositionPush": "Оскаржити",
+ "consiliumPositionSettle": "Домовитися",
+ "consiliumPositionInvestigate": "Дослідити",
+ "consiliumPositionOutOfScope": "Поза компетенцією",
+ "consiliumConfidence": "Впевненість",
+ "consiliumKeyCitation": "Ключове посилання",
+ "consiliumAdversarialRound": "Змагальний раунд",
+ "consiliumViewFullOpinion": "Повний висновок",
+ "consiliumExpertsAgreed": "{count, plural, one{{count} експерт згоден} few{{count} експерти згодні} many{{count} експертів згодні} other{{count} експертів згодні}}",
+ "@consiliumExpertsAgreed": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "consiliumExpertsDisagree": "{count, plural, one{{count} експерт не згоден} few{{count} експерти не згодні} many{{count} експертів не згодні} other{{count} експертів не згодні}}",
+ "@consiliumExpertsDisagree": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "consiliumDisclaimer": "ШІ-агенти, а не люди-юристи. Важливі рішення перевіряйте з ліцензованим адвокатом.",
+ "@consiliumDisclaimer": {
+  "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
+ },
+ "draftsTab": "Drafts",
+ "draftingTitle": "Drafting Studio",
+ "draftingEmpty": "Empty draft",
+ "draftingPlaceholder": "Start typing your draft…",
+ "draftingDraftsList": "My drafts",
+ "draftingSave": "Save",
+ "draftingSaved": "Saved",
+ "draftingSavedJustNow": "Saved just now",
+ "draftingAiRevise": "Revise with AI",
+ "draftingExportPdf": "Export PDF",
+ "draftingExportDocx": "Export DOCX",
+ "draftingExportMd": "Export Markdown",
+ "draftingDeleteDraft": "Delete draft",
+ "draftingConfirmDelete": "Delete this draft?",
+ "draftingConfirmDeleteMessage": "This action cannot be undone.",
+ "draftingConfirm": "Delete",
+ "draftingCancel": "Cancel",
+ "draftingDraftReplyTo": "Reply to {name}",
+ "draftingUntitled": "Untitled",
+ "draftingTitleHint": "Title (optional)",
+ "draftingAiReviseTitle": "Revise with AI",
+ "draftingAiReviseSelectionLabel": "Selected text:",
+ "draftingAiReviseInstructionLabel": "Instruction (optional)",
+ "draftingAiReviseInstructionHint": "e.g. \"make it more formal\" or \"shorten\"",
+ "draftingAiReviseRunButton": "Generate revision",
+ "draftingAiReviseSuggestionLabel": "Suggested revision:",
+ "draftingAiReviseChangesLabel": "Changes:",
+ "draftingAiReviseAccept": "Accept",
+ "draftingAiReviseReject": "Reject",
+ "draftingFormatBold": "Bold",
+ "draftingFormatItalic": "Italic",
+ "draftingFormatHeading": "Heading",
+ "draftingFormatBullet": "Bullet list",
+ "draftingFormatNumbered": "Numbered list",
+ "draftingEmptyListMessage": "You have no drafts yet.",
+ "draftingEmptyListAction": "New draft",
+ "draftingExporting": "Exporting…",
+ "draftingExportFailed": "Export failed",
+ "draftingSaveFailed": "Save failed",
+ "draftingNewDraft": "New draft",
+ "vaultNoteChip": "Vault note",
+ "saveToVault": "Save to Vault",
+ "savingToVault": "Saving to Vault…",
+ "savedToVault": "Saved to Vault",
+ "vaultNoteTitlePrefix": "Note: ",
+ "openInVault": "Open in Vault",
+ "saveToVaultFailed": "Save to Vault failed",
+ "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
+ "draftingVersionHistory": "Version history",
+ "dangerZone": "[en] Danger zone",
+ "deleteAccountConfirmButton": "[en] Delete forever",
+ "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+ "emptyHomeTitle": "Welcome to Advocat",
+ "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+ "intentChip1": "Got a fine",
+ "intentChip2": "Permit denied",
+ "intentChip3": "Contract problem",
+ "emptyCasesTitle": "No cases yet",
+ "emptyCasesCta": "Start a case",
+ "emptyDraftsTitle": "No drafts yet",
+ "emptyDraftsCta": "Create draft",
+ "emptyChatTitle": "Ask Advocat anything",
+ "chatExamplePrompt1": "Help me reply to a fine",
+ "chatExamplePrompt2": "Review my rental contract",
+ "chatExamplePrompt3": "What are my rights at work?",
+ "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+ "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+ "deletingAccount": "[en] Deleting account…",
+ "contractReviewTitle": "Contract Review",
+ "@contractReviewTitle": {
+  "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
+ },
+ "contractReviewUploadCta": "Upload contract",
+ "@contractReviewUploadCta": {
+  "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
+ },
+ "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
+ "@contractReviewQuotaRemaining": {
+  "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
+ },
+ "contractReviewRedFlags": "Red flags",
+ "@contractReviewRedFlags": {
+  "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
+ },
+ "contractReviewReviewPoints": "Review points",
+ "@contractReviewReviewPoints": {
+  "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
+ },
+ "contractReviewNegotiationTips": "Negotiation tips",
+ "@contractReviewNegotiationTips": {
+  "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
+ },
+ "contractReviewSaveToVault": "Save to Vault",
+ "@contractReviewSaveToVault": {
+  "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
+ },
+ "contractReviewContinueChat": "Continue in chat",
+ "@contractReviewContinueChat": {
+  "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
+ },
+ "referralInviteFriends": "Invite Friends",
+ "referralYourCode": "Your code",
+ "referralCopiedToast": "Code copied to clipboard",
+ "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
+ "referralInvited": "Friends invited",
+ "referralRewardsEarned": "Free months earned",
+ "deadlineUrgencyToday": "Today & Overdue",
+ "deadlineUrgencyWeek": "This week",
+ "deadlineUrgencyMonth": "This month",
+ "deadlineUrgencyLater": "Later",
+ "deadlineAddManual": "Add deadline",
+ "deadlineSnoozeBy": "Snooze",
+ "deadlineSnooze1d": "Snooze 1 day",
+ "deadlineSnooze3d": "Snooze 3 days",
+ "deadlineSnooze7d": "Snooze 7 days",
+ "deadlineDismiss": "Dismiss",
+ "deadlineExportIcs": "Add to calendar",
+ "deadlineSource": "Source",
+ "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
+ "deadlineNewTitle": "New deadline",
+ "deadlineFieldTitle": "Title",
+ "deadlineFieldDueDate": "Due date",
+ "deadlineFieldNotes": "Notes (optional)",
+ "deadlineSaved": "Deadline saved",
+ "deadlineSaveFailed": "Could not save deadline",
+ "deadlineUrgentBannerSingle": "1 deadline today or overdue",
+ "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
+ "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
+ "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
+ "@deadlineUrgentBannerMany": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "@deadlineDaysLeft": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "@deadlineDaysOverdue": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "iapPayWithApple": "Сплатити через Apple",
+ "iapRestorePurchases": "Відновити покупки",
+ "iapPurchaseFailed": "Не вдалося здійснити покупку. Спробуйте ще раз або зверніться до підтримки.",
+ "iapRestoreSuccess": "Вашу підписку відновлено.",
+ "iapRestoreNoActive": "Активну підписку для відновлення не знайдено.",
+ "deadlineEuRadarTitle": "EU deadline radar (preview)",
+ "@deadlineEuRadarTitle": {
+  "x-todo": "translate to uk"
+ },
+ "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+ "@deadlineEuRadarSubtitle": {
+  "x-todo": "translate to uk"
+ },
+ "aiAnalyzing": "ШІ аналізує",
+ "speakIntoMicHint": "Говоріть у мікрофон. Переконайтеся, що доступ до мікрофона ввімкнено.",
+ "freeLimitReached": "Ви використали всі {count} безкоштовних повідомлень ШІ. Перейдіть на Legal Counsel для необмеженої допомоги ШІ!",
+ "@freeLimitReached": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "appleComingSoon": "Незабаром",
+ "appleComingSoonMessage": "Вхід через Apple стане доступним незабаром. Скористайтеся Google або електронною поштою, щоб продовжити.",
+ "dpaTitle": "Угода про обробку даних",
+ "dpaCheckoutGateTitle": "Перш ніж оновити план",
+ "dpaCheckoutGateBody": "Законодавство ЄС (ст. 28 GDPR) вимагає від нас укласти Угоду про обробку даних з кожним платним клієнтом. Будь ласка, ознайомтеся та прийміть її.",
+ "dpaViewLink": "Переглянути Угоду про обробку даних",
+ "dpaCheckboxLabel": "Я прочитав(-ла) і приймаю Угоду про обробку даних (v1.0).",
+ "dpaCancel": "Скасувати",
+ "dpaAcceptAndContinue": "Прийняти та продовжити",
+ "dpaOpenHint": "Відкрийте Угоду про обробку даних хоча б раз, щоб активувати кнопку «Прийняти».",
+ "rateAppComingSoon": "Незабаром у магазинах застосунків!",
+ "dataCopiedToClipboard": "Дані скопійовано в буфер обміну",
+ "noEventsForFilter": "Немає подій, що відповідають цьому фільтру",
+ "timelineFilterAll": "Усі",
+ "timelineFilterEmails": "Електронні листи",
+ "timelineFilterConsilium": "Рішення ШІ",
+ "timelineFilterDeadlines": "Строки",
+ "timelineFilterNotes": "Нотатки",
+ "timelineEventEmailIn": "Лист отримано",
+ "timelineEventEmailOut": "Лист надіслано",
+ "timelineEventConsiliumDecision": "Рішення ШІ",
+ "timelineEventDeadlineSet": "Строк",
+ "timelineEventDocUploaded": "Документ",
+ "timelineEventPhaseChange": "Зміна етапу",
+ "timelineEventManualNote": "Нотатка",
+ "timelineJustNow": "Щойно",
+ "timelineMinutesAgo": "{count, plural, one{{count} хвилину тому} few{{count} хвилини тому} many{{count} хвилин тому} other{{count} хвилини тому}}",
+ "@timelineMinutesAgo": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "timelineHoursAgo": "{count, plural, one{{count} годину тому} few{{count} години тому} many{{count} годин тому} other{{count} години тому}}",
+ "@timelineHoursAgo": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "timelineDaysAgo": "{count, plural, one{{count} день тому} few{{count} дні тому} many{{count} днів тому} other{{count} дня тому}}",
+ "@timelineDaysAgo": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "gmailReauthBannerBody": "Advocat v2.1 читає вашу поштову скриньку, щоб готувати відповіді; ви можете відкликати доступ будь-коли. Повторно підключіть Gmail, щоб увімкнути проактивне сортування.",
+ "gmailReauthBannerCta": "Повторно авторизувати",
+ "fiveAiMessagesTotal": "5 повідомлень ШІ (на весь час)",
+ "hundredAiMessagesDay": "100 повідомлень ШІ/день",
+ "unlimitedAiMessages": "Необмежені повідомлення ШІ",
+ "voiceInput": "Голосове введення",
+ "strategyRecommendations": "Стратегічні рекомендації",
+ "foundingMemberNote": "Засновник: 9,99 €/міс перші 3 місяці",
+ "saveTwentyPercent": "Заощаджуйте 20%",
+ "gdprConsentAiProcessing": "Я погоджуюся на обробку моїх даних для правової допомоги ШІ (обов’язково)",
+ "gdprConsentAnalytics": "Я погоджуюся на аналітику для покращення сервісу (необов’язково)",
+ "gdprArt9Intro": "Цей застосунок обробляє особливі категорії персональних даних згідно зі статтею 9 GDPR, зокрема:",
+ "gdprSpecialLegalCases": "Деталі вашої правової справи та судові документи",
+ "gdprSpecialNationality": "Громадянство та імміграційний статус",
+ "gdprConsentLegalData": "Я даю згоду на обробку даних моєї правової справи, громадянства та імміграційного статусу за допомогою ШІ (обов’язково)",
+ "gdprConsentVoice": "Я даю згоду на обробку голосового запису (необов’язково)",
+ "gdprViewPrivacyPolicy": "Переглянути Політику конфіденційності",
+ "legalInformation": "Юридична інформація",
+ "legalEntityName": "Vorantis OÜ",
+ "legalRegistryCode": "Реєстраційний код: 17098992",
+ "legalAddress": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145",
+ "legalEmail": "Email: support@advocat.ee",
+ "legalRegistry": "Зареєстровано в Естонському комерційному реєстрі (Äriregister)",
+ "domesticViolenceDesc": "Права потерпілих, екстрена допомога, заборонні приписи",
+ "rightCallEmergency": "Ви маєте право зателефонувати 112 у будь-якій надзвичайній ситуації — поліція, швидка допомога, пожежна служба",
+ "rightVictimProtection": "Як потерпілий(-а), ви маєте право на захист, підтримку та інформацію про вашу справу",
+ "rightRestrainingOrder": "Ви можете подати заяву на заборонний припис (lähestymiskielto), щоб тримати кривдника на відстані",
+ "rightVictimInterpreter": "Ви маєте право на перекладача під час усіх правових процедур",
+ "rightMedicalHelp": "Ви маєте право на негайну медичну допомогу та документування травм",
+ "rightShelter": "Ви маєте право на екстрене укриття — зверніться до притулку або соціальних служб",
+ "mustReportDanger": "Якщо хтось перебуває в безпосередній небезпеці, негайно телефонуйте 112",
+ "mustDocumentInjuries": "Задокументуйте всі травми — фотографії, медичні записи, письмові нотатки",
+ "domesticActionCallEmergency": "Телефонуйте 112, якщо ви в безпосередній небезпеці",
+ "domesticActionGoToSafe": "Перейдіть у безпечне місце — притулок, до друга, публічне місце",
+ "domesticActionDocumentEverything": "Задокументуйте травми: зробіть фотографії, отримайте медичні записи",
+ "domesticActionFilePoliceReport": "Подайте заяву до поліції — це можна зробити й пізніше",
+ "domesticActionContactShelter": "Зверніться до притулку або кризової лінії допомоги",
+ "domesticActionApplyRestraining": "Подайте заяву на заборонний припис через поліцію або суд",
+ "domesticFactRestrainingOrder": "У Фінляндії заборонний припис (lähestymiskielto) може бути виданий навіть без кримінальної справи. Він забороняє особі контактувати з вами або наближатися до вас.",
+ "domesticFactVictimDirective": "Згідно з Директивою ЄС про права потерпілих 2012/29/EU ви маєте право на повагу, на отримання інформації мовою, яку розумієте, та на доступ до служб підтримки потерпілих — незалежно від вашого статусу проживання.",
+ "domesticDeadlinePoliceReport": "Подання заяви до поліції — суворого строку немає, але чим раніше, тим краще для доказів",
+ "domesticDeadlineRestraining": "Заборонний припис — можна подати заяву будь-коли",
+ "contactEmergency": "Екстрений номер",
+ "contactShelter": "Лінія допомоги Turvakoti (Притулок)",
+ "contactCrisisHelpline": "Кризова лінія допомоги (Kriisipuhelin)",
+ "contactNollaLinja": "Nollalinja — Лінія допомоги щодо насильства над жінками",
+ "consumerProtectionDesc": "Шахрайство, дефектні товари, повернення, недобросовісні продавці",
+ "rightReturnOnline": "Ви маєте 14 днів, щоб скасувати онлайн-покупки без пояснення причин (право ЄС на відмову)",
+ "rightDefectiveProduct": "Якщо товар дефектний, ви маєте право на ремонт, заміну або повернення коштів",
+ "rightClearPricing": "Продавці повинні чітко вказувати ціни, включно з усіма зборами — приховані витрати незаконні",
+ "rightComplainBoard": "Ви можете безкоштовно подати скаргу до Ради зі споживчих спорів",
+ "rightProtectionFraud": "Ви захищені від недобросовісних комерційних практик і шахрайства",
+ "mustKeepReceipts": "Зберігайте всі чеки, договори та листування з продавцями",
+ "mustActTimely": "Повідомляйте продавця про дефекти протягом розумного строку після їх виявлення",
+ "consumerActionKeepEvidence": "Зберігайте чеки, знімки екрана, листи та всі докази покупки",
+ "consumerActionContactSeller": "Спершу зверніться до продавця — поясніть проблему письмово",
+ "consumerActionFileComplaint": "Подайте скаргу до Ради зі споживчих спорів (kuluttajariitalautakunta)",
+ "consumerActionContactAuthority": "Зверніться до Консультаційної служби для споживачів по безкоштовну допомогу",
+ "consumerActionReportFraud": "Повідомте про шахрайство до поліції та Омбудсмена з прав споживачів",
+ "consumerFactWithdrawal": "Згідно з Директивою ЄС про права споживачів 2011/83/EU ви маєте 14 днів, щоб відмовитися від будь-якої онлайн- чи дистанційної покупки — без пояснення причин. Продавець повинен повернути вам кошти протягом 14 днів.",
+ "consumerFactWarranty": "У Фінляндії продавець відповідає за дефекти товару протягом розумного строку (часто 2+ роки). Це окремо від будь-якої гарантії виробника.",
+ "consumerDeadlineWithdrawal": "Відмова від онлайн-покупки — 14 днів з моменту доставки",
+ "consumerDeadlineDefect": "Повідомлення продавця про дефект — протягом 2 місяців з моменту виявлення (рекомендовано)",
+ "contactConsumerAdvisory": "Консультаційна служба для споживачів",
+ "contactConsumerOmbudsman": "Омбудсмен з прав споживачів (Kuluttaja-asiamies)",
+ "contactConsumerDisputesBoardDirect": "Рада зі споживчих спорів",
+ "categoryChildren": "Діти",
+ "categoryDigital": "Цифрове",
+ "childrenRights": "Права дітей та аліменти",
+ "childrenRightsDesc": "Утримання дитини, аліменти, захист, державні гарантії",
+ "cyberbullying": "Кібербулінг та онлайн-переслідування",
+ "cyberbullyingDesc": "Погрози, порушення приватності, наклеп в інтернеті",
+ "rightChildSupport": "Обидва батьки за законом зобов’язані фінансово утримувати свою дитину (Perekonnaseadus § 100–102)",
+ "rightMinimumAlimony": "Мінімальне утримання дитини в Естонії: базова сума (295,86 €) + 3% від середньої валової зарплати за попередній рік (PKS § 101). Із 01.04.2026 — 318,62 €/місяць на дитину. Оновлюється щороку 1 квітня. Калькулятор: alimendid.ee",
+ "rightCourtAlimony": "Ви можете подати заяву на аліменти через повітовий суд (maakohus) — адвокат не потрібен для вимог до 6 400 €",
+ "rightBailiffEnforcement": "Якщо батько/мати відмовляється платити, судовий виконавець (kohtutäitur) може примусово виконати рішення суду, включно зі стягненням із зарплати",
+ "rightStateAlimonyGuarantee": "Якщо батько/мати не платить, держава надає elatisabi (допомогу на утримання) через Sotsiaalkindlustusamet — до 100 €/місяць на дитину",
+ "rightChildEducation": "Кожна дитина має право на освіту, охорону здоров’я та захист від жорстокого поводження (Lastekaitseseadus § 4–5)",
+ "rightChildContact": "Дитина має право підтримувати контакт з обома батьками, якщо суд не вирішить інакше (PKS § 143)",
+ "mustFileCourtClaim": "Щоб отримати аліменти, ви маєте подати позов до суду або домовитися про суму письмово",
+ "mustNotifyAddressChange": "Повідомляйте Sotsiaalkindlustusamet про зміну адреси, якщо отримуєте elatisabi",
+ "childrenActionGatherDocs": "Зберіть свідоцтво про народження дитини, ваше посвідчення особи та докази витрат",
+ "childrenActionFileCourtClaim": "Подайте позов про аліменти до повітового суду (maakohus) — можна зробити онлайн через e-toimik",
+ "childrenActionApplyElatisabi": "Подайте заяву на державну гарантію аліментів (elatisabi) до Sotsiaalkindlustusamet, якщо батько/мати не платить",
+ "childrenActionContactBailiff": "Зверніться до судового виконавця (kohtutäitur) для примусового виконання рішення суду",
+ "childrenActionCallLasteabi": "Телефонуйте на Lasteabi 116 111 — дитяча лінія допомоги, безкоштовна, цілодобово",
+ "childrenDeadlineElatisabi": "Заява на elatisabi — після рішення суду, суворого строку немає, але процес потребує часу",
+ "childrenDeadlineCourt": "Аліменти можна вимагати ретроактивно за період до 1 року до подання позову",
+ "childrenFactMinimum": "Із 01.04.2026 мінімальне утримання дитини становить 318,62 €/місяць на дитину. Формула: базова сума (295,86 €) + 3% від середньої валової зарплати за попередній рік. Оновлюється щороку 1 квітня. Батько/мати не може домовитися платити менше. Калькулятор: alimendid.ee",
+ "childrenFactElatisabi": "Державну гарантію аліментів Естонії (elatisabi) було запроваджено у 2017 році для захисту дітей, коли батько/мати відмовляється платити. Держава виплачує кошти, а потім стягує суму з батька-боржника.",
+ "rightReportCybercrime": "Ви маєте право повідомляти про онлайн-погрози, переслідування та крадіжку особистих даних до поліції (Karistusseadustik § 120, § 157¹)",
+ "rightContentRemoval": "Ви можете вимагати видалення наклепницького або приватного контенту з платформ і вимагати видалення згідно з GDPR",
+ "rightMoralDamageCompensation": "Ви можете вимагати відшкодування моральної шкоди, заподіяної кібербулінгом (Võlaõigusseadus § 1043–1055)",
+ "rightPrivacyProtection": "Ваше приватне життя захищене — несанкціоноване поширення ваших фотографій, повідомлень або персональних даних є незаконним (KarS § 157)",
+ "rightDataProtection": "Повідомляйте про порушення захисту даних (несанкціоноване використання ваших даних) до Andmekaitse Inspektsioon",
+ "rightDefamationAction": "Наклеп (laimamine) є цивільним правопорушенням — ви можете подати позов про відшкодування шкоди та вимагати публічного спростування (KarS § 247 (скасовано), VÕS § 1047)",
+ "mustCollectEvidence": "Зберіть і збережіть усі докази — знімки екрана, посилання, дати та інформацію про свідків",
+ "mustNotRetaliate": "Не мстіться і не вступайте у відповідне переслідування — це може послабити вашу справу",
+ "cyberActionScreenshots": "Робіть знімки екрана всього переслідування — зберігайте URL, дати, імена користувачів і вміст",
+ "cyberActionReportPolice": "Подайте заяву до поліції в найближчому відділку або онлайн на politsei.ee",
+ "cyberActionReportPlatform": "Повідомте про контент платформі соціальних мереж для видалення",
+ "cyberActionContactDPA": "Зверніться до Andmekaitse Inspektsioon, якщо ваші персональні дані було використано неправомірно",
+ "cyberActionConsultLawyer": "Проконсультуйтеся з адвокатом щодо цивільного відшкодування — безкоштовна правова допомога доступна через Riigi Õigusabi",
+ "cyberDeadlineCriminal": "Кримінальна скарга — суворого строку немає, але повідомляйте оперативно для найкращого результату",
+ "cyberDeadlineCivil": "Цивільний позов про відшкодування шкоди — до 3 років з моменту, коли ви дізналися про порушення (TsÜS § 150)",
+ "cyberFactPrivacy": "В Естонії несанкціоноване поширення інтимних зображень особи може призвести до позбавлення волі на строк до 3 років згідно з Karistusseadustik § 157¹ (порушення приватності).",
+ "cyberFactGDPR": "Згідно з GDPR ви маєте «право бути забутим» — платформи зобов’язані видалити ваші персональні дані на вимогу, якщо немає правової підстави їх зберігати.",
+ "upgradeBannerTitle": "Оновіть для необмежених консультацій",
+ "upgradeBannerCta": "Оновити",
+ "paymentSuccessTitle": "Оплата успішна",
+ "paymentSuccessBody": "Вашу підписку активовано.",
+ "commonOk": "OK",
+ "reasoningPillIdle": "Думаю…",
+ "reasoningPillSearchingLaw": "Шукаю в естонському законодавстві…",
+ "reasoningPillSearchingWeb": "Шукаю в інтернеті…",
+ "reasoningPillCheckingCompany": "Перевіряю реєстр компаній…",
+ "reasoningPillCheckingVehicle": "Перевіряю реєстр транспортних засобів…",
+ "reasoningPillReadingDocument": "Читаю ваш документ…",
+ "reasoningPillDrafting": "Складаю документ…",
+ "reasoningPillPreparingEmail": "Готую електронний лист…",
+ "reasoningPillFindingLawyer": "Шукаю адвокатів…",
+ "reasoningPillThinking": "Обмірковую вашу справу…",
+ "reasoningPillFinalising": "Формую вашу відповідь…",
+ "reasoningCollapsedFormat": "Міркував {sec} с · {sources} джерел",
+ "@reasoningCollapsedFormat": {
+  "placeholders": {
+   "sec": {
+    "type": "int"
+   },
+   "sources": {
+    "type": "int"
+   }
+  }
+ },
+ "reasoningExpandHint": "торкніться, щоб побачити кроки",
+ "caseFileTitle": "Матеріали справи",
+ "caseFileTimeline": "Хронологія",
+ "caseFileParties": "Сторони",
+ "caseFileDeadlines": "Строки",
+ "caseFileExportPdf": "Завантажити досьє (PDF)",
+ "caseFileEmpty": "Спілкуйтеся з ШІ про вашу справу — ваша хронологія сформується сама.",
+ "caseFileDisclaimer": "Це досьє автоматично сформовано з вашого чату. Воно не є юридичною консультацією.",
+ "caseFileTabLabel": "Справа",
+ "refresh": "Оновити",
+ "demoLimitReached": "Досягнуто демо-ліміту. Зареєструйтеся безкоштовно, щоб продовжити.",
+ "demoLimitSignUpCta": "Зареєструватися",
+ "freeQuotaExhausted": "Ви використали всі 10 безкоштовних повідомлень цього місяця.",
+ "upgradeForUnlimited": "Перейдіть на Pro для необмеженого доступу",
+ "upgradeCta": "Оновити",
+ "rateLimitTryAgain": "Надсилаєте занадто швидко. Спробуйте знову за кілька секунд.",
+ "quickProfilePrompt": "Щоб я міг допомогти точніше: який ваш правовий статус — ви громадянин(-ка) Естонії, громадянин(-ка) ЄС з іншої країни, чи маєте посвідку на проживання?",
+ "quickProfileChipEstonianCitizen": "Громадянин(-ка) Естонії",
+ "quickProfileChipEuCitizen": "Громадянин(-ка) ЄС (інша країна)",
+ "quickProfileChipResidencePermit": "Посвідка на проживання",
+ "quickProfileSkipBtn": "Пропустити",
+ "quickProfileSavedAck": "Зрозуміло. Тепер, у чому ваше запитання?",
+ "caseTitleLabel": "Назва справи",
+ "jurisdictionLabel": "Юрисдикція",
+ "caseTypeLabel": "Тип справи",
+ "caseLanguageLabel": "Мова",
+ "caseNumbersSection": "Номери справ",
+ "partiesSection": "Сторони",
+ "authoritiesSection": "Органи влади",
+ "timelineSection": "Хронологія",
+ "openQuestionsSection": "Відкриті питання",
+ "nextActionsSection": "Наступні дії",
+ "summarySection": "Підсумок",
+ "addRow": "Додати рядок",
+ "removeRow": "Видалити",
+ "archiveCase": "Архівувати справу",
+ "closeCase": "Закрити справу",
+ "continueChatAboutCase": "Продовжити чат про цю справу",
+ "linkChatToCase": "Прив’язати до справи",
+ "clearActiveCase": "Очистити активну справу",
+ "caseSavedAck": "Справу збережено",
+ "caseArchivedAck": "Справу заархівовано",
+ "intakeStep1Title": "Де розглядається справа?",
+ "intakeStep1Subtitle": "Країна та орган, з яким ви маєте справу.",
+ "intakeJurisdictionLabel": "Країна / юрисдикція",
+ "intakeAuthorityLabel": "Тип органу",
+ "intakeAuthorityNameLabel": "Назва органу (необов’язково)",
+ "intakeAuthorityPolice": "Поліція",
+ "intakeAuthorityCourt": "Суд",
+ "intakeAuthoritySocial": "Соціальні служби",
+ "intakeAuthorityEmployer": "Роботодавець",
+ "intakeAuthorityLandlord": "Орендодавець",
+ "intakeAuthorityOpposingParty": "Протилежна сторона",
+ "intakeAuthorityOther": "Інше",
+ "intakeStep2Title": "Який тип справи?",
+ "intakeStep2Subtitle": "Оберіть найближчий тип — можна уточнити пізніше.",
+ "intakeCaseTypeCriminal": "Кримінальна",
+ "intakeCaseTypeCivil": "Цивільна",
+ "intakeCaseTypeFamily": "Сімейна",
+ "intakeCaseTypeAdmin": "Адміністративна",
+ "intakeCaseTypeImmigration": "Імміграційна",
+ "intakeCaseTypeLabor": "Трудова",
+ "intakeCaseTypeConsumer": "Споживча",
+ "intakeCaseTypeInheritance": "Спадкова",
+ "intakeCaseTypeOther": "Інше",
+ "intakeStep3Title": "Хто залучений?",
+ "intakeStep3Subtitle": "Ваша роль і протилежна сторона.",
+ "intakeRoleLabel": "Ваша роль",
+ "intakeRolePlaintiff": "Позивач",
+ "intakeRoleDefendant": "Відповідач",
+ "intakeRoleVictim": "Потерпілий",
+ "intakeRoleAccused": "Обвинувачений",
+ "intakeRoleWitness": "Свідок",
+ "intakeRoleFamily": "Член сім’ї",
+ "intakeRoleOther": "Інше",
+ "intakeOpposingSideLabel": "Протилежна сторона (необов’язково)",
+ "intakeWitnessesLabel": "Свідки (необов’язково)",
+ "intakeAddWitness": "Додати свідка",
+ "intakeWitnessHint": "Ім’я або контакт",
+ "intakeStep4Title": "Номери та дати",
+ "intakeStep4Subtitle": "Усе, що вже маєте. Пропустіть те, чого немає.",
+ "intakeCaseNumberLabel": "Номер справи (необов’язково)",
+ "intakeIncidentDateLabel": "Дата інциденту (необов’язково)",
+ "intakeIncidentDatePick": "Оберіть дату",
+ "intakeDeadlinesLabel": "Відомі строки",
+ "intakeAddDeadline": "Додати строк",
+ "intakeDeadlineWhatHint": "Що",
+ "intakeStep5Title": "Документи",
+ "intakeStep5Subtitle": "Завантажте все релевантне. Ми це прочитаємо.",
+ "intakeUploadDocsLabel": "Завантажити документи",
+ "intakeSkipDocs": "Пропустити — завантажу пізніше",
+ "intakeNextBtn": "Далі",
+ "intakeBackBtn": "Назад",
+ "intakeFinishBtn": "Завершити та відкрити чат",
+ "intakeUrgentBtn": "Терміново — запитати зараз",
+ "intakeUrgentDialogTitle": "Відкрити чат зараз?",
+ "intakeUrgentDialogBody": "Ми збережемо введене вами як чернетку справи. Ви можете завершити майстер зі сторінки справи будь-коли.",
+ "intakeUrgentConfirm": "Відкрити чат",
+ "intakeUrgentCancel": "Продовжити заповнення",
+ "intakePreparingCase": "Готуємо вашу справу…",
+ "intakeFallbackGreeting": "Я бачу вашу справу. Розкажіть, що найбільш нагальне — я опрацюю це разом з вами.",
+ "intakeUrgentGreeting": "Я бачу, що це терміново. Поставте своє запитання — решту я заповню в процесі.",
+ "intakeStepIndicator": "Крок {current} з {total}",
+ "@intakeStepIndicator": {
+  "placeholders": {
+   "current": {
+    "type": "int"
+   },
+   "total": {
+    "type": "int"
+   }
+  }
+ },
+ "intakeFieldRequired": "Обов’язково",
+ "intakeUploadProgress": "Завантаження {done} / {total}…",
+ "@intakeUploadProgress": {
+  "placeholders": {
+   "done": {
+    "type": "int"
+   },
+   "total": {
+    "type": "int"
+   }
+  }
+ },
+ "uplDisclaimerFooter": "Advocat не є юридичною фірмою. Це інформація, а не юридична консультація.",
+ "parallelActionsHeadline": "Консиліум рекомендує {count} паралельних дій",
+ "@parallelActionsHeadline": {
+  "description": "Headline at the top of the Parallel Actions card — N>=2 emails the consilium recommends sending in parallel.",
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "parallelActionsApproveAll": "Схвалити всі та надіслати",
+ "@parallelActionsApproveAll": {
+  "description": "Primary button when every action is checked."
+ },
+ "parallelActionsApproveSelected": "Схвалити {count} з {total}",
+ "@parallelActionsApproveSelected": {
+  "description": "Primary button when only a subset of actions is checked.",
+  "placeholders": {
+   "count": {
+    "type": "int"
+   },
+   "total": {
+    "type": "int"
+   }
+  }
+ },
+ "parallelActionsConfirmTitle": "Надіслати {count} листів?",
+ "@parallelActionsConfirmTitle": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "parallelActionsConfirmBody": "Advocat надішле {count} підготовлених відповідей через ваш підключений Gmail. Кожна надсилається незалежно — якщо одна не вдасться, інші все одно надійдуть.",
+ "@parallelActionsConfirmBody": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "parallelActionsSentToast": "{count} надіслано.",
+ "@parallelActionsSentToast": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "parallelActionsPartialFailureToast": "{sent} надіслано, {failed} не вдалося.",
+ "@parallelActionsPartialFailureToast": {
+  "placeholders": {
+   "sent": {
+    "type": "int"
+   },
+   "failed": {
+    "type": "int"
+   }
+  }
+ },
+ "parallelActionsKindReply": "відповідь",
+ "parallelActionsKindNew": "новий",
+ "parallelActionsCheckboxSelected": "Дію обрано",
+ "parallelActionsCheckboxUnselected": "Дію не обрано",
+ "parallelActionsCitationCount": "{count} цит.",
+ "@parallelActionsCitationCount": {
+  "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "parallelActionsRetryFailed": "Повторити невдалі ({count})",
+ "@parallelActionsRetryFailed": {
+  "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "agentApprovalNeedsReviewTitle": "Advocat потребує вашого схвалення",
+ "@agentApprovalNeedsReviewTitle": {
+  "description": "Day 6-7 (2026-05-27): title above the agent-loop approval card."
+ },
+ "agentApprovalResolvedTitle": "Дію вирішено",
+ "@agentApprovalResolvedTitle": {
+  "description": "Day 6-7 (2026-05-27): title after the user approved or declined the agent's pending action."
+ },
+ "agentApprovalStepsLabel": "кроків",
+ "@agentApprovalStepsLabel": {
+  "description": "Day 6-7 (2026-05-27): label after iteration count, e.g. '4 steps'."
+ },
+ "agentApprovalApproveButton": "Схвалити та надіслати",
+ "@agentApprovalApproveButton": {
+  "description": "Day 6-7 (2026-05-27): primary action on the approval card."
+ },
+ "agentApprovalDeclineButton": "Відхилити",
+ "@agentApprovalDeclineButton": {
+  "description": "Day 6-7 (2026-05-27): secondary action on the approval card."
+ },
+ "agentApprovalAttachmentsLabel": "Вкладення",
+ "@agentApprovalAttachmentsLabel": {
+  "description": "Day 6-7 (2026-05-27): label above the attachment chip row."
+ },
+ "agentApprovalSentSummary": "Надіслано від вашого імені.",
+ "@agentApprovalSentSummary": {
+  "description": "Day 6-7 (2026-05-27): chat message after the user approved + the write succeeded."
+ },
+ "agentApprovalDeclinedSummary": "Відхилено — нічого не надіслано.",
+ "@agentApprovalDeclinedSummary": {
+  "description": "Day 6-7 (2026-05-27): chat message after the user declined the agent's pending action."
+ },
+ "agentToolDraftEmailAtt": "Надіслати лист із вкладеннями",
+ "@agentToolDraftEmailAtt": {
+  "description": "Day 6-7 (2026-05-27): friendly name for the draft_email_with_attachments tool on the approval card."
+ },
+ "agentToolSendEmail": "Надіслати лист",
+ "@agentToolSendEmail": {
+  "description": "Day 6-7 (2026-05-27): friendly name for send_email tool."
+ },
+ "agentToolGeneratePdf": "Згенерувати PDF",
+ "@agentToolGeneratePdf": {
+  "description": "Day 6-7 (2026-05-27): friendly name for generate_pdf tool."
+ },
+ "agentToolApproveSend": "Надіслати підготовлену відповідь",
+ "@agentToolApproveSend": {
+  "description": "Day 6-7 (2026-05-27): friendly name for approve_send_draft tool."
+ },
+ "inboxErrorTitle": "Не вдалося завантажити поштову скриньку",
+ "@inboxErrorTitle": {
+  "description": "P1-6 (2026-05-27): title shown above the retry button when the inbox failed to load."
+ },
+ "inboxEditDiscardTitle": "Відхилити незбережені зміни?",
+ "@inboxEditDiscardTitle": {
+  "description": "P1-3 (2026-05-27): WillPopScope dialog title when the user back-navigates with unsaved draft edits."
+ },
+ "inboxEditDiscardBody": "У вас є незбережені зміни в цій чернетці. Повернення назад відхилить їх.",
+ "@inboxEditDiscardBody": {
+  "description": "P1-3 (2026-05-27): body of the discard-edits dialog."
+ },
+ "inboxEditKeepEditing": "Продовжити редагування",
+ "@inboxEditKeepEditing": {
+  "description": "P1-3 (2026-05-27): keep-editing button on the discard-edits dialog."
+ },
+ "inboxEditDiscard": "Відхилити",
+ "@inboxEditDiscard": {
+  "description": "P1-3 (2026-05-27): destructive confirm button on the discard-edits dialog."
+ },
+ "plannerSettingsTitle": "Трипрохідне правове міркування",
+ "@plannerSettingsTitle": {
+  "description": "Settings tile title for the planner toggle (Pkg 6)."
+ },
+ "plannerSettingsSubtitle": "План → відповідь → критика. Повільніше, але ретельніше.",
+ "@plannerSettingsSubtitle": {
+  "description": "Settings tile subtitle explaining the planner's three-pass loop."
+ },
+ "plannerSettingsProBadge": "Pro",
+ "@plannerSettingsProBadge": {
+  "description": "Pro tier badge on the planner settings tile."
+ },
+ "plannerSettingsProDescription": "Доступно в плані Pro",
+ "@plannerSettingsProDescription": {
+  "description": "Locked-tile hint shown to free-tier users on the planner toggle."
+ },
+ "plannerTrailHeaderPlan": "План",
+ "@plannerTrailHeaderPlan": {
+  "description": "Reasoning Trail Plan section header."
+ },
+ "plannerTrailHeaderCritique": "Критика",
+ "@plannerTrailHeaderCritique": {
+  "description": "Reasoning Trail Critique section header."
+ },
+ "plannerTrailSubQuestions": "Підпитання",
+ "@plannerTrailSubQuestions": {
+  "description": "Reasoning Trail sub-questions list label."
+ },
+ "plannerTrailCounterArgs": "Контраргументи",
+ "@plannerTrailCounterArgs": {
+  "description": "Reasoning Trail counter-arguments list label."
+ },
+ "plannerTrailEvidenceGaps": "Прогалини в доказах",
+ "@plannerTrailEvidenceGaps": {
+  "description": "Reasoning Trail evidence-gaps list label."
+ },
+ "plannerTrailMaterialGapTrue": "Виявлено суттєву прогалину",
+ "@plannerTrailMaterialGapTrue": {
+  "description": "Reasoning Trail critique status when the planner flagged a material gap."
+ },
+ "plannerTrailRegeneratedBadge": "Згенеровано повторно один раз",
+ "@plannerTrailRegeneratedBadge": {
+  "description": "Reasoning Trail header badge when the answer was regenerated once."
+ },
+ "plannerTrailEmpty": "немає елементів",
+ "@plannerTrailEmpty": {
+  "description": "Reasoning Trail placeholder shown when a list section is empty."
+ },
+ "supportTitle": "Допомога",
+ "@supportTitle": {
+  "description": "Title of the in-app support drawer (also help FAB tooltip)."
+ },
+ "supportSubtitle": "Зазвичай ми відповідаємо протягом 1–2 годин.",
+ "supportSearchPlaceholder": "Пошук у довідці…",
+ "@supportSearchPlaceholder": {
+  "description": "Placeholder for the help search field in the support drawer."
+ },
+ "supportStatusAllOk": "Усі системи в нормі",
+ "@supportStatusAllOk": {
+  "description": "Status pill shown in the support drawer header when service is healthy."
+ },
+ "supportFaqWhatIs": "Що таке Advocat?",
+ "supportFaqHowSubscribe": "Як оформити підписку на Pro?",
+ "supportFaqExportData": "Чи можу я експортувати свої дані?",
+ "supportFaqCancelAccount": "Скасувати або видалити обліковий запис",
+ "supportFaqTalkHuman": "Поговорити з людиною",
+ "supportContactEmail": "Email",
+ "supportContactTelegram": "Telegram",
+ "supportContactWhatsapp": "WhatsApp",
+ "supportFooterSla": "Ми відповідаємо протягом 24 год",
+ "@supportFooterSla": {
+  "description": "Footer copy at the bottom of the support drawer."
+ },
+ "supportWhatsapp": "WhatsApp",
+ "supportEmail": "Email",
+ "supportInApp": "Напишіть нам тут",
+ "supportCategoryLabel": "Категорія",
+ "supportCategoryBug": "Помилка",
+ "supportCategoryPayment": "Проблема з оплатою",
+ "supportCategoryQuestion": "Запитання",
+ "supportCategoryFeature": "Запит функції",
+ "supportCategoryOther": "Інше",
+ "supportMessagePlaceholder": "Опишіть вашу проблему...",
+ "supportEmailLabel": "Email (необов’язково)",
+ "supportSend": "Надіслати",
+ "supportSentSuccess": "Повідомлення надіслано! Ми скоро відповімо.",
+ "supportError": "Щось пішло не так. Спробуйте ще раз.",
+ "supportErrorTooShort": "Будь ласка, напишіть щонайменше 10 символів.",
+ "supportErrorTooLong": "Максимум 2000 символів.",
+ "supportPrivacyNotice": "Ваше повідомлення зберігається безпечно.",
+ "referralAntiFraud": "Максимум 12 успішних запрошень на рік.",
+ "referralEmpty": "Поки що немає запрошень. Надішліть своє посилання, щоб почати заробляти.",
+ "referralRecentActivity": "Нещодавня активність",
+ "referralActivityInvited": "Запрошено {when}",
+ "@referralActivityInvited": {
+  "placeholders": {
+   "when": {
+    "type": "String"
+   }
+  }
+ },
+ "referralActivityActivated": "активовано {when}",
+ "@referralActivityActivated": {
+  "placeholders": {
+   "when": {
+    "type": "String"
+   }
+  }
+ },
+ "referralActivityPending": "ще не активовано",
+ "referralStatsInvitedCount": "Ви запросили {count, plural, =0{поки що жодного друга} one{{count} друга} few{{count} друзів} many{{count} друзів} other{{count} друга}}",
+ "@referralStatsInvitedCount": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "referralStatsConvertedCount": "{count, plural, =0{поки що жоден не активував} one{{count} активував} few{{count} активували} many{{count} активували} other{{count} активували}}",
+ "@referralStatsConvertedCount": {
+  "placeholders": {
+   "count": {
+    "type": "int"
+   }
+  }
+ },
+ "referralStatsEarnedCount": "Ваш бонус: {months, plural, =0{поки що нічого} one{{months} безкоштовний місяць} few{{months} безкоштовні місяці} many{{months} безкоштовних місяців} other{{months} безкоштовного місяця}}",
+ "@referralStatsEarnedCount": {
+  "placeholders": {
+   "months": {
+    "type": "int"
+   }
+  }
+ },
+ "referralNudgeMessage": "Подобається Advocat? Запросіть друга — обоє отримаєте безкоштовний місяць.",
+ "referralNudgeAction": "Запросити",
+ "referralLandingTitle": "Вас запрошено до Advocat",
+ "referralLandingSubtitle": "{inviterName} запросив(-ла) вас — отримайте безкоштовний перший місяць.",
+ "@referralLandingSubtitle": {
+  "placeholders": {
+   "inviterName": {
+    "type": "String"
+   }
+  }
+ },
+ "referralLandingSubtitleGeneric": "Отримайте безкоштовний перший місяць Advocat Pro.",
+ "referralLandingCta": "Активувати безкоштовний місяць і зареєструватися",
+ "referralLandingCtaSecondary": "Або дізнайтеся більше про Advocat",
+ "referralLandingFallback": "Термін дії цього посилання минув — але ви все одно можете спробувати Advocat безкоштовно.",
+ "referralLandingBenefits": "17 мов • Реальне естонське, фінське та право ЄС • Цілодобово — без очікування",
+ "sensitiveConsentTitle": "Згода на обробку чутливих даних",
+ "sensitiveConsentBody": "Документи, які ви збираєтеся завантажити, можуть містити особливі категорії персональних даних згідно зі ст. 9 GDPR — як-от медичні записи, дані про судимість, біометричні дані або інформацію про ваше расове походження, релігію чи сексуальну орієнтацію.\n\nМи обробляємо ці дані лише для надання вам правової допомоги ШІ, зберігаємо їх у зашифрованому вигляді у вашому приватному обліковому записі та ніколи не використовуємо для навчання моделей. Ви можете відкликати згоду та видалити дані будь-коли в Налаштуваннях.\n\nПриймаючи, ви даєте явну згоду згідно зі ст. 9(2)(a) GDPR на обробку особливих категорій даних для цієї мети.",
+ "sensitiveConsentExplicitCheckbox": "Я даю явну згоду на обробку особливих категорій даних (ст. 9(2)(a) GDPR).",
+ "sensitiveConsentRightToShareCheckbox": "Я підтверджую, що маю право надати ці дані (дані є моїми, або я маю поінформовану/законну підставу надавати дані третіх осіб).",
+ "sensitiveConsentViewCategories": "Переглянути, що вважається чутливим →",
+ "sensitiveConsentWithdrawAction": "Відкликати згоду на обробку чутливих даних",
+ "privacyAndData": "КОНФІДЕНЦІЙНІСТЬ І ДАНІ",
+ "exportMyDataSubtitle": "Завантажте копію всіх ваших персональних даних (ст. 15 GDPR).",
+ "withdrawSensitiveConsent": "Згода на обробку чутливих даних",
+ "withdrawSensitiveConsentSubtitle": "Керуйте або відкликайте згоду на обробку особливих категорій даних (ст. 9(2)(a) GDPR).",
+ "dataProcessingAgreement": "Угода про обробку даних",
+ "exportingData": "Експортуємо ваші дані…",
+ "exportComplete": "Експорт даних готовий — збережено на ваш пристрій.",
+ "exportFailed": "Не вдалося експортувати. Будь ласка, спробуйте ще раз або зверніться до підтримки.",
+ "panicCoachmark": "Утримуйте для екстреної допомоги.",
+ "panicTitle": "Що вам потрібно прямо зараз?",
+ "panicCardReadAloud": "Зачитати вголос офіцеру",
+ "panicCardRecord": "Записати цю розмову",
+ "panicCardCall": "Зателефонувати адвокату",
+ "panicCardAi": "Поговорити з Advocat зараз",
+ "panicClose": "Закрити",
+ "panicBadgeV2": "V2",
+ "panicRecordV1Title": "Незабаром у V2",
+ "panicRecordV1Body": "Функція запису проходить юридичну перевірку для Естонії та з’явиться у V2. Наразі скористайтеся вбудованим диктофоном вашого телефона.",
+ "panicCallFallbackBody": "Напишіть на kiire@advocat.ee з коротким описом, і ми вам передзвонимо.",
+ "softCaseShellBanner": "Ми створили «Справу без назви», щоб відстежувати це. Торкніться, щоб перейменувати.",
+ "@softCaseShellBanner": {
+  "description": "One-line banner shown after a first-touch upload auto-materialised a soft-case shell (P0 deadline-extraction fix). Tapping deep-links to the case rename screen."
+ },
+ "softCaseShellBannerCta": "Перейменувати"
 }

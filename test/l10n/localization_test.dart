@@ -4,283 +4,222 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Loads an ARB file and returns its key-value map.
-/// Filters out metadata keys (starting with '@' or '@@').
 Map<String, dynamic> _loadArb(String path) {
   final file = File(path);
   expect(file.existsSync(), isTrue, reason: 'ARB file not found: $path');
   final content = file.readAsStringSync();
-  final Map<String, dynamic> json = jsonDecode(content) as Map<String, dynamic>;
-  return json;
+  return jsonDecode(content) as Map<String, dynamic>;
 }
 
-/// Returns only translation keys (not metadata keys starting with @).
-Set<String> _translationKeys(Map<String, dynamic> arb) {
-  return arb.keys.where((k) => !k.startsWith('@')).toSet();
-}
+/// Translation keys (not metadata keys starting with @).
+Set<String> _translationKeys(Map<String, dynamic> arb) =>
+    arb.keys.where((k) => !k.startsWith('@')).toSet();
 
-/// Returns metadata keys (starting with @ but not @@).
-Set<String> _metadataKeys(Map<String, dynamic> arb) {
-  return arb.keys.where((k) => k.startsWith('@') && !k.startsWith('@@')).toSet();
+/// Metadata keys (starting with @ but not @@).
+Set<String> _metadataKeys(Map<String, dynamic> arb) =>
+    arb.keys.where((k) => k.startsWith('@') && !k.startsWith('@@')).toSet();
+
+/// The ICU named-placeholder arguments referenced by a value string. Matches
+/// `{name}` interpolations AND the `{name, plural|select, ...}` argument name,
+/// but NOT plain words inside plural/select branches (e.g. `=0{today}` or
+/// `other{...}`) which are translatable literals, not placeholders.
+Set<String> _placeholders(String value) {
+  // The plural/select argument name(s), e.g. {count, plural, ...}.
+  final arg = RegExp(r'\{([a-zA-Z][a-zA-Z0-9_]*),\s*(?:plural|select)');
+  final args = arg.allMatches(value).map((m) => m.group(1)!).toSet();
+
+  // Strip branch bodies so their inner text (and any nested literals) can't be
+  // mistaken for a placeholder. A branch is a selector (=0 / one / other / a
+  // word) immediately followed by a `{...}` body. We blank the body.
+  final branch = RegExp(r'(=\d+|[a-zA-Z]+)\s*\{[^{}]*\}');
+  var stripped = value;
+  String prev;
+  do {
+    prev = stripped;
+    stripped = stripped.replaceAll(branch, '');
+  } while (stripped != prev);
+
+  // Whatever bare `{name}` remains in the stripped string is a real
+  // interpolation placeholder.
+  final named = RegExp(r'\{([a-zA-Z][a-zA-Z0-9_]*)\}');
+  final names = named.allMatches(stripped).map((m) => m.group(1)!).toSet();
+
+  return {...args, ...names};
 }
 
 void main() {
-  // Resolve path relative to the test file location
-  // Tests run from the project root, so lib/l10n/ is accessible directly
   const basePath = 'lib/l10n';
 
-  late Map<String, dynamic> enArb;
-  late Map<String, dynamic> fiArb;
-  late Map<String, dynamic> ruArb;
-  late Map<String, dynamic> etArb;
+  // Every locale registered in supportedLanguages / AppLocalizations.
+  // Keep in sync with lib/l10n/*.arb — the discovery test below asserts that.
+  const allLocales = <String>[
+    'ar', 'de', 'en', 'es', 'et', 'fa', 'fi', 'fr', 'it',
+    'lt', 'lv', 'pl', 'ro', 'ru', 'sv', 'tr', 'uk',
+  ];
 
+  late Map<String, dynamic> enArb;
   late Set<String> enKeys;
-  late Set<String> fiKeys;
-  late Set<String> ruKeys;
-  late Set<String> etKeys;
+  // locale -> arb map / translation key set
+  final arbs = <String, Map<String, dynamic>>{};
+  final keys = <String, Set<String>>{};
 
   setUpAll(() {
     enArb = _loadArb('$basePath/app_en.arb');
-    fiArb = _loadArb('$basePath/app_fi.arb');
-    ruArb = _loadArb('$basePath/app_ru.arb');
-    etArb = _loadArb('$basePath/app_et.arb');
-
     enKeys = _translationKeys(enArb);
-    fiKeys = _translationKeys(fiArb);
-    ruKeys = _translationKeys(ruArb);
-    etKeys = _translationKeys(etArb);
+    for (final loc in allLocales) {
+      final arb = _loadArb('$basePath/app_$loc.arb');
+      arbs[loc] = arb;
+      keys[loc] = _translationKeys(arb);
+    }
   });
 
-  group('ARB file existence', () {
-    test('English ARB exists', () {
-      expect(File('$basePath/app_en.arb').existsSync(), isTrue);
+  group('Locale discovery', () {
+    test('every app_*.arb on disk is in the tested allLocales set', () {
+      final onDisk = Directory(basePath)
+          .listSync()
+          .whereType<File>()
+          .map((f) => f.uri.pathSegments.last)
+          .where((n) => n.startsWith('app_') && n.endsWith('.arb'))
+          .map((n) => n.substring(4, n.length - 4))
+          .toSet();
+      expect(
+        onDisk.difference(allLocales.toSet()),
+        isEmpty,
+        reason: 'New ARB file(s) not covered by the parity test — '
+            'add them to allLocales.',
+      );
+      expect(
+        allLocales.toSet().difference(onDisk),
+        isEmpty,
+        reason: 'allLocales references a locale with no ARB file.',
+      );
     });
 
-    test('Finnish ARB exists', () {
-      expect(File('$basePath/app_fi.arb').existsSync(), isTrue);
-    });
-
-    test('Russian ARB exists', () {
-      expect(File('$basePath/app_ru.arb').existsSync(), isTrue);
-    });
-
-    test('Estonian ARB exists', () {
-      expect(File('$basePath/app_et.arb').existsSync(), isTrue);
-    });
-  });
-
-  group('Locale identifiers', () {
-    test('English ARB has correct locale', () {
-      expect(enArb['@@locale'], 'en');
-    });
-
-    test('Finnish ARB has correct locale', () {
-      expect(fiArb['@@locale'], 'fi');
-    });
-
-    test('Russian ARB has correct locale', () {
-      expect(ruArb['@@locale'], 'ru');
-    });
-
-    test('Estonian ARB has correct locale', () {
-      expect(etArb['@@locale'], 'et');
+    test('each ARB declares its own @@locale', () {
+      for (final loc in allLocales) {
+        expect(arbs[loc]!['@@locale'], loc,
+            reason: 'app_$loc.arb has wrong @@locale');
+      }
     });
   });
 
-  group('Key completeness — no missing translations', () {
-    test('Finnish has all English keys', () {
-      final missingInFi = enKeys.difference(fiKeys);
-      expect(missingInFi, isEmpty,
-          reason:
-              'Finnish is missing ${missingInFi.length} keys: ${missingInFi.take(10).join(", ")}');
+  group('Key completeness — every locale matches the English template', () {
+    test('no locale is missing any English key (silent en fallback)', () {
+      final problems = <String>[];
+      for (final loc in allLocales) {
+        final missing = enKeys.difference(keys[loc]!);
+        if (missing.isNotEmpty) {
+          problems.add(
+              '$loc missing ${missing.length}: ${missing.take(8).join(", ")}');
+        }
+      }
+      expect(problems, isEmpty, reason: problems.join('\n'));
     });
 
-    test('Russian has all English keys', () {
-      final missingInRu = enKeys.difference(ruKeys);
-      expect(missingInRu, isEmpty,
-          reason:
-              'Russian is missing ${missingInRu.length} keys: ${missingInRu.take(10).join(", ")}');
-    });
-
-    test('English has all Finnish keys', () {
-      final missingInEn = fiKeys.difference(enKeys);
-      expect(missingInEn, isEmpty,
-          reason:
-              'English is missing ${missingInEn.length} keys from Finnish: ${missingInEn.take(10).join(", ")}');
-    });
-
-    test('English has all Russian keys', () {
-      final missingInEn = ruKeys.difference(enKeys);
-      expect(missingInEn, isEmpty,
-          reason:
-              'English is missing ${missingInEn.length} keys from Russian: ${missingInEn.take(10).join(", ")}');
-    });
-
-    test('Estonian has all English keys', () {
-      final missingInEt = enKeys.difference(etKeys);
-      expect(missingInEt, isEmpty,
-          reason:
-              'Estonian is missing ${missingInEt.length} keys: ${missingInEt.take(10).join(", ")}');
-    });
-
-    test('English has all Estonian keys', () {
-      final missingInEn = etKeys.difference(enKeys);
-      expect(missingInEn, isEmpty,
-          reason:
-              'English is missing ${missingInEn.length} keys from Estonian: ${missingInEn.take(10).join(", ")}');
-    });
-
-    test('All four primary locales have the same key set', () {
-      expect(enKeys, equals(fiKeys),
-          reason: 'English and Finnish key sets differ');
-      expect(enKeys, equals(ruKeys),
-          reason: 'English and Russian key sets differ');
-      expect(enKeys, equals(etKeys),
-          reason: 'English and Estonian key sets differ');
+    test('no locale carries a stale key absent from the template', () {
+      final problems = <String>[];
+      for (final loc in allLocales) {
+        final extra = keys[loc]!.difference(enKeys);
+        if (extra.isNotEmpty) {
+          problems.add('$loc extra: ${extra.join(", ")}');
+        }
+      }
+      expect(problems, isEmpty, reason: problems.join('\n'));
     });
   });
 
   group('No empty translation values', () {
-    test('English has no empty values', () {
+    test('every locale value is a non-empty string', () {
+      final problems = <String>[];
+      for (final loc in allLocales) {
+        final arb = arbs[loc]!;
+        for (final key in keys[loc]!) {
+          final v = arb[key];
+          if (v is String && v.isEmpty) {
+            problems.add('$loc."$key" is empty');
+          }
+        }
+      }
+      expect(problems, isEmpty, reason: problems.take(20).join('\n'));
+    });
+  });
+
+  group('ICU placeholder integrity across locales', () {
+    test('each locale preserves the English placeholder set per key', () {
+      final problems = <String>[];
       for (final key in enKeys) {
-        final value = enArb[key];
-        if (value is String) {
-          expect(value.isNotEmpty, isTrue,
-              reason: 'English key "$key" has an empty value');
+        final en = enArb[key];
+        if (en is! String) continue;
+        final want = _placeholders(en);
+        if (want.isEmpty) continue;
+        for (final loc in allLocales) {
+          if (loc == 'en') continue;
+          final v = arbs[loc]![key];
+          if (v is! String) continue;
+          final got = _placeholders(v);
+          if (!want.difference(got).isEmpty) {
+            problems.add(
+                '$loc."$key" lost placeholder(s) ${want.difference(got)} '
+                '(want $want, got $got)');
+          }
         }
       }
-    });
-
-    test('Finnish has no empty values', () {
-      for (final key in fiKeys) {
-        final value = fiArb[key];
-        if (value is String) {
-          expect(value.isNotEmpty, isTrue,
-              reason: 'Finnish key "$key" has an empty value');
-        }
-      }
-    });
-
-    test('Russian has no empty values', () {
-      for (final key in ruKeys) {
-        final value = ruArb[key];
-        if (value is String) {
-          expect(value.isNotEmpty, isTrue,
-              reason: 'Russian key "$key" has an empty value');
-        }
-      }
-    });
-
-    test('Estonian has no empty values', () {
-      for (final key in etKeys) {
-        final value = etArb[key];
-        if (value is String) {
-          expect(value.isNotEmpty, isTrue,
-              reason: 'Estonian key "$key" has an empty value');
-        }
-      }
+      expect(problems, isEmpty, reason: problems.take(20).join('\n'));
     });
   });
 
   group('Key naming conventions', () {
-    test('all keys use camelCase', () {
+    test('all template keys use camelCase', () {
       for (final key in enKeys) {
-        // camelCase: starts with lowercase letter, no underscores, no spaces
         expect(key, matches(RegExp(r'^[a-z][a-zA-Z0-9]*$')),
-            reason: 'Key "$key" is not in camelCase');
+            reason: 'Key "$key" is not camelCase');
       }
     });
   });
 
-  group('Critical UI strings present', () {
-    test('login-related keys exist', () {
-      expect(enKeys, contains('logIn'));
-      expect(enKeys, contains('signIn'));
-      expect(enKeys, contains('email'));
-      expect(enKeys, contains('password'));
-      expect(enKeys, contains('forgotPassword'));
-    });
-
-    test('register-related keys exist', () {
-      expect(enKeys, contains('createAccount'));
-      expect(enKeys, contains('signUp'));
-      expect(enKeys, contains('confirmPassword'));
-      expect(enKeys, contains('fullName'));
-    });
-
-    test('settings-related keys exist', () {
-      expect(enKeys, contains('settings'));
-      expect(enKeys, contains('language'));
-      expect(enKeys, contains('signOut'));
-      expect(enKeys, contains('deleteAccount'));
-    });
-
-    test('navigation-related keys exist', () {
-      expect(enKeys, contains('home'));
-      expect(enKeys, contains('cases'));
-      expect(enKeys, contains('deadlines'));
-      expect(enKeys, contains('settings'));
-    });
-
-    test('checker-related keys exist', () {
-      expect(enKeys, contains('checkCompany'));
-      expect(enKeys, contains('checkVehicle'));
-      expect(enKeys, contains('checkerTitle'));
-    });
-
-    test('document-related keys exist', () {
-      expect(enKeys, contains('documents'));
-      expect(enKeys, contains('scanDocument'));
-      expect(enKeys, contains('uploadDocument'));
-    });
-
-    test('GDPR-related keys exist', () {
-      expect(enKeys, contains('gdprIntro'));
-      expect(enKeys, contains('gdprChat'));
-      expect(enKeys, contains('gdprDocs'));
-      expect(enKeys, contains('gdprStorage'));
-      expect(enKeys, contains('gdprDelete'));
-      expect(enKeys, contains('privacyPolicy'));
-    });
-
-    test('error and feedback keys exist', () {
-      expect(enKeys, contains('error'));
-      expect(enKeys, contains('loading'));
-      expect(enKeys, contains('retry'));
-      expect(enKeys, contains('cancel'));
-      expect(enKeys, contains('confirm'));
-    });
-
-    test('legal entity information keys exist', () {
-      expect(enKeys, contains('legalEntityName'));
-      expect(enKeys, contains('legalRegistryCode'));
-      expect(enKeys, contains('legalAddress'));
-      expect(enKeys, contains('legalEmail'));
+  group('Critical UI strings present in template', () {
+    test('login/register/settings/nav/checker/docs/GDPR/error keys exist', () {
+      const required = <String>[
+        'logIn', 'signIn', 'email', 'password', 'forgotPassword',
+        'createAccount', 'signUp', 'confirmPassword', 'fullName',
+        'settings', 'language', 'signOut', 'deleteAccount',
+        'home', 'cases', 'deadlines',
+        'checkCompany', 'checkVehicle', 'checkerTitle',
+        'documents', 'scanDocument', 'uploadDocument',
+        'gdprIntro', 'gdprChat', 'gdprDocs', 'gdprStorage', 'gdprDelete',
+        'privacyPolicy',
+        'error', 'loading', 'retry', 'cancel', 'confirm',
+        'legalEntityName', 'legalRegistryCode', 'legalAddress', 'legalEmail',
+      ];
+      for (final key in required) {
+        expect(enKeys, contains(key), reason: 'missing critical key "$key"');
+      }
     });
   });
 
   group('Metadata integrity for parameterized strings', () {
-    test('all parameterized English strings have @-metadata', () {
-      // Strings with {param} placeholders should have corresponding @key metadata
+    test('every parameterized English string has @-metadata', () {
       final metaKeys = _metadataKeys(enArb);
       for (final key in enKeys) {
         final value = enArb[key];
         if (value is String && value.contains(RegExp(r'\{[a-zA-Z]+\}'))) {
-          final metaKey = '@$key';
-          expect(metaKeys, contains(metaKey),
-              reason:
-                  'Parameterized key "$key" is missing @-metadata entry');
+          expect(metaKeys, contains('@$key'),
+              reason: 'Parameterized key "$key" missing @-metadata');
         }
       }
     });
   });
 
   group('Reasonable translation lengths', () {
-    test('no translation is excessively long (>2000 chars)', () {
-      for (final key in enKeys) {
-        final value = enArb[key];
-        if (value is String) {
-          expect(value.length, lessThan(2000),
-              reason: 'English key "$key" is excessively long: ${value.length} chars');
+    test('no translation exceeds 2000 chars', () {
+      for (final loc in allLocales) {
+        final arb = arbs[loc]!;
+        for (final key in keys[loc]!) {
+          final v = arb[key];
+          if (v is String) {
+            expect(v.length, lessThan(2000),
+                reason: '$loc."$key" excessively long: ${v.length}');
+          }
         }
       }
     });

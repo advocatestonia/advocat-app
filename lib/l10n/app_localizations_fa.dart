@@ -63,23 +63,23 @@ class AppLocalizationsFa extends AppLocalizations {
   String get analyzing => 'در حال تحلیل…';
 
   @override
-  String get aiAnalyzing => 'AI is analyzing';
+  String get aiAnalyzing => 'هوش مصنوعی در حال تحلیل است';
 
   @override
   String get speakIntoMicHint =>
-      'Speak into the microphone. Make sure microphone access is enabled.';
+      'در میکروفون صحبت کنید. مطمئن شوید دسترسی به میکروفون فعال است.';
 
   @override
   String get aiErrorRateLimit =>
-      'The service is temporarily overloaded. Please try again in 1-2 minutes.';
+      'سرویس موقتاً بیش از حد بارگذاری شده است. لطفاً ۱ تا ۲ دقیقه دیگر دوباره تلاش کنید.';
 
   @override
   String get aiErrorOverload =>
-      'The AI is busy right now, please try again in a minute.';
+      'هوش مصنوعی هم‌اکنون مشغول است، لطفاً یک دقیقه دیگر دوباره تلاش کنید.';
 
   @override
   String freeLimitReached(int count) {
-    return 'You have used all $count free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!';
+    return 'شما از تمام $count پیام رایگان هوش مصنوعی استفاده کرده‌اید. برای دستیار حقوقی نامحدود به Legal Counsel ارتقا دهید!';
   }
 
   @override
@@ -191,11 +191,11 @@ class AppLocalizationsFa extends AppLocalizations {
   String get continueWithGoogle => 'ادامه با Google';
 
   @override
-  String get appleComingSoon => 'Coming soon';
+  String get appleComingSoon => 'به‌زودی';
 
   @override
   String get appleComingSoonMessage =>
-      'Apple Sign-In becomes available soon. Use Google or email to continue.';
+      'ورود با Apple به‌زودی در دسترس خواهد بود. برای ادامه از Google یا ایمیل استفاده کنید.';
 
   @override
   String get copyText => 'کپی متن';
@@ -614,31 +614,31 @@ class AppLocalizationsFa extends AppLocalizations {
   String get privacyPolicy => 'سیاست حفظ حریم خصوصی';
 
   @override
-  String get dpaTitle => 'Data Processing Agreement';
+  String get dpaTitle => 'قرارداد پردازش داده‌ها';
 
   @override
-  String get dpaCheckoutGateTitle => 'Before you upgrade';
+  String get dpaCheckoutGateTitle => 'پیش از ارتقا';
 
   @override
   String get dpaCheckoutGateBody =>
-      'EU law (GDPR Art. 28) requires us to sign a Data Processing Agreement with every paying customer. Please review and accept.';
+      'قانون اتحادیه اروپا (ماده ۲۸ GDPR) ما را ملزم می‌کند که با هر مشتری پرداخت‌کننده یک قرارداد پردازش داده‌ها امضا کنیم. لطفاً آن را بررسی و بپذیرید.';
 
   @override
-  String get dpaViewLink => 'View Data Processing Agreement';
+  String get dpaViewLink => 'مشاهده قرارداد پردازش داده‌ها';
 
   @override
   String get dpaCheckboxLabel =>
-      'I have read and accept the Data Processing Agreement (v1.0).';
+      'قرارداد پردازش داده‌ها (نسخه ۱.۰) را خوانده‌ام و می‌پذیرم.';
 
   @override
-  String get dpaCancel => 'Cancel';
+  String get dpaCancel => 'لغو';
 
   @override
-  String get dpaAcceptAndContinue => 'Accept and continue';
+  String get dpaAcceptAndContinue => 'پذیرفتن و ادامه';
 
   @override
   String get dpaOpenHint =>
-      'Open the DPA at least once to enable the Accept button.';
+      'برای فعال شدن دکمه پذیرش، حداقل یک بار DPA را باز کنید.';
 
   @override
   String get pro => 'حرفه‌ای';
@@ -650,10 +650,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get rateUs => 'به ما امتیاز دهید';
 
   @override
-  String get rateAppComingSoon => 'Coming to app stores soon!';
+  String get rateAppComingSoon => 'به‌زودی در فروشگاه‌های برنامه!';
 
   @override
-  String get dataCopiedToClipboard => 'Data copied to clipboard';
+  String get dataCopiedToClipboard => 'داده‌ها در کلیپ‌بورد کپی شد';
 
   @override
   String get readingDocument => 'در حال خواندن سند…';
@@ -1249,54 +1249,54 @@ class AppLocalizationsFa extends AppLocalizations {
   String get caseInfoUpdated => 'اطلاعات پرونده آخرین بار به‌روزرسانی شد.';
 
   @override
-  String get noEventsForFilter => 'No events match this filter';
+  String get noEventsForFilter => 'هیچ رویدادی با این فیلتر مطابقت ندارد';
 
   @override
-  String get timelineFilterAll => 'All';
+  String get timelineFilterAll => 'همه';
 
   @override
-  String get timelineFilterEmails => 'Emails';
+  String get timelineFilterEmails => 'ایمیل‌ها';
 
   @override
-  String get timelineFilterConsilium => 'AI decisions';
+  String get timelineFilterConsilium => 'تصمیمات هوش مصنوعی';
 
   @override
-  String get timelineFilterDeadlines => 'Deadlines';
+  String get timelineFilterDeadlines => 'مهلت‌ها';
 
   @override
-  String get timelineFilterNotes => 'Notes';
+  String get timelineFilterNotes => 'یادداشت‌ها';
 
   @override
-  String get timelineEventEmailIn => 'Email received';
+  String get timelineEventEmailIn => 'ایمیل دریافت شد';
 
   @override
-  String get timelineEventEmailOut => 'Email sent';
+  String get timelineEventEmailOut => 'ایمیل ارسال شد';
 
   @override
-  String get timelineEventConsiliumDecision => 'AI decision';
+  String get timelineEventConsiliumDecision => 'تصمیم هوش مصنوعی';
 
   @override
-  String get timelineEventDeadlineSet => 'Deadline';
+  String get timelineEventDeadlineSet => 'مهلت';
 
   @override
-  String get timelineEventDocUploaded => 'Document';
+  String get timelineEventDocUploaded => 'سند';
 
   @override
-  String get timelineEventPhaseChange => 'Phase change';
+  String get timelineEventPhaseChange => 'تغییر مرحله';
 
   @override
-  String get timelineEventManualNote => 'Note';
+  String get timelineEventManualNote => 'یادداشت';
 
   @override
-  String get timelineJustNow => 'Just now';
+  String get timelineJustNow => 'همین حالا';
 
   @override
   String timelineMinutesAgo(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count minutes ago',
-      one: '1 minute ago',
+      other: '$count دقیقه پیش',
+      one: '۱ دقیقه پیش',
     );
     return '$_temp0';
   }
@@ -1306,8 +1306,8 @@ class AppLocalizationsFa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count hours ago',
-      one: '1 hour ago',
+      other: '$count ساعت پیش',
+      one: '۱ ساعت پیش',
     );
     return '$_temp0';
   }
@@ -1317,8 +1317,8 @@ class AppLocalizationsFa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days ago',
-      one: '1 day ago',
+      other: '$count روز پیش',
+      one: '۱ روز پیش',
     );
     return '$_temp0';
   }
@@ -1587,10 +1587,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get gmailReauthBannerBody =>
-      'Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.';
+      'Advocat نسخه ۲.۱ صندوق ورودی شما را برای پیش‌نویس پاسخ‌ها می‌خواند؛ هر زمان می‌توانید دسترسی را لغو کنید. برای فعال‌سازی غربالگری فعال، Gmail را دوباره وصل کنید.';
 
   @override
-  String get gmailReauthBannerCta => 'Reauthorize';
+  String get gmailReauthBannerCta => 'تأیید مجدد دسترسی';
 
   @override
   String connectedTo(String email) {
@@ -1654,26 +1654,25 @@ class AppLocalizationsFa extends AppLocalizations {
   String get priorityProcessing => 'پردازش اولویت‌دار';
 
   @override
-  String get fiveAiMessagesTotal => '5 AI messages (lifetime)';
+  String get fiveAiMessagesTotal => '۵ پیام هوش مصنوعی (مادام‌العمر)';
 
   @override
-  String get hundredAiMessagesDay => '100 AI messages/day';
+  String get hundredAiMessagesDay => '۱۰۰ پیام هوش مصنوعی در روز';
 
   @override
-  String get unlimitedAiMessages => 'Unlimited AI messages';
+  String get unlimitedAiMessages => 'پیام‌های نامحدود هوش مصنوعی';
 
   @override
-  String get voiceInput => 'Voice input';
+  String get voiceInput => 'ورودی صوتی';
 
   @override
-  String get strategyRecommendations => 'Strategy recommendations';
+  String get strategyRecommendations => 'توصیه‌های راهبردی';
 
   @override
-  String get foundingMemberNote =>
-      'Founding Member: 9.99€/mo for first 3 months';
+  String get foundingMemberNote => 'عضو مؤسس: ۹.۹۹ یورو در ماه برای ۳ ماه نخست';
 
   @override
-  String get saveTwentyPercent => 'Save 20%';
+  String get saveTwentyPercent => '۲۰٪ صرفه‌جویی';
 
   @override
   String get forever => 'برای همیشه';
@@ -1789,53 +1788,50 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get gdprConsentAiProcessing =>
-      'I agree to the processing of my data for AI legal assistance (required)';
+      'با پردازش داده‌هایم برای دستیار حقوقی هوش مصنوعی موافقم (الزامی)';
 
   @override
   String get gdprConsentAnalytics =>
-      'I agree to analytics to improve the service (optional)';
+      'با تحلیل داده‌ها برای بهبود سرویس موافقم (اختیاری)';
 
   @override
   String get gdprArt9Intro =>
-      'This app processes special category personal data under GDPR Article 9, including:';
+      'این برنامه داده‌های شخصی دسته‌های ویژه را طبق ماده ۹ GDPR پردازش می‌کند، از جمله:';
 
   @override
-  String get gdprSpecialLegalCases =>
-      'Your legal case details and court documents';
+  String get gdprSpecialLegalCases => 'جزئیات پرونده حقوقی و اسناد دادگاهی شما';
 
   @override
-  String get gdprSpecialNationality => 'Nationality and immigration status';
+  String get gdprSpecialNationality => 'ملیت و وضعیت مهاجرتی';
 
   @override
   String get gdprConsentLegalData =>
-      'I consent to the processing of my legal case data, nationality, and immigration status by AI (required)';
+      'با پردازش داده‌های پرونده حقوقی، ملیت و وضعیت مهاجرتی‌ام توسط هوش مصنوعی موافقم (الزامی)';
 
   @override
-  String get gdprConsentVoice =>
-      'I consent to voice recording processing (optional)';
+  String get gdprConsentVoice => 'با پردازش ضبط صدا موافقم (اختیاری)';
 
   @override
-  String get gdprViewPrivacyPolicy => 'View Privacy Policy';
+  String get gdprViewPrivacyPolicy => 'مشاهده سیاست حریم خصوصی';
 
   @override
-  String get legalInformation => 'Legal Information';
+  String get legalInformation => 'اطلاعات حقوقی';
 
   @override
   String get legalEntityName => 'Vorantis OÜ';
 
   @override
-  String get legalRegistryCode => 'Registry code: 17098992';
+  String get legalRegistryCode => 'کد ثبت: 17098992';
 
   @override
   String get legalAddress =>
       'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145';
 
   @override
-  String get legalEmail => 'Email: support@advocat.ee';
+  String get legalEmail => 'ایمیل: support@advocat.ee';
 
   @override
-  String get legalRegistry =>
-      'Registered in Estonian Commercial Register (Äriregister)';
+  String get legalRegistry => 'ثبت‌شده در دفتر ثبت تجاری استونی (Äriregister)';
 
   @override
   String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
@@ -2075,92 +2071,91 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get domesticViolenceDesc =>
-      'Victim rights, emergency help, restraining orders';
+      'حقوق قربانی، کمک اضطراری، احکام منع نزدیکی';
 
   @override
   String get rightCallEmergency =>
-      'You have the right to call 112 in any emergency — police, ambulance, fire';
+      'شما حق دارید در هر شرایط اضطراری با ۱۱۲ تماس بگیرید — پلیس، آمبولانس، آتش‌نشانی';
 
   @override
   String get rightVictimProtection =>
-      'As a victim, you have the right to protection, support, and information about your case';
+      'به‌عنوان قربانی، شما حق محافظت، حمایت و دریافت اطلاعات درباره پرونده خود را دارید';
 
   @override
   String get rightRestrainingOrder =>
-      'You can apply for a restraining order (lähestymiskielto) to keep the abuser away';
+      'می‌توانید برای دور نگه داشتن آزاردهنده درخواست حکم منع نزدیکی (lähestymiskielto) دهید';
 
   @override
   String get rightVictimInterpreter =>
-      'You have the right to an interpreter during all legal proceedings';
+      'شما در تمام مراحل قانونی حق داشتن مترجم را دارید';
 
   @override
   String get rightMedicalHelp =>
-      'You have the right to immediate medical treatment and documentation of injuries';
+      'شما حق درمان فوری پزشکی و مستندسازی آسیب‌ها را دارید';
 
   @override
   String get rightShelter =>
-      'You have the right to emergency shelter — contact a shelter or social services';
+      'شما حق سرپناه اضطراری را دارید — با یک پناهگاه یا خدمات اجتماعی تماس بگیرید';
 
   @override
   String get mustReportDanger =>
-      'If someone is in immediate danger, call 112 immediately';
+      'اگر کسی در خطر فوری است، بلافاصله با ۱۱۲ تماس بگیرید';
 
   @override
   String get mustDocumentInjuries =>
-      'Document all injuries — photos, medical records, written notes';
+      'تمام آسیب‌ها را مستند کنید — عکس، سوابق پزشکی، یادداشت‌های کتبی';
 
   @override
   String get domesticActionCallEmergency =>
-      'Call 112 if you are in immediate danger';
+      'اگر در خطر فوری هستید با ۱۱۲ تماس بگیرید';
 
   @override
   String get domesticActionGoToSafe =>
-      'Go to a safe place — shelter, friend, public place';
+      'به مکانی امن بروید — پناهگاه، دوست، مکان عمومی';
 
   @override
   String get domesticActionDocumentEverything =>
-      'Document injuries: take photos, get medical records';
+      'آسیب‌ها را مستند کنید: عکس بگیرید، سوابق پزشکی تهیه کنید';
 
   @override
   String get domesticActionFilePoliceReport =>
-      'File a police report — you can do this later too';
+      'شکایت پلیسی ثبت کنید — می‌توانید این کار را بعداً هم انجام دهید';
 
   @override
   String get domesticActionContactShelter =>
-      'Contact a shelter or crisis helpline';
+      'با یک پناهگاه یا خط تلفن بحران تماس بگیرید';
 
   @override
   String get domesticActionApplyRestraining =>
-      'Apply for a restraining order through police or court';
+      'از طریق پلیس یا دادگاه درخواست حکم منع نزدیکی دهید';
 
   @override
   String get domesticFactRestrainingOrder =>
-      'In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.';
+      'در فنلاند، حکم منع نزدیکی (lähestymiskielto) می‌تواند حتی بدون پرونده کیفری صادر شود. این حکم فرد را از تماس یا نزدیک شدن به شما منع می‌کند.';
 
   @override
   String get domesticFactVictimDirective =>
-      'Under EU Victims\' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.';
+      'طبق دستورالعمل قربانیان اتحادیه اروپا 2012/29/EU، شما حق دارید با احترام با شما رفتار شود، اطلاعات را به زبانی که می‌فهمید دریافت کنید و به خدمات حمایت از قربانیان دسترسی داشته باشید — صرف‌نظر از وضعیت اقامت شما.';
 
   @override
   String get domesticDeadlinePoliceReport =>
-      'File police report — no strict deadline, but sooner is better for evidence';
+      'ثبت شکایت پلیسی — مهلت سختگیرانه‌ای ندارد، اما هرچه زودتر برای حفظ شواهد بهتر است';
 
   @override
   String get domesticDeadlineRestraining =>
-      'Restraining order — can be applied for at any time';
+      'حکم منع نزدیکی — در هر زمان قابل درخواست است';
 
   @override
-  String get contactEmergency => 'Emergency Number';
+  String get contactEmergency => 'شماره اضطراری';
 
   @override
-  String get contactShelter => 'Turvakoti (Shelter) Helpline';
+  String get contactShelter => 'خط تلفن پناهگاه (Turvakoti)';
 
   @override
-  String get contactCrisisHelpline => 'Crisis Helpline (Kriisipuhelin)';
+  String get contactCrisisHelpline => 'خط تلفن بحران (Kriisipuhelin)';
 
   @override
-  String get contactNollaLinja =>
-      'Nollalinja — Violence Against Women Helpline';
+  String get contactNollaLinja => 'Nollalinja — خط تلفن خشونت علیه زنان';
 
   @override
   String get inheritance => 'ارث';
@@ -2234,81 +2229,81 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get consumerProtectionDesc =>
-      'Fraud, defective products, returns, deceptive sellers';
+      'کلاهبرداری، محصولات معیوب، مرجوعی، فروشندگان فریبکار';
 
   @override
   String get rightReturnOnline =>
-      'You have 14 days to cancel online purchases without reason (EU right of withdrawal)';
+      'شما ۱۴ روز فرصت دارید خریدهای آنلاین را بدون دلیل لغو کنید (حق انصراف اتحادیه اروپا)';
 
   @override
   String get rightDefectiveProduct =>
-      'If a product is defective, you have the right to repair, replacement, or refund';
+      'اگر محصولی معیوب است، شما حق تعمیر، تعویض یا بازپرداخت را دارید';
 
   @override
   String get rightClearPricing =>
-      'Sellers must display clear prices including all fees — hidden costs are illegal';
+      'فروشندگان باید قیمت‌های شفاف شامل تمام هزینه‌ها را نمایش دهند — هزینه‌های پنهان غیرقانونی هستند';
 
   @override
   String get rightComplainBoard =>
-      'You can file a free complaint with the Consumer Disputes Board';
+      'می‌توانید به‌صورت رایگان شکایتی به هیئت اختلافات مصرف‌کننده ثبت کنید';
 
   @override
   String get rightProtectionFraud =>
-      'You are protected against unfair commercial practices and fraud';
+      'شما در برابر شیوه‌های تجاری ناعادلانه و کلاهبرداری محافظت می‌شوید';
 
   @override
   String get mustKeepReceipts =>
-      'Keep all receipts, contracts, and communication with sellers';
+      'تمام رسیدها، قراردادها و مکاتبات با فروشندگان را نگه دارید';
 
   @override
   String get mustActTimely =>
-      'Report defects to the seller within a reasonable time after discovery';
+      'نقص‌ها را در زمان معقولی پس از کشف به فروشنده گزارش دهید';
 
   @override
   String get consumerActionKeepEvidence =>
-      'Keep receipts, screenshots, emails, and all proof of purchase';
+      'رسیدها، تصاویر صفحه، ایمیل‌ها و تمام مدارک خرید را نگه دارید';
 
   @override
   String get consumerActionContactSeller =>
-      'Contact the seller first — explain the problem in writing';
+      'ابتدا با فروشنده تماس بگیرید — مشکل را به‌صورت کتبی توضیح دهید';
 
   @override
   String get consumerActionFileComplaint =>
-      'File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)';
+      'شکایتی به هیئت اختلافات مصرف‌کننده (kuluttajariitalautakunta) ثبت کنید';
 
   @override
   String get consumerActionContactAuthority =>
-      'Contact the Consumer Advisory Services for free help';
+      'برای کمک رایگان با خدمات مشاوره مصرف‌کننده تماس بگیرید';
 
   @override
   String get consumerActionReportFraud =>
-      'Report fraud to the police and Consumer Ombudsman';
+      'کلاهبرداری را به پلیس و دادستان مصرف‌کننده گزارش دهید';
 
   @override
   String get consumerFactWithdrawal =>
-      'Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.';
+      'طبق دستورالعمل حقوق مصرف‌کننده اتحادیه اروپا 2011/83/EU، شما ۱۴ روز فرصت دارید از هر خرید آنلاین یا از راه دور انصراف دهید — بدون هیچ پرسشی. فروشنده باید ظرف ۱۴ روز مبلغ را بازپرداخت کند.';
 
   @override
   String get consumerFactWarranty =>
-      'In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.';
+      'در فنلاند، فروشنده برای مدت معقولی (اغلب ۲ سال یا بیشتر) مسئول نقص‌های محصول است. این مستقل از هرگونه گارانتی سازنده است.';
 
   @override
   String get consumerDeadlineWithdrawal =>
-      'Online purchase withdrawal — 14 days from delivery';
+      'انصراف از خرید آنلاین — ۱۴ روز از زمان تحویل';
 
   @override
   String get consumerDeadlineDefect =>
-      'Report defect to seller — within 2 months of discovery (recommended)';
+      'گزارش نقص به فروشنده — ظرف ۲ ماه از کشف (توصیه‌شده)';
 
   @override
-  String get contactConsumerAdvisory => 'Consumer Advisory Services';
+  String get contactConsumerAdvisory => 'خدمات مشاوره مصرف‌کننده';
 
   @override
   String get contactConsumerOmbudsman =>
-      'Consumer Ombudsman (Kuluttaja-asiamies)';
+      'دادستان مصرف‌کننده (Kuluttaja-asiamies)';
 
   @override
-  String get contactConsumerDisputesBoardDirect => 'Consumer Disputes Board';
+  String get contactConsumerDisputesBoardDirect => 'هیئت اختلافات مصرف‌کننده';
 
   @override
   String get caseTypeStepLabel => 'Case Type';
@@ -2462,164 +2457,162 @@ class AppLocalizationsFa extends AppLocalizations {
   String get chatDisclaimerGotIt => 'Got it';
 
   @override
-  String get categoryChildren => 'Children';
+  String get categoryChildren => 'کودکان';
 
   @override
-  String get categoryDigital => 'Digital';
+  String get categoryDigital => 'دیجیتال';
 
   @override
-  String get childrenRights => 'Children\'s Rights & Alimony';
+  String get childrenRights => 'حقوق کودکان و نفقه';
 
   @override
-  String get childrenRightsDesc =>
-      'Child support, alimony, protection, state guarantees';
+  String get childrenRightsDesc => 'نفقه فرزند، نفقه، حمایت، تضمین‌های دولتی';
 
   @override
-  String get cyberbullying => 'Cyberbullying & Online Harassment';
+  String get cyberbullying => 'قلدری سایبری و آزار آنلاین';
 
   @override
-  String get cyberbullyingDesc =>
-      'Threats, privacy violations, defamation online';
+  String get cyberbullyingDesc => 'تهدید، نقض حریم خصوصی، افترا در فضای آنلاین';
 
   @override
   String get rightChildSupport =>
-      'Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)';
+      'هر دو والد از نظر قانونی موظف به حمایت مالی از فرزند خود هستند (Perekonnaseadus § 100–102)';
 
   @override
   String get rightMinimumAlimony =>
-      'Minimum child support in Estonia: base amount (€295.86) + 3% of previous year\'s average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee';
+      'حداقل نفقه فرزند در استونی: مبلغ پایه (€295.86) + ۳٪ میانگین حقوق ناخالص سال گذشته (PKS § 101). از 01.04.2026 — €318.62 در ماه برای هر فرزند. هر سال در اول آوریل به‌روزرسانی می‌شود. ماشین‌حساب: alimendid.ee';
 
   @override
   String get rightCourtAlimony =>
-      'You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400';
+      'می‌توانید از طریق دادگاه شهرستان (maakohus) درخواست نفقه دهید — برای ادعاهای تا €6,400 نیازی به وکیل نیست';
 
   @override
   String get rightBailiffEnforcement =>
-      'If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment';
+      'اگر والد از پرداخت خودداری کند، یک مأمور اجرا (kohtutäitur) می‌تواند حکم دادگاه را اجرا کند، از جمله توقیف حقوق';
 
   @override
   String get rightStateAlimonyGuarantee =>
-      'If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child';
+      'اگر والد پرداخت نکند، دولت از طریق Sotsiaalkindlustusamet کمک‌هزینه نفقه (elatisabi) ارائه می‌دهد — تا €100 در ماه برای هر فرزند';
 
   @override
   String get rightChildEducation =>
-      'Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)';
+      'هر کودکی حق آموزش، مراقبت بهداشتی و محافظت در برابر سوءاستفاده را دارد (Lastekaitseseadus § 4–5)';
 
   @override
   String get rightChildContact =>
-      'A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)';
+      'کودک حق دارد ارتباط خود را با هر دو والد حفظ کند مگر اینکه دادگاه طور دیگری تصمیم بگیرد (PKS § 143)';
 
   @override
   String get mustFileCourtClaim =>
-      'To receive alimony, you must file a claim at court or agree on the amount in writing';
+      'برای دریافت نفقه، باید در دادگاه دعوا اقامه کنید یا مبلغ را به‌صورت کتبی توافق کنید';
 
   @override
   String get mustNotifyAddressChange =>
-      'Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi';
+      'اگر elatisabi دریافت می‌کنید، تغییرات آدرس را به Sotsiaalkindlustusamet اطلاع دهید';
 
   @override
   String get childrenActionGatherDocs =>
-      'Gather child\'s birth certificate, your ID, and proof of expenses';
+      'گواهی تولد فرزند، کارت شناسایی خود و مدارک هزینه‌ها را جمع‌آوری کنید';
 
   @override
   String get childrenActionFileCourtClaim =>
-      'File an alimony claim at the county court (maakohus) — can be done online via e-toimik';
+      'دعوای نفقه را در دادگاه شهرستان (maakohus) اقامه کنید — می‌تواند آنلاین از طریق e-toimik انجام شود';
 
   @override
   String get childrenActionApplyElatisabi =>
-      'Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won\'t pay';
+      'اگر والد پرداخت نکند، در Sotsiaalkindlustusamet برای تضمین نفقه دولتی (elatisabi) درخواست دهید';
 
   @override
   String get childrenActionContactBailiff =>
-      'Contact a bailiff (kohtutäitur) to enforce the court order';
+      'برای اجرای حکم دادگاه با یک مأمور اجرا (kohtutäitur) تماس بگیرید';
 
   @override
   String get childrenActionCallLasteabi =>
-      'Call Lasteabi 116 111 for children\'s helpline — free, 24/7';
+      'با خط تلفن کودکان Lasteabi 116 111 تماس بگیرید — رایگان، ۲۴ ساعته';
 
   @override
   String get childrenDeadlineElatisabi =>
-      'Apply for elatisabi — after court order, no strict deadline but process takes time';
+      'درخواست elatisabi — پس از حکم دادگاه، مهلت سختگیرانه‌ای ندارد اما فرایند زمان‌بر است';
 
   @override
   String get childrenDeadlineCourt =>
-      'Alimony can be claimed retroactively for up to 1 year before court filing';
+      'نفقه را می‌توان به‌صورت گذشته‌نگر تا ۱ سال پیش از ثبت در دادگاه مطالبه کرد';
 
   @override
   String get childrenFactMinimum =>
-      'From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year\'s average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee';
+      'از 01.04.2026 حداقل نفقه فرزند €318.62 در ماه برای هر فرزند است. فرمول: مبلغ پایه (€295.86) + ۳٪ میانگین حقوق ناخالص سال گذشته. هر سال در اول آوریل به‌روزرسانی می‌شود. یک والد نمی‌تواند توافق کند کمتر بپردازد. ماشین‌حساب: alimendid.ee';
 
   @override
   String get childrenFactElatisabi =>
-      'Estonia\'s state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent.';
+      'تضمین نفقه دولتی استونی (elatisabi) در سال ۲۰۱۷ برای محافظت از کودکان هنگامی که یک والد از پرداخت خودداری می‌کند، معرفی شد. دولت پرداخت می‌کند و سپس مبلغ را از والد بدهکار بازپس می‌گیرد.';
 
   @override
   String get rightReportCybercrime =>
-      'You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)';
+      'شما حق دارید تهدیدهای آنلاین، آزار و سرقت هویت را به پلیس گزارش دهید (Karistusseadustik § 120, § 157¹)';
 
   @override
   String get rightContentRemoval =>
-      'You can request removal of defamatory or private content from platforms and demand takedown under GDPR';
+      'می‌توانید درخواست حذف محتوای افتراآمیز یا خصوصی از پلتفرم‌ها را داشته باشید و طبق GDPR خواستار حذف آن شوید';
 
   @override
   String get rightMoralDamageCompensation =>
-      'You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)';
+      'می‌توانید برای خسارت معنوی ناشی از قلدری سایبری مطالبه غرامت کنید (Võlaõigusseadus § 1043–1055)';
 
   @override
   String get rightPrivacyProtection =>
-      'Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)';
+      'حریم خصوصی شما محافظت می‌شود — اشتراک‌گذاری غیرمجاز عکس‌ها، پیام‌ها یا داده‌های شخصی شما غیرقانونی است (KarS § 157)';
 
   @override
   String get rightDataProtection =>
-      'Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon';
+      'نقض حفاظت از داده‌ها (استفاده غیرمجاز از داده‌های شما) را به Andmekaitse Inspektsioon گزارش دهید';
 
   @override
   String get rightDefamationAction =>
-      'Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)';
+      'افترا (laimamine) یک تخلف مدنی است — می‌توانید برای خسارت شکایت کنید و خواستار عذرخواهی عمومی شوید (KarS § 247 (لغوشده)، VÕS § 1047)';
 
   @override
   String get mustCollectEvidence =>
-      'Collect and preserve all evidence — screenshots, links, dates, and witness information';
+      'تمام شواهد را جمع‌آوری و حفظ کنید — تصاویر صفحه، لینک‌ها، تاریخ‌ها و اطلاعات شاهدان';
 
   @override
   String get mustNotRetaliate =>
-      'Do not retaliate or engage in counter-harassment — it may weaken your case';
+      'تلافی نکنید یا در آزار متقابل شرکت نکنید — ممکن است پرونده شما را تضعیف کند';
 
   @override
   String get cyberActionScreenshots =>
-      'Take screenshots of all harassment — save URLs, dates, usernames, and content';
+      'از تمام موارد آزار تصویر صفحه بگیرید — نشانی‌های اینترنتی، تاریخ‌ها، نام‌های کاربری و محتوا را ذخیره کنید';
 
   @override
   String get cyberActionReportPolice =>
-      'File a police report at the nearest station or online at politsei.ee';
+      'در نزدیک‌ترین کلانتری یا به‌صورت آنلاین در politsei.ee شکایت پلیسی ثبت کنید';
 
   @override
   String get cyberActionReportPlatform =>
-      'Report the content to the social media platform for removal';
+      'محتوا را برای حذف به پلتفرم رسانه اجتماعی گزارش دهید';
 
   @override
   String get cyberActionContactDPA =>
-      'Contact Andmekaitse Inspektsioon if your personal data was misused';
+      'اگر از داده‌های شخصی شما سوءاستفاده شده است، با Andmekaitse Inspektsioon تماس بگیرید';
 
   @override
   String get cyberActionConsultLawyer =>
-      'Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi';
+      'درباره خسارات مدنی با یک وکیل مشورت کنید — کمک حقوقی رایگان از طریق Riigi Õigusabi در دسترس است';
 
   @override
   String get cyberDeadlineCriminal =>
-      'Criminal complaint — no strict deadline, but report promptly for best results';
+      'شکایت کیفری — مهلت سختگیرانه‌ای ندارد، اما برای بهترین نتیجه سریع گزارش دهید';
 
   @override
   String get cyberDeadlineCivil =>
-      'Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)';
+      'دعوای مدنی برای خسارت — تا ۳ سال از زمانی که از تخلف مطلع شدید (TsÜS § 150)';
 
   @override
   String get cyberFactPrivacy =>
-      'In Estonia, unauthorized sharing of someone\'s intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).';
+      'در استونی، اشتراک‌گذاری غیرمجاز تصاویر خصوصی فرد می‌تواند طبق Karistusseadustik § 157¹ (نقض حریم خصوصی) تا ۳ سال زندان در پی داشته باشد.';
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the “right to be forgotten” — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'طبق GDPR، شما «حق فراموش شدن» را دارید — پلتفرم‌ها باید در صورت درخواست، داده‌های شخصی شما را حذف کنند، مگر اینکه مبنای قانونی برای نگه‌داشتن آن وجود داشته باشد.';
 
   @override
   String get guestUser => 'مهمان';
@@ -2697,408 +2690,406 @@ class AppLocalizationsFa extends AppLocalizations {
   String get backToChat => 'بازگشت به چت';
 
   @override
-  String get upgradeBannerTitle => 'Upgrade for unlimited consultations';
+  String get upgradeBannerTitle => 'برای مشاوره‌های نامحدود ارتقا دهید';
 
   @override
-  String get upgradeBannerCta => 'Upgrade';
+  String get upgradeBannerCta => 'ارتقا';
 
   @override
-  String get paymentSuccessTitle => 'Payment successful';
+  String get paymentSuccessTitle => 'پرداخت موفق';
 
   @override
-  String get paymentSuccessBody => 'Your subscription is now active.';
+  String get paymentSuccessBody => 'اشتراک شما اکنون فعال است.';
 
   @override
-  String get commonOk => 'OK';
+  String get commonOk => 'تأیید';
 
   @override
-  String get feedbackThumbsUpLabel => 'Helpful';
+  String get feedbackThumbsUpLabel => 'مفید';
 
   @override
-  String get feedbackThumbsDownLabel => 'Not helpful';
+  String get feedbackThumbsDownLabel => 'غیرمفید';
 
   @override
-  String get feedbackCommentPrompt => 'What was wrong?';
+  String get feedbackCommentPrompt => 'چه چیزی اشتباه بود؟';
 
   @override
-  String get feedbackSend => 'Send';
+  String get feedbackSend => 'ارسال';
 
   @override
-  String get feedbackCancel => 'Cancel';
+  String get feedbackCancel => 'لغو';
 
   @override
-  String get reasoningPillIdle => 'Thinking…';
+  String get reasoningPillIdle => 'در حال فکر کردن…';
 
   @override
-  String get reasoningPillSearchingLaw => 'Searching Estonian law…';
+  String get reasoningPillSearchingLaw => 'در حال جستجوی قانون استونی…';
 
   @override
-  String get reasoningPillSearchingWeb => 'Searching the web…';
+  String get reasoningPillSearchingWeb => 'در حال جستجوی وب…';
 
   @override
-  String get reasoningPillCheckingCompany => 'Checking company registry…';
+  String get reasoningPillCheckingCompany => 'در حال بررسی دفتر ثبت شرکت‌ها…';
 
   @override
-  String get reasoningPillCheckingVehicle => 'Checking vehicle registry…';
+  String get reasoningPillCheckingVehicle => 'در حال بررسی دفتر ثبت خودرو…';
 
   @override
-  String get reasoningPillReadingDocument => 'Reading your document…';
+  String get reasoningPillReadingDocument => 'در حال خواندن سند شما…';
 
   @override
-  String get reasoningPillDrafting => 'Drafting the document…';
+  String get reasoningPillDrafting => 'در حال تنظیم پیش‌نویس سند…';
 
   @override
-  String get reasoningPillPreparingEmail => 'Preparing email…';
+  String get reasoningPillPreparingEmail => 'در حال آماده‌سازی ایمیل…';
 
   @override
-  String get reasoningPillFindingLawyer => 'Looking up lawyers…';
+  String get reasoningPillFindingLawyer => 'در حال جستجوی وکلا…';
 
   @override
-  String get reasoningPillThinking => 'Reasoning through your case…';
+  String get reasoningPillThinking => 'در حال تحلیل پرونده شما…';
 
   @override
-  String get reasoningPillFinalising => 'Composing your answer…';
+  String get reasoningPillFinalising => 'در حال نگارش پاسخ شما…';
 
   @override
   String reasoningCollapsedFormat(int sec, int sources) {
-    return 'Reasoned for ${sec}s · $sources sources';
+    return '$sec ثانیه استدلال · $sources منبع';
   }
 
   @override
-  String get reasoningExpandHint => 'tap to see steps';
+  String get reasoningExpandHint => 'برای دیدن مراحل ضربه بزنید';
 
   @override
-  String get caseFileTitle => 'Case File';
+  String get caseFileTitle => 'پرونده';
 
   @override
-  String get caseFileTimeline => 'Timeline';
+  String get caseFileTimeline => 'خط زمانی';
 
   @override
-  String get caseFileParties => 'Parties';
+  String get caseFileParties => 'طرف‌ها';
 
   @override
-  String get caseFileDeadlines => 'Deadlines';
+  String get caseFileDeadlines => 'مهلت‌ها';
 
   @override
-  String get caseFileExportPdf => 'Download dossier (PDF)';
+  String get caseFileExportPdf => 'دانلود پرونده (PDF)';
 
   @override
   String get caseFileEmpty =>
-      'Chat with the AI about your case — your timeline will build itself.';
+      'درباره پرونده‌تان با هوش مصنوعی گفتگو کنید — خط زمانی شما خودبه‌خود ساخته می‌شود.';
 
   @override
   String get caseFileDisclaimer =>
-      'This dossier is auto-extracted from your chat. It is not legal advice.';
+      'این پرونده به‌صورت خودکار از گفتگوی شما استخراج شده است. این مشاوره حقوقی نیست.';
 
   @override
-  String get caseFileTabLabel => 'Case';
+  String get caseFileTabLabel => 'پرونده';
 
   @override
-  String get refresh => 'Refresh';
+  String get refresh => 'بازخوانی';
 
   @override
   String get demoLimitReached =>
-      'Demo limit reached. Sign up for free to continue.';
+      'محدودیت نسخه نمایشی به پایان رسید. برای ادامه به‌صورت رایگان ثبت‌نام کنید.';
 
   @override
-  String get demoLimitSignUpCta => 'Sign up';
+  String get demoLimitSignUpCta => 'ثبت‌نام';
 
   @override
   String get freeQuotaExhausted =>
-      'You\'ve used all 10 free messages this month.';
+      'شما از تمام ۱۰ پیام رایگان این ماه استفاده کرده‌اید.';
 
   @override
-  String get upgradeForUnlimited => 'Upgrade to Pro for unlimited';
+  String get upgradeForUnlimited => 'برای نامحدود به Pro ارتقا دهید';
 
   @override
-  String get upgradeCta => 'Upgrade';
+  String get upgradeCta => 'ارتقا';
 
   @override
   String get rateLimitTryAgain =>
-      'Sending too fast. Try again in a few seconds.';
+      'ارسال بیش از حد سریع است. چند ثانیه دیگر دوباره تلاش کنید.';
 
   @override
   String get quickProfilePrompt =>
-      'So I can help more precisely, what is your legal status: are you an Estonian citizen, an EU citizen from another country, or do you have a residence permit?';
+      'تا بتوانم دقیق‌تر کمک کنم، وضعیت حقوقی شما چیست: شهروند استونی هستید، شهروند اتحادیه اروپا از کشوری دیگر، یا اجازه اقامت دارید؟';
 
   @override
-  String get quickProfileChipEstonianCitizen => 'Estonian citizen';
+  String get quickProfileChipEstonianCitizen => 'شهروند استونی';
 
   @override
-  String get quickProfileChipEuCitizen => 'EU citizen (other)';
+  String get quickProfileChipEuCitizen => 'شهروند اتحادیه اروپا (دیگر)';
 
   @override
-  String get quickProfileChipResidencePermit => 'Residence permit';
+  String get quickProfileChipResidencePermit => 'اجازه اقامت';
 
   @override
-  String get quickProfileSkipBtn => 'Skip';
+  String get quickProfileSkipBtn => 'رد کردن';
 
   @override
-  String get quickProfileSavedAck => 'Got it. Now, what\'s your question?';
+  String get quickProfileSavedAck => 'متوجه شدم. حالا، سؤال شما چیست؟';
 
   @override
-  String get caseTitleLabel => 'Case title';
+  String get caseTitleLabel => 'عنوان پرونده';
 
   @override
-  String get jurisdictionLabel => 'Jurisdiction';
+  String get jurisdictionLabel => 'حوزه قضایی';
 
   @override
-  String get caseTypeLabel => 'Case type';
+  String get caseTypeLabel => 'نوع پرونده';
 
   @override
-  String get caseLanguageLabel => 'Language';
+  String get caseLanguageLabel => 'زبان';
 
   @override
-  String get caseNumbersSection => 'Case numbers';
+  String get caseNumbersSection => 'شماره‌های پرونده';
 
   @override
-  String get partiesSection => 'Parties';
+  String get partiesSection => 'طرف‌ها';
 
   @override
-  String get authoritiesSection => 'Authorities';
+  String get authoritiesSection => 'مراجع';
 
   @override
-  String get timelineSection => 'Timeline';
+  String get timelineSection => 'خط زمانی';
 
   @override
-  String get openQuestionsSection => 'Open questions';
+  String get openQuestionsSection => 'پرسش‌های باز';
 
   @override
-  String get nextActionsSection => 'Next actions';
+  String get nextActionsSection => 'اقدامات بعدی';
 
   @override
-  String get summarySection => 'Summary';
+  String get summarySection => 'خلاصه';
 
   @override
-  String get addRow => 'Add row';
+  String get addRow => 'افزودن ردیف';
 
   @override
-  String get removeRow => 'Remove';
+  String get removeRow => 'حذف';
 
   @override
-  String get archiveCase => 'Archive case';
+  String get archiveCase => 'بایگانی پرونده';
 
   @override
-  String get closeCase => 'Close case';
+  String get closeCase => 'بستن پرونده';
 
   @override
-  String get continueChatAboutCase => 'Continue chat about this case';
+  String get continueChatAboutCase => 'ادامه گفتگو درباره این پرونده';
 
   @override
-  String get linkChatToCase => 'Link to case';
+  String get linkChatToCase => 'پیوند به پرونده';
 
   @override
-  String get clearActiveCase => 'Clear active case';
+  String get clearActiveCase => 'پاک کردن پرونده فعال';
 
   @override
-  String get caseSavedAck => 'Case saved';
+  String get caseSavedAck => 'پرونده ذخیره شد';
 
   @override
-  String get caseArchivedAck => 'Case archived';
+  String get caseArchivedAck => 'پرونده بایگانی شد';
 
   @override
-  String get intakeStep1Title => 'Where is the case?';
+  String get intakeStep1Title => 'پرونده کجاست؟';
 
   @override
-  String get intakeStep1Subtitle =>
-      'Country and authority you are dealing with.';
+  String get intakeStep1Subtitle => 'کشور و مرجعی که با آن سروکار دارید.';
 
   @override
-  String get intakeJurisdictionLabel => 'Country / jurisdiction';
+  String get intakeJurisdictionLabel => 'کشور / حوزه قضایی';
 
   @override
-  String get intakeAuthorityLabel => 'Authority type';
+  String get intakeAuthorityLabel => 'نوع مرجع';
 
   @override
-  String get intakeAuthorityNameLabel => 'Authority name (optional)';
+  String get intakeAuthorityNameLabel => 'نام مرجع (اختیاری)';
 
   @override
-  String get intakeAuthorityPolice => 'Police';
+  String get intakeAuthorityPolice => 'پلیس';
 
   @override
-  String get intakeAuthorityCourt => 'Court';
+  String get intakeAuthorityCourt => 'دادگاه';
 
   @override
-  String get intakeAuthoritySocial => 'Social services';
+  String get intakeAuthoritySocial => 'خدمات اجتماعی';
 
   @override
-  String get intakeAuthorityEmployer => 'Employer';
+  String get intakeAuthorityEmployer => 'کارفرما';
 
   @override
-  String get intakeAuthorityLandlord => 'Landlord';
+  String get intakeAuthorityLandlord => 'صاحب‌خانه';
 
   @override
-  String get intakeAuthorityOpposingParty => 'Opposing party';
+  String get intakeAuthorityOpposingParty => 'طرف مقابل';
 
   @override
-  String get intakeAuthorityOther => 'Other';
+  String get intakeAuthorityOther => 'سایر';
 
   @override
-  String get intakeStep2Title => 'What kind of case?';
+  String get intakeStep2Title => 'چه نوع پرونده‌ای؟';
 
   @override
   String get intakeStep2Subtitle =>
-      'Pick the closest type — you can refine later.';
+      'نزدیک‌ترین نوع را انتخاب کنید — بعداً می‌توانید آن را اصلاح کنید.';
 
   @override
-  String get intakeCaseTypeCriminal => 'Criminal';
+  String get intakeCaseTypeCriminal => 'کیفری';
 
   @override
-  String get intakeCaseTypeCivil => 'Civil';
+  String get intakeCaseTypeCivil => 'مدنی';
 
   @override
-  String get intakeCaseTypeFamily => 'Family';
+  String get intakeCaseTypeFamily => 'خانواده';
 
   @override
-  String get intakeCaseTypeAdmin => 'Administrative';
+  String get intakeCaseTypeAdmin => 'اداری';
 
   @override
-  String get intakeCaseTypeImmigration => 'Immigration';
+  String get intakeCaseTypeImmigration => 'مهاجرت';
 
   @override
-  String get intakeCaseTypeLabor => 'Labor';
+  String get intakeCaseTypeLabor => 'کار';
 
   @override
-  String get intakeCaseTypeConsumer => 'Consumer';
+  String get intakeCaseTypeConsumer => 'مصرف‌کننده';
 
   @override
-  String get intakeCaseTypeInheritance => 'Inheritance';
+  String get intakeCaseTypeInheritance => 'ارث';
 
   @override
-  String get intakeCaseTypeOther => 'Other';
+  String get intakeCaseTypeOther => 'سایر';
 
   @override
-  String get intakeStep3Title => 'Who is involved?';
+  String get intakeStep3Title => 'چه کسانی درگیر هستند؟';
 
   @override
-  String get intakeStep3Subtitle => 'Your role and the other side.';
+  String get intakeStep3Subtitle => 'نقش شما و طرف مقابل.';
 
   @override
-  String get intakeRoleLabel => 'Your role';
+  String get intakeRoleLabel => 'نقش شما';
 
   @override
-  String get intakeRolePlaintiff => 'Plaintiff';
+  String get intakeRolePlaintiff => 'خواهان';
 
   @override
-  String get intakeRoleDefendant => 'Defendant';
+  String get intakeRoleDefendant => 'خوانده';
 
   @override
-  String get intakeRoleVictim => 'Victim';
+  String get intakeRoleVictim => 'قربانی';
 
   @override
-  String get intakeRoleAccused => 'Accused';
+  String get intakeRoleAccused => 'متهم';
 
   @override
-  String get intakeRoleWitness => 'Witness';
+  String get intakeRoleWitness => 'شاهد';
 
   @override
-  String get intakeRoleFamily => 'Family member';
+  String get intakeRoleFamily => 'عضو خانواده';
 
   @override
-  String get intakeRoleOther => 'Other';
+  String get intakeRoleOther => 'سایر';
 
   @override
-  String get intakeOpposingSideLabel => 'Opposing side (optional)';
+  String get intakeOpposingSideLabel => 'طرف مقابل (اختیاری)';
 
   @override
-  String get intakeWitnessesLabel => 'Witnesses (optional)';
+  String get intakeWitnessesLabel => 'شاهدان (اختیاری)';
 
   @override
-  String get intakeAddWitness => 'Add witness';
+  String get intakeAddWitness => 'افزودن شاهد';
 
   @override
-  String get intakeWitnessHint => 'Name or contact';
+  String get intakeWitnessHint => 'نام یا اطلاعات تماس';
 
   @override
-  String get intakeStep4Title => 'Numbers & dates';
+  String get intakeStep4Title => 'شماره‌ها و تاریخ‌ها';
 
   @override
-  String get intakeStep4Subtitle =>
-      'Whatever you already have. Skip what you don\'t.';
+  String get intakeStep4Subtitle => 'هرچه دارید. آنچه ندارید را رد کنید.';
 
   @override
-  String get intakeCaseNumberLabel => 'Case number (optional)';
+  String get intakeCaseNumberLabel => 'شماره پرونده (اختیاری)';
 
   @override
-  String get intakeIncidentDateLabel => 'Incident date (optional)';
+  String get intakeIncidentDateLabel => 'تاریخ رخداد (اختیاری)';
 
   @override
-  String get intakeIncidentDatePick => 'Pick date';
+  String get intakeIncidentDatePick => 'انتخاب تاریخ';
 
   @override
-  String get intakeDeadlinesLabel => 'Known deadlines';
+  String get intakeDeadlinesLabel => 'مهلت‌های شناخته‌شده';
 
   @override
-  String get intakeAddDeadline => 'Add deadline';
+  String get intakeAddDeadline => 'افزودن مهلت';
 
   @override
-  String get intakeDeadlineWhatHint => 'What';
+  String get intakeDeadlineWhatHint => 'چه چیزی';
 
   @override
-  String get intakeStep5Title => 'Documents';
+  String get intakeStep5Title => 'اسناد';
 
   @override
   String get intakeStep5Subtitle =>
-      'Upload anything relevant. We will read it.';
+      'هر چیز مرتبطی را بارگذاری کنید. ما آن را خواهیم خواند.';
 
   @override
-  String get intakeUploadDocsLabel => 'Upload documents';
+  String get intakeUploadDocsLabel => 'بارگذاری اسناد';
 
   @override
-  String get intakeSkipDocs => 'Skip — I\'ll upload later';
+  String get intakeSkipDocs => 'رد کردن — بعداً بارگذاری می‌کنم';
 
   @override
-  String get intakeNextBtn => 'Next';
+  String get intakeNextBtn => 'بعدی';
 
   @override
-  String get intakeBackBtn => 'Back';
+  String get intakeBackBtn => 'بازگشت';
 
   @override
-  String get intakeFinishBtn => 'Finish & open chat';
+  String get intakeFinishBtn => 'پایان و باز کردن گفتگو';
 
   @override
-  String get intakeUrgentBtn => 'Urgent — ask now';
+  String get intakeUrgentBtn => 'فوری — همین حالا بپرسید';
 
   @override
-  String get intakeUrgentDialogTitle => 'Open chat now?';
+  String get intakeUrgentDialogTitle => 'گفتگو را همین حالا باز کنم؟';
 
   @override
   String get intakeUrgentDialogBody =>
-      'We\'ll save what you\'ve entered as a draft case. You can finish the wizard from the case page anytime.';
+      'آنچه وارد کرده‌اید را به‌عنوان پرونده پیش‌نویس ذخیره می‌کنیم. می‌توانید هر زمان از صفحه پرونده، راهنمای گام‌به‌گام را تکمیل کنید.';
 
   @override
-  String get intakeUrgentConfirm => 'Open chat';
+  String get intakeUrgentConfirm => 'باز کردن گفتگو';
 
   @override
-  String get intakeUrgentCancel => 'Keep filling';
+  String get intakeUrgentCancel => 'ادامه پر کردن';
 
   @override
-  String get intakePreparingCase => 'Preparing your case…';
+  String get intakePreparingCase => 'در حال آماده‌سازی پرونده شما…';
 
   @override
   String get intakeFallbackGreeting =>
-      'I see your case. Tell me what\'s most pressing — I\'ll work through it with you.';
+      'پرونده شما را می‌بینم. مهم‌ترین موضوع را بگویید — همراه شما به آن رسیدگی می‌کنم.';
 
   @override
   String get intakeUrgentGreeting =>
-      'I see this is urgent. Ask your question — I\'ll fill in the rest as we go.';
+      'می‌بینم که این موضوع فوری است. سؤال خود را بپرسید — بقیه را در ادامه تکمیل می‌کنم.';
 
   @override
   String intakeStepIndicator(int current, int total) {
-    return 'Step $current of $total';
+    return 'گام $current از $total';
   }
 
   @override
-  String get intakeFieldRequired => 'Required';
+  String get intakeFieldRequired => 'الزامی';
 
   @override
   String intakeUploadProgress(int done, int total) {
-    return 'Uploading $done / $total…';
+    return 'در حال بارگذاری $done / $total…';
   }
 
   @override
   String get uplDisclaimerFooter =>
-      'Advocat is not a law firm. This is information, not legal advice.';
+      'Advocat یک مؤسسه حقوقی نیست. این اطلاعات است، نه مشاوره حقوقی.';
 
   @override
   String get citationStatusVerifiedBadge => 'تأییدشده';
@@ -3418,110 +3409,110 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String parallelActionsHeadline(int count) {
-    return 'Consilium recommends $count parallel actions';
+    return 'Consilium $count اقدام موازی را توصیه می‌کند';
   }
 
   @override
-  String get parallelActionsApproveAll => 'Approve All & Send';
+  String get parallelActionsApproveAll => 'تأیید همه و ارسال';
 
   @override
   String parallelActionsApproveSelected(int count, int total) {
-    return 'Approve $count of $total';
+    return 'تأیید $count از $total';
   }
 
   @override
   String parallelActionsConfirmTitle(int count) {
-    return 'Send $count emails?';
+    return '$count ایمیل ارسال شود؟';
   }
 
   @override
   String parallelActionsConfirmBody(int count) {
-    return 'Advocat will dispatch $count prepared replies via your connected Gmail. Each one is sent independently — if any one fails, the others still go.';
+    return 'Advocat $count پاسخ آماده‌شده را از طریق Gmail متصل شما ارسال می‌کند. هر یک مستقل ارسال می‌شود — اگر هرکدام ناموفق باشد، بقیه همچنان ارسال می‌شوند.';
   }
 
   @override
   String parallelActionsSentToast(int count) {
-    return '$count sent.';
+    return '$count ارسال شد.';
   }
 
   @override
   String parallelActionsPartialFailureToast(int sent, int failed) {
-    return '$sent sent, $failed failed.';
+    return '$sent ارسال شد، $failed ناموفق.';
   }
 
   @override
-  String get parallelActionsKindReply => 'reply';
+  String get parallelActionsKindReply => 'پاسخ';
 
   @override
-  String get parallelActionsKindNew => 'new';
+  String get parallelActionsKindNew => 'جدید';
 
   @override
-  String get parallelActionsCheckboxSelected => 'Action selected';
+  String get parallelActionsCheckboxSelected => 'اقدام انتخاب شد';
 
   @override
-  String get parallelActionsCheckboxUnselected => 'Action not selected';
+  String get parallelActionsCheckboxUnselected => 'اقدام انتخاب نشد';
 
   @override
   String parallelActionsCitationCount(int count) {
-    return '$count cit';
+    return '$count استناد';
   }
 
   @override
   String parallelActionsRetryFailed(int count) {
-    return 'Retry failed ($count)';
+    return 'تلاش مجدد برای ناموفق‌ها ($count)';
   }
 
   @override
-  String get agentApprovalNeedsReviewTitle => 'Advocat needs your approval';
+  String get agentApprovalNeedsReviewTitle => 'Advocat به تأیید شما نیاز دارد';
 
   @override
-  String get agentApprovalResolvedTitle => 'Action resolved';
+  String get agentApprovalResolvedTitle => 'اقدام تعیین‌تکلیف شد';
 
   @override
-  String get agentApprovalStepsLabel => 'steps';
+  String get agentApprovalStepsLabel => 'گام';
 
   @override
-  String get agentApprovalApproveButton => 'Approve & Send';
+  String get agentApprovalApproveButton => 'تأیید و ارسال';
 
   @override
-  String get agentApprovalDeclineButton => 'Decline';
+  String get agentApprovalDeclineButton => 'رد کردن';
 
   @override
-  String get agentApprovalAttachmentsLabel => 'Attachments';
+  String get agentApprovalAttachmentsLabel => 'پیوست‌ها';
 
   @override
-  String get agentApprovalSentSummary => 'Sent on your behalf.';
+  String get agentApprovalSentSummary => 'از طرف شما ارسال شد.';
 
   @override
-  String get agentApprovalDeclinedSummary => 'Declined — nothing was sent.';
+  String get agentApprovalDeclinedSummary => 'رد شد — چیزی ارسال نشد.';
 
   @override
-  String get agentToolDraftEmailAtt => 'Send email with attachments';
+  String get agentToolDraftEmailAtt => 'ارسال ایمیل با پیوست';
 
   @override
-  String get agentToolSendEmail => 'Send email';
+  String get agentToolSendEmail => 'ارسال ایمیل';
 
   @override
-  String get agentToolGeneratePdf => 'Generate PDF';
+  String get agentToolGeneratePdf => 'تولید PDF';
 
   @override
-  String get agentToolApproveSend => 'Send prepared reply';
+  String get agentToolApproveSend => 'ارسال پاسخ آماده‌شده';
 
   @override
-  String get inboxErrorTitle => 'Could not load inbox';
+  String get inboxErrorTitle => 'بارگذاری صندوق ورودی ممکن نشد';
 
   @override
-  String get inboxEditDiscardTitle => 'Discard unsaved edits?';
+  String get inboxEditDiscardTitle => 'تغییرات ذخیره‌نشده را نادیده بگیرم؟';
 
   @override
   String get inboxEditDiscardBody =>
-      'You have unsaved changes to this draft. Going back will discard them.';
+      'تغییرات ذخیره‌نشده‌ای در این پیش‌نویس دارید. بازگشت آن‌ها را نادیده می‌گیرد.';
 
   @override
-  String get inboxEditKeepEditing => 'Keep editing';
+  String get inboxEditKeepEditing => 'ادامه ویرایش';
 
   @override
-  String get inboxEditDiscard => 'Discard';
+  String get inboxEditDiscard => 'نادیده گرفتن';
 
   @override
   String get workspaceTabOverview => 'Overview';
@@ -3548,71 +3539,71 @@ class AppLocalizationsFa extends AppLocalizations {
   String get workspaceInboxEmpty => 'No related email.';
 
   @override
-  String get plannerSettingsTitle => 'Three-pass legal reasoning';
+  String get plannerSettingsTitle => 'استدلال حقوقی سه‌مرحله‌ای';
 
   @override
   String get plannerSettingsSubtitle =>
-      'Plan → answer → critique. Slower but more thorough.';
+      'برنامه‌ریزی ← پاسخ ← نقد. کندتر اما دقیق‌تر.';
 
   @override
   String get plannerSettingsProBadge => 'Pro';
 
   @override
-  String get plannerSettingsProDescription => 'Available on Pro plan';
+  String get plannerSettingsProDescription => 'در طرح Pro در دسترس است';
 
   @override
-  String get plannerTrailHeaderPlan => 'Plan';
+  String get plannerTrailHeaderPlan => 'برنامه';
 
   @override
-  String get plannerTrailHeaderCritique => 'Critique';
+  String get plannerTrailHeaderCritique => 'نقد';
 
   @override
-  String get plannerTrailSubQuestions => 'Sub-questions';
+  String get plannerTrailSubQuestions => 'پرسش‌های فرعی';
 
   @override
-  String get plannerTrailCounterArgs => 'Counter-arguments';
+  String get plannerTrailCounterArgs => 'استدلال‌های متقابل';
 
   @override
-  String get plannerTrailEvidenceGaps => 'Evidence gaps';
+  String get plannerTrailEvidenceGaps => 'خلأهای شواهد';
 
   @override
-  String get plannerTrailMaterialGapTrue => 'Material gap detected';
+  String get plannerTrailMaterialGapTrue => 'خلأ اساسی شناسایی شد';
 
   @override
-  String get plannerTrailRegeneratedBadge => 'Regenerated once';
+  String get plannerTrailRegeneratedBadge => 'یک‌بار بازتولید شد';
 
   @override
-  String get plannerTrailEmpty => 'no items';
+  String get plannerTrailEmpty => 'موردی نیست';
 
   @override
-  String get supportTitle => 'Help';
+  String get supportTitle => 'راهنما';
 
   @override
-  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+  String get supportSubtitle => 'معمولاً ظرف ۱ تا ۲ ساعت پاسخ می‌دهیم.';
 
   @override
-  String get supportSearchPlaceholder => 'Search help…';
+  String get supportSearchPlaceholder => 'جستجوی راهنما…';
 
   @override
-  String get supportStatusAllOk => 'All systems normal';
+  String get supportStatusAllOk => 'همه سیستم‌ها عادی';
 
   @override
-  String get supportFaqWhatIs => 'What is Advocat?';
+  String get supportFaqWhatIs => 'Advocat چیست؟';
 
   @override
-  String get supportFaqHowSubscribe => 'How do I subscribe to Pro?';
+  String get supportFaqHowSubscribe => 'چگونه در Pro مشترک شوم؟';
 
   @override
-  String get supportFaqExportData => 'Can I export my data?';
+  String get supportFaqExportData => 'آیا می‌توانم داده‌هایم را خروجی بگیرم؟';
 
   @override
-  String get supportFaqCancelAccount => 'Cancel or delete account';
+  String get supportFaqCancelAccount => 'لغو یا حذف حساب';
 
   @override
-  String get supportFaqTalkHuman => 'Talk to a human';
+  String get supportFaqTalkHuman => 'گفتگو با یک انسان';
 
   @override
-  String get supportContactEmail => 'Email';
+  String get supportContactEmail => 'ایمیل';
 
   @override
   String get supportContactTelegram => 'Telegram';
@@ -3621,58 +3612,58 @@ class AppLocalizationsFa extends AppLocalizations {
   String get supportContactWhatsapp => 'WhatsApp';
 
   @override
-  String get supportFooterSla => 'We respond within 24h';
+  String get supportFooterSla => 'ظرف ۲۴ ساعت پاسخ می‌دهیم';
 
   @override
   String get supportWhatsapp => 'WhatsApp';
 
   @override
-  String get supportEmail => 'Email';
+  String get supportEmail => 'ایمیل';
 
   @override
-  String get supportInApp => 'Message us here';
+  String get supportInApp => 'اینجا برای ما پیام بگذارید';
 
   @override
-  String get supportCategoryLabel => 'Category';
+  String get supportCategoryLabel => 'دسته';
 
   @override
-  String get supportCategoryBug => 'Bug';
+  String get supportCategoryBug => 'اشکال';
 
   @override
-  String get supportCategoryPayment => 'Payment issue';
+  String get supportCategoryPayment => 'مشکل پرداخت';
 
   @override
-  String get supportCategoryQuestion => 'Question';
+  String get supportCategoryQuestion => 'پرسش';
 
   @override
-  String get supportCategoryFeature => 'Feature request';
+  String get supportCategoryFeature => 'درخواست قابلیت';
 
   @override
-  String get supportCategoryOther => 'Other';
+  String get supportCategoryOther => 'سایر';
 
   @override
-  String get supportMessagePlaceholder => 'Describe your problem...';
+  String get supportMessagePlaceholder => 'مشکل خود را شرح دهید...';
 
   @override
-  String get supportEmailLabel => 'Email (optional)';
+  String get supportEmailLabel => 'ایمیل (اختیاری)';
 
   @override
-  String get supportSend => 'Send';
+  String get supportSend => 'ارسال';
 
   @override
-  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+  String get supportSentSuccess => 'پیام ارسال شد! به‌زودی پاسخ می‌دهیم.';
 
   @override
-  String get supportError => 'Something went wrong. Try again.';
+  String get supportError => 'مشکلی پیش آمد. دوباره تلاش کنید.';
 
   @override
-  String get supportErrorTooShort => 'Please write at least 10 characters.';
+  String get supportErrorTooShort => 'لطفاً حداقل ۱۰ نویسه بنویسید.';
 
   @override
-  String get supportErrorTooLong => 'Maximum 2000 characters.';
+  String get supportErrorTooLong => 'حداکثر ۲۰۰۰ نویسه.';
 
   @override
-  String get supportPrivacyNotice => 'Your message is stored securely.';
+  String get supportPrivacyNotice => 'پیام شما به‌صورت امن ذخیره می‌شود.';
 
   @override
   String get reviewThisContract => 'بررسی این قرارداد';
@@ -3792,38 +3783,38 @@ class AppLocalizationsFa extends AppLocalizations {
       'خوشت آمد؟ یک دوست را دعوت کن — هر دو یک ماه رایگان می‌گیرید.';
 
   @override
-  String get referralAntiFraud => 'Maximum 12 successful referrals per year.';
+  String get referralAntiFraud => 'حداکثر ۱۲ معرفی موفق در سال.';
 
   @override
   String get referralEmpty =>
-      'No referrals yet. Send your link to start earning.';
+      'هنوز معرفی‌ای نیست. لینک خود را ارسال کنید تا کسب درآمد را آغاز کنید.';
 
   @override
-  String get referralRecentActivity => 'Recent activity';
+  String get referralRecentActivity => 'فعالیت اخیر';
 
   @override
   String referralActivityInvited(String when) {
-    return 'Invited $when';
+    return 'دعوت‌شده $when';
   }
 
   @override
   String referralActivityActivated(String when) {
-    return 'activated $when';
+    return 'فعال شد $when';
   }
 
   @override
-  String get referralActivityPending => 'not activated yet';
+  String get referralActivityPending => 'هنوز فعال نشده';
 
   @override
   String referralStatsInvitedCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count friends',
-      one: '1 friend',
-      zero: 'no friends yet',
+      other: '$count دوست',
+      one: '۱ دوست',
+      zero: 'هنوز هیچ دوستی',
     );
-    return 'You\'ve invited $_temp0';
+    return 'شما $_temp0 دعوت کرده‌اید';
   }
 
   @override
@@ -3831,9 +3822,9 @@ class AppLocalizationsFa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count have activated',
-      one: '1 has activated',
-      zero: 'none activated yet',
+      other: '$count نفر فعال شده‌اند',
+      one: '۱ نفر فعال شده',
+      zero: 'هنوز هیچ‌کدام فعال نشده',
     );
     return '$_temp0';
   }
@@ -3843,45 +3834,45 @@ class AppLocalizationsFa extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       months,
       locale: localeName,
-      other: '$months free months',
-      one: '1 free month',
-      zero: 'nothing yet',
+      other: '$months ماه رایگان',
+      one: '۱ ماه رایگان',
+      zero: 'هنوز هیچ',
     );
-    return 'Your bonus: $_temp0';
+    return 'پاداش شما: $_temp0';
   }
 
   @override
   String get referralNudgeMessage =>
-      'Like Advocat? Invite a friend — both get a free month.';
+      'از Advocat خوشتان آمد؟ یک دوست را دعوت کنید — هر دو یک ماه رایگان دریافت می‌کنید.';
 
   @override
-  String get referralNudgeAction => 'Invite';
+  String get referralNudgeAction => 'دعوت';
 
   @override
-  String get referralLandingTitle => 'You\'ve been invited to Advocat';
+  String get referralLandingTitle => 'شما به Advocat دعوت شده‌اید';
 
   @override
   String referralLandingSubtitle(String inviterName) {
-    return '$inviterName invited you — claim your free first month.';
+    return '$inviterName شما را دعوت کرد — ماه اول رایگان خود را دریافت کنید.';
   }
 
   @override
   String get referralLandingSubtitleGeneric =>
-      'Claim your free first month of Advocat Pro.';
+      'ماه اول رایگان Advocat Pro خود را دریافت کنید.';
 
   @override
-  String get referralLandingCta => 'Activate free month & sign up';
+  String get referralLandingCta => 'فعال‌سازی ماه رایگان و ثبت‌نام';
 
   @override
-  String get referralLandingCtaSecondary => 'Or learn more about Advocat';
+  String get referralLandingCtaSecondary => 'یا درباره Advocat بیشتر بدانید';
 
   @override
   String get referralLandingFallback =>
-      'This link has expired — but you can still try Advocat free.';
+      'این لینک منقضی شده است — اما همچنان می‌توانید Advocat را رایگان امتحان کنید.';
 
   @override
   String get referralLandingBenefits =>
-      '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+      '۱۷ زبان • قانون واقعی استونی، فنلاند و اتحادیه اروپا • ۲۴/۷ — بدون انتظار';
 
   @override
   String get checkerProTagline => 'Professional verification tools';
@@ -3976,162 +3967,163 @@ class AppLocalizationsFa extends AppLocalizations {
   String get increaseDependents => 'Increase';
 
   @override
-  String get sensitiveConsentTitle => 'Sensitive data consent';
+  String get sensitiveConsentTitle => 'رضایت برای داده‌های حساس';
 
   @override
   String get sensitiveConsentBody =>
-      'Documents you\'re about to upload may contain special-category personal data under GDPR Art. 9 — such as health records, criminal records, biometric data, or information about your racial origin, religion, or sexual orientation.\n\nWe process this data only to provide you with AI legal assistance, store it encrypted in your private account, and never use it to train models. You can withdraw consent and delete the data at any time from Settings.\n\nBy accepting, you give explicit consent under Art. 9(2)(a) GDPR to process special-category data for this purpose.';
+      'اسنادی که قرار است بارگذاری کنید ممکن است حاوی داده‌های شخصی دسته‌های ویژه طبق ماده ۹ GDPR باشند — مانند سوابق پزشکی، سوابق کیفری، داده‌های زیست‌سنجی، یا اطلاعات مربوط به منشأ نژادی، مذهب یا گرایش جنسی شما.\n\nما این داده‌ها را تنها برای ارائه دستیار حقوقی هوش مصنوعی به شما پردازش می‌کنیم، آن‌ها را رمزگذاری‌شده در حساب خصوصی شما ذخیره می‌کنیم و هرگز از آن‌ها برای آموزش مدل‌ها استفاده نمی‌کنیم. می‌توانید هر زمان رضایت را پس بگیرید و داده‌ها را از بخش تنظیمات حذف کنید.\n\nبا پذیرفتن، شما طبق ماده ۹(۲)(الف) GDPR رضایت صریح خود را برای پردازش داده‌های دسته ویژه برای این منظور اعلام می‌کنید.';
 
   @override
   String get sensitiveConsentExplicitCheckbox =>
-      'I give explicit consent to process special-category data (Art. 9(2)(a) GDPR).';
+      'من رضایت صریح خود را برای پردازش داده‌های دسته ویژه اعلام می‌کنم (ماده ۹(۲)(الف) GDPR).';
 
   @override
   String get sensitiveConsentRightToShareCheckbox =>
-      'I confirm I have the right to share this data (the data is mine, or I have informed/lawful basis to share third-party data).';
+      'تأیید می‌کنم که حق اشتراک‌گذاری این داده‌ها را دارم (داده‌ها از آن من است، یا مبنای قانونی/اطلاع‌رسانی برای اشتراک‌گذاری داده‌های شخص ثالث دارم).';
 
   @override
   String get sensitiveConsentViewCategories =>
-      'View what counts as sensitive →';
+      'ببینید چه چیزی حساس محسوب می‌شود ←';
 
   @override
   String get sensitiveConsentWithdrawAction =>
-      'Withdraw sensitive data consent';
+      'پس گرفتن رضایت برای داده‌های حساس';
 
   @override
-  String get privacyAndData => 'PRIVACY & DATA';
+  String get privacyAndData => 'حریم خصوصی و داده‌ها';
 
   @override
   String get exportMyDataSubtitle =>
-      'Download a copy of all your personal data (GDPR Art. 15).';
+      'یک نسخه از تمام داده‌های شخصی خود را دانلود کنید (ماده ۱۵ GDPR).';
 
   @override
-  String get withdrawSensitiveConsent => 'Sensitive data consent';
+  String get withdrawSensitiveConsent => 'رضایت برای داده‌های حساس';
 
   @override
   String get withdrawSensitiveConsentSubtitle =>
-      'Manage or withdraw consent to process special-category data (GDPR Art. 9(2)(a)).';
+      'رضایت برای پردازش داده‌های دسته ویژه را مدیریت یا پس بگیرید (ماده ۹(۲)(الف) GDPR).';
 
   @override
-  String get dataProcessingAgreement => 'Data Processing Agreement';
+  String get dataProcessingAgreement => 'قرارداد پردازش داده‌ها';
 
   @override
-  String get exportingData => 'Exporting your data…';
+  String get exportingData => 'در حال خروجی گرفتن از داده‌های شما…';
 
   @override
-  String get exportComplete => 'Data export ready — saved to your device.';
+  String get exportComplete =>
+      'خروجی داده‌ها آماده است — در دستگاه شما ذخیره شد.';
 
   @override
   String get exportFailed =>
-      'Export failed. Please try again or contact support.';
+      'خروجی گرفتن ناموفق بود. لطفاً دوباره تلاش کنید یا با پشتیبانی تماس بگیرید.';
 
   @override
-  String get quotaExhaustedTitle => 'Free message limit reached';
+  String get quotaExhaustedTitle => 'محدودیت پیام رایگان به پایان رسید';
 
   @override
   String quotaExhaustedBody(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month and get unlimited AI legal consultations.';
+    return 'شما از تمام $count پیام رایگان استفاده کرده‌اید. به Advocat Counsel با ۱۹.۹۹ یورو در ماه ارتقا دهید و مشاوره‌های حقوقی نامحدود هوش مصنوعی دریافت کنید.';
   }
 
   @override
-  String get quotaExhaustedLater => 'Later';
+  String get quotaExhaustedLater => 'بعداً';
 
   @override
-  String get quotaExhaustedUpgrade => 'Advocat Counsel — €19.99/mo';
+  String get quotaExhaustedUpgrade => 'Advocat Counsel — ۱۹.۹۹ یورو در ماه';
 
   @override
   String quotaCtaMessage(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month.';
+    return 'شما از تمام $count پیام رایگان استفاده کرده‌اید. به Advocat Counsel با ۱۹.۹۹ یورو در ماه ارتقا دهید.';
   }
 
   @override
-  String get quotaCtaButton => 'Get Advocat Counsel — €19.99/mo';
+  String get quotaCtaButton => 'دریافت Advocat Counsel — ۱۹.۹۹ یورو در ماه';
 
   @override
   String get aiErrorQuota =>
-      'Free message limit reached. Subscribe to continue using AI.';
+      'محدودیت پیام رایگان به پایان رسید. برای ادامه استفاده از هوش مصنوعی مشترک شوید.';
 
   @override
   String get aiErrorAuth =>
-      'Sign-in required to use the AI. Please register or log in.';
+      'برای استفاده از هوش مصنوعی ورود لازم است. لطفاً ثبت‌نام یا وارد شوید.';
 
   @override
   String get aiErrorGeneric =>
-      'Temporary AI error. Please try again in a minute. If it persists, contact support.';
+      'خطای موقت هوش مصنوعی. لطفاً یک دقیقه دیگر دوباره تلاش کنید. اگر ادامه یافت، با پشتیبانی تماس بگیرید.';
 
   @override
-  String get tooltipShareCase => 'Share case summary';
+  String get tooltipShareCase => 'اشتراک‌گذاری خلاصه پرونده';
 
   @override
-  String get tooltipMuteVoice => 'Mute voice';
+  String get tooltipMuteVoice => 'بی‌صدا کردن صدا';
 
   @override
-  String get tooltipUnmuteVoice => 'Unmute voice';
+  String get tooltipUnmuteVoice => 'باصدا کردن صدا';
 
   @override
-  String get tooltipAttachDoc => 'Attach document';
+  String get tooltipAttachDoc => 'پیوست سند';
 
   @override
-  String get aiTypingHint => 'AI…';
+  String get aiTypingHint => 'هوش مصنوعی…';
 
   @override
-  String get error404Title => 'Page not found';
+  String get error404Title => 'صفحه یافت نشد';
 
   @override
   String error404Body(String path) {
-    return 'We couldn\'t find: $path';
+    return 'نتوانستیم این را پیدا کنیم: $path';
   }
 
   @override
-  String get goToHome => 'Go to home';
+  String get goToHome => 'رفتن به خانه';
 
   @override
   String get emailAlreadyRegistered =>
-      'This email is already registered. Want to sign in?';
+      'این ایمیل قبلاً ثبت شده است. می‌خواهید وارد شوید؟';
 
   @override
-  String get actionSignIn => 'Sign in';
+  String get actionSignIn => 'ورود';
 
   @override
-  String get actionUndo => 'Undo';
+  String get actionUndo => 'واگرد';
 
   @override
-  String get intakeUrgentOpened => 'Chat opened — your draft is saved.';
+  String get intakeUrgentOpened => 'گفتگو باز شد — پیش‌نویس شما ذخیره شد.';
 
   @override
-  String get panicCoachmark => 'Hold for emergency help.';
+  String get panicCoachmark => 'برای کمک اضطراری نگه دارید.';
 
   @override
-  String get panicTitle => 'What do you need right now?';
+  String get panicTitle => 'همین حالا به چه چیزی نیاز دارید؟';
 
   @override
-  String get panicCardReadAloud => 'Read aloud to the officer';
+  String get panicCardReadAloud => 'برای مأمور با صدای بلند بخوانید';
 
   @override
-  String get panicCardRecord => 'Record this conversation';
+  String get panicCardRecord => 'این گفتگو را ضبط کنید';
 
   @override
-  String get panicCardCall => 'Call a lawyer';
+  String get panicCardCall => 'با یک وکیل تماس بگیرید';
 
   @override
-  String get panicCardAi => 'Talk to Advocat now';
+  String get panicCardAi => 'همین حالا با Advocat صحبت کنید';
 
   @override
-  String get panicClose => 'Close';
+  String get panicClose => 'بستن';
 
   @override
   String get panicBadgeV2 => 'V2';
 
   @override
-  String get panicRecordV1Title => 'Coming in V2';
+  String get panicRecordV1Title => 'در V2 می‌آید';
 
   @override
   String get panicRecordV1Body =>
-      'The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone\'s built-in voice recorder.';
+      'قابلیت ضبط در حال اعتبارسنجی حقوقی برای استونی است و در V2 عرضه می‌شود. فعلاً از ضبط‌کننده صدای داخلی تلفن خود استفاده کنید.';
 
   @override
   String get panicCallFallbackBody =>
-      'Email kiire@advocat.ee with a short description and we will call you back.';
+      'به kiire@advocat.ee یک توضیح کوتاه ایمیل کنید و ما با شما تماس می‌گیریم.';
 
   @override
   String get consiliumHeader => 'کنسولیوم وکلا';
@@ -4207,10 +4199,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get softCaseShellBanner =>
-      'We created \"Untitled case\" to track this. Tap to rename.';
+      'برای پیگیری این مورد «پرونده بدون عنوان» ایجاد کردیم. برای تغییر نام ضربه بزنید.';
 
   @override
-  String get softCaseShellBannerCta => 'Rename';
+  String get softCaseShellBannerCta => 'تغییر نام';
 
   @override
   String get draftsTab => 'Drafts';

@@ -1,1357 +1,1954 @@
 {
-    "@@locale": "tr",
-    "about": "Hakkında",
-    "aboutSection": "HAKKINDA",
-    "appearance": "Appearance",
-    "appearanceSystem": "System (auto)",
-    "appearanceLight": "Light",
-    "appearanceDark": "Dark",
-    "appearanceDescription": "Choose how Advocat looks",
-    "accidents": "Kazalar",
-    "active": "Aktif",
-    "activeCases": "Aktif Davalar",
-    "addedToAppeal": "İtiraza eklendi",
-    "agreeToTerms": "Kabul ediyorum: ",
-    "aiAnalysis": "Yapay Zeka Analizi",
-    "aiAssistant": "Yapay Zeka Hukuk Asistanı",
-    "aiChat": "Yapay Zeka Sohbet",
-    "all": "Tümü",
-    "alreadyHaveAccount": "Zaten hesabınız var mı? ",
-    "analyzing": "Analiz ediliyor…",
-    "andWord": " ve ",
-    "appTitle": "Advocat — Hukuki Bilgi Aracı",
-    "appVersion": "Uygulama Sürümü",
-    "appealFiled": "İtiraz Sunuldu",
-    "areYouAbsolutelySure": "Kesinlikle emin misiniz?",
-    "askAboutCase": "Davamı analiz et",
-    "asylum": "İltica",
-    "back": "Geri",
-    "basic": "Temel",
-    "beforeYouBuy": "Satın almadan önce",
-    "beforeYouWork": "Onlarla çalışmadan önce",
-    "camera": "Kamera",
-    "cancel": "İptal",
-    "caseDescription": "Durumunuzu açıklayın",
-    "caseDetail": "Dava Detayları",
-    "caseOverview": "İşte dava özetiniz",
-    "caseTitle": "Dava Başlığı",
-    "caseUpdated": "Dava güncellendi",
-    "cases": "Davalar",
-    "checkCompany": "Şirketi Kontrol Et",
-    "checkDeadlines": "Süreleri kontrol et",
-    "checkVehicle": "Aracı Kontrol Et",
-    "checkerTitle": "Denetleyici",
-    "checkingErrors": "Hatalar kontrol ediliyor…",
-    "choosePlan": "Plan Seç",
-    "closed": "Kapalı",
-    "companyName": "Şirket adı veya sicil numarası",
-    "completed": "Tamamlanmış",
-    "confirm": "Onayla",
-    "confirmPassword": "Şifreyi Onayla",
-    "connectEmail": "E-posta Bağla",
-    "connectGmail": "Gmail Bağla",
-    "connectOutlook": "Outlook Bağla",
-    "connected": "Bağlı",
-    "contactSupport": "Destek ile İletişime Geçin",
-    "continueWithGoogle": "Google ile Devam Et",
-    "copyText": "Metni kopyala",
-    "correspondence": "Yazışma",
-    "couldNotLoadCases": "Davalarınız yüklenemedi",
-    "country": "Ülke",
-    "createAccount": "Hesap Oluştur",
-    "createCase": "Dava Oluştur",
-    "criminalCase": "Ceza Davası",
-    "critical": "Kritik",
-    "currentPlan": "Mevcut Plan",
-    "dataAndPrivacy": "VERİ VE GİZLİLİK",
-    "dataExportRequested": "Veri dışa aktarması talep edildi. E-postanızı kontrol edin.",
-    "daysRemaining": "{count, plural, =0{kalan gün yok} other{{count} gün}}",
-    "@daysRemaining": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineReminders": "Süre Hatırlatmaları",
-    "deadlineRemindersDesc": "Süreler öncesinde bildirim alın",
-    "deadlines": "Süreler",
-    "debtCollection": "Alacak Tahsilatı",
-    "deleteAccount": "Hesabı Sil",
-    "deleteAccountDesc": "Hesabınızı kalıcı olarak kaldırın",
-    "deleteAccountDialogContent": "Bu işlem kalıcıdır ve geri alınamaz. Tüm verileriniz, davalarınız ve belgeleriniz kalıcı olarak silinecektir.",
-    "deleteConfirm": "Emin misiniz? Tüm verileriniz kalıcı olarak silinecektir.",
-    "demoHint": "Demo: “908FBT” plakasını deneyin",
-    "demoModeDesc": "Gerçek bir davadan örnek verilerle uygulamayı keşfedin",
-    "deportation": "Sınır dışı etme",
-    "disclaimer": "Yalnızca yapay zeka rehberliği — hukuki danışmanlık değildir. Her zaman bir avukata danışın.",
-    "disclaimerFull": "Bu bir yapay zeka asistanıdır, avukat değildir. Yapay zeka analizi hata içerebilir. Her zaman yetkin bir hukukçu ile doğrulayın.",
-    "disconnect": "Bağlantıyı Kes",
-    "discrimination": "Ayrımcılık",
-    "doNotBuy": "Satın almayın",
-    "documents": "Belgeler",
-    "documentsCount": "{count, plural, =0{belge yok} other{{count} belge}}",
-    "@documentsCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "draftAppeal": "İtiraz Taslağı",
-    "editDraft": "Düzenle",
-    "editProfile": "Profili Düzenle",
-    "email": "E-posta",
-    "emailConnected": "E-posta bağlandı",
-    "emailDisconnected": "E-posta bağlantısı kesildi",
-    "emailIntegration": "E-POSTA ENTEGRASYONU",
-    "emailInvalid": "Geçerli bir e-posta adresi girin",
-    "emailPrivacyNote": "Yalnızca hukuki konularla ilgili e-postaları okuyoruz. Kişisel e-postalarınız gizli kalır.",
-    "emailRequired": "E-posta gereklidir",
-    "emergencyShield": "Acil Durum Kalkanı",
-    "error": "Hata",
-    "exportDataDesc": "Tüm dava verilerinizi indirin",
-    "exportDataDialogContent": "Davalar, belgeler ve yazışmalar dahil tüm verilerinizin bir indirmesini hazırlayacağız. Hazır olduğunda bir e-posta alacaksınız.",
-    "exportMyData": "Verilerimi Dışa Aktar",
-    "exportPdf": "PDF olarak dışa aktar",
-    "familyReunification": "Aile Birleşimi",
-    "forgotPassword": "Şifremi Unuttum?",
-    "free": "Ücretsiz",
-    "fullDefense": "Advocat Pro",
-    "fullName": "Ad Soyad",
-    "gallery": "Galeri",
-    "generateAppeal": "İtiraz oluştur",
-    "getStarted": "Başla",
-    "goodAfternoon": "İyi günler, {name}",
-    "@goodAfternoon": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodEvening": "İyi akşamlar, {name}",
-    "@goodEvening": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodMorning": "Günaydın, {name}",
-    "@goodMorning": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodNight": "İyi geceler, {name}",
-    "@goodNight": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "home": "Ana Sayfa",
-    "important": "Önemli",
-    "inProgress": "Devam Ediyor",
-    "informational": "Bilgilendirici",
-    "inspection": "Teknik muayene",
-    "insurance": "Sigorta",
-    "issuesFound": "{count, plural, =0{sorun bulunamadı} other{{count} sorun bulundu}}",
-    "@issuesFound": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "laborDispute": "İşçi Uyuşmazlığı",
-    "langEnglish": "İngilizce",
-    "langFinnish": "Fince",
-    "langRussian": "Rusça",
-    "language": "Dil",
-    "lastActivity": "Son aktivite: {time}",
-    "@lastActivity": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "legalFighter": "Hukuk Savaşçısı",
-    "legalSection": "HUKUKİ",
-    "licensePlate": "Plaka",
-    "loading": "Yükleniyor…",
-    "logIn": "Giriş Yap",
-    "loginFailed": "Geçersiz e-posta veya şifre. Lütfen tekrar deneyin.",
-    "lost": "Kaybedildi",
-    "markComplete": "Tamamlandı olarak işaretle",
-    "mileage": "Kilometre",
-    "myCases": "Davalarım",
-    "nameRequired": "Ad soyad gereklidir",
-    "newCase": "Yeni Dava",
-    "next": "İleri",
-    "noAccount": "Hesabınız yok mu? ",
-    "noCases": "Henüz dava yok",
-    "noCasesYet": "Henüz dava yok",
-    "noDeadlines": "Süre yok — her şey yolunda!",
-    "noRecentActivity": "Son aktivite yok",
-    "notifications": "BİLDİRİMLER",
-    "onboardingDesc1": "Advocat hukuki durumunuzu anlamanıza yardımcı olur. Yapay zeka araçları belgeleri analiz eder, olası sorunları belirler ve incelemeniz için belge taslakları hazırlar. Bir hukuk bürosu değil — davanızı destekleyen bir teknoloji aracıdır.",
-    "onboardingDesc2": "Herhangi bir hukuki belgeyi fotoğraflayın. Yapay zeka onu birden fazla dilde okur, temel verileri çıkarır ve AB direktifleri ile ulusal yasalara uygunluğu kontrol eder.",
-    "onboardingDesc3": "Yapay zeka araçlarımız 40’dan fazla usul gereksinimi türünü kontrol eder. Yapay zeka analizi dikkat gerektiren sorunları tespit edebilir — tebligat dili, usul adımları ve yasal süreler gibi. Her zaman yetkin bir avukat ile doğrulayın.",
-    "onboardingDesc4": "Yapay zeka, incelemeniz için hukuki referanslarla itiraz, şikayet ve mektup taslakları hazırlar. Ne sunacağınıza siz karar verirsiniz. Her belge, sunulmadan önce yetkin bir hukukçu tarafından incelenmelidir.",
-    "onboardingNext": "İleri",
-    "onboardingSkip": "Atla",
-    "onboardingTitle1": "Yapay Zeka Destekli Hukuki Bilgi",
-    "onboardingTitle2": "Belgeleri Tarayın ve Analiz Edin",
-    "onboardingTitle3": "Yapay Zeka Olası Sorunları Kontrol Eder",
-    "onboardingTitle4": "İncelemeniz İçin Belge Taslakları",
-    "openACase": "Dava Aç",
-    "optional": "(isteğe bağlı)",
-    "orDivider": "veya",
-    "other": "Diğer",
-    "overdue": "Gecikmiş",
-    "owners": "Önceki sahipler",
-    "password": "Şifre",
-    "passwordRequired": "Şifre gereklidir",
-    "passwordStrengthMedium": "Orta",
-    "passwordStrengthStrong": "Güçlü",
-    "passwordStrengthWeak": "Zayıf",
-    "passwordTooShort": "Şifre en az 8 karakter olmalıdır",
-    "passwordsDoNotMatch": "Şifreler eşleşmiyor",
-    "pendingDecision": "Karar Bekleniyor",
-    "perCheck": "kontrol başına",
-    "permanentlyDelete": "Kalıcı Olarak Sil",
-    "policeMisconduct": "Polis Suçu",
-    "popular": "POPÜLER",
-    "preferences": "TERCİHLER",
-    "preferredLanguage": "Tercih Edilen Dil",
-    "pricePerCheck": "€4,99 kontrol başına",
-    "privacyPolicy": "Gizlilik Politikası",
-    "pro": "Pro",
-    "pushNotifications": "Anlık Bildirimler",
-    "rateUs": "Bizi Değerlendirin",
-    "readingDocument": "Belge okunuyor…",
-    "recentActivity": "Son Aktivite",
-    "referenceNumber": "Referans Numarası",
-    "registerFailed": "Kayıt başarısız oldu. Lütfen tekrar deneyin.",
-    "reportFraud": "Dolandırıcılığı Bildirin",
-    "requestExport": "Dışa Aktarma Talep Et",
-    "researchingLaw": "Uygulanabilir yasa araştırılıyor…",
-    "resetPasswordFailed": "Bağlantı gönderilemedi. Lütfen tekrar deneyin.",
-    "resetPasswordSent": "Şifre sıfırlama bağlantısı e-postanıza gönderildi.",
-    "residencePermit": "Oturma İzni",
-    "manageSubscription": "Aboneliği yönet",
-    "restorePurchases": "Satın Almaları Geri Yükle",
-    "retry": "Tekrar Dene",
-    "reviewWarning": "Göndermeden önce dikkatlice inceleyin. İçerikten siz sorumlusunuz.",
-    "riskHigh": "Yüksek risk — kaçının",
-    "riskLow": "Çalışmak için güvenli",
-    "riskMedium": "Dikkatli olun",
-    "safeToBuy": "Satın almak güvenli",
-    "saveAndAnalyze": "Kaydet ve Analiz Et",
-    "saveDraft": "Kaydet",
-    "saveWithAnnual": "Yıllık faturalandırma ile %25 tasarruf edin",
-    "scan": "Tara",
-    "scanDocument": "Belge Tara",
-    "searchCases": "Dava ara…",
-    "selectCountry": "Ülke seçin",
-    "selectLanguage": "Dil Seçin",
-    "sendViaEmail": "E-posta ile gönder",
-    "settings": "Ayarlar",
-    "signIn": "Giriş Yap",
-    "signInLink": "Giriş Yap",
-    "signInSubtitle": "Davalarınıza erişmek için giriş yapın",
-    "signOut": "Çıkış Yap",
-    "signOutConfirm": "Çıkış yapmak istediğinizden emin misiniz?",
-    "signUp": "Hesap Oluştur",
-    "signUpLink": "Kayıt Ol",
-    "socialBenefits": "Sosyal Yardımlar",
-    "someConcerns": "Bazı endişeler",
-    "startFirstCase": "İlk davanızı başlatın",
-    "step": "Adım {current} / {total}",
-    "@step": {
-        "placeholders": {
-            "current": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "stolen": "Çalıntı kontrolü",
-    "subscription": "Abonelik",
-    "syncLegalCorrespondence": "Hukuki yazışmayı senkronize et",
-    "syncNow": "Şimdi Senkronize Et",
-    "tenantRights": "Kiracı Hakları",
-    "termsOfService": "Hizmet Koşulları",
-    "termsRequired": "Hizmet Koşullarını kabul etmelisiniz",
-    "timeline": "Zaman Çizelgesi",
-    "tryDemoMode": "Demo Modunu Deneyin",
-    "typeDeleteToConfirm": "Hesabın kalıcı olarak kaldırılmasını onaylamak için DELETE yazın.",
-    "typeMessage": "Bir mesaj yazın…",
-    "upcoming": "Yaklaşan",
-    "uploadDocument": "Belge Yükle",
-    "urgentDeadline": "Acil: {title}",
-    "@urgentDeadline": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "useInAppeal": "İtirazda kullan",
-    "vehicleChecker": "Araç Denetleyici",
-    "vehicleChecks": "Durum Kontrolleri",
-    "vehicleColor": "Renk",
-    "vehicleMake": "Marka",
-    "vehicleModel": "Model",
-    "vehicleYear": "Yıl",
-    "version": "Sürüm",
-    "victimSupport": "Mağdur Desteği",
-    "viewAll": "Tümünü Gör",
-    "vinNumber": "VIN numarası",
-    "welcomeBack": "Tekrar Hoş Geldiniz",
-    "whatAreMyOptions": "Seçeneklerim neler?",
-    "won": "Kazanıldı",
-    "activityWillAppear": "Davanız ilerledikçe etkinlikler burada görünecektir.",
-    "addDocument": "Belge ekle",
-    "addPage": "Sayfa ekle",
-    "aiDisclaimer": "Yapay Zeka Sorumluluk Reddi",
-    "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
-    "@aiDisclaimerCompact": {
-        "description": "TODO: native legal review (currently English fallback)"
-    },
-    "aiDisclaimerFullTitle": "Important: how Advocat works",
-    "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
-    "aiDisclaimerExpand": "Learn more",
-    "aiDisclaimerDismiss": "OK, I understand",
-    "alignDocument": "Belgeyi çerçeve içinde hizalayın",
-    "allClearDeadlines": "Her şey yolunda! Yeni süreler belirlendiğinde burada görünecek.",
-    "analysisFailedRetry": "Analiz başarısız. Lütfen tekrar deneyin.",
-    "analyzeSelected": "Seçilenleri analiz et",
-    "analyzed": "Analiz edildi",
-    "analyzingContent": "İçerik analiz ediliyor…",
-    "annual": "Yıllık",
-    "annualLeave": "Yıllık izin (çalışılan her ay için en az 2 gün)",
-    "appeal": "İtiraz",
-    "appealDeadline": "İtiraz süresi",
-    "appealDeadlineDesc": "İtiraz en geç {date} tarihine kadar yapılmalıdır.",
-    "@appealDeadlineDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "appealDeadlineSet": "İtiraz süresi belirlendi",
-    "appealDraft": "İtiraz taslağı",
-    "applyLegalAid": "Gerekirse adli yardım başvurusu yapın",
-    "assignToCase": "Davaya ata",
-    "basicAiAnalysis": "Temel YZ analizi",
-    "basicRights": "Temel haklar:",
-    "batchAnalysisStarting": "Toplu analiz başlıyor…",
-    "calculateEligibility": "Uygunluğu hesapla",
-    "cameraPermissionDesc": "Belge taramak için kamera erişimi verin veya galeriyi kullanın.",
-    "cameraPermissionRequired": "Kamera izni gerekli",
-    "capturePhotoFailed": "Fotoğraf çekilemedi. Lütfen tekrar deneyin.",
-    "caseCreated": "Dava oluşturuldu",
-    "caseCreatedDesc": "“{title}” davası oluşturuldu.",
-    "@caseCreatedDesc": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "caseCreationComingSoon": "Önceden doldurulmuş verilerle dava oluşturma yakında",
-    "caseInfoUpdated": "Dava bilgileri son güncelleme.",
-    "caseSummaryCopied": "Dava özeti kopyalandı",
-    "caseTimeline": "Dava zaman çizelgesi",
-    "changesSaved": "Değişiklikler kaydedildi",
-    "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
-    "checkEligibility": "{country} adli yardım uygunluğunuzu kontrol edin",
-    "checkingPurchases": "Önceki satın almalar kontrol ediliyor…",
-    "chooseHowToAdd": "Belgenizi nasıl eklemek istediğinizi seçin",
-    "citizenship": "Vatandaşlık",
-    "completedDeadlinesDesc": "Tamamlanan süreler burada gösterilecektir.",
-    "connectYourEmail": "E-postanızı bağlayın",
-    "connectYourEmailDesc": "Davalarınızla ilgili hukuki yazışmaları otomatik olarak tespit etmek için e-postanızı bağlayın.",
-    "connectedTo": "{email} bağlı",
-    "@connectedTo": {
-        "placeholders": {
-            "email": {
-                "type": "String"
-            }
-        }
-    },
-    "contactLawyerImmediately": "Hemen bir avukatla iletişime geçin",
-    "contactLegalAidOffice": "Adli yardım bürosuyla iletişime geçin",
-    "cookiePolicy": "Çerez Politikası",
-    "copiedToClipboard": "Panoya kopyalandı",
-    "copy": "Kopyala",
-    "copySummary": "Özeti kopyala",
-    "couldNotLoadCase": "Dava ayrıntıları yüklenemedi",
-    "couldNotLoadDeadlines": "Süreler yüklenemedi",
-    "couldNotLoadTimeline": "Zaman çizelgesi yüklenemedi",
-    "courtCaseNo": "Mahkeme dosya no",
-    "createNote": "Not oluştur",
-    "createNoteDesc": "Not yazın veya önemli ayrıntıları kaydedin",
-    "created": "Oluşturuldu",
-    "dataPrivacyConsent": "Veri Gizliliği Onayı",
-    "days": "gün",
-    "daysLate": "gün gecikmiş",
-    "decisionReceived": "Karar alındı",
-    "decisionReceivedDesc": "Bu dava için resmi bir karar alındı.",
-    "decline": "Reddet",
-    "delete": "Sil",
-    "deleteCase": "Davayı sil",
-    "deleteCaseConfirm": "“{title}” silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-    "@deleteCaseConfirm": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "deleteDocumentsConfirm": "{count} belge silinsin mi?",
-    "@deleteDocumentsConfirm": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deleteSelected": "Seçilenleri sil",
-    "deportationNotice": "Sınır dışı bildirimi",
-    "deportationNoticeDesc": "Sınır dışı kararına itiraz adımları",
-    "disconnectEmail": "E-postayı ayır",
-    "disconnectEmailConfirm": "Otomatik e-posta senkronizasyonu durdurulacak. Önceden senkronize edilen e-postalar kalacak.",
-    "discriminationDesc": "Ayrımcılığı nasıl bildirir ve mücadele edersiniz",
-    "doNotIgnoreNotice": "Bildirimi görmezden GELMEYİN - süreler kesindir",
-    "documentAnalysis": "Belge analizi",
-    "documentIncident": "Olayı belgeleyin (tarih, saat, tanıklar)",
-    "documentProcessedOk": "Belge başarıyla işlendi",
-    "documentUploadedSuccess": "Belge başarıyla yüklendi",
-    "documentVault": "Belge kasası",
-    "done": "Bitti",
-    "draftCopiedToClipboard": "Taslak panoya kopyalandı",
-    "draftDocument": "Taslak belge",
-    "draftGeneration": "Taslak oluşturma",
-    "edit": "Düzenle",
-    "editDocument": "Belgeyi düzenle",
-    "emailComingSoon": "E-posta gönderimi yakında",
-    "emailIntegrationTitle": "E-posta entegrasyonu",
-    "english": "İngilizce",
-    "estimateDisclaimer": "Bu sadece bir tahmindir. Gerçek uygunluk Adli Yardım Bürosu tarafından belirlenir.",
-    "exportAsPdf": "PDF olarak dışa aktar",
-    "failed": "Başarısız",
-    "failedToCreateCaseRetry": "Dava oluşturulamadı. Lütfen tekrar deneyin.",
-    "failedToGenerateDraft": "Taslak oluşturulamadı. Lütfen tekrar deneyin.",
-    "failedToLoadCases": "Davalar yüklenemedi",
-    "failedToLoadDocuments": "Belgeler yüklenemedi",
-    "fileComplaintOmbudsman": "Ayrımcılıkla Mücadele Ombudsmanına şikayette bulunun",
-    "filterByType": "Türe göre filtrele",
-    "finnish": "Fince",
-    "forever": "sonsuza kadar",
-    "fromDocument": "Belgeden",
-    "fullAiAnalysis": "Tam YZ analizi",
-    "fullFreeLegalAid": "Muhtemelen ücretsiz adli yardıma hak kazanıyorsunuz.",
-    "gdprChat": "Sohbet mesajlarının YZ tarafından işlenmesi",
-    "gdprDelete": "Verilerinizi istediğiniz zaman silme hakkı",
-    "gdprDocs": "Yüklenen belgelerin analizi",
-    "gdprFooter": "Verileriniz şifrelenir ve üçüncü taraflarla paylaşılmaz. Onayı geri çekebilir ve tüm verileri Ayarlardan silebilirsiniz.",
-    "gdprIntro": "YZ hukuki yardım sağlamak için verilerinizi GDPR (AB 2016/679) uyarınca işliyoruz. Devam ederek kabul ediyorsunuz:",
-    "gdprStorage": "Dava verilerinin şifreli depolanması",
-    "generateAppealWithIssues": "{count, plural, other{İtiraz Oluştur ({count} sorun)}}",
-    "@generateAppealWithIssues": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "generatingDraft": "Taslağınız oluşturuluyor…",
-    "generatingDraftDesc": "YZ, dava detaylarınıza dayalı hukuki belge hazırlıyor.",
-    "greatJobDeadlines": "Süreleri takip etmekte harika iş çıkarıyorsunuz.",
-    "haveQuestionsAi": "Sorularınız mı var? YZ'ye sorun",
-    "hearingScheduled": "Duruşma planlandı",
-    "hearingScheduledDesc": "Mahkeme duruşması {date} için planlandı.",
-    "@hearingScheduledDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "howToAct": "Nasıl hareket etmeli:",
-    "iAgree": "Kabul ediyorum",
-    "iAgreeToThe": "Kabul ediyorum ",
-    "immediateSteps": "Acil adımlar:",
-    "immigrationDetention": "Göçmen gözaltısı",
-    "immigrationDetentionDesc": "Yetkililer tarafından gözaltına alındığınızda haklar",
-    "inCourt": "Mahkemede",
-    "issuesFoundHeader": "Bulunan sorunlar",
-    "issuesFoundInDocument": "{count, plural, =0{Belgenizde sorun bulunamadı} other{Belgenizde {count} sorun bulundu}}",
-    "@issuesFoundInDocument": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "knowYourRights": "Haklarınızı bilin",
-    "landlordNotice": "Ev sahibi ihbar süresi vermeli (3–6 ay)",
-    "lastSynced": "Son senkronizasyon: {time}",
-    "@lastSynced": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "late": "gecikmiş",
-    "legalAidCalculator": "Adli yardım hesaplayıcı",
-    "legalAidWithCopay": "%{percent} katkı payı ile adli yardıma hak kazanabilirsiniz.",
-    "@legalAidWithCopay": {
-        "placeholders": {
-            "percent": {
-                "type": "String"
-            }
-        }
-    },
-    "legalEmails": "Hukuki e-postalar",
-    "legalEmailsWillAppear": "Hukuki olarak sınıflandırılan e-postalar burada görünecek.",
-    "likelyEligible": "Muhtemelen uygun",
-    "mayNotQualify": "Uygun olmayabilir",
-    "mayNotQualifyDesc": "Bu tahmine göre devlet adli yardımına uygun olmayabilirsiniz.",
-    "migriReference": "Migri referansı",
-    "minimumWage": "Toplu sözleşmeye göre asgari ücret",
-    "monthly": "Aylık",
-    "monthlyIncome": "Aylık gelir (EUR)",
-    "mostPopular": "EN POPÜLER",
-    "mustNotResist": "Fiziksel direnç göstermemek",
-    "mustProvideName": "Adınızı ve doğum tarihinizi belirtin",
-    "mustShowId": "Varsa kimliğinizi gösterin",
-    "nationality": "Uyruk",
-    "noCasesMatchSearch": "Aramanızla eşleşen dava yok",
-    "noCompletedDeadlines": "Tamamlanmış süre yok",
-    "noContentAvailable": "İçerik mevcut değil",
-    "noDocumentsScanHint": "Henüz belge yok. Tarayın veya yükleyin.",
-    "noDocumentsYet": "Henüz belge yüklenmedi",
-    "noDocumentsYetScan": "Henüz belge yok",
-    "noEventsYet": "Henüz etkinlik yok",
-    "noLegalEmailsYet": "Henüz hukuki e-posta yok",
-    "noPreviousPurchases": "Önceki satın alma bulunamadı.",
-    "noSignificantIssues": "Bu belgede önemli sorun tespit edilmedi.",
-    "noUpcomingDeadlines": "Yaklaşan süre yok",
-    "noUpcomingDeadlinesShort": "Yaklaşan süre yok",
-    "noteAppealDeadline": "İtiraz süresini not edin (genellikle 30 gün)",
-    "nothingOverdue": "Gecikmiş bir şey yok",
-    "numberOfDependents": "Bakmakla yükümlü olunan kişi sayısı",
-    "oneCaseActive": "1 aktif dava",
-    "openCase": "Davayı aç",
-    "openSettings": "Ayarları aç",
-    "orWord": "veya",
-    "pageCount": "{count, plural, =0{sayfa yok} other{{count} sayfa}}",
-    "@pageCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "pageNumber": "Sayfa {number}",
-    "@pageNumber": {
-        "placeholders": {
-            "number": {
-                "type": "int"
-            }
-        }
-    },
-    "pagesUploadedSuccess": "{count, plural, other{{count} sayfa başarıyla yüklendi}}",
-    "@pagesUploadedSuccess": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "paymentFailed": "Ödeme başarısız: {error}",
-    "@paymentFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String"
-            }
-        }
-    },
-    "pdf": "PDF",
-    "pdfExportComingSoon": "PDF dışa aktarma yakında",
-    "pending": "Beklemede",
-    "perMonth": "/ay",
-    "perYear": "/yıl",
-    "preparingUpload": "Yükleme hazırlanıyor…",
-    "preview": "Önizleme",
-    "priorityProcessing": "Öncelikli işleme",
-    "processing": "İşleniyor",
-    "protectionUnjustEviction": "Haksız tahliyeye karşı koruma",
-    "readingText": "Metin okunuyor…",
-    "ready": "Hazır",
-    "reportAndOpenCase": "Bildir ve dava aç",
-    "reportMileageFraud": "Kilometre sahtekarlığını bildir",
-    "reportMileageFraudDesc": "Araç kontrol verilerine dayalı sahtekarlık raporu oluşturulacak.",
-    "reportToPolice": "Suçsa polise bildirin (tehdit, saldırı)",
-    "retake": "Yeniden çek",
-    "retryAnalysis": "Analizi tekrarla",
-    "reviewBeforeSending": "Göndermeden önce dikkatlice gözden geçirin. Bu belgenin içeriğinden siz sorumlusunuz.",
-    "rightAppealAdmin": "İdare Mahkemesine itiraz hakkı",
-    "rightAskInterpreter": "Tercüman isteyin",
-    "rightChallengeDetention": "Gözaltına mahkemede itiraz hakkı",
-    "rightContactEmbassy": "Büyükelçiliğinizle iletişim hakkı",
-    "rightContactLawyer": "Sorgulamadan önce avukatla iletişim",
-    "rightContactLawyerDetention": "Avukatla iletişim hakkı",
-    "rightHabitableDwelling": "Yaşanabilir bir konuta hak",
-    "rightHumaneTreatment": "İnsani muamele ve tıbbi bakım hakkı",
-    "rightInterpreter": "Tercüman hakkı",
-    "rightKnowDetentionReason": "Gözaltı nedenini bilme hakkı",
-    "rightKnowWhyStopped": "Neden durdurulduğunuzu bilmek",
-    "rightLegalRep": "Hukuki temsil hakkı",
-    "rightRecordEncounter": "Karşılaşmayı kaydedin (kamusal alanlarda)",
-    "rightRemainSilent": "Sessiz kalın (kimliğinizi belirtmelisiniz)",
-    "rightStayDuringAppeal": "İtiraz sırasında kalma hakkı (çoğu durumda)",
-    "russian": "Rusça",
-    "safeWorkingConditions": "Güvenli çalışma koşulları",
-    "save": "Kaydet",
-    "saveChanges": "Değişiklikleri kaydet",
-    "saveTwentyFivePercent": "%25 tasarruf edin",
-    "scanDocumentDesc": "Belgenizin fotoğrafını çekin",
-    "scanFirstDocumentHint": "İlk belgenizi tarayın, YZ hatalar için analiz etsin.",
-    "scanNew": "Yeni tarama",
-    "scenarioNotFound": "Senaryo bulunamadı",
-    "secureDocumentStorage": "Güvenli belge deposu",
-    "secureDocumentStorageDesc": "Önemli hukuki belgelerinizi tek bir yerde saklayın.",
-    "securityDeposit": "Depozito max 3 aylık kira",
-    "selected": "{count} seçili",
-    "@selected": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "severityOverview": "Ciddiyet genel bakışı",
-    "sickLeave": "Hastalık izni tazminatı",
-    "somethingWentWrong": "Bir şeyler yanlış gitti",
-    "genericError": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
-    "stoppedByPolice": "Polis tarafından durdurulma",
-    "stoppedByPoliceDesc": "Polis kontrolünde haklarınız",
-    "successSubscribed": "{plan} aboneliği başarılı!",
-    "@successSubscribed": {
-        "placeholders": {
-            "plan": {
-                "type": "String"
-            }
-        }
-    },
-    "switchToGrid": "Izgara görünümüne geç",
-    "switchToList": "Liste görünümüne geç",
-    "takePhotoInstead": "Fotoğraf çekin",
-    "tenantRightsDesc": "Konut ve kiracı korumaları",
-    "threeCasesActive": "3 aktif dava",
-    "threeDocScans": "3 belge taraması",
-    "totalAssets": "Toplam varlıklar (EUR)",
-    "twentyDocScans": "20 belge taraması",
-    "typeLabel": "Tür",
-    "unlimitedCases": "Sınırsız dava",
-    "unlimitedDocScans": "Sınırsız belge taraması",
-    "unlinkedEmails": "Bağlanmamış e-postalar",
-    "uploadFailed": "Yükleme başarısız. Bağlantınızı kontrol edin.",
-    "uploadFile": "Dosya yükle",
-    "uploadFileDesc": "Cihazınızdan bir PDF veya resim seçin",
-    "uploadingPercent": "Yükleniyor… %{percent}",
-    "@uploadingPercent": {
-        "placeholders": {
-            "percent": {
-                "type": "int"
-            }
-        }
-    },
-    "useThisPhoto": "Bu fotoğrafı kullan",
-    "viewFull": "Tam görüntüle",
-    "workPermit": "Çalışma izni",
-    "workingTimeLimits": "Çalışma süresi sınırları (maks 8s/gün, 40s/hafta)",
-    "workplaceRights": "İşyeri hakları",
-    "workplaceRightsDesc": "Finlandiya'da iş hukuku korumaları",
-    "writtenRentalAgreement": "Yazılı kira sözleşmesi gerekli",
-    "youHaveRightTo": "Haklarınız:",
-    "youMust": "Yapmanız gerekenler:",
-    "yourRights": "Haklarınız:",
-    "yourRightsAsTenant": "Kiracı olarak haklarınız:",
-    "yourRightsInDetention": "Gözaltında haklarınız:",
-    "whatToDo": "Ne yapmalı",
-    "getHelp": "Yardım al",
-    "share": "Paylaş",
-    "didYouKnow": "Biliyor muydunuz?",
-    "mustKnow": "Bilmeniz gereken",
-    "goodToKnow": "Bilmekte fayda var",
-    "sentFromAdvocat": "Advocat uygulamasından gönderildi",
-    "policeActionStayCalm": "Sakin olun ve ellerinizi görünür tutun",
-    "policeActionAskWhy": "Memura neden durdurulduğunuzu sorun",
-    "policeActionProvideName": "Adınızı ve doğum tarihinizi bildirin",
-    "policeActionWantLawyer": "Açıkça belirtin: “Sorulardan önce bir avukat istiyorum”",
-    "policeActionAskInterpreter": "Gerekirse tercüman isteyin",
-    "policeActionNoteBadge": "Memurun adını ve sicil numarasını not edin",
-    "policeFactMustTellReason": "Finlandiya'da polis, sizi durdurma nedenini söylemek zorundadır. Söylemezlerse sorabilirsiniz — yasal olarak açıklamak zorundadırlar.",
-    "policeFactCanRecord": "Finlandiya'da kamuya açık yerlerde polis etkileşimlerini kaydedebilirsiniz. Bu, ifade özgürlüğü kapsamında korunmaktadır.",
-    "contactFinnishLegalAid": "Finlandiya Adli Yardım",
-    "contactNonDiscriminationOmbudsman": "Ayrımcılıkla Mücadele Ombudsmanı",
-    "deportationDeadlineAppeal": "İdare Mahkemesine itiraz — genellikle tebliğden itibaren 30 gün",
-    "deportationDeadlineLegalAid": "Adli yardım başvurusu yapın — bunu DERHAL yapın",
-    "deportationFactStayDuringAppeal": "Finlandiya'da itirazınız işlenirken genellikle ülkede kalma hakkınız vardır. Aktif bir itiraz süresince çoğu durumda sınır dışı etme gerçekleştirilemez.",
-    "contactRefugeeAdviceCentre": "Finlandiya Mülteci Danışma Merkezi",
-    "contactAdminCourtHelsinki": "Helsinki İdare Mahkemesi",
-    "workplaceActionKeepContract": "İş sözleşmenizin kopyalarını saklayın",
-    "workplaceActionTrackHours": "Çalışma saatlerinizi bağımsız olarak takip edin",
-    "workplaceActionReportUnsafe": "Güvensiz koşulları iş güvenliği otoritesine bildirin",
-    "workplaceActionJoinUnion": "Korunma için bir sendikaya katılın",
-    "workplaceActionContactAuthority": "Gerekirse İş Güvenliği Otoritesine başvurun",
-    "workplaceFactCollectiveWage": "Finlandiya'da toplu iş sözleşmeleri sektöre göre asgari ücretleri belirler — tek bir ulusal asgari ücret yoktur. İşvereniniz alanınızın toplu iş sözleşmesine uymak zorundadır.",
-    "workplaceFactOralContract": "Yazılı sözleşme olmasa bile Finlandiya'da tam çalışan haklarına sahipsiniz. Sözlü anlaşma yasal olarak eşit derecede bağlayıcıdır.",
-    "contactOccupationalSafety": "İş Güvenliği Otoritesi",
-    "contactTradeUnionSAK": "Sendika Danışmanlığı (SAK)",
-    "tenantActionWrittenAgreement": "Her zaman yazılı kira sözleşmesi yapın",
-    "tenantActionDocumentCondition": "Taşınma sırasında dairenin durumunu belgeleyin (fotoğraflar)",
-    "tenantActionReportMaintenance": "Bakım sorunlarını yazılı olarak bildirin",
-    "tenantActionNoIllegalEviction": "Yasadışı tahliyeyi asla kabul etmeyin — mahkemeler karar vermelidir",
-    "tenantActionContactAdvisory": "Anlaşmazlık durumunda kiracı danışma hizmetlerine başvurun",
-    "tenantFactNoEvictionWithoutCourt": "Finlandiya'da ev sahibi, kira sözleşmeniz sona ermiş olsa bile mahkeme kararı olmadan sizi tahliye edemez. Kilit değiştirmek veya hizmetleri kesmek yasadışıdır.",
-    "contactTenantsAssociation": "Finlandiya Kiracılar Derneği",
-    "contactConsumerDisputesBoard": "Tüketici Uyuşmazlıkları Kurulu",
-    "detentionActionAskDecision": "Derhal yazılı gözaltı kararını isteyin",
-    "detentionActionRequestLawyer": "Avukatla iletişim kurmayı talep edin",
-    "detentionActionContactEmbassy": "Büyükelçiliğiniz veya konsolosluğunuzla iletişime geçin",
-    "detentionActionAskMedical": "Gerekirse tıbbi yardım isteyin",
-    "detentionActionRequestInterpreter": "Tüm duruşmalar için tercüman talep edin",
-    "detentionDeadlineCourtReview": "Sulh mahkemesi gözaltını 4 gün içinde incelemelidir",
-    "detentionDeadlineContinuation": "Mahkeme uzatmayı her 2 haftada bir inceler",
-    "detentionFactCourtReview": "Finlandiya'da göç gözaltısı 4 gün içinde bir sulh mahkemesi tarafından incelenmelidir. İncelenmezse gözaltı yasadışı hale gelir.",
-    "contactParliamentaryOmbudsman": "Parlamento Ombudsmanı",
-    "discriminationActionWriteDown": "Ne olduğunu tam olarak yazın (tarih, saat, yer)",
-    "discriminationActionSaveEvidence": "Kanıtları saklayın: mesajlar, e-postalar, tanıklar",
-    "discriminationActionFileComplaint": "Ayrımcılıkla Mücadele Ombudsmanına şikayette bulunun",
-    "discriminationActionContactLegalAid": "Ücretsiz danışmanlık için adli yardım bürosuna başvurun",
-    "discriminationActionReportPolice": "Tehdit veya saldırı varsa polise bildirin",
-    "discriminationFactNonDiscriminationAct": "Finlandiya Ayrımcılık Yasağı Kanunu; yaş, köken, uyruk, dil, din, sağlık, engellilik, cinsel yönelim ve diğer kişisel özelliklere dayalı ayrımcılığı kapsar.",
-    "contactVictimSupportRIKU": "Mağdur Desteği Finlandiya (RIKU)",
-    "domesticViolence": "Aile içi şiddet",
-    "inheritance": "Miras",
-    "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
-    "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
-    "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
-    "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
-    "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
-    "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
-    "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
-    "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
-    "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
-    "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
-    "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
-    "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
-    "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
-    "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
-    "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
-    "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
-    "consumerProtection": "Tüketici koruması",
-    "caseTypeStepLabel": "Case Type",
-    "detailsStepLabel": "Details",
-    "documentsStepLabel": "Documents",
-    "whatTypeOfCase": "What type of case is this?",
-    "selectCategoryDescription": "Select the category that best describes your situation.",
-    "tellUsAboutCase": "Tell us about your case",
-    "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
-    "caseTitleHint": "e.g., Residence Permit Appeal 2026",
-    "countryJurisdiction": "Country / Jurisdiction",
-    "selectCountryHint": "Select a country",
-    "referenceNumberHint": "e.g., UMA/12345/2026",
-    "descriptionOptional": "Description (optional)",
-    "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
-    "uploadFirstDocument": "Upload your first document",
-    "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
-    "tapToUploadFile": "Tap to upload a file",
-    "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
-    "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
-    "aiGeneratedDisclaimer": "AI-generated • Not legal advice",
-    "callAI": "Call AI",
-    "comingSoon": "Yakında",
-    "encrypted": "Encrypted",
-    "typing": "Typing…",
-    "online": "Online",
-    "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
-    "tapMicrophoneToSpeak": "Tap the microphone to speak",
-    "categoryEssential": "Essential",
-    "categoryPolice": "Police",
-    "categoryWork": "Work",
-    "categoryHousing": "Housing",
-    "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count, plural, =0{hak yok} other{İçinde {count} hak var}}",
-    "@rightsInsideCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "freeAidThreshold": "Free aid threshold",
-    "partialAidThreshold": "Partial aid threshold",
-    "assetLimit": "Asset limit",
-    "whereToApplyLabel": "Where to apply",
-    "phoneLabel": "Phone",
-    "websiteLabel": "Website",
-    "disclaimerCollapsed": "AI guidance only",
-    "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
-    "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "chatDisclaimerSubtitle": "Yapay zeka asistanı · hukuki tavsiye değil",
-    "chatDisclaimerBannerFull": "Advocat, bir avukat değil, hukuki bilgi sağlayan bir yapay zeka asistanıdır. Buradaki bilgiler avukat–müvekkil ilişkisi kurmaz, hukuki tavsiye niteliği taşımaz ve hatalı olabilir. Bağlayıcı hukuki tavsiye için yargı yetkinizdeki lisanslı bir avukata danışın. Sizi temsil etmiyoruz.",
-    "chatDisclaimerFooter": "Yapay zeka tarafından üretildi. Lisanslı bir avukata danışın.",
-    "chatDisclaimerGotIt": "Anladım",
-    "guestUser": "Misafir",
-    "howToUse": "Nasil kullanilir?",
-    "tutorialStep1Title": "YZ Hukuk Asistani",
-    "tutorialStep1Desc": "Herhangi bir hukuki soru sorun ve Estonya yasalarina dayali aninda yanitlar alin.",
-    "tutorialStep2Title": "Haklarinizi Bilin",
-    "tutorialStep2Desc": "Hukuki bilgileri konulara gore arayin — is, konut, tuketici haklari ve daha fazlasi.",
-    "tutorialStep3Title": "Belgeleri Tarayin",
-    "tutorialStep3Desc": "Hukuki belgelerin fotografini cekin, YZ analizi ve guvenli depolama icin.",
-    "tutorialStep4Title": "Baslayalim!",
-    "tutorialStep4Desc": "Uygulamayi kesfedin ve haklarinizi koruyun. Tum veriler cihazinizda ozel kalir.",
-    "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Premium özellikleri açın",
-    "voiceDisclaimer": "Sesli asistan şu anda yalnızca masaüstünde çalışmaktadır (Chrome tarayıcı). Mobil destek yakında.",
-    "recommended": "Önerilen",
-    "pleaseLogIn": "Lütfen giriş yapın",
-    "subscriptionNotFound": "Abonelik bulunamadı",
-    "errorWithMessage": "Hata: {message}",
-    "redirectingToPayment": "Ödeme sayfasına yönlendiriliyor…",
-    "cheaperAnnually": "€{amount}/ay daha ucuz yıllık abonelikle",
-    "navigatingTo": "Açılıyor",
-    "stayInChat": "Sohbette kal",
-    "backToChat": "Sohbete dön",
-    "citationStatusVerifiedBadge": "Doğrulandı",
-    "citationStatusUnverifiedBadge": "Doğrulanmadı",
-    "citationStatusHistoricalBadge": "Tarihsel sürüm",
-    "citationStatusVerifiedTooltip": "Erişilen bir hukuki kaynaktan alıntılandı.",
-    "citationStatusUnverifiedTooltip": "Yapay zekâ bu bölümü kaynak erişimi olmadan alıntıladı — güvenmeden önce doğrulayın.",
-    "citationStatusHistoricalTooltip": "Alıntılanan hüküm artık yürürlükte değil.",
-    "citationOpenInRiigiTeataja": "Riigi Teataja'da aç",
-    "citationSnippetExpand": "Tam metni göster",
-    "citationSnippetCollapse": "Daha az göster",
-    "citationUnverifiedSheetNote": "Yapay zekâ bu paragrafı alıntıladı, ancak bu görüşmede mevzuat külliyatından alınmamıştı. Güvenmeden önce atfı doğrulayın.",
-    "citationFooterNoneWarning": "Belgelenmiş atıf yok",
-    "citationFooterSummaryTotal": "{count, plural, other{{count} alıntı}}",
-    "citationFooterSummaryVerified": "{count, plural, other{{count} doğrulanmış}}",
-    "citationFooterSummaryUnverified": "{count, plural, other{{count} doğrulanmamış}}",
-    "citationFooterSummaryHistorical": "{count, plural, other{{count} tarihsel}}",
-    "@citationFooterSummaryTotal": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryVerified": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryUnverified": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@citationFooterSummaryHistorical": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineRadarTitle": "Upcoming deadlines",
-    "deadlineRadarEmpty": "No upcoming deadlines",
-    "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "{count, plural, =0{bugün} other{{count} gün içinde}}",
-    "@deadlineCardDaysLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineCardTomorrow": "tomorrow",
-    "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count, plural, other{{count} gün gecikme}}",
-    "@deadlineCardOverdue": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deadlineCardMarkComplete": "Mark complete",
-    "deadlineCardSnooze": "Snooze",
-    "deadlineCardSnooze3d": "Snooze 3 days",
-    "deadlineCardSnooze7d": "Snooze 7 days",
-    "deadlineCardSnoozeCustom": "Pick a date",
-    "deadlineCardEdit": "Edit",
-    "deadlineCardDelete": "Archive",
-    "deadlineCardSourceLabelPdf": "from PDF",
-    "deadlineCardSourceLabelIntake": "from intake",
-    "deadlineCardSourceLabelManual": "added manually",
-    "deadlineCardSourceLabelEmail": "from email",
-    "deadlineCardSourceLabelHaikuExtract": "AI-extracted",
-    "deadlineCardSourceLabelStatutoryTemplate": "statute template",
-    "deadlineBannerCritical": "Critical deadline {title} {when}",
-    "@deadlineBannerCritical": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            },
-            "when": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlineBannerDismiss": "Dismiss",
-    "deadlineBannerOpen": "Open deadline",
-    "deadlineHolidayShifted": "Shifted from {original} due to {reason}",
-    "@deadlineHolidayShifted": {
-        "placeholders": {
-            "original": {
-                "type": "String"
-            },
-            "reason": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlinePermissionAskTitle": "Enable deadline reminders?",
-    "deadlinePermissionAskBody": "We'll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.",
-    "deadlinePermissionAllow": "Allow",
-    "deadlinePermissionLater": "Later",
-    "deadlineSettingsSection": "Deadline reminders",
-    "deadlineSettingsPushChannel": "Push notifications",
-    "deadlineSettingsEmailChannel": "Email (critical only)",
-    "deadlineSettingsInAppChannel": "In-app banners",
-    "deadlineSettingsCriticalBypass": "Critical reminders bypass quiet hours",
-    "deadlineSettingsQuietHours": "Quiet hours",
-    "deadlineSettingsQuietHoursBadge": "Quiet {start}–{end}",
-    "@deadlineSettingsQuietHoursBadge": {
-        "placeholders": {
-            "start": {
-                "type": "String"
-            },
-            "end": {
-                "type": "String"
-            }
-        }
-    },
-    "deadlineCaseScreenTitle": "Case deadlines",
-    "deadlineAddManualCta": "Add deadline",
-    "deadlineFormTitle": "Title",
-    "deadlineFormDescription": "Description (optional)",
-    "deadlineFormStatuteTemplate": "Statute template",
-    "deadlineFormStatuteTemplateNone": "None (manual)",
-    "deadlineFormDeadlineAt": "Deadline date",
-    "deadlineFormPriority": "Priority",
-    "deadlineFormSave": "Save",
-    "deadlineFormCancel": "Cancel",
-    "deadlineCompletedNotePrompt": "Add a note (optional)",
-    "deadlineCompletedNoteSave": "Save",
-    "inboxTitle": "Inbox",
-    "inboxEmptyTitle": "Nothing pending",
-    "inboxEmptyBody": "New email threads will appear here as they get triaged.",
-    "inboxApproveSend": "Approve & send",
-    "inboxEditDraft": "Edit",
-    "inboxSnooze": "Snooze",
-    "inboxArchive": "Archive",
-    "inboxFilterAll": "All",
-    "inboxConfirmSendTitle": "Send the prepared reply?",
-    "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
-    "inboxSendButton": "Send",
-    "inboxSentToast": "Sent.",
-    "inboxAlreadySentToast": "Already sent.",
-    "inboxSendErrorToast": "Could not send the reply. Tap retry.",
-    "inboxSnoozedToast": "Snoozed for 24h.",
-    "inboxArchivedToast": "Archived.",
-    "inboxDraftLoadError": "Could not load draft.",
-    "inboxDeadlineToday": "today",
-    "inboxDeadlineTomorrow": "tomorrow",
-    "inboxDeadlineInDays": "in {days}d",
-    "@inboxDeadlineInDays": {
-        "placeholders": {
-            "days": {
-                "type": "int"
-            }
-        }
-    },
-    "inboxDeadlineOverdue": "overdue {days}d",
-    "@inboxDeadlineOverdue": {
-        "placeholders": {
-            "days": {
-                "type": "int"
-            }
-        }
-    },
-    "workspaceTabOverview": "Overview",
-    "workspaceTabChat": "Chat",
-    "workspaceTabDrafts": "Drafts",
-    "workspaceOverviewEmpty": "Add documents to build a summary.",
-    "workspaceTimelineEmpty": "No events yet.",
-    "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
-    "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email.",
-    "reviewThisContract": "Sözleşmeyi incele",
-    "contractReviews": "Sözleşme incelemeleri",
-    "@contractReviews": {},
-    "contractReviewsFreeFeature": "1 sözleşme incelemesi (ömür boyu deneme)",
-    "@contractReviewsFreeFeature": {},
-    "contractReviewsCounselFeature": "Ayda 5 sözleşme incelemesi",
-    "@contractReviewsCounselFeature": {},
-    "contractReviewsProFeature": "Ayda 20 sözleşme incelemesi",
-    "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "{count, plural, =0{Bu ay sözleşme incelemesi kalmadı} other{Bu ay {count} sözleşme incelemesi kaldı}}",
-    "@contractReviewsLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "contractReviewsExhausted": "Bu ay sözleşme incelemesi kalmadı",
-    "@contractReviewsExhausted": {},
-    "contractReviewsFreeTrialLeft": "Ücretsiz deneme: 1 sözleşme incelemesi",
-    "@contractReviewsFreeTrialLeft": {},
-    "contractReviewsFreeTrialUsed": "Ücretsiz deneme kullanıldı — yükseltin",
-    "@contractReviewsFreeTrialUsed": {},
-    "contractReviewsUpgradeTitle": "Sözleşme incelemeleri tükendi",
-    "@contractReviewsUpgradeTitle": {},
-    "contractReviewsUpgradeBodyFree": "Ücretsiz sözleşme incelemenizi kullandınız. Aylık incelemeler için yükseltin.",
-    "@contractReviewsUpgradeBodyFree": {},
-    "contractReviewsUpgradeBodyPaid": "Bu ay {cap} incelemenin {used} tanesini kullandınız. Daha yüksek aylık limit için yükseltin.",
-    "@contractReviewsUpgradeBodyPaid": {
-        "placeholders": {
-            "used": {
-                "type": "int"
-            },
-            "cap": {
-                "type": "int"
-            }
-        }
-    },
-    "contractReviewsUpgradeCounselCta": "Counsel'a yükselt (€19,99/ay) — 5 inceleme",
-    "@contractReviewsUpgradeCounselCta": {},
-    "contractReviewsUpgradeProCta": "Pro'ya yükselt (€29,99/ay) — 20 inceleme",
-    "@contractReviewsUpgradeProCta": {},
-    "contractReviewsUpgradeToProShort": "Pro'ya yükselt — 20/ay",
-    "@contractReviewsUpgradeToProShort": {},
-    "notNow": "Şimdi değil",
-    "@notNow": {},
-    "referralTitle": "Arkadaşlarını davet et",
-    "@referralTitle": {},
-    "referralSubtitle": "Bir ay ücretsiz kazan. Bir ay ücretsiz hediye et.",
-    "@referralSubtitle": {},
-    "referralYourLink": "BAĞLANTIN",
-    "@referralYourLink": {},
-    "referralCopyLink": "Bağlantıyı kopyala",
-    "@referralCopyLink": {},
-    "referralShare": "Paylaş",
-    "@referralShare": {},
-    "referralLinkCopied": "Bağlantı kopyalandı",
-    "@referralLinkCopied": {},
-    "referralStatsInvited": "Davet edilen",
-    "@referralStatsInvited": {},
-    "referralStatsConverted": "Kayıt olan",
-    "@referralStatsConverted": {},
-    "referralStatsEarned": "Kazanılan ay",
-    "@referralStatsEarned": {},
-    "referralShareWhatsApp": "WhatsApp'ta paylaş",
-    "@referralShareWhatsApp": {},
-    "referralShareTelegram": "Telegram'da paylaş",
-    "@referralShareTelegram": {},
-    "referralShareEmail": "E-posta ile paylaş",
-    "@referralShareEmail": {},
-    "referralEmailSubject": "Advocat'ı dene — yapay zekâ hukuk asistanın",
-    "@referralEmailSubject": {},
-    "referralLoadError": "Veriler yüklenemedi. Yenilemek için aşağı çek.",
-    "@referralLoadError": {},
-    "referralRetry": "Tekrar dene",
-    "@referralRetry": {},
-    "referralSettingsTile": "Arkadaşlarını davet et",
-    "@referralSettingsTile": {},
-    "referralAfterReviewCta": "Beğendin mi? Bir arkadaşını davet et — ikiniz de bir ay ücretsiz kazanın.",
-    "@referralAfterReviewCta": {},
-    "checkerProTagline": "Profesyonel doğrulama araçları",
-    "checkerDataSource": "Resmî kayıtlardan alınan veriler",
-    "companyCheckerHint": "Şirket adı veya sicil numarası",
-    "companyCheckerPriceChip": "Kontrol başına €2.99  •  Pro'ya dahildir",
-    "companyCheckerEmptyState": "Tam rapor için şirket adını veya sicil\nnumarasını girin",
-    "aiMemoryTitle": "Yapay zekâ hafızası",
-    "aiMemorySubtitle": "Yapay zekânın sizinle ilgili hatırladıklarını gözden geçirin ve silin",
-    "bookLawyerCallTitle": "Avukatla görüşme planlayın",
-    "bookLawyerCallComingSoonTitle": "Gerçek avukatlarla görüşmeler — yakında",
-    "bookLawyerCallComingSoonBody": "Pro ve Premium, ortak avukatla 15 dakikalık görüşmeleri kapsar (Pro: 1/çeyrek, Premium: 2/çeyrek). Estonyalı bağımsız avukat ağını tamamlıyoruz; rezervasyon açılır açılmaz size e-posta göndereceğiz.",
-    "bookLawyerCallQuotaAvailable": "Bu çeyrekte {total} aramadan {remaining} hakkınız kaldı.",
-    "@bookLawyerCallQuotaAvailable": {
-        "placeholders": {
-            "remaining": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "bookLawyerCallQuotaExhausted": "Üç aylık kontenjan kullanıldı.",
-    "bookLawyerCallQuotaBodyAvailable": "Pro paketi çeyrekte 1, Premium 2 aramayı kapsar. Aramalar 15 dakikadır ve Google Meet üzerinden yapılır.",
-    "bookLawyerCallQuotaBodyExhausted": "Kontenjanınız bir sonraki çeyreğin ilk günü sıfırlanır. Daha erken konuşmanız mı gerekiyor? Ekstra arama için Premium'a yükseltin.",
-    "severityCritical": "KRİTİK",
-    "severityHigh": "YÜKSEK",
-    "severityMedium": "ORTA",
-    "severityLow": "DÜŞÜK",
-    "deadlineRequiredFields": "Başlık ve son tarih zorunludur",
-    "acceptTermsRequired": "Lütfen Hizmet Şartlarını kabul edin",
-    "chatLegalCouncilTooltip": "Hukuki konsey (4 uzman)",
-    "attachFileTooltip": "Dosya ekle",
-    "sendMessage": "Mesaj gönder",
-    "stopGenerating": "Oluşturmayı durdur",
-    "showPassword": "Şifreyi göster",
-    "hidePassword": "Şifreyi gizle",
-    "decreaseDependents": "Azalt",
-    "increaseDependents": "Artır",
-    "consiliumHeader": "Avukat konsültasyonu",
-    "@consiliumHeader": {
-        "description": "Header text for the multi-agent legal consilium panel"
-    },
-    "consiliumProgress": "{count} / {total} hazır",
-    "@consiliumProgress": {
-        "description": "Progress indicator while consilium experts produce opinions",
-        "placeholders": {
-            "count": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumStarting": "Avukatlar davanızı inceliyor…",
-    "consiliumDisagreement": "Uzmanlar aynı fikirde değil",
-    "@consiliumDisagreement": {
-        "description": "Banner shown when experts have conflicting positions"
-    },
-    "consiliumSynthesizing": "Tavsiye derleniyor…",
-    "consiliumDone": "Konsültasyon tamamlandı · {totalRoles} uzman",
-    "@consiliumDone": {
-        "placeholders": {
-            "totalRoles": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumPositionPush": "İtiraz et",
-    "consiliumPositionSettle": "Uzlaş",
-    "consiliumPositionInvestigate": "Araştır",
-    "consiliumPositionOutOfScope": "Yetki dışı",
-    "consiliumConfidence": "Güven",
-    "consiliumKeyCitation": "Temel kaynak",
-    "consiliumAdversarialRound": "Çekişmeli tur",
-    "consiliumViewFullOpinion": "Tam görüşü gör",
-    "consiliumExpertsAgreed": "{count, plural, other{{count} uzman katılıyor}}",
-    "@consiliumExpertsAgreed": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumExpertsDisagree": "{count, plural, other{{count} uzman katılmıyor}}",
-    "@consiliumExpertsDisagree": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "consiliumDisclaimer": "YZ ajanları, insan avukatlar değil. Önemli kararları baroya kayıtlı bir avukatla doğrulayın.",
-    "@consiliumDisclaimer": {
-        "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    },
-    "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
-    "draftsTab": "Drafts",
-    "draftingTitle": "Drafting Studio",
-    "draftingEmpty": "Empty draft",
-    "draftingPlaceholder": "Start typing your draft…",
-    "draftingDraftsList": "My drafts",
-    "draftingSave": "Save",
-    "draftingSaved": "Saved",
-    "draftingSavedJustNow": "Saved just now",
-    "draftingAiRevise": "Revise with AI",
-    "draftingExportPdf": "Export PDF",
-    "draftingExportDocx": "Export DOCX",
-    "draftingExportMd": "Export Markdown",
-    "draftingDeleteDraft": "Delete draft",
-    "draftingConfirmDelete": "Delete this draft?",
-    "draftingConfirmDeleteMessage": "This action cannot be undone.",
-    "draftingConfirm": "Delete",
-    "draftingCancel": "Cancel",
-    "draftingDraftReplyTo": "Reply to {name}",
-    "draftingUntitled": "Untitled",
-    "draftingTitleHint": "Title (optional)",
-    "draftingAiReviseTitle": "Revise with AI",
-    "draftingAiReviseSelectionLabel": "Selected text:",
-    "draftingAiReviseInstructionLabel": "Instruction (optional)",
-    "draftingAiReviseInstructionHint": "e.g. \"make it more formal\" or \"shorten\"",
-    "draftingAiReviseRunButton": "Generate revision",
-    "draftingAiReviseSuggestionLabel": "Suggested revision:",
-    "draftingAiReviseChangesLabel": "Changes:",
-    "draftingAiReviseAccept": "Accept",
-    "draftingAiReviseReject": "Reject",
-    "draftingFormatBold": "Bold",
-    "draftingFormatItalic": "Italic",
-    "draftingFormatHeading": "Heading",
-    "draftingFormatBullet": "Bullet list",
-    "draftingFormatNumbered": "Numbered list",
-    "draftingEmptyListMessage": "You have no drafts yet.",
-    "draftingEmptyListAction": "New draft",
-    "draftingExporting": "Exporting…",
-    "draftingExportFailed": "Export failed",
-    "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft",
-    "vaultNoteChip": "Vault note",
-    "saveToVault": "Save to Vault",
-    "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault",
-    "vaultNoteTitlePrefix": "Note: ",
-    "openInVault": "Open in Vault",
-    "saveToVaultFailed": "Save to Vault failed",
-    "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history",
-    "dangerZone": "[en] Danger zone",
-    "deleteAccountConfirmButton": "[en] Delete forever",
-    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
-    "emptyHomeTitle": "Welcome to Advocat",
-    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
-    "intentChip1": "Got a fine",
-    "intentChip2": "Permit denied",
-    "intentChip3": "Contract problem",
-    "emptyCasesTitle": "No cases yet",
-    "emptyCasesCta": "Start a case",
-    "emptyDraftsTitle": "No drafts yet",
-    "emptyDraftsCta": "Create draft",
-    "emptyChatTitle": "Ask Advocat anything",
-    "chatExamplePrompt1": "Help me reply to a fine",
-    "chatExamplePrompt2": "Review my rental contract",
-    "chatExamplePrompt3": "What are my rights at work?",
-    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
-    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
-    "deletingAccount": "[en] Deleting account…",
-    "contractReviewTitle": "Contract Review",
-    "@contractReviewTitle": {
-        "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewUploadCta": "Upload contract",
-    "@contractReviewUploadCta": {
-        "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
-    "@contractReviewQuotaRemaining": {
-        "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewRedFlags": "Red flags",
-    "@contractReviewRedFlags": {
-        "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewReviewPoints": "Review points",
-    "@contractReviewReviewPoints": {
-        "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewNegotiationTips": "Negotiation tips",
-    "@contractReviewNegotiationTips": {
-        "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewSaveToVault": "Save to Vault",
-    "@contractReviewSaveToVault": {
-        "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "contractReviewContinueChat": "Continue in chat",
-    "@contractReviewContinueChat": {
-        "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
-    },
-    "referralInviteFriends": "Invite Friends",
-    "referralYourCode": "Your code",
-    "referralCopiedToast": "Code copied to clipboard",
-    "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
-    "referralInvited": "Friends invited",
-    "referralRewardsEarned": "Free months earned",
-    "deadlineUrgencyToday": "Today & Overdue",
-    "deadlineUrgencyWeek": "This week",
-    "deadlineUrgencyMonth": "This month",
-    "deadlineUrgencyLater": "Later",
-    "deadlineAddManual": "Add deadline",
-    "deadlineSnoozeBy": "Snooze",
-    "deadlineSnooze1d": "Snooze 1 day",
-    "deadlineSnooze3d": "Snooze 3 days",
-    "deadlineSnooze7d": "Snooze 7 days",
-    "deadlineDismiss": "Dismiss",
-    "deadlineExportIcs": "Add to calendar",
-    "deadlineSource": "Source",
-    "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
-    "deadlineNewTitle": "New deadline",
-    "deadlineFieldTitle": "Title",
-    "deadlineFieldDueDate": "Due date",
-    "deadlineFieldNotes": "Notes (optional)",
-    "deadlineSaved": "Deadline saved",
-    "deadlineSaveFailed": "Could not save deadline",
-    "deadlineUrgentBannerSingle": "1 deadline today or overdue",
-    "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
-    "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
-    "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
-    "@deadlineUrgentBannerMany": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@deadlineDaysLeft": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "@deadlineDaysOverdue": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "iapPayWithApple": "Apple ile öde",
-    "iapRestorePurchases": "Satın alımları geri yükle",
-    "iapPurchaseFailed": "Satın alma başarısız. Lütfen tekrar deneyin veya destek ile iletişime geçin.",
-    "iapRestoreSuccess": "Aboneliğiniz geri yüklendi.",
-    "iapRestoreNoActive": "Geri yüklenecek aktif abonelik bulunamadı.",
-    "deadlineEuRadarTitle": "EU deadline radar (preview)",
-    "@deadlineEuRadarTitle": {"x-todo": "translate to tr"},
-    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
-    "@deadlineEuRadarSubtitle": {"x-todo": "translate to tr"}
+  "@@locale": "tr",
+  "about": "Hakkında",
+  "aboutSection": "HAKKINDA",
+  "appearance": "Appearance",
+  "appearanceSystem": "System (auto)",
+  "appearanceLight": "Light",
+  "appearanceDark": "Dark",
+  "appearanceDescription": "Choose how Advocat looks",
+  "accidents": "Kazalar",
+  "active": "Aktif",
+  "activeCases": "Aktif Davalar",
+  "addedToAppeal": "İtiraza eklendi",
+  "agreeToTerms": "Kabul ediyorum: ",
+  "aiAnalysis": "Yapay Zeka Analizi",
+  "aiAssistant": "Yapay Zeka Hukuk Asistanı",
+  "aiChat": "Yapay Zeka Sohbet",
+  "all": "Tümü",
+  "alreadyHaveAccount": "Zaten hesabınız var mı? ",
+  "analyzing": "Analiz ediliyor…",
+  "andWord": " ve ",
+  "appTitle": "Advocat — Hukuki Bilgi Aracı",
+  "appVersion": "Uygulama Sürümü",
+  "appealFiled": "İtiraz Sunuldu",
+  "areYouAbsolutelySure": "Kesinlikle emin misiniz?",
+  "askAboutCase": "Davamı analiz et",
+  "asylum": "İltica",
+  "back": "Geri",
+  "basic": "Temel",
+  "beforeYouBuy": "Satın almadan önce",
+  "beforeYouWork": "Onlarla çalışmadan önce",
+  "camera": "Kamera",
+  "cancel": "İptal",
+  "caseDescription": "Durumunuzu açıklayın",
+  "caseDetail": "Dava Detayları",
+  "caseOverview": "İşte dava özetiniz",
+  "caseTitle": "Dava Başlığı",
+  "caseUpdated": "Dava güncellendi",
+  "cases": "Davalar",
+  "checkCompany": "Şirketi Kontrol Et",
+  "checkDeadlines": "Süreleri kontrol et",
+  "checkVehicle": "Aracı Kontrol Et",
+  "checkerTitle": "Denetleyici",
+  "checkingErrors": "Hatalar kontrol ediliyor…",
+  "choosePlan": "Plan Seç",
+  "closed": "Kapalı",
+  "companyName": "Şirket adı veya sicil numarası",
+  "completed": "Tamamlanmış",
+  "confirm": "Onayla",
+  "confirmPassword": "Şifreyi Onayla",
+  "connectEmail": "E-posta Bağla",
+  "connectGmail": "Gmail Bağla",
+  "connectOutlook": "Outlook Bağla",
+  "connected": "Bağlı",
+  "contactSupport": "Destek ile İletişime Geçin",
+  "continueWithGoogle": "Google ile Devam Et",
+  "copyText": "Metni kopyala",
+  "correspondence": "Yazışma",
+  "couldNotLoadCases": "Davalarınız yüklenemedi",
+  "country": "Ülke",
+  "createAccount": "Hesap Oluştur",
+  "createCase": "Dava Oluştur",
+  "criminalCase": "Ceza Davası",
+  "critical": "Kritik",
+  "currentPlan": "Mevcut Plan",
+  "dataAndPrivacy": "VERİ VE GİZLİLİK",
+  "dataExportRequested": "Veri dışa aktarması talep edildi. E-postanızı kontrol edin.",
+  "daysRemaining": "{count, plural, =0{kalan gün yok} other{{count} gün}}",
+  "@daysRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineReminders": "Süre Hatırlatmaları",
+  "deadlineRemindersDesc": "Süreler öncesinde bildirim alın",
+  "deadlines": "Süreler",
+  "debtCollection": "Alacak Tahsilatı",
+  "deleteAccount": "Hesabı Sil",
+  "deleteAccountDesc": "Hesabınızı kalıcı olarak kaldırın",
+  "deleteAccountDialogContent": "Bu işlem kalıcıdır ve geri alınamaz. Tüm verileriniz, davalarınız ve belgeleriniz kalıcı olarak silinecektir.",
+  "deleteConfirm": "Emin misiniz? Tüm verileriniz kalıcı olarak silinecektir.",
+  "demoHint": "Demo: “908FBT” plakasını deneyin",
+  "demoModeDesc": "Gerçek bir davadan örnek verilerle uygulamayı keşfedin",
+  "deportation": "Sınır dışı etme",
+  "disclaimer": "Yalnızca yapay zeka rehberliği — hukuki danışmanlık değildir. Her zaman bir avukata danışın.",
+  "disclaimerFull": "Bu bir yapay zeka asistanıdır, avukat değildir. Yapay zeka analizi hata içerebilir. Her zaman yetkin bir hukukçu ile doğrulayın.",
+  "disconnect": "Bağlantıyı Kes",
+  "discrimination": "Ayrımcılık",
+  "doNotBuy": "Satın almayın",
+  "documents": "Belgeler",
+  "documentsCount": "{count, plural, =0{belge yok} other{{count} belge}}",
+  "@documentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "draftAppeal": "İtiraz Taslağı",
+  "editDraft": "Düzenle",
+  "editProfile": "Profili Düzenle",
+  "email": "E-posta",
+  "emailConnected": "E-posta bağlandı",
+  "emailDisconnected": "E-posta bağlantısı kesildi",
+  "emailIntegration": "E-POSTA ENTEGRASYONU",
+  "emailInvalid": "Geçerli bir e-posta adresi girin",
+  "emailPrivacyNote": "Yalnızca hukuki konularla ilgili e-postaları okuyoruz. Kişisel e-postalarınız gizli kalır.",
+  "emailRequired": "E-posta gereklidir",
+  "emergencyShield": "Acil Durum Kalkanı",
+  "error": "Hata",
+  "exportDataDesc": "Tüm dava verilerinizi indirin",
+  "exportDataDialogContent": "Davalar, belgeler ve yazışmalar dahil tüm verilerinizin bir indirmesini hazırlayacağız. Hazır olduğunda bir e-posta alacaksınız.",
+  "exportMyData": "Verilerimi Dışa Aktar",
+  "exportPdf": "PDF olarak dışa aktar",
+  "familyReunification": "Aile Birleşimi",
+  "forgotPassword": "Şifremi Unuttum?",
+  "free": "Ücretsiz",
+  "fullDefense": "Advocat Pro",
+  "fullName": "Ad Soyad",
+  "gallery": "Galeri",
+  "generateAppeal": "İtiraz oluştur",
+  "getStarted": "Başla",
+  "goodAfternoon": "İyi günler, {name}",
+  "@goodAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodEvening": "İyi akşamlar, {name}",
+  "@goodEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodMorning": "Günaydın, {name}",
+  "@goodMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodNight": "İyi geceler, {name}",
+  "@goodNight": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "home": "Ana Sayfa",
+  "important": "Önemli",
+  "inProgress": "Devam Ediyor",
+  "informational": "Bilgilendirici",
+  "inspection": "Teknik muayene",
+  "insurance": "Sigorta",
+  "issuesFound": "{count, plural, =0{sorun bulunamadı} other{{count} sorun bulundu}}",
+  "@issuesFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "laborDispute": "İşçi Uyuşmazlığı",
+  "langEnglish": "İngilizce",
+  "langFinnish": "Fince",
+  "langRussian": "Rusça",
+  "language": "Dil",
+  "lastActivity": "Son aktivite: {time}",
+  "@lastActivity": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "legalFighter": "Hukuk Savaşçısı",
+  "legalSection": "HUKUKİ",
+  "licensePlate": "Plaka",
+  "loading": "Yükleniyor…",
+  "logIn": "Giriş Yap",
+  "loginFailed": "Geçersiz e-posta veya şifre. Lütfen tekrar deneyin.",
+  "lost": "Kaybedildi",
+  "markComplete": "Tamamlandı olarak işaretle",
+  "mileage": "Kilometre",
+  "myCases": "Davalarım",
+  "nameRequired": "Ad soyad gereklidir",
+  "newCase": "Yeni Dava",
+  "next": "İleri",
+  "noAccount": "Hesabınız yok mu? ",
+  "noCases": "Henüz dava yok",
+  "noCasesYet": "Henüz dava yok",
+  "noDeadlines": "Süre yok — her şey yolunda!",
+  "noRecentActivity": "Son aktivite yok",
+  "notifications": "BİLDİRİMLER",
+  "onboardingDesc1": "Advocat hukuki durumunuzu anlamanıza yardımcı olur. Yapay zeka araçları belgeleri analiz eder, olası sorunları belirler ve incelemeniz için belge taslakları hazırlar. Bir hukuk bürosu değil — davanızı destekleyen bir teknoloji aracıdır.",
+  "onboardingDesc2": "Herhangi bir hukuki belgeyi fotoğraflayın. Yapay zeka onu birden fazla dilde okur, temel verileri çıkarır ve AB direktifleri ile ulusal yasalara uygunluğu kontrol eder.",
+  "onboardingDesc3": "Yapay zeka araçlarımız 40’dan fazla usul gereksinimi türünü kontrol eder. Yapay zeka analizi dikkat gerektiren sorunları tespit edebilir — tebligat dili, usul adımları ve yasal süreler gibi. Her zaman yetkin bir avukat ile doğrulayın.",
+  "onboardingDesc4": "Yapay zeka, incelemeniz için hukuki referanslarla itiraz, şikayet ve mektup taslakları hazırlar. Ne sunacağınıza siz karar verirsiniz. Her belge, sunulmadan önce yetkin bir hukukçu tarafından incelenmelidir.",
+  "onboardingNext": "İleri",
+  "onboardingSkip": "Atla",
+  "onboardingTitle1": "Yapay Zeka Destekli Hukuki Bilgi",
+  "onboardingTitle2": "Belgeleri Tarayın ve Analiz Edin",
+  "onboardingTitle3": "Yapay Zeka Olası Sorunları Kontrol Eder",
+  "onboardingTitle4": "İncelemeniz İçin Belge Taslakları",
+  "openACase": "Dava Aç",
+  "optional": "(isteğe bağlı)",
+  "orDivider": "veya",
+  "other": "Diğer",
+  "overdue": "Gecikmiş",
+  "owners": "Önceki sahipler",
+  "password": "Şifre",
+  "passwordRequired": "Şifre gereklidir",
+  "passwordStrengthMedium": "Orta",
+  "passwordStrengthStrong": "Güçlü",
+  "passwordStrengthWeak": "Zayıf",
+  "passwordTooShort": "Şifre en az 8 karakter olmalıdır",
+  "passwordsDoNotMatch": "Şifreler eşleşmiyor",
+  "pendingDecision": "Karar Bekleniyor",
+  "perCheck": "kontrol başına",
+  "permanentlyDelete": "Kalıcı Olarak Sil",
+  "policeMisconduct": "Polis Suçu",
+  "popular": "POPÜLER",
+  "preferences": "TERCİHLER",
+  "preferredLanguage": "Tercih Edilen Dil",
+  "pricePerCheck": "€4,99 kontrol başına",
+  "privacyPolicy": "Gizlilik Politikası",
+  "pro": "Pro",
+  "pushNotifications": "Anlık Bildirimler",
+  "rateUs": "Bizi Değerlendirin",
+  "readingDocument": "Belge okunuyor…",
+  "recentActivity": "Son Aktivite",
+  "referenceNumber": "Referans Numarası",
+  "registerFailed": "Kayıt başarısız oldu. Lütfen tekrar deneyin.",
+  "reportFraud": "Dolandırıcılığı Bildirin",
+  "requestExport": "Dışa Aktarma Talep Et",
+  "researchingLaw": "Uygulanabilir yasa araştırılıyor…",
+  "resetPasswordFailed": "Bağlantı gönderilemedi. Lütfen tekrar deneyin.",
+  "resetPasswordSent": "Şifre sıfırlama bağlantısı e-postanıza gönderildi.",
+  "residencePermit": "Oturma İzni",
+  "manageSubscription": "Aboneliği yönet",
+  "restorePurchases": "Satın Almaları Geri Yükle",
+  "retry": "Tekrar Dene",
+  "reviewWarning": "Göndermeden önce dikkatlice inceleyin. İçerikten siz sorumlusunuz.",
+  "riskHigh": "Yüksek risk — kaçının",
+  "riskLow": "Çalışmak için güvenli",
+  "riskMedium": "Dikkatli olun",
+  "safeToBuy": "Satın almak güvenli",
+  "saveAndAnalyze": "Kaydet ve Analiz Et",
+  "saveDraft": "Kaydet",
+  "saveWithAnnual": "Yıllık faturalandırma ile %25 tasarruf edin",
+  "scan": "Tara",
+  "scanDocument": "Belge Tara",
+  "searchCases": "Dava ara…",
+  "selectCountry": "Ülke seçin",
+  "selectLanguage": "Dil Seçin",
+  "sendViaEmail": "E-posta ile gönder",
+  "settings": "Ayarlar",
+  "signIn": "Giriş Yap",
+  "signInLink": "Giriş Yap",
+  "signInSubtitle": "Davalarınıza erişmek için giriş yapın",
+  "signOut": "Çıkış Yap",
+  "signOutConfirm": "Çıkış yapmak istediğinizden emin misiniz?",
+  "signUp": "Hesap Oluştur",
+  "signUpLink": "Kayıt Ol",
+  "socialBenefits": "Sosyal Yardımlar",
+  "someConcerns": "Bazı endişeler",
+  "startFirstCase": "İlk davanızı başlatın",
+  "step": "Adım {current} / {total}",
+  "@step": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stolen": "Çalıntı kontrolü",
+  "subscription": "Abonelik",
+  "syncLegalCorrespondence": "Hukuki yazışmayı senkronize et",
+  "syncNow": "Şimdi Senkronize Et",
+  "tenantRights": "Kiracı Hakları",
+  "termsOfService": "Hizmet Koşulları",
+  "termsRequired": "Hizmet Koşullarını kabul etmelisiniz",
+  "timeline": "Zaman Çizelgesi",
+  "tryDemoMode": "Demo Modunu Deneyin",
+  "typeDeleteToConfirm": "Hesabın kalıcı olarak kaldırılmasını onaylamak için DELETE yazın.",
+  "typeMessage": "Bir mesaj yazın…",
+  "upcoming": "Yaklaşan",
+  "uploadDocument": "Belge Yükle",
+  "urgentDeadline": "Acil: {title}",
+  "@urgentDeadline": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "useInAppeal": "İtirazda kullan",
+  "vehicleChecker": "Araç Denetleyici",
+  "vehicleChecks": "Durum Kontrolleri",
+  "vehicleColor": "Renk",
+  "vehicleMake": "Marka",
+  "vehicleModel": "Model",
+  "vehicleYear": "Yıl",
+  "version": "Sürüm",
+  "victimSupport": "Mağdur Desteği",
+  "viewAll": "Tümünü Gör",
+  "vinNumber": "VIN numarası",
+  "welcomeBack": "Tekrar Hoş Geldiniz",
+  "whatAreMyOptions": "Seçeneklerim neler?",
+  "won": "Kazanıldı",
+  "activityWillAppear": "Davanız ilerledikçe etkinlikler burada görünecektir.",
+  "addDocument": "Belge ekle",
+  "addPage": "Sayfa ekle",
+  "aiDisclaimer": "Yapay Zeka Sorumluluk Reddi",
+  "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
+  "@aiDisclaimerCompact": {
+    "description": "TODO: native legal review (currently English fallback)"
+  },
+  "aiDisclaimerFullTitle": "Important: how Advocat works",
+  "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
+  "aiDisclaimerExpand": "Learn more",
+  "aiDisclaimerDismiss": "OK, I understand",
+  "alignDocument": "Belgeyi çerçeve içinde hizalayın",
+  "allClearDeadlines": "Her şey yolunda! Yeni süreler belirlendiğinde burada görünecek.",
+  "analysisFailedRetry": "Analiz başarısız. Lütfen tekrar deneyin.",
+  "analyzeSelected": "Seçilenleri analiz et",
+  "analyzed": "Analiz edildi",
+  "analyzingContent": "İçerik analiz ediliyor…",
+  "annual": "Yıllık",
+  "annualLeave": "Yıllık izin (çalışılan her ay için en az 2 gün)",
+  "appeal": "İtiraz",
+  "appealDeadline": "İtiraz süresi",
+  "appealDeadlineDesc": "İtiraz en geç {date} tarihine kadar yapılmalıdır.",
+  "@appealDeadlineDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "appealDeadlineSet": "İtiraz süresi belirlendi",
+  "appealDraft": "İtiraz taslağı",
+  "applyLegalAid": "Gerekirse adli yardım başvurusu yapın",
+  "assignToCase": "Davaya ata",
+  "basicAiAnalysis": "Temel YZ analizi",
+  "basicRights": "Temel haklar:",
+  "batchAnalysisStarting": "Toplu analiz başlıyor…",
+  "calculateEligibility": "Uygunluğu hesapla",
+  "cameraPermissionDesc": "Belge taramak için kamera erişimi verin veya galeriyi kullanın.",
+  "cameraPermissionRequired": "Kamera izni gerekli",
+  "capturePhotoFailed": "Fotoğraf çekilemedi. Lütfen tekrar deneyin.",
+  "caseCreated": "Dava oluşturuldu",
+  "caseCreatedDesc": "“{title}” davası oluşturuldu.",
+  "@caseCreatedDesc": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "caseCreationComingSoon": "Önceden doldurulmuş verilerle dava oluşturma yakında",
+  "caseInfoUpdated": "Dava bilgileri son güncelleme.",
+  "caseSummaryCopied": "Dava özeti kopyalandı",
+  "caseTimeline": "Dava zaman çizelgesi",
+  "changesSaved": "Değişiklikler kaydedildi",
+  "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
+  "checkEligibility": "{country} adli yardım uygunluğunuzu kontrol edin",
+  "checkingPurchases": "Önceki satın almalar kontrol ediliyor…",
+  "chooseHowToAdd": "Belgenizi nasıl eklemek istediğinizi seçin",
+  "citizenship": "Vatandaşlık",
+  "completedDeadlinesDesc": "Tamamlanan süreler burada gösterilecektir.",
+  "connectYourEmail": "E-postanızı bağlayın",
+  "connectYourEmailDesc": "Davalarınızla ilgili hukuki yazışmaları otomatik olarak tespit etmek için e-postanızı bağlayın.",
+  "connectedTo": "{email} bağlı",
+  "@connectedTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "contactLawyerImmediately": "Hemen bir avukatla iletişime geçin",
+  "contactLegalAidOffice": "Adli yardım bürosuyla iletişime geçin",
+  "cookiePolicy": "Çerez Politikası",
+  "copiedToClipboard": "Panoya kopyalandı",
+  "copy": "Kopyala",
+  "copySummary": "Özeti kopyala",
+  "couldNotLoadCase": "Dava ayrıntıları yüklenemedi",
+  "couldNotLoadDeadlines": "Süreler yüklenemedi",
+  "couldNotLoadTimeline": "Zaman çizelgesi yüklenemedi",
+  "courtCaseNo": "Mahkeme dosya no",
+  "createNote": "Not oluştur",
+  "createNoteDesc": "Not yazın veya önemli ayrıntıları kaydedin",
+  "created": "Oluşturuldu",
+  "dataPrivacyConsent": "Veri Gizliliği Onayı",
+  "days": "gün",
+  "daysLate": "gün gecikmiş",
+  "decisionReceived": "Karar alındı",
+  "decisionReceivedDesc": "Bu dava için resmi bir karar alındı.",
+  "decline": "Reddet",
+  "delete": "Sil",
+  "deleteCase": "Davayı sil",
+  "deleteCaseConfirm": "“{title}” silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+  "@deleteCaseConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteDocumentsConfirm": "{count} belge silinsin mi?",
+  "@deleteDocumentsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteSelected": "Seçilenleri sil",
+  "deportationNotice": "Sınır dışı bildirimi",
+  "deportationNoticeDesc": "Sınır dışı kararına itiraz adımları",
+  "disconnectEmail": "E-postayı ayır",
+  "disconnectEmailConfirm": "Otomatik e-posta senkronizasyonu durdurulacak. Önceden senkronize edilen e-postalar kalacak.",
+  "discriminationDesc": "Ayrımcılığı nasıl bildirir ve mücadele edersiniz",
+  "doNotIgnoreNotice": "Bildirimi görmezden GELMEYİN - süreler kesindir",
+  "documentAnalysis": "Belge analizi",
+  "documentIncident": "Olayı belgeleyin (tarih, saat, tanıklar)",
+  "documentProcessedOk": "Belge başarıyla işlendi",
+  "documentUploadedSuccess": "Belge başarıyla yüklendi",
+  "documentVault": "Belge kasası",
+  "done": "Bitti",
+  "draftCopiedToClipboard": "Taslak panoya kopyalandı",
+  "draftDocument": "Taslak belge",
+  "draftGeneration": "Taslak oluşturma",
+  "edit": "Düzenle",
+  "editDocument": "Belgeyi düzenle",
+  "emailComingSoon": "E-posta gönderimi yakında",
+  "emailIntegrationTitle": "E-posta entegrasyonu",
+  "english": "İngilizce",
+  "estimateDisclaimer": "Bu sadece bir tahmindir. Gerçek uygunluk Adli Yardım Bürosu tarafından belirlenir.",
+  "exportAsPdf": "PDF olarak dışa aktar",
+  "failed": "Başarısız",
+  "failedToCreateCaseRetry": "Dava oluşturulamadı. Lütfen tekrar deneyin.",
+  "failedToGenerateDraft": "Taslak oluşturulamadı. Lütfen tekrar deneyin.",
+  "failedToLoadCases": "Davalar yüklenemedi",
+  "failedToLoadDocuments": "Belgeler yüklenemedi",
+  "fileComplaintOmbudsman": "Ayrımcılıkla Mücadele Ombudsmanına şikayette bulunun",
+  "filterByType": "Türe göre filtrele",
+  "finnish": "Fince",
+  "forever": "sonsuza kadar",
+  "fromDocument": "Belgeden",
+  "fullAiAnalysis": "Tam YZ analizi",
+  "fullFreeLegalAid": "Muhtemelen ücretsiz adli yardıma hak kazanıyorsunuz.",
+  "gdprChat": "Sohbet mesajlarının YZ tarafından işlenmesi",
+  "gdprDelete": "Verilerinizi istediğiniz zaman silme hakkı",
+  "gdprDocs": "Yüklenen belgelerin analizi",
+  "gdprFooter": "Verileriniz şifrelenir ve üçüncü taraflarla paylaşılmaz. Onayı geri çekebilir ve tüm verileri Ayarlardan silebilirsiniz.",
+  "gdprIntro": "YZ hukuki yardım sağlamak için verilerinizi GDPR (AB 2016/679) uyarınca işliyoruz. Devam ederek kabul ediyorsunuz:",
+  "gdprStorage": "Dava verilerinin şifreli depolanması",
+  "generateAppealWithIssues": "{count, plural, other{İtiraz Oluştur ({count} sorun)}}",
+  "@generateAppealWithIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "generatingDraft": "Taslağınız oluşturuluyor…",
+  "generatingDraftDesc": "YZ, dava detaylarınıza dayalı hukuki belge hazırlıyor.",
+  "greatJobDeadlines": "Süreleri takip etmekte harika iş çıkarıyorsunuz.",
+  "haveQuestionsAi": "Sorularınız mı var? YZ'ye sorun",
+  "hearingScheduled": "Duruşma planlandı",
+  "hearingScheduledDesc": "Mahkeme duruşması {date} için planlandı.",
+  "@hearingScheduledDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "howToAct": "Nasıl hareket etmeli:",
+  "iAgree": "Kabul ediyorum",
+  "iAgreeToThe": "Kabul ediyorum ",
+  "immediateSteps": "Acil adımlar:",
+  "immigrationDetention": "Göçmen gözaltısı",
+  "immigrationDetentionDesc": "Yetkililer tarafından gözaltına alındığınızda haklar",
+  "inCourt": "Mahkemede",
+  "issuesFoundHeader": "Bulunan sorunlar",
+  "issuesFoundInDocument": "{count, plural, =0{Belgenizde sorun bulunamadı} other{Belgenizde {count} sorun bulundu}}",
+  "@issuesFoundInDocument": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "knowYourRights": "Haklarınızı bilin",
+  "landlordNotice": "Ev sahibi ihbar süresi vermeli (3–6 ay)",
+  "lastSynced": "Son senkronizasyon: {time}",
+  "@lastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "late": "gecikmiş",
+  "legalAidCalculator": "Adli yardım hesaplayıcı",
+  "legalAidWithCopay": "%{percent} katkı payı ile adli yardıma hak kazanabilirsiniz.",
+  "@legalAidWithCopay": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "legalEmails": "Hukuki e-postalar",
+  "legalEmailsWillAppear": "Hukuki olarak sınıflandırılan e-postalar burada görünecek.",
+  "likelyEligible": "Muhtemelen uygun",
+  "mayNotQualify": "Uygun olmayabilir",
+  "mayNotQualifyDesc": "Bu tahmine göre devlet adli yardımına uygun olmayabilirsiniz.",
+  "migriReference": "Migri referansı",
+  "minimumWage": "Toplu sözleşmeye göre asgari ücret",
+  "monthly": "Aylık",
+  "monthlyIncome": "Aylık gelir (EUR)",
+  "mostPopular": "EN POPÜLER",
+  "mustNotResist": "Fiziksel direnç göstermemek",
+  "mustProvideName": "Adınızı ve doğum tarihinizi belirtin",
+  "mustShowId": "Varsa kimliğinizi gösterin",
+  "nationality": "Uyruk",
+  "noCasesMatchSearch": "Aramanızla eşleşen dava yok",
+  "noCompletedDeadlines": "Tamamlanmış süre yok",
+  "noContentAvailable": "İçerik mevcut değil",
+  "noDocumentsScanHint": "Henüz belge yok. Tarayın veya yükleyin.",
+  "noDocumentsYet": "Henüz belge yüklenmedi",
+  "noDocumentsYetScan": "Henüz belge yok",
+  "noEventsYet": "Henüz etkinlik yok",
+  "noLegalEmailsYet": "Henüz hukuki e-posta yok",
+  "noPreviousPurchases": "Önceki satın alma bulunamadı.",
+  "noSignificantIssues": "Bu belgede önemli sorun tespit edilmedi.",
+  "noUpcomingDeadlines": "Yaklaşan süre yok",
+  "noUpcomingDeadlinesShort": "Yaklaşan süre yok",
+  "noteAppealDeadline": "İtiraz süresini not edin (genellikle 30 gün)",
+  "nothingOverdue": "Gecikmiş bir şey yok",
+  "numberOfDependents": "Bakmakla yükümlü olunan kişi sayısı",
+  "oneCaseActive": "1 aktif dava",
+  "openCase": "Davayı aç",
+  "openSettings": "Ayarları aç",
+  "orWord": "veya",
+  "pageCount": "{count, plural, =0{sayfa yok} other{{count} sayfa}}",
+  "@pageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pageNumber": "Sayfa {number}",
+  "@pageNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "pagesUploadedSuccess": "{count, plural, other{{count} sayfa başarıyla yüklendi}}",
+  "@pagesUploadedSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentFailed": "Ödeme başarısız: {error}",
+  "@paymentFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "pdf": "PDF",
+  "pdfExportComingSoon": "PDF dışa aktarma yakında",
+  "pending": "Beklemede",
+  "perMonth": "/ay",
+  "perYear": "/yıl",
+  "preparingUpload": "Yükleme hazırlanıyor…",
+  "preview": "Önizleme",
+  "priorityProcessing": "Öncelikli işleme",
+  "processing": "İşleniyor",
+  "protectionUnjustEviction": "Haksız tahliyeye karşı koruma",
+  "readingText": "Metin okunuyor…",
+  "ready": "Hazır",
+  "reportAndOpenCase": "Bildir ve dava aç",
+  "reportMileageFraud": "Kilometre sahtekarlığını bildir",
+  "reportMileageFraudDesc": "Araç kontrol verilerine dayalı sahtekarlık raporu oluşturulacak.",
+  "reportToPolice": "Suçsa polise bildirin (tehdit, saldırı)",
+  "retake": "Yeniden çek",
+  "retryAnalysis": "Analizi tekrarla",
+  "reviewBeforeSending": "Göndermeden önce dikkatlice gözden geçirin. Bu belgenin içeriğinden siz sorumlusunuz.",
+  "rightAppealAdmin": "İdare Mahkemesine itiraz hakkı",
+  "rightAskInterpreter": "Tercüman isteyin",
+  "rightChallengeDetention": "Gözaltına mahkemede itiraz hakkı",
+  "rightContactEmbassy": "Büyükelçiliğinizle iletişim hakkı",
+  "rightContactLawyer": "Sorgulamadan önce avukatla iletişim",
+  "rightContactLawyerDetention": "Avukatla iletişim hakkı",
+  "rightHabitableDwelling": "Yaşanabilir bir konuta hak",
+  "rightHumaneTreatment": "İnsani muamele ve tıbbi bakım hakkı",
+  "rightInterpreter": "Tercüman hakkı",
+  "rightKnowDetentionReason": "Gözaltı nedenini bilme hakkı",
+  "rightKnowWhyStopped": "Neden durdurulduğunuzu bilmek",
+  "rightLegalRep": "Hukuki temsil hakkı",
+  "rightRecordEncounter": "Karşılaşmayı kaydedin (kamusal alanlarda)",
+  "rightRemainSilent": "Sessiz kalın (kimliğinizi belirtmelisiniz)",
+  "rightStayDuringAppeal": "İtiraz sırasında kalma hakkı (çoğu durumda)",
+  "russian": "Rusça",
+  "safeWorkingConditions": "Güvenli çalışma koşulları",
+  "save": "Kaydet",
+  "saveChanges": "Değişiklikleri kaydet",
+  "saveTwentyFivePercent": "%25 tasarruf edin",
+  "scanDocumentDesc": "Belgenizin fotoğrafını çekin",
+  "scanFirstDocumentHint": "İlk belgenizi tarayın, YZ hatalar için analiz etsin.",
+  "scanNew": "Yeni tarama",
+  "scenarioNotFound": "Senaryo bulunamadı",
+  "secureDocumentStorage": "Güvenli belge deposu",
+  "secureDocumentStorageDesc": "Önemli hukuki belgelerinizi tek bir yerde saklayın.",
+  "securityDeposit": "Depozito max 3 aylık kira",
+  "selected": "{count} seçili",
+  "@selected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "severityOverview": "Ciddiyet genel bakışı",
+  "sickLeave": "Hastalık izni tazminatı",
+  "somethingWentWrong": "Bir şeyler yanlış gitti",
+  "genericError": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+  "stoppedByPolice": "Polis tarafından durdurulma",
+  "stoppedByPoliceDesc": "Polis kontrolünde haklarınız",
+  "successSubscribed": "{plan} aboneliği başarılı!",
+  "@successSubscribed": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "switchToGrid": "Izgara görünümüne geç",
+  "switchToList": "Liste görünümüne geç",
+  "takePhotoInstead": "Fotoğraf çekin",
+  "tenantRightsDesc": "Konut ve kiracı korumaları",
+  "threeCasesActive": "3 aktif dava",
+  "threeDocScans": "3 belge taraması",
+  "totalAssets": "Toplam varlıklar (EUR)",
+  "twentyDocScans": "20 belge taraması",
+  "typeLabel": "Tür",
+  "unlimitedCases": "Sınırsız dava",
+  "unlimitedDocScans": "Sınırsız belge taraması",
+  "unlinkedEmails": "Bağlanmamış e-postalar",
+  "uploadFailed": "Yükleme başarısız. Bağlantınızı kontrol edin.",
+  "uploadFile": "Dosya yükle",
+  "uploadFileDesc": "Cihazınızdan bir PDF veya resim seçin",
+  "uploadingPercent": "Yükleniyor… %{percent}",
+  "@uploadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "useThisPhoto": "Bu fotoğrafı kullan",
+  "viewFull": "Tam görüntüle",
+  "workPermit": "Çalışma izni",
+  "workingTimeLimits": "Çalışma süresi sınırları (maks 8s/gün, 40s/hafta)",
+  "workplaceRights": "İşyeri hakları",
+  "workplaceRightsDesc": "Finlandiya'da iş hukuku korumaları",
+  "writtenRentalAgreement": "Yazılı kira sözleşmesi gerekli",
+  "youHaveRightTo": "Haklarınız:",
+  "youMust": "Yapmanız gerekenler:",
+  "yourRights": "Haklarınız:",
+  "yourRightsAsTenant": "Kiracı olarak haklarınız:",
+  "yourRightsInDetention": "Gözaltında haklarınız:",
+  "whatToDo": "Ne yapmalı",
+  "getHelp": "Yardım al",
+  "share": "Paylaş",
+  "didYouKnow": "Biliyor muydunuz?",
+  "mustKnow": "Bilmeniz gereken",
+  "goodToKnow": "Bilmekte fayda var",
+  "sentFromAdvocat": "Advocat uygulamasından gönderildi",
+  "policeActionStayCalm": "Sakin olun ve ellerinizi görünür tutun",
+  "policeActionAskWhy": "Memura neden durdurulduğunuzu sorun",
+  "policeActionProvideName": "Adınızı ve doğum tarihinizi bildirin",
+  "policeActionWantLawyer": "Açıkça belirtin: “Sorulardan önce bir avukat istiyorum”",
+  "policeActionAskInterpreter": "Gerekirse tercüman isteyin",
+  "policeActionNoteBadge": "Memurun adını ve sicil numarasını not edin",
+  "policeFactMustTellReason": "Finlandiya'da polis, sizi durdurma nedenini söylemek zorundadır. Söylemezlerse sorabilirsiniz — yasal olarak açıklamak zorundadırlar.",
+  "policeFactCanRecord": "Finlandiya'da kamuya açık yerlerde polis etkileşimlerini kaydedebilirsiniz. Bu, ifade özgürlüğü kapsamında korunmaktadır.",
+  "contactFinnishLegalAid": "Finlandiya Adli Yardım",
+  "contactNonDiscriminationOmbudsman": "Ayrımcılıkla Mücadele Ombudsmanı",
+  "deportationDeadlineAppeal": "İdare Mahkemesine itiraz — genellikle tebliğden itibaren 30 gün",
+  "deportationDeadlineLegalAid": "Adli yardım başvurusu yapın — bunu DERHAL yapın",
+  "deportationFactStayDuringAppeal": "Finlandiya'da itirazınız işlenirken genellikle ülkede kalma hakkınız vardır. Aktif bir itiraz süresince çoğu durumda sınır dışı etme gerçekleştirilemez.",
+  "contactRefugeeAdviceCentre": "Finlandiya Mülteci Danışma Merkezi",
+  "contactAdminCourtHelsinki": "Helsinki İdare Mahkemesi",
+  "workplaceActionKeepContract": "İş sözleşmenizin kopyalarını saklayın",
+  "workplaceActionTrackHours": "Çalışma saatlerinizi bağımsız olarak takip edin",
+  "workplaceActionReportUnsafe": "Güvensiz koşulları iş güvenliği otoritesine bildirin",
+  "workplaceActionJoinUnion": "Korunma için bir sendikaya katılın",
+  "workplaceActionContactAuthority": "Gerekirse İş Güvenliği Otoritesine başvurun",
+  "workplaceFactCollectiveWage": "Finlandiya'da toplu iş sözleşmeleri sektöre göre asgari ücretleri belirler — tek bir ulusal asgari ücret yoktur. İşvereniniz alanınızın toplu iş sözleşmesine uymak zorundadır.",
+  "workplaceFactOralContract": "Yazılı sözleşme olmasa bile Finlandiya'da tam çalışan haklarına sahipsiniz. Sözlü anlaşma yasal olarak eşit derecede bağlayıcıdır.",
+  "contactOccupationalSafety": "İş Güvenliği Otoritesi",
+  "contactTradeUnionSAK": "Sendika Danışmanlığı (SAK)",
+  "tenantActionWrittenAgreement": "Her zaman yazılı kira sözleşmesi yapın",
+  "tenantActionDocumentCondition": "Taşınma sırasında dairenin durumunu belgeleyin (fotoğraflar)",
+  "tenantActionReportMaintenance": "Bakım sorunlarını yazılı olarak bildirin",
+  "tenantActionNoIllegalEviction": "Yasadışı tahliyeyi asla kabul etmeyin — mahkemeler karar vermelidir",
+  "tenantActionContactAdvisory": "Anlaşmazlık durumunda kiracı danışma hizmetlerine başvurun",
+  "tenantFactNoEvictionWithoutCourt": "Finlandiya'da ev sahibi, kira sözleşmeniz sona ermiş olsa bile mahkeme kararı olmadan sizi tahliye edemez. Kilit değiştirmek veya hizmetleri kesmek yasadışıdır.",
+  "contactTenantsAssociation": "Finlandiya Kiracılar Derneği",
+  "contactConsumerDisputesBoard": "Tüketici Uyuşmazlıkları Kurulu",
+  "detentionActionAskDecision": "Derhal yazılı gözaltı kararını isteyin",
+  "detentionActionRequestLawyer": "Avukatla iletişim kurmayı talep edin",
+  "detentionActionContactEmbassy": "Büyükelçiliğiniz veya konsolosluğunuzla iletişime geçin",
+  "detentionActionAskMedical": "Gerekirse tıbbi yardım isteyin",
+  "detentionActionRequestInterpreter": "Tüm duruşmalar için tercüman talep edin",
+  "detentionDeadlineCourtReview": "Sulh mahkemesi gözaltını 4 gün içinde incelemelidir",
+  "detentionDeadlineContinuation": "Mahkeme uzatmayı her 2 haftada bir inceler",
+  "detentionFactCourtReview": "Finlandiya'da göç gözaltısı 4 gün içinde bir sulh mahkemesi tarafından incelenmelidir. İncelenmezse gözaltı yasadışı hale gelir.",
+  "contactParliamentaryOmbudsman": "Parlamento Ombudsmanı",
+  "discriminationActionWriteDown": "Ne olduğunu tam olarak yazın (tarih, saat, yer)",
+  "discriminationActionSaveEvidence": "Kanıtları saklayın: mesajlar, e-postalar, tanıklar",
+  "discriminationActionFileComplaint": "Ayrımcılıkla Mücadele Ombudsmanına şikayette bulunun",
+  "discriminationActionContactLegalAid": "Ücretsiz danışmanlık için adli yardım bürosuna başvurun",
+  "discriminationActionReportPolice": "Tehdit veya saldırı varsa polise bildirin",
+  "discriminationFactNonDiscriminationAct": "Finlandiya Ayrımcılık Yasağı Kanunu; yaş, köken, uyruk, dil, din, sağlık, engellilik, cinsel yönelim ve diğer kişisel özelliklere dayalı ayrımcılığı kapsar.",
+  "contactVictimSupportRIKU": "Mağdur Desteği Finlandiya (RIKU)",
+  "domesticViolence": "Aile içi şiddet",
+  "inheritance": "Miras",
+  "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
+  "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
+  "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
+  "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
+  "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
+  "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
+  "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
+  "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
+  "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
+  "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
+  "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
+  "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
+  "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
+  "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
+  "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
+  "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
+  "consumerProtection": "Tüketici koruması",
+  "caseTypeStepLabel": "Case Type",
+  "detailsStepLabel": "Details",
+  "documentsStepLabel": "Documents",
+  "whatTypeOfCase": "What type of case is this?",
+  "selectCategoryDescription": "Select the category that best describes your situation.",
+  "tellUsAboutCase": "Tell us about your case",
+  "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
+  "caseTitleHint": "e.g., Residence Permit Appeal 2026",
+  "countryJurisdiction": "Country / Jurisdiction",
+  "selectCountryHint": "Select a country",
+  "referenceNumberHint": "e.g., UMA/12345/2026",
+  "descriptionOptional": "Description (optional)",
+  "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
+  "uploadFirstDocument": "Upload your first document",
+  "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
+  "tapToUploadFile": "Tap to upload a file",
+  "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
+  "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
+  "aiGeneratedDisclaimer": "AI-generated • Not legal advice",
+  "callAI": "Call AI",
+  "comingSoon": "Yakında",
+  "encrypted": "Encrypted",
+  "typing": "Typing…",
+  "online": "Online",
+  "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
+  "tapMicrophoneToSpeak": "Tap the microphone to speak",
+  "categoryEssential": "Essential",
+  "categoryPolice": "Police",
+  "categoryWork": "Work",
+  "categoryHousing": "Housing",
+  "categoryConsumer": "Consumer",
+  "rightsInsideCount": "{count, plural, =0{hak yok} other{İçinde {count} hak var}}",
+  "@rightsInsideCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeAidThreshold": "Free aid threshold",
+  "partialAidThreshold": "Partial aid threshold",
+  "assetLimit": "Asset limit",
+  "whereToApplyLabel": "Where to apply",
+  "phoneLabel": "Phone",
+  "websiteLabel": "Website",
+  "disclaimerCollapsed": "AI guidance only",
+  "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
+  "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
+  "chatDisclaimerSubtitle": "Yapay zeka asistanı · hukuki tavsiye değil",
+  "chatDisclaimerBannerFull": "Advocat, bir avukat değil, hukuki bilgi sağlayan bir yapay zeka asistanıdır. Buradaki bilgiler avukat–müvekkil ilişkisi kurmaz, hukuki tavsiye niteliği taşımaz ve hatalı olabilir. Bağlayıcı hukuki tavsiye için yargı yetkinizdeki lisanslı bir avukata danışın. Sizi temsil etmiyoruz.",
+  "chatDisclaimerFooter": "Yapay zeka tarafından üretildi. Lisanslı bir avukata danışın.",
+  "chatDisclaimerGotIt": "Anladım",
+  "guestUser": "Misafir",
+  "howToUse": "Nasil kullanilir?",
+  "tutorialStep1Title": "YZ Hukuk Asistani",
+  "tutorialStep1Desc": "Herhangi bir hukuki soru sorun ve Estonya yasalarina dayali aninda yanitlar alin.",
+  "tutorialStep2Title": "Haklarinizi Bilin",
+  "tutorialStep2Desc": "Hukuki bilgileri konulara gore arayin — is, konut, tuketici haklari ve daha fazlasi.",
+  "tutorialStep3Title": "Belgeleri Tarayin",
+  "tutorialStep3Desc": "Hukuki belgelerin fotografini cekin, YZ analizi ve guvenli depolama icin.",
+  "tutorialStep4Title": "Baslayalim!",
+  "tutorialStep4Desc": "Uygulamayi kesfedin ve haklarinizi koruyun. Tum veriler cihazinizda ozel kalir.",
+  "advocatProTitle": "Advocat Pro",
+  "advocatProSubtitle": "Premium özellikleri açın",
+  "voiceDisclaimer": "Sesli asistan şu anda yalnızca masaüstünde çalışmaktadır (Chrome tarayıcı). Mobil destek yakında.",
+  "recommended": "Önerilen",
+  "pleaseLogIn": "Lütfen giriş yapın",
+  "subscriptionNotFound": "Abonelik bulunamadı",
+  "errorWithMessage": "Hata: {message}",
+  "redirectingToPayment": "Ödeme sayfasına yönlendiriliyor…",
+  "cheaperAnnually": "€{amount}/ay daha ucuz yıllık abonelikle",
+  "navigatingTo": "Açılıyor",
+  "stayInChat": "Sohbette kal",
+  "backToChat": "Sohbete dön",
+  "citationStatusVerifiedBadge": "Doğrulandı",
+  "citationStatusUnverifiedBadge": "Doğrulanmadı",
+  "citationStatusHistoricalBadge": "Tarihsel sürüm",
+  "citationStatusVerifiedTooltip": "Erişilen bir hukuki kaynaktan alıntılandı.",
+  "citationStatusUnverifiedTooltip": "Yapay zekâ bu bölümü kaynak erişimi olmadan alıntıladı — güvenmeden önce doğrulayın.",
+  "citationStatusHistoricalTooltip": "Alıntılanan hüküm artık yürürlükte değil.",
+  "citationOpenInRiigiTeataja": "Riigi Teataja'da aç",
+  "citationSnippetExpand": "Tam metni göster",
+  "citationSnippetCollapse": "Daha az göster",
+  "citationUnverifiedSheetNote": "Yapay zekâ bu paragrafı alıntıladı, ancak bu görüşmede mevzuat külliyatından alınmamıştı. Güvenmeden önce atfı doğrulayın.",
+  "citationFooterNoneWarning": "Belgelenmiş atıf yok",
+  "citationFooterSummaryTotal": "{count, plural, other{{count} alıntı}}",
+  "citationFooterSummaryVerified": "{count, plural, other{{count} doğrulanmış}}",
+  "citationFooterSummaryUnverified": "{count, plural, other{{count} doğrulanmamış}}",
+  "citationFooterSummaryHistorical": "{count, plural, other{{count} tarihsel}}",
+  "@citationFooterSummaryTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@citationFooterSummaryVerified": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@citationFooterSummaryUnverified": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@citationFooterSummaryHistorical": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineRadarTitle": "Upcoming deadlines",
+  "deadlineRadarEmpty": "No upcoming deadlines",
+  "deadlineRadarViewAll": "View all",
+  "deadlineCardDaysLeft": "{count, plural, =0{bugün} other{{count} gün içinde}}",
+  "@deadlineCardDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineCardTomorrow": "tomorrow",
+  "deadlineCardToday": "today",
+  "deadlineCardOverdue": "{count, plural, other{{count} gün gecikme}}",
+  "@deadlineCardOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineCardMarkComplete": "Mark complete",
+  "deadlineCardSnooze": "Snooze",
+  "deadlineCardSnooze3d": "Snooze 3 days",
+  "deadlineCardSnooze7d": "Snooze 7 days",
+  "deadlineCardSnoozeCustom": "Pick a date",
+  "deadlineCardEdit": "Edit",
+  "deadlineCardDelete": "Archive",
+  "deadlineCardSourceLabelPdf": "from PDF",
+  "deadlineCardSourceLabelIntake": "from intake",
+  "deadlineCardSourceLabelManual": "added manually",
+  "deadlineCardSourceLabelEmail": "from email",
+  "deadlineCardSourceLabelHaikuExtract": "AI-extracted",
+  "deadlineCardSourceLabelStatutoryTemplate": "statute template",
+  "deadlineBannerCritical": "Critical deadline {title} {when}",
+  "@deadlineBannerCritical": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlineBannerDismiss": "Dismiss",
+  "deadlineBannerOpen": "Open deadline",
+  "deadlineHolidayShifted": "Shifted from {original} due to {reason}",
+  "@deadlineHolidayShifted": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlinePermissionAskTitle": "Enable deadline reminders?",
+  "deadlinePermissionAskBody": "We'll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.",
+  "deadlinePermissionAllow": "Allow",
+  "deadlinePermissionLater": "Later",
+  "deadlineSettingsSection": "Deadline reminders",
+  "deadlineSettingsPushChannel": "Push notifications",
+  "deadlineSettingsEmailChannel": "Email (critical only)",
+  "deadlineSettingsInAppChannel": "In-app banners",
+  "deadlineSettingsCriticalBypass": "Critical reminders bypass quiet hours",
+  "deadlineSettingsQuietHours": "Quiet hours",
+  "deadlineSettingsQuietHoursBadge": "Quiet {start}–{end}",
+  "@deadlineSettingsQuietHoursBadge": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "deadlineCaseScreenTitle": "Case deadlines",
+  "deadlineAddManualCta": "Add deadline",
+  "deadlineFormTitle": "Title",
+  "deadlineFormDescription": "Description (optional)",
+  "deadlineFormStatuteTemplate": "Statute template",
+  "deadlineFormStatuteTemplateNone": "None (manual)",
+  "deadlineFormDeadlineAt": "Deadline date",
+  "deadlineFormPriority": "Priority",
+  "deadlineFormSave": "Save",
+  "deadlineFormCancel": "Cancel",
+  "deadlineCompletedNotePrompt": "Add a note (optional)",
+  "deadlineCompletedNoteSave": "Save",
+  "inboxTitle": "Inbox",
+  "inboxEmptyTitle": "Nothing pending",
+  "inboxEmptyBody": "New email threads will appear here as they get triaged.",
+  "inboxApproveSend": "Approve & send",
+  "inboxEditDraft": "Edit",
+  "inboxSnooze": "Snooze",
+  "inboxArchive": "Archive",
+  "inboxFilterAll": "All",
+  "inboxConfirmSendTitle": "Send the prepared reply?",
+  "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
+  "inboxSendButton": "Send",
+  "inboxSentToast": "Sent.",
+  "inboxAlreadySentToast": "Already sent.",
+  "inboxSendErrorToast": "Could not send the reply. Tap retry.",
+  "inboxSnoozedToast": "Snoozed for 24h.",
+  "inboxArchivedToast": "Archived.",
+  "inboxDraftLoadError": "Could not load draft.",
+  "inboxDeadlineToday": "today",
+  "inboxDeadlineTomorrow": "tomorrow",
+  "inboxDeadlineInDays": "in {days}d",
+  "@inboxDeadlineInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "inboxDeadlineOverdue": "overdue {days}d",
+  "@inboxDeadlineOverdue": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "workspaceTabOverview": "Overview",
+  "workspaceTabChat": "Chat",
+  "workspaceTabDrafts": "Drafts",
+  "workspaceOverviewEmpty": "Add documents to build a summary.",
+  "workspaceTimelineEmpty": "No events yet.",
+  "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
+  "workspaceDraftsEmpty": "No drafts yet.",
+  "workspaceInboxEmpty": "No related email.",
+  "reviewThisContract": "Sözleşmeyi incele",
+  "contractReviews": "Sözleşme incelemeleri",
+  "@contractReviews": {},
+  "contractReviewsFreeFeature": "1 sözleşme incelemesi (ömür boyu deneme)",
+  "@contractReviewsFreeFeature": {},
+  "contractReviewsCounselFeature": "Ayda 5 sözleşme incelemesi",
+  "@contractReviewsCounselFeature": {},
+  "contractReviewsProFeature": "Ayda 20 sözleşme incelemesi",
+  "@contractReviewsProFeature": {},
+  "contractReviewsLeft": "{count, plural, =0{Bu ay sözleşme incelemesi kalmadı} other{Bu ay {count} sözleşme incelemesi kaldı}}",
+  "@contractReviewsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contractReviewsExhausted": "Bu ay sözleşme incelemesi kalmadı",
+  "@contractReviewsExhausted": {},
+  "contractReviewsFreeTrialLeft": "Ücretsiz deneme: 1 sözleşme incelemesi",
+  "@contractReviewsFreeTrialLeft": {},
+  "contractReviewsFreeTrialUsed": "Ücretsiz deneme kullanıldı — yükseltin",
+  "@contractReviewsFreeTrialUsed": {},
+  "contractReviewsUpgradeTitle": "Sözleşme incelemeleri tükendi",
+  "@contractReviewsUpgradeTitle": {},
+  "contractReviewsUpgradeBodyFree": "Ücretsiz sözleşme incelemenizi kullandınız. Aylık incelemeler için yükseltin.",
+  "@contractReviewsUpgradeBodyFree": {},
+  "contractReviewsUpgradeBodyPaid": "Bu ay {cap} incelemenin {used} tanesini kullandınız. Daha yüksek aylık limit için yükseltin.",
+  "@contractReviewsUpgradeBodyPaid": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "contractReviewsUpgradeCounselCta": "Counsel'a yükselt (€19,99/ay) — 5 inceleme",
+  "@contractReviewsUpgradeCounselCta": {},
+  "contractReviewsUpgradeProCta": "Pro'ya yükselt (€29,99/ay) — 20 inceleme",
+  "@contractReviewsUpgradeProCta": {},
+  "contractReviewsUpgradeToProShort": "Pro'ya yükselt — 20/ay",
+  "@contractReviewsUpgradeToProShort": {},
+  "notNow": "Şimdi değil",
+  "@notNow": {},
+  "referralTitle": "Arkadaşlarını davet et",
+  "@referralTitle": {},
+  "referralSubtitle": "Bir ay ücretsiz kazan. Bir ay ücretsiz hediye et.",
+  "@referralSubtitle": {},
+  "referralYourLink": "BAĞLANTIN",
+  "@referralYourLink": {},
+  "referralCopyLink": "Bağlantıyı kopyala",
+  "@referralCopyLink": {},
+  "referralShare": "Paylaş",
+  "@referralShare": {},
+  "referralLinkCopied": "Bağlantı kopyalandı",
+  "@referralLinkCopied": {},
+  "referralStatsInvited": "Davet edilen",
+  "@referralStatsInvited": {},
+  "referralStatsConverted": "Kayıt olan",
+  "@referralStatsConverted": {},
+  "referralStatsEarned": "Kazanılan ay",
+  "@referralStatsEarned": {},
+  "referralShareWhatsApp": "WhatsApp'ta paylaş",
+  "@referralShareWhatsApp": {},
+  "referralShareTelegram": "Telegram'da paylaş",
+  "@referralShareTelegram": {},
+  "referralShareEmail": "E-posta ile paylaş",
+  "@referralShareEmail": {},
+  "referralEmailSubject": "Advocat'ı dene — yapay zekâ hukuk asistanın",
+  "@referralEmailSubject": {},
+  "referralLoadError": "Veriler yüklenemedi. Yenilemek için aşağı çek.",
+  "@referralLoadError": {},
+  "referralRetry": "Tekrar dene",
+  "@referralRetry": {},
+  "referralSettingsTile": "Arkadaşlarını davet et",
+  "@referralSettingsTile": {},
+  "referralAfterReviewCta": "Beğendin mi? Bir arkadaşını davet et — ikiniz de bir ay ücretsiz kazanın.",
+  "@referralAfterReviewCta": {},
+  "checkerProTagline": "Profesyonel doğrulama araçları",
+  "checkerDataSource": "Resmî kayıtlardan alınan veriler",
+  "companyCheckerHint": "Şirket adı veya sicil numarası",
+  "companyCheckerPriceChip": "Kontrol başına €2.99  •  Pro'ya dahildir",
+  "companyCheckerEmptyState": "Tam rapor için şirket adını veya sicil\nnumarasını girin",
+  "aiMemoryTitle": "Yapay zekâ hafızası",
+  "aiMemorySubtitle": "Yapay zekânın sizinle ilgili hatırladıklarını gözden geçirin ve silin",
+  "bookLawyerCallTitle": "Avukatla görüşme planlayın",
+  "bookLawyerCallComingSoonTitle": "Gerçek avukatlarla görüşmeler — yakında",
+  "bookLawyerCallComingSoonBody": "Pro ve Premium, ortak avukatla 15 dakikalık görüşmeleri kapsar (Pro: 1/çeyrek, Premium: 2/çeyrek). Estonyalı bağımsız avukat ağını tamamlıyoruz; rezervasyon açılır açılmaz size e-posta göndereceğiz.",
+  "bookLawyerCallQuotaAvailable": "Bu çeyrekte {total} aramadan {remaining} hakkınız kaldı.",
+  "@bookLawyerCallQuotaAvailable": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "bookLawyerCallQuotaExhausted": "Üç aylık kontenjan kullanıldı.",
+  "bookLawyerCallQuotaBodyAvailable": "Pro paketi çeyrekte 1, Premium 2 aramayı kapsar. Aramalar 15 dakikadır ve Google Meet üzerinden yapılır.",
+  "bookLawyerCallQuotaBodyExhausted": "Kontenjanınız bir sonraki çeyreğin ilk günü sıfırlanır. Daha erken konuşmanız mı gerekiyor? Ekstra arama için Premium'a yükseltin.",
+  "severityCritical": "KRİTİK",
+  "severityHigh": "YÜKSEK",
+  "severityMedium": "ORTA",
+  "severityLow": "DÜŞÜK",
+  "deadlineRequiredFields": "Başlık ve son tarih zorunludur",
+  "acceptTermsRequired": "Lütfen Hizmet Şartlarını kabul edin",
+  "chatLegalCouncilTooltip": "Hukuki konsey (4 uzman)",
+  "attachFileTooltip": "Dosya ekle",
+  "sendMessage": "Mesaj gönder",
+  "stopGenerating": "Oluşturmayı durdur",
+  "showPassword": "Şifreyi göster",
+  "hidePassword": "Şifreyi gizle",
+  "decreaseDependents": "Azalt",
+  "increaseDependents": "Artır",
+  "consiliumHeader": "Avukat konsültasyonu",
+  "@consiliumHeader": {
+    "description": "Header text for the multi-agent legal consilium panel"
+  },
+  "consiliumProgress": "{count} / {total} hazır",
+  "@consiliumProgress": {
+    "description": "Progress indicator while consilium experts produce opinions",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumStarting": "Avukatlar davanızı inceliyor…",
+  "consiliumDisagreement": "Uzmanlar aynı fikirde değil",
+  "@consiliumDisagreement": {
+    "description": "Banner shown when experts have conflicting positions"
+  },
+  "consiliumSynthesizing": "Tavsiye derleniyor…",
+  "consiliumDone": "Konsültasyon tamamlandı · {totalRoles} uzman",
+  "@consiliumDone": {
+    "placeholders": {
+      "totalRoles": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumPositionPush": "İtiraz et",
+  "consiliumPositionSettle": "Uzlaş",
+  "consiliumPositionInvestigate": "Araştır",
+  "consiliumPositionOutOfScope": "Yetki dışı",
+  "consiliumConfidence": "Güven",
+  "consiliumKeyCitation": "Temel kaynak",
+  "consiliumAdversarialRound": "Çekişmeli tur",
+  "consiliumViewFullOpinion": "Tam görüşü gör",
+  "consiliumExpertsAgreed": "{count, plural, other{{count} uzman katılıyor}}",
+  "@consiliumExpertsAgreed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumExpertsDisagree": "{count, plural, other{{count} uzman katılmıyor}}",
+  "@consiliumExpertsDisagree": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "consiliumDisclaimer": "YZ ajanları, insan avukatlar değil. Önemli kararları baroya kayıtlı bir avukatla doğrulayın.",
+  "@consiliumDisclaimer": {
+    "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
+  },
+  "draftsTab": "Drafts",
+  "draftingTitle": "Drafting Studio",
+  "draftingEmpty": "Empty draft",
+  "draftingPlaceholder": "Start typing your draft…",
+  "draftingDraftsList": "My drafts",
+  "draftingSave": "Save",
+  "draftingSaved": "Saved",
+  "draftingSavedJustNow": "Saved just now",
+  "draftingAiRevise": "Revise with AI",
+  "draftingExportPdf": "Export PDF",
+  "draftingExportDocx": "Export DOCX",
+  "draftingExportMd": "Export Markdown",
+  "draftingDeleteDraft": "Delete draft",
+  "draftingConfirmDelete": "Delete this draft?",
+  "draftingConfirmDeleteMessage": "This action cannot be undone.",
+  "draftingConfirm": "Delete",
+  "draftingCancel": "Cancel",
+  "draftingDraftReplyTo": "Reply to {name}",
+  "draftingUntitled": "Untitled",
+  "draftingTitleHint": "Title (optional)",
+  "draftingAiReviseTitle": "Revise with AI",
+  "draftingAiReviseSelectionLabel": "Selected text:",
+  "draftingAiReviseInstructionLabel": "Instruction (optional)",
+  "draftingAiReviseInstructionHint": "e.g. \"make it more formal\" or \"shorten\"",
+  "draftingAiReviseRunButton": "Generate revision",
+  "draftingAiReviseSuggestionLabel": "Suggested revision:",
+  "draftingAiReviseChangesLabel": "Changes:",
+  "draftingAiReviseAccept": "Accept",
+  "draftingAiReviseReject": "Reject",
+  "draftingFormatBold": "Bold",
+  "draftingFormatItalic": "Italic",
+  "draftingFormatHeading": "Heading",
+  "draftingFormatBullet": "Bullet list",
+  "draftingFormatNumbered": "Numbered list",
+  "draftingEmptyListMessage": "You have no drafts yet.",
+  "draftingEmptyListAction": "New draft",
+  "draftingExporting": "Exporting…",
+  "draftingExportFailed": "Export failed",
+  "draftingSaveFailed": "Save failed",
+  "draftingNewDraft": "New draft",
+  "vaultNoteChip": "Vault note",
+  "saveToVault": "Save to Vault",
+  "savingToVault": "Saving to Vault…",
+  "savedToVault": "Saved to Vault",
+  "vaultNoteTitlePrefix": "Note: ",
+  "openInVault": "Open in Vault",
+  "saveToVaultFailed": "Save to Vault failed",
+  "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
+  "draftingVersionHistory": "Version history",
+  "dangerZone": "[en] Danger zone",
+  "deleteAccountConfirmButton": "[en] Delete forever",
+  "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+  "emptyHomeTitle": "Welcome to Advocat",
+  "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+  "intentChip1": "Got a fine",
+  "intentChip2": "Permit denied",
+  "intentChip3": "Contract problem",
+  "emptyCasesTitle": "No cases yet",
+  "emptyCasesCta": "Start a case",
+  "emptyDraftsTitle": "No drafts yet",
+  "emptyDraftsCta": "Create draft",
+  "emptyChatTitle": "Ask Advocat anything",
+  "chatExamplePrompt1": "Help me reply to a fine",
+  "chatExamplePrompt2": "Review my rental contract",
+  "chatExamplePrompt3": "What are my rights at work?",
+  "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+  "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+  "deletingAccount": "[en] Deleting account…",
+  "contractReviewTitle": "Contract Review",
+  "@contractReviewTitle": {
+    "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewUploadCta": "Upload contract",
+  "@contractReviewUploadCta": {
+    "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
+  "@contractReviewQuotaRemaining": {
+    "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewRedFlags": "Red flags",
+  "@contractReviewRedFlags": {
+    "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewReviewPoints": "Review points",
+  "@contractReviewReviewPoints": {
+    "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewNegotiationTips": "Negotiation tips",
+  "@contractReviewNegotiationTips": {
+    "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewSaveToVault": "Save to Vault",
+  "@contractReviewSaveToVault": {
+    "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "contractReviewContinueChat": "Continue in chat",
+  "@contractReviewContinueChat": {
+    "description": "TODO native translation for locale=tr; currently English fallback — copy lives in contract_review_screen.dart."
+  },
+  "referralInviteFriends": "Invite Friends",
+  "referralYourCode": "Your code",
+  "referralCopiedToast": "Code copied to clipboard",
+  "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
+  "referralInvited": "Friends invited",
+  "referralRewardsEarned": "Free months earned",
+  "deadlineUrgencyToday": "Today & Overdue",
+  "deadlineUrgencyWeek": "This week",
+  "deadlineUrgencyMonth": "This month",
+  "deadlineUrgencyLater": "Later",
+  "deadlineAddManual": "Add deadline",
+  "deadlineSnoozeBy": "Snooze",
+  "deadlineSnooze1d": "Snooze 1 day",
+  "deadlineSnooze3d": "Snooze 3 days",
+  "deadlineSnooze7d": "Snooze 7 days",
+  "deadlineDismiss": "Dismiss",
+  "deadlineExportIcs": "Add to calendar",
+  "deadlineSource": "Source",
+  "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
+  "deadlineNewTitle": "New deadline",
+  "deadlineFieldTitle": "Title",
+  "deadlineFieldDueDate": "Due date",
+  "deadlineFieldNotes": "Notes (optional)",
+  "deadlineSaved": "Deadline saved",
+  "deadlineSaveFailed": "Could not save deadline",
+  "deadlineUrgentBannerSingle": "1 deadline today or overdue",
+  "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
+  "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
+  "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
+  "@deadlineUrgentBannerMany": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@deadlineDaysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@deadlineDaysOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "iapPayWithApple": "Apple ile öde",
+  "iapRestorePurchases": "Satın alımları geri yükle",
+  "iapPurchaseFailed": "Satın alma başarısız. Lütfen tekrar deneyin veya destek ile iletişime geçin.",
+  "iapRestoreSuccess": "Aboneliğiniz geri yüklendi.",
+  "iapRestoreNoActive": "Geri yüklenecek aktif abonelik bulunamadı.",
+  "deadlineEuRadarTitle": "EU deadline radar (preview)",
+  "@deadlineEuRadarTitle": {
+    "x-todo": "translate to tr"
+  },
+  "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+  "@deadlineEuRadarSubtitle": {
+    "x-todo": "translate to tr"
+  },
+  "aiAnalyzing": "Yapay zeka analiz ediyor",
+  "speakIntoMicHint": "Mikrofona konuşun. Mikrofon erişiminin etkin olduğundan emin olun.",
+  "aiErrorRateLimit": "Hizmet geçici olarak aşırı yüklü. Lütfen 1-2 dakika içinde tekrar deneyin.",
+  "aiErrorOverload": "Yapay zeka şu anda meşgul, lütfen bir dakika içinde tekrar deneyin.",
+  "freeLimitReached": "{count} ücretsiz yapay zeka mesajının tamamını kullandınız. Sınırsız yapay zeka desteği için Legal Counsel paketine yükseltin!",
+  "@freeLimitReached": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appleComingSoon": "Yakında",
+  "appleComingSoonMessage": "Apple ile Giriş yakında kullanıma sunulacak. Devam etmek için Google veya e-posta kullanın.",
+  "dpaTitle": "Veri İşleme Sözleşmesi",
+  "dpaCheckoutGateTitle": "Yükseltmeden önce",
+  "dpaCheckoutGateBody": "AB hukuku (GDPR Madde 28) her ödeme yapan müşteriyle bir Veri İşleme Sözleşmesi imzalamamızı gerektirir. Lütfen inceleyip kabul edin.",
+  "dpaViewLink": "Veri İşleme Sözleşmesini görüntüle",
+  "dpaCheckboxLabel": "Veri İşleme Sözleşmesini (v1.0) okudum ve kabul ediyorum.",
+  "dpaCancel": "İptal",
+  "dpaAcceptAndContinue": "Kabul et ve devam et",
+  "dpaOpenHint": "Kabul Et düğmesini etkinleştirmek için DPA'yı en az bir kez açın.",
+  "rateAppComingSoon": "Yakında uygulama mağazalarında!",
+  "dataCopiedToClipboard": "Veriler panoya kopyalandı",
+  "noEventsForFilter": "Bu filtreye uyan olay yok",
+  "timelineFilterAll": "Tümü",
+  "timelineFilterEmails": "E-postalar",
+  "timelineFilterConsilium": "Yapay zeka kararları",
+  "timelineFilterDeadlines": "Son tarihler",
+  "timelineFilterNotes": "Notlar",
+  "timelineEventEmailIn": "E-posta alındı",
+  "timelineEventEmailOut": "E-posta gönderildi",
+  "timelineEventConsiliumDecision": "Yapay zeka kararı",
+  "timelineEventDeadlineSet": "Son tarih",
+  "timelineEventDocUploaded": "Belge",
+  "timelineEventPhaseChange": "Aşama değişikliği",
+  "timelineEventManualNote": "Not",
+  "timelineJustNow": "Az önce",
+  "timelineMinutesAgo": "{count, plural, =1{1 dakika önce} other{{count} dakika önce}}",
+  "@timelineMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timelineHoursAgo": "{count, plural, =1{1 saat önce} other{{count} saat önce}}",
+  "@timelineHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timelineDaysAgo": "{count, plural, =1{1 gün önce} other{{count} gün önce}}",
+  "@timelineDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gmailReauthBannerBody": "Advocat v2.1, yanıt taslakları hazırlamak için gelen kutunuzu okur; istediğiniz zaman iptal edebilirsiniz. Proaktif önceliklendirmeyi etkinleştirmek için Gmail'i yeniden bağlayın.",
+  "gmailReauthBannerCta": "Yeniden yetkilendir",
+  "fiveAiMessagesTotal": "5 yapay zeka mesajı (ömür boyu)",
+  "hundredAiMessagesDay": "Günde 100 yapay zeka mesajı",
+  "unlimitedAiMessages": "Sınırsız yapay zeka mesajı",
+  "voiceInput": "Sesli giriş",
+  "strategyRecommendations": "Strateji önerileri",
+  "foundingMemberNote": "Kurucu Üye: İlk 3 ay için aylık 9,99 €",
+  "saveTwentyPercent": "%20 tasarruf edin",
+  "gdprConsentAiProcessing": "Verilerimin yapay zeka hukuki yardımı için işlenmesini kabul ediyorum (zorunlu)",
+  "gdprConsentAnalytics": "Hizmeti iyileştirmek için analitiği kabul ediyorum (isteğe bağlı)",
+  "gdprArt9Intro": "Bu uygulama, GDPR Madde 9 kapsamında özel kategori kişisel verileri işler, şunlar dahil:",
+  "gdprSpecialLegalCases": "Hukuki dava ayrıntılarınız ve mahkeme belgeleriniz",
+  "gdprSpecialNationality": "Uyruk ve göçmenlik durumu",
+  "gdprConsentLegalData": "Hukuki dava verilerimin, uyruğumun ve göçmenlik durumumun yapay zeka tarafından işlenmesine onay veriyorum (zorunlu)",
+  "gdprConsentVoice": "Ses kaydı işlenmesine onay veriyorum (isteğe bağlı)",
+  "gdprViewPrivacyPolicy": "Gizlilik Politikasını görüntüle",
+  "legalInformation": "Yasal Bilgiler",
+  "legalEntityName": "Vorantis OÜ",
+  "legalRegistryCode": "Sicil kodu: 17098992",
+  "legalAddress": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145",
+  "legalEmail": "E-posta: support@advocat.ee",
+  "legalRegistry": "Estonya Ticaret Siciline (Äriregister) kayıtlıdır",
+  "domesticViolenceDesc": "Mağdur hakları, acil yardım, uzaklaştırma kararları",
+  "rightCallEmergency": "Herhangi bir acil durumda 112'yi arama hakkına sahipsiniz — polis, ambulans, itfaiye",
+  "rightVictimProtection": "Mağdur olarak korunma, destek ve davanız hakkında bilgi alma hakkına sahipsiniz",
+  "rightRestrainingOrder": "İstismarcıyı uzak tutmak için uzaklaştırma kararı (lähestymiskielto) talep edebilirsiniz",
+  "rightVictimInterpreter": "Tüm yasal işlemler sırasında tercüman hakkına sahipsiniz",
+  "rightMedicalHelp": "Acil tıbbi tedavi ve yaralanmaların belgelenmesi hakkına sahipsiniz",
+  "rightShelter": "Acil barınma hakkına sahipsiniz — bir sığınma evi veya sosyal hizmetlerle iletişime geçin",
+  "mustReportDanger": "Biri ani tehlike altındaysa hemen 112'yi arayın",
+  "mustDocumentInjuries": "Tüm yaralanmaları belgeleyin — fotoğraflar, tıbbi kayıtlar, yazılı notlar",
+  "domesticActionCallEmergency": "Ani tehlike altındaysanız 112'yi arayın",
+  "domesticActionGoToSafe": "Güvenli bir yere gidin — sığınma evi, arkadaş, kamuya açık yer",
+  "domesticActionDocumentEverything": "Yaralanmaları belgeleyin: fotoğraf çekin, tıbbi kayıt alın",
+  "domesticActionFilePoliceReport": "Polise suç duyurusunda bulunun — bunu daha sonra da yapabilirsiniz",
+  "domesticActionContactShelter": "Bir sığınma evi veya kriz yardım hattıyla iletişime geçin",
+  "domesticActionApplyRestraining": "Polis veya mahkeme aracılığıyla uzaklaştırma kararı için başvurun",
+  "domesticFactRestrainingOrder": "Finlandiya'da, bir uzaklaştırma kararı (lähestymiskielto) ceza davası olmadan dahi verilebilir. Bu, kişinin sizinle iletişim kurmasını veya size yaklaşmasını yasaklar.",
+  "domesticFactVictimDirective": "AB Mağdur Hakları Direktifi 2012/29/EU uyarınca, ikamet durumunuzdan bağımsız olarak saygıyla muamele görme, anladığınız bir dilde bilgi alma ve mağdur destek hizmetlerine erişme hakkına sahipsiniz.",
+  "domesticDeadlinePoliceReport": "Polise suç duyurusu — kesin bir son tarih yok, ancak deliller için erken olması daha iyidir",
+  "domesticDeadlineRestraining": "Uzaklaştırma kararı — her zaman başvurulabilir",
+  "contactEmergency": "Acil Durum Numarası",
+  "contactShelter": "Turvakoti (Sığınma Evi) Yardım Hattı",
+  "contactCrisisHelpline": "Kriz Yardım Hattı (Kriisipuhelin)",
+  "contactNollaLinja": "Nollalinja — Kadına Yönelik Şiddet Yardım Hattı",
+  "consumerProtectionDesc": "Dolandırıcılık, kusurlu ürünler, iadeler, aldatıcı satıcılar",
+  "rightReturnOnline": "Çevrimiçi alışverişleri 14 gün içinde gerekçe göstermeden iptal etme hakkına sahipsiniz (AB cayma hakkı)",
+  "rightDefectiveProduct": "Bir ürün kusurluysa, onarım, değişim veya iade hakkına sahipsiniz",
+  "rightClearPricing": "Satıcılar tüm ücretler dahil net fiyatları göstermek zorundadır — gizli maliyetler yasa dışıdır",
+  "rightComplainBoard": "Tüketici Uyuşmazlıkları Kuruluna ücretsiz şikayette bulunabilirsiniz",
+  "rightProtectionFraud": "Haksız ticari uygulamalara ve dolandırıcılığa karşı korunursunuz",
+  "mustKeepReceipts": "Tüm fişleri, sözleşmeleri ve satıcılarla yapılan yazışmaları saklayın",
+  "mustActTimely": "Kusurları, keşfettikten sonra makul bir süre içinde satıcıya bildirin",
+  "consumerActionKeepEvidence": "Fişleri, ekran görüntülerini, e-postaları ve tüm satın alma kanıtlarını saklayın",
+  "consumerActionContactSeller": "Önce satıcıyla iletişime geçin — sorunu yazılı olarak açıklayın",
+  "consumerActionFileComplaint": "Tüketici Uyuşmazlıkları Kuruluna (kuluttajariitalautakunta) şikayette bulunun",
+  "consumerActionContactAuthority": "Ücretsiz yardım için Tüketici Danışma Hizmetleriyle iletişime geçin",
+  "consumerActionReportFraud": "Dolandırıcılığı polise ve Tüketici Ombudsmanına bildirin",
+  "consumerFactWithdrawal": "AB Tüketici Hakları Direktifi 2011/83/EU uyarınca, herhangi bir çevrimiçi veya mesafeli satın alımdan 14 gün içinde cayma hakkına sahipsiniz — hiçbir gerekçe gerekmez. Satıcı 14 gün içinde geri ödeme yapmalıdır.",
+  "consumerFactWarranty": "Finlandiya'da satıcı, ürün kusurlarından makul bir süre (genellikle 2 yıl veya daha fazla) boyunca sorumludur. Bu, üreticinin garantisinden ayrıdır.",
+  "consumerDeadlineWithdrawal": "Çevrimiçi satın alımdan cayma — teslimattan itibaren 14 gün",
+  "consumerDeadlineDefect": "Kusuru satıcıya bildirin — keşiften itibaren 2 ay içinde (önerilir)",
+  "contactConsumerAdvisory": "Tüketici Danışma Hizmetleri",
+  "contactConsumerOmbudsman": "Tüketici Ombudsmanı (Kuluttaja-asiamies)",
+  "contactConsumerDisputesBoardDirect": "Tüketici Uyuşmazlıkları Kurulu",
+  "categoryChildren": "Çocuklar",
+  "categoryDigital": "Dijital",
+  "childrenRights": "Çocuk Hakları ve Nafaka",
+  "childrenRightsDesc": "Çocuk desteği, nafaka, koruma, devlet güvenceleri",
+  "cyberbullying": "Siber Zorbalık ve Çevrimiçi Taciz",
+  "cyberbullyingDesc": "Tehditler, gizlilik ihlalleri, çevrimiçi karalama",
+  "rightChildSupport": "Her iki ebeveyn de çocuklarını mali olarak desteklemekle yasal olarak yükümlüdür (Perekonnaseadus § 100–102)",
+  "rightMinimumAlimony": "Estonya'da asgari çocuk desteği: temel tutar (295,86 €) + önceki yılın ortalama brüt maaşının %3'ü (PKS § 101). 01.04.2026'dan itibaren — çocuk başına aylık 318,62 €. Her yıl 1 Nisan'da güncellenir. Hesaplayıcı: alimendid.ee",
+  "rightCourtAlimony": "Bölge mahkemesi (maakohus) aracılığıyla nafaka talep edebilirsiniz — 6.400 €'ya kadar talepler için avukat gerekmez",
+  "rightBailiffEnforcement": "Ebeveyn ödemeyi reddederse, bir icra memuru (kohtutäitur) mahkeme kararını icra edebilir, maaş haczi dahil",
+  "rightStateAlimonyGuarantee": "Ebeveyn ödeme yapmazsa, devlet Sotsiaalkindlustusamet aracılığıyla elatisabi (nafaka yardımı) sağlar — çocuk başına aylık 100 €'ya kadar",
+  "rightChildEducation": "Her çocuk eğitim, sağlık hizmeti ve istismardan korunma hakkına sahiptir (Lastekaitseseadus § 4–5)",
+  "rightChildContact": "Bir mahkeme aksini kararlaştırmadıkça, çocuk her iki ebeveynle de iletişimini sürdürme hakkına sahiptir (PKS § 143)",
+  "mustFileCourtClaim": "Nafaka almak için mahkemeye dava açmalı veya tutar üzerinde yazılı olarak anlaşmalısınız",
+  "mustNotifyAddressChange": "Elatisabi alıyorsanız adres değişikliklerini Sotsiaalkindlustusamet'e bildirin",
+  "childrenActionGatherDocs": "Çocuğun doğum belgesini, kimliğinizi ve gider kanıtlarını toplayın",
+  "childrenActionFileCourtClaim": "Bölge mahkemesine (maakohus) nafaka davası açın — e-toimik üzerinden çevrimiçi yapılabilir",
+  "childrenActionApplyElatisabi": "Ebeveyn ödemezse Sotsiaalkindlustusamet'te devlet nafaka güvencesi (elatisabi) için başvurun",
+  "childrenActionContactBailiff": "Mahkeme kararını icra etmek için bir icra memuruyla (kohtutäitur) iletişime geçin",
+  "childrenActionCallLasteabi": "Çocuk yardım hattı için Lasteabi 116 111'i arayın — ücretsiz, 7/24",
+  "childrenDeadlineElatisabi": "Elatisabi için başvurun — mahkeme kararından sonra, kesin bir son tarih yok ancak süreç zaman alır",
+  "childrenDeadlineCourt": "Nafaka, mahkemeye başvurudan önceki 1 yıla kadar geriye dönük olarak talep edilebilir",
+  "childrenFactMinimum": "01.04.2026'dan itibaren asgari çocuk desteği çocuk başına aylık 318,62 €'dur. Formül: temel tutar (295,86 €) + önceki yılın ortalama brüt maaşının %3'ü. Her yıl 1 Nisan'da güncellenir. Bir ebeveyn daha az ödemeyi kabul edemez. Hesaplayıcı: alimendid.ee",
+  "childrenFactElatisabi": "Estonya'nın devlet nafaka güvencesi (elatisabi), bir ebeveynin ödeme yapmayı reddetmesi durumunda çocukları korumak için 2017'de getirildi. Devlet öder ve ardından tutarı borçlu ebeveynden tahsil eder.",
+  "rightReportCybercrime": "Çevrimiçi tehditleri, tacizi ve kimlik hırsızlığını polise bildirme hakkına sahipsiniz (Karistusseadustik § 120, § 157¹)",
+  "rightContentRemoval": "Karalayıcı veya özel içeriğin platformlardan kaldırılmasını talep edebilir ve GDPR kapsamında kaldırılmasını isteyebilirsiniz",
+  "rightMoralDamageCompensation": "Siber zorbalığın neden olduğu manevi zarar için tazminat talep edebilirsiniz (Võlaõigusseadus § 1043–1055)",
+  "rightPrivacyProtection": "Özel hayatınız korunmaktadır — fotoğraflarınızın, mesajlarınızın veya kişisel verilerinizin izinsiz paylaşılması yasa dışıdır (KarS § 157)",
+  "rightDataProtection": "Veri koruma ihlallerini (verilerinizin izinsiz kullanımı) Andmekaitse Inspektsioon'a bildirin",
+  "rightDefamationAction": "Karalama (laimamine) bir hukuki suçtur — tazminat davası açabilir ve kamuya açık bir düzeltme talep edebilirsiniz (KarS § 247 (yürürlükten kaldırıldı), VÕS § 1047)",
+  "mustCollectEvidence": "Tüm delilleri toplayın ve saklayın — ekran görüntüleri, bağlantılar, tarihler ve tanık bilgileri",
+  "mustNotRetaliate": "Misilleme yapmayın veya karşı tacize girişmeyin — bu davanızı zayıflatabilir",
+  "cyberActionScreenshots": "Tüm tacizin ekran görüntülerini alın — URL'leri, tarihleri, kullanıcı adlarını ve içeriği kaydedin",
+  "cyberActionReportPolice": "En yakın karakolda veya politsei.ee adresinde çevrimiçi olarak polise suç duyurusunda bulunun",
+  "cyberActionReportPlatform": "İçeriği kaldırılması için sosyal medya platformuna bildirin",
+  "cyberActionContactDPA": "Kişisel verileriniz kötüye kullanıldıysa Andmekaitse Inspektsioon ile iletişime geçin",
+  "cyberActionConsultLawyer": "Hukuki tazminat hakkında bir avukata danışın — Riigi Õigusabi aracılığıyla ücretsiz hukuki yardım mevcuttur",
+  "cyberDeadlineCriminal": "Suç duyurusu — kesin bir son tarih yok, ancak en iyi sonuç için derhal bildirin",
+  "cyberDeadlineCivil": "Tazminat için hukuk davası — ihlali öğrendiğiniz tarihten itibaren 3 yıla kadar (TsÜS § 150)",
+  "cyberFactPrivacy": "Estonya'da, birinin mahrem görüntülerinin izinsiz paylaşılması Karistusseadustik § 157¹ (gizlilik ihlali) uyarınca 3 yıla kadar hapis cezasıyla sonuçlanabilir.",
+  "cyberFactGDPR": "GDPR kapsamında “unutulma hakkına” sahipsiniz — platformlar, saklamak için yasal bir dayanak yoksa talebiniz üzerine kişisel verilerinizi silmek zorundadır.",
+  "upgradeBannerTitle": "Sınırsız danışmanlık için yükseltin",
+  "upgradeBannerCta": "Yükselt",
+  "paymentSuccessTitle": "Ödeme başarılı",
+  "paymentSuccessBody": "Aboneliğiniz artık etkin.",
+  "commonOk": "Tamam",
+  "feedbackThumbsUpLabel": "Yararlı",
+  "feedbackThumbsDownLabel": "Yararlı değil",
+  "feedbackCommentPrompt": "Nesi yanlıştı?",
+  "feedbackSend": "Gönder",
+  "feedbackCancel": "İptal",
+  "reasoningPillIdle": "Düşünüyor…",
+  "reasoningPillSearchingLaw": "Estonya hukuku aranıyor…",
+  "reasoningPillSearchingWeb": "Web'de aranıyor…",
+  "reasoningPillCheckingCompany": "Şirket sicili kontrol ediliyor…",
+  "reasoningPillCheckingVehicle": "Araç sicili kontrol ediliyor…",
+  "reasoningPillReadingDocument": "Belgeniz okunuyor…",
+  "reasoningPillDrafting": "Belge taslağı hazırlanıyor…",
+  "reasoningPillPreparingEmail": "E-posta hazırlanıyor…",
+  "reasoningPillFindingLawyer": "Avukatlar aranıyor…",
+  "reasoningPillThinking": "Davanız üzerinde düşünülüyor…",
+  "reasoningPillFinalising": "Yanıtınız oluşturuluyor…",
+  "reasoningCollapsedFormat": "{sec} sn boyunca akıl yürütüldü · {sources} kaynak",
+  "@reasoningCollapsedFormat": {
+    "placeholders": {
+      "sec": {
+        "type": "int"
+      },
+      "sources": {
+        "type": "int"
+      }
+    }
+  },
+  "reasoningExpandHint": "adımları görmek için dokunun",
+  "caseFileTitle": "Dava Dosyası",
+  "caseFileTimeline": "Zaman Çizelgesi",
+  "caseFileParties": "Taraflar",
+  "caseFileDeadlines": "Son tarihler",
+  "caseFileExportPdf": "Dosyayı indir (PDF)",
+  "caseFileEmpty": "Davanız hakkında yapay zeka ile sohbet edin — zaman çizelgeniz kendiliğinden oluşacak.",
+  "caseFileDisclaimer": "Bu dosya, sohbetinizden otomatik olarak çıkarılmıştır. Hukuki tavsiye değildir.",
+  "caseFileTabLabel": "Dava",
+  "refresh": "Yenile",
+  "demoLimitReached": "Demo sınırına ulaşıldı. Devam etmek için ücretsiz kaydolun.",
+  "demoLimitSignUpCta": "Kaydol",
+  "freeQuotaExhausted": "Bu ay 10 ücretsiz mesajın tamamını kullandınız.",
+  "upgradeForUnlimited": "Sınırsız için Pro'ya yükseltin",
+  "upgradeCta": "Yükselt",
+  "rateLimitTryAgain": "Çok hızlı gönderiyorsunuz. Birkaç saniye içinde tekrar deneyin.",
+  "quickProfilePrompt": "Size daha isabetli yardımcı olabilmem için, yasal durumunuz nedir: Estonya vatandaşı mısınız, başka bir ülkeden AB vatandaşı mısınız, yoksa ikamet izniniz mi var?",
+  "quickProfileChipEstonianCitizen": "Estonya vatandaşı",
+  "quickProfileChipEuCitizen": "AB vatandaşı (diğer)",
+  "quickProfileChipResidencePermit": "İkamet izni",
+  "quickProfileSkipBtn": "Atla",
+  "quickProfileSavedAck": "Anladım. Şimdi, sorunuz nedir?",
+  "caseTitleLabel": "Dava başlığı",
+  "jurisdictionLabel": "Yargı yetkisi",
+  "caseTypeLabel": "Dava türü",
+  "caseLanguageLabel": "Dil",
+  "caseNumbersSection": "Dava numaraları",
+  "partiesSection": "Taraflar",
+  "authoritiesSection": "Makamlar",
+  "timelineSection": "Zaman Çizelgesi",
+  "openQuestionsSection": "Açık sorular",
+  "nextActionsSection": "Sonraki adımlar",
+  "summarySection": "Özet",
+  "addRow": "Satır ekle",
+  "removeRow": "Kaldır",
+  "archiveCase": "Davayı arşivle",
+  "closeCase": "Davayı kapat",
+  "continueChatAboutCase": "Bu dava hakkında sohbete devam et",
+  "linkChatToCase": "Davaya bağla",
+  "clearActiveCase": "Etkin davayı temizle",
+  "caseSavedAck": "Dava kaydedildi",
+  "caseArchivedAck": "Dava arşivlendi",
+  "intakeStep1Title": "Dava nerede?",
+  "intakeStep1Subtitle": "İşlem yaptığınız ülke ve makam.",
+  "intakeJurisdictionLabel": "Ülke / yargı yetkisi",
+  "intakeAuthorityLabel": "Makam türü",
+  "intakeAuthorityNameLabel": "Makam adı (isteğe bağlı)",
+  "intakeAuthorityPolice": "Polis",
+  "intakeAuthorityCourt": "Mahkeme",
+  "intakeAuthoritySocial": "Sosyal hizmetler",
+  "intakeAuthorityEmployer": "İşveren",
+  "intakeAuthorityLandlord": "Ev sahibi",
+  "intakeAuthorityOpposingParty": "Karşı taraf",
+  "intakeAuthorityOther": "Diğer",
+  "intakeStep2Title": "Ne tür bir dava?",
+  "intakeStep2Subtitle": "En yakın türü seçin — daha sonra ayrıntılandırabilirsiniz.",
+  "intakeCaseTypeCriminal": "Ceza",
+  "intakeCaseTypeCivil": "Hukuk",
+  "intakeCaseTypeFamily": "Aile",
+  "intakeCaseTypeAdmin": "İdari",
+  "intakeCaseTypeImmigration": "Göçmenlik",
+  "intakeCaseTypeLabor": "İş",
+  "intakeCaseTypeConsumer": "Tüketici",
+  "intakeCaseTypeInheritance": "Miras",
+  "intakeCaseTypeOther": "Diğer",
+  "intakeStep3Title": "Kimler dahil?",
+  "intakeStep3Subtitle": "Sizin rolünüz ve karşı taraf.",
+  "intakeRoleLabel": "Rolünüz",
+  "intakeRolePlaintiff": "Davacı",
+  "intakeRoleDefendant": "Davalı",
+  "intakeRoleVictim": "Mağdur",
+  "intakeRoleAccused": "Sanık",
+  "intakeRoleWitness": "Tanık",
+  "intakeRoleFamily": "Aile üyesi",
+  "intakeRoleOther": "Diğer",
+  "intakeOpposingSideLabel": "Karşı taraf (isteğe bağlı)",
+  "intakeWitnessesLabel": "Tanıklar (isteğe bağlı)",
+  "intakeAddWitness": "Tanık ekle",
+  "intakeWitnessHint": "Ad veya iletişim",
+  "intakeStep4Title": "Numaralar ve tarihler",
+  "intakeStep4Subtitle": "Elinizde ne varsa. Olmayanları atlayın.",
+  "intakeCaseNumberLabel": "Dava numarası (isteğe bağlı)",
+  "intakeIncidentDateLabel": "Olay tarihi (isteğe bağlı)",
+  "intakeIncidentDatePick": "Tarih seç",
+  "intakeDeadlinesLabel": "Bilinen son tarihler",
+  "intakeAddDeadline": "Son tarih ekle",
+  "intakeDeadlineWhatHint": "Ne",
+  "intakeStep5Title": "Belgeler",
+  "intakeStep5Subtitle": "İlgili her şeyi yükleyin. Biz okuyacağız.",
+  "intakeUploadDocsLabel": "Belge yükle",
+  "intakeSkipDocs": "Atla — daha sonra yükleyeceğim",
+  "intakeNextBtn": "İleri",
+  "intakeBackBtn": "Geri",
+  "intakeFinishBtn": "Bitir ve sohbeti aç",
+  "intakeUrgentBtn": "Acil — şimdi sor",
+  "intakeUrgentDialogTitle": "Sohbeti şimdi aç?",
+  "intakeUrgentDialogBody": "Girdiklerinizi taslak dava olarak kaydedeceğiz. Sihirbazı dava sayfasından istediğiniz zaman tamamlayabilirsiniz.",
+  "intakeUrgentConfirm": "Sohbeti aç",
+  "intakeUrgentCancel": "Doldurmaya devam et",
+  "intakePreparingCase": "Davanız hazırlanıyor…",
+  "intakeFallbackGreeting": "Davanızı görüyorum. En acil olanı söyleyin — sizinle birlikte üzerinde çalışacağım.",
+  "intakeUrgentGreeting": "Bunun acil olduğunu görüyorum. Sorunuzu sorun — ilerledikçe gerisini ben tamamlarım.",
+  "intakeStepIndicator": "Adım {current} / {total}",
+  "@intakeStepIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "intakeFieldRequired": "Zorunlu",
+  "intakeUploadProgress": "Yükleniyor {done} / {total}…",
+  "@intakeUploadProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "uplDisclaimerFooter": "Advocat bir hukuk bürosu değildir. Bu, bilgilendirmedir, hukuki tavsiye değildir.",
+  "parallelActionsHeadline": "Consilium {count} paralel eylem öneriyor",
+  "@parallelActionsHeadline": {
+    "description": "Headline at the top of the Parallel Actions card — N>=2 emails the consilium recommends sending in parallel.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsApproveAll": "Tümünü Onayla ve Gönder",
+  "parallelActionsApproveSelected": "{total} eylemden {count} tanesini onayla",
+  "@parallelActionsApproveSelected": {
+    "description": "Primary button when only a subset of actions is checked.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsConfirmTitle": "{count} e-posta gönderilsin mi?",
+  "@parallelActionsConfirmTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsConfirmBody": "Advocat, hazırlanan {count} yanıtı bağlı Gmail hesabınız aracılığıyla gönderecek. Her biri bağımsız olarak gönderilir — herhangi biri başarısız olursa diğerleri yine de gider.",
+  "@parallelActionsConfirmBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsSentToast": "{count} gönderildi.",
+  "@parallelActionsSentToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsPartialFailureToast": "{sent} gönderildi, {failed} başarısız oldu.",
+  "@parallelActionsPartialFailureToast": {
+    "placeholders": {
+      "sent": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsKindReply": "yanıt",
+  "parallelActionsKindNew": "yeni",
+  "parallelActionsCheckboxSelected": "Eylem seçildi",
+  "parallelActionsCheckboxUnselected": "Eylem seçilmedi",
+  "parallelActionsCitationCount": "{count} atıf",
+  "@parallelActionsCitationCount": {
+    "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "parallelActionsRetryFailed": "Başarısız olanları yeniden dene ({count})",
+  "@parallelActionsRetryFailed": {
+    "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "agentApprovalNeedsReviewTitle": "Advocat onayınıza ihtiyaç duyuyor",
+  "agentApprovalResolvedTitle": "Eylem çözümlendi",
+  "agentApprovalStepsLabel": "adım",
+  "agentApprovalApproveButton": "Onayla ve Gönder",
+  "agentApprovalDeclineButton": "Reddet",
+  "agentApprovalAttachmentsLabel": "Ekler",
+  "agentApprovalSentSummary": "Sizin adınıza gönderildi.",
+  "agentApprovalDeclinedSummary": "Reddedildi — hiçbir şey gönderilmedi.",
+  "agentToolDraftEmailAtt": "Eklerle e-posta gönder",
+  "agentToolSendEmail": "E-posta gönder",
+  "agentToolGeneratePdf": "PDF oluştur",
+  "agentToolApproveSend": "Hazırlanan yanıtı gönder",
+  "inboxErrorTitle": "Gelen kutusu yüklenemedi",
+  "inboxEditDiscardTitle": "Kaydedilmemiş düzenlemeler atılsın mı?",
+  "inboxEditDiscardBody": "Bu taslakta kaydedilmemiş değişiklikleriniz var. Geri dönmek bunları atacaktır.",
+  "inboxEditKeepEditing": "Düzenlemeye devam et",
+  "inboxEditDiscard": "At",
+  "plannerSettingsTitle": "Üç aşamalı hukuki akıl yürütme",
+  "plannerSettingsSubtitle": "Planla → yanıtla → eleştir. Daha yavaş ama daha kapsamlı.",
+  "plannerSettingsProBadge": "Pro",
+  "plannerSettingsProDescription": "Pro planında kullanılabilir",
+  "plannerTrailHeaderPlan": "Plan",
+  "plannerTrailHeaderCritique": "Eleştiri",
+  "plannerTrailSubQuestions": "Alt sorular",
+  "plannerTrailCounterArgs": "Karşı argümanlar",
+  "plannerTrailEvidenceGaps": "Delil boşlukları",
+  "plannerTrailMaterialGapTrue": "Esaslı boşluk tespit edildi",
+  "plannerTrailRegeneratedBadge": "Bir kez yeniden oluşturuldu",
+  "plannerTrailEmpty": "öğe yok",
+  "supportTitle": "Yardım",
+  "supportSubtitle": "Genellikle 1-2 saat içinde yanıt veririz.",
+  "supportSearchPlaceholder": "Yardımda ara…",
+  "supportStatusAllOk": "Tüm sistemler normal",
+  "supportFaqWhatIs": "Advocat nedir?",
+  "supportFaqHowSubscribe": "Pro'ya nasıl abone olurum?",
+  "supportFaqExportData": "Verilerimi dışa aktarabilir miyim?",
+  "supportFaqCancelAccount": "Hesabı iptal et veya sil",
+  "supportFaqTalkHuman": "Bir kişiyle görüş",
+  "supportContactEmail": "E-posta",
+  "supportContactTelegram": "Telegram",
+  "supportContactWhatsapp": "WhatsApp",
+  "supportFooterSla": "24 saat içinde yanıt veririz",
+  "supportWhatsapp": "WhatsApp",
+  "supportEmail": "E-posta",
+  "supportInApp": "Bize buradan yazın",
+  "supportCategoryLabel": "Kategori",
+  "supportCategoryBug": "Hata",
+  "supportCategoryPayment": "Ödeme sorunu",
+  "supportCategoryQuestion": "Soru",
+  "supportCategoryFeature": "Özellik talebi",
+  "supportCategoryOther": "Diğer",
+  "supportMessagePlaceholder": "Sorununuzu açıklayın...",
+  "supportEmailLabel": "E-posta (isteğe bağlı)",
+  "supportSend": "Gönder",
+  "supportSentSuccess": "Mesaj gönderildi! Yakında yanıt vereceğiz.",
+  "supportError": "Bir şeyler ters gitti. Tekrar deneyin.",
+  "supportErrorTooShort": "Lütfen en az 10 karakter yazın.",
+  "supportErrorTooLong": "En fazla 2000 karakter.",
+  "supportPrivacyNotice": "Mesajınız güvenli bir şekilde saklanır.",
+  "referralAntiFraud": "Yılda en fazla 12 başarılı yönlendirme.",
+  "referralEmpty": "Henüz yönlendirme yok. Kazanmaya başlamak için bağlantınızı gönderin.",
+  "referralRecentActivity": "Son etkinlik",
+  "referralActivityInvited": "Davet edildi {when}",
+  "@referralActivityInvited": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "referralActivityActivated": "etkinleştirildi {when}",
+  "@referralActivityActivated": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "referralActivityPending": "henüz etkinleştirilmedi",
+  "referralStatsInvitedCount": "{count, plural, =0{henüz arkadaş davet etmediniz} =1{1 arkadaş} other{{count} arkadaş}} davet ettiniz",
+  "@referralStatsInvitedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "referralStatsConvertedCount": "{count, plural, =0{henüz hiçbiri etkinleştirilmedi} =1{1 tanesi etkinleştirildi} other{{count} tanesi etkinleştirildi}}",
+  "@referralStatsConvertedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "referralStatsEarnedCount": "Bonusunuz: {months, plural, =0{henüz yok} =1{1 ücretsiz ay} other{{months} ücretsiz ay}}",
+  "@referralStatsEarnedCount": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "referralNudgeMessage": "Advocat'ı beğendiniz mi? Bir arkadaşınızı davet edin — ikiniz de bir ücretsiz ay kazanın.",
+  "referralNudgeAction": "Davet et",
+  "referralLandingTitle": "Advocat'a davet edildiniz",
+  "referralLandingSubtitle": "{inviterName} sizi davet etti — ücretsiz ilk ayınızı talep edin.",
+  "@referralLandingSubtitle": {
+    "placeholders": {
+      "inviterName": {
+        "type": "String"
+      }
+    }
+  },
+  "referralLandingSubtitleGeneric": "Advocat Pro'nun ücretsiz ilk ayını talep edin.",
+  "referralLandingCta": "Ücretsiz ayı etkinleştir ve kaydol",
+  "referralLandingCtaSecondary": "Veya Advocat hakkında daha fazla bilgi edinin",
+  "referralLandingFallback": "Bu bağlantının süresi doldu — ancak yine de Advocat'ı ücretsiz deneyebilirsiniz.",
+  "referralLandingBenefits": "17 dil • Gerçek Estonya, Finlandiya ve AB hukuku • 7/24 — bekleme yok",
+  "sensitiveConsentTitle": "Hassas veri onayı",
+  "sensitiveConsentBody": "Yüklemek üzere olduğunuz belgeler, GDPR Madde 9 kapsamında özel kategori kişisel veriler içerebilir — sağlık kayıtları, sabıka kayıtları, biyometrik veriler veya ırksal kökeniniz, dininiz ya da cinsel yöneliminiz hakkında bilgiler gibi.\n\nBu verileri yalnızca size yapay zeka hukuki yardımı sağlamak için işler, özel hesabınızda şifreli olarak saklar ve modelleri eğitmek için asla kullanmayız. Onayınızı geri çekebilir ve verileri istediğiniz zaman Ayarlar'dan silebilirsiniz.\n\nKabul ederek, özel kategori verilerin bu amaçla işlenmesi için GDPR Madde 9(2)(a) uyarınca açık onay vermiş olursunuz.",
+  "sensitiveConsentExplicitCheckbox": "Özel kategori verilerin işlenmesine açık onay veriyorum (GDPR Madde 9(2)(a)).",
+  "sensitiveConsentRightToShareCheckbox": "Bu verileri paylaşma hakkına sahip olduğumu teyit ediyorum (veriler bana ait ya da üçüncü taraf verilerini paylaşmak için bilgilendirilmiş/yasal dayanağım var).",
+  "sensitiveConsentViewCategories": "Neyin hassas sayıldığını görüntüle →",
+  "sensitiveConsentWithdrawAction": "Hassas veri onayını geri çek",
+  "privacyAndData": "GİZLİLİK VE VERİLER",
+  "exportMyDataSubtitle": "Tüm kişisel verilerinizin bir kopyasını indirin (GDPR Madde 15).",
+  "withdrawSensitiveConsent": "Hassas veri onayı",
+  "withdrawSensitiveConsentSubtitle": "Özel kategori verilerin işlenmesine ilişkin onayı yönetin veya geri çekin (GDPR Madde 9(2)(a)).",
+  "dataProcessingAgreement": "Veri İşleme Sözleşmesi",
+  "exportingData": "Verileriniz dışa aktarılıyor…",
+  "exportComplete": "Veri dışa aktarımı hazır — cihazınıza kaydedildi.",
+  "exportFailed": "Dışa aktarma başarısız oldu. Lütfen tekrar deneyin veya destekle iletişime geçin.",
+  "quotaExhaustedTitle": "Ücretsiz mesaj sınırına ulaşıldı",
+  "quotaExhaustedBody": "{count} ücretsiz mesajın tamamını kullandınız. Aylık 19,99 € karşılığında Advocat Counsel'a yükseltin ve sınırsız yapay zeka hukuki danışmanlığı edinin.",
+  "@quotaExhaustedBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quotaExhaustedLater": "Daha sonra",
+  "quotaExhaustedUpgrade": "Advocat Counsel — aylık 19,99 €",
+  "quotaCtaMessage": "{count} ücretsiz mesajın tamamını kullandınız. Aylık 19,99 € karşılığında Advocat Counsel'a yükseltin.",
+  "@quotaCtaMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quotaCtaButton": "Advocat Counsel edinin — aylık 19,99 €",
+  "aiErrorQuota": "Ücretsiz mesaj sınırına ulaşıldı. Yapay zekayı kullanmaya devam etmek için abone olun.",
+  "aiErrorAuth": "Yapay zekayı kullanmak için giriş yapmanız gerekir. Lütfen kaydolun veya oturum açın.",
+  "aiErrorGeneric": "Geçici yapay zeka hatası. Lütfen bir dakika içinde tekrar deneyin. Sorun devam ederse destekle iletişime geçin.",
+  "tooltipShareCase": "Dava özetini paylaş",
+  "tooltipMuteVoice": "Sesi kapat",
+  "tooltipUnmuteVoice": "Sesi aç",
+  "tooltipAttachDoc": "Belge ekle",
+  "aiTypingHint": "Yapay zeka…",
+  "error404Title": "Sayfa bulunamadı",
+  "error404Body": "Şunu bulamadık: {path}",
+  "@error404Body": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "goToHome": "Ana sayfaya git",
+  "emailAlreadyRegistered": "Bu e-posta zaten kayıtlı. Oturum açmak ister misiniz?",
+  "actionSignIn": "Oturum aç",
+  "actionUndo": "Geri al",
+  "intakeUrgentOpened": "Sohbet açıldı — taslağınız kaydedildi.",
+  "panicCoachmark": "Acil yardım için basılı tutun.",
+  "panicTitle": "Şu anda neye ihtiyacınız var?",
+  "panicCardReadAloud": "Görevliye yüksek sesle oku",
+  "panicCardRecord": "Bu konuşmayı kaydet",
+  "panicCardCall": "Bir avukat ara",
+  "panicCardAi": "Şimdi Advocat ile konuş",
+  "panicClose": "Kapat",
+  "panicBadgeV2": "V2",
+  "panicRecordV1Title": "V2'de geliyor",
+  "panicRecordV1Body": "Kayıt özelliği Estonya için yasal olarak doğrulanıyor ve V2'de kullanıma sunulacak. Şimdilik telefonunuzun yerleşik ses kaydedicisini kullanın.",
+  "panicCallFallbackBody": "kiire@advocat.ee adresine kısa bir açıklamayla e-posta gönderin, sizi geri arayalım.",
+  "softCaseShellBanner": "Bunu takip etmek için \"Başlıksız dava\" oluşturduk. Yeniden adlandırmak için dokunun.",
+  "softCaseShellBannerCta": "Yeniden adlandır"
 }
