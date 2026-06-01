@@ -13,6 +13,7 @@ import {
   jsonError,
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
+import { isValidVoiceId } from "./validate.ts";
 
 const ELEVENLABS_API_KEY = Deno.env.get("ELEVENLABS_API_KEY");
 
@@ -51,8 +52,10 @@ serve(async (req) => {
       return jsonError("Invalid text (required, max 5000 chars)", 400);
     }
 
-    const voiceId =
-      (typeof voice_id === "string" && voice_id) || DEFAULT_VOICE_ID;
+    // voiceId is interpolated into the ElevenLabs request path, so it must be
+    // an opaque alphanumeric id — never an attacker-controlled string that
+    // could inject path segments / query params against our API key.
+    const voiceId = isValidVoiceId(voice_id) ? voice_id : DEFAULT_VOICE_ID;
     const langCode =
       language && typeof language === "string" && SUPPORTED_LANGS.has(language)
         ? language
