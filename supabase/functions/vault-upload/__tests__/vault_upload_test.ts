@@ -36,6 +36,11 @@ function makeFake(opts: {
   inserts?: Record<string, Record<string, unknown>>;
   /** Rows returned by vault_search_documents RPC (for list tests). */
   searchRows?: Array<Record<string, unknown>>;
+  /** Case ids the caller owns — `cases` select().eq().maybeSingle() returns a
+   *  row only for these (mirrors cases_select_own RLS under the JWT client). */
+  ownedCaseIds?: string[];
+  /** If set, the `cases` ownership check returns this error. */
+  caseCheckError?: string;
   /** If set, all RPCs / inserts will return this error. */
   forceError?: string;
 }): { client: SupabaseLike; rpcCalls: RpcCall[]; insertCalls: InsertCall[] } {
@@ -83,10 +88,26 @@ function makeFake(opts: {
         },
         select(_cols) {
           return {
-            eq(_c, _v) {
+            eq(_c, val) {
               return {
                 order(_c2, _o) {
                   return { limit: (_n) => Promise.resolve({ data: [], error: null }) };
+                },
+                maybeSingle: () => {
+                  if (table === "cases" && opts.caseCheckError) {
+                    return Promise.resolve({
+                      data: null,
+                      error: { message: opts.caseCheckError },
+                    });
+                  }
+                  if (table === "cases") {
+                    const owned = (opts.ownedCaseIds ?? []).includes(val as string);
+                    return Promise.resolve({
+                      data: owned ? { id: val } : null,
+                      error: null,
+                    });
+                  }
+                  return Promise.resolve({ data: null, error: null });
                 },
               };
             },
@@ -233,6 +254,94 @@ Deno.test("runVaultUpload never encrypts under a different user id", async () =>
   }
 });
 
+// ─── case_id ownership guard (IDOR) ─────────────────────────────────────────
+
+const CASE_A = "cccccccc-cccc-cccc-cccc-cccccccccccc";
+const CASE_FOREIGN = "dddddddd-dddd-dddd-dddd-dddddddddddd";
+
+Deno.test("runVaultUpload rejects pinning a document to a case the caller does not own", async () => {
+  // USER_A owns CASE_A only. Trying to attach to CASE_FOREIGN (USER_B's case)
+  // must 403 BEFORE any encrypt/insert happens — no forgery into foreign case.
+  const { client, rpcCalls, insertCalls } = makeFake({
+    rpc: { vault_encrypt_text: "<ENC>" },
+    inserts: { documents: { id: "doc-x" } },
+    ownedCaseIds: [CASE_A],
+  });
+  const r = await runVaultUpload(
+    {
+      file_name: "x.pdf",
+      storage_path: `${USER_A}/x.pdf`,
+      mime_type: "application/pdf",
+      case_id: CASE_FOREIGN,
+    },
+    { supabase: client, userId: USER_A },
+  );
+  assertEquals(r.kind, "error");
+  assertEquals(r.status, 403);
+  if (r.kind === "error") assertEquals(r.body.error, "case_not_owned");
+  // No side effects: ownership check gates everything.
+  assertEquals(rpcCalls.filter((c) => c.fn === "vault_encrypt_text").length, 0);
+  assertEquals(insertCalls.length, 0);
+});
+
+Deno.test("runVaultUpload allows pinning to an owned case", async () => {
+  const { client, insertCalls } = makeFake({
+    rpc: { vault_encrypt_text: "<ENC>" },
+    inserts: { documents: { id: "doc-owned" } },
+    ownedCaseIds: [CASE_A],
+  });
+  const r = await runVaultUpload(
+    {
+      file_name: "x.pdf",
+      storage_path: `${USER_A}/x.pdf`,
+      mime_type: "application/pdf",
+      case_id: CASE_A,
+    },
+    { supabase: client, userId: USER_A },
+  );
+  assertEquals(r.kind, "success");
+  const docInsert = insertCalls.find((c) => c.table === "documents");
+  assertExists(docInsert);
+  assertEquals(docInsert!.row["case_id"], CASE_A);
+});
+
+Deno.test("runVaultUpload with no case_id skips the ownership check", async () => {
+  // ownedCaseIds empty — but a vault-only doc (no case_id) must still succeed.
+  const { client } = makeFake({
+    rpc: { vault_encrypt_text: "<ENC>" },
+    inserts: { documents: { id: "doc-vault-only" } },
+    ownedCaseIds: [],
+  });
+  const r = await runVaultUpload(
+    { file_name: "x.pdf", storage_path: `${USER_A}/x.pdf`, mime_type: "application/pdf" },
+    { supabase: client, userId: USER_A },
+  );
+  assertEquals(r.kind, "success");
+});
+
+Deno.test("runVaultUpload 500 (generic) when the case ownership check errors", async () => {
+  const { client } = makeFake({
+    rpc: { vault_encrypt_text: "<ENC>" },
+    caseCheckError: "connection reset",
+    ownedCaseIds: [CASE_A],
+  });
+  const r = await runVaultUpload(
+    {
+      file_name: "x.pdf",
+      storage_path: `${USER_A}/x.pdf`,
+      mime_type: "application/pdf",
+      case_id: CASE_A,
+    },
+    { supabase: client, userId: USER_A },
+  );
+  assertEquals(r.kind, "error");
+  assertEquals(r.status, 500);
+  if (r.kind === "error") {
+    assertEquals(r.body.error, "case_check_failed");
+    assert(!r.body.error.includes("connection reset"));
+  }
+});
+
 // ─── Error propagation ─────────────────────────────────────────────────────
 
 Deno.test("runVaultUpload 500 when encrypt RPC fails", async () => {
@@ -282,6 +391,9 @@ Deno.test("runVaultUpload 500 when insert fails (RLS denial simulated)", async (
                 order(_c3, _o) {
                   return { limit: (_n) => Promise.resolve({ data: [], error: null }) };
                 },
+                // No case_id in this test's body, so the ownership check is
+                // skipped — return an owned row defensively just in case.
+                maybeSingle: () => Promise.resolve({ data: { id: _v }, error: null }),
               };
             },
           };

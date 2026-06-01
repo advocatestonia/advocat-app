@@ -37,6 +37,10 @@ export interface SupabaseLike {
             error: { message: string } | null;
           }>;
         };
+        maybeSingle(): Promise<{
+          data: Record<string, unknown> | null;
+          error: { message: string; code?: string } | null;
+        }>;
       };
     };
   };
@@ -162,6 +166,32 @@ export async function runVaultUpload(
   const v = validateUploadRequest(rawBody);
   if (!("ok" in v)) return v;
   const req = v.req;
+
+  // 0. Ownership check on case_id. The FK to public.cases only guarantees the
+  //    case EXISTS, not that the caller owns it, and the documents RLS INSERT
+  //    policy checks only `auth.uid() = user_id` — NOT that case_id belongs to
+  //    the same user. Without this, a caller could pin their own document row
+  //    to ANOTHER user's case_id; if any read path aggregates documents by
+  //    case (case view / export), the planted row would surface inside the
+  //    victim's case (forgery / phishing into someone else's matter).
+  //    The supabase client here is JWT-scoped (auth.uid() == userId), so the
+  //    cases_select_own RLS policy returns a row ONLY when the caller owns it.
+  if (req.case_id) {
+    const owned = await deps.supabase
+      .from("cases")
+      .select("id")
+      .eq("id", req.case_id)
+      .maybeSingle();
+    if (owned.error) {
+      console.error(`vault-upload: case ownership check failed: ${owned.error.message}`);
+      return { kind: "error", status: 500, body: { error: "case_check_failed" } };
+    }
+    if (!owned.data) {
+      // Either the case does not exist or it is not the caller's. Return 403
+      // without distinguishing the two (no existence oracle for foreign cases).
+      return { kind: "error", status: 403, body: { error: "case_not_owned" } };
+    }
+  }
 
   // 1. Encrypt file_name + storage_path via the per-user DEK helpers.
   const encName = await deps.supabase.rpc("vault_encrypt_text", {
