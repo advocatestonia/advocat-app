@@ -6,6 +6,7 @@ import '../../../core/citations/marker.dart';
 import '../citations/citation_model.dart';
 import 'action_chip.dart';
 import 'citations/citation_marker_span.dart';
+import 'rich_message_blocks.dart';
 
 // ---------------------------------------------------------------------------
 // Public API
@@ -62,7 +63,7 @@ class RichMessage extends StatelessWidget {
           color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
         );
 
-    final blocks = _parseBlocks(text);
+    final blocks = parseRichBlocks(text);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,28 +78,28 @@ class RichMessage extends StatelessWidget {
 
   Widget _buildBlock(
     BuildContext context,
-    _Block block,
+    RichBlock block,
     TextStyle style,
     int index,
     bool isDark,
   ) {
     Widget child;
     switch (block.type) {
-      case _BlockType.header:
+      case RichBlockType.header:
         child = _buildHeader(context, block.content, style, isDark);
-      case _BlockType.bullet:
+      case RichBlockType.bullet:
         child = _buildBullet(context, block.content, style, isDark);
-      case _BlockType.numbered:
+      case RichBlockType.numbered:
         child = _buildNumbered(context, block.content, block.number, style, isDark);
-      case _BlockType.quote:
+      case RichBlockType.quote:
         child = _buildQuote(context, block.content, style, isDark);
-      case _BlockType.divider:
+      case RichBlockType.divider:
         child = _buildDivider(isDark);
-      case _BlockType.table:
+      case RichBlockType.table:
         child = _buildTable(context, block.rows, style, isDark);
-      case _BlockType.paragraph:
+      case RichBlockType.paragraph:
         child = _buildParagraph(context, block.content, style, isDark);
-      case _BlockType.empty:
+      case RichBlockType.empty:
         child = const SizedBox(height: 4);
     }
 
@@ -616,133 +617,6 @@ class RichMessage extends StatelessWidget {
         ? TextDirection.rtl
         : TextDirection.ltr;
   }
-}
-
-// ---------------------------------------------------------------------------
-// Block parser
-// ---------------------------------------------------------------------------
-
-enum _BlockType { header, bullet, numbered, quote, divider, table, paragraph, empty }
-
-class _Block {
-  final _BlockType type;
-  final String content;
-  final int number;
-  final List<List<String>> rows;
-
-  const _Block({
-    required this.type,
-    this.content = '',
-    this.number = 0,
-    this.rows = const [],
-  });
-}
-
-/// Splits raw text into structural blocks.
-List<_Block> _parseBlocks(String text) {
-  final lines = text.split('\n');
-  final blocks = <_Block>[];
-
-  int i = 0;
-  while (i < lines.length) {
-    final line = lines[i];
-    final trimmed = line.trim();
-
-    // Empty line
-    if (trimmed.isEmpty) {
-      blocks.add(const _Block(type: _BlockType.empty));
-      i++;
-      continue;
-    }
-
-    // Divider: ---  or ___ or ***  (3+ chars)
-    if (RegExp(r'^[-_*]{3,}$').hasMatch(trimmed)) {
-      blocks.add(const _Block(type: _BlockType.divider));
-      i++;
-      continue;
-    }
-
-    // Header: ## text
-    if (trimmed.startsWith('## ')) {
-      blocks.add(_Block(
-        type: _BlockType.header,
-        content: trimmed.substring(3).trim(),
-      ));
-      i++;
-      continue;
-    }
-
-    // Single # header (less common but still valid)
-    if (trimmed.startsWith('# ') && !trimmed.startsWith('## ')) {
-      blocks.add(_Block(
-        type: _BlockType.header,
-        content: trimmed.substring(2).trim(),
-      ));
-      i++;
-      continue;
-    }
-
-    // Quote: > text
-    if (trimmed.startsWith('> ')) {
-      // Collect consecutive quote lines
-      final quoteBuffer = StringBuffer();
-      while (i < lines.length && lines[i].trim().startsWith('> ')) {
-        if (quoteBuffer.isNotEmpty) quoteBuffer.write('\n');
-        quoteBuffer.write(lines[i].trim().substring(2));
-        i++;
-      }
-      blocks.add(_Block(type: _BlockType.quote, content: quoteBuffer.toString()));
-      continue;
-    }
-
-    // Table: line contains | (at least 2 pipes)
-    if (trimmed.contains('|') && '|'.allMatches(trimmed).length >= 2) {
-      final tableRows = <List<String>>[];
-      while (i < lines.length &&
-          lines[i].trim().contains('|') &&
-          '|'.allMatches(lines[i].trim()).length >= 2) {
-        final cells = lines[i]
-            .trim()
-            .split('|')
-            .map((c) => c.trim())
-            .where((c) => c.isNotEmpty)
-            .toList();
-        tableRows.add(cells);
-        i++;
-      }
-      blocks.add(_Block(type: _BlockType.table, rows: tableRows));
-      continue;
-    }
-
-    // Bullet: - text  or bullet text
-    if (trimmed.startsWith('- ') || trimmed.startsWith('\u2022 ')) {
-      final prefix = trimmed.startsWith('- ') ? '- ' : '\u2022 ';
-      blocks.add(_Block(
-        type: _BlockType.bullet,
-        content: trimmed.substring(prefix.length).trim(),
-      ));
-      i++;
-      continue;
-    }
-
-    // Numbered list: 1. text, 2. text, etc.
-    final numberedMatch = RegExp(r'^(\d+)\.\s+(.+)$').firstMatch(trimmed);
-    if (numberedMatch != null) {
-      blocks.add(_Block(
-        type: _BlockType.numbered,
-        content: numberedMatch.group(2)!,
-        number: int.parse(numberedMatch.group(1)!),
-      ));
-      i++;
-      continue;
-    }
-
-    // Paragraph (default)
-    blocks.add(_Block(type: _BlockType.paragraph, content: trimmed));
-    i++;
-  }
-
-  return blocks;
 }
 
 // ---------------------------------------------------------------------------
