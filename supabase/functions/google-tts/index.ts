@@ -10,6 +10,7 @@ import {
   jsonError,
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
+import { resolveLangCode } from "./lang.ts";
 
 const GOOGLE_TTS_API_KEY = Deno.env.get("GOOGLE_TTS_API_KEY");
 
@@ -97,16 +98,7 @@ serve(async (req) => {
     }
 
     const lang = typeof language === "string" && language ? language : "et";
-    const langCode = lang.length === 2 ? `${lang}-${lang.toUpperCase()}` : lang;
-
-    const langCodeMap: Record<string, string> = {
-      en: "en-US",
-      ar: "ar-XA",
-      uk: "uk-UA",
-      sv: "sv-SE",
-      et: "et-EE",
-    };
-    const finalLangCode = langCodeMap[lang] || langCode;
+    const finalLangCode = resolveLangCode(lang);
 
     const isMale = gender === "male";
     const voiceMap = isMale ? VOICE_MAP_MALE : VOICE_MAP_FEMALE;
