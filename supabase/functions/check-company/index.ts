@@ -14,6 +14,7 @@ import {
   jsonError,
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
+import { isSafeRegistryCode } from "./ssrf.ts";
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -84,7 +85,7 @@ serve(async (req) => {
         // upstream `url` is still surfaced to the client as `check_url` below
         // (a browser link, not a server fetch), so functionality is preserved.
         let detailed: Record<string, any> | null = null;
-        const safeRegCode = /^\d{4,12}$/.test(companies[0].registry_code)
+        const safeRegCode = isSafeRegistryCode(companies[0].registry_code)
           ? companies[0].registry_code
           : "";
         if (safeRegCode) {
