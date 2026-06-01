@@ -75,12 +75,21 @@ serve(async (req) => {
           historical_names: c.historical_names || [],
         }));
 
-        // Fetch detailed info by scraping the company HTML page
+        // Fetch detailed info by scraping the company HTML page.
+        // SECURITY: the server-side scrape URL is built ONLY from the
+        // registry_code (constrained to digits) pinned to the ariregister
+        // host — NEVER from the upstream-supplied `url` field. Fetching an
+        // upstream-controlled URL here would be a server-side request forgery
+        // (SSRF) if the registry API ever returned an off-host link. The
+        // upstream `url` is still surfaced to the client as `check_url` below
+        // (a browser link, not a server fetch), so functionality is preserved.
         let detailed: Record<string, any> | null = null;
-        const companyPageUrl =
-          companies[0].url ||
-          `https://ariregister.rik.ee/est/company/${companies[0].registry_code}`;
-        if (companies[0].registry_code) {
+        const safeRegCode = /^\d{4,12}$/.test(companies[0].registry_code)
+          ? companies[0].registry_code
+          : "";
+        if (safeRegCode) {
+          const companyPageUrl =
+            `https://ariregister.rik.ee/est/company/${safeRegCode}`;
           try {
             const pageResponse = await fetch(companyPageUrl);
             if (pageResponse.ok) {
