@@ -22,7 +22,7 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 type Period = "current_month" | "last_30_days" | "current_year" | "custom";
 
-serve(async (req) => {
+export async function handleRequest(req: Request): Promise<Response> {
   if (req.method === "OPTIONS") {
     return new Response(null, {
       status: 204,
@@ -164,9 +164,13 @@ serve(async (req) => {
       "Cache-Control": "private, max-age=60",
     },
   });
-});
+}
 
-function resolvePeriod(
+if (import.meta.main) {
+  serve(handleRequest);
+}
+
+export function resolvePeriod(
   period: Period,
   fromIso: string | null,
   toIso: string | null,
@@ -226,16 +230,37 @@ async function countRangePerUser(sb: any, table: string, orgId: string, userId: 
 }
 
 // deno-lint-ignore no-explicit-any
-async function countApiCalls(sb: any, orgId: string, start: Date, end: Date): Promise<number> {
-  // org_api_rate_counters stores daily counts; sum within range.
+export async function countApiCalls(sb: any, orgId: string, start: Date, end: Date): Promise<number> {
+  // org_api_rate_counters has NO org_id column — it keys on api_key_id
+  // (migration 20260523060000: columns are api_key_id, bucket_date,
+  // request_count). So we first resolve the org's API keys, then sum
+  // request_count over the date range. (Previously this queried org_id/day/
+  // count — none of which exist — so the count silently failed to 0.)
+  const { data: keys, error: keysErr } = await sb
+    .from("org_api_keys")
+    .select("id")
+    .eq("org_id", orgId);
+  if (keysErr) {
+    console.error(`[org-usage-stats] api_keys lookup failed:`, keysErr.message);
+    return 0;
+  }
+  const keyIds = (keys ?? []).map((k: { id: string }) => k.id);
+  if (keyIds.length === 0) return 0;
+
   const { data, error } = await sb
     .from("org_api_rate_counters")
-    .select("count")
-    .eq("org_id", orgId)
-    .gte("day", start.toISOString().slice(0, 10))
-    .lte("day", end.toISOString().slice(0, 10));
-  if (error) return 0;
-  return (data ?? []).reduce((acc: number, r: { count: number }) => acc + (r.count ?? 0), 0);
+    .select("request_count")
+    .in("api_key_id", keyIds)
+    .gte("bucket_date", start.toISOString().slice(0, 10))
+    .lte("bucket_date", end.toISOString().slice(0, 10));
+  if (error) {
+    console.error(`[org-usage-stats] api_calls count failed:`, error.message);
+    return 0;
+  }
+  return (data ?? []).reduce(
+    (acc: number, r: { request_count: number }) => acc + (r.request_count ?? 0),
+    0,
+  );
 }
 
 // deno-lint-ignore no-explicit-any
