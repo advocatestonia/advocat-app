@@ -21,6 +21,7 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { constantTimeEqual, corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
 import { twoStageScrub } from "../_shared/pii_scrubber.ts";
+import { clampInt } from "./clamp.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY =
@@ -176,18 +177,4 @@ async function recordScrubError(rowId: string, error: string): Promise<void> {
   } catch {
     // best-effort
   }
-}
-
-function clampInt(
-  raw: string | null,
-  min: number,
-  max: number,
-  fallback: number,
-): number {
-  if (!raw) return fallback;
-  const n = parseInt(raw, 10);
-  if (!Number.isFinite(n)) return fallback;
-  if (n < min) return min;
-  if (n > max) return max;
-  return n;
 }
