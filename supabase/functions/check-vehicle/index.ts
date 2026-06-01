@@ -24,6 +24,7 @@ import {
   jsonError,
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
+import { isPlateValid, normalizeCountry } from "./validate.ts";
 
 interface CountryRegistry {
   code: string;
@@ -95,30 +96,6 @@ const REGISTRIES: Record<string, CountryRegistry> = {
     note: "Free lookup on Transportstyrelsen, registration-number based.",
   },
 };
-
-// Normalise any country identifier (2-letter code, full name in EN/native)
-// to a canonical ISO-3166-1 alpha-2 key used in REGISTRIES.
-function normalizeCountry(raw: string | undefined | null): string {
-  if (!raw) return "EE";
-  const s = raw.trim().toLowerCase();
-  if (s.length === 2) return s.toUpperCase();
-  const aliases: Record<string, string> = {
-    estonia: "EE", eesti: "EE",
-    finland: "FI", suomi: "FI",
-    latvia: "LV", latvija: "LV",
-    lithuania: "LT", lietuva: "LT",
-    germany: "DE", deutschland: "DE",
-    poland: "PL", polska: "PL",
-    sweden: "SE", sverige: "SE",
-  };
-  return aliases[s] ?? "EE";
-}
-
-// Basic plate validation — we don't accept obviously invalid input.
-function isPlateValid(plate: string): boolean {
-  if (!plate || plate.length < 3 || plate.length > 12) return false;
-  return /^[A-Za-zÅÄÖÕÜа-яА-Я0-9\-\s]+$/.test(plate);
-}
 
 // Estonia-specific: check insurance via the real LKF Oracle form.
 // Step 1: GET the form to extract p_key session token.
