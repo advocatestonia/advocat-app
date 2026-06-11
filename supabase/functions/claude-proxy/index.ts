@@ -24,7 +24,11 @@ import {
   type ChainProvider,
   type ChainResult,
 } from "./provider_chain.ts";
-import { classifyComplexity } from "./classify_complexity.ts";
+import {
+  applyModelThinkingCompat,
+  classifyComplexity,
+} from "./classify_complexity.ts";
+import { resolveUserTier, type UserTier } from "./tier_resolver.ts";
 import {
   classifyQuery,
   estimateCostCents,
@@ -1831,20 +1835,21 @@ serve(withSentry("claude-proxy", async (req) => {
     // citation chunks for paid users, adversarial). Force-* env vars are
     // honoured first as emergency switches.
     //
-    // Conservative tier inference: anon → free; everyone else → free unless
-    // body.user_tier / body.tier explicitly says otherwise. Most paid users
-    // hit a Sonnet rule on signals alone (citations, halt, planner, contract),
-    // so this conservative default rarely under-routes them.
-    const bodyTierRaw = String(
-      (body as { user_tier?: unknown }).user_tier ??
-        (body as { tier?: unknown }).tier ?? "",
-    ).toLowerCase();
-    const userTier: "free" | "counsel" | "pro" =
-      bodyTierRaw === "pro"
-        ? "pro"
-        : bodyTierRaw === "counsel"
-        ? "counsel"
-        : "free";
+    // Wave-1 fix (2026-06-11): tier is resolved SERVER-SIDE from
+    // public.subscriptions / public.profiles via the service-role key
+    // (see tier_resolver.ts; same source of truth as check-ai-quota's
+    // detectPlan). The previous code read body.user_tier / body.tier —
+    // but no client ever sends those, so every paying user routed as
+    // "free" and never got the premium model. They were also spoofable.
+    // Client-supplied tier claims are now IGNORED and stripped so they
+    // never reach Anthropic (unknown top-level params 400 there).
+    delete (body as { user_tier?: unknown }).user_tier;
+    delete (body as { tier?: unknown }).tier;
+    const userTier: UserTier = isAnon ? "free" : await resolveUserTier({
+      supabaseUrl: SUPABASE_URL,
+      serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+      userId: gate.user.id,
+    });
     // Cheap input-token estimate: ~4 chars/token across messages + system.
     const estimatedInputTokens = (() => {
       let chars = 0;
@@ -1887,6 +1892,14 @@ serve(withSentry("claude-proxy", async (req) => {
     const routedModelId = modelIdFor(routingDecision.model);
     const modelBeforeSignalRouter = body.model;
     body.model = routedModelId;
+    // Wave-1 fix (2026-06-11): reconcile thinking + sampling params with
+    // the FINAL model. classifyComplexity (above) attaches
+    // {type:"enabled", budget_tokens:N} — the only shape Haiku 4.5 /
+    // Sonnet 4 accept — but Opus 4.8 is adaptive-only: budget_tokens AND
+    // temperature/top_p/top_k all 400 there. Must run AFTER the signal
+    // router so it sees the model that will actually be called; the
+    // streaming, non-streaming and agent-loop paths all forward `body`.
+    applyModelThinkingCompat(body);
     // Per-request structured log so we can audit routing in production.
     console.log(
       "[router]",

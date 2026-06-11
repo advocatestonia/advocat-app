@@ -5,9 +5,7 @@
 //     supabase/functions/claude-proxy/__tests__/classify_complexity_test.ts
 // -----------------------------------------------------------------------------
 
-import {
-  assertEquals,
-} from "https://deno.land/std@0.224.0/assert/mod.ts";
+import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
 
 import {
   BUDGET_COMPLEX,
@@ -20,7 +18,10 @@ import {
 Deno.test("anon caller never gets thinking (max_tokens clamped to 500)", () => {
   // Even on a long legal message, anon stays at null.
   const result = classifyComplexity(
-    [{ role: "user", content: "I got a deportation notice. What's my appeal window?" }],
+    [{
+      role: "user",
+      content: "I got a deportation notice. What's my appeal window?",
+    }],
     /* userIsAnon */ true,
   );
   assertEquals(result, null);
@@ -159,4 +160,166 @@ Deno.test("medium message with tools → still medium (not bumped)", () => {
   );
   // hasTools doesn't degrade — still medium.
   assertEquals(result?.budget_tokens, BUDGET_MEDIUM);
+});
+
+// ---- Wave-1 fix (2026-06-11): per-model thinking compatibility ------
+//
+// Deployed-bug pin: the proxy routed "complex" turns to claude-opus-4-8
+// while body.thinking still carried {type:"enabled", budget_tokens:6144}
+// (and the Flutter client's temperature) → Anthropic 400 on every complex
+// turn. Opus 4.7+ is adaptive-only: budget_tokens AND temperature/top_p/
+// top_k are removed params. applyModelThinkingCompat reconciles the body
+// with the FINAL model and is called in index.ts right after the signal
+// router assigns body.model.
+
+import {
+  applyModelThinkingCompat,
+  isAdaptiveOnlyThinkingModel,
+} from "../classify_complexity.ts";
+import { assert } from "https://deno.land/std@0.224.0/assert/mod.ts";
+
+Deno.test("TC-01 — adaptive-only model detection", () => {
+  assertEquals(isAdaptiveOnlyThinkingModel("claude-opus-4-8"), true);
+  assertEquals(isAdaptiveOnlyThinkingModel("claude-opus-4-7"), true);
+  assertEquals(isAdaptiveOnlyThinkingModel("claude-fable-5"), true);
+  assertEquals(isAdaptiveOnlyThinkingModel("claude-haiku-4-5-20251001"), false);
+  assertEquals(isAdaptiveOnlyThinkingModel("claude-sonnet-4-20250514"), false);
+  assertEquals(isAdaptiveOnlyThinkingModel("claude-sonnet-4-6"), false);
+});
+
+Deno.test("TC-02 — Opus 4.8 + enabled/budget → adaptive, NEVER budget_tokens", () => {
+  const body: Record<string, unknown> = {
+    model: "claude-opus-4-8",
+    max_tokens: 32000,
+    thinking: {
+      type: "enabled",
+      budget_tokens: BUDGET_COMPLEX,
+      display: "summarized",
+    },
+  };
+  applyModelThinkingCompat(body);
+  assertEquals(body.thinking, { type: "adaptive", display: "summarized" });
+  // The exact 400 trigger: budget_tokens must NOT appear in the payload.
+  assert(!JSON.stringify(body).includes("budget_tokens"));
+});
+
+Deno.test("TC-03 — Opus 4.8 strips temperature/top_p/top_k (removed params)", () => {
+  // The Flutter client sends temperature on every turn (claude_service.dart),
+  // which alone 400s an Opus 4.8 call even without thinking.
+  const body: Record<string, unknown> = {
+    model: "claude-opus-4-8",
+    temperature: 0.3,
+    top_p: 0.9,
+    top_k: 40,
+  };
+  applyModelThinkingCompat(body);
+  assertEquals("temperature" in body, false);
+  assertEquals("top_p" in body, false);
+  assertEquals("top_k" in body, false);
+});
+
+Deno.test("TC-04 — Opus 4.8 + already-adaptive / absent thinking → untouched", () => {
+  const adaptive: Record<string, unknown> = {
+    model: "claude-opus-4-8",
+    thinking: { type: "adaptive", display: "summarized" },
+  };
+  applyModelThinkingCompat(adaptive);
+  assertEquals(adaptive.thinking, { type: "adaptive", display: "summarized" });
+
+  const absent: Record<string, unknown> = { model: "claude-opus-4-8" };
+  applyModelThinkingCompat(absent);
+  assertEquals("thinking" in absent, false);
+});
+
+Deno.test("TC-05 — classifyComplexity output fed to Opus body ends up adaptive (e2e shape)", () => {
+  // Mirrors the production sequence: classifier attaches the budget shape,
+  // signal router later picks Opus, compat translates it.
+  const inferred = classifyComplexity(
+    [{
+      role: "user",
+      content: "I got a deportation notice. What's my appeal window?",
+    }],
+    false,
+  );
+  assertEquals(inferred?.type, "enabled");
+  const body: Record<string, unknown> = {
+    model: "claude-opus-4-8",
+    max_tokens: 32000,
+    thinking: inferred,
+    temperature: 0.3,
+  };
+  applyModelThinkingCompat(body);
+  const payload = JSON.stringify(body);
+  assert(!payload.includes("budget_tokens"));
+  assert(!payload.includes("temperature"));
+  assertEquals((body.thinking as { type: string }).type, "adaptive");
+});
+
+Deno.test("TC-06 — Haiku 4.5 keeps the enabled/budget shape (supported there)", () => {
+  const thinking = {
+    type: "enabled",
+    budget_tokens: BUDGET_MEDIUM,
+    display: "summarized",
+  };
+  const body: Record<string, unknown> = {
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 32000,
+    thinking,
+    temperature: 0.3,
+  };
+  applyModelThinkingCompat(body);
+  assertEquals(body.thinking, thinking);
+  // Sampling params are still valid on Haiku 4.5 — must NOT be stripped.
+  assertEquals(body.temperature, 0.3);
+});
+
+Deno.test("TC-07 — budget model + adaptive → translated to enabled/budget", () => {
+  const body: Record<string, unknown> = {
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 32000,
+    thinking: { type: "adaptive" },
+  };
+  applyModelThinkingCompat(body);
+  assertEquals(body.thinking, {
+    type: "enabled",
+    budget_tokens: BUDGET_COMPLEX,
+    display: "summarized",
+  });
+});
+
+Deno.test("TC-08 — budget model + adaptive clamps under small max_tokens", () => {
+  // budget must be < max_tokens (API contract). 4096 < BUDGET_COMPLEX → medium.
+  const medium: Record<string, unknown> = {
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 4096,
+    thinking: { type: "adaptive" },
+  };
+  applyModelThinkingCompat(medium);
+  assertEquals(
+    (medium.thinking as { budget_tokens: number }).budget_tokens,
+    BUDGET_MEDIUM,
+  );
+
+  // 500-token cap leaves no usable budget (min 1024) → thinking dropped.
+  const tiny: Record<string, unknown> = {
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 500,
+    thinking: { type: "adaptive" },
+  };
+  applyModelThinkingCompat(tiny);
+  assertEquals("thinking" in tiny, false);
+});
+
+Deno.test("TC-09 — non-string model → no-op (defensive)", () => {
+  const body: Record<string, unknown> = {
+    thinking: {
+      type: "enabled",
+      budget_tokens: BUDGET_COMPLEX,
+      display: "summarized",
+    },
+    temperature: 0.3,
+  };
+  applyModelThinkingCompat(body);
+  assertEquals((body.thinking as { type: string }).type, "enabled");
+  assertEquals(body.temperature, 0.3);
 });

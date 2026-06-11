@@ -39,23 +39,81 @@ export interface ThinkingConfig {
  *  the test stable as we add more languages. */
 const LEGAL_KEYWORDS = [
   // English
-  "deport", "appeal", "court", "lawsuit", "lawyer", "tenant", "landlord",
-  "evict", "fired", "dismissal", "custody", "divorce", "subpoena", "fine",
-  "complaint", "claim", "rights", "violation", "warrant", "asylum",
+  "deport",
+  "appeal",
+  "court",
+  "lawsuit",
+  "lawyer",
+  "tenant",
+  "landlord",
+  "evict",
+  "fired",
+  "dismissal",
+  "custody",
+  "divorce",
+  "subpoena",
+  "fine",
+  "complaint",
+  "claim",
+  "rights",
+  "violation",
+  "warrant",
+  "asylum",
   // Russian
-  "жалоб", "депорт", "суд", "адвокат", "развод", "увольнен", "выселен",
-  "штраф", "иск", "квартир", "договор", "наруш", "права", "выдвор",
-  "апелляц", "обжалов",
+  "жалоб",
+  "депорт",
+  "суд",
+  "адвокат",
+  "развод",
+  "увольнен",
+  "выселен",
+  "штраф",
+  "иск",
+  "квартир",
+  "договор",
+  "наруш",
+  "права",
+  "выдвор",
+  "апелляц",
+  "обжалов",
   // Estonian
-  "deportats", "kohus", "kohtu", "koht", "advokaat", "kaebus", "üür",
-  "töölt", "vallandam", "lahutus", "trahv", "rikkum", "õigus",
-  "väljasaatm", "apellats",
+  "deportats",
+  "kohus",
+  "kohtu",
+  "koht",
+  "advokaat",
+  "kaebus",
+  "üür",
+  "töölt",
+  "vallandam",
+  "lahutus",
+  "trahv",
+  "rikkum",
+  "õigus",
+  "väljasaatm",
+  "apellats",
   // Finnish
-  "karkot", "tuomioistuin", "asianajaja", "valitus", "vuokra", "irtisano",
-  "avioero", "sakko", "rikkomus", "oikeu",
+  "karkot",
+  "tuomioistuin",
+  "asianajaja",
+  "valitus",
+  "vuokra",
+  "irtisano",
+  "avioero",
+  "sakko",
+  "rikkomus",
+  "oikeu",
   // German
-  "abschieb", "gericht", "anwalt", "berufung", "miete", "kündig",
-  "scheidung", "bußgeld", "verstoß", "recht",
+  "abschieb",
+  "gericht",
+  "anwalt",
+  "berufung",
+  "miete",
+  "kündig",
+  "scheidung",
+  "bußgeld",
+  "verstoß",
+  "recht",
 ];
 
 const LEGAL_KEYWORDS_REGEX = new RegExp(
@@ -161,4 +219,106 @@ function extractUserText(content: unknown): string {
     return out.join(" ");
   }
   return "";
+}
+
+// =============================================================================
+// Wave-1 fix (2026-06-11) — per-model thinking compatibility
+// =============================================================================
+//
+// The proxy can route a turn to Opus 4.8 AFTER classifyComplexity attached
+// `{type:"enabled", budget_tokens:N}`. Opus 4.7+ removed `budget_tokens`
+// entirely — adaptive (`{type:"adaptive"}`) is the only on-mode — and also
+// removed the sampling params (temperature / top_p / top_k). Sending either
+// shape produced a hard Anthropic 400 on every "complex" turn in production
+// (the Flutter client sends temperature on every call, so even a turn
+// without thinking would 400 on Opus).
+//
+// Conversely the budget-style models in the allowlist (Haiku 4.5, Sonnet 4)
+// reject `{type:"adaptive"}`. `applyModelThinkingCompat` reconciles
+// body.thinking + sampling params with the FINAL body.model and MUST run
+// after the signal router picks that model (index.ts).
+// =============================================================================
+
+/** Adaptive thinking shape for Opus 4.7+ / Fable-family models.
+ *  `display:"summarized"` keeps the sanitised-summary contract the client
+ *  pill UI depends on (same rationale as ThinkingConfig above). */
+export interface AdaptiveThinkingConfig {
+  type: "adaptive";
+  display: "summarized" | "omitted";
+}
+
+/** Models whose thinking is adaptive-only (`budget_tokens` fully removed):
+ *  Opus 4.7 / 4.8 and the Fable/Mythos 5 family. Haiku 4.5 and Sonnet 4
+ *  keep the legacy `{type:"enabled", budget_tokens}` shape. */
+export function isAdaptiveOnlyThinkingModel(modelId: string): boolean {
+  return (
+    /^claude-opus-4-[78]/.test(modelId) ||
+    /^claude-(fable|mythos)-/.test(modelId)
+  );
+}
+
+interface ThinkingCompatBody {
+  model?: unknown;
+  thinking?: unknown;
+  max_tokens?: unknown;
+  temperature?: unknown;
+  top_p?: unknown;
+  top_k?: unknown;
+}
+
+/** Mutate `body` so its `thinking` + sampling params are valid for the
+ *  final `body.model`. Pure shape translation — never throws, never
+ *  changes which model is called.
+ *
+ *  Adaptive-only model (Opus 4.8 …):
+ *    - `{type:"enabled", budget_tokens}` → `{type:"adaptive", display}`
+ *    - temperature / top_p / top_k are DELETED (removed params → 400)
+ *    - adaptive / disabled / absent pass through unchanged
+ *
+ *  Budget-style model (Haiku 4.5, Sonnet 4):
+ *    - `{type:"adaptive"}` → `{type:"enabled", budget_tokens}` clamped
+ *      under max_tokens (API requires budget < max_tokens); dropped when
+ *      max_tokens leaves no usable budget
+ *    - enabled / absent pass through unchanged */
+export function applyModelThinkingCompat(body: ThinkingCompatBody): void {
+  if (typeof body.model !== "string") return;
+  const thinking = body.thinking && typeof body.thinking === "object"
+    ? (body.thinking as { type?: unknown; display?: unknown })
+    : null;
+
+  if (isAdaptiveOnlyThinkingModel(body.model)) {
+    // Sampling params were removed on Opus 4.7+ — they 400 the call.
+    delete body.temperature;
+    delete body.top_p;
+    delete body.top_k;
+    if (thinking?.type === "enabled") {
+      const compat: AdaptiveThinkingConfig = {
+        type: "adaptive",
+        display: thinking.display === "omitted" ? "omitted" : "summarized",
+      };
+      body.thinking = compat;
+    }
+    return;
+  }
+
+  // Budget-style model — "adaptive" is rejected; translate it.
+  if (thinking?.type === "adaptive") {
+    const maxTokens = typeof body.max_tokens === "number"
+      ? body.max_tokens
+      : undefined;
+    let budget = BUDGET_COMPLEX;
+    if (maxTokens !== undefined && budget >= maxTokens) budget = BUDGET_MEDIUM;
+    if (maxTokens !== undefined && budget >= maxTokens) {
+      // max_tokens too small for any meaningful budget (API min 1024) —
+      // a thinking-less turn is better than a guaranteed 400.
+      delete body.thinking;
+      return;
+    }
+    const compat: ThinkingConfig = {
+      type: "enabled",
+      budget_tokens: budget,
+      display: "summarized",
+    };
+    body.thinking = compat;
+  }
 }
