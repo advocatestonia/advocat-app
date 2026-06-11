@@ -77,6 +77,14 @@ final authControllerProvider =
   return AuthController(ref);
 });
 
+/// Flips to `true` when Supabase emits [AuthChangeEvent.passwordRecovery]
+/// (the user opened the reset-password email link — the recovery session
+/// signs them in, but until 2026-06-11 there was no screen to actually set
+/// a new password). `AdvocatApp` listens to this flag and routes to
+/// `AppRoutes.newPassword`; [AuthController.updatePassword] clears it on
+/// success.
+final passwordRecoveryPendingProvider = StateProvider<bool>((ref) => false);
+
 // ---------------------------------------------------------------------------
 // Auth controller
 // ---------------------------------------------------------------------------
@@ -90,6 +98,10 @@ class AuthController extends StateNotifier<AuthState> {
 
   SupabaseService get _supabase => _ref.read(supabaseServiceProvider);
 
+  /// Subscription to the Supabase auth-event stream — currently used only
+  /// for the password-recovery deep link. Cancelled in [dispose].
+  StreamSubscription<dynamic>? _authEventsSub;
+
   // -- Initialization -------------------------------------------------------
 
   void _init() {
@@ -101,6 +113,8 @@ class AuthController extends StateNotifier<AuthState> {
       );
       return;
     }
+
+    _listenForPasswordRecovery();
 
     // Check if user is already logged in via Supabase
     try {
@@ -127,6 +141,50 @@ class AuthController extends StateNotifier<AuthState> {
     } catch (_) {
       state = const AuthState(status: AuthStatus.unauthenticated);
     }
+  }
+
+  /// Subscribe to the auth-event stream and flag password-recovery links.
+  ///
+  /// When the user opens the reset-password email link, Supabase exchanges
+  /// the code for a session (signing them in) and emits
+  /// [AuthChangeEvent.passwordRecovery]. `onAuthStateChange` is backed by a
+  /// BehaviorSubject, so even an event fired during `Supabase.initialize`
+  /// (before this controller exists) is replayed to us on subscribe.
+  ///
+  /// We (1) mark the state authenticated from the recovery session so the
+  /// router redirect doesn't bounce to /login, and (2) flip
+  /// [passwordRecoveryPendingProvider] so `AdvocatApp` routes to the
+  /// set-new-password screen.
+  void _listenForPasswordRecovery() {
+    try {
+      _authEventsSub = _supabase.authStateChanges.listen((data) {
+        if (data.event != AuthChangeEvent.passwordRecovery) return;
+        final user = data.session?.user;
+        if (user != null) {
+          state = AuthState(
+            status: AuthStatus.authenticated,
+            appUser: AppUser(
+              id: user.id,
+              email: user.email ?? '',
+              fullName: user.userMetadata?['full_name'] as String? ?? '',
+              preferredLanguage:
+                  user.userMetadata?['preferred_language'] as String? ?? 'et',
+              createdAt: DateTime.tryParse(user.createdAt) ?? DateTime.now(),
+            ),
+          );
+        }
+        _ref.read(passwordRecoveryPendingProvider.notifier).state = true;
+      });
+    } catch (e) {
+      // Non-fatal — recovery deep links simply won't auto-route.
+      if (kDebugMode) debugPrint('passwordRecovery listener failed: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _authEventsSub?.cancel();
+    super.dispose();
   }
 
   /// Load the user's full profile from the Supabase `profiles` table.
@@ -475,6 +533,31 @@ class AuthController extends StateNotifier<AuthState> {
       state = AuthState(
         status: AuthStatus.error,
         errorMessage: 'Password reset failed: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  /// Set a new password for the signed-in user.
+  ///
+  /// Used by `NewPasswordScreen` for both the password-recovery deep link
+  /// and Settings → "Change password". Deliberately does NOT change
+  /// [AuthStatus] — the user stays authenticated either way; only
+  /// [AuthState.errorMessage] is populated on failure so the screen can
+  /// surface it. Clears [passwordRecoveryPendingProvider] on success.
+  Future<bool> updatePassword(String newPassword) async {
+    try {
+      await _supabase.updatePassword(newPassword);
+      _ref.read(passwordRecoveryPendingProvider.notifier).state = false;
+      state = state.copyWith(errorMessage: null);
+      return true;
+    } on AuthException catch (e) {
+      state = state.copyWith(errorMessage: e.message);
+      return false;
+    } catch (e) {
+      if (kDebugMode) debugPrint('Update password error: $e');
+      state = state.copyWith(
+        errorMessage: 'Password update failed: ${e.toString()}',
       );
       return false;
     }

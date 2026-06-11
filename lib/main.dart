@@ -17,6 +17,8 @@ import 'config/app_config.dart';
 import 'config/theme.dart';
 import 'config/router.dart';
 import 'core/services/error_reporter.dart';
+import 'features/auth/providers/auth_provider.dart'
+    show passwordRecoveryPendingProvider;
 import 'l10n/app_localizations.dart';
 import 'services/notification_service.dart';
 import 'shared/error_boundary.dart';
@@ -198,6 +200,18 @@ class AdvocatApp extends ConsumerWidget {
     // Default = ThemeMode.system (OS preference wins until the user picks
     // Light/Dark in Settings → Appearance). See shared/providers/theme_mode_provider.dart.
     final themeMode = ref.watch(themeModeProvider);
+
+    // Password-recovery deep link: when Supabase emits
+    // AuthChangeEvent.passwordRecovery (user clicked the reset-email link),
+    // the auth controller flips this flag — route to the set-new-password
+    // screen so the reset flow isn't a dead end (beta audit 2026-06-11).
+    // The flag also flips back to false after a successful update; the
+    // `next` guard ignores that transition.
+    ref.listen<bool>(passwordRecoveryPendingProvider, (previous, next) {
+      if (next && previous != true) {
+        router.go(AppRoutes.newPassword);
+      }
+    });
 
     return MaterialApp.router(
       title: 'Advocat \u2014 AI Legal Defense',

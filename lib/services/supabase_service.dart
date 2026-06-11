@@ -121,9 +121,28 @@ class SupabaseService {
     await _client.auth.signOut();
   }
 
+  /// Where the password-recovery email links back to. Must match the web
+  /// deployment URL — the same target the OAuth flows use (see
+  /// `loginWithGoogle` / `loginWithApple` in auth_provider.dart). Without
+  /// an explicit redirectTo, Supabase falls back to the project's Site URL
+  /// which may not be the app shell.
+  static const String passwordResetRedirectUrl = 'https://advocat.ee/app.html';
+
   Future<void> resetPassword(String email) async {
     if (isDemo) return;
-    await _client.auth.resetPasswordForEmail(email);
+    await _client.auth.resetPasswordForEmail(
+      email,
+      redirectTo: passwordResetRedirectUrl,
+    );
+  }
+
+  /// Set a new password for the signed-in user. Used by the set-new-password
+  /// screen (password-recovery deep link + Settings → "Change password").
+  Future<void> updatePassword(String newPassword) async {
+    if (isDemo) {
+      throw Exception('Password update unavailable in demo mode');
+    }
+    await _client.auth.updateUser(UserAttributes(password: newPassword));
   }
 
   // ── User profile ──────────────────────────────────────────────────────

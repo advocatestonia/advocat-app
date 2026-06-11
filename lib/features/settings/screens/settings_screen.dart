@@ -151,6 +151,21 @@ class SettingsScreen extends ConsumerWidget {
           // "PRIVACY & DATA" to align with GDPR phrasing and to mark the
           // DSAR flow rollout (export-my-data wired to dsar-export edge fn).
           _SectionHeader(title: l.privacyAndData),
+          // Account security — change password. Reuses the set-new-password
+          // screen from the password-recovery deep-link flow (beta audit
+          // 2026-06-11). Hidden in demo mode: there is no real Supabase
+          // account whose password could be updated.
+          if (!ref.watch(isDemoModeProvider))
+            _SettingsTile(
+              icon: Icons.lock_outline,
+              title: l.changePassword,
+              subtitle: l.changePasswordSubtitle,
+              trailing: const Icon(
+                AppIcons.chevronRight,
+                color: AppColors.textTertiary,
+              ),
+              onTap: () => context.push(AppRoutes.newPassword),
+            ),
           // ADR-001 Tier 1 — let users review & wipe what the AI has
           // learned about them (GDPR Art. 17). Localized via aiMemory* keys.
           _SettingsTile(

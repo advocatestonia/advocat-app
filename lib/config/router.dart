@@ -6,6 +6,7 @@ import 'feature_flags.dart';
 import '../features/auth/providers/auth_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../features/auth/screens/login_screen.dart';
+import '../features/auth/screens/new_password_screen.dart';
 import '../features/auth/screens/register_screen.dart';
 import '../features/onboarding/screens/onboarding_screen.dart';
 import '../features/home/screens/home_screen.dart';
@@ -115,6 +116,11 @@ abstract final class AppRoutes {
   static const String onboarding = '/onboarding';
   static const String login = '/login';
   static const String register = '/register';
+  /// Set-new-password screen. Reached automatically when the app receives
+  /// an `AuthChangeEvent.passwordRecovery` (reset-email deep link — see the
+  /// `passwordRecoveryPendingProvider` listener in main.dart) and manually
+  /// from Settings → "Change password".
+  static const String newPassword = '/new-password';
   static const String home = '/home';
   static const String cases = '/cases';
   static const String caseDetail = '/cases/:id';
@@ -298,6 +304,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.register,
         name: 'register',
         builder: (context, state) => const RegisterScreen(),
+      ),
+      // Set-new-password — routed to by the passwordRecovery listener in
+      // main.dart (reset-email deep link) and pushed from Settings →
+      // "Change password". Outside the shell: no bottom nav competing with
+      // the keyboard, mirroring the other auth screens.
+      GoRoute(
+        path: AppRoutes.newPassword,
+        name: 'newPassword',
+        builder: (context, state) => const NewPasswordScreen(),
       ),
 
       // ── Main app shell with bottom navigation ──────────────────────
