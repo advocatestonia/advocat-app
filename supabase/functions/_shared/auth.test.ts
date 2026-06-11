@@ -313,8 +313,9 @@ Deno.test("T15 — whisper-stt + tts-proxy use bucket name that matches function
 });
 
 Deno.test("T16 — stripe-webhook uses timingSafeEqual (patch 04)", () => {
+  // Signature logic was extracted to stripe-webhook/signature.ts.
   const src = Deno.readTextFileSync(
-    new URL("../stripe-webhook/index.ts", import.meta.url),
+    new URL("../stripe-webhook/signature.ts", import.meta.url),
   );
   assertStringIncludes(src, "timingSafeEqual");
   assertStringIncludes(src, "MAX_WEBHOOK_AGE_SEC");

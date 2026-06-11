@@ -21,7 +21,7 @@ import {
 import {
   editSimilarity,
   parseReviewerIds,
-} from "../gold-review/index.ts";
+} from "../gold-review/pure.ts";
 import { shouldEnqueueGold } from "../_shared/gold_enqueue.ts";
 
 // ─── parseReviewerIds ───────────────────────────────────────────────────────

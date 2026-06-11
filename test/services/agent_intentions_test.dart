@@ -21,6 +21,14 @@ import 'package:advocat/services/tool_definitions.dart';
 void main() {
   late AssistantTools tools;
 
+  // Dynamic future date — hardcoded dates rotted once they fell into the
+  // past (5 tests started failing after 2026-06-05).
+  final futureCheckAtIso = DateTime.now()
+      .toUtc()
+      .add(const Duration(days: 30))
+      .toIso8601String();
+  final futureCheckAtDate = futureCheckAtIso.substring(0, 10);
+
   setUp(() {
     tools = AssistantTools(supabaseService: SupabaseService());
   });
@@ -74,7 +82,7 @@ void main() {
   group('set_followup_intention — handler input hardening', () {
     test('missing intent_type returns structured error', () async {
       final r = await tools.execute('set_followup_intention', {
-        'check_at': '2026-06-05T10:00:00Z',
+        'check_at': futureCheckAtIso,
         'context_summary': 'Check appeal',
       });
       expect(r.success, isFalse);
@@ -93,7 +101,7 @@ void main() {
     test('missing context_summary returns structured error', () async {
       final r = await tools.execute('set_followup_intention', {
         'intent_type': 'remind_deadline',
-        'check_at': '2026-06-05T10:00:00Z',
+        'check_at': futureCheckAtIso,
       });
       expect(r.success, isFalse);
       expect(r.displayText.toLowerCase(), contains('context_summary'));
@@ -102,7 +110,7 @@ void main() {
     test('invalid intent_type is rejected', () async {
       final r = await tools.execute('set_followup_intention', {
         'intent_type': 'do_something_evil',
-        'check_at': '2026-06-05T10:00:00Z',
+        'check_at': futureCheckAtIso,
         'context_summary': 'x',
       });
       expect(r.success, isFalse);
@@ -133,7 +141,7 @@ void main() {
       final long = 'x' * 501;
       final r = await tools.execute('set_followup_intention', {
         'intent_type': 'remind_deadline',
-        'check_at': '2026-06-05T10:00:00Z',
+        'check_at': futureCheckAtIso,
         'context_summary': long,
       });
       expect(r.success, isFalse);
@@ -144,7 +152,7 @@ void main() {
       final boundary = 'x' * 500;
       final r = await tools.execute('set_followup_intention', {
         'intent_type': 'remind_deadline',
-        'check_at': '2026-12-31T10:00:00Z',
+        'check_at': futureCheckAtIso,
         'context_summary': boundary,
       });
       expect(r.success, isTrue,
@@ -156,7 +164,7 @@ void main() {
     test('returns success card with cardType=intention_set', () async {
       final r = await tools.execute('set_followup_intention', {
         'intent_type': 'remind_deadline',
-        'check_at': '2026-06-05T10:00:00Z',
+        'check_at': futureCheckAtIso,
         'context_summary': '30-day appeal deadline for PPA decision',
       });
       expect(r.success, isTrue);
@@ -168,7 +176,7 @@ void main() {
       final r = await tools.execute('set_followup_intention', {
         'intent_type': 'check_court_status',
         'target_id': 'R-2025/123',
-        'check_at': '2026-06-05T10:00:00Z',
+        'check_at': futureCheckAtIso,
         'context_summary': 'Check Sulga case status',
       });
       expect(r.success, isTrue);
@@ -176,13 +184,13 @@ void main() {
       expect(r.data!['target_id'], 'R-2025/123');
       // check_at must serialise as ISO 8601 in UTC.
       final iso = r.data!['check_at'] as String;
-      expect(iso, contains('2026-06-05'));
+      expect(iso, contains(futureCheckAtDate));
     });
 
     test('does NOT require user approval (passive scheduling)', () async {
       final r = await tools.execute('set_followup_intention', {
         'intent_type': 'follow_up_question',
-        'check_at': '2026-07-01T10:00:00Z',
+        'check_at': futureCheckAtIso,
         'context_summary': 'Check on appeal preparation progress',
       });
       // The handler itself must NOT mark requiresApproval — set_followup_intention
@@ -195,12 +203,12 @@ void main() {
     test('displayText mentions when the user will be reminded', () async {
       final r = await tools.execute('set_followup_intention', {
         'intent_type': 'remind_deadline',
-        'check_at': '2026-06-05T10:00:00Z',
+        'check_at': futureCheckAtIso,
         'context_summary': 'Appeal deadline',
       });
       expect(r.success, isTrue);
       // Must reference the date so the user knows when to expect contact.
-      expect(r.displayText, contains('2026-06-05'));
+      expect(r.displayText, contains(futureCheckAtDate));
     });
   });
 }
