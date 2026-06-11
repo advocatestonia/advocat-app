@@ -5015,8 +5015,8 @@ abstract class AppLocalizations {
   /// No description provided for @freeQuotaExhausted.
   ///
   /// In en, this message translates to:
-  /// **'You\'ve used all 10 free messages this month.'**
-  String get freeQuotaExhausted;
+  /// **'You\'ve used all {count} free messages this month.'**
+  String freeQuotaExhausted(int count);
 
   /// No description provided for @upgradeForUnlimited.
   ///
@@ -8089,6 +8089,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hypothetical EU procedural deadlines — mock data'**
   String get deadlineEuRadarSubtitle;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get changePassword;
+
+  /// No description provided for @changePasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update your account password'**
+  String get changePasswordSubtitle;
+
+  /// No description provided for @newPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a new password'**
+  String get newPasswordTitle;
+
+  /// No description provided for @newPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter and confirm a new password for your account.'**
+  String get newPasswordHint;
+
+  /// No description provided for @newPasswordSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save new password'**
+  String get newPasswordSave;
+
+  /// No description provided for @newPasswordSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password updated. You can now use it to sign in.'**
+  String get newPasswordSuccess;
+
+  /// No description provided for @newPasswordError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update password. Please try again.'**
+  String get newPasswordError;
 }
 
 class _AppLocalizationsDelegate

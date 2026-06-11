@@ -2828,8 +2828,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get demoLimitSignUpCta => 'Зареєструватися';
 
   @override
-  String get freeQuotaExhausted =>
-      'Ви використали всі 10 безкоштовних повідомлень цього місяця.';
+  String freeQuotaExhausted(int count) {
+    return 'Ви використали всі $count безкоштовних повідомлень цього місяця.';
+  }
 
   @override
   String get upgradeForUnlimited => 'Перейдіть на Pro для необмеженого доступу';
@@ -4637,4 +4638,28 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypothetical EU procedural deadlines — mock data';
+
+  @override
+  String get changePassword => 'Змінити пароль';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Оновіть пароль вашого облікового запису';
+
+  @override
+  String get newPasswordTitle => 'Встановіть новий пароль';
+
+  @override
+  String get newPasswordHint =>
+      'Введіть і підтвердьте новий пароль для вашого облікового запису.';
+
+  @override
+  String get newPasswordSave => 'Зберегти новий пароль';
+
+  @override
+  String get newPasswordSuccess =>
+      'Пароль оновлено. Тепер використовуйте його для входу.';
+
+  @override
+  String get newPasswordError => 'Не вдалося оновити пароль. Спробуйте ще раз.';
 }

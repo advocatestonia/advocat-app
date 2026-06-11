@@ -2797,8 +2797,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get demoLimitSignUpCta => 'Kaydol';
 
   @override
-  String get freeQuotaExhausted =>
-      'Bu ay 10 ücretsiz mesajın tamamını kullandınız.';
+  String freeQuotaExhausted(int count) {
+    return 'Bu ay $count ücretsiz mesajın tamamını kullandınız.';
+  }
 
   @override
   String get upgradeForUnlimited => 'Sınırsız için Pro\'ya yükseltin';
@@ -4568,4 +4569,27 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypothetical EU procedural deadlines — mock data';
+
+  @override
+  String get changePassword => 'Şifreyi değiştir';
+
+  @override
+  String get changePasswordSubtitle => 'Hesap şifrenizi güncelleyin';
+
+  @override
+  String get newPasswordTitle => 'Yeni şifre belirleyin';
+
+  @override
+  String get newPasswordHint =>
+      'Hesabınız için yeni bir şifre girin ve onaylayın.';
+
+  @override
+  String get newPasswordSave => 'Yeni şifreyi kaydet';
+
+  @override
+  String get newPasswordSuccess =>
+      'Şifre güncellendi. Artık girişte kullanabilirsiniz.';
+
+  @override
+  String get newPasswordError => 'Şifre güncellenemedi. Lütfen tekrar deneyin.';
 }

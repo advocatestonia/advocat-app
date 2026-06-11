@@ -17,6 +17,7 @@ import '../../../main.dart';
 import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../shared/utils/date_utils.dart';
+import '../../../shared/widgets/ai_disclaimer_banner.dart';
 import '../../../shared/widgets/gdpr_consent_dialog.dart';
 import '../../../shared/widgets/skeleton_loader.dart';
 import '../../../shared/pending_checkout.dart';
@@ -479,6 +480,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<void> _checkFirstTimeOnboarding() async {
     try {
+      // EU AI Act Art. 50(1) — register() routes straight to /home and the
+      // router blocks authenticated users from /onboarding, so users who
+      // sign up in-app would otherwise NEVER see the AI-not-a-lawyer modal
+      // (it only fired from the onboarding screen). Mirror that trigger
+      // here, gated by the same shared-prefs key
+      // (`ai_disclaimer_modal_seen_v1`) so it shows at most once per
+      // device regardless of which surface fired first. Runs BEFORE the
+      // welcome-modal seen check so existing users who skipped onboarding
+      // still get their one-time disclosure.
+      final showDisclaimer = await AiDisclaimerBanner.shouldShowModal();
+      if (showDisclaimer && mounted) {
+        await showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => const AiDisclaimerBanner.modal(
+            key: Key('home_ai_disclaimer_modal'),
+          ),
+        );
+      }
+      if (!mounted) return;
+
       final prefs = await SharedPreferences.getInstance();
       final seen = prefs.getBool(_welcomeModalSeenKey) ?? false;
       if (seen) return;

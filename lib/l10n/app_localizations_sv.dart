@@ -63,7 +63,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get analyzing => 'Analyserar';
 
   @override
-  String get aiAnalyzing => 'AI is analyzing';
+  String get aiAnalyzing => 'AI analyserar';
 
   @override
   String get speakIntoMicHint =>
@@ -1697,7 +1697,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
+      'Hej! Jag är Advocat — din juridiska AI-assistent. Jag ger juridisk information, inte juridisk rådgivning. Vilken juridisk fråga kan jag hjälpa till med?';
 
   @override
   String get copySummary => 'Kopiera sammanfattning';
@@ -1753,20 +1753,20 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get aiDisclaimerCompact =>
-      'Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.';
+      'Advocat är AI-genererad juridisk information, inte juridisk rådgivning. Kontrollera med en legitimerad jurist innan du agerar.';
 
   @override
-  String get aiDisclaimerFullTitle => 'Important: how Advocat works';
+  String get aiDisclaimerFullTitle => 'Viktigt: så fungerar Advocat';
 
   @override
   String get aiDisclaimerFullBody =>
-      'Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.';
+      'Advocat är ett verktyg baserat på artificiell intelligens som ger juridisk information, inte juridisk rådgivning. Enligt EU:s AI-förordning (art. 50) måste vi tydligt informera dig: du interagerar med AI, inte med en mänsklig jurist.\n\nAdvocat är ingen advokatbyrå. Vi är inte legitimerade advokater enligt den estniska Advokatuuriseadus eller den finska Asianajajalaki, och advokatsekretess gäller inte för dina samtal med detta verktyg. Innan du förlitar dig på något svar — för att överklaga, skriva under ett avtal eller agera inom en tidsfrist — kontrollera med en legitimerad jurist i din jurisdiktion.';
 
   @override
-  String get aiDisclaimerExpand => 'Learn more';
+  String get aiDisclaimerExpand => 'Läs mer';
 
   @override
-  String get aiDisclaimerDismiss => 'OK, I understand';
+  String get aiDisclaimerDismiss => 'OK, jag förstår';
 
   @override
   String get dataPrivacyConsent => 'Dataskyddssamtycke';
@@ -2386,7 +2386,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get chatWelcomeSubtitle =>
-      'I will analyze the situation, check documents, find errors, and suggest what to do.';
+      'Jag analyserar situationen, granskar dokument, hittar fel och föreslår vad du bör göra.';
 
   @override
   String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
@@ -2445,7 +2445,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get chatDisclaimerBanner =>
-      'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.';
+      'AI-assistenten ger juridisk information, inte juridisk rådgivning. Rådgör alltid med en kvalificerad jurist.';
 
   @override
   String get chatDisclaimerSubtitle => 'AI-assistent · ej juridisk rådgivning';
@@ -2804,8 +2804,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get demoLimitSignUpCta => 'Registrera dig';
 
   @override
-  String get freeQuotaExhausted =>
-      'Du har använt alla 10 gratismeddelanden den här månaden.';
+  String freeQuotaExhausted(int count) {
+    return 'Du har använt alla $count gratismeddelanden den här månaden.';
+  }
 
   @override
   String get upgradeForUnlimited => 'Uppgradera till Pro för obegränsat';
@@ -3681,7 +3682,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get contractReviewsFreeFeature =>
-      '1 avtalsgranskning (provning för livstid)';
+      '1 avtalsgranskning (engångsprov, gratis)';
 
   @override
   String get contractReviewsCounselFeature => '5 avtalsgranskningar per månad';
@@ -3694,9 +3695,9 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count kontraktsgranskningar kvar denna månad',
-      one: '1 kontraktsgranskning kvar denna månad',
-      zero: 'Inga kontraktsgranskningar kvar denna månad',
+      other: '$count avtalsgranskningar kvar denna månad',
+      one: '1 avtalsgranskning kvar denna månad',
+      zero: 'Inga avtalsgranskningar kvar denna månad',
     );
     return '$_temp0';
   }
@@ -3706,12 +3707,10 @@ class AppLocalizationsSv extends AppLocalizations {
       'Inga avtalsgranskningar kvar denna månad';
 
   @override
-  String get contractReviewsFreeTrialLeft =>
-      'Gratis provning: 1 avtalsgranskning';
+  String get contractReviewsFreeTrialLeft => 'Gratis prov: 1 avtalsgranskning';
 
   @override
-  String get contractReviewsFreeTrialUsed =>
-      'Gratis provning använd — uppgradera';
+  String get contractReviewsFreeTrialUsed => 'Gratis prov använt — uppgradera';
 
   @override
   String get contractReviewsUpgradeTitle => 'Avtalsgranskningar slut';
@@ -4396,13 +4395,13 @@ class AppLocalizationsSv extends AppLocalizations {
   String get emptyChatTitle => 'Ask Advocat anything';
 
   @override
-  String get chatExamplePrompt1 => 'Help me reply to a fine';
+  String get chatExamplePrompt1 => 'Hjälp mig svara på böter';
 
   @override
-  String get chatExamplePrompt2 => 'Review my rental contract';
+  String get chatExamplePrompt2 => 'Granska mitt hyresavtal';
 
   @override
-  String get chatExamplePrompt3 => 'What are my rights at work?';
+  String get chatExamplePrompt3 => 'Vilka rättigheter har jag på jobbet?';
 
   @override
   String get dangerZone => '[en] Danger zone';
@@ -4427,29 +4426,29 @@ class AppLocalizationsSv extends AppLocalizations {
   String get deletingAccount => '[en] Deleting account…';
 
   @override
-  String get contractReviewTitle => 'Contract Review';
+  String get contractReviewTitle => 'Avtalsgranskning';
 
   @override
-  String get contractReviewUploadCta => 'Upload contract';
+  String get contractReviewUploadCta => 'Ladda upp avtal';
 
   @override
   String get contractReviewQuotaRemaining =>
-      'Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.';
+      'Ladda upp ett avtal i PDF, DOC, DOCX eller TXT för en AI-granskning med varningsflaggor och förhandlingstips.';
 
   @override
-  String get contractReviewRedFlags => 'Red flags';
+  String get contractReviewRedFlags => 'Varningsflaggor';
 
   @override
-  String get contractReviewReviewPoints => 'Review points';
+  String get contractReviewReviewPoints => 'Granskningspunkter';
 
   @override
-  String get contractReviewNegotiationTips => 'Negotiation tips';
+  String get contractReviewNegotiationTips => 'Förhandlingstips';
 
   @override
-  String get contractReviewSaveToVault => 'Save to Vault';
+  String get contractReviewSaveToVault => 'Spara i valvet';
 
   @override
-  String get contractReviewContinueChat => 'Continue in chat';
+  String get contractReviewContinueChat => 'Fortsätt i chatten';
 
   @override
   String get referralInviteFriends => 'Invite Friends';
@@ -4581,4 +4580,28 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypothetical EU procedural deadlines — mock data';
+
+  @override
+  String get changePassword => 'Byt lösenord';
+
+  @override
+  String get changePasswordSubtitle => 'Uppdatera ditt kontolösenord';
+
+  @override
+  String get newPasswordTitle => 'Ange ett nytt lösenord';
+
+  @override
+  String get newPasswordHint =>
+      'Ange och bekräfta ett nytt lösenord för ditt konto.';
+
+  @override
+  String get newPasswordSave => 'Spara nytt lösenord';
+
+  @override
+  String get newPasswordSuccess =>
+      'Lösenordet har uppdaterats. Du kan nu logga in med det.';
+
+  @override
+  String get newPasswordError =>
+      'Det gick inte att uppdatera lösenordet. Försök igen.';
 }

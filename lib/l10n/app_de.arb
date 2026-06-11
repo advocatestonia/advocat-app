@@ -323,14 +323,14 @@
     "addDocument": "Dokument hinzufügen",
     "addPage": "Seite hinzufügen",
     "aiDisclaimer": "KI-Haftungsausschluss",
-    "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
+    "aiDisclaimerCompact": "Advocat liefert KI-gestützte Rechtsinformationen, keine Rechtsberatung. Lassen Sie alles vor dem Handeln von einem zugelassenen Anwalt prüfen.",
     "@aiDisclaimerCompact": {
         "description": "TODO: native legal review (currently English fallback)"
     },
-    "aiDisclaimerFullTitle": "Important: how Advocat works",
-    "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
-    "aiDisclaimerExpand": "Learn more",
-    "aiDisclaimerDismiss": "OK, I understand",
+    "aiDisclaimerFullTitle": "Wichtig: So funktioniert Advocat",
+    "aiDisclaimerFullBody": "Advocat ist ein Werkzeug auf Basis künstlicher Intelligenz, das Rechtsinformationen liefert, keine Rechtsberatung. Nach der EU-KI-Verordnung (Art. 50) müssen wir Sie klar darauf hinweisen: Sie interagieren mit einer KI, nicht mit einem menschlichen Anwalt.\n\nAdvocat ist keine Anwaltskanzlei. Wir sind keine zugelassenen Anwälte nach dem estnischen Advokatuuriseadus oder dem finnischen Asianajajalaki, und Ihre Gespräche mit diesem Werkzeug unterliegen nicht dem Anwaltsgeheimnis. Bevor Sie sich auf eine Antwort verlassen — um Rechtsmittel einzulegen, einen Vertrag zu unterschreiben oder eine Frist zu wahren — lassen Sie sie von einem zugelassenen Anwalt in Ihrer Jurisdiktion prüfen.",
+    "aiDisclaimerExpand": "Mehr erfahren",
+    "aiDisclaimerDismiss": "OK, verstanden",
     "alignDocument": "Dokument im Rahmen ausrichten",
     "allClearDeadlines": "Alles erledigt! Neue Fristen erscheinen hier, wenn sie gesetzt werden.",
     "analysisFailedRetry": "Analyse fehlgeschlagen. Bitte erneut versuchen.",
@@ -374,7 +374,7 @@
     "caseSummaryCopied": "Fallzusammenfassung kopiert",
     "caseTimeline": "Fallzeitleiste",
     "changesSaved": "Änderungen gespeichert",
-    "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
+    "chatWelcomeMessage": "Hallo! Ich bin Advocat — Ihr KI-Rechtsassistent. Ich liefere Rechtsinformationen, keine Rechtsberatung. Bei welcher Rechtsfrage kann ich helfen?",
     "checkEligibility": "Prüfen Sie Ihren Anspruch auf Prozesskostenhilfe: {country}",
     "checkingPurchases": "Frühere Käufe werden geprüft…",
     "chooseHowToAdd": "Wählen Sie, wie Sie Ihr Dokument hinzufügen möchten",
@@ -841,7 +841,7 @@
     "navigatingTo": "Öffne",
     "stayInChat": "Im Chat bleiben",
     "backToChat": "Zurück zum Chat",
-    "aiAnalyzing": "AI is analyzing",
+    "aiAnalyzing": "KI analysiert",
     "@aiAnalyzing": {
         "x-needs-review": "OMEGA-5 v24.2 — English stub",
         "x-source-value": "AI is analyzing"
@@ -1905,41 +1905,41 @@
     "emptyDraftsTitle": "No drafts yet",
     "emptyDraftsCta": "Create draft",
     "emptyChatTitle": "Ask Advocat anything",
-    "chatExamplePrompt1": "Help me reply to a fine",
-    "chatExamplePrompt2": "Review my rental contract",
-    "chatExamplePrompt3": "What are my rights at work?",
+    "chatExamplePrompt1": "Hilf mir, auf einen Bußgeldbescheid zu antworten",
+    "chatExamplePrompt2": "Prüfe meinen Mietvertrag",
+    "chatExamplePrompt3": "Welche Rechte habe ich am Arbeitsplatz?",
     "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
     "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
     "deletingAccount": "[en] Deleting account…",
-    "contractReviewTitle": "Contract Review",
+    "contractReviewTitle": "Vertragsprüfung",
     "@contractReviewTitle": {
         "description": "TODO native translation for locale=de; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewUploadCta": "Upload contract",
+    "contractReviewUploadCta": "Vertrag hochladen",
     "@contractReviewUploadCta": {
         "description": "TODO native translation for locale=de; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
+    "contractReviewQuotaRemaining": "Laden Sie einen Vertrag als PDF, DOC, DOCX oder TXT hoch und erhalten Sie eine KI-Prüfung mit Warnsignalen und Verhandlungstipps.",
     "@contractReviewQuotaRemaining": {
         "description": "TODO native translation for locale=de; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewRedFlags": "Red flags",
+    "contractReviewRedFlags": "Warnsignale",
     "@contractReviewRedFlags": {
         "description": "TODO native translation for locale=de; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewReviewPoints": "Review points",
+    "contractReviewReviewPoints": "Prüfpunkte",
     "@contractReviewReviewPoints": {
         "description": "TODO native translation for locale=de; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewNegotiationTips": "Negotiation tips",
+    "contractReviewNegotiationTips": "Verhandlungstipps",
     "@contractReviewNegotiationTips": {
         "description": "TODO native translation for locale=de; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewSaveToVault": "Save to Vault",
+    "contractReviewSaveToVault": "Im Tresor speichern",
     "@contractReviewSaveToVault": {
         "description": "TODO native translation for locale=de; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewContinueChat": "Continue in chat",
+    "contractReviewContinueChat": "Im Chat fortfahren",
     "@contractReviewContinueChat": {
         "description": "TODO native translation for locale=de; currently English fallback — copy lives in contract_review_screen.dart."
     },
@@ -2102,7 +2102,7 @@
     "refresh": "Aktualisieren",
     "demoLimitReached": "Demo-Limit erreicht. Registrieren Sie sich kostenlos, um fortzufahren.",
     "demoLimitSignUpCta": "Registrieren",
-    "freeQuotaExhausted": "Sie haben alle 10 kostenlosen Nachrichten diesen Monat aufgebraucht.",
+    "freeQuotaExhausted": "Sie haben alle {count} kostenlosen Nachrichten diesen Monat aufgebraucht.",
     "upgradeForUnlimited": "Auf Pro upgraden für unbegrenzte Nutzung",
     "upgradeCta": "Upgrade",
     "rateLimitTryAgain": "Zu schnell gesendet. Versuchen Sie es in ein paar Sekunden erneut.",
@@ -2434,5 +2434,12 @@
     "panicRecordV1Body": "Die Aufzeichnungsfunktion wird derzeit für Estland rechtlich geprüft und kommt in V2. Nutzen Sie vorerst das integrierte Sprachaufnahmegerät Ihres Telefons.",
     "panicCallFallbackBody": "Schreiben Sie an kiire@advocat.ee mit einer kurzen Beschreibung, und wir rufen Sie zurück.",
     "softCaseShellBanner": "Wir haben „Unbenannter Fall“ erstellt, um dies zu verfolgen. Tippen, um umzubenennen.",
-    "softCaseShellBannerCta": "Umbenennen"
+    "softCaseShellBannerCta": "Umbenennen",
+    "changePassword": "Passwort ändern",
+    "changePasswordSubtitle": "Aktualisieren Sie Ihr Kontopasswort",
+    "newPasswordTitle": "Neues Passwort festlegen",
+    "newPasswordHint": "Geben Sie ein neues Passwort für Ihr Konto ein und bestätigen Sie es.",
+    "newPasswordSave": "Neues Passwort speichern",
+    "newPasswordSuccess": "Passwort aktualisiert. Sie können sich jetzt damit anmelden.",
+    "newPasswordError": "Passwort konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
 }

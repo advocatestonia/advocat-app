@@ -1570,7 +1570,7 @@
     "refresh": "Reîmprospătează",
     "demoLimitReached": "Limita demo a fost atinsă. Înregistrați-vă gratuit pentru a continua.",
     "demoLimitSignUpCta": "Înregistrare",
-    "freeQuotaExhausted": "Ați folosit toate cele 10 mesaje gratuite din această lună.",
+    "freeQuotaExhausted": "Ați folosit toate cele {count} mesaje gratuite din această lună.",
     "upgradeForUnlimited": "Treceți la Pro pentru acces nelimitat",
     "upgradeCta": "Upgrade",
     "rateLimitTryAgain": "Trimiteți prea repede. Încercați din nou peste câteva secunde.",
@@ -1950,5 +1950,12 @@
     "panicRecordV1Body": "Funcția de înregistrare este în curs de validare juridică pentru Estonia și va fi lansată în V2. Deocamdată, folosiți reportofonul încorporat al telefonului dumneavoastră.",
     "panicCallFallbackBody": "Trimiteți un e-mail la kiire@advocat.ee cu o scurtă descriere și vă vom suna înapoi.",
     "softCaseShellBanner": "Am creat „Caz fără titlu” pentru a-l urmări. Atingeți pentru a redenumi.",
-    "softCaseShellBannerCta": "Redenumește"
+    "softCaseShellBannerCta": "Redenumește",
+    "changePassword": "Schimbă parola",
+    "changePasswordSubtitle": "Actualizează parola contului tău",
+    "newPasswordTitle": "Setează o parolă nouă",
+    "newPasswordHint": "Introdu și confirmă o parolă nouă pentru contul tău.",
+    "newPasswordSave": "Salvează parola nouă",
+    "newPasswordSuccess": "Parola a fost actualizată. O poți folosi acum pentru autentificare.",
+    "newPasswordError": "Actualizarea parolei a eșuat. Te rugăm să încerci din nou."
 }

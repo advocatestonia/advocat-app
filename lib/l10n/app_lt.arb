@@ -584,20 +584,20 @@
     "scanFirstDocumentHint": "Nuskaitykite pirmą dokumentą, kad AI jį išanalizuotų klaidų paieškai ir apeliacijų generavimui.",
     "failedToLoadDocuments": "Nepavyko įkelti dokumentų",
     "aiDisclaimer": "DI atsakomybės apribojimas",
-    "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
+    "aiDisclaimerCompact": "Advocat — tai AI teikiama teisinė informacija, o ne teisinė konsultacija. Prieš imdamiesi veiksmų pasitikrinkite pas licencijuotą teisininką.",
     "@aiDisclaimerCompact": {
         "description": "TODO: native legal review (currently English fallback)"
     },
-    "aiDisclaimerFullTitle": "Important: how Advocat works",
-    "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
-    "aiDisclaimerExpand": "Learn more",
-    "aiDisclaimerDismiss": "OK, I understand",
+    "aiDisclaimerFullTitle": "Svarbu: kaip veikia Advocat",
+    "aiDisclaimerFullBody": "Advocat — tai dirbtinio intelekto įrankis, teikiantis teisinę informaciją, o ne teisines konsultacijas. Pagal ES dirbtinio intelekto aktą (50 str.) privalome aiškiai pasakyti: bendraujate su AI, o ne su žmogumi teisininku.\n\nAdvocat nėra advokatų kontora. Mes nesame licencijuoti advokatai pagal Estijos Advokatuuriseadus ar Suomijos Asianajajalaki, o jūsų pokalbiams su šiuo įrankiu netaikoma advokato ir kliento bendravimo apsauga. Prieš remdamiesi bet kuriuo atsakymu — teikdami skundą, pasirašydami sutartį ar veikdami iki termino — pasitikrinkite pas licencijuotą teisininką savo jurisdikcijoje.",
+    "aiDisclaimerExpand": "Sužinoti daugiau",
+    "aiDisclaimerDismiss": "Gerai, supratau",
     "annual": "Metinis",
     "assignToCase": "Priskirti bylai",
     "basicAiAnalysis": "Pagrindinė DI analizė",
     "caseCreationComingSoon": "Bylos kūrimas su iš anksto užpildytais duomenimis netrukus",
     "caseSummaryCopied": "Bylos santrauka nukopijuota",
-    "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
+    "chatWelcomeMessage": "Sveiki! Aš esu Advocat — jūsų AI teisinis padėjėjas. Teikiu teisinę informaciją, o ne teisines konsultacijas. Kokiu teisiniu klausimu galiu padėti?",
     "checkingPurchases": "Tikrinami ankstesni pirkimai…",
     "connectYourEmail": "Prijunkite el. paštą",
     "connectYourEmailDesc": "Prijunkite el. paštą, kad automatiškai aptiktumėte ir tvarkytumėte su bylomis susijusią teisinę korespondenciją.",
@@ -791,7 +791,7 @@
     "encrypted": "Encrypted",
     "typing": "Typing…",
     "online": "Online",
-    "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
+    "chatWelcomeSubtitle": "Išanalizuosiu situaciją, patikrinsiu dokumentus, rasiu klaidas ir pasiūlysiu, ką daryti.",
     "tapMicrophoneToSpeak": "Tap the microphone to speak",
     "categoryEssential": "Essential",
     "categoryPolice": "Police",
@@ -814,7 +814,7 @@
     "websiteLabel": "Website",
     "disclaimerCollapsed": "AI guidance only",
     "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
-    "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
+    "chatDisclaimerBanner": "AI padėjėjas teikia teisinę informaciją, o ne teisines konsultacijas. Visada pasitarkite su kvalifikuotu teisininku.",
     "chatDisclaimerSubtitle": "DI asistentas · ne teisinė konsultacija",
     "chatDisclaimerBannerFull": "Advocat – tai DI teisinės informacijos asistentas, o ne advokatas. Čia pateikta informacija nesukuria advokato ir kliento santykių, nėra teisinė konsultacija ir gali būti netiksli. Dėl privalomos teisinės konsultacijos kreipkitės į licencijuotą advokatą savo jurisdikcijoje. Mes jums neatstovaujame.",
     "chatDisclaimerFooter": "Sukurta DI. Patikrinkite pas licencijuotą advokatą.",
@@ -841,7 +841,7 @@
     "navigatingTo": "Atidaroma",
     "stayInChat": "Likti pokalbyje",
     "backToChat": "Grįžti į pokalbį",
-    "aiAnalyzing": "AI is analyzing",
+    "aiAnalyzing": "AI analizuoja",
     "@aiAnalyzing": {
         "x-needs-review": "OMEGA-5 v24.2 — English stub",
         "x-source-value": "AI is analyzing"
@@ -1857,41 +1857,41 @@
     "emptyDraftsTitle": "No drafts yet",
     "emptyDraftsCta": "Create draft",
     "emptyChatTitle": "Ask Advocat anything",
-    "chatExamplePrompt1": "Help me reply to a fine",
-    "chatExamplePrompt2": "Review my rental contract",
-    "chatExamplePrompt3": "What are my rights at work?",
+    "chatExamplePrompt1": "Padėk atsakyti į baudą",
+    "chatExamplePrompt2": "Peržiūrėk mano nuomos sutartį",
+    "chatExamplePrompt3": "Kokios mano teisės darbe?",
     "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
     "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
     "deletingAccount": "[en] Deleting account…",
-    "contractReviewTitle": "Contract Review",
+    "contractReviewTitle": "Sutarties peržiūra",
     "@contractReviewTitle": {
         "description": "TODO native translation for locale=lt; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewUploadCta": "Upload contract",
+    "contractReviewUploadCta": "Įkelti sutartį",
     "@contractReviewUploadCta": {
         "description": "TODO native translation for locale=lt; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
+    "contractReviewQuotaRemaining": "Įkelkite PDF, DOC, DOCX arba TXT formato sutartį ir gaukite AI peržiūrą su įspėjamaisiais ženklais bei derybų patarimais.",
     "@contractReviewQuotaRemaining": {
         "description": "TODO native translation for locale=lt; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewRedFlags": "Red flags",
+    "contractReviewRedFlags": "Įspėjamieji ženklai",
     "@contractReviewRedFlags": {
         "description": "TODO native translation for locale=lt; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewReviewPoints": "Review points",
+    "contractReviewReviewPoints": "Peržiūros punktai",
     "@contractReviewReviewPoints": {
         "description": "TODO native translation for locale=lt; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewNegotiationTips": "Negotiation tips",
+    "contractReviewNegotiationTips": "Derybų patarimai",
     "@contractReviewNegotiationTips": {
         "description": "TODO native translation for locale=lt; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewSaveToVault": "Save to Vault",
+    "contractReviewSaveToVault": "Išsaugoti saugykloje",
     "@contractReviewSaveToVault": {
         "description": "TODO native translation for locale=lt; currently English fallback — copy lives in contract_review_screen.dart."
     },
-    "contractReviewContinueChat": "Continue in chat",
+    "contractReviewContinueChat": "Tęsti pokalbyje",
     "@contractReviewContinueChat": {
         "description": "TODO native translation for locale=lt; currently English fallback — copy lives in contract_review_screen.dart."
     },
@@ -2054,7 +2054,7 @@
     "refresh": "Atnaujinti",
     "demoLimitReached": "Pasiektas demonstracinės versijos limitas. Užsiregistruokite nemokamai, kad tęstumėte.",
     "demoLimitSignUpCta": "Užsiregistruoti",
-    "freeQuotaExhausted": "Šį mėnesį panaudojote visus 10 nemokamų pranešimų.",
+    "freeQuotaExhausted": "Šį mėnesį panaudojote visus {count} nemokamų pranešimų.",
     "upgradeForUnlimited": "Atnaujinkite į Pro neribotam naudojimui",
     "upgradeCta": "Atnaujinti",
     "rateLimitTryAgain": "Siunčiate per greitai. Bandykite dar kartą po kelių sekundžių.",
@@ -2434,5 +2434,12 @@
     "panicRecordV1Body": "Įrašymo funkcija teisiškai tikrinama Estijai ir bus įdiegta V2 versijoje. Kol kas naudokite telefono integruotą balso įrašymo įrenginį.",
     "panicCallFallbackBody": "Parašykite el. laišką kiire@advocat.ee su trumpu aprašymu ir mes jums perskambinsime.",
     "softCaseShellBanner": "Sukūrėme „Bylą be pavadinimo“, kad galėtume tai sekti. Bakstelėkite, kad pervadintumėte.",
-    "softCaseShellBannerCta": "Pervadinti"
+    "softCaseShellBannerCta": "Pervadinti",
+    "changePassword": "Keisti slaptažodį",
+    "changePasswordSubtitle": "Atnaujinkite savo paskyros slaptažodį",
+    "newPasswordTitle": "Nustatykite naują slaptažodį",
+    "newPasswordHint": "Įveskite ir patvirtinkite naują paskyros slaptažodį.",
+    "newPasswordSave": "Išsaugoti naują slaptažodį",
+    "newPasswordSuccess": "Slaptažodis atnaujintas. Dabar galite jį naudoti prisijungdami.",
+    "newPasswordError": "Nepavyko atnaujinti slaptažodžio. Bandykite dar kartą."
 }

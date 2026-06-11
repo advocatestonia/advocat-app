@@ -12,7 +12,8 @@ library;
 //
 // Three reasons a send can be denied:
 //   1. Anon (demo) — IP rate limit + demo cap exhausted (3/min)
-//   2. Free tier — 7 monthly messages exhausted
+//   2. Free tier — monthly free messages exhausted (kFreeMessagesPerMonth,
+//      kept in sync with check-ai-quota FREE_LIMIT — see drift-guard test)
 //   3. Rate limit — 3/min IP cap (transient)
 //
 // Fix: a small helper `buildQuotaErrorSnackBar` that produces a SnackBar
@@ -20,6 +21,8 @@ library;
 // The pure-function shape lets us assert SnackBar text + CTA wiring
 // without spinning up the full ChatScreen.
 // =============================================================================
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -97,9 +100,17 @@ void main() {
       );
 
       // The user sees BOTH the limit-reached line and the upgrade hint.
+      // The count must render the REAL free-tier cap (25), not the stale
+      // "10" the 2026-06-11 audit flagged.
       expect(
-        find.textContaining("You've used all 10 free messages this month."),
+        find.textContaining(
+            "You've used all $kFreeMessagesPerMonth free messages this month."),
         findsOneWidget,
+      );
+      expect(
+        find.textContaining('all 10 free messages'),
+        findsNothing,
+        reason: 'stale pre-audit copy must never resurface',
       );
       // Upgrade CTA is present and works.
       final ctaFinder = find.byKey(const Key('quota_snackbar_cta'));
@@ -189,7 +200,8 @@ void main() {
       // Asserts l10n wiring without locking the exact phrasing — we just
       // confirm the EN string is NOT shown when locale=et.
       expect(
-        find.textContaining("You've used all 10 free messages this month."),
+        find.textContaining(
+            "You've used all $kFreeMessagesPerMonth free messages this month."),
         findsNothing,
       );
     });
@@ -251,6 +263,58 @@ void main() {
       expect(
         QuotaDenialReason.fromQuota(isAnon: false, remaining: 5, isPro: false),
         isNull,
+      );
+    });
+  });
+
+  group('free-limit copy ↔ backend drift guard (audit 2026-06-11)', () {
+    // The paywall snackbar said "10 free messages" while
+    // check-ai-quota enforced 25/month. The l10n key is now
+    // parameterized; these tests keep the Dart constant honest.
+
+    test('kFreeMessagesPerMonth matches check-ai-quota FREE_LIMIT', () {
+      // Source-string assertion (same style as
+      // home_screen_modal_priority_test) — reads the deployed edge-fn
+      // source so a backend bump without a copy bump fails loudly.
+      final source = File('supabase/functions/check-ai-quota/index.ts')
+          .readAsStringSync();
+      final match =
+          RegExp(r'const FREE_LIMIT\s*=\s*(\d+)\s*;').firstMatch(source);
+      expect(match, isNotNull,
+          reason: 'FREE_LIMIT constant must exist in check-ai-quota');
+      expect(int.parse(match!.group(1)!), kFreeMessagesPerMonth,
+          reason: 'Snackbar copy and backend quota must show the same '
+              'free-tier monthly cap');
+    });
+
+    testWidgets('explicit freeLimit overrides the rendered count',
+        (tester) async {
+      late BuildContext ctx;
+      await tester.pumpWidget(MaterialApp(
+        locale: const Locale('en'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: Builder(builder: (c) {
+            ctx = c;
+            return const SizedBox.shrink();
+          }),
+        ),
+      ));
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        buildQuotaErrorSnackBar(
+          context: ctx,
+          reason: QuotaDenialReason.freeQuotaExhausted,
+          onUpgrade: () {},
+          freeLimit: 42,
+        ),
+      );
+      await tester.pump();
+
+      expect(
+        find.textContaining("You've used all 42 free messages this month."),
+        findsOneWidget,
+        reason: 'the {count} placeholder must flow from the freeLimit param',
       );
     });
   });

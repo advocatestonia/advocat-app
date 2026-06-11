@@ -323,14 +323,14 @@
   "addDocument": "Lägg till dokument",
   "addPage": "Lägg till sida",
   "aiDisclaimer": "AI-ansvarsfriskrivning",
-  "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
+  "aiDisclaimerCompact": "Advocat är AI-genererad juridisk information, inte juridisk rådgivning. Kontrollera med en legitimerad jurist innan du agerar.",
   "@aiDisclaimerCompact": {
     "description": "TODO: native legal review (currently English fallback)"
   },
-  "aiDisclaimerFullTitle": "Important: how Advocat works",
-  "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
-  "aiDisclaimerExpand": "Learn more",
-  "aiDisclaimerDismiss": "OK, I understand",
+  "aiDisclaimerFullTitle": "Viktigt: så fungerar Advocat",
+  "aiDisclaimerFullBody": "Advocat är ett verktyg baserat på artificiell intelligens som ger juridisk information, inte juridisk rådgivning. Enligt EU:s AI-förordning (art. 50) måste vi tydligt informera dig: du interagerar med AI, inte med en mänsklig jurist.\n\nAdvocat är ingen advokatbyrå. Vi är inte legitimerade advokater enligt den estniska Advokatuuriseadus eller den finska Asianajajalaki, och advokatsekretess gäller inte för dina samtal med detta verktyg. Innan du förlitar dig på något svar — för att överklaga, skriva under ett avtal eller agera inom en tidsfrist — kontrollera med en legitimerad jurist i din jurisdiktion.",
+  "aiDisclaimerExpand": "Läs mer",
+  "aiDisclaimerDismiss": "OK, jag förstår",
   "alignDocument": "Justera dokumentet inom ramen",
   "allClearDeadlines": "Allt klart! Nya tidsfrister visas här när de sätts.",
   "analysisFailedRetry": "Analysen misslyckades. Försök igen.",
@@ -374,7 +374,7 @@
   "caseSummaryCopied": "Ärendesammanfattning kopierad",
   "caseTimeline": "Ärendetidslinje",
   "changesSaved": "Ändringar sparade",
-  "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
+  "chatWelcomeMessage": "Hej! Jag är Advocat — din juridiska AI-assistent. Jag ger juridisk information, inte juridisk rådgivning. Vilken juridisk fråga kan jag hjälpa till med?",
   "checkEligibility": "Kontrollera din behörighet för rättshjälp: {country}",
   "checkingPurchases": "Kontrollerar tidigare köp…",
   "chooseHowToAdd": "Välj hur du vill lägga till ditt dokument",
@@ -791,7 +791,7 @@
   "encrypted": "Encrypted",
   "typing": "Typing…",
   "online": "Online",
-  "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
+  "chatWelcomeSubtitle": "Jag analyserar situationen, granskar dokument, hittar fel och föreslår vad du bör göra.",
   "tapMicrophoneToSpeak": "Tap the microphone to speak",
   "categoryEssential": "Essential",
   "categoryPolice": "Police",
@@ -814,7 +814,7 @@
   "websiteLabel": "Website",
   "disclaimerCollapsed": "AI guidance only",
   "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
-  "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
+  "chatDisclaimerBanner": "AI-assistenten ger juridisk information, inte juridisk rådgivning. Rådgör alltid med en kvalificerad jurist.",
   "chatDisclaimerSubtitle": "AI-assistent · ej juridisk rådgivning",
   "chatDisclaimerBannerFull": "Advocat är en AI-assistent för juridisk information, inte en advokat. Informationen här skapar inget advokat–klient-förhållande, är inte juridisk rådgivning och kan vara felaktig. För bindande juridisk rådgivning, kontakta en behörig advokat i din jurisdiktion. Vi företräder dig inte.",
   "chatDisclaimerFooter": "AI-genererat. Verifiera med en behörig advokat.",
@@ -841,7 +841,7 @@
   "navigatingTo": "Öppnar",
   "stayInChat": "Stanna i chatten",
   "backToChat": "Tillbaka till chatten",
-  "aiAnalyzing": "AI is analyzing",
+  "aiAnalyzing": "AI analyserar",
   "@aiAnalyzing": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "AI is analyzing"
@@ -1622,13 +1622,13 @@
   "reviewThisContract": "Granska kontraktet",
   "contractReviews": "Avtalsgranskningar",
   "@contractReviews": {},
-  "contractReviewsFreeFeature": "1 avtalsgranskning (provning för livstid)",
+  "contractReviewsFreeFeature": "1 avtalsgranskning (engångsprov, gratis)",
   "@contractReviewsFreeFeature": {},
   "contractReviewsCounselFeature": "5 avtalsgranskningar per månad",
   "@contractReviewsCounselFeature": {},
   "contractReviewsProFeature": "20 avtalsgranskningar per månad",
   "@contractReviewsProFeature": {},
-  "contractReviewsLeft": "{count, plural, =0{Inga kontraktsgranskningar kvar denna månad} =1{1 kontraktsgranskning kvar denna månad} other{{count} kontraktsgranskningar kvar denna månad}}",
+  "contractReviewsLeft": "{count, plural, =0{Inga avtalsgranskningar kvar denna månad} =1{1 avtalsgranskning kvar denna månad} other{{count} avtalsgranskningar kvar denna månad}}",
   "@contractReviewsLeft": {
     "placeholders": {
       "count": {
@@ -1638,9 +1638,9 @@
   },
   "contractReviewsExhausted": "Inga avtalsgranskningar kvar denna månad",
   "@contractReviewsExhausted": {},
-  "contractReviewsFreeTrialLeft": "Gratis provning: 1 avtalsgranskning",
+  "contractReviewsFreeTrialLeft": "Gratis prov: 1 avtalsgranskning",
   "@contractReviewsFreeTrialLeft": {},
-  "contractReviewsFreeTrialUsed": "Gratis provning använd — uppgradera",
+  "contractReviewsFreeTrialUsed": "Gratis prov använt — uppgradera",
   "@contractReviewsFreeTrialUsed": {},
   "contractReviewsUpgradeTitle": "Avtalsgranskningar slut",
   "@contractReviewsUpgradeTitle": {},
@@ -1857,41 +1857,41 @@
   "emptyDraftsTitle": "No drafts yet",
   "emptyDraftsCta": "Create draft",
   "emptyChatTitle": "Ask Advocat anything",
-  "chatExamplePrompt1": "Help me reply to a fine",
-  "chatExamplePrompt2": "Review my rental contract",
-  "chatExamplePrompt3": "What are my rights at work?",
+  "chatExamplePrompt1": "Hjälp mig svara på böter",
+  "chatExamplePrompt2": "Granska mitt hyresavtal",
+  "chatExamplePrompt3": "Vilka rättigheter har jag på jobbet?",
   "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
   "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
   "deletingAccount": "[en] Deleting account…",
-  "contractReviewTitle": "Contract Review",
+  "contractReviewTitle": "Avtalsgranskning",
   "@contractReviewTitle": {
     "description": "TODO native translation for locale=sv; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewUploadCta": "Upload contract",
+  "contractReviewUploadCta": "Ladda upp avtal",
   "@contractReviewUploadCta": {
     "description": "TODO native translation for locale=sv; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
+  "contractReviewQuotaRemaining": "Ladda upp ett avtal i PDF, DOC, DOCX eller TXT för en AI-granskning med varningsflaggor och förhandlingstips.",
   "@contractReviewQuotaRemaining": {
     "description": "TODO native translation for locale=sv; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewRedFlags": "Red flags",
+  "contractReviewRedFlags": "Varningsflaggor",
   "@contractReviewRedFlags": {
     "description": "TODO native translation for locale=sv; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewReviewPoints": "Review points",
+  "contractReviewReviewPoints": "Granskningspunkter",
   "@contractReviewReviewPoints": {
     "description": "TODO native translation for locale=sv; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewNegotiationTips": "Negotiation tips",
+  "contractReviewNegotiationTips": "Förhandlingstips",
   "@contractReviewNegotiationTips": {
     "description": "TODO native translation for locale=sv; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewSaveToVault": "Save to Vault",
+  "contractReviewSaveToVault": "Spara i valvet",
   "@contractReviewSaveToVault": {
     "description": "TODO native translation for locale=sv; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewContinueChat": "Continue in chat",
+  "contractReviewContinueChat": "Fortsätt i chatten",
   "@contractReviewContinueChat": {
     "description": "TODO native translation for locale=sv; currently English fallback — copy lives in contract_review_screen.dart."
   },
@@ -2054,7 +2054,7 @@
   "refresh": "Uppdatera",
   "demoLimitReached": "Demogräns nådd. Registrera dig gratis för att fortsätta.",
   "demoLimitSignUpCta": "Registrera dig",
-  "freeQuotaExhausted": "Du har använt alla 10 gratismeddelanden den här månaden.",
+  "freeQuotaExhausted": "Du har använt alla {count} gratismeddelanden den här månaden.",
   "upgradeForUnlimited": "Uppgradera till Pro för obegränsat",
   "upgradeCta": "Uppgradera",
   "rateLimitTryAgain": "Du skickar för snabbt. Försök igen om några sekunder.",
@@ -2430,5 +2430,12 @@
   "panicRecordV1Body": "Inspelningsfunktionen genomgår en juridisk validering för Estland och lanseras i V2. Använd tills vidare din telefons inbyggda röstinspelare.",
   "panicCallFallbackBody": "Mejla kiire@advocat.ee med en kort beskrivning så ringer vi tillbaka.",
   "softCaseShellBanner": "Vi skapade \"Namnlöst ärende\" för att spåra detta. Tryck för att byta namn.",
-  "softCaseShellBannerCta": "Byt namn"
+  "softCaseShellBannerCta": "Byt namn",
+    "changePassword": "Byt lösenord",
+    "changePasswordSubtitle": "Uppdatera ditt kontolösenord",
+    "newPasswordTitle": "Ange ett nytt lösenord",
+    "newPasswordHint": "Ange och bekräfta ett nytt lösenord för ditt konto.",
+    "newPasswordSave": "Spara nytt lösenord",
+    "newPasswordSuccess": "Lösenordet har uppdaterats. Du kan nu logga in med det.",
+    "newPasswordError": "Det gick inte att uppdatera lösenordet. Försök igen."
 }

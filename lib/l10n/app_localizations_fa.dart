@@ -2797,8 +2797,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get demoLimitSignUpCta => 'ثبت‌نام';
 
   @override
-  String get freeQuotaExhausted =>
-      'شما از تمام ۱۰ پیام رایگان این ماه استفاده کرده‌اید.';
+  String freeQuotaExhausted(int count) {
+    return 'شما از تمام $count پیام رایگان این ماه استفاده کرده‌اید.';
+  }
 
   @override
   String get upgradeForUnlimited => 'برای نامحدود به Pro ارتقا دهید';
@@ -4572,4 +4573,28 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypothetical EU procedural deadlines — mock data';
+
+  @override
+  String get changePassword => 'تغییر رمز عبور';
+
+  @override
+  String get changePasswordSubtitle => 'رمز عبور حساب خود را به‌روزرسانی کنید';
+
+  @override
+  String get newPasswordTitle => 'تعیین رمز عبور جدید';
+
+  @override
+  String get newPasswordHint =>
+      'رمز عبور جدیدی برای حساب خود وارد و تأیید کنید.';
+
+  @override
+  String get newPasswordSave => 'ذخیره رمز عبور جدید';
+
+  @override
+  String get newPasswordSuccess =>
+      'رمز عبور به‌روزرسانی شد. اکنون می‌توانید با آن وارد شوید.';
+
+  @override
+  String get newPasswordError =>
+      'به‌روزرسانی رمز عبور ناموفق بود. لطفاً دوباره تلاش کنید.';
 }

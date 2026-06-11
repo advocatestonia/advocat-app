@@ -323,14 +323,14 @@
   "addDocument": "Dodaj dokument",
   "addPage": "Dodaj stronę",
   "aiDisclaimer": "Zastrzeżenie dotyczące AI",
-  "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
+  "aiDisclaimerCompact": "Advocat to informacja prawna generowana przez AI, a nie porada prawna. Przed podjęciem działań skonsultuj się z licencjonowanym prawnikiem.",
   "@aiDisclaimerCompact": {
     "description": "TODO: native legal review (currently English fallback)"
   },
-  "aiDisclaimerFullTitle": "Important: how Advocat works",
-  "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
-  "aiDisclaimerExpand": "Learn more",
-  "aiDisclaimerDismiss": "OK, I understand",
+  "aiDisclaimerFullTitle": "Ważne: jak działa Advocat",
+  "aiDisclaimerFullBody": "Advocat to narzędzie sztucznej inteligencji, które dostarcza informacje prawne, a nie porady prawne. Zgodnie z unijnym aktem o sztucznej inteligencji (art. 50) musimy wyraźnie poinformować: rozmawiasz z AI, a nie z prawnikiem.\n\nAdvocat nie jest kancelarią prawną. Nie jesteśmy licencjonowanymi adwokatami w rozumieniu estońskiej ustawy Advokatuuriseadus ani fińskiej ustawy Asianajajalaki, a Twoje rozmowy z tym narzędziem nie są objęte tajemnicą adwokacką. Zanim oprzesz się na jakiejkolwiek odpowiedzi — aby złożyć odwołanie, podpisać umowę lub dotrzymać terminu — zweryfikuj ją u licencjonowanego prawnika w swojej jurysdykcji.",
+  "aiDisclaimerExpand": "Dowiedz się więcej",
+  "aiDisclaimerDismiss": "OK, rozumiem",
   "alignDocument": "Wyrównaj dokument w ramce",
   "allClearDeadlines": "Wszystko w porządku! Nowe terminy pojawią się tutaj.",
   "analysisFailedRetry": "Analiza nie powiodła się. Spróbuj ponownie.",
@@ -374,7 +374,7 @@
   "caseSummaryCopied": "Podsumowanie sprawy skopiowane",
   "caseTimeline": "Oś czasu sprawy",
   "changesSaved": "Zmiany zapisane",
-  "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
+  "chatWelcomeMessage": "Cześć! Jestem Advocat — Twój asystent prawny AI. Dostarczam informacje prawne, a nie porady prawne. W jakiej kwestii prawnej mogę pomóc?",
   "checkEligibility": "Sprawdź swoje uprawnienia do pomocy prawnej: {country}",
   "checkingPurchases": "Sprawdzanie poprzednich zakupów…",
   "chooseHowToAdd": "Wybierz sposób dodania dokumentu",
@@ -791,7 +791,7 @@
   "encrypted": "Encrypted",
   "typing": "Typing…",
   "online": "Online",
-  "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
+  "chatWelcomeSubtitle": "Przeanalizuję sytuację, sprawdzę dokumenty, znajdę błędy i podpowiem, co robić.",
   "tapMicrophoneToSpeak": "Tap the microphone to speak",
   "categoryEssential": "Essential",
   "categoryPolice": "Police",
@@ -814,7 +814,7 @@
   "websiteLabel": "Website",
   "disclaimerCollapsed": "AI guidance only",
   "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
-  "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
+  "chatDisclaimerBanner": "Asystent AI dostarcza informacje prawne, a nie porady prawne. Zawsze skonsultuj się z wykwalifikowanym prawnikiem.",
   "chatDisclaimerSubtitle": "Asystent AI · nie porada prawna",
   "chatDisclaimerBannerFull": "Advocat to asystent AI udzielający informacji prawnej, a nie prawnik. Treści tutaj nie tworzą stosunku adwokat–klient, nie są poradą prawną i mogą być błędne. W sprawie wiążącej porady prawnej skonsultuj się z licencjonowanym adwokatem w swojej jurysdykcji. Nie reprezentujemy Państwa.",
   "chatDisclaimerFooter": "Wygenerowane przez AI. Zweryfikuj u licencjonowanego adwokata.",
@@ -841,7 +841,7 @@
   "navigatingTo": "Otwieram",
   "stayInChat": "Zostań na czacie",
   "backToChat": "Wróć do czatu",
-  "aiAnalyzing": "AI is analyzing",
+  "aiAnalyzing": "AI analizuje",
   "@aiAnalyzing": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "AI is analyzing"
@@ -1622,7 +1622,7 @@
   "reviewThisContract": "Przeanalizuj umowę",
   "contractReviews": "Przeglądy umów",
   "@contractReviews": {},
-  "contractReviewsFreeFeature": "1 przegląd umowy (próba dożywotnia)",
+  "contractReviewsFreeFeature": "1 przegląd umowy (jednorazowo, bezpłatnie)",
   "@contractReviewsFreeFeature": {},
   "contractReviewsCounselFeature": "5 przeglądów umów miesięcznie",
   "@contractReviewsCounselFeature": {},
@@ -1638,15 +1638,15 @@
   },
   "contractReviewsExhausted": "Brak pozostałych przeglądów umów w tym miesiącu",
   "@contractReviewsExhausted": {},
-  "contractReviewsFreeTrialLeft": "Darmowa próba: 1 przegląd umowy",
+  "contractReviewsFreeTrialLeft": "Bezpłatna wersja próbna: 1 przegląd umowy",
   "@contractReviewsFreeTrialLeft": {},
-  "contractReviewsFreeTrialUsed": "Darmowa próba wykorzystana — zaktualizuj",
+  "contractReviewsFreeTrialUsed": "Wersja próbna wykorzystana — ulepsz plan",
   "@contractReviewsFreeTrialUsed": {},
   "contractReviewsUpgradeTitle": "Przeglądy umów wyczerpane",
   "@contractReviewsUpgradeTitle": {},
-  "contractReviewsUpgradeBodyFree": "Wykorzystałeś darmowy przegląd umowy. Zaktualizuj, aby uzyskać miesięczne przeglądy.",
+  "contractReviewsUpgradeBodyFree": "Wykorzystałeś(-aś) bezpłatny przegląd umowy. Ulepsz plan, aby otrzymywać miesięczne przeglądy.",
   "@contractReviewsUpgradeBodyFree": {},
-  "contractReviewsUpgradeBodyPaid": "Wykorzystałeś {used} z {cap} przeglądów w tym miesiącu. Zaktualizuj, aby uzyskać wyższy miesięczny limit.",
+  "contractReviewsUpgradeBodyPaid": "Wykorzystałeś(-aś) {used} z {cap} przeglądów w tym miesiącu. Ulepsz plan, aby uzyskać wyższy miesięczny limit.",
   "@contractReviewsUpgradeBodyPaid": {
     "placeholders": {
       "used": {
@@ -1857,41 +1857,41 @@
   "emptyDraftsTitle": "No drafts yet",
   "emptyDraftsCta": "Create draft",
   "emptyChatTitle": "Ask Advocat anything",
-  "chatExamplePrompt1": "Help me reply to a fine",
-  "chatExamplePrompt2": "Review my rental contract",
-  "chatExamplePrompt3": "What are my rights at work?",
+  "chatExamplePrompt1": "Pomóż mi odpowiedzieć na mandat",
+  "chatExamplePrompt2": "Sprawdź moją umowę najmu",
+  "chatExamplePrompt3": "Jakie mam prawa w pracy?",
   "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
   "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
   "deletingAccount": "[en] Deleting account…",
-  "contractReviewTitle": "Contract Review",
+  "contractReviewTitle": "Analiza umowy",
   "@contractReviewTitle": {
     "description": "TODO native translation for locale=pl; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewUploadCta": "Upload contract",
+  "contractReviewUploadCta": "Prześlij umowę",
   "@contractReviewUploadCta": {
     "description": "TODO native translation for locale=pl; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
+  "contractReviewQuotaRemaining": "Prześlij umowę w formacie PDF, DOC, DOCX lub TXT, aby otrzymać analizę AI z sygnałami ostrzegawczymi i wskazówkami negocjacyjnymi.",
   "@contractReviewQuotaRemaining": {
     "description": "TODO native translation for locale=pl; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewRedFlags": "Red flags",
+  "contractReviewRedFlags": "Sygnały ostrzegawcze",
   "@contractReviewRedFlags": {
     "description": "TODO native translation for locale=pl; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewReviewPoints": "Review points",
+  "contractReviewReviewPoints": "Punkty do weryfikacji",
   "@contractReviewReviewPoints": {
     "description": "TODO native translation for locale=pl; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewNegotiationTips": "Negotiation tips",
+  "contractReviewNegotiationTips": "Wskazówki negocjacyjne",
   "@contractReviewNegotiationTips": {
     "description": "TODO native translation for locale=pl; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewSaveToVault": "Save to Vault",
+  "contractReviewSaveToVault": "Zapisz w Sejfie",
   "@contractReviewSaveToVault": {
     "description": "TODO native translation for locale=pl; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "contractReviewContinueChat": "Continue in chat",
+  "contractReviewContinueChat": "Kontynuuj na czacie",
   "@contractReviewContinueChat": {
     "description": "TODO native translation for locale=pl; currently English fallback — copy lives in contract_review_screen.dart."
   },
@@ -2054,7 +2054,7 @@
   "refresh": "Odśwież",
   "demoLimitReached": "Osiągnięto limit wersji demo. Zarejestruj się bezpłatnie, aby kontynuować.",
   "demoLimitSignUpCta": "Zarejestruj się",
-  "freeQuotaExhausted": "Wykorzystałeś(-aś) wszystkie 10 bezpłatnych wiadomości w tym miesiącu.",
+  "freeQuotaExhausted": "Wykorzystałeś(-aś) wszystkie {count} bezpłatnych wiadomości w tym miesiącu.",
   "upgradeForUnlimited": "Przejdź na Pro, aby uzyskać dostęp bez limitów",
   "upgradeCta": "Ulepsz plan",
   "rateLimitTryAgain": "Wysyłasz zbyt szybko. Spróbuj ponownie za kilka sekund.",
@@ -2430,5 +2430,12 @@
   "panicRecordV1Body": "Funkcja nagrywania jest obecnie walidowana prawnie dla Estonii i pojawi się w V2. Na razie użyj wbudowanego dyktafonu w telefonie.",
   "panicCallFallbackBody": "Napisz na kiire@advocat.ee z krótkim opisem, a oddzwonimy.",
   "softCaseShellBanner": "Utworzyliśmy „Sprawę bez tytułu”, aby ją śledzić. Dotknij, aby zmienić nazwę.",
-  "softCaseShellBannerCta": "Zmień nazwę"
+  "softCaseShellBannerCta": "Zmień nazwę",
+    "changePassword": "Zmień hasło",
+    "changePasswordSubtitle": "Zaktualizuj hasło swojego konta",
+    "newPasswordTitle": "Ustaw nowe hasło",
+    "newPasswordHint": "Wprowadź i potwierdź nowe hasło do swojego konta.",
+    "newPasswordSave": "Zapisz nowe hasło",
+    "newPasswordSuccess": "Hasło zostało zaktualizowane. Możesz teraz zalogować się nowym hasłem.",
+    "newPasswordError": "Nie udało się zaktualizować hasła. Spróbuj ponownie."
 }

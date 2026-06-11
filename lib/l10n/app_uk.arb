@@ -1612,7 +1612,7 @@
  "refresh": "Оновити",
  "demoLimitReached": "Досягнуто демо-ліміту. Зареєструйтеся безкоштовно, щоб продовжити.",
  "demoLimitSignUpCta": "Зареєструватися",
- "freeQuotaExhausted": "Ви використали всі 10 безкоштовних повідомлень цього місяця.",
+ "freeQuotaExhausted": "Ви використали всі {count} безкоштовних повідомлень цього місяця.",
  "upgradeForUnlimited": "Перейдіть на Pro для необмеженого доступу",
  "upgradeCta": "Оновити",
  "rateLimitTryAgain": "Надсилаєте занадто швидко. Спробуйте знову за кілька секунд.",
@@ -2055,5 +2055,12 @@
  "@softCaseShellBanner": {
   "description": "One-line banner shown after a first-touch upload auto-materialised a soft-case shell (P0 deadline-extraction fix). Tapping deep-links to the case rename screen."
  },
- "softCaseShellBannerCta": "Перейменувати"
+ "softCaseShellBannerCta": "Перейменувати",
+    "changePassword": "Змінити пароль",
+    "changePasswordSubtitle": "Оновіть пароль вашого облікового запису",
+    "newPasswordTitle": "Встановіть новий пароль",
+    "newPasswordHint": "Введіть і підтвердьте новий пароль для вашого облікового запису.",
+    "newPasswordSave": "Зберегти новий пароль",
+    "newPasswordSuccess": "Пароль оновлено. Тепер використовуйте його для входу.",
+    "newPasswordError": "Не вдалося оновити пароль. Спробуйте ще раз."
 }

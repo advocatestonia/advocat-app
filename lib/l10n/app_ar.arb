@@ -1570,7 +1570,7 @@
   "refresh": "تحديث",
   "demoLimitReached": "تم بلوغ حد النسخة التجريبية. سجّل مجانًا للمتابعة.",
   "demoLimitSignUpCta": "إنشاء حساب",
-  "freeQuotaExhausted": "لقد استخدمت جميع الرسائل المجانية الـ10 هذا الشهر.",
+  "freeQuotaExhausted": "لقد استخدمت جميع الرسائل المجانية الـ{count} هذا الشهر.",
   "upgradeForUnlimited": "قم بالترقية إلى Pro للاستخدام غير المحدود",
   "upgradeCta": "ترقية",
   "rateLimitTryAgain": "الإرسال سريع جدًا. حاول مرة أخرى خلال بضع ثوانٍ.",
@@ -1950,5 +1950,12 @@
   "panicRecordV1Body": "تخضع ميزة التسجيل للتحقق القانوني في إستونيا وستُطرح في V2. في الوقت الحالي، استخدم مسجّل الصوت المدمج في هاتفك.",
   "panicCallFallbackBody": "أرسل بريدًا إلكترونيًا إلى kiire@advocat.ee مع وصف موجز وسنعاود الاتصال بك.",
   "softCaseShellBanner": "أنشأنا “قضية بلا عنوان” لتتبّع هذا. اضغط لإعادة التسمية.",
-  "softCaseShellBannerCta": "إعادة التسمية"
+  "softCaseShellBannerCta": "إعادة التسمية",
+    "changePassword": "تغيير كلمة المرور",
+    "changePasswordSubtitle": "حدّث كلمة مرور حسابك",
+    "newPasswordTitle": "تعيين كلمة مرور جديدة",
+    "newPasswordHint": "أدخل كلمة مرور جديدة لحسابك وأكّدها.",
+    "newPasswordSave": "حفظ كلمة المرور الجديدة",
+    "newPasswordSuccess": "تم تحديث كلمة المرور. يمكنك الآن استخدامها لتسجيل الدخول.",
+    "newPasswordError": "فشل تحديث كلمة المرور. يرجى المحاولة مرة أخرى."
 }

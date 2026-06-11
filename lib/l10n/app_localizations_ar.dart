@@ -2784,8 +2784,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get demoLimitSignUpCta => 'إنشاء حساب';
 
   @override
-  String get freeQuotaExhausted =>
-      'لقد استخدمت جميع الرسائل المجانية الـ10 هذا الشهر.';
+  String freeQuotaExhausted(int count) {
+    return 'لقد استخدمت جميع الرسائل المجانية الـ$count هذا الشهر.';
+  }
 
   @override
   String get upgradeForUnlimited => 'قم بالترقية إلى Pro للاستخدام غير المحدود';
@@ -4553,4 +4554,27 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypothetical EU procedural deadlines — mock data';
+
+  @override
+  String get changePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get changePasswordSubtitle => 'حدّث كلمة مرور حسابك';
+
+  @override
+  String get newPasswordTitle => 'تعيين كلمة مرور جديدة';
+
+  @override
+  String get newPasswordHint => 'أدخل كلمة مرور جديدة لحسابك وأكّدها.';
+
+  @override
+  String get newPasswordSave => 'حفظ كلمة المرور الجديدة';
+
+  @override
+  String get newPasswordSuccess =>
+      'تم تحديث كلمة المرور. يمكنك الآن استخدامها لتسجيل الدخول.';
+
+  @override
+  String get newPasswordError =>
+      'فشل تحديث كلمة المرور. يرجى المحاولة مرة أخرى.';
 }

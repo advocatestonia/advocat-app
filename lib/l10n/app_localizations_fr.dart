@@ -2846,8 +2846,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get demoLimitSignUpCta => 'S\'inscrire';
 
   @override
-  String get freeQuotaExhausted =>
-      'Vous avez utilisé vos 10 messages gratuits ce mois-ci.';
+  String freeQuotaExhausted(int count) {
+    return 'Vous avez utilisé vos $count messages gratuits ce mois-ci.';
+  }
 
   @override
   String get upgradeForUnlimited => 'Passez à Pro pour un usage illimité';
@@ -4635,4 +4636,29 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypothetical EU procedural deadlines — mock data';
+
+  @override
+  String get changePassword => 'Changer le mot de passe';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Mettez à jour le mot de passe de votre compte';
+
+  @override
+  String get newPasswordTitle => 'Définir un nouveau mot de passe';
+
+  @override
+  String get newPasswordHint =>
+      'Saisissez et confirmez un nouveau mot de passe pour votre compte.';
+
+  @override
+  String get newPasswordSave => 'Enregistrer le nouveau mot de passe';
+
+  @override
+  String get newPasswordSuccess =>
+      'Mot de passe mis à jour. Vous pouvez maintenant l\'utiliser pour vous connecter.';
+
+  @override
+  String get newPasswordError =>
+      'Échec de la mise à jour du mot de passe. Veuillez réessayer.';
 }

@@ -2804,8 +2804,9 @@ class AppLocalizationsEt extends AppLocalizations {
   String get demoLimitSignUpCta => 'Registreeru';
 
   @override
-  String get freeQuotaExhausted =>
-      'Olete kasutanud kõik 10 tasuta sõnumit selles kuus.';
+  String freeQuotaExhausted(int count) {
+    return 'Olete kasutanud kõik $count tasuta sõnumit selles kuus.';
+  }
 
   @override
   String get upgradeForUnlimited => 'Uuenda Pro-le piiramatuks kasutamiseks';
@@ -4586,4 +4587,27 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hüpoteetilised ELi menetlustähtajad — testandmed';
+
+  @override
+  String get changePassword => 'Muuda parooli';
+
+  @override
+  String get changePasswordSubtitle => 'Uuenda oma konto parooli';
+
+  @override
+  String get newPasswordTitle => 'Määra uus parool';
+
+  @override
+  String get newPasswordHint => 'Sisesta ja kinnita oma konto uus parool.';
+
+  @override
+  String get newPasswordSave => 'Salvesta uus parool';
+
+  @override
+  String get newPasswordSuccess =>
+      'Parool on uuendatud. Saad seda nüüd sisselogimisel kasutada.';
+
+  @override
+  String get newPasswordError =>
+      'Parooli uuendamine ebaõnnestus. Palun proovi uuesti.';
 }

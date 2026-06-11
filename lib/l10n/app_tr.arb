@@ -1570,7 +1570,7 @@
   "refresh": "Yenile",
   "demoLimitReached": "Demo sınırına ulaşıldı. Devam etmek için ücretsiz kaydolun.",
   "demoLimitSignUpCta": "Kaydol",
-  "freeQuotaExhausted": "Bu ay 10 ücretsiz mesajın tamamını kullandınız.",
+  "freeQuotaExhausted": "Bu ay {count} ücretsiz mesajın tamamını kullandınız.",
   "upgradeForUnlimited": "Sınırsız için Pro'ya yükseltin",
   "upgradeCta": "Yükselt",
   "rateLimitTryAgain": "Çok hızlı gönderiyorsunuz. Birkaç saniye içinde tekrar deneyin.",
@@ -1950,5 +1950,12 @@
   "panicRecordV1Body": "Kayıt özelliği Estonya için yasal olarak doğrulanıyor ve V2'de kullanıma sunulacak. Şimdilik telefonunuzun yerleşik ses kaydedicisini kullanın.",
   "panicCallFallbackBody": "kiire@advocat.ee adresine kısa bir açıklamayla e-posta gönderin, sizi geri arayalım.",
   "softCaseShellBanner": "Bunu takip etmek için \"Başlıksız dava\" oluşturduk. Yeniden adlandırmak için dokunun.",
-  "softCaseShellBannerCta": "Yeniden adlandır"
+  "softCaseShellBannerCta": "Yeniden adlandır",
+    "changePassword": "Şifreyi değiştir",
+    "changePasswordSubtitle": "Hesap şifrenizi güncelleyin",
+    "newPasswordTitle": "Yeni şifre belirleyin",
+    "newPasswordHint": "Hesabınız için yeni bir şifre girin ve onaylayın.",
+    "newPasswordSave": "Yeni şifreyi kaydet",
+    "newPasswordSuccess": "Şifre güncellendi. Artık girişte kullanabilirsiniz.",
+    "newPasswordError": "Şifre güncellenemedi. Lütfen tekrar deneyin."
 }

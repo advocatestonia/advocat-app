@@ -1087,7 +1087,14 @@
     "refresh": "Refresh",
     "demoLimitReached": "Demo limit reached. Sign up for free to continue.",
     "demoLimitSignUpCta": "Sign up",
-    "freeQuotaExhausted": "You've used all 10 free messages this month.",
+    "freeQuotaExhausted": "You've used all {count} free messages this month.",
+    "@freeQuotaExhausted": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "upgradeForUnlimited": "Upgrade to Pro for unlimited",
     "upgradeCta": "Upgrade",
     "rateLimitTryAgain": "Sending too fast. Try again in a few seconds.",
@@ -2197,5 +2204,12 @@
     "deadlineEuRadarTitle": "EU deadline radar (preview)",
     "@deadlineEuRadarTitle": {},
     "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
-    "@deadlineEuRadarSubtitle": {}
+    "@deadlineEuRadarSubtitle": {},
+    "changePassword": "Change password",
+    "changePasswordSubtitle": "Update your account password",
+    "newPasswordTitle": "Set a new password",
+    "newPasswordHint": "Enter and confirm a new password for your account.",
+    "newPasswordSave": "Save new password",
+    "newPasswordSuccess": "Password updated. You can now use it to sign in.",
+    "newPasswordError": "Failed to update password. Please try again."
 }

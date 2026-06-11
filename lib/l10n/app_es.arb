@@ -1570,7 +1570,7 @@
  "refresh": "Actualizar",
  "demoLimitReached": "Límite de demostración alcanzado. Regístrese gratis para continuar.",
  "demoLimitSignUpCta": "Registrarse",
- "freeQuotaExhausted": "Ha utilizado los 10 mensajes gratuitos de este mes.",
+ "freeQuotaExhausted": "Ha utilizado los {count} mensajes gratuitos de este mes.",
  "upgradeForUnlimited": "Cambie a Pro para tener mensajes ilimitados",
  "upgradeCta": "Mejorar plan",
  "rateLimitTryAgain": "Está enviando demasiado rápido. Vuelva a intentarlo en unos segundos.",
@@ -1950,5 +1950,12 @@
  "panicRecordV1Body": "La función de grabación está en proceso de validación jurídica para Estonia y estará disponible en la V2. Por ahora, use la grabadora de voz integrada de su teléfono.",
  "panicCallFallbackBody": "Escriba a kiire@advocat.ee con una breve descripción y le devolveremos la llamada.",
  "softCaseShellBanner": "Creamos un «Caso sin título» para hacer seguimiento de esto. Toque para cambiar el nombre.",
- "softCaseShellBannerCta": "Cambiar nombre"
+ "softCaseShellBannerCta": "Cambiar nombre",
+    "changePassword": "Cambiar contraseña",
+    "changePasswordSubtitle": "Actualiza la contraseña de tu cuenta",
+    "newPasswordTitle": "Establecer una nueva contraseña",
+    "newPasswordHint": "Introduce y confirma una nueva contraseña para tu cuenta.",
+    "newPasswordSave": "Guardar nueva contraseña",
+    "newPasswordSuccess": "Contraseña actualizada. Ya puedes usarla para iniciar sesión.",
+    "newPasswordError": "No se pudo actualizar la contraseña. Inténtalo de nuevo."
 }

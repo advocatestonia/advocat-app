@@ -1051,7 +1051,7 @@
     "refresh": "Обновить",
     "demoLimitReached": "Демо-лимит исчерпан. Зарегистрируйтесь бесплатно, чтобы продолжить.",
     "demoLimitSignUpCta": "Регистрация",
-    "freeQuotaExhausted": "Вы использовали все 10 бесплатных сообщений в этом месяце.",
+    "freeQuotaExhausted": "Вы использовали все {count} бесплатных сообщений в этом месяце.",
     "upgradeForUnlimited": "Оформите Pro для безлимитного доступа",
     "upgradeCta": "Оформить",
     "rateLimitTryAgain": "Слишком частые запросы. Попробуйте через пару секунд.",
@@ -1975,5 +1975,12 @@
     "deadlineEuRadarTitle": "Радар сроков ЕС (превью)",
     "@deadlineEuRadarTitle": {},
     "deadlineEuRadarSubtitle": "Гипотетические процессуальные сроки ЕС — тестовые данные",
-    "@deadlineEuRadarSubtitle": {}
+    "@deadlineEuRadarSubtitle": {},
+    "changePassword": "Сменить пароль",
+    "changePasswordSubtitle": "Обновите пароль вашего аккаунта",
+    "newPasswordTitle": "Задайте новый пароль",
+    "newPasswordHint": "Введите и подтвердите новый пароль для вашего аккаунта.",
+    "newPasswordSave": "Сохранить новый пароль",
+    "newPasswordSuccess": "Пароль обновлён. Теперь используйте его для входа.",
+    "newPasswordError": "Не удалось обновить пароль. Попробуйте ещё раз."
 }

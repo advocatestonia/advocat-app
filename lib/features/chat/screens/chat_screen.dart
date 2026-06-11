@@ -216,7 +216,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final _knowledgeService = ClientKnowledgeService();
   bool _upgradeBannerDismissed = false;
   int _freeMessagesUsed = 0;
-  // Mirrors AIService.freeTotalLimit (10/mo as of Bentley P8 2026-05-16).
+  // Mirrors AIService.freeTotalLimit (25/mo; source of truth: check-ai-quota FREE_LIMIT).
   // Updated at runtime from the server response so the UI never drifts from
   // the real quota.
   int _freeMessagesTotal = AIService.freeTotalLimit;

@@ -17,7 +17,7 @@
 //   1. [QuotaDenialReason.anonDemo] — anon user hit the demo cap. Shows
 //      the demo limit text + a "Sign up" CTA that navigates to /register.
 //   2. [QuotaDenialReason.freeQuotaExhausted] — logged-in free user used
-//      all 7 monthly messages. Shows the upgrade text + an "Upgrade" CTA
+//      all monthly free messages. Shows the upgrade text + an "Upgrade" CTA
 //      that navigates to /subscription.
 //   3. [QuotaDenialReason.rateLimit] — IP rate-limit (3/min) hit. Shows a
 //      transient "try again" message with NO CTA (the user just waits).
@@ -31,6 +31,16 @@ import 'package:flutter/material.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 
+/// Free-tier monthly message cap shown in quota copy.
+///
+/// MUST stay in sync with the backend source of truth:
+/// `supabase/functions/check-ai-quota/index.ts` `FREE_LIMIT` (25) and
+/// `AIService.freeTotalLimit` (25). Audit 2026-06-11 found this copy said
+/// "10 free messages" while the backend enforced 25/month — the l10n key
+/// `freeQuotaExhausted` is now parameterized with `{count}` so only this
+/// constant (and the backend) carry the literal.
+const int kFreeMessagesPerMonth = 25;
+
 /// Why a chat send was denied. Use [fromQuota] to derive the reason from
 /// the current [AiQuota]/auth state — pass the resulting (nullable) value
 /// to [buildQuotaErrorSnackBar] when non-null.
@@ -39,7 +49,7 @@ enum QuotaDenialReason {
   /// CTA: sign up.
   anonDemo,
 
-  /// Logged-in free-tier user used all 7 monthly messages. CTA: upgrade.
+  /// Logged-in free-tier user used all monthly free messages. CTA: upgrade.
   freeQuotaExhausted,
 
   /// IP rate-limit (3 messages per minute). Transient — no CTA.
@@ -75,11 +85,16 @@ enum QuotaDenialReason {
 ///     [QuotaDenialReason.freeQuotaExhausted]. Typical impl:
 ///     `context.push('/subscription')`.
 ///   - rate limit has no CTA (it's transient — the user just waits).
+///   - [freeLimit] — the free-tier monthly cap rendered in the
+///     [QuotaDenialReason.freeQuotaExhausted] copy. Defaults to
+///     [kFreeMessagesPerMonth]; pass `AIService.freeTotalLimit` from
+///     screens that already depend on the service layer.
 SnackBar buildQuotaErrorSnackBar({
   required BuildContext context,
   required QuotaDenialReason reason,
   VoidCallback? onSignUp,
   VoidCallback? onUpgrade,
+  int freeLimit = kFreeMessagesPerMonth,
 }) {
   final l10n = AppLocalizations.of(context);
 
@@ -98,12 +113,12 @@ SnackBar buildQuotaErrorSnackBar({
       break;
     case QuotaDenialReason.freeQuotaExhausted:
       // Combine the two l10n keys so the user sees both lines in one
-      // snackbar — "you've used all 10 / upgrade to Pro for unlimited".
-      // Free-tier limit bumped 7 → 10 in Bentley P8 (2026-05-16); the
-      // localised string ships with {count} so this fallback is the only
-      // place a literal needs updating.
-      final exhausted = l10n?.freeQuotaExhausted ??
-          "You've used all 10 free messages this month.";
+      // snackbar — "you've used all N / upgrade to Pro for unlimited".
+      // The localised string ships with {count}, so the rendered number
+      // always follows [freeLimit] (default [kFreeMessagesPerMonth], in
+      // sync with check-ai-quota FREE_LIMIT = 25).
+      final exhausted = l10n?.freeQuotaExhausted(freeLimit) ??
+          "You've used all $freeLimit free messages this month.";
       final upgrade = l10n?.upgradeForUnlimited ?? 'Upgrade to Pro for unlimited';
       message = '$exhausted $upgrade';
       ctaLabel = l10n?.upgradeCta ?? 'Upgrade';

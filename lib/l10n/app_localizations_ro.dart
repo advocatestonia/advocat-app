@@ -2832,8 +2832,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get demoLimitSignUpCta => 'Înregistrare';
 
   @override
-  String get freeQuotaExhausted =>
-      'Ați folosit toate cele 10 mesaje gratuite din această lună.';
+  String freeQuotaExhausted(int count) {
+    return 'Ați folosit toate cele $count mesaje gratuite din această lună.';
+  }
 
   @override
   String get upgradeForUnlimited => 'Treceți la Pro pentru acces nelimitat';
@@ -4620,4 +4621,28 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypothetical EU procedural deadlines — mock data';
+
+  @override
+  String get changePassword => 'Schimbă parola';
+
+  @override
+  String get changePasswordSubtitle => 'Actualizează parola contului tău';
+
+  @override
+  String get newPasswordTitle => 'Setează o parolă nouă';
+
+  @override
+  String get newPasswordHint =>
+      'Introdu și confirmă o parolă nouă pentru contul tău.';
+
+  @override
+  String get newPasswordSave => 'Salvează parola nouă';
+
+  @override
+  String get newPasswordSuccess =>
+      'Parola a fost actualizată. O poți folosi acum pentru autentificare.';
+
+  @override
+  String get newPasswordError =>
+      'Actualizarea parolei a eșuat. Te rugăm să încerci din nou.';
 }

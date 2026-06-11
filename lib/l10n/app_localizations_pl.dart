@@ -63,7 +63,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get analyzing => 'Analizowanie…';
 
   @override
-  String get aiAnalyzing => 'AI is analyzing';
+  String get aiAnalyzing => 'AI analizuje';
 
   @override
   String get speakIntoMicHint =>
@@ -1726,7 +1726,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
+      'Cześć! Jestem Advocat — Twój asystent prawny AI. Dostarczam informacje prawne, a nie porady prawne. W jakiej kwestii prawnej mogę pomóc?';
 
   @override
   String get copySummary => 'Kopiuj podsumowanie';
@@ -1783,20 +1783,20 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get aiDisclaimerCompact =>
-      'Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.';
+      'Advocat to informacja prawna generowana przez AI, a nie porada prawna. Przed podjęciem działań skonsultuj się z licencjonowanym prawnikiem.';
 
   @override
-  String get aiDisclaimerFullTitle => 'Important: how Advocat works';
+  String get aiDisclaimerFullTitle => 'Ważne: jak działa Advocat';
 
   @override
   String get aiDisclaimerFullBody =>
-      'Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.';
+      'Advocat to narzędzie sztucznej inteligencji, które dostarcza informacje prawne, a nie porady prawne. Zgodnie z unijnym aktem o sztucznej inteligencji (art. 50) musimy wyraźnie poinformować: rozmawiasz z AI, a nie z prawnikiem.\n\nAdvocat nie jest kancelarią prawną. Nie jesteśmy licencjonowanymi adwokatami w rozumieniu estońskiej ustawy Advokatuuriseadus ani fińskiej ustawy Asianajajalaki, a Twoje rozmowy z tym narzędziem nie są objęte tajemnicą adwokacką. Zanim oprzesz się na jakiejkolwiek odpowiedzi — aby złożyć odwołanie, podpisać umowę lub dotrzymać terminu — zweryfikuj ją u licencjonowanego prawnika w swojej jurysdykcji.';
 
   @override
-  String get aiDisclaimerExpand => 'Learn more';
+  String get aiDisclaimerExpand => 'Dowiedz się więcej';
 
   @override
-  String get aiDisclaimerDismiss => 'OK, I understand';
+  String get aiDisclaimerDismiss => 'OK, rozumiem';
 
   @override
   String get dataPrivacyConsent => 'Zgoda na przetwarzanie danych';
@@ -2419,7 +2419,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get chatWelcomeSubtitle =>
-      'I will analyze the situation, check documents, find errors, and suggest what to do.';
+      'Przeanalizuję sytuację, sprawdzę dokumenty, znajdę błędy i podpowiem, co robić.';
 
   @override
   String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
@@ -2480,7 +2480,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get chatDisclaimerBanner =>
-      'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.';
+      'Asystent AI dostarcza informacje prawne, a nie porady prawne. Zawsze skonsultuj się z wykwalifikowanym prawnikiem.';
 
   @override
   String get chatDisclaimerSubtitle => 'Asystent AI · nie porada prawna';
@@ -2841,8 +2841,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get demoLimitSignUpCta => 'Zarejestruj się';
 
   @override
-  String get freeQuotaExhausted =>
-      'Wykorzystałeś(-aś) wszystkie 10 bezpłatnych wiadomości w tym miesiącu.';
+  String freeQuotaExhausted(int count) {
+    return 'Wykorzystałeś(-aś) wszystkie $count bezpłatnych wiadomości w tym miesiącu.';
+  }
 
   @override
   String get upgradeForUnlimited =>
@@ -3758,7 +3759,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get contractReviewsFreeFeature =>
-      '1 przegląd umowy (próba dożywotnia)';
+      '1 przegląd umowy (jednorazowo, bezpłatnie)';
 
   @override
   String get contractReviewsCounselFeature => '5 przeglądów umów miesięcznie';
@@ -3785,22 +3786,23 @@ class AppLocalizationsPl extends AppLocalizations {
       'Brak pozostałych przeglądów umów w tym miesiącu';
 
   @override
-  String get contractReviewsFreeTrialLeft => 'Darmowa próba: 1 przegląd umowy';
+  String get contractReviewsFreeTrialLeft =>
+      'Bezpłatna wersja próbna: 1 przegląd umowy';
 
   @override
   String get contractReviewsFreeTrialUsed =>
-      'Darmowa próba wykorzystana — zaktualizuj';
+      'Wersja próbna wykorzystana — ulepsz plan';
 
   @override
   String get contractReviewsUpgradeTitle => 'Przeglądy umów wyczerpane';
 
   @override
   String get contractReviewsUpgradeBodyFree =>
-      'Wykorzystałeś darmowy przegląd umowy. Zaktualizuj, aby uzyskać miesięczne przeglądy.';
+      'Wykorzystałeś(-aś) bezpłatny przegląd umowy. Ulepsz plan, aby otrzymywać miesięczne przeglądy.';
 
   @override
   String contractReviewsUpgradeBodyPaid(int used, int cap) {
-    return 'Wykorzystałeś $used z $cap przeglądów w tym miesiącu. Zaktualizuj, aby uzyskać wyższy miesięczny limit.';
+    return 'Wykorzystałeś(-aś) $used z $cap przeglądów w tym miesiącu. Ulepsz plan, aby uzyskać wyższy miesięczny limit.';
   }
 
   @override
@@ -4489,13 +4491,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get emptyChatTitle => 'Ask Advocat anything';
 
   @override
-  String get chatExamplePrompt1 => 'Help me reply to a fine';
+  String get chatExamplePrompt1 => 'Pomóż mi odpowiedzieć na mandat';
 
   @override
-  String get chatExamplePrompt2 => 'Review my rental contract';
+  String get chatExamplePrompt2 => 'Sprawdź moją umowę najmu';
 
   @override
-  String get chatExamplePrompt3 => 'What are my rights at work?';
+  String get chatExamplePrompt3 => 'Jakie mam prawa w pracy?';
 
   @override
   String get dangerZone => '[en] Danger zone';
@@ -4520,29 +4522,29 @@ class AppLocalizationsPl extends AppLocalizations {
   String get deletingAccount => '[en] Deleting account…';
 
   @override
-  String get contractReviewTitle => 'Contract Review';
+  String get contractReviewTitle => 'Analiza umowy';
 
   @override
-  String get contractReviewUploadCta => 'Upload contract';
+  String get contractReviewUploadCta => 'Prześlij umowę';
 
   @override
   String get contractReviewQuotaRemaining =>
-      'Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.';
+      'Prześlij umowę w formacie PDF, DOC, DOCX lub TXT, aby otrzymać analizę AI z sygnałami ostrzegawczymi i wskazówkami negocjacyjnymi.';
 
   @override
-  String get contractReviewRedFlags => 'Red flags';
+  String get contractReviewRedFlags => 'Sygnały ostrzegawcze';
 
   @override
-  String get contractReviewReviewPoints => 'Review points';
+  String get contractReviewReviewPoints => 'Punkty do weryfikacji';
 
   @override
-  String get contractReviewNegotiationTips => 'Negotiation tips';
+  String get contractReviewNegotiationTips => 'Wskazówki negocjacyjne';
 
   @override
-  String get contractReviewSaveToVault => 'Save to Vault';
+  String get contractReviewSaveToVault => 'Zapisz w Sejfie';
 
   @override
-  String get contractReviewContinueChat => 'Continue in chat';
+  String get contractReviewContinueChat => 'Kontynuuj na czacie';
 
   @override
   String get referralInviteFriends => 'Invite Friends';
@@ -4675,4 +4677,28 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypothetical EU procedural deadlines — mock data';
+
+  @override
+  String get changePassword => 'Zmień hasło';
+
+  @override
+  String get changePasswordSubtitle => 'Zaktualizuj hasło swojego konta';
+
+  @override
+  String get newPasswordTitle => 'Ustaw nowe hasło';
+
+  @override
+  String get newPasswordHint =>
+      'Wprowadź i potwierdź nowe hasło do swojego konta.';
+
+  @override
+  String get newPasswordSave => 'Zapisz nowe hasło';
+
+  @override
+  String get newPasswordSuccess =>
+      'Hasło zostało zaktualizowane. Możesz teraz zalogować się nowym hasłem.';
+
+  @override
+  String get newPasswordError =>
+      'Nie udało się zaktualizować hasła. Spróbuj ponownie.';
 }

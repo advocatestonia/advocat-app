@@ -1570,7 +1570,7 @@
     "refresh": "Aggiorna",
     "demoLimitReached": "Limite della demo raggiunto. Si registri gratuitamente per continuare.",
     "demoLimitSignUpCta": "Registrati",
-    "freeQuotaExhausted": "Ha utilizzato tutti i 10 messaggi gratuiti di questo mese.",
+    "freeQuotaExhausted": "Ha utilizzato tutti i {count} messaggi gratuiti di questo mese.",
     "upgradeForUnlimited": "Passi a Pro per messaggi illimitati",
     "upgradeCta": "Effettua l'upgrade",
     "rateLimitTryAgain": "Invio troppo rapido. Riprovi tra qualche secondo.",
@@ -1950,5 +1950,12 @@
     "panicRecordV1Body": "La funzione di registrazione è in fase di validazione legale per l'Estonia e sarà disponibile nella V2. Per ora, usi il registratore vocale integrato del suo telefono.",
     "panicCallFallbackBody": "Scriva a kiire@advocat.ee con una breve descrizione e la richiameremo.",
     "softCaseShellBanner": "Abbiamo creato \"Caso senza titolo\" per tenerne traccia. Tocchi per rinominarlo.",
-    "softCaseShellBannerCta": "Rinomina"
+    "softCaseShellBannerCta": "Rinomina",
+    "changePassword": "Cambia password",
+    "changePasswordSubtitle": "Aggiorna la password del tuo account",
+    "newPasswordTitle": "Imposta una nuova password",
+    "newPasswordHint": "Inserisci e conferma una nuova password per il tuo account.",
+    "newPasswordSave": "Salva nuova password",
+    "newPasswordSuccess": "Password aggiornata. Ora puoi usarla per accedere.",
+    "newPasswordError": "Impossibile aggiornare la password. Riprova."
 }

@@ -2806,8 +2806,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get demoLimitSignUpCta => 'Rekisteröidy';
 
   @override
-  String get freeQuotaExhausted =>
-      'Olet käyttänyt kaikki 10 ilmaista viestiä tässä kuussa.';
+  String freeQuotaExhausted(int count) {
+    return 'Olet käyttänyt kaikki $count ilmaista viestiä tässä kuussa.';
+  }
 
   @override
   String get upgradeForUnlimited =>
@@ -4595,4 +4596,27 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypoteettiset EU-prosessuaaliset määräajat — testidata';
+
+  @override
+  String get changePassword => 'Vaihda salasana';
+
+  @override
+  String get changePasswordSubtitle => 'Päivitä tilisi salasana';
+
+  @override
+  String get newPasswordTitle => 'Aseta uusi salasana';
+
+  @override
+  String get newPasswordHint => 'Syötä ja vahvista tilisi uusi salasana.';
+
+  @override
+  String get newPasswordSave => 'Tallenna uusi salasana';
+
+  @override
+  String get newPasswordSuccess =>
+      'Salasana päivitetty. Voit nyt kirjautua sillä sisään.';
+
+  @override
+  String get newPasswordError =>
+      'Salasanan päivitys epäonnistui. Yritä uudelleen.';
 }

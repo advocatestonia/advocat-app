@@ -63,7 +63,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get analyzing => 'Analizuojama…';
 
   @override
-  String get aiAnalyzing => 'AI is analyzing';
+  String get aiAnalyzing => 'AI analizuoja';
 
   @override
   String get speakIntoMicHint =>
@@ -1723,7 +1723,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
+      'Sveiki! Aš esu Advocat — jūsų AI teisinis padėjėjas. Teikiu teisinę informaciją, o ne teisines konsultacijas. Kokiu teisiniu klausimu galiu padėti?';
 
   @override
   String get copySummary => 'Kopijuoti santrauką';
@@ -1780,20 +1780,20 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get aiDisclaimerCompact =>
-      'Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.';
+      'Advocat — tai AI teikiama teisinė informacija, o ne teisinė konsultacija. Prieš imdamiesi veiksmų pasitikrinkite pas licencijuotą teisininką.';
 
   @override
-  String get aiDisclaimerFullTitle => 'Important: how Advocat works';
+  String get aiDisclaimerFullTitle => 'Svarbu: kaip veikia Advocat';
 
   @override
   String get aiDisclaimerFullBody =>
-      'Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.';
+      'Advocat — tai dirbtinio intelekto įrankis, teikiantis teisinę informaciją, o ne teisines konsultacijas. Pagal ES dirbtinio intelekto aktą (50 str.) privalome aiškiai pasakyti: bendraujate su AI, o ne su žmogumi teisininku.\n\nAdvocat nėra advokatų kontora. Mes nesame licencijuoti advokatai pagal Estijos Advokatuuriseadus ar Suomijos Asianajajalaki, o jūsų pokalbiams su šiuo įrankiu netaikoma advokato ir kliento bendravimo apsauga. Prieš remdamiesi bet kuriuo atsakymu — teikdami skundą, pasirašydami sutartį ar veikdami iki termino — pasitikrinkite pas licencijuotą teisininką savo jurisdikcijoje.';
 
   @override
-  String get aiDisclaimerExpand => 'Learn more';
+  String get aiDisclaimerExpand => 'Sužinoti daugiau';
 
   @override
-  String get aiDisclaimerDismiss => 'OK, I understand';
+  String get aiDisclaimerDismiss => 'Gerai, supratau';
 
   @override
   String get dataPrivacyConsent => 'Duomenų privatumo sutikimas';
@@ -2419,7 +2419,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get chatWelcomeSubtitle =>
-      'I will analyze the situation, check documents, find errors, and suggest what to do.';
+      'Išanalizuosiu situaciją, patikrinsiu dokumentus, rasiu klaidas ir pasiūlysiu, ką daryti.';
 
   @override
   String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
@@ -2480,7 +2480,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get chatDisclaimerBanner =>
-      'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.';
+      'AI padėjėjas teikia teisinę informaciją, o ne teisines konsultacijas. Visada pasitarkite su kvalifikuotu teisininku.';
 
   @override
   String get chatDisclaimerSubtitle =>
@@ -2842,8 +2842,9 @@ class AppLocalizationsLt extends AppLocalizations {
   String get demoLimitSignUpCta => 'Užsiregistruoti';
 
   @override
-  String get freeQuotaExhausted =>
-      'Šį mėnesį panaudojote visus 10 nemokamų pranešimų.';
+  String freeQuotaExhausted(int count) {
+    return 'Šį mėnesį panaudojote visus $count nemokamų pranešimų.';
+  }
 
   @override
   String get upgradeForUnlimited => 'Atnaujinkite į Pro neribotam naudojimui';
@@ -4468,13 +4469,13 @@ class AppLocalizationsLt extends AppLocalizations {
   String get emptyChatTitle => 'Ask Advocat anything';
 
   @override
-  String get chatExamplePrompt1 => 'Help me reply to a fine';
+  String get chatExamplePrompt1 => 'Padėk atsakyti į baudą';
 
   @override
-  String get chatExamplePrompt2 => 'Review my rental contract';
+  String get chatExamplePrompt2 => 'Peržiūrėk mano nuomos sutartį';
 
   @override
-  String get chatExamplePrompt3 => 'What are my rights at work?';
+  String get chatExamplePrompt3 => 'Kokios mano teisės darbe?';
 
   @override
   String get dangerZone => '[en] Danger zone';
@@ -4499,29 +4500,29 @@ class AppLocalizationsLt extends AppLocalizations {
   String get deletingAccount => '[en] Deleting account…';
 
   @override
-  String get contractReviewTitle => 'Contract Review';
+  String get contractReviewTitle => 'Sutarties peržiūra';
 
   @override
-  String get contractReviewUploadCta => 'Upload contract';
+  String get contractReviewUploadCta => 'Įkelti sutartį';
 
   @override
   String get contractReviewQuotaRemaining =>
-      'Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.';
+      'Įkelkite PDF, DOC, DOCX arba TXT formato sutartį ir gaukite AI peržiūrą su įspėjamaisiais ženklais bei derybų patarimais.';
 
   @override
-  String get contractReviewRedFlags => 'Red flags';
+  String get contractReviewRedFlags => 'Įspėjamieji ženklai';
 
   @override
-  String get contractReviewReviewPoints => 'Review points';
+  String get contractReviewReviewPoints => 'Peržiūros punktai';
 
   @override
-  String get contractReviewNegotiationTips => 'Negotiation tips';
+  String get contractReviewNegotiationTips => 'Derybų patarimai';
 
   @override
-  String get contractReviewSaveToVault => 'Save to Vault';
+  String get contractReviewSaveToVault => 'Išsaugoti saugykloje';
 
   @override
-  String get contractReviewContinueChat => 'Continue in chat';
+  String get contractReviewContinueChat => 'Tęsti pokalbyje';
 
   @override
   String get referralInviteFriends => 'Invite Friends';
@@ -4653,4 +4654,28 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypothetical EU procedural deadlines — mock data';
+
+  @override
+  String get changePassword => 'Keisti slaptažodį';
+
+  @override
+  String get changePasswordSubtitle => 'Atnaujinkite savo paskyros slaptažodį';
+
+  @override
+  String get newPasswordTitle => 'Nustatykite naują slaptažodį';
+
+  @override
+  String get newPasswordHint =>
+      'Įveskite ir patvirtinkite naują paskyros slaptažodį.';
+
+  @override
+  String get newPasswordSave => 'Išsaugoti naują slaptažodį';
+
+  @override
+  String get newPasswordSuccess =>
+      'Slaptažodis atnaujintas. Dabar galite jį naudoti prisijungdami.';
+
+  @override
+  String get newPasswordError =>
+      'Nepavyko atnaujinti slaptažodžio. Bandykite dar kartą.';
 }

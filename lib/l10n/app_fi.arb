@@ -1057,7 +1057,7 @@
     "quickProfileSavedAck": "Selvä. Mikä on kysymyksesi?",
     "demoLimitReached": "Demoraja saavutettu. Rekisteröidy ilmaiseksi jatkaaksesi.",
     "demoLimitSignUpCta": "Rekisteröidy",
-    "freeQuotaExhausted": "Olet käyttänyt kaikki 10 ilmaista viestiä tässä kuussa.",
+    "freeQuotaExhausted": "Olet käyttänyt kaikki {count} ilmaista viestiä tässä kuussa.",
     "rateLimitTryAgain": "Lähetät liian nopeasti. Yritä uudelleen muutaman sekunnin kuluttua.",
     "upgradeCta": "Päivitä",
     "upgradeForUnlimited": "Päivitä Pro-tilaan saadaksesi rajattomat viestit",
@@ -1975,5 +1975,12 @@
     "deadlineEuRadarTitle": "EU-määräaikatutka (esikatselu)",
     "@deadlineEuRadarTitle": {},
     "deadlineEuRadarSubtitle": "Hypoteettiset EU-prosessuaaliset määräajat — testidata",
-    "@deadlineEuRadarSubtitle": {}
+    "@deadlineEuRadarSubtitle": {},
+    "changePassword": "Vaihda salasana",
+    "changePasswordSubtitle": "Päivitä tilisi salasana",
+    "newPasswordTitle": "Aseta uusi salasana",
+    "newPasswordHint": "Syötä ja vahvista tilisi uusi salasana.",
+    "newPasswordSave": "Tallenna uusi salasana",
+    "newPasswordSuccess": "Salasana päivitetty. Voit nyt kirjautua sillä sisään.",
+    "newPasswordError": "Salasanan päivitys epäonnistui. Yritä uudelleen."
 }

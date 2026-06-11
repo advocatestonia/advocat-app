@@ -2799,8 +2799,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get demoLimitSignUpCta => 'Sign up';
 
   @override
-  String get freeQuotaExhausted =>
-      'You\'ve used all 10 free messages this month.';
+  String freeQuotaExhausted(int count) {
+    return 'You\'ve used all $count free messages this month.';
+  }
 
   @override
   String get upgradeForUnlimited => 'Upgrade to Pro for unlimited';
@@ -4574,4 +4575,27 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deadlineEuRadarSubtitle =>
       'Hypothetical EU procedural deadlines — mock data';
+
+  @override
+  String get changePassword => 'Change password';
+
+  @override
+  String get changePasswordSubtitle => 'Update your account password';
+
+  @override
+  String get newPasswordTitle => 'Set a new password';
+
+  @override
+  String get newPasswordHint =>
+      'Enter and confirm a new password for your account.';
+
+  @override
+  String get newPasswordSave => 'Save new password';
+
+  @override
+  String get newPasswordSuccess =>
+      'Password updated. You can now use it to sign in.';
+
+  @override
+  String get newPasswordError => 'Failed to update password. Please try again.';
 }

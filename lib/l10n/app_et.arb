@@ -1051,7 +1051,7 @@
     "refresh": "Värskenda",
     "demoLimitReached": "Demoversiooni limiit on täis. Registreeru tasuta, et jätkata.",
     "demoLimitSignUpCta": "Registreeru",
-    "freeQuotaExhausted": "Olete kasutanud kõik 10 tasuta sõnumit selles kuus.",
+    "freeQuotaExhausted": "Olete kasutanud kõik {count} tasuta sõnumit selles kuus.",
     "upgradeForUnlimited": "Uuenda Pro-le piiramatuks kasutamiseks",
     "upgradeCta": "Uuenda",
     "rateLimitTryAgain": "Saadate liiga kiiresti. Proovige paari sekundi pärast uuesti.",
@@ -1957,5 +1957,12 @@
     "agentToolGeneratePdf": "Loo PDF",
     "@agentToolGeneratePdf": {},
     "agentToolApproveSend": "Saada ettevalmistatud vastus",
-    "@agentToolApproveSend": {}
+    "@agentToolApproveSend": {},
+    "changePassword": "Muuda parooli",
+    "changePasswordSubtitle": "Uuenda oma konto parooli",
+    "newPasswordTitle": "Määra uus parool",
+    "newPasswordHint": "Sisesta ja kinnita oma konto uus parool.",
+    "newPasswordSave": "Salvesta uus parool",
+    "newPasswordSuccess": "Parool on uuendatud. Saad seda nüüd sisselogimisel kasutada.",
+    "newPasswordError": "Parooli uuendamine ebaõnnestus. Palun proovi uuesti."
 }
