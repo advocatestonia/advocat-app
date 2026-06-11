@@ -247,7 +247,7 @@
                 "name": "Advocat бесплатный?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Advocat работает по freemium-модели. Каждый месяц вы можете бесплатно использовать до 7 сообщений с AI-юридическим помощником — этого обычно достаточно для одного быстрого вопроса. Для дальнейшего использования доступны платные пакеты: Counsel (ранее Pro) 19,99 €/месяц — неограниченный чат, анализ документов, 17 языков; Representation (ранее Premium) 29,99 €/месяц — все функции Counsel плюс создание документов, голосовой помощник и приоритетная поддержка. Полный прайс-лист: https://advocat.ee/#pricing. Отмена в любое время, право возврата ЕС в течение 14 дней."
+                    "text": "Advocat работает по freemium-модели. Каждый месяц вы можете бесплатно использовать до 25 сообщений с AI-юридическим помощником — этого обычно достаточно для одного быстрого вопроса. Для дальнейшего использования доступны платные пакеты: Counsel (ранее Pro) 19,99 €/месяц — неограниченный чат, анализ документов, 17 языков; Representation (ранее Premium) 29,99 €/месяц — все функции Counsel плюс создание документов, голосовой помощник и приоритетная поддержка. Полный прайс-лист: https://advocat.ee/#pricing. Отмена в любое время, право возврата ЕС в течение 14 дней."
                 }
             },
             {
@@ -296,6 +296,9 @@
 <!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
      All vendor scripts are loaded conditionally inside _analytics.js
      after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Cookie consent (W2-13): per-jurisdiction granular banner. MUST load before
+     _utm_capture.js and _analytics.js so consent gates every pixel. -->
+<script src="/_cookie_consent.js" defer></script>
 <script src="/_utm_capture.js"></script>
 <script src="/_analytics.js" defer></script>
 </head>
@@ -448,7 +451,7 @@
 
             <div class="faq-item">
                 <h3>19. Advocat бесплатный?</h3>
-                <p>Advocat работает по <strong>freemium-модели</strong>. Каждый месяц вы можете бесплатно использовать до <strong>7 сообщений</strong> с AI-юридическим помощником — этого обычно достаточно для одного быстрого вопроса. Для дальнейшего использования доступны платные пакеты:</p>
+                <p>Advocat работает по <strong>freemium-модели</strong>. Каждый месяц вы можете бесплатно использовать до <strong>25 сообщений</strong> с AI-юридическим помощником — этого обычно достаточно для одного быстрого вопроса. Для дальнейшего использования доступны платные пакеты:</p>
                 <ul>
                     <li><strong>Counsel</strong> (ранее Pro): <strong>19,99 €/месяц</strong> — неограниченный чат, анализ документов, 17 языков</li>
                     <li><strong>Representation</strong> (ранее Premium): <strong>29,99 €/месяц</strong> — все функции Counsel плюс создание документов, голосовой помощник, приоритетная поддержка</li>
@@ -473,7 +476,7 @@
 
             <div class="cta-box">
                 <h3>Есть вопрос о ваших правах?</h3>
-                <p>Advocat AI объяснит простым языком, какие у вас возможности и права. Freemium: 7 сообщений в месяц бесплатно, далее платные пакеты от 19,99 €/месяц.</p>
+                <p>Advocat AI объяснит простым языком, какие у вас возможности и права. Freemium: 25 сообщений в месяц бесплатно, далее платные пакеты от 19,99 €/месяц.</p>
                 <a href="/app.html" class="cta-btn">Попробовать Advocat &rarr;</a>
             </div>
         </div>
