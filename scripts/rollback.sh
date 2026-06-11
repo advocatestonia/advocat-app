@@ -108,7 +108,10 @@ ok "gh-pages force-pushed to $TARGET_SHA"
 # Optional SQL down (BP-4 addition)
 # ---------------------------------------------------------------------------
 if [[ -n "$SQL_DOWN" ]]; then
-  DOWN_SQL="$REPO_ROOT/supabase/migrations/${SQL_DOWN}.down.sql"
+  # .down.sql files live in migrations_down/ (moved out of migrations/ so the
+  # CLI no longer parses them); fall back to the old location just in case.
+  DOWN_SQL="$REPO_ROOT/supabase/migrations_down/${SQL_DOWN}.down.sql"
+  [[ -f "$DOWN_SQL" ]] || DOWN_SQL="$REPO_ROOT/supabase/migrations/${SQL_DOWN}.down.sql"
   if [[ -f "$DOWN_SQL" ]]; then
     log "Running SQL down: $DOWN_SQL"
     if [[ $DRY_RUN -eq 1 ]]; then

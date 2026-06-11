@@ -95,15 +95,30 @@ create table if not exists public.error_log (
   ))
 );
 
-comment on table public.error_log is
-  'P5 (2026-05-15): edge-fn error sink. 100%% of 5xx, 10%% of normal errors. '
-  'Service-role write only. 30-day manual TTL.';
-
 create index if not exists idx_error_log_recent
   on public.error_log (occurred_at desc);
 
-create index if not exists idx_error_log_fn_severity
-  on public.error_log (fn_name, severity, occurred_at desc);
+-- 2026-06-11 repair note: on prod, public.error_log was ALREADY created by
+-- 20260515220031_anti_abuse_protection with a DIFFERENT shape (kind/source,
+-- no fn_name). The `create table if not exists` above then no-ops, and an
+-- unconditional index on (fn_name, ...) would fail with 42703. Guard both
+-- the fn_name index and the table comment on column existence so this
+-- migration is safe on BOTH a fresh database and current prod.
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public'
+      and table_name   = 'error_log'
+      and column_name  = 'fn_name'
+  ) then
+    create index if not exists idx_error_log_fn_severity
+      on public.error_log (fn_name, severity, occurred_at desc);
+    comment on table public.error_log is
+      'P5 (2026-05-15): edge-fn error sink. 100%% of 5xx, 10%% of normal errors. '
+      'Service-role write only. 30-day manual TTL.';
+  end if;
+end$$;
 
 alter table public.error_log enable row level security;
 
@@ -134,18 +149,31 @@ comment on view public.v_halt_rail_24h is
   'Owner query: SELECT * FROM v_halt_rail_24h;';
 
 -- "Last 1h error spike": top fn × severity combos.
-create or replace view public.v_error_log_1h as
-  select
-    fn_name,
-    severity,
-    count(*)::int as events,
-    min(occurred_at) as first_seen,
-    max(occurred_at) as last_seen
-  from public.error_log
-  where occurred_at >= now() - interval '1 hour'
-  group by fn_name, severity
-  order by events desc;
+-- 2026-06-11 repair note: guarded like idx_error_log_fn_severity above —
+-- on prod error_log has no fn_name column (20260515220031 shape), so an
+-- unconditional view referencing it would fail with 42703.
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public'
+      and table_name   = 'error_log'
+      and column_name  = 'fn_name'
+  ) then
+    create or replace view public.v_error_log_1h as
+      select
+        fn_name,
+        severity,
+        count(*)::int as events,
+        min(occurred_at) as first_seen,
+        max(occurred_at) as last_seen
+      from public.error_log
+      where occurred_at >= now() - interval '1 hour'
+      group by fn_name, severity
+      order by events desc;
 
-comment on view public.v_error_log_1h is
-  'Edge-fn error volume by fn × severity for the last hour. '
-  'Owner query: SELECT * FROM v_error_log_1h;';
+    comment on view public.v_error_log_1h is
+      'Edge-fn error volume by fn × severity for the last hour. '
+      'Owner query: SELECT * FROM v_error_log_1h;';
+  end if;
+end$$;
