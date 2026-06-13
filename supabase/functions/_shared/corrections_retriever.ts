@@ -26,6 +26,8 @@ export const CORRECTIONS_BLOCK_MAX_BYTES = 4 * 1024;
 export const DEFAULT_SIMILARITY_THRESHOLD = 0.45;
 export const DEFAULT_TOP_K = 3;
 
+import { pseudonymize } from "./llm_egress/pseudonymizer.ts";
+
 const OPENAI_URL = "https://api.openai.com/v1/embeddings";
 const OPENAI_MODEL = "text-embedding-3-small";
 
@@ -85,16 +87,20 @@ export async function embedText(opts: EmbedTextOpts): Promise<number[]> {
       "Content-Type": "application/json",
       Authorization: `Bearer ${opts.openaiApiKey}`,
     },
+    // Pseudonymize the user's question before it reaches OpenAI — this path
+    // embeds case-fact text and must not leak real names/IDs. Structured PII
+    // becomes PERSON_N / EMAIL_N tokens; semantic match is robust to it.
+    // See _shared/llm_egress (Data Fortress, 2026-06-13).
     body: JSON.stringify({
       model: OPENAI_MODEL,
-      input: opts.text.slice(0, 8000),
+      input: pseudonymize(opts.text.slice(0, 8000)).text,
     }),
   });
   if (!res.ok) {
     const err = await res.text();
     throw new Error(`OpenAI ${res.status}: ${err.slice(0, 200)}`);
   }
-  const json = await res.json() as {
+  const json = (await res.json()) as {
     data?: Array<{ embedding?: number[] }>;
   };
   const vec = json.data?.[0]?.embedding;
@@ -108,7 +114,7 @@ export async function embedText(opts: EmbedTextOpts): Promise<number[]> {
 
 function buildDefaultRetriever(
   supabaseUrl: string,
-  serviceRoleKey: string,
+  serviceRoleKey: string
 ): SimilarityRetriever {
   return async (req) => {
     const res = await fetch(`${supabaseUrl}/rest/v1/rpc/match_corrections`, {
@@ -129,7 +135,7 @@ function buildDefaultRetriever(
       const err = await res.text();
       throw new Error(`match_corrections ${res.status}: ${err.slice(0, 200)}`);
     }
-    const rows = await res.json() as CorrectionRow[];
+    const rows = (await res.json()) as CorrectionRow[];
     return Array.isArray(rows) ? rows : [];
   };
 }
@@ -142,7 +148,7 @@ function buildDefaultRetriever(
  * — the caller should ALWAYS proceed without retrieval as a safe default.
  */
 export async function retrieveCorrections(
-  opts: RetrieveCorrectionsOpts,
+  opts: RetrieveCorrectionsOpts
 ): Promise<CorrectionRow[]> {
   const threshold = opts.threshold ?? DEFAULT_SIMILARITY_THRESHOLD;
   const topK = opts.topK ?? DEFAULT_TOP_K;
@@ -158,7 +164,7 @@ export async function retrieveCorrections(
       });
     } catch (e) {
       console.warn(
-        `retrieveCorrections (injected): ${String(e).slice(0, 200)}`,
+        `retrieveCorrections (injected): ${String(e).slice(0, 200)}`
       );
       return [];
     }
@@ -179,7 +185,10 @@ export async function retrieveCorrections(
     console.warn(`retrieveCorrections embed: ${String(e).slice(0, 200)}`);
     return [];
   }
-  const retriever = buildDefaultRetriever(opts.supabaseUrl, opts.serviceRoleKey);
+  const retriever = buildDefaultRetriever(
+    opts.supabaseUrl,
+    opts.serviceRoleKey
+  );
   try {
     return await retriever({
       questionEmbedding: embedding,
@@ -207,7 +216,7 @@ export async function retrieveCorrections(
  */
 export function formatCorrectionsBlock(
   rows: CorrectionRow[],
-  maxBytes: number = CORRECTIONS_BLOCK_MAX_BYTES,
+  maxBytes: number = CORRECTIONS_BLOCK_MAX_BYTES
 ): string {
   if (!rows || rows.length === 0) return "";
   const header = "<learned_corrections>";
@@ -260,7 +269,8 @@ function truncateToBytes(s: string, maxBytes: number): string {
   const enc = new TextEncoder();
   if (enc.encode(s).length <= maxBytes) return s;
   // Binary-shrink — fast enough for our sizes.
-  let lo = 0, hi = s.length;
+  let lo = 0,
+    hi = s.length;
   while (lo < hi) {
     const mid = (lo + hi + 1) >>> 1;
     if (enc.encode(s.slice(0, mid)).length <= maxBytes) lo = mid;
@@ -293,7 +303,7 @@ export interface SelfCorrectionMatch {
  */
 export function selfCorrectionScan(
   draftReply: string,
-  rows: CorrectionRow[],
+  rows: CorrectionRow[]
 ): SelfCorrectionMatch[] {
   if (!draftReply || !rows || rows.length === 0) return [];
   const haystack = normalize(draftReply);
@@ -335,11 +345,13 @@ function pickProbe(wrong: string): string | null {
  * under 1 KB so the second-pass system prompt doesn't balloon.
  */
 export function buildSelfCorrectionAddendum(
-  matches: SelfCorrectionMatch[],
+  matches: SelfCorrectionMatch[]
 ): string {
   if (matches.length === 0) return "";
   const lines: string[] = ["<do_not_repeat>"];
-  lines.push("Your previous draft contained phrasing that matches a KNOWN past mistake.");
+  lines.push(
+    "Your previous draft contained phrasing that matches a KNOWN past mistake."
+  );
   lines.push("Re-draft the answer WITHOUT repeating these claims:");
   for (let i = 0; i < matches.length && i < 3; i++) {
     const m = matches[i];

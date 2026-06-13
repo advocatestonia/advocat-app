@@ -10,6 +10,8 @@
 // `vector(1536)` and pgvector will reject 3072-d vectors at insert time.
 // -----------------------------------------------------------------------------
 
+import { pseudonymize } from "../_shared/llm_egress/pseudonymizer.ts";
+
 const OPENAI_EMBED_URL = "https://api.openai.com/v1/embeddings";
 const OPENAI_MODEL = "text-embedding-3-small";
 
@@ -40,9 +42,18 @@ export interface EmbedResult {
  */
 export async function embedQuery(
   query: string,
-  opts: { apiKey: string; timeoutMs?: number; signal?: AbortSignal } = {
-    apiKey: "",
-  },
+  opts: {
+    apiKey: string;
+    timeoutMs?: number;
+    signal?: AbortSignal;
+    /**
+     * Set true ONLY when embedding public corpus text (statutes, citations)
+     * that contains no user PII. User queries (default) are pseudonymized
+     * before leaving for OpenAI — case facts must never reach the embeddings
+     * API in the clear. See _shared/llm_egress (Data Fortress, 2026-06-13).
+     */
+    corpus?: boolean;
+  } = { apiKey: "" }
 ): Promise<EmbedResult | null> {
   if (!opts.apiKey) {
     throw new EmbeddingError("OPENAI_API_KEY not set");
@@ -51,6 +62,11 @@ export async function embedQuery(
     return null;
   }
 
+  // Pseudonymize user queries before egress to OpenAI. Structured PII becomes
+  // PERSON_N / EMAIL_N tokens — a real name/ID must not leave the EU
+  // unscrubbed. Corpus indexing passes corpus:true to skip (no PII there).
+  const outbound = opts.corpus ? query : pseudonymize(query).text;
+
   const timeoutMs = opts.timeoutMs ?? 5000;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort("timeout"), timeoutMs);
@@ -58,19 +74,22 @@ export async function embedQuery(
   // If the caller passed an outer signal (test harness), tie it in.
   if (opts.signal) {
     if (opts.signal.aborted) controller.abort();
-    else opts.signal.addEventListener("abort", () => controller.abort(), { once: true });
+    else
+      opts.signal.addEventListener("abort", () => controller.abort(), {
+        once: true,
+      });
   }
 
   try {
     const resp = await fetch(OPENAI_EMBED_URL, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${opts.apiKey}`,
+        Authorization: `Bearer ${opts.apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         model: OPENAI_MODEL,
-        input: query,
+        input: outbound,
         encoding_format: "float",
       }),
       signal: controller.signal,
@@ -78,11 +97,13 @@ export async function embedQuery(
 
     if (!resp.ok) {
       const detail = await resp.text().catch(() => "");
-      console.warn(`embedQuery: OpenAI ${resp.status} — ${detail.slice(0, 240)}`);
+      console.warn(
+        `embedQuery: OpenAI ${resp.status} — ${detail.slice(0, 240)}`
+      );
       return null;
     }
 
-    const data = await resp.json() as {
+    const data = (await resp.json()) as {
       data?: Array<{ embedding?: number[] }>;
       usage?: { total_tokens?: number; prompt_tokens?: number };
     };
@@ -91,7 +112,7 @@ export async function embedQuery(
       console.warn(
         `embedQuery: malformed response (embedding length=${
           Array.isArray(embedding) ? embedding.length : "n/a"
-        })`,
+        })`
       );
       return null;
     }
