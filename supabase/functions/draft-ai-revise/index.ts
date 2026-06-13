@@ -27,14 +27,15 @@ import {
   runDraftRevise,
 } from "./handler.ts";
 
-const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY")!;
+const ANTHROPIC_API_KEY = (Deno.env.get("CLAUDE_API_KEY") ??
+  Deno.env.get("ANTHROPIC_API_KEY"))!;
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 // ─── Anthropic caller — real HTTP. ──────────────────────────────────────────
 
 const realAnthropic: AnthropicCaller = async (
-  req: AnthropicRequest,
+  req: AnthropicRequest
 ): Promise<AnthropicResponse> => {
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",

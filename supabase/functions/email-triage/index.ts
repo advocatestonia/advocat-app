@@ -42,10 +42,7 @@ import {
   type TriageInsertRow,
   type UserPrefs,
 } from "./triage_logic.ts";
-import {
-  type ConsiliumSSEEvent,
-  runConsilium,
-} from "../_shared/consilium.ts";
+import { type ConsiliumSSEEvent, runConsilium } from "../_shared/consilium.ts";
 import {
   appendCaseEventReal,
   applyMemoryUpdatesReal,
@@ -58,7 +55,8 @@ import {
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY") ?? "";
+const ANTHROPIC_API_KEY =
+  Deno.env.get("CLAUDE_API_KEY") ?? Deno.env.get("ANTHROPIC_API_KEY") ?? "";
 // Upstream timeout — a hung Anthropic connection would otherwise pin the
 // isolate and stall the triage queue. The resulting TimeoutError matches
 // TRANSIENT_ERROR_RE below, so it's retried rather than dropped.
@@ -69,8 +67,8 @@ const ANTHROPIC_FETCH_TIMEOUT_MS = 120_000;
 // forged by anyone reading the repo. The optional CRON_SECRET reuse stays
 // because cron paths require a high-entropy shared secret, but no public
 // fallback ever ships.
-const GATE_SECRET = Deno.env.get("EMAIL_AGENT_GATE_SECRET") ??
-  Deno.env.get("CRON_SECRET") ?? "";
+const GATE_SECRET =
+  Deno.env.get("EMAIL_AGENT_GATE_SECRET") ?? Deno.env.get("CRON_SECRET") ?? "";
 
 const QUOTA_TIERS: Record<string, number> = {
   free: 0,
@@ -86,88 +84,94 @@ const QUOTA_TIERS: Record<string, number> = {
 // fail-loud behaviour during incident response.
 const USE_RETRY_QUEUE =
   (Deno.env.get("EMAIL_TRIAGE_USE_RETRY_QUEUE") ?? "true").toLowerCase() !==
-    "false";
+  "false";
 
 // Anthropic errors we treat as transient (re-enqueue). Anything else is a
 // permanent failure (parser bug, missing thread, config error) and bubbles
 // as a 502 to the caller so the retry-tick worker dead-letters it.
-const TRANSIENT_ERROR_RE = /\b(5\d\d|429|529|timeout|ECONNRESET|fetch failed)\b/i;
+const TRANSIENT_ERROR_RE =
+  /\b(5\d\d|429|529|timeout|ECONNRESET|fetch failed)\b/i;
 
-serve(withSentry("email-triage", async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: corsHeaders });
-  }
-  if (req.method !== "POST") {
-    return jsonError("Method not allowed", 405);
-  }
-
-  let body: { thread_id?: string; user_id?: string };
-  try {
-    body = await req.json();
-  } catch (_) {
-    return jsonError("Invalid JSON body", 400);
-  }
-  if (!body?.thread_id) {
-    return jsonError("thread_id is required", 400);
-  }
-
-  // Cron / internal-call path — SECURITY (2026-05-27): the x-internal-call
-  // header alone is NOT sufficient; the caller MUST also present the
-  // service-role bearer (matches the pattern in pdf-parser/index.ts:130).
-  // Otherwise any user with a valid Supabase JWT could forge
-  // `x-internal-call: email-inbox-sync` + body.user_id and run paid
-  // Sonnet triage on behalf of an arbitrary user.
-  const cronHeader = req.headers.get("x-cron-secret");
-  const internalCallHeader = req.headers.get("x-internal-call");
-  const authHeaderRaw = req.headers.get("authorization") ??
-    req.headers.get("Authorization") ?? "";
-  const isInternalCall = internalCallHeader === "email-inbox-sync" &&
-    constantTimeEqual(authHeaderRaw, `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`);
-  // Trace propagation — pulled once from the request and threaded through
-  // every Anthropic call / queue row / audit insert below.
-  const traceId = getOrCreateTraceId(req);
-
-  if (cronHeader || isInternalCall) {
-    if (cronHeader) {
-      const gate = checkCronSecret(cronHeader, Deno.env.get("CRON_SECRET"));
-      if (gate.kind === "deny") {
-        return jsonError(gate.body.error, gate.status);
-      }
+serve(
+  withSentry("email-triage", async (req) => {
+    if (req.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: corsHeaders });
     }
-    const userId = body.user_id;
-    if (!userId) return jsonError("user_id required for cron", 400);
-    return await dispatchTriage(body.thread_id!, userId, traceId);
-  }
-  // If the caller TRIED to use x-internal-call but didn't present the
-  // service-role bearer, fail loud — never fall through to the per-user
-  // JWT path (would let them forge `body.user_id`).
-  if (internalCallHeader) {
-    return jsonError("internal-call requires service-role bearer", 401);
-  }
+    if (req.method !== "POST") {
+      return jsonError("Method not allowed", 405);
+    }
 
-  // SECURITY (Wave-1 2026-05-28, audit P1-11):
-  // Per-user JWT path previously did bare `sb.auth.getUser(token)` (no U1
-  // role/aud check), so a forged token could trigger paid Sonnet triage
-  // on arbitrary `thread_id`s — ~$0.02/triage burn. Gate now enforces
-  // role/aud + postgres-backed rate limit. Internal-call (cron) path
-  // above already validates the service-role bearer separately.
-  const gate = await requireUserWithRateLimit(req, {
-    bucket: "email-triage",
-    maxPerMinute: 30,
-  });
-  if (gate.kind === "deny") return gate.response;
-  return await dispatchTriage(body.thread_id!, gate.user.id, traceId);
-}));
+    let body: { thread_id?: string; user_id?: string };
+    try {
+      body = await req.json();
+    } catch (_) {
+      return jsonError("Invalid JSON body", 400);
+    }
+    if (!body?.thread_id) {
+      return jsonError("thread_id is required", 400);
+    }
+
+    // Cron / internal-call path — SECURITY (2026-05-27): the x-internal-call
+    // header alone is NOT sufficient; the caller MUST also present the
+    // service-role bearer (matches the pattern in pdf-parser/index.ts:130).
+    // Otherwise any user with a valid Supabase JWT could forge
+    // `x-internal-call: email-inbox-sync` + body.user_id and run paid
+    // Sonnet triage on behalf of an arbitrary user.
+    const cronHeader = req.headers.get("x-cron-secret");
+    const internalCallHeader = req.headers.get("x-internal-call");
+    const authHeaderRaw =
+      req.headers.get("authorization") ??
+      req.headers.get("Authorization") ??
+      "";
+    const isInternalCall =
+      internalCallHeader === "email-inbox-sync" &&
+      constantTimeEqual(authHeaderRaw, `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`);
+    // Trace propagation — pulled once from the request and threaded through
+    // every Anthropic call / queue row / audit insert below.
+    const traceId = getOrCreateTraceId(req);
+
+    if (cronHeader || isInternalCall) {
+      if (cronHeader) {
+        const gate = checkCronSecret(cronHeader, Deno.env.get("CRON_SECRET"));
+        if (gate.kind === "deny") {
+          return jsonError(gate.body.error, gate.status);
+        }
+      }
+      const userId = body.user_id;
+      if (!userId) return jsonError("user_id required for cron", 400);
+      return await dispatchTriage(body.thread_id!, userId, traceId);
+    }
+    // If the caller TRIED to use x-internal-call but didn't present the
+    // service-role bearer, fail loud — never fall through to the per-user
+    // JWT path (would let them forge `body.user_id`).
+    if (internalCallHeader) {
+      return jsonError("internal-call requires service-role bearer", 401);
+    }
+
+    // SECURITY (Wave-1 2026-05-28, audit P1-11):
+    // Per-user JWT path previously did bare `sb.auth.getUser(token)` (no U1
+    // role/aud check), so a forged token could trigger paid Sonnet triage
+    // on arbitrary `thread_id`s — ~$0.02/triage burn. Gate now enforces
+    // role/aud + postgres-backed rate limit. Internal-call (cron) path
+    // above already validates the service-role bearer separately.
+    const gate = await requireUserWithRateLimit(req, {
+      bucket: "email-triage",
+      maxPerMinute: 30,
+    });
+    if (gate.kind === "deny") return gate.response;
+    return await dispatchTriage(body.thread_id!, gate.user.id, traceId);
+  })
+);
 
 async function dispatchTriage(
   threadId: string,
   userId: string,
-  traceId: string,
+  traceId: string
 ): Promise<Response> {
   const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
   const deps = makeProdDeps(sb, traceId);
   console.log(
-    `email-triage start thread=${threadId} trace=${shortTrace(traceId)}`,
+    `email-triage start thread=${threadId} trace=${shortTrace(traceId)}`
   );
   try {
     const out = await runTriage(deps, {
@@ -184,7 +188,11 @@ async function dispatchTriage(
       // attempts. 422 (not 500) so it is unambiguously in retry-tick's
       // DEAD_LETTER_STATUSES — a real 500 still means transient/unexpected
       // and should retry.
-      return jsonError(out.error_code, 422, out.detail ? { detail: out.detail } : {});
+      return jsonError(
+        out.error_code,
+        422,
+        out.detail ? { detail: out.detail } : {}
+      );
     }
 
     // Pkg 5 — wait → strategy auto-transition on HIGH/CRITICAL inbound.
@@ -192,9 +200,8 @@ async function dispatchTriage(
     // Re-fetch the thread row (just case_id) since runTriage's
     // ThreadRecord isn't returned in TriageOutcome and we don't want
     // to widen that contract for a sidecar effect.
-    let phaseFlip:
-      | { changed: boolean; from?: string; to?: string }
-      | null = null;
+    let phaseFlip: { changed: boolean; from?: string; to?: string } | null =
+      null;
     try {
       const { data: threadRow } = await sb
         .from("email_threads")
@@ -212,9 +219,7 @@ async function dispatchTriage(
       }
     } catch (e) {
       console.warn(
-        `email-triage: phase-flip post-step threw: ${
-          String(e).slice(0, 200)
-        }`,
+        `email-triage: phase-flip post-step threw: ${String(e).slice(0, 200)}`
       );
     }
 
@@ -249,9 +254,9 @@ async function dispatchTriage(
           console.error("enqueue_triage failed:", enqErr.message);
         } else {
           console.log(
-            `triage enqueued for retry thread=${threadId} trace=${
-              shortTrace(traceId)
-            } reason=${detail.slice(0, 60)}`,
+            `triage enqueued for retry thread=${threadId} trace=${shortTrace(
+              traceId
+            )} reason=${detail.slice(0, 60)}`
           );
         }
       } catch (enqE) {
@@ -273,15 +278,13 @@ async function dispatchTriage(
 function makeProdDeps(
   // deno-lint-ignore no-explicit-any
   sb: any,
-  traceId: string | null = null,
+  traceId: string | null = null
 ): MinimalTriageDeps {
   return {
     async loadThread(threadId: string): Promise<ThreadRecord | null> {
       const { data: t, error } = await sb
         .from("email_threads")
-        .select(
-          "id, user_id, case_id, subject, participants",
-        )
+        .select("id, user_id, case_id, subject, participants")
         .eq("id", threadId)
         .maybeSingle();
       if (error || !t) return null;
@@ -296,7 +299,7 @@ function makeProdDeps(
         .select(
           "id, gmail_message_id, sender_email, sender_name, " +
             "to_recipients, cc_recipients, subject, body_plaintext, " +
-            "sent_at, has_attachments, attachments_meta, headers_meta",
+            "sent_at, has_attachments, attachments_meta, headers_meta"
         )
         .eq("thread_id", threadId)
         .order("sent_at", { ascending: false })
@@ -375,7 +378,7 @@ function makeProdDeps(
     },
 
     async loadInboundAttachments(
-      threadId: string,
+      threadId: string
     ): Promise<InboundAttachment[]> {
       // Fix #2 (2026-05-26) — bridge email_attachments → pdf-parser →
       // triage context. Returns `[]` on any error so triage critical
@@ -410,7 +413,9 @@ function makeProdDeps(
             else plan = "premium";
           }
         }
-      } catch (_) { /* fall through */ }
+      } catch (_) {
+        /* fall through */
+      }
       const limit = QUOTA_TIERS[plan] ?? 0;
       return { allowed: limit > 0, remaining: limit, plan };
     },
@@ -428,9 +433,7 @@ function makeProdDeps(
           max_tokens: args.maxTokens,
           temperature: args.temperature,
           system: args.systemBlocks,
-          messages: [
-            { role: "user", content: args.userMessage },
-          ],
+          messages: [{ role: "user", content: args.userMessage }],
         }),
         signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
       });
@@ -450,7 +453,7 @@ function makeProdDeps(
         output_tokens: Number(usage.output_tokens ?? 0),
         cache_read_input_tokens: Number(usage.cache_read_input_tokens ?? 0),
         cache_creation_input_tokens: Number(
-          usage.cache_creation_input_tokens ?? 0,
+          usage.cache_creation_input_tokens ?? 0
         ),
       };
     },
@@ -493,9 +496,10 @@ function makeProdDeps(
       } catch (e) {
         // runConsilium is documented as never-throws, but belt-and-braces.
         console.warn(
-          `email-triage callConsilium: runConsilium threw: ${
-            String(e).slice(0, 200)
-          }`,
+          `email-triage callConsilium: runConsilium threw: ${String(e).slice(
+            0,
+            200
+          )}`
         );
       }
 
@@ -505,28 +509,32 @@ function makeProdDeps(
       // remain unchanged — they parse Sonnet's structured 6-block output
       // exactly as on the legacy path.
       const consiliumBlock = synthesisText
-        ? `\n<consilium_synthesis>\n${synthesisText.slice(0, 12_000)}\n</consilium_synthesis>\n`
+        ? `\n<consilium_synthesis>\n${synthesisText.slice(
+            0,
+            12_000
+          )}\n</consilium_synthesis>\n`
         : "";
-      const lawyerOpinionsBlock = lawyerOpinions.length > 0
-        ? `\n<lawyer_opinions>\n${
-          lawyerOpinions
-            .map((o) =>
-              `- ${o.role_name} (${o.position}): ${o.opinion.slice(0, 300)}`
-            )
-            .join("\n")
-        }\n</lawyer_opinions>\n`
-        : "";
-      const augmentedSystemBlocks = consiliumBlock || lawyerOpinionsBlock
-        ? [
-          ...args.systemBlocks,
-          {
-            type: "text" as const,
-            // No cache_control — this block is per-thread and must not
-            // pollute the cached prefix.
-            text: `${lawyerOpinionsBlock}${consiliumBlock}`,
-          },
-        ]
-        : args.systemBlocks;
+      const lawyerOpinionsBlock =
+        lawyerOpinions.length > 0
+          ? `\n<lawyer_opinions>\n${lawyerOpinions
+              .map(
+                (o) =>
+                  `- ${o.role_name} (${o.position}): ${o.opinion.slice(0, 300)}`
+              )
+              .join("\n")}\n</lawyer_opinions>\n`
+          : "";
+      const augmentedSystemBlocks =
+        consiliumBlock || lawyerOpinionsBlock
+          ? [
+              ...args.systemBlocks,
+              {
+                type: "text" as const,
+                // No cache_control — this block is per-thread and must not
+                // pollute the cached prefix.
+                text: `${lawyerOpinionsBlock}${consiliumBlock}`,
+              },
+            ]
+          : args.systemBlocks;
 
       const headers = buildAnthropicHeaders(ANTHROPIC_API_KEY);
       const resp = await fetch("https://api.anthropic.com/v1/messages", {
@@ -537,9 +545,7 @@ function makeProdDeps(
           max_tokens: args.maxTokens,
           temperature: args.temperature,
           system: augmentedSystemBlocks,
-          messages: [
-            { role: "user", content: args.userMessage },
-          ],
+          messages: [{ role: "user", content: args.userMessage }],
         }),
         signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
       });
@@ -559,7 +565,7 @@ function makeProdDeps(
         output_tokens: Number(usage.output_tokens ?? 0),
         cache_read_input_tokens: Number(usage.cache_read_input_tokens ?? 0),
         cache_creation_input_tokens: Number(
-          usage.cache_creation_input_tokens ?? 0,
+          usage.cache_creation_input_tokens ?? 0
         ),
         lawyer_opinions: lawyerOpinions,
         consilium_synthesis: synthesisText || undefined,
@@ -590,7 +596,9 @@ function makeProdDeps(
           .from("email_threads")
           .update({ triage_status: status })
           .eq("id", threadId);
-      } catch (_e) { /* ignore */ }
+      } catch (_e) {
+        /* ignore */
+      }
     },
 
     async appendCaseEvent(args) {
@@ -613,7 +621,9 @@ function makeProdDeps(
             locale: args.locale,
           },
         });
-      } catch (_e) { /* ignore */ }
+      } catch (_e) {
+        /* ignore */
+      }
     },
 
     async applyMemoryUpdates(args) {

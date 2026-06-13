@@ -61,8 +61,10 @@ function parseRetryAfter(header: string | null): number | undefined {
 function isCreditExhaustedBody(body: string): boolean {
   if (!body) return false;
   const lower = body.toLowerCase();
-  return lower.includes("credit balance") &&
-    (lower.includes("too low") || lower.includes("insufficient"));
+  return (
+    lower.includes("credit balance") &&
+    (lower.includes("too low") || lower.includes("insufficient"))
+  );
 }
 
 /**
@@ -77,7 +79,8 @@ function concatTextBlocks(content: unknown): string {
   const parts: string[] = [];
   for (const block of content) {
     if (
-      block && typeof block === "object" &&
+      block &&
+      typeof block === "object" &&
       (block as { type?: string }).type === "text" &&
       typeof (block as { text?: unknown }).text === "string"
     ) {
@@ -91,11 +94,12 @@ function concatTextBlocks(content: unknown): string {
  * Call Anthropic Messages. Returns text + token usage. Throws typed errors.
  */
 export async function callAnthropic(
-  args: CallAnthropicArgs,
+  args: CallAnthropicArgs
 ): Promise<ProviderResponse> {
   const { systemPrompt, messages, maxTokens, model } = args;
 
-  const apiKey = Deno.env.get("ANTHROPIC_API_KEY");
+  const apiKey =
+    Deno.env.get("CLAUDE_API_KEY") ?? Deno.env.get("ANTHROPIC_API_KEY");
   if (!apiKey) {
     throw new ProviderAuthError();
   }
@@ -124,10 +128,7 @@ export async function callAnthropic(
     if ((e as Error).name === "AbortError") {
       throw new ProviderTimeoutError();
     }
-    throw new ProviderError(
-      `network error: ${String(e).slice(0, 200)}`,
-      0,
-    );
+    throw new ProviderError(`network error: ${String(e).slice(0, 200)}`, 0);
   } finally {
     clearTimeout(timer);
   }
@@ -151,11 +152,11 @@ export async function callAnthropic(
     throw new ProviderError(
       `anthropic ${res.status}`,
       res.status,
-      body.slice(0, 1000),
+      body.slice(0, 1000)
     );
   }
 
-  const data = await res.json() as {
+  const data = (await res.json()) as {
     content?: unknown;
     usage?: { input_tokens?: number; output_tokens?: number };
   };

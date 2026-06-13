@@ -1659,12 +1659,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           // Guard against empty responses (e.g. tool_use only).
           if (responseText.trim().isEmpty) {
-            responseText = 'Ошибка: AI вернул пустой ответ. Попробуйте ещё раз или перезагрузите страницу.';
+            responseText = 'Error: the AI returned an empty response. Please try again or reload the page.';
           }
         } else {
           // No AI backend configured — this is a real configuration issue,
           // not a demo mode. Surface it so the owner can fix it.
-          responseText = 'Ошибка: AI не настроен (SUPABASE_URL/ANON_KEY не baked в сборку). Свяжитесь с поддержкой support@advocat.ee';
+          responseText = 'Error: AI is not configured (SUPABASE_URL/ANON_KEY were not baked into the build). Please contact support@advocat.ee';
         }
 
         await supabase.saveChatMessage(
@@ -1732,20 +1732,20 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           final errorMsg = e.toString().toLowerCase();
           if (errorMsg.contains('rate limit') || errorMsg.contains('429')) {
             userFacingMessage = l10n?.aiErrorRateLimit ??
-                'Слишком много запросов подряд. Подождите минуту и попробуйте снова.';
+                'Too many requests in a row. Please wait a minute and try again.';
           } else if (errorMsg.contains('overload') ||
               errorMsg.contains('529')) {
             userFacingMessage = l10n?.aiErrorOverload ??
-                'AI сейчас занят, попробуйте через минуту.';
+                'The AI is busy right now, please try again in a minute.';
           } else if (errorMsg.contains('unauthorized') || errorMsg.contains('401')) {
             userFacingMessage = l10n?.aiErrorAuth ??
-                'Требуется вход в аккаунт для использования AI. Зарегистрируйтесь или войдите.';
+                'You need to sign in to use the AI. Please register or log in.';
           } else if (errorMsg.contains('quota') || errorMsg.contains('free limit')) {
             userFacingMessage = l10n?.aiErrorQuota ??
-                'Достигнут лимит бесплатных сообщений. Оформите подписку для продолжения.';
+                'You have reached the free message limit. Please subscribe to continue.';
           } else {
             userFacingMessage = l10n?.aiErrorGeneric ??
-                'Временная ошибка AI. Попробуйте ещё раз через минуту. Если не работает — напишите в поддержку.';
+                'Temporary AI error. Please try again in a minute. If it persists, contact support.';
           }
         }
         setState(() {

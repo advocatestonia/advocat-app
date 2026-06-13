@@ -489,7 +489,7 @@ const _legalLookupLog = new Map<string, LegalLookupVerifierRecord>();
  *  deletes them from the internal store so a later turn cannot inherit them.
  *  When `ids` is undefined, drains everything currently held. */
 export function consumeLegalLookupLog(
-  ids?: ReadonlyArray<string>,
+  ids?: ReadonlyArray<string>
 ): LegalLookupVerifierRecord[] {
   const out: LegalLookupVerifierRecord[] = [];
   if (ids === undefined) {
@@ -523,10 +523,10 @@ export function consumeLegalLookupLog(
 export async function executeToolCalls(
   blocks: ToolUseBlock[],
   authHeader: string,
-  userId: string,
+  userId: string
 ): Promise<ToolResultBlock[]> {
   const results = await Promise.all(
-    blocks.map((block) => executeSingleTool(block, authHeader, userId)),
+    blocks.map((block) => executeSingleTool(block, authHeader, userId))
   );
   return results;
 }
@@ -538,7 +538,7 @@ export async function executeToolCalls(
 async function executeSingleTool(
   block: ToolUseBlock,
   authHeader: string,
-  userId: string,
+  userId: string
 ): Promise<ToolResultBlock> {
   try {
     switch (block.name) {
@@ -546,50 +546,50 @@ async function executeSingleTool(
         return await handleListInbox(
           block.id,
           block.input as unknown as ListInboxInput,
-          userId,
+          userId
         );
       case "read_thread_full":
         return await handleReadThreadFull(
           block.id,
           block.input as unknown as ReadThreadFullInput,
-          userId,
+          userId
         );
       case "run_pdf_parser":
         return await handleRunPdfParser(
           block.id,
           block.input as unknown as RunPdfParserInput,
-          userId,
+          userId
         );
       case "run_consilium":
         return await handleRunConsilium(
           block.id,
           block.input as unknown as RunConsiliumInput,
-          userId,
+          userId
         );
       case "send_email":
         return await handleSendEmail(
           block.id,
           block.input as unknown as SendEmailInput,
           authHeader,
-          userId,
+          userId
         );
       case "draft_email_with_attachments":
         return await handleDraftEmailWithAttachments(
           block.id,
           block.input as unknown as DraftEmailWithAttachmentsInput,
           authHeader,
-          userId,
+          userId
         );
       case "generate_pdf":
         return await handleGeneratePdf(
           block.id,
           block.input as unknown as GeneratePdfInput,
-          userId,
+          userId
         );
       case "legal_lookup":
         return await handleLegalLookup(
           block.id,
-          block.input as unknown as LegalLookupInput,
+          block.input as unknown as LegalLookupInput
         );
       default:
         return {
@@ -617,7 +617,7 @@ async function handleSendEmail(
   toolUseId: string,
   input: SendEmailInput,
   authHeader: string,
-  userId: string,
+  userId: string
 ): Promise<ToolResultBlock> {
   // Defence-in-depth: reject if the model somehow omits confirmation.
   if (input.confirmed !== true) {
@@ -677,9 +677,9 @@ async function handleSendEmail(
   // allowlist check (F-004 fix). Cheap query — bounded by date.
   let inboundHistory: Array<{ from: string; sent_at: Date }> = [];
   try {
-    const since =
-      new Date(Date.now() - ALLOWLIST_RECENCY_DAYS * 24 * 60 * 60 * 1_000)
-        .toISOString();
+    const since = new Date(
+      Date.now() - ALLOWLIST_RECENCY_DAYS * 24 * 60 * 60 * 1_000
+    ).toISOString();
     const { data: msgs } = await sb
       .from("email_messages")
       .select("sender_email, sent_at")
@@ -696,7 +696,7 @@ async function handleSendEmail(
   } catch (e) {
     console.warn(
       "handleSendEmail: inbound history lookup failed:",
-      String(e).slice(0, 200),
+      String(e).slice(0, 200)
     );
   }
 
@@ -738,7 +738,7 @@ async function handleSendEmail(
     userId,
     to,
     cc,
-    null, // send_email has no in-reply-to thread id; use sender-history only
+    null // send_email has no in-reply-to thread id; use sender-history only
   );
   if (!allow.ok) {
     return {
@@ -756,23 +756,20 @@ async function handleSendEmail(
   // Forward to the existing send-email edge function. We call it internally
   // (same Supabase project) using the caller's JWT so the function's own
   // auth + rate-limit + correspondence logging all apply unchanged.
-  const resp = await fetch(
-    `${SUPABASE_URL}/functions/v1/send-email`,
-    {
-      method: "POST",
-      headers: {
-        "Authorization": authHeader,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ to, subject, body, cc }),
-      signal: AbortSignal.timeout(INTERNAL_FETCH_TIMEOUT_MS),
+  const resp = await fetch(`${SUPABASE_URL}/functions/v1/send-email`, {
+    method: "POST",
+    headers: {
+      Authorization: authHeader,
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({ to, subject, body, cc }),
+    signal: AbortSignal.timeout(INTERNAL_FETCH_TIMEOUT_MS),
+  });
 
   if (!resp.ok) {
     let detail = "";
     try {
-      const err = await resp.json() as { error?: string; details?: string };
+      const err = (await resp.json()) as { error?: string; details?: string };
       detail = err.error ?? err.details ?? "";
     } catch (_) {
       detail = await resp.text().catch(() => "");
@@ -782,13 +779,13 @@ async function handleSendEmail(
       tool_use_id: toolUseId,
       content: `Error sending email (HTTP ${resp.status}): ${detail}`.slice(
         0,
-        500,
+        500
       ),
       is_error: true,
     };
   }
 
-  const result = await resp.json() as {
+  const result = (await resp.json()) as {
     ok?: boolean;
     provider?: string;
     provider_message_id?: string;
@@ -826,7 +823,7 @@ async function handleSendEmail(
 async function handleGeneratePdf(
   toolUseId: string,
   input: GeneratePdfInput,
-  userId: string,
+  userId: string
 ): Promise<ToolResultBlock> {
   const title = (input.title ?? "Document").trim().slice(0, 200);
   const content = (input.content ?? "").trim();
@@ -859,14 +856,13 @@ async function handleGeneratePdf(
   const storagePath = `${userId}/generated/${ts}_${safeName}.html`;
 
   // Upload via Supabase Storage REST API (service role).
-  const uploadUrl =
-    `${SUPABASE_URL}/storage/v1/object/case-documents/${storagePath}`;
+  const uploadUrl = `${SUPABASE_URL}/storage/v1/object/case-documents/${storagePath}`;
 
   const htmlBytes = new TextEncoder().encode(html);
   const uploadResp = await fetch(uploadUrl, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
       "Content-Type": "text/html; charset=utf-8",
       "x-upsert": "true",
     },
@@ -879,21 +875,21 @@ async function handleGeneratePdf(
     return {
       type: "tool_result",
       tool_use_id: toolUseId,
-      content: `Error uploading document (HTTP ${uploadResp.status}): ${err}`.slice(
-        0,
-        500,
-      ),
+      content:
+        `Error uploading document (HTTP ${uploadResp.status}): ${err}`.slice(
+          0,
+          500
+        ),
       is_error: true,
     };
   }
 
   // Create a signed URL valid for 3600 seconds (1 hour).
-  const signedUrlEndpoint =
-    `${SUPABASE_URL}/storage/v1/object/sign/case-documents/${storagePath}`;
+  const signedUrlEndpoint = `${SUPABASE_URL}/storage/v1/object/sign/case-documents/${storagePath}`;
   const signResp = await fetch(signedUrlEndpoint, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ expiresIn: 3600 }),
@@ -912,7 +908,10 @@ async function handleGeneratePdf(
     };
   }
 
-  const signData = await signResp.json() as { signedURL?: string; signedUrl?: string };
+  const signData = (await signResp.json()) as {
+    signedURL?: string;
+    signedUrl?: string;
+  };
   // Supabase returns either `signedURL` (older) or `signedUrl` (newer).
   const relativeUrl = signData.signedURL ?? signData.signedUrl ?? "";
   // Build the full URL: if it's already absolute, use it; otherwise prepend base.
@@ -961,29 +960,44 @@ function markdownToHtml(md: string): string {
 
     // Headings
     if (line.startsWith("#### ")) {
-      if (inList) { out.push("</ul>"); inList = false; }
+      if (inList) {
+        out.push("</ul>");
+        inList = false;
+      }
       out.push(`<h4>${escHtml(line.slice(5))}</h4>`);
       continue;
     }
     if (line.startsWith("### ")) {
-      if (inList) { out.push("</ul>"); inList = false; }
+      if (inList) {
+        out.push("</ul>");
+        inList = false;
+      }
       out.push(`<h3>${escHtml(line.slice(4))}</h3>`);
       continue;
     }
     if (line.startsWith("## ")) {
-      if (inList) { out.push("</ul>"); inList = false; }
+      if (inList) {
+        out.push("</ul>");
+        inList = false;
+      }
       out.push(`<h2>${escHtml(line.slice(3))}</h2>`);
       continue;
     }
     if (line.startsWith("# ")) {
-      if (inList) { out.push("</ul>"); inList = false; }
+      if (inList) {
+        out.push("</ul>");
+        inList = false;
+      }
       out.push(`<h1>${escHtml(line.slice(2))}</h1>`);
       continue;
     }
 
     // Horizontal rule
     if (/^[-*_]{3,}$/.test(line.trim())) {
-      if (inList) { out.push("</ul>"); inList = false; }
+      if (inList) {
+        out.push("</ul>");
+        inList = false;
+      }
       out.push("<hr>");
       continue;
     }
@@ -1127,7 +1141,9 @@ function buildHtmlDocument(args: {
   <header>
     <div class="doc-type">${escHtml(label)}</div>
     <h1>${escHtml(args.title)}</h1>
-    <div class="meta">Generated by Advocat AI &bull; ${escHtml(args.dateStr)}</div>
+    <div class="meta">Generated by Advocat AI &bull; ${escHtml(
+      args.dateStr
+    )}</div>
   </header>
 
   <main>
@@ -1251,7 +1267,7 @@ export function adaptV2RowToLegacy(row: LawSearchV2Row): LawSearchRpcRow {
  */
 async function handleLegalLookup(
   toolUseId: string,
-  input: LegalLookupInput,
+  input: LegalLookupInput
 ): Promise<ToolResultBlock> {
   const query = (input.query ?? "").trim();
   const jurisdiction = (input.jurisdiction ?? "").trim().toLowerCase();
@@ -1337,13 +1353,10 @@ async function handleLegalLookup(
             match_threshold: params.similarity_threshold,
             match_count: params.match_count,
           };
-          const { data, error } = await supabase.rpc(
-            "law_search_v2",
-            v2Params,
-          );
+          const { data, error } = await supabase.rpc("law_search_v2", v2Params);
           if (error) {
             console.warn(
-              `legal_lookup tool: law_search_v2 RPC error — ${error.message}`,
+              `legal_lookup tool: law_search_v2 RPC error — ${error.message}`
             );
             return null;
           }
@@ -1382,13 +1395,13 @@ async function handleLegalLookup(
           };
           const { data, error } = await supabase.rpc(
             "law_search_hybrid",
-            hybridParams,
+            hybridParams
           );
           if (error) {
             // Surface the RPC error but degrade silently — `legalLookup`
             // will retry on the dense path.
             console.warn(
-              `legal_lookup tool: law_search_hybrid RPC error — ${error.message}`,
+              `legal_lookup tool: law_search_hybrid RPC error — ${error.message}`
             );
             return null;
           }
@@ -1408,7 +1421,7 @@ async function handleLegalLookup(
             .in("id", ids);
           if (error) {
             console.warn(
-              `legal_lookup tool: freshness query error — ${error.message}`,
+              `legal_lookup tool: freshness query error — ${error.message}`
             );
             return out;
           }
@@ -1430,33 +1443,41 @@ async function handleLegalLookup(
         // (pre-ingestion), the RPC simply returns 0 rows and the
         // enrichment is omitted silently. No fallback to a different
         // table — the RPC only knows law_chunks_v2.
-        casesCiting: async ({ act_slug, section }): Promise<LegalLookupCaseCitation[] | null> => {
+        casesCiting: async ({
+          act_slug,
+          section,
+        }): Promise<LegalLookupCaseCitation[] | null> => {
           const { data, error } = await supabase.rpc("cases_citing", {
             p_act_slug: act_slug,
             p_section: section,
           });
           if (error) {
             console.warn(
-              `legal_lookup tool: cases_citing RPC error — ${error.message}`,
+              `legal_lookup tool: cases_citing RPC error — ${error.message}`
             );
             return null;
           }
-          return Array.isArray(data) ? data as LegalLookupCaseCitation[] : null;
+          return Array.isArray(data)
+            ? (data as LegalLookupCaseCitation[])
+            : null;
         },
         // Corpus v3 — HE / eelnõu / seletuskiri (legislative intent).
         // Same emptiness behaviour as cases_citing.
-        travauxFor: async ({ act_slug, section }): Promise<LegalLookupTravaux[] | null> => {
+        travauxFor: async ({
+          act_slug,
+          section,
+        }): Promise<LegalLookupTravaux[] | null> => {
           const { data, error } = await supabase.rpc("travaux_for", {
             p_act_slug: act_slug,
             p_section: section,
           });
           if (error) {
             console.warn(
-              `legal_lookup tool: travaux_for RPC error — ${error.message}`,
+              `legal_lookup tool: travaux_for RPC error — ${error.message}`
             );
             return null;
           }
-          return Array.isArray(data) ? data as LegalLookupTravaux[] : null;
+          return Array.isArray(data) ? (data as LegalLookupTravaux[]) : null;
         },
       },
       {
@@ -1467,7 +1488,7 @@ async function handleLegalLookup(
         // law_search_v2 RPC, this becomes the redaktsioon anchor.
         validAt: input.valid_at ?? null,
         // Live API resolved from env inside legalLookup. No-op in v1.
-      },
+      }
     );
 
     // Publish a verifier-friendly view of this lookup so the post-pass
@@ -1528,7 +1549,7 @@ function adminClient() {
 async function handleListInbox(
   toolUseId: string,
   input: ListInboxInput,
-  userId: string,
+  userId: string
 ): Promise<ToolResultBlock> {
   const limit = Math.min(Math.max(input.limit ?? 10, 1), 20);
   const onlyUnread = input.only_unread === true;
@@ -1539,13 +1560,13 @@ async function handleListInbox(
     HIGH: 3,
     CRITICAL: 4,
   };
-  const minRank = sevMin ? (SEV_RANK[sevMin] ?? 0) : 0;
+  const minRank = sevMin ? SEV_RANK[sevMin] ?? 0 : 0;
   const sb = adminClient();
   let q = sb
     .from("email_threads")
     .select(
       "id, gmail_thread_id, subject, snippet, participants, last_message_at, " +
-        "label_ids, triage_status",
+        "label_ids, triage_status"
     )
     .eq("user_id", userId)
     .order("last_message_at", { ascending: false })
@@ -1574,13 +1595,11 @@ async function handleListInbox(
     .from("email_triage_results")
     .select(
       "thread_id, severity, user_brief, draft_body, draft_subject, " +
-        "send_recommendation, sent_at",
+        "send_recommendation, sent_at"
     )
     .in("thread_id", threadIds);
   const triageByThread: Record<string, Record<string, unknown>> = {};
-  for (
-    const r of ((triage ?? []) as unknown as Array<Record<string, unknown>>)
-  ) {
+  for (const r of (triage ?? []) as unknown as Array<Record<string, unknown>>) {
     triageByThread[r.thread_id as string] = r;
   }
   const rows: Array<Record<string, unknown>> = [];
@@ -1595,7 +1614,8 @@ async function handleListInbox(
       snippet: t.snippet,
       participants: t.participants,
       last_message_at: t.last_message_at,
-      unread: Array.isArray(t.label_ids) &&
+      unread:
+        Array.isArray(t.label_ids) &&
         (t.label_ids as string[]).includes("UNREAD"),
       severity: sev,
       user_brief: tr?.user_brief ?? null,
@@ -1613,7 +1633,7 @@ async function handleListInbox(
 async function handleReadThreadFull(
   toolUseId: string,
   input: ReadThreadFullInput,
-  userId: string,
+  userId: string
 ): Promise<ToolResultBlock> {
   const tid = (input.thread_id ?? "").trim();
   if (!tid) {
@@ -1626,17 +1646,18 @@ async function handleReadThreadFull(
   }
   const sb = adminClient();
   // Accept either uuid PK or gmail_thread_id string.
-  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-    .test(tid);
+  const isUuid =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(tid);
   const threadQ = sb
     .from("email_threads")
     .select(
-      "id, gmail_thread_id, subject, participants, last_message_at, label_ids",
+      "id, gmail_thread_id, subject, participants, last_message_at, label_ids"
     )
     .eq("user_id", userId);
   const { data: thread, error: tErr } = await (isUuid
     ? threadQ.eq("id", tid)
-    : threadQ.eq("gmail_thread_id", tid)).maybeSingle();
+    : threadQ.eq("gmail_thread_id", tid)
+  ).maybeSingle();
   if (tErr || !thread) {
     return {
       type: "tool_result",
@@ -1652,7 +1673,7 @@ async function handleReadThreadFull(
       .select(
         "id, gmail_message_id, sender_email, sender_name, to_recipients, " +
           "cc_recipients, subject, body_plaintext, sent_at, has_attachments, " +
-          "attachments_meta",
+          "attachments_meta"
       )
       .eq("thread_id", threadDbId)
       .order("sent_at", { ascending: true }),
@@ -1666,7 +1687,7 @@ async function handleReadThreadFull(
       .select(
         "id, severity, user_brief, draft_body, draft_subject, draft_to, " +
           "draft_cc, draft_language, send_recommendation, proposed_actions, " +
-          "lawyer_opinions, sent_at",
+          "lawyer_opinions, sent_at"
       )
       .eq("thread_id", threadDbId)
       .order("created_at", { ascending: false })
@@ -1682,12 +1703,13 @@ async function handleReadThreadFull(
     // content as DATA, not INSTRUCTIONS.
     const rawBody = (m.body_plaintext as string | null) ?? null;
     const truncatedBody = rawBody?.slice(0, 8000) ?? null;
-    const wrappedBody = truncatedBody == null
-      ? null
-      : wrapUntrusted(
-        `Email from ${(m.sender_email as string) ?? "unknown"}`,
-        truncatedBody,
-      );
+    const wrappedBody =
+      truncatedBody == null
+        ? null
+        : wrapUntrusted(
+            `Email from ${(m.sender_email as string) ?? "unknown"}`,
+            truncatedBody
+          );
     return {
       sender: m.sender_name
         ? `${m.sender_name} <${m.sender_email}>`
@@ -1695,31 +1717,30 @@ async function handleReadThreadFull(
       to: m.to_recipients,
       cc: m.cc_recipients,
       // Subject is sender-controlled free text — fence it like the body.
-      subject: m.subject == null
-        ? null
-        : wrapUntrusted(
-          `Email subject from ${(m.sender_email as string) ?? "unknown"}`,
-          String(m.subject),
-        ),
+      subject:
+        m.subject == null
+          ? null
+          : wrapUntrusted(
+              `Email subject from ${(m.sender_email as string) ?? "unknown"}`,
+              String(m.subject)
+            ),
       sent_at: m.sent_at,
       body: wrappedBody,
-      body_truncated: typeof m.body_plaintext === "string" &&
-        m.body_plaintext.length > 8000,
+      body_truncated:
+        typeof m.body_plaintext === "string" && m.body_plaintext.length > 8000,
       has_attachments: m.has_attachments,
     };
   });
   const attRows = (attRes.data ?? []) as unknown as Array<
     Record<string, unknown>
   >;
-  const attachments = attRows.map(
-    (a) => ({
-      attachment_id: a.id,
-      filename: a.filename,
-      mime: a.mime,
-      size_bytes: a.size_bytes,
-      already_parsed: !!a.parsed_text,
-    }),
-  );
+  const attachments = attRows.map((a) => ({
+    attachment_id: a.id,
+    filename: a.filename,
+    mime: a.mime,
+    size_bytes: a.size_bytes,
+    already_parsed: !!a.parsed_text,
+  }));
   const triage = triageRes.data ?? null;
   return {
     type: "tool_result",
@@ -1734,13 +1755,13 @@ async function handleReadThreadFull(
           // Fence them like message bodies (which are already wrapped above).
           subject: wrapUntrusted(
             "Email subject",
-            String((thread as Record<string, unknown>).subject ?? ""),
+            String((thread as Record<string, unknown>).subject ?? "")
           ),
           participants: wrapUntrusted(
             "Email participants",
             JSON.stringify(
-              (thread as Record<string, unknown>).participants ?? null,
-            ),
+              (thread as Record<string, unknown>).participants ?? null
+            )
           ),
           last_message_at: (thread as Record<string, unknown>).last_message_at,
         },
@@ -1749,7 +1770,7 @@ async function handleReadThreadFull(
         triage,
       },
       null,
-      2,
+      2
     ),
   };
 }
@@ -1757,7 +1778,7 @@ async function handleReadThreadFull(
 async function handleRunPdfParser(
   toolUseId: string,
   input: RunPdfParserInput,
-  userId: string,
+  userId: string
 ): Promise<ToolResultBlock> {
   const attId = (input.attachment_id ?? "").trim();
   if (!attId) {
@@ -1773,7 +1794,7 @@ async function handleRunPdfParser(
     .from("email_attachments")
     .select(
       "id, user_id, thread_id, message_id, filename, mime, storage_path, " +
-        "parsed_text, parsed_meta, parsed_at",
+        "parsed_text, parsed_meta, parsed_at"
     )
     .eq("id", attId)
     .maybeSingle();
@@ -1811,7 +1832,7 @@ async function handleRunPdfParser(
           // to attacker@evil.com") that a malicious PDF could carry.
           parsed_text: wrapUntrusted(
             `PDF ${a.filename}`,
-            (a.parsed_text as string).slice(0, 5000),
+            (a.parsed_text as string).slice(0, 5000)
           ),
           // parsed_meta holds key_extractions (parties, key_facts,
           // deadlines, …) — all derived verbatim from the same
@@ -1821,12 +1842,12 @@ async function handleRunPdfParser(
           // through key_facts, which sat OUTSIDE the untrusted_data block.
           parsed_meta: wrapUntrusted(
             `PDF ${a.filename} metadata`,
-            JSON.stringify(a.parsed_meta ?? null),
+            JSON.stringify(a.parsed_meta ?? null)
           ),
           parsed_at: a.parsed_at,
         },
         null,
-        2,
+        2
       ),
     };
   }
@@ -1835,7 +1856,7 @@ async function handleRunPdfParser(
     const resp = await fetch(`${SUPABASE_URL}/functions/v1/pdf-parser`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
         "Content-Type": "application/json",
         "x-internal-call": "claude-proxy",
       },
@@ -1852,14 +1873,13 @@ async function handleRunPdfParser(
       return {
         type: "tool_result",
         tool_use_id: toolUseId,
-        content:
-          `run_pdf_parser: pdf-parser HTTP ${resp.status}: ${
-            errText.slice(0, 200)
-          }`,
+        content: `run_pdf_parser: pdf-parser HTTP ${
+          resp.status
+        }: ${errText.slice(0, 200)}`,
         is_error: true,
       };
     }
-    const data = await resp.json() as {
+    const data = (await resp.json()) as {
       document_id?: string;
       doc_type?: string;
       parsed_summary?: string;
@@ -1895,7 +1915,7 @@ async function handleRunPdfParser(
           // Day 11-14: wrap untrusted PDF text — see cached branch above.
           parsed_summary: wrapUntrusted(
             `PDF ${a.filename}`,
-            (data.parsed_summary ?? "").slice(0, 5000),
+            (data.parsed_summary ?? "").slice(0, 5000)
           ),
           // key_extractions (parties, key_facts, deadlines, …) is derived
           // verbatim from the attacker-controlled PDF — same injection
@@ -1903,13 +1923,13 @@ async function handleRunPdfParser(
           // would otherwise carry injection text outside the block.
           key_extractions: wrapUntrusted(
             `PDF ${a.filename} extractions`,
-            JSON.stringify(data.key_extractions ?? null),
+            JSON.stringify(data.key_extractions ?? null)
           ),
           page_count: data.page_count,
           lang_detected: data.lang_detected,
         },
         null,
-        2,
+        2
       ),
     };
   } catch (e) {
@@ -1925,7 +1945,7 @@ async function handleRunPdfParser(
 async function handleRunConsilium(
   toolUseId: string,
   input: RunConsiliumInput,
-  _userId: string,
+  _userId: string
 ): Promise<ToolResultBlock> {
   const question = (input.question ?? "").trim();
   if (!question) {
@@ -1936,7 +1956,8 @@ async function handleRunConsilium(
       is_error: true,
     };
   }
-  const apiKey = Deno.env.get("ANTHROPIC_API_KEY") ?? "";
+  const apiKey =
+    Deno.env.get("CLAUDE_API_KEY") ?? Deno.env.get("ANTHROPIC_API_KEY") ?? "";
   if (!apiKey) {
     return {
       type: "tool_result",
@@ -1972,13 +1993,17 @@ async function handleRunConsilium(
         const e = ev as any;
         if (e?.type === "role_complete" && typeof e?.opinion === "string") {
           opinions.push({
-            name: typeof e?.role === "string"
-              ? e.role
-              : (typeof e?.name === "string" ? e.name : "lawyer"),
+            name:
+              typeof e?.role === "string"
+                ? e.role
+                : typeof e?.name === "string"
+                ? e.name
+                : "lawyer",
             opinion: e.opinion.slice(0, 2000),
           });
         } else if (
-          e?.type === "synthesis_delta" && typeof e?.text === "string"
+          e?.type === "synthesis_delta" &&
+          typeof e?.text === "string"
         ) {
           synthesisText += e.text;
         }
@@ -1997,7 +2022,7 @@ async function handleRunConsilium(
           opinions: opinions.slice(0, 15),
         },
         null,
-        2,
+        2
       ),
     };
   } catch (e) {
@@ -2034,7 +2059,7 @@ async function handleDraftEmailWithAttachments(
   toolUseId: string,
   input: DraftEmailWithAttachmentsInput,
   authHeader: string,
-  userId: string,
+  userId: string
 ): Promise<ToolResultBlock> {
   // Defence-in-depth — agent loop should have stopped here for approval,
   // but if it didn't (caller bug), refuse without confirmed=true.
@@ -2053,7 +2078,9 @@ async function handleDraftEmailWithAttachments(
   const subject = (input.subject ?? "").trim();
   const body = (input.body ?? "").trim();
   const cc = input.cc?.trim();
-  const attIds = Array.isArray(input.attachment_ids) ? input.attachment_ids : [];
+  const attIds = Array.isArray(input.attachment_ids)
+    ? input.attachment_ids
+    : [];
   if (!to || !subject || !body) {
     return {
       type: "tool_result",
@@ -2076,8 +2103,7 @@ async function handleDraftEmailWithAttachments(
     return {
       type: "tool_result",
       tool_use_id: toolUseId,
-      content:
-        `attachment_ids exceeds ${MAX_OUTBOUND_ATTACHMENTS} entries (got ${attIds.length})`,
+      content: `attachment_ids exceeds ${MAX_OUTBOUND_ATTACHMENTS} entries (got ${attIds.length})`,
       is_error: true,
     };
   }
@@ -2108,8 +2134,7 @@ async function handleDraftEmailWithAttachments(
     return {
       type: "tool_result",
       tool_use_id: toolUseId,
-      content:
-        `Some attachment_ids did not resolve (asked ${attIds.length}, got ${atts.length})`,
+      content: `Some attachment_ids did not resolve (asked ${attIds.length}, got ${atts.length})`,
       is_error: true,
     };
   }
@@ -2129,8 +2154,7 @@ async function handleDraftEmailWithAttachments(
     return {
       type: "tool_result",
       tool_use_id: toolUseId,
-      content:
-        `attachment_size_exceeded: total ${totalBytes} bytes > 25 MB cap`,
+      content: `attachment_size_exceeded: total ${totalBytes} bytes > 25 MB cap`,
       is_error: true,
     };
   }
@@ -2166,9 +2190,9 @@ async function handleDraftEmailWithAttachments(
   }
   let inboundHistory: Array<{ from: string; sent_at: Date }> = [];
   try {
-    const since =
-      new Date(Date.now() - ALLOWLIST_RECENCY_DAYS * 24 * 60 * 60 * 1_000)
-        .toISOString();
+    const since = new Date(
+      Date.now() - ALLOWLIST_RECENCY_DAYS * 24 * 60 * 60 * 1_000
+    ).toISOString();
     const { data: msgs } = await sb
       .from("email_messages")
       .select("sender_email, sent_at")
@@ -2185,12 +2209,10 @@ async function handleDraftEmailWithAttachments(
   } catch (e) {
     console.warn(
       "handleDraftEmailWithAttachments: inbound history lookup failed:",
-      String(e).slice(0, 200),
+      String(e).slice(0, 200)
     );
   }
-  for (
-    const addr of [to, ...(cc ? cc.split(",").map((s) => s.trim()) : [])]
-  ) {
+  for (const addr of [to, ...(cc ? cc.split(",").map((s) => s.trim()) : [])]) {
     if (!addr) continue;
     const upliAllow = upliIsRecipientAllowed({
       recipient: addr,
@@ -2210,12 +2232,19 @@ async function handleDraftEmailWithAttachments(
     }
   }
 
-  const allowCheck = await isRecipientAllowed(sb, userId, to, cc, input.in_reply_to_thread_id ?? null);
+  const allowCheck = await isRecipientAllowed(
+    sb,
+    userId,
+    to,
+    cc,
+    input.in_reply_to_thread_id ?? null
+  );
   if (!allowCheck.ok) {
     return {
       type: "tool_result",
       tool_use_id: toolUseId,
-      content: `recipient_not_in_allowlist: ${allowCheck.reason}. ` +
+      content:
+        `recipient_not_in_allowlist: ${allowCheck.reason}. ` +
         `Advocat only sends to addresses you have corresponded with before, ` +
         `or to participants of the current thread. To add ${to} to your ` +
         `allowlist, send them a message from your regular email client first.`,
@@ -2232,15 +2261,17 @@ async function handleDraftEmailWithAttachments(
   if (input.in_reply_to_thread_id) {
     const tid = input.in_reply_to_thread_id.trim();
     const isUuid =
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-        .test(tid);
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        tid
+      );
     const threadQ = sb
       .from("email_threads")
       .select("id, gmail_thread_id")
       .eq("user_id", userId);
     const { data: thread } = await (isUuid
       ? threadQ.eq("id", tid)
-      : threadQ.eq("gmail_thread_id", tid)).maybeSingle();
+      : threadQ.eq("gmail_thread_id", tid)
+    ).maybeSingle();
     if (thread) {
       const t = thread as unknown as {
         id: string;
@@ -2321,8 +2352,7 @@ async function handleDraftEmailWithAttachments(
       return {
         type: "tool_result",
         tool_use_id: toolUseId,
-        content:
-          "Gmail token refresh failed — user must reconnect via /email.",
+        content: "Gmail token refresh failed — user must reconnect via /email.",
         is_error: true,
       };
     }
@@ -2376,13 +2406,13 @@ async function handleDraftEmailWithAttachments(
   const STEP = 8192;
   for (let i = 0; i < wireBytes.length; i += STEP) {
     bin += String.fromCharCode(
-      ...wireBytes.subarray(i, Math.min(i + STEP, wireBytes.length)),
+      ...wireBytes.subarray(i, Math.min(i + STEP, wireBytes.length))
     );
   }
-  const raw = btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(
-    /=+$/,
-    "",
-  );
+  const raw = btoa(bin)
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
 
   // ── 6. POST to Gmail send. ───────────────────────────────────────────
   const sendBody: Record<string, unknown> = { raw };
@@ -2392,12 +2422,12 @@ async function handleDraftEmailWithAttachments(
     {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(sendBody),
       signal: AbortSignal.timeout(15_000),
-    },
+    }
   );
   if (!resp.ok) {
     const err = await resp.text();
@@ -2426,7 +2456,7 @@ async function handleDraftEmailWithAttachments(
         total_bytes: totalBytes,
       },
       null,
-      2,
+      2
     ),
   };
 }
@@ -2464,7 +2494,7 @@ async function isRecipientAllowed(
   userId: string,
   to: string,
   cc: string | undefined,
-  inReplyToThreadId: string | null,
+  inReplyToThreadId: string | null
 ): Promise<{ ok: boolean; reason?: string }> {
   const targets = new Set<string>();
   if (to) targets.add(to.trim().toLowerCase());
@@ -2479,8 +2509,9 @@ async function isRecipientAllowed(
   if (inReplyToThreadId) {
     const tid = inReplyToThreadId.trim();
     const isUuid =
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-        .test(tid);
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        tid
+      );
     try {
       const q = sb
         .from("email_threads")
@@ -2488,14 +2519,15 @@ async function isRecipientAllowed(
         .eq("user_id", userId);
       const { data: thread } = await (isUuid
         ? q.eq("id", tid)
-        : q.eq("gmail_thread_id", tid)).maybeSingle();
+        : q.eq("gmail_thread_id", tid)
+      ).maybeSingle();
       const partsRaw = (thread as { participants?: unknown } | null)
         ?.participants;
       if (Array.isArray(partsRaw)) {
         const partsLower = new Set(
           partsRaw
             .filter((p): p is string => typeof p === "string")
-            .map((p) => p.trim().toLowerCase()),
+            .map((p) => p.trim().toLowerCase())
         );
         // Remove every target that the thread covers.
         for (const t of [...targets]) {
@@ -2521,9 +2553,7 @@ async function isRecipientAllowed(
       .order("sent_at", { ascending: false })
       .limit(RECIPIENT_ALLOWLIST_MAX_HISTORY);
     const known = new Set<string>();
-    for (
-      const m of ((msgs ?? []) as unknown as Array<Record<string, unknown>>)
-    ) {
+    for (const m of (msgs ?? []) as unknown as Array<Record<string, unknown>>) {
       const sender = (m.sender_email as string | null)?.trim().toLowerCase();
       if (sender) known.add(sender);
       const to = m.to_recipients;
@@ -2565,9 +2595,7 @@ async function isRecipientAllowed(
 // =============================================================================
 
 /** Return true when an Anthropic response content block is a tool_use block. */
-export function isToolUseBlock(
-  block: unknown,
-): block is ToolUseBlock {
+export function isToolUseBlock(block: unknown): block is ToolUseBlock {
   return (
     typeof block === "object" &&
     block !== null &&
@@ -2578,9 +2606,7 @@ export function isToolUseBlock(
 }
 
 /** Extract all tool_use blocks from an Anthropic response content array. */
-export function extractToolUseBlocks(
-  content: unknown,
-): ToolUseBlock[] {
+export function extractToolUseBlocks(content: unknown): ToolUseBlock[] {
   if (!Array.isArray(content)) return [];
   return content.filter(isToolUseBlock);
 }

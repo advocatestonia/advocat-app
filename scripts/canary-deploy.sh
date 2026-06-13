@@ -172,12 +172,75 @@ else
     fi
   fi
 fi
+# Functions invoked by pg_cron / Stripe / public webhooks authenticate
+# themselves (service-role secret, HMAC, or signed payload) and MUST be
+# deployed with --no-verify-jwt — otherwise the gateway rejects every
+# cron/webhook call with 401 and the job dies silently. Deploying any of
+# these WITHOUT the flag re-arms verify_jwt and breaks them (root cause of
+# the 4 dead crons found in the 2026-06-11 beta audit). Keep this list in
+# sync with build-and-deploy.sh and supabase/config.toml [functions.*].
+# Derived from live prod state (probed 2026-06-13) ∪ the 4 crons the
+# beta audit found wrongly re-armed to verify_jwt=true. Every entry either
+# is invoked by pg_cron/Stripe/public webhook or is a public/anon endpoint
+# that authenticates itself. If you add a function that cron or a webhook
+# calls, add it here too.
+NO_JWT_FNS=(
+  # payments / webhooks (Stripe signs the payload)
+  stripe-webhook
+  create-checkout
+  reconcile-subscriptions
+  # the 4 crons the audit found dead (must be flipped back to no-jwt)
+  deadline-radar-tick
+  email-inbox-sync
+  agent-intentions-cron
+  deadline-reminder
+  # other cron / public endpoints already verify_jwt=false on prod
+  deadline-radar-eu
+  triage-retry-tick
+  alert-tick
+  oauth-callback
+  law-search
+  landmark-search
+  citation-extractor
+  admin-add-correction
+  gold-review
+  hallucination-eval-runner
+  corpus-embedder
+  finlex-fetcher
+  eur-lex-fetcher
+  hudoc-fetcher
+  b2b-signal
+  draft-export-docx
+  # B2B org endpoints — verify_jwt=false ONLY preserves current prod state.
+  # ⚠️ SECURITY REVIEW PENDING (beta audit 2026-06-13): confirm each of these
+  # actually self-authenticates before treating no-jwt as correct.
+  create-organization
+  accept-invitation
+  create-org-checkout
+  generate-api-key
+  invite-member
+  remove-member
+  update-member-role
+  revoke-api-key
+  org-billing-portal
+  org-usage-stats
+)
+fn_needs_no_jwt() {
+  local cand="$1" f
+  for f in "${NO_JWT_FNS[@]}"; do [[ "$f" == "$cand" ]] && return 0; done
+  return 1
+}
 if [[ ${#CHANGED_FNS[@]} -eq 0 ]]; then
   ok "No Edge Function changes detected"
 else
   for fn in "${CHANGED_FNS[@]}"; do
-    log "Deploying Edge Function: $fn"
-    run "supabase functions deploy \"$fn\" --project-ref \"$PROJECT_REF\""
+    if fn_needs_no_jwt "$fn"; then
+      log "Deploying Edge Function: $fn (--no-verify-jwt: cron/webhook self-authenticates)"
+      run "supabase functions deploy \"$fn\" --project-ref \"$PROJECT_REF\" --no-verify-jwt"
+    else
+      log "Deploying Edge Function: $fn"
+      run "supabase functions deploy \"$fn\" --project-ref \"$PROJECT_REF\""
+    fi
   done
   ok "Deployed ${#CHANGED_FNS[@]} Edge Function(s): ${CHANGED_FNS[*]}"
 fi
@@ -388,6 +451,44 @@ for f in "${LANDING_FILES[@]}"; do
   RSYNC_EXCLUDE+=(--exclude="$f")
 done
 run "rsync -av ${RSYNC_EXCLUDE[*]} build/web/ \"$WORKTREE/\""
+
+# ---------------------------------------------------------------------------
+# Publish landing + legal pages from web/ sources.
+# The Flutter build does NOT emit these (they're hand-authored marketing/legal
+# HTML living in web/), and the rsync above EXCLUDES them so the build can't
+# clobber them — but that also meant they were never re-published, so prod
+# served whatever was last hand-pushed to gh-pages. That stale-landing gap is
+# why Wave-2 changes (geofence, cookie-consent v2, privacy v3.2) never went
+# live. Copy the canonical sources from web/ over the worktree here, AFTER the
+# build rsync, so edits to these files actually ship. app.html / CNAME /
+# .nojekyll are intentionally NOT in this list (app shell + GH Pages config).
+LANDING_PUBLISH=(
+  index.html
+  privacy.html
+  terms.html
+  lawyers.html
+  impressum.html
+  cookies.html
+  payment-success.html
+  payment-cancel.html
+  for-firms.html
+  dispute-resolution.html
+  b2b-only.html
+  demo.html
+  404.html
+  sitemap.xml
+  robots.txt
+)
+for f in "${LANDING_PUBLISH[@]}"; do
+  if [[ -e "web/$f" ]]; then
+    run "cp -a \"web/$f\" \"$WORKTREE/$f\""
+  fi
+done
+# Directories that ship verbatim from web/ (blog posts, lead-magnet tools).
+for d in blog tools; do
+  [[ -d "web/$d" ]] && run "rsync -av --delete \"web/$d/\" \"$WORKTREE/$d/\""
+done
+ok "Landing + legal pages republished from web/ sources"
 
 # SPA deep-link stubs at prod root. Same logic as staging — copies of
 # app.html under stable per-route file names so the smoke's curl_code probe

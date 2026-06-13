@@ -29,12 +29,14 @@ import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const SUPABASE_SERVICE_ROLE_KEY =
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
 // QA harness shared secret. The header `X-QA-Secret` MUST match either
 // CORPUS_EMBEDDER_SECRET (the active prod secret name, used by the eval
 // runner) or the legacy QA_TEMP_SECRET fallback.
-const QA_SECRET = Deno.env.get("CORPUS_EMBEDDER_SECRET") ??
+const QA_SECRET =
+  Deno.env.get("CORPUS_EMBEDDER_SECRET") ??
   Deno.env.get("QA_TEMP_SECRET") ??
   "";
 
@@ -45,17 +47,20 @@ const EMBED_DIM = 1536;
 const SUPPORTED_JURS = new Set(["fi", "ee", "eu", "echr"]);
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  // Scoped to the prod origin for consistency with the other functions.
+  // Access is gated by a constant-time x-qa-secret check, not CORS, so this
+  // is hardening-for-consistency, not an exploit fix.
+  "Access-Control-Allow-Origin": "https://advocat.ee",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, x-qa-secret",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
 function err(message: string, status: number): Response {
-  return new Response(
-    JSON.stringify({ error: message }),
-    { status, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-  );
+  return new Response(JSON.stringify({ error: message }), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
 }
 
 /** Constant-time string compare — avoids a timing oracle on the QA secret. */
@@ -66,12 +71,14 @@ function timingSafeEqualStr(a: string, b: string): boolean {
   return diff === 0;
 }
 
-async function embed(query: string): Promise<{ embedding: number[]; tokens: number } | null> {
+async function embed(
+  query: string
+): Promise<{ embedding: number[]; tokens: number } | null> {
   const t0 = performance.now();
   const resp = await fetch(OPENAI_EMBED_URL, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${OPENAI_API_KEY}`,
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -85,7 +92,7 @@ async function embed(query: string): Promise<{ embedding: number[]; tokens: numb
     console.warn(`embed: OpenAI ${resp.status} — ${detail.slice(0, 240)}`);
     return null;
   }
-  const data = await resp.json() as {
+  const data = (await resp.json()) as {
     data?: Array<{ embedding?: number[] }>;
     usage?: { total_tokens?: number; prompt_tokens?: number };
   };
@@ -144,18 +151,25 @@ serve(async (req) => {
   if (!query) return err("Missing 'query'", 400);
   if (query.length > 4000) return err("Query too long", 400);
 
-  const jurisdiction = typeof body.jurisdiction === "string" ? body.jurisdiction : "";
+  const jurisdiction =
+    typeof body.jurisdiction === "string" ? body.jurisdiction : "";
   if (!SUPPORTED_JURS.has(jurisdiction)) {
-    return err(`Invalid 'jurisdiction' (one of ${[...SUPPORTED_JURS].join(", ")})`, 400);
+    return err(
+      `Invalid 'jurisdiction' (one of ${[...SUPPORTED_JURS].join(", ")})`,
+      400
+    );
   }
 
-  const topK = typeof body.top_k === "number" && body.top_k > 0 && body.top_k <= 20
-    ? Math.floor(body.top_k)
-    : 5;
+  const topK =
+    typeof body.top_k === "number" && body.top_k > 0 && body.top_k <= 20
+      ? Math.floor(body.top_k)
+      : 5;
   // Allow negative thresholds — cosine similarity is in [-1, 1] and the
   // QA harness wants every retrieved row, no floor.
   const threshold =
-    typeof body.threshold === "number" && body.threshold >= -1 && body.threshold <= 1
+    typeof body.threshold === "number" &&
+    body.threshold >= -1 &&
+    body.threshold <= 1
       ? body.threshold
       : -1.0;
   const hybridMode = body.hybrid === true;
@@ -211,7 +225,9 @@ serve(async (req) => {
         r.case_number ?? "",
         r.parties_redacted ?? "",
         r.key_holding ?? "",
-      ].join(" ").toLowerCase();
+      ]
+        .join(" ")
+        .toLowerCase();
       let hits = 0;
       for (const t of tokens) if (haystack.includes(t)) hits += 1;
       return { row: r, score: tokens.length ? hits / tokens.length : 0 };
@@ -234,7 +250,10 @@ serve(async (req) => {
         rpc_ms: Math.round(performance.now() - rpcStart),
         total_ms: Math.round(performance.now() - tStart),
       }),
-      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      }
     );
   }
 
@@ -246,7 +265,8 @@ serve(async (req) => {
   const rpcStart = performance.now();
   // Format embedding as pgvector text literal to avoid any JSON→vector parsing
   // quirks. PostgREST accepts `[0.1, 0.2, ...]` as text representation.
-  const vectorLit = "[" + embRes.embedding.map((v) => v.toString()).join(",") + "]";
+  const vectorLit =
+    "[" + embRes.embedding.map((v) => v.toString()).join(",") + "]";
 
   // The IVFFlat index has `lists=100` and pgvector's default `probes=1`
   // which causes recall to collapse on queries whose embedding doesn't fall
@@ -265,47 +285,54 @@ serve(async (req) => {
     : `${SUPABASE_URL}/rest/v1/rpc/law_search_v2_qa`;
   const rpcBody = hybridV2Mode
     ? {
-      p_query_embedding: vectorLit,
-      p_query_text: query,
-      p_jurisdiction: jurisdiction,
-      p_lang: null,
-      p_act_slug: null,
-      p_valid_at: null,
-      p_match_threshold: threshold,
-      p_limit: topK,
-      p_probes: 100,
-      p_max_per_act: typeof body.v2_max_per_act === "number" ? body.v2_max_per_act : 1,
-      p_rrf_k: typeof body.v2_rrf_k === "number" ? body.v2_rrf_k : 60,
-      p_section_boost: typeof body.v2_section_boost === "number" ? body.v2_section_boost : 0.5,
-      p_section_label_boost: typeof body.v2_section_label_boost === "number" ? body.v2_section_label_boost : 0.25,
-    }
+        p_query_embedding: vectorLit,
+        p_query_text: query,
+        p_jurisdiction: jurisdiction,
+        p_lang: null,
+        p_act_slug: null,
+        p_valid_at: null,
+        p_match_threshold: threshold,
+        p_limit: topK,
+        p_probes: 100,
+        p_max_per_act:
+          typeof body.v2_max_per_act === "number" ? body.v2_max_per_act : 1,
+        p_rrf_k: typeof body.v2_rrf_k === "number" ? body.v2_rrf_k : 60,
+        p_section_boost:
+          typeof body.v2_section_boost === "number"
+            ? body.v2_section_boost
+            : 0.5,
+        p_section_label_boost:
+          typeof body.v2_section_label_boost === "number"
+            ? body.v2_section_label_boost
+            : 0.25,
+      }
     : hybridMode
     ? {
-      p_query_embedding: vectorLit,
-      p_query_text: query,
-      p_jurisdiction: jurisdiction,
-      p_lang: null,
-      p_act_slug: null,
-      p_valid_at: null,
-      p_match_threshold: threshold,
-      p_limit: topK,
-      p_probes: 100,
-    }
+        p_query_embedding: vectorLit,
+        p_query_text: query,
+        p_jurisdiction: jurisdiction,
+        p_lang: null,
+        p_act_slug: null,
+        p_valid_at: null,
+        p_match_threshold: threshold,
+        p_limit: topK,
+        p_probes: 100,
+      }
     : {
-      query_embedding: vectorLit,
-      jurisdiction_filter: jurisdiction,
-      act_slug_filter: null,
-      lang_filter: null,
-      valid_at: null,
-      match_threshold: threshold,
-      match_count: topK,
-      probes: 100,
-    };
+        query_embedding: vectorLit,
+        jurisdiction_filter: jurisdiction,
+        act_slug_filter: null,
+        lang_filter: null,
+        valid_at: null,
+        match_threshold: threshold,
+        match_count: topK,
+        probes: 100,
+      };
   const rpcResp = await fetch(rpcUrl, {
     method: "POST",
     headers: {
-      "apikey": SUPABASE_SERVICE_ROLE_KEY,
-      "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      apikey: SUPABASE_SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(rpcBody),
@@ -317,7 +344,10 @@ serve(async (req) => {
       : hybridMode
       ? "law_search_hybrid_qa"
       : "law_search_v2_qa";
-    return err(`${rpcName} HTTP ${rpcResp.status}: ${detail.slice(0, 200)}`, 502);
+    return err(
+      `${rpcName} HTTP ${rpcResp.status}: ${detail.slice(0, 200)}`,
+      502
+    );
   }
   const rawText = await rpcResp.text();
   // Replace stray NaN tokens with 0 before parsing (PostgREST emits raw NaN
@@ -340,17 +370,18 @@ serve(async (req) => {
   // text, similarity, source_url) so the eval contract is unchanged.
   const normalised = Array.isArray(rows)
     ? (rows as Array<Record<string, unknown>>).map((r) => ({
-      id: r.id,
-      act_slug: r.act_slug,
-      section_label: r.section_label,
-      text: r.text,
-      similarity: typeof r.similarity === "number" ? r.similarity : 0,
-      source_url: r.source_url ?? null,
-      // Hybrid-only diagnostic fields (omitted on baseline path):
-      bm25_rank: typeof r.bm25_rank === "number" ? r.bm25_rank : undefined,
-      rrf_score: typeof r.rrf_score === "number" ? r.rrf_score : undefined,
-      source_type: typeof r.source_type === "string" ? r.source_type : undefined,
-    }))
+        id: r.id,
+        act_slug: r.act_slug,
+        section_label: r.section_label,
+        text: r.text,
+        similarity: typeof r.similarity === "number" ? r.similarity : 0,
+        source_url: r.source_url ?? null,
+        // Hybrid-only diagnostic fields (omitted on baseline path):
+        bm25_rank: typeof r.bm25_rank === "number" ? r.bm25_rank : undefined,
+        rrf_score: typeof r.rrf_score === "number" ? r.rrf_score : undefined,
+        source_type:
+          typeof r.source_type === "string" ? r.source_type : undefined,
+      }))
     : [];
 
   return new Response(
@@ -362,7 +393,10 @@ serve(async (req) => {
       total_ms: Math.round(performance.now() - tStart),
       mode: hybridV2Mode ? "hybrid_v2" : hybridMode ? "hybrid" : "v2",
     }),
-    { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    {
+      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    }
   );
 });
 // touch 1778934521
