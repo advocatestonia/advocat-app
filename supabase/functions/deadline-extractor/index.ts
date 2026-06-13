@@ -50,6 +50,7 @@ import {
   type StatutoryAnchor,
 } from "../_shared/statutory_anchors.ts";
 import { recordSpend } from "../_shared/spend_tracker.ts";
+import { scrubAnthropicBody } from "../_shared/llm_egress/scrub_body.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -598,12 +599,12 @@ async function callSonnet(userPayload: string): Promise<string | null> {
         "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
+      body: JSON.stringify(scrubAnthropicBody({
         model: DEADLINE_EXTRACTOR_MODEL,
         max_tokens: DEADLINE_EXTRACTOR_MAX_TOKENS,
         system: DEADLINE_EXTRACTOR_SYSTEM_PROMPT,
         messages: [{ role: "user", content: userPayload }],
-      }),
+      })),
       signal: controller.signal,
     });
     clearTimeout(timer);

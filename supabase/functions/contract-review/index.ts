@@ -40,6 +40,7 @@ import {
   contractReviewDisabledResponse,
   flagOn,
 } from "../_shared/kill_switches.ts";
+import { scrubAnthropicBody } from "../_shared/llm_egress/scrub_body.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -288,13 +289,13 @@ function buildPlannerCaller(): PlannerCaller {
         "x-api-key": ANTHROPIC_API_KEY,
         "anthropic-version": "2023-06-01",
       },
-      body: JSON.stringify({
+      body: JSON.stringify(scrubAnthropicBody({
         model: ANTHROPIC_MODEL,
         max_tokens: ANTHROPIC_MAX_TOKENS,
         temperature: 0.0,
         system: req.systemPrompt,
         messages: [{ role: "user", content: req.userPrompt }],
-      }),
+      })),
       signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
     });
     if (!res.ok) {
@@ -333,7 +334,7 @@ function buildPdfWorkerCaller(): PdfWorkerCaller {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${PDF_WORKER_SECRET}`,
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(scrubAnthropicBody(payload)),
       signal: AbortSignal.timeout(PDF_WORKER_FETCH_TIMEOUT_MS),
     });
     if (!res.ok) {

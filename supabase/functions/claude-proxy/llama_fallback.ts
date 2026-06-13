@@ -31,6 +31,8 @@
 //   - Quality disclosure: prepend a small bilingual note to fallback output.
 // -----------------------------------------------------------------------------
 
+import { scrubText } from "../_shared/llm_egress/scrub_body.ts";
+
 export const DEEPINFRA_URL =
   "https://api.deepinfra.com/v1/openai/chat/completions";
 export const LLAMA_MODEL = "meta-llama/Llama-3.3-70B-Instruct";
@@ -77,7 +79,7 @@ export interface OpenAIMessage {
  */
 export function convertToOpenAIMessages(
   systemPrompt: string | unknown,
-  anthropicMessages: AnthropicMessage[],
+  anthropicMessages: AnthropicMessage[]
 ): OpenAIMessage[] {
   const out: OpenAIMessage[] = [];
 
@@ -160,7 +162,7 @@ export interface AnthropicShapedResponse {
  */
 export function convertToAnthropicResponse(
   openai: OpenAIChatCompletion,
-  reason: FallbackReason,
+  reason: FallbackReason
 ): AnthropicShapedResponse {
   const choice = openai.choices?.[0];
   const replyText = choice?.message?.content ?? "";
@@ -212,7 +214,7 @@ export interface CallLlamaResult {
  * upstream outage).
  */
 export async function callLlamaFallback(
-  opts: CallLlamaOptions,
+  opts: CallLlamaOptions
 ): Promise<CallLlamaResult> {
   const apiKey = opts.apiKey ?? Deno.env.get("DEEPINFRA_API_KEY") ?? "";
   if (!apiKey) {
@@ -227,8 +229,8 @@ export async function callLlamaFallback(
 
   const openaiMessages = convertToOpenAIMessages(
     opts.systemPrompt,
-    opts.messages,
-  );
+    opts.messages
+  ).map((m) => ({ ...m, content: scrubText(m.content) }));
 
   const requestBody = {
     model: LLAMA_MODEL,
@@ -246,7 +248,7 @@ export async function callLlamaFallback(
     const res = await fetch(url, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),

@@ -22,6 +22,7 @@
 
 import { embedText } from "./corrections_retriever.ts";
 import { recordSpend } from "./spend_tracker.ts";
+import { scrubAnthropicBody } from "./llm_egress/scrub_body.ts";
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const MODEL_HAIKU = "claude-haiku-4-5-20251001";
@@ -99,13 +100,13 @@ const defaultCaller: HaikuCaller = async (req) => {
       "x-api-key": req.apiKey,
       "anthropic-version": "2023-06-01",
     },
-    body: JSON.stringify({
+    body: JSON.stringify(scrubAnthropicBody({
       model: MODEL_HAIKU,
       max_tokens: req.maxTokens,
       temperature: 0.0,
       system: req.systemPrompt,
       messages: [{ role: "user", content: req.userMessage }],
-    }),
+    })),
   });
   if (!res.ok) {
     const err = await res.text();
@@ -289,7 +290,7 @@ export async function detectAndRecordCorrection(
           Authorization: `Bearer ${opts.serviceRoleKey}`,
           Prefer: "return=minimal",
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(scrubAnthropicBody(body)),
       },
     );
     if (!res.ok) {

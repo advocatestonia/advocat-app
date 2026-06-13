@@ -52,6 +52,7 @@ import {
   loadMemoryBlockReal,
   maybeTransitionWaitToStrategyOnInbound,
 } from "./wiring.ts";
+import { scrubAnthropicBody } from "../_shared/llm_egress/scrub_body.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -428,13 +429,13 @@ function makeProdDeps(
       const resp = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers,
-        body: JSON.stringify({
+        body: JSON.stringify(scrubAnthropicBody({
           model: "claude-sonnet-4-6",
           max_tokens: args.maxTokens,
           temperature: args.temperature,
           system: args.systemBlocks,
           messages: [{ role: "user", content: args.userMessage }],
-        }),
+        })),
         signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
       });
       if (!resp.ok) {
@@ -540,13 +541,13 @@ function makeProdDeps(
       const resp = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers,
-        body: JSON.stringify({
+        body: JSON.stringify(scrubAnthropicBody({
           model: "claude-sonnet-4-6",
           max_tokens: args.maxTokens,
           temperature: args.temperature,
           system: augmentedSystemBlocks,
           messages: [{ role: "user", content: args.userMessage }],
-        }),
+        })),
         signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
       });
       if (!resp.ok) {

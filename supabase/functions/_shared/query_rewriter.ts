@@ -1,3 +1,4 @@
+import { scrubAnthropicBody } from "./llm_egress/scrub_body.ts";
 // query_rewriter.ts — вабанк A2 (2026-05-15)
 // -----------------------------------------------------------------------------
 // Translates a user's legal question (RU/EN/FI/ET) into the EXACT terminology
@@ -150,13 +151,13 @@ export function defaultHaikuJsonCaller(apiKey: string): HaikuJsonCaller {
           "x-api-key": apiKey,
           "anthropic-version": "2023-06-01",
         },
-        body: JSON.stringify({
+        body: JSON.stringify(scrubAnthropicBody({
           model: opts.model,
           max_tokens: opts.maxTokens,
           temperature: opts.temperature,
           system: opts.system,
           messages: [{ role: "user", content: opts.userMessage }],
-        }),
+        })),
         signal: ctrl.signal,
       });
       if (!res.ok) {

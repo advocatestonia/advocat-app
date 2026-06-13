@@ -26,6 +26,7 @@ import {
   type DraftDbClient,
   runDraftRevise,
 } from "./handler.ts";
+import { scrubAnthropicBody } from "../_shared/llm_egress/scrub_body.ts";
 
 const ANTHROPIC_API_KEY = (Deno.env.get("CLAUDE_API_KEY") ??
   Deno.env.get("ANTHROPIC_API_KEY"))!;
@@ -44,7 +45,7 @@ const realAnthropic: AnthropicCaller = async (
       "x-api-key": ANTHROPIC_API_KEY,
       "anthropic-version": "2023-06-01",
     },
-    body: JSON.stringify(req),
+    body: JSON.stringify(scrubAnthropicBody(req)),
   });
   if (!r.ok) {
     const text = await r.text();

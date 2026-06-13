@@ -1,3 +1,4 @@
+import { scrubAnthropicBody } from "./llm_egress/scrub_body.ts";
 // subtraction_critic.ts — Senior-lawyer "cut 50-60%" pass.
 // -----------------------------------------------------------------------------
 // Pure-ish module — no Deno globals beyond `fetch`. Imported by
@@ -116,13 +117,13 @@ export const defaultSubtractionCaller: AnthropicCaller = async (req) => {
       "x-api-key": req.apiKey,
       "anthropic-version": "2023-06-01",
     },
-    body: JSON.stringify({
+    body: JSON.stringify(scrubAnthropicBody({
       model: req.model,
       max_tokens: req.maxTokens,
       temperature: req.temperature,
       system: req.systemPrompt,
       messages: req.messages,
-    }),
+    })),
   });
   if (!res.ok) {
     const err = await res.text();

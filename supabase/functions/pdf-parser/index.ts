@@ -67,6 +67,10 @@ import {
   type RequestBody,
   stitchPages,
 } from "./helpers.ts";
+import {
+  scrubAnthropicBody,
+  scrubText,
+} from "../_shared/llm_egress/scrub_body.ts";
 
 // Re-export the v2 helpers so existing imports of `partyIsUserAttorney`
 // and `DOC_BURST_DAILY_THRESHOLD` from `../index.ts` continue to work
@@ -134,14 +138,16 @@ serve(async (req: Request) => {
   // attachment, so the storage path prefix check below still binds).
   let resolvedUserId: string;
   const internalCallHeader = req.headers.get("x-internal-call");
-  const authHeader = req.headers.get("authorization") ?? req.headers.get("Authorization") ?? "";
-  const isInternalCall = !!internalCallHeader &&
+  const authHeader =
+    req.headers.get("authorization") ?? req.headers.get("Authorization") ?? "";
+  const isInternalCall =
+    !!internalCallHeader &&
     constantTimeEqual(authHeader, `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`);
   if (isInternalCall) {
     // Pre-parse the body once to extract the user_id for path validation.
     // The full parseAndValidateBody re-runs below; this is just for auth.
     try {
-      const raw = await req.clone().json() as { user_id?: string };
+      const raw = (await req.clone().json()) as { user_id?: string };
       if (!raw.user_id || typeof raw.user_id !== "string") {
         return jsonError("internal-call requires user_id in body", 400);
       }
@@ -224,7 +230,7 @@ serve(async (req: Request) => {
         isImagePath
           ? "Image too large (max 10 MB)"
           : "PDF too large (max 50 MB)",
-        413,
+        413
       );
     }
     pdfBytes = new Uint8Array(buf);
@@ -242,7 +248,7 @@ serve(async (req: Request) => {
       ? await runImageOcrPipeline(
           pdfBytes,
           CLAUDE_API_KEY,
-          normalizeImageMediaType(body.mime_type),
+          normalizeImageMediaType(body.mime_type)
         )
       : await runParsePipeline(pdfBytes, CLAUDE_API_KEY);
   } catch (e) {
@@ -262,7 +268,7 @@ serve(async (req: Request) => {
     console.error(`pdf-parser: pipeline failed: ${msg.slice(0, 300)}`);
     return jsonError(
       isImagePath ? "Image could not be parsed" : "PDF could not be parsed",
-      502,
+      502
     );
   }
 
@@ -278,7 +284,7 @@ serve(async (req: Request) => {
   // ── 6. Structured extraction via Sonnet. ─────────────────────────────────
   const extracted = await runStructuredExtraction(
     pipeline.parsed_text,
-    CLAUDE_API_KEY,
+    CLAUDE_API_KEY
   );
 
   // ── 7. Embedding via OpenAI. Use the parsed_summary so retrieval ranks
@@ -337,7 +343,7 @@ serve(async (req: Request) => {
     });
   } catch (e) {
     console.warn(
-      `pdf-parser: b2b signal write failed: ${String(e).slice(0, 200)}`,
+      `pdf-parser: b2b signal write failed: ${String(e).slice(0, 200)}`
     );
   }
 
@@ -389,7 +395,7 @@ interface RecordPdfParserSignalsArgs {
 }
 
 export async function recordPdfParserB2bSignals(
-  args: RecordPdfParserSignalsArgs,
+  args: RecordPdfParserSignalsArgs
 ): Promise<void> {
   // ── 1. doc_burst_3plus_day (v2: 5+/day instead of 3+) ─────────────────
   try {
@@ -430,7 +436,7 @@ export async function recordPdfParserB2bSignals(
     }
   } catch (e) {
     console.warn(
-      `pdf-parser: doc_burst signal failed: ${String(e).slice(0, 150)}`,
+      `pdf-parser: doc_burst signal failed: ${String(e).slice(0, 150)}`
     );
   }
 
@@ -439,7 +445,7 @@ export async function recordPdfParserB2bSignals(
     const hasUserAttorney = args.extracted.parties.some((p) =>
       partyIsUserAttorney(
         p as unknown as Record<string, unknown>,
-        args.userEmail ?? null,
+        args.userEmail ?? null
       )
     );
     if (hasUserAttorney) {
@@ -469,7 +475,7 @@ export async function recordPdfParserB2bSignals(
     }
   } catch (e) {
     console.warn(
-      `pdf-parser: attorney_role signal failed: ${String(e).slice(0, 150)}`,
+      `pdf-parser: attorney_role signal failed: ${String(e).slice(0, 150)}`
     );
   }
 }
@@ -485,7 +491,7 @@ export async function recordPdfParserB2bSignals(
  */
 export async function runParsePipeline(
   pdfBytes: Uint8Array,
-  claudeKey: string,
+  claudeKey: string
 ): Promise<ParsePipelineResult> {
   // Step 1 — text-layer extraction.
   const textPages = await extractTextLayer(pdfBytes);
@@ -514,7 +520,7 @@ export async function runParsePipeline(
 
   if (visionPages.length > PDF_MAX_VISION_PAGES) {
     throw new Error(
-      `scan_too_long: ${visionPages.length} pages need OCR, max ${PDF_MAX_VISION_PAGES}`,
+      `scan_too_long: ${visionPages.length} pages need OCR, max ${PDF_MAX_VISION_PAGES}`
     );
   }
 
@@ -529,7 +535,7 @@ export async function runParsePipeline(
       ocrText = visionOut.trim();
     } catch (e) {
       console.warn(
-        `pdf-parser: vision OCR page ${pn} failed: ${String(e).slice(0, 200)}`,
+        `pdf-parser: vision OCR page ${pn} failed: ${String(e).slice(0, 200)}`
       );
     }
     if (ocrText.length >= PDF_VISION_MIN_USABLE_CHARS) {
@@ -552,7 +558,7 @@ export async function runParsePipeline(
 
   const totalUsableChars = finalPages.reduce(
     (acc, p) => acc + p.text.length,
-    0,
+    0
   );
   const readable = totalUsableChars >= PDF_VISION_MIN_USABLE_CHARS;
 
@@ -580,7 +586,7 @@ export async function runParsePipeline(
 export async function runImageOcrPipeline(
   imageBytes: Uint8Array,
   claudeKey: string,
-  mediaType: string,
+  mediaType: string
 ): Promise<ParsePipelineResult> {
   let ocrText = "";
   try {
@@ -588,7 +594,7 @@ export async function runImageOcrPipeline(
     ocrText = out.trim();
   } catch (e) {
     console.warn(
-      `pdf-parser: vision OCR (image) failed: ${String(e).slice(0, 200)}`,
+      `pdf-parser: vision OCR (image) failed: ${String(e).slice(0, 200)}`
     );
   }
 
@@ -621,10 +627,9 @@ export async function runImageOcrPipeline(
  */
 // deno-lint-ignore no-explicit-any
 async function loadPdfJs(): Promise<any> {
-  const dynImport = new Function(
-    "specifier",
-    "return import(specifier);",
-  ) as (specifier: string) => Promise<unknown>;
+  const dynImport = new Function("specifier", "return import(specifier);") as (
+    specifier: string
+  ) => Promise<unknown>;
   return await dynImport("npm:pdfjs-dist@4.0.379/legacy/build/pdf.mjs");
 }
 
@@ -641,7 +646,9 @@ async function extractTextLayer(pdfBytes: Uint8Array): Promise<PageText[]> {
     // npm packages at deploy time. Tests bypass this path entirely via
     // the `__setPdfTextLayerImplForTest` hook.
     const impl = pdfTextLayerImpl ?? (await loadPdfJs());
-    const pdfjs = impl as { getDocument: (arg: unknown) => { promise: Promise<unknown> } };
+    const pdfjs = impl as {
+      getDocument: (arg: unknown) => { promise: Promise<unknown> };
+    };
     const loadingTask = pdfjs.getDocument({
       data: pdfBytes,
       // Disable workers — Deno doesn't have the worker runtime pdfjs expects.
@@ -650,7 +657,7 @@ async function extractTextLayer(pdfBytes: Uint8Array): Promise<PageText[]> {
       disableFontFace: true,
       useSystemFonts: false,
     });
-    const doc = await loadingTask.promise as {
+    const doc = (await loadingTask.promise) as {
       numPages: number;
       getPage: (n: number) => Promise<{
         getTextContent: () => Promise<{
@@ -675,9 +682,10 @@ async function extractTextLayer(pdfBytes: Uint8Array): Promise<PageText[]> {
         });
       } catch (e) {
         console.warn(
-          `pdf-parser: page ${i} text extraction failed: ${
-            String(e).slice(0, 150)
-          }`,
+          `pdf-parser: page ${i} text extraction failed: ${String(e).slice(
+            0,
+            150
+          )}`
         );
         out.push({ page: i, text: "", source: "empty" });
       }
@@ -685,7 +693,7 @@ async function extractTextLayer(pdfBytes: Uint8Array): Promise<PageText[]> {
     return out;
   } catch (e) {
     console.warn(
-      `pdf-parser: pdfjs getDocument failed: ${String(e).slice(0, 200)}`,
+      `pdf-parser: pdfjs getDocument failed: ${String(e).slice(0, 200)}`
     );
     return [];
   }
@@ -706,7 +714,7 @@ async function extractTextLayer(pdfBytes: Uint8Array): Promise<PageText[]> {
  */
 async function renderPageToPng(
   pdfBytes: Uint8Array,
-  pageNum: number,
+  pageNum: number
 ): Promise<Uint8Array> {
   if (pdfRenderImpl) {
     return await pdfRenderImpl(pdfBytes, pageNum);
@@ -714,7 +722,7 @@ async function renderPageToPng(
   // Production path is intentionally narrow — we throw, the caller logs
   // and continues with the text it already has. See spec "scan fallback".
   throw new Error(
-    `Page ${pageNum} render not supported in this runtime — pdfjs canvas missing`,
+    `Page ${pageNum} render not supported in this runtime — pdfjs canvas missing`
   );
 }
 
@@ -725,11 +733,16 @@ async function renderPageToPng(
 async function runVisionOcrOnPage(
   imageBytes: Uint8Array,
   apiKey: string,
-  mediaType: string = "image/png",
+  mediaType: string = "image/png"
 ): Promise<string> {
   // Encode bytes to base64 for the Anthropic media block.
   const base64 = encodeBase64(imageBytes);
-  const reqBody = {
+  // NOTE (Data Fortress TIER-0, 2026-06-13): the raw document IMAGE (passport,
+  // court PDF) is sent to Anthropic Vision and CANNOT be pseudonymized — it's
+  // binary. scrubAnthropicBody below only no-ops the static text prompt here.
+  // True protection for this path requires EU-region inference (Phase 1,
+  // Bedrock eu-central-1). Tracked, owner-gated.
+  const reqBody = scrubAnthropicBody({
     model: VISION_MODEL,
     max_tokens: 4_000,
     system: "You are analyzing a legal document image for OCR.",
@@ -745,7 +758,7 @@ async function runVisionOcrOnPage(
         ],
       },
     ],
-  };
+  });
   const ctrl = new AbortController();
   const timeout = setTimeout(() => ctrl.abort(), 60_000);
   try {
@@ -764,7 +777,7 @@ async function runVisionOcrOnPage(
       const snippet = (await res.text()).slice(0, 200);
       throw new Error(`Vision ${res.status}: ${snippet}`);
     }
-    const json = await res.json() as {
+    const json = (await res.json()) as {
       content?: Array<{ type?: string; text?: string }>;
       usage?: {
         input_tokens?: number;
@@ -785,15 +798,22 @@ async function runVisionOcrOnPage(
     // Best-effort: never await blocking, never throw on failure.
     try {
       const u = json.usage ?? {};
-      const inputTokens = (u.input_tokens ?? 0) +
+      const inputTokens =
+        (u.input_tokens ?? 0) +
         (u.cache_creation_input_tokens ?? 0) +
         (u.cache_read_input_tokens ?? 0);
       const outputTokens = u.output_tokens ?? 0;
       if (inputTokens > 0 || outputTokens > 0) {
-        recordSpend(inputTokens, outputTokens, VISION_MODEL, "anthropic_haiku")
-          .catch(() => {});
+        recordSpend(
+          inputTokens,
+          outputTokens,
+          VISION_MODEL,
+          "anthropic_haiku"
+        ).catch(() => {});
       }
-    } catch (_e) { /* never bubble */ }
+    } catch (_e) {
+      /* never bubble */
+    }
     return out;
   } finally {
     clearTimeout(timeout);
@@ -812,14 +832,15 @@ async function runVisionOcrOnPage(
  */
 export async function runStructuredExtraction(
   parsedText: string,
-  apiKey: string,
+  apiKey: string
 ): Promise<ExtractedDoc> {
   // Cap text at ~80 KB so the system+user prompt fits inside Sonnet's
   // 200 KB context comfortably (we also leave room for the 200K guard
   // ceiling on the calling side, though that guard is server-side and
   // doesn't apply here — we call Anthropic directly).
   const TRIM = 80_000;
-  const text = parsedText.length > TRIM ? parsedText.slice(0, TRIM) : parsedText;
+  const text =
+    parsedText.length > TRIM ? parsedText.slice(0, TRIM) : parsedText;
 
   const reqBody = {
     model: PDF_EXTRACTOR_MODEL,
@@ -828,8 +849,7 @@ export async function runStructuredExtraction(
     messages: [
       {
         role: "user",
-        content:
-          "<document_text>\n" + text + "\n</document_text>\n\nJSON:",
+        content: "<document_text>\n" + text + "\n</document_text>\n\nJSON:",
       },
     ],
   };
@@ -852,7 +872,7 @@ export async function runStructuredExtraction(
       console.warn(`pdf-parser: extractor ${res.status}: ${snippet}`);
       return emptyExtraction();
     }
-    const json = await res.json() as {
+    const json = (await res.json()) as {
       content?: Array<{ type?: string; text?: string }>;
     };
     if (!Array.isArray(json.content)) return emptyExtraction();
@@ -867,7 +887,7 @@ export async function runStructuredExtraction(
   } catch (e) {
     clearTimeout(timeout);
     console.warn(
-      `pdf-parser: extractor fetch failed: ${String(e).slice(0, 200)}`,
+      `pdf-parser: extractor fetch failed: ${String(e).slice(0, 200)}`
     );
     return emptyExtraction();
   }
@@ -884,7 +904,7 @@ export async function runStructuredExtraction(
  */
 export async function runEmbedding(
   text: string,
-  apiKey: string,
+  apiKey: string
 ): Promise<number[]> {
   const ctrl = new AbortController();
   const timeout = setTimeout(() => ctrl.abort(), 30_000);
@@ -897,7 +917,10 @@ export async function runEmbedding(
       },
       body: JSON.stringify({
         model: EMBEDDING_MODEL,
-        input: text.slice(0, 8000),
+        // Scrub direct identifiers from the parsed-document summary before it
+        // leaves for OpenAI embeddings — passport/court-doc OCR text carries
+        // isikukood/HETU/IBAN. (Data Fortress, 2026-06-13.)
+        input: scrubText(text.slice(0, 8000)),
         dimensions: EMBEDDING_DIM,
       }),
       signal: ctrl.signal,
@@ -908,7 +931,7 @@ export async function runEmbedding(
       console.warn(`pdf-parser: embed ${res.status}: ${snippet}`);
       return new Array<number>(EMBEDDING_DIM).fill(0);
     }
-    const json = await res.json() as {
+    const json = (await res.json()) as {
       data?: Array<{ embedding?: unknown }>;
     };
     const arr = json?.data?.[0]?.embedding;
@@ -986,7 +1009,10 @@ async function upsertDocumentRow(args: UpsertArgs): Promise<UpsertResult> {
       // Log raw DB error server-side; return a stable generic code to the
       // client (leak-class fix — the raw PostgREST message can disclose table
       // / column / constraint names). Mirrors oauth-callback / create-checkout.
-      console.error("[pdf-parser] case_documents select failed:", existing.error);
+      console.error(
+        "[pdf-parser] case_documents select failed:",
+        existing.error
+      );
       return { kind: "error", message: "document_persist_failed" };
     }
     const found = (existing.data as Array<{ id: string }> | null)?.[0];
@@ -1038,10 +1064,7 @@ export function __setPdfTextLayerImplForTest(impl: any) {
 }
 /** Test helper — set the page-render mock. Pass null to reset. */
 export function __setPdfRenderImplForTest(
-  impl:
-    | ((pdf: Uint8Array, pageNum: number) => Promise<Uint8Array>)
-    | null,
+  impl: ((pdf: Uint8Array, pageNum: number) => Promise<Uint8Array>) | null
 ) {
   pdfRenderImpl = impl;
 }
-

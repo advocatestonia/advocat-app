@@ -12,6 +12,7 @@ import {
   type SubtractionResult,
   runSubtractionCritic,
 } from "./subtraction_critic.ts";
+import { scrubAnthropicBody } from "./llm_egress/scrub_body.ts";
 // -----------------------------------------------------------------------------
 // Pure-ish module — no Deno globals beyond `fetch`. Imported by
 //   • supabase/functions/claude-proxy/index.ts (when mode='legal_planner')
@@ -203,13 +204,13 @@ export const defaultAnthropicCaller: AnthropicCaller = async (req) => {
       "x-api-key": req.apiKey,
       "anthropic-version": "2023-06-01",
     },
-    body: JSON.stringify({
+    body: JSON.stringify(scrubAnthropicBody({
       model: req.model,
       max_tokens: req.maxTokens,
       temperature: req.temperature,
       system: req.systemPrompt,
       messages: req.messages,
-    }),
+    })),
   });
   if (!res.ok) {
     const err = await res.text();

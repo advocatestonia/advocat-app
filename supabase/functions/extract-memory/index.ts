@@ -56,6 +56,7 @@ import {
   parseHaikuFacts,
   TEXT_MAX_LEN,
 } from "./memory_schema.ts";
+import { scrubAnthropicBody } from "../_shared/llm_egress/scrub_body.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -153,7 +154,7 @@ serve(async (req: Request) => {
         "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(haikuBody),
+      body: JSON.stringify(scrubAnthropicBody(haikuBody)),
     });
   } catch (e) {
     console.error(

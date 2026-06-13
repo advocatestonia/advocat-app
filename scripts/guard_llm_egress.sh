@@ -32,6 +32,7 @@ _shared/corrections_retriever.ts    # scrubbed — pseudonymize() before embeddi
 law-search/embed.ts                 # scrubbed — pseudonymize() before embeddings (user queries)
 # --- internal: the egress/scrubber machinery itself ---
 _shared/pii_scrubber.ts             # internal — the scrubber (Haiku name-pass)
+_shared/llm_egress/scrub_body.ts    # internal — the body-scrub helper (host names in comments)
 _shared/redactor.ts                 # internal — redaction helper
 _shared/providers/anthropic_provider.ts  # internal — provider transport
 _shared/providers/openai_provider.ts     # internal — provider transport
@@ -44,29 +45,28 @@ qa-corpus-search/index.ts           # corpus — searches public corpus
 eur-lex-fetcher/index.ts            # fetcher — pulls public EU law, no user egress
 he-fetcher/index.ts                 # fetcher — pulls FI travaux, no user egress
 hudoc-fetcher/index.ts              # fetcher — pulls ECtHR cases, no user egress
-# --- PENDING WIRING: these egress user/case text and are NOT yet scrubbed. ---
-# Tracked as the remaining work; each must be routed through prepareEgress().
-# Listed so the guard still passes (no NEW silent site), but DO NOT relabel to
-# "scrubbed" until the wiring is verified in code + tests.
-_shared/advice_digest.ts            # pending-wiring — digests case text
-_shared/consilium.ts                # pending-wiring — runs on case text
-_shared/correction_detector.ts      # pending-wiring — compares drafts
-_shared/fact_extractor.ts           # pending-wiring — runs on raw case text
-_shared/legal_planner.ts            # pending-wiring — planner over case context
-_shared/query_rewriter.ts           # pending-wiring — rewrites user queries
-_shared/subtraction_critic.ts       # pending-wiring — critic over draft
-case-auto-patch/index.ts            # pending-wiring — patches from case text
-classify-contract/index.ts          # pending-wiring — classifies contract text
-claude-proxy/index.ts               # scrubbed — stripIdentifiersFromBody() on all 3 Anthropic egress points (identifiers-only tier: strips isikukood/HETU/IBAN, keeps names/emails for tool-calling)
-claude-proxy/llama_fallback.ts      # pending-wiring — fallback chat egress
-claude-proxy/model_router.ts        # pending-wiring — routes chat payloads
-contract-review/index.ts            # pending-wiring — reviews contract text
-deadline-extractor/index.ts         # pending-wiring — extracts from case text
-draft-ai-revise/index.ts            # pending-wiring — revises draft text
-email-triage/index.ts               # pending-wiring — triages email body
-extract-memory/index.ts             # pending-wiring — summarizes case memory
-pdf-parser/index.ts                 # pending-wiring — TIER-0 raw document (Vision OCR)
-whisper-stt/index.ts                # pending-wiring — audio transcription
+# --- scrubbed: routed through _shared/llm_egress scrubAnthropicBody/scrubText ---
+# (identifiers-only tier: strips isikukood/HETU/IBAN, keeps names/emails/phones
+#  for tool-calling + draft fidelity; EU-residency is the backstop for those.)
+_shared/advice_digest.ts            # scrubbed — scrubAnthropicBody on Haiku digest
+_shared/consilium.ts                # scrubbed — scrubAnthropicBody on lawyer-agent bodies
+_shared/correction_detector.ts      # scrubbed — scrubAnthropicBody on detector body
+_shared/fact_extractor.ts           # scrubbed — scrubAnthropicBody on extractor bodies
+_shared/legal_planner.ts            # scrubbed — scrubAnthropicBody in defaultAnthropicCaller
+_shared/query_rewriter.ts           # scrubbed — scrubAnthropicBody in defaultHaikuJsonCaller
+_shared/subtraction_critic.ts       # scrubbed — scrubAnthropicBody on critic body
+case-auto-patch/index.ts            # scrubbed — scrubAnthropicBody on patch body
+classify-contract/index.ts          # scrubbed — scrubAnthropicBody on classify body
+claude-proxy/index.ts               # scrubbed — stripIdentifiersFromBody on all 3 Anthropic egress
+claude-proxy/llama_fallback.ts      # scrubbed — scrubText on each DeepInfra message content
+claude-proxy/model_router.ts        # scrubbed — scrubAnthropicBody on routed body
+contract-review/index.ts            # scrubbed — scrubAnthropicBody on review bodies
+deadline-extractor/index.ts         # scrubbed — scrubAnthropicBody on extractor body
+draft-ai-revise/index.ts            # scrubbed — scrubAnthropicBody on revise body
+email-triage/index.ts               # scrubbed — scrubAnthropicBody on both triage bodies
+extract-memory/index.ts             # scrubbed — scrubAnthropicBody on memory body
+pdf-parser/index.ts                 # partial — embeddings input scrubText'd; Vision IMAGE is TIER-0 binary (needs EU-inference Phase 1)
+whisper-stt/index.ts                # tier0-binary — only audio bytes egress, no text to scrub
 EOF
 
 # Allowlisted paths, one per line (comments/whitespace stripped). Kept as a

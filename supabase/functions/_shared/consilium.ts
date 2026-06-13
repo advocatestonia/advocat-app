@@ -41,6 +41,7 @@ import {
   resolveDefaultMemoryDir,
   selectConsiliumRoles,
 } from "./consilium_roles/index.ts";
+import { scrubAnthropicBody } from "./llm_egress/scrub_body.ts";
 
 export const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 
@@ -490,12 +491,12 @@ export async function callAnthropicBlocking(opts: {
   const res = await fetch(ANTHROPIC_URL, {
     method: "POST",
     headers: buildAnthropicHeaders(opts.apiKey),
-    body: JSON.stringify({
+    body: JSON.stringify(scrubAnthropicBody({
       model: opts.model,
       max_tokens: opts.maxTokens,
       system: systemPayload,
       messages: [{ role: "user", content: opts.userMessage }],
-    }),
+    })),
     signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
   });
 
@@ -834,13 +835,13 @@ export async function runConsilium(params: {
     const streamRes = await fetch(ANTHROPIC_URL, {
       method: "POST",
       headers: buildAnthropicHeaders(anthropicApiKey),
-      body: JSON.stringify({
+      body: JSON.stringify(scrubAnthropicBody({
         model: MODEL_SONNET,
         max_tokens: 2048,
         stream: true,
         system: synthesisSystem,
         messages: [{ role: "user", content: synthesisUserMessage }],
-      }),
+      })),
       signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
     });
 

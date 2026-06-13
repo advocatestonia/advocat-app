@@ -70,6 +70,7 @@ import {
 } from "../_shared/case_phase.ts";
 import { isValidCaseId } from "../claude-proxy/active_case_injection.ts";
 import { recordSpend } from "../_shared/spend_tracker.ts";
+import { scrubAnthropicBody } from "../_shared/llm_egress/scrub_body.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -445,7 +446,7 @@ async function runHaiku(args: {
         "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify(scrubAnthropicBody(requestBody)),
       signal: ctrl.signal,
     });
     clearTimeout(timeout);

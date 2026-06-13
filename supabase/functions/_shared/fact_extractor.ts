@@ -1,3 +1,4 @@
+import { scrubAnthropicBody } from "./llm_egress/scrub_body.ts";
 // fact_extractor.ts — Case Fact Model, Upgrade 2.
 // -----------------------------------------------------------------------------
 // Extracts structured facts from a chat turn and merges them into the
@@ -88,13 +89,13 @@ async function callAnthropicBlocking(opts: {
   const res = await fetch(ANTHROPIC_URL, {
     method: "POST",
     headers: buildAnthropicHeaders(opts.apiKey),
-    body: JSON.stringify({
+    body: JSON.stringify(scrubAnthropicBody({
       model: opts.model,
       max_tokens: opts.maxTokens,
       temperature: opts.temperature,
       system: opts.system,
       messages: [{ role: "user", content: opts.userMessage }],
-    }),
+    })),
   });
 
   if (!res.ok) {
@@ -233,7 +234,7 @@ export async function extractAndPatchFacts(
           "apikey": opts.serviceRoleKey,
           "Authorization": `Bearer ${opts.serviceRoleKey}`,
         },
-        body: JSON.stringify({
+        body: JSON.stringify(scrubAnthropicBody({
           p_case_id: opts.caseId,
           p_certain_dates: certainDates,
           p_certain_parties: certainParties,
@@ -241,7 +242,7 @@ export async function extractAndPatchFacts(
           p_open_questions: openQuestions,
           p_contradictions: contradictions,
           p_legal_claims: legalClaims,
-        }),
+        })),
       },
     );
 
@@ -278,7 +279,7 @@ export async function extractAndPatchFacts(
           Authorization: `Bearer ${opts.serviceRoleKey}`,
           Prefer: "return=minimal",
         },
-        body: JSON.stringify({
+        body: JSON.stringify(scrubAnthropicBody({
           user_id: opts.userId,
           conversation_id: null,
           question: opts.userMessage.slice(0, 4000),
@@ -291,7 +292,7 @@ export async function extractAndPatchFacts(
           severity: "factual",
           embedding: null,
           metadata: { case_id: opts.caseId, detected_by: "fact_extractor_v1" },
-        }),
+        })),
       });
     } catch (e) {
       console.warn(

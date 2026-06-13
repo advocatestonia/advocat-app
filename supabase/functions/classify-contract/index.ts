@@ -35,6 +35,7 @@ import {
   flagOn,
 } from "../_shared/kill_switches.ts";
 import { recordSpend } from "../_shared/spend_tracker.ts";
+import { scrubAnthropicBody } from "../_shared/llm_egress/scrub_body.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -179,13 +180,13 @@ function buildHaikuCaller(): HaikuCaller {
         "x-api-key": ANTHROPIC_API_KEY,
         "anthropic-version": "2023-06-01",
       },
-      body: JSON.stringify({
+      body: JSON.stringify(scrubAnthropicBody({
         model: HAIKU_MODEL,
         max_tokens: HAIKU_MAX_TOKENS,
         temperature: 0.0,
         system: req.systemPrompt,
         messages: [{ role: "user", content: userMessage }],
-      }),
+      })),
     });
     if (!res.ok) {
       const err = await res.text();

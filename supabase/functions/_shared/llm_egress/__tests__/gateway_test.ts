@@ -125,6 +125,11 @@ Deno.test(
 
 Deno.test(
   "GW-02 — special tier THROWS when structured PII survives",
+  // The Haiku pass triggers recordSpend()'s fire-and-forget telemetry fetch
+  // (it has a usage block); that dangling request is pre-existing prod
+  // behaviour (`.catch(()=>{})`), so we relax the op/resource sanitizer for
+  // this test rather than mask it — the scrub guarantee under test is intact.
+  { sanitizeOps: false, sanitizeResources: false },
   async () => {
     // Force a leak: an email shape the pseudonymizer's regex can't catch is hard
     // to construct (regex is the same), so simulate via a haiku fetcher that
@@ -156,6 +161,8 @@ Deno.test(
 
 Deno.test(
   "GW-03 — standard tier does NOT throw on residual PII (logs only)",
+  // See GW-02: relaxes sanitizer for recordSpend's fire-and-forget telemetry.
+  { sanitizeOps: false, sanitizeResources: false },
   async () => {
     const evilFetcher: typeof fetch = () =>
       Promise.resolve(

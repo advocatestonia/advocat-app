@@ -1,3 +1,4 @@
+import { scrubAnthropicBody } from "../_shared/llm_egress/scrub_body.ts";
 // =============================================================================
 // model_router.ts — smart Haiku-driven model & max_tokens router.
 // =============================================================================
@@ -389,7 +390,7 @@ export async function classifyQuery(
         // re-billing the full 300 tokens every time.
         "anthropic-beta": "prompt-caching-2024-07-31",
       },
-      body: JSON.stringify({
+      body: JSON.stringify(scrubAnthropicBody({
         model: ROUTER_MODEL,
         max_tokens: ROUTER_MAX_TOKENS,
         system: [
@@ -411,7 +412,7 @@ export async function classifyQuery(
           },
         ],
         temperature: 0,
-      }),
+      })),
       signal: controller.signal,
     });
 
