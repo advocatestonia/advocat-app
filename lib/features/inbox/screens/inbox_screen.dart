@@ -18,6 +18,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/ai_disclaimer_banner.dart';
 import '../models/inbox_severity.dart';
 import '../providers/inbox_provider.dart';
 import '../widgets/inbox_empty_state.dart';
@@ -96,6 +97,17 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
         onRefresh: () => ref.read(inboxProvider.notifier).refresh(),
         child: Column(
           children: [
+            // EU AI Act Art. 50 + EE Advokatuuriseadus §47 / FI Asianajajalaki §5 —
+            // the inbox surfaces AI-triaged correspondence and AI-drafted
+            // replies, so it carries the same AI-not-a-lawyer disclaimer as
+            // chat/contract/checker. Closes the one UPL gap found in the
+            // 2026-06-13 deep-dive audit (QA-04).
+            const Padding(
+              padding: EdgeInsets.fromLTRB(8, 6, 8, 0),
+              child: AiDisclaimerBanner.compact(
+                key: Key('inbox_ai_disclaimer_banner'),
+              ),
+            ),
             _SeverityFilterRow(active: state.severityFilter),
             Expanded(child: _body(context, l)),
           ],

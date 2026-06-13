@@ -36,6 +36,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/assistant_tools.dart';
+import '../../../shared/widgets/ai_disclaimer_banner.dart';
 import '../providers/inbox_provider.dart';
 
 /// Char cap shared with the counter + the autosave guard.
@@ -376,6 +377,14 @@ class _EditScaffold extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // AI-drafted reply surface — same AI-not-a-lawyer disclaimer as
+            // chat (EU AI Act Art. 50, EE/FI bar acts). Deep-dive audit QA-04.
+            const Padding(
+              padding: EdgeInsets.only(bottom: AppSpacing.sm),
+              child: AiDisclaimerBanner.compact(
+                key: Key('inbox_draft_ai_disclaimer_banner'),
+              ),
+            ),
             if (payload.title.isNotEmpty) ...[
               Text(
                 payload.title,
