@@ -109,6 +109,33 @@ serve(async (req) => {
       `storage_failures=${result.storage_results.filter((r) => r.error).length}`
   );
 
+  // Data Fortress Pillar 1: crypto-shred — destroy the user's wrapped DEK so
+  // every ciphertext they ever wrote becomes mathematically unrecoverable.
+  // The generic sweep above already targets user_encryption_keys (so the RPC
+  // often returns 0 — it already lost the race to the sweep). We call the
+  // explicit shred as a belt-and-suspenders guarantee and record dek_shredded
+  // in the cert as a BOOLEAN fact (the DEK is destroyed either way). The
+  // sweep TableResult carries no row count, so we don't try to read one.
+  const counts = buildDeletionCounts(result);
+  const keySwept = result.table_results.some(
+    (r) => r.table === "user_encryption_keys" && r.ok
+  );
+  let dekShredded = keySwept;
+  try {
+    const { data: shred } = await sb.rpc("vault_crypto_shred_user", {
+      p_user_id: userId,
+    });
+    const row = Array.isArray(shred) ? shred[0] : shred;
+    const destroyed =
+      (row as { keys_destroyed?: number } | null)?.keys_destroyed ?? 0;
+    if (destroyed > 0) dekShredded = true;
+  } catch (e) {
+    console.warn(
+      `[account-delete] crypto-shred failed: ${String(e).slice(0, 160)}`
+    );
+  }
+  if (dekShredded) counts["dek_shredded"] = 1;
+
   // Data Fortress Pillar 3: record a crypto-proof-of-erasure certificate and
   // hand it back to the user. Best-effort — never blocks or fails the delete
   // (the erasure already happened; a missing cert is logged, not fatal).
@@ -117,7 +144,7 @@ serve(async (req) => {
     {
       userId,
       subjectEmail: userEmail ?? null,
-      counts: buildDeletionCounts(result),
+      counts,
       deletedAt: new Date().toISOString(),
     }
   );

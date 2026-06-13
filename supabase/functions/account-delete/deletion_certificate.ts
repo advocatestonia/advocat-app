@@ -140,21 +140,28 @@ export async function recordDeletionCertificate(
 /**
  * Build the {resource: count} map from the account-delete result shape.
  * Exported so the caller (and tests) get a consistent counts object.
+ *
+ * NOTE: the table sweep (TableResult) does NOT carry per-table row counts —
+ * it only reports ok/skipped/error. So for tables we record PRESENCE (1 =
+ * "this table was cleared for the user") rather than a fabricated row count.
+ * Storage results DO carry a real removed-object count, so those are exact.
  */
 export function buildDeletionCounts(result: {
   table_results: ReadonlyArray<{
     table: string;
     deleted?: number;
     ok: boolean;
+    skipped?: boolean;
   }>;
   storage_results: ReadonlyArray<{ bucket: string; removed: number }>;
   auth_user_deleted?: boolean;
 }): DeletionCounts {
   const counts: DeletionCounts = {};
   for (const t of result.table_results) {
-    if (t.ok && typeof t.deleted === "number" && t.deleted > 0) {
-      counts[`table:${t.table}`] = t.deleted;
-    }
+    if (!t.ok || t.skipped) continue;
+    // Prefer a real count when present; otherwise record presence (1).
+    counts[`table:${t.table}`] =
+      typeof t.deleted === "number" && t.deleted > 0 ? t.deleted : 1;
   }
   for (const s of result.storage_results) {
     if (s.removed > 0) counts[`storage:${s.bucket}`] = s.removed;

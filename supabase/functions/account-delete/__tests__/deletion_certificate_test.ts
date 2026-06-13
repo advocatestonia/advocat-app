@@ -12,10 +12,10 @@ import {
 Deno.test("CERT-01 — buildDeletionCounts maps tables, storage, auth", () => {
   const counts = buildDeletionCounts({
     table_results: [
-      { table: "chat_messages", deleted: 12, ok: true },
-      { table: "case_files", deleted: 3, ok: true },
-      { table: "skipped", deleted: 0, ok: true },
-      { table: "failed", deleted: 5, ok: false },
+      { table: "chat_messages", deleted: 12, ok: true }, // real count
+      { table: "case_files", ok: true }, // no count -> presence (1)
+      { table: "was_skipped", ok: true, skipped: true }, // omitted
+      { table: "failed", ok: false }, // omitted
     ],
     storage_results: [
       { bucket: "case-documents", removed: 4 },
@@ -23,12 +23,13 @@ Deno.test("CERT-01 — buildDeletionCounts maps tables, storage, auth", () => {
     ],
     auth_user_deleted: true,
   });
+  // Real count preserved; cleared-without-count recorded as presence (1).
   assertEquals(counts["table:chat_messages"], 12);
-  assertEquals(counts["table:case_files"], 3);
+  assertEquals(counts["table:case_files"], 1);
   assertEquals(counts["storage:case-documents"], 4);
   assertEquals(counts["auth_user"], 1);
-  // zero/failed entries are omitted
-  assert(!("table:skipped" in counts));
+  // skipped / failed / empty-bucket entries are omitted
+  assert(!("table:was_skipped" in counts));
   assert(!("table:failed" in counts));
   assert(!("storage:empty" in counts));
 });
