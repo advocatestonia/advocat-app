@@ -28,37 +28,70 @@ export interface PseudonymizeResult {
   counts: Record<string, number>;
 }
 
-// Ordered most-structured-first. Each entry: a regex + the token prefix.
-// NOTE: surnames come LAST because they are the loosest pattern.
-const PATTERNS: Array<{ re: RegExp; prefix: string }> = [
-  { re: /\b[\w.+-]+@[\w.-]+\.\w{2,}\b/g, prefix: "EMAIL" },
+// Each pattern carries a `class`:
+//   "identifier" — a DIRECT government/financial identifier the LLM never
+//                  needs for reasoning (isikukood, HETU, IBAN). Stripping it
+//                  doesn't degrade answers or tool calls. Always scrubbed.
+//   "contextual" — a value the LLM may need to reason or call tools with
+//                  (names, emails, phones, case numbers). Scrubbed only in
+//                  full mode; KEPT in identifiers-only mode (the main-chat
+//                  tier, where EU-residency is the backstop and tool-calling /
+//                  draft fidelity require the real value).
+// Ordered most-structured-first. Surnames last (loosest pattern).
+type PiiClass = "identifier" | "contextual";
+const PATTERNS: Array<{ re: RegExp; prefix: string; cls: PiiClass }> = [
+  { re: /\b[\w.+-]+@[\w.-]+\.\w{2,}\b/g, prefix: "EMAIL", cls: "contextual" },
   // Estonian ID (isikukood): 11 digits, century-marker prefix 1-6.
-  { re: /\b[1-6]\d{2}[01]\d[0-3]\d{5}\b/g, prefix: "ID_EE" },
+  { re: /\b[1-6]\d{2}[01]\d[0-3]\d{5}\b/g, prefix: "ID_EE", cls: "identifier" },
   // Finnish HETU: DDMMYY[+/-A]NNN[X]
-  { re: /\b\d{6}[+\-A]\d{3}[\dA-Y]\b/g, prefix: "HETU_FI" },
-  // Lower-court case numbers R-YY/NNNN, H-YY/NNNN.
-  { re: /\b[RH]-\d{2}\/\d{4,}\b/g, prefix: "CASE_NO" },
+  { re: /\b\d{6}[+\-A]\d{3}[\dA-Y]\b/g, prefix: "HETU_FI", cls: "identifier" },
   // IBAN (EE/FI and generic) — financial identifier.
-  { re: /\b[A-Z]{2}\d{2}[A-Z0-9]{10,30}\b/g, prefix: "IBAN" },
+  {
+    re: /\b[A-Z]{2}\d{2}[A-Z0-9]{10,30}\b/g,
+    prefix: "IBAN",
+    cls: "identifier",
+  },
+  // Lower-court case numbers R-YY/NNNN, H-YY/NNNN.
+  { re: /\b[RH]-\d{2}\/\d{4,}\b/g, prefix: "CASE_NO", cls: "contextual" },
   // EE/FI phones: +358/+372 international, or local Estonian formats.
   {
     re: /\b(?:\+?3[58][\s-]?(?:\d[\s-]?){6,10}\d|(?:5|6|7|8)\d{2}\s?\d{4}|\d{3}\s\d{4})\b/g,
     prefix: "PHONE",
+    cls: "contextual",
   },
   // Estonian/Finnish surnames — capitalized word with a typical suffix.
   {
     re: /\b[A-ZÄÖÕÜŠŽÅ][a-zäöõüšžåéàèíóú]+(?:nen|saar|mäki|vald|poeg|väli|järvi|kivi|lainen|aho|virta|salo|laine|metsä|koski)\b/g,
     prefix: "PERSON",
+    cls: "contextual",
   },
 ];
+
+export interface PseudonymizeOpts {
+  /**
+   * When true, scrub ONLY direct "identifier"-class PII (isikukood, HETU,
+   * IBAN) and leave contextual PII (names, emails, phones, case numbers)
+   * intact. Used by the main-chat tier where the LLM needs real names/emails
+   * for tool-calling and draft fidelity, and EU-residency is the backstop for
+   * the rest. Default false = full scrub.
+   */
+  identifiersOnly?: boolean;
+}
 
 /**
  * Replace PII with stable reversible tokens. The same real value maps to the
  * same token throughout one call (so co-reference survives). Returns the
  * tokenized text plus the reverse map for rehydration.
  */
-export function pseudonymize(input: string): PseudonymizeResult {
+export function pseudonymize(
+  input: string,
+  opts: PseudonymizeOpts = {}
+): PseudonymizeResult {
   if (!input) return { text: "", map: {}, counts: {} };
+
+  const patterns = opts.identifiersOnly
+    ? PATTERNS.filter((p) => p.cls === "identifier")
+    : PATTERNS;
 
   let t = input;
   const map: Record<string, string> = {};
@@ -67,7 +100,7 @@ export function pseudonymize(input: string): PseudonymizeResult {
   const seen = new Map<string, string>();
   const nextN: Record<string, number> = {};
 
-  for (const { re, prefix } of PATTERNS) {
+  for (const { re, prefix } of patterns) {
     t = t.replace(re, (match) => {
       let token = seen.get(match);
       if (!token) {

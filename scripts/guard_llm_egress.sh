@@ -57,7 +57,7 @@ _shared/query_rewriter.ts           # pending-wiring — rewrites user queries
 _shared/subtraction_critic.ts       # pending-wiring — critic over draft
 case-auto-patch/index.ts            # pending-wiring — patches from case text
 classify-contract/index.ts          # pending-wiring — classifies contract text
-claude-proxy/index.ts               # pending-wiring — MAIN chat egress (highest priority)
+claude-proxy/index.ts               # scrubbed — stripIdentifiersFromBody() on all 3 Anthropic egress points (identifiers-only tier: strips isikukood/HETU/IBAN, keeps names/emails for tool-calling)
 claude-proxy/llama_fallback.ts      # pending-wiring — fallback chat egress
 claude-proxy/model_router.ts        # pending-wiring — routes chat payloads
 contract-review/index.ts            # pending-wiring — reviews contract text

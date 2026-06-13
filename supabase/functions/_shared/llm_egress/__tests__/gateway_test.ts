@@ -58,6 +58,35 @@ Deno.test("PSEUDO-04 — public-record citations are preserved", () => {
   assert(r.text.includes("3-3-1-99-2024"), "public case id scrubbed");
 });
 
+Deno.test(
+  "PSEUDO-05 — identifiersOnly strips IDs but KEEPS names/emails",
+  () => {
+    const input =
+      "Aho (isikukood 38001010000, aho@example.fi, IBAN EE382200221020145685) called.";
+    const r = pseudonymize(input, { identifiersOnly: true });
+    // identifier-class scrubbed:
+    assert(!r.text.includes("38001010000"), "isikukood leaked");
+    assert(!r.text.includes("EE382200221020145685"), "IBAN leaked");
+    assert(r.text.includes("ID_EE_1"));
+    assert(r.text.includes("IBAN_1"));
+    // contextual-class KEPT (LLM needs them for tool-calls / drafts):
+    assert(r.text.includes("Aho"), "name was scrubbed in identifiersOnly mode");
+    assert(
+      r.text.includes("aho@example.fi"),
+      "email scrubbed in identifiersOnly"
+    );
+  }
+);
+
+Deno.test(
+  "PSEUDO-06 — identifiersOnly is reversible for the IDs it strips",
+  () => {
+    const r = pseudonymize("code 38001010000", { identifiersOnly: true });
+    assertEquals(r.map["ID_EE_1"], "38001010000");
+    assertEquals(rehydrate(r.text, r.map), "code 38001010000");
+  }
+);
+
 // ─── validator ──────────────────────────────────────────────────────────────
 
 Deno.test("VAL-01 — clean text passes", () => {
