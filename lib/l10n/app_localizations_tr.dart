@@ -4592,4 +4592,54 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get newPasswordError => 'Şifre güncellenemedi. Lütfen tekrar deneyin.';
+
+  @override
+  String get accessLogTile => 'Access log';
+
+  @override
+  String get accessLogTileSubtitle => 'See who and what accessed your data';
+
+  @override
+  String get accessLogTitle => 'Access log for my data';
+
+  @override
+  String get accessLogIntro =>
+      'A transparent, tamper-evident record of every time your data was accessed or processed — including by our AI. You can verify it has not been altered.';
+
+  @override
+  String get accessLogEmpty => 'No access events yet.';
+
+  @override
+  String get accessLogError =>
+      'Could not load your access log. Pull down to retry.';
+
+  @override
+  String get accessLogIntegrityOk =>
+      'Integrity verified — the log links form an unbroken chain.';
+
+  @override
+  String get accessLogIntegrityBroken =>
+      'Warning: the log chain is broken. Some entries may have been removed or reordered. Please contact support.';
+
+  @override
+  String get accessActionLlmEgress =>
+      'Sent to AI for processing (pseudonymized)';
+
+  @override
+  String get accessActionAiAnalysis => 'Analyzed by AI';
+
+  @override
+  String get accessActionDocumentParse => 'Document parsed';
+
+  @override
+  String get accessActionStaffRead => 'Reviewed by a staff member';
+
+  @override
+  String get accessActionExport => 'Data exported';
+
+  @override
+  String get accessActionEmailTriage => 'Email triaged';
+
+  @override
+  String get accessActionDeadlineScan => 'Deadlines scanned';
 }

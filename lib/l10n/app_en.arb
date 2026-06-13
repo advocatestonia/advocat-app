@@ -2211,5 +2211,20 @@
     "newPasswordHint": "Enter and confirm a new password for your account.",
     "newPasswordSave": "Save new password",
     "newPasswordSuccess": "Password updated. You can now use it to sign in.",
-    "newPasswordError": "Failed to update password. Please try again."
+    "newPasswordError": "Failed to update password. Please try again.",
+    "accessLogTile": "Access log",
+    "accessLogTileSubtitle": "See who and what accessed your data",
+    "accessLogTitle": "Access log for my data",
+    "accessLogIntro": "A transparent, tamper-evident record of every time your data was accessed or processed — including by our AI. You can verify it has not been altered.",
+    "accessLogEmpty": "No access events yet.",
+    "accessLogError": "Could not load your access log. Pull down to retry.",
+    "accessLogIntegrityOk": "Integrity verified — the log links form an unbroken chain.",
+    "accessLogIntegrityBroken": "Warning: the log chain is broken. Some entries may have been removed or reordered. Please contact support.",
+    "accessActionLlmEgress": "Sent to AI for processing (pseudonymized)",
+    "accessActionAiAnalysis": "Analyzed by AI",
+    "accessActionDocumentParse": "Document parsed",
+    "accessActionStaffRead": "Reviewed by a staff member",
+    "accessActionExport": "Data exported",
+    "accessActionEmailTriage": "Email triaged",
+    "accessActionDeadlineScan": "Deadlines scanned"
 }

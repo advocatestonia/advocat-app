@@ -335,6 +335,37 @@ function logHallucinationWarning(payload: {
 }
 
 /**
+ * Data Fortress Pillar 3: record a client-visible "your data was sent to AI"
+ * access-log entry. Fire-and-forget via the record_data_access RPC (service-
+ * role, SECURITY DEFINER). Never blocks or fails the chat turn. Skipped for
+ * anon principals (no user row to attribute the access to).
+ */
+function recordChatAccess(userId: string, caseId: string | null): void {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return;
+  if (!userId || userId.startsWith("anon:")) return;
+  fetch(`${SUPABASE_URL}/rest/v1/rpc/record_data_access`, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify({
+      p_user_id: userId,
+      p_action: "llm_egress",
+      p_target_table: caseId ? "cases" : null,
+      p_target_id: caseId,
+      p_details: { surface: "chat", provider: "anthropic" },
+    }),
+  }).catch((e) =>
+    console.warn(
+      `claude-proxy: access-log insert failed: ${String(e).slice(0, 160)}`
+    )
+  );
+}
+
+/**
  * Wave-1 security fix (F-001, 2026-05-28).
  *
  * Ensure the UNTRUSTED_DATA_RULE block is present in `body.system` BEFORE
@@ -859,6 +890,10 @@ serve(
         typeof body.case_id === "string" ? body.case_id : null;
       const persistUserId = isAnon ? null : gate.user.id;
       delete (body as { message_id?: unknown }).message_id;
+
+      // Data Fortress Pillar 3: log this AI access for the user's own access
+      // log (fire-and-forget; skipped for anon).
+      if (persistUserId) recordChatAccess(persistUserId, persistCaseId);
 
       // Enforce allowed model
       if (!body.model || !ALLOWED_MODELS.has(body.model)) {

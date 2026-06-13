@@ -31,6 +31,10 @@ import {
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
 import { runAccountDelete, type SupabaseAdminLike } from "./handler.ts";
+import {
+  buildDeletionCounts,
+  recordDeletionCertificate,
+} from "./deletion_certificate.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -93,7 +97,7 @@ serve(async (req) => {
 
   const result = await runAccountDelete(
     sb as unknown as SupabaseAdminLike,
-    userId,
+    userId
   );
 
   // Structured server log for security review — Art. 5(2) accountability.
@@ -102,8 +106,21 @@ serve(async (req) => {
       `auth_deleted=${result.auth_user_deleted} ` +
       `partial=${result.partial ?? false} ` +
       `table_failures=${result.table_results.filter((r) => !r.ok).length} ` +
-      `storage_failures=${result.storage_results.filter((r) => r.error).length}`,
+      `storage_failures=${result.storage_results.filter((r) => r.error).length}`
   );
 
-  return jsonOk(result, result.ok ? 200 : 207);
+  // Data Fortress Pillar 3: record a crypto-proof-of-erasure certificate and
+  // hand it back to the user. Best-effort — never blocks or fails the delete
+  // (the erasure already happened; a missing cert is logged, not fatal).
+  const certificate = await recordDeletionCertificate(
+    sb as unknown as Parameters<typeof recordDeletionCertificate>[0],
+    {
+      userId,
+      subjectEmail: userEmail ?? null,
+      counts: buildDeletionCounts(result),
+      deletedAt: new Date().toISOString(),
+    }
+  );
+
+  return jsonOk({ ...result, certificate }, result.ok ? 200 : 207);
 });

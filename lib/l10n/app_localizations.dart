@@ -8131,6 +8131,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to update password. Please try again.'**
   String get newPasswordError;
+
+  /// No description provided for @accessLogTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Access log'**
+  String get accessLogTile;
+
+  /// No description provided for @accessLogTileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'See who and what accessed your data'**
+  String get accessLogTileSubtitle;
+
+  /// No description provided for @accessLogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Access log for my data'**
+  String get accessLogTitle;
+
+  /// No description provided for @accessLogIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'A transparent, tamper-evident record of every time your data was accessed or processed — including by our AI. You can verify it has not been altered.'**
+  String get accessLogIntro;
+
+  /// No description provided for @accessLogEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No access events yet.'**
+  String get accessLogEmpty;
+
+  /// No description provided for @accessLogError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your access log. Pull down to retry.'**
+  String get accessLogError;
+
+  /// No description provided for @accessLogIntegrityOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrity verified — the log links form an unbroken chain.'**
+  String get accessLogIntegrityOk;
+
+  /// No description provided for @accessLogIntegrityBroken.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning: the log chain is broken. Some entries may have been removed or reordered. Please contact support.'**
+  String get accessLogIntegrityBroken;
+
+  /// No description provided for @accessActionLlmEgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to AI for processing (pseudonymized)'**
+  String get accessActionLlmEgress;
+
+  /// No description provided for @accessActionAiAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzed by AI'**
+  String get accessActionAiAnalysis;
+
+  /// No description provided for @accessActionDocumentParse.
+  ///
+  /// In en, this message translates to:
+  /// **'Document parsed'**
+  String get accessActionDocumentParse;
+
+  /// No description provided for @accessActionStaffRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviewed by a staff member'**
+  String get accessActionStaffRead;
+
+  /// No description provided for @accessActionExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Data exported'**
+  String get accessActionExport;
+
+  /// No description provided for @accessActionEmailTriage.
+  ///
+  /// In en, this message translates to:
+  /// **'Email triaged'**
+  String get accessActionEmailTriage;
+
+  /// No description provided for @accessActionDeadlineScan.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadlines scanned'**
+  String get accessActionDeadlineScan;
 }
 
 class _AppLocalizationsDelegate

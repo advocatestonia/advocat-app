@@ -205,9 +205,7 @@ export const USER_DATA_TABLES: ReadonlyArray<readonly [string, string]> = [
  */
 export const APP_SCHEMA_USER_DATA_TABLES: ReadonlyArray<
   readonly [string, string]
-> = [
-  ["email_triage_queue", "user_id"],
-] as const;
+> = [["email_triage_queue", "user_id"]] as const;
 
 /**
  * Tables intentionally EXCLUDED from the Art. 17 sweep. Every entry MUST
@@ -218,107 +216,193 @@ export const APP_SCHEMA_USER_DATA_TABLES: ReadonlyArray<
  * If you're tempted to add a new table here just to silence CI, STOP and ask
  * privacy review first. The GDPR Art. 17(3) exemptions are narrow.
  */
-export const EXCLUDED_TABLES: ReadonlyArray<
-  { table: string; reason: string }
-> = [
-  // Art. 17(3)(b): compliance with a legal obligation. The audit log is the
-  // mechanism by which the controller proves it complied with Art. 5(2)
-  // accountability — wiping it would defeat the legal obligation that justifies
-  // its existence. Anonymise instead in a future migration (replace user_id
-  // with a one-way hash after 90 days).
-  { table: "audit_log", reason: "Art. 17(3)(b) accountability — legal obligation to retain" },
-  { table: "backup_audit_log", reason: "Art. 17(3)(b) accountability — backup integrity log" },
+export const EXCLUDED_TABLES: ReadonlyArray<{ table: string; reason: string }> =
+  [
+    // Art. 17(3)(b): compliance with a legal obligation. The audit log is the
+    // mechanism by which the controller proves it complied with Art. 5(2)
+    // accountability — wiping it would defeat the legal obligation that justifies
+    // its existence. Anonymise instead in a future migration (replace user_id
+    // with a one-way hash after 90 days).
+    {
+      table: "audit_log",
+      reason: "Art. 17(3)(b) accountability — legal obligation to retain",
+    },
+    {
+      table: "backup_audit_log",
+      reason: "Art. 17(3)(b) accountability — backup integrity log",
+    },
+    // The deletion certificate is the cryptographic PROOF that this user's data
+    // was erased — deleting it would destroy the evidence of compliance. It
+    // holds only user_id + email + counts + hash (no case content). Append-only
+    // by trigger; the user receives the signed receipt in the delete response.
+    {
+      table: "deletion_certificates",
+      reason:
+        "Art. 17(3)(b) accountability — proof-of-erasure receipt, must survive erasure",
+    },
 
-  // Art. 17(3)(e): defence of legal claims. Attorney-privilege acceptance
-  // is the proof of consent that a paying user reviewed the privilege
-  // disclaimer at the time advice was given — if a future malpractice claim
-  // arises after deletion, this row is the only proof that the disclaimer
-  // was shown. Retained until the claim limitation period (FI 3 yrs, EE 3 yrs).
-  { table: "attorney_privilege_acceptance", reason: "Art. 17(3)(e) defence of legal claims — proof of disclaimer" },
+    // Art. 17(3)(e): defence of legal claims. Attorney-privilege acceptance
+    // is the proof of consent that a paying user reviewed the privilege
+    // disclaimer at the time advice was given — if a future malpractice claim
+    // arises after deletion, this row is the only proof that the disclaimer
+    // was shown. Retained until the claim limitation period (FI 3 yrs, EE 3 yrs).
+    {
+      table: "attorney_privilege_acceptance",
+      reason: "Art. 17(3)(e) defence of legal claims — proof of disclaimer",
+    },
 
-  // Cascade from auth.users via ON DELETE CASCADE. The auth.admin.deleteUser
-  // step in this handler triggers the cascade. Listing it here too would
-  // attempt a delete that always returns 0 rows (RLS service-role on a
-  // table whose rows are about to be cascade-deleted by auth.users delete).
-  { table: "apple_iap_transactions", reason: "Cascades from auth.users via FK ON DELETE CASCADE" },
+    // Cascade from auth.users via ON DELETE CASCADE. The auth.admin.deleteUser
+    // step in this handler triggers the cascade. Listing it here too would
+    // attempt a delete that always returns 0 rows (RLS service-role on a
+    // table whose rows are about to be cascade-deleted by auth.users delete).
+    {
+      table: "apple_iap_transactions",
+      reason: "Cascades from auth.users via FK ON DELETE CASCADE",
+    },
 
-  // Retention/lifecycle email log (weekly digest, win-back, insight alerts).
-  // `email_events.user_id REFERENCES auth.users(id) ON DELETE CASCADE`
-  // (migration 20260514160000_retention_infra.sql) — the auth.users delete in
-  // step 3 of this handler wipes it automatically. Listing it in
-  // USER_DATA_TABLES would only attempt a redundant delete that races the
-  // cascade. Same rationale as apple_iap_transactions above.
-  { table: "email_events", reason: "Cascades from auth.users via FK ON DELETE CASCADE (retention email log)" },
+    // Retention/lifecycle email log (weekly digest, win-back, insight alerts).
+    // `email_events.user_id REFERENCES auth.users(id) ON DELETE CASCADE`
+    // (migration 20260514160000_retention_infra.sql) — the auth.users delete in
+    // step 3 of this handler wipes it automatically. Listing it in
+    // USER_DATA_TABLES would only attempt a redundant delete that races the
+    // cascade. Same rationale as apple_iap_transactions above.
+    {
+      table: "email_events",
+      reason:
+        "Cascades from auth.users via FK ON DELETE CASCADE (retention email log)",
+    },
 
-  // Stripe payload archive. RLS deny-all to clients. Retained for fraud
-  // investigation under Art. 6(1)(f) legitimate interest; user_id appears
-  // only inside the embedded Stripe JSON, not as a column.
-  { table: "webhook_events", reason: "Stripe payload archive — Art. 6(1)(f) fraud defence; user_id is nested JSON not a column" },
+    // Stripe payload archive. RLS deny-all to clients. Retained for fraud
+    // investigation under Art. 6(1)(f) legitimate interest; user_id appears
+    // only inside the embedded Stripe JSON, not as a column.
+    {
+      table: "webhook_events",
+      reason:
+        "Stripe payload archive — Art. 6(1)(f) fraud defence; user_id is nested JSON not a column",
+    },
 
-  // Lawyer partnership tables. `partner_lawyers.lawyer_id` is the auth.users
-  // ID of the LAWYER (not a regular user). Deleting a user account does
-  // not delete their lawyer profile; that's a separate flow. Same for
-  // lawyer_verification_audit.
-  { table: "partner_lawyers", reason: "Lawyer onboarding — separate partner-offboarding flow" },
-  { table: "lawyer_verification_audit", reason: "Tied to partner_lawyers; separate offboarding flow" },
+    // Lawyer partnership tables. `partner_lawyers.lawyer_id` is the auth.users
+    // ID of the LAWYER (not a regular user). Deleting a user account does
+    // not delete their lawyer profile; that's a separate flow. Same for
+    // lawyer_verification_audit.
+    {
+      table: "partner_lawyers",
+      reason: "Lawyer onboarding — separate partner-offboarding flow",
+    },
+    {
+      table: "lawyer_verification_audit",
+      reason: "Tied to partner_lawyers; separate offboarding flow",
+    },
 
-  // Org tables. Deleting a user account does NOT delete their orgs (an org
-  // can have other members). Org deletion is a separate flow keyed on org_id.
-  { table: "org_members", reason: "Org-scoped — removed via leave-org flow, not account-delete" },
-  { table: "org_audit_log", reason: "Org-scoped accountability log — survives individual member deletion" },
-  { table: "org_invitations", reason: "Org-scoped" },
-  { table: "org_subscriptions", reason: "Org-scoped" },
-  { table: "org_branding", reason: "Org-scoped" },
-  { table: "org_usage_counters", reason: "Org-scoped" },
-  { table: "org_api_keys", reason: "Org-scoped" },
-  { table: "org_api_rate_counters", reason: "Org-scoped" },
-  { table: "organizations", reason: "Org-scoped" },
+    // Org tables. Deleting a user account does NOT delete their orgs (an org
+    // can have other members). Org deletion is a separate flow keyed on org_id.
+    {
+      table: "org_members",
+      reason: "Org-scoped — removed via leave-org flow, not account-delete",
+    },
+    {
+      table: "org_audit_log",
+      reason:
+        "Org-scoped accountability log — survives individual member deletion",
+    },
+    { table: "org_invitations", reason: "Org-scoped" },
+    { table: "org_subscriptions", reason: "Org-scoped" },
+    { table: "org_branding", reason: "Org-scoped" },
+    { table: "org_usage_counters", reason: "Org-scoped" },
+    { table: "org_api_keys", reason: "Org-scoped" },
+    { table: "org_api_rate_counters", reason: "Org-scoped" },
+    { table: "organizations", reason: "Org-scoped" },
 
-  // System tables with no PII.
-  { table: "ingest_jobs", reason: "Internal queue — no user PII" },
-  { table: "unresolved_refs", reason: "Internal queue — no user PII" },
-  { table: "anthropic_daily_spend", reason: "Aggregate spend counter — no user PII" },
-  { table: "rate_limit_events", reason: "Aggregate counter; pruned via cron" },
-  { table: "error_log", reason: "System error log — Art. 17(3)(b)" },
-  { table: "halt_rail_triggers", reason: "Internal anti-abuse log" },
-  { table: "recent_alerts", reason: "Internal anti-abuse log" },
-  { table: "spend_hourly_snapshot", reason: "Aggregate spend counter" },
-  { table: "app_errors", reason: "System error log" },
-  { table: "app_config", reason: "System config — no per-user data" },
+    // System tables with no PII.
+    { table: "ingest_jobs", reason: "Internal queue — no user PII" },
+    { table: "unresolved_refs", reason: "Internal queue — no user PII" },
+    {
+      table: "anthropic_daily_spend",
+      reason: "Aggregate spend counter — no user PII",
+    },
+    {
+      table: "rate_limit_events",
+      reason: "Aggregate counter; pruned via cron",
+    },
+    { table: "error_log", reason: "System error log — Art. 17(3)(b)" },
+    { table: "halt_rail_triggers", reason: "Internal anti-abuse log" },
+    { table: "recent_alerts", reason: "Internal anti-abuse log" },
+    { table: "spend_hourly_snapshot", reason: "Aggregate spend counter" },
+    { table: "app_errors", reason: "System error log" },
+    { table: "app_config", reason: "System config — no per-user data" },
 
-  // Sensitive schema — cascades from public.case_documents.
-  { table: "case_documents_sensitive", reason: "Cascades from public.case_documents via FK" },
-  { table: "pii_redaction_map", reason: "Sensitive schema — service-role only; cascades from owner tables" },
+    // Sensitive schema — cascades from public.case_documents.
+    {
+      table: "case_documents_sensitive",
+      reason: "Cascades from public.case_documents via FK",
+    },
+    {
+      table: "pii_redaction_map",
+      reason:
+        "Sensitive schema — service-role only; cascades from owner tables",
+    },
 
-  // Refund tracking (subscriptions cascade handles user link).
-  { table: "refund_consents", reason: "Cascades via subscriptions delete; row retained for refund audit if any" },
+    // Refund tracking (subscriptions cascade handles user link).
+    {
+      table: "refund_consents",
+      reason:
+        "Cascades via subscriptions delete; row retained for refund audit if any",
+    },
 
-  // ── FK-cascade children with NO user_id column. Listing these with a
-  //    "user_id" column produced false strictFailures (42703) under
-  //    DELETE_STRICT=1. The actual data IS erased via ON DELETE CASCADE when
-  //    the parent row is deleted in USER_DATA_TABLES above.
-  { table: "chat_planner_traces", reason: "Cascades from chat_messages via FK message_id ON DELETE CASCADE (no user_id column)" },
-  { table: "draft_versions", reason: "Cascades from user_drafts via FK draft_id ON DELETE CASCADE (no user_id column)" },
-  { table: "vault_document_tags", reason: "Cascades from documents via FK document_id ON DELETE CASCADE (no user_id column)" },
+    // ── FK-cascade children with NO user_id column. Listing these with a
+    //    "user_id" column produced false strictFailures (42703) under
+    //    DELETE_STRICT=1. The actual data IS erased via ON DELETE CASCADE when
+    //    the parent row is deleted in USER_DATA_TABLES above.
+    {
+      table: "chat_planner_traces",
+      reason:
+        "Cascades from chat_messages via FK message_id ON DELETE CASCADE (no user_id column)",
+    },
+    {
+      table: "draft_versions",
+      reason:
+        "Cascades from user_drafts via FK draft_id ON DELETE CASCADE (no user_id column)",
+    },
+    {
+      table: "vault_document_tags",
+      reason:
+        "Cascades from documents via FK document_id ON DELETE CASCADE (no user_id column)",
+    },
 
-  // Derived training corpus. Promoted from gold_corpus_queue (which IS wiped).
-  // source_queue_id FK is SET NULL on delete, severing the user link; rows hold
-  // only a PII-scrubbed question/answer pair used as curated eval/training data.
-  // Retained under Art. 17(3)(d) scientific-research / Art. 89 safeguards
-  // (pseudonymised). If unscrubbed PII is ever found here, treat as a P0.
-  { table: "gold_corpus_pairs", reason: "Art. 17(3)(d)/Art. 89 pseudonymised training corpus; user link SET NULL via source_queue_id" },
+    // Derived training corpus. Promoted from gold_corpus_queue (which IS wiped).
+    // source_queue_id FK is SET NULL on delete, severing the user link; rows hold
+    // only a PII-scrubbed question/answer pair used as curated eval/training data.
+    // Retained under Art. 17(3)(d) scientific-research / Art. 89 safeguards
+    // (pseudonymised). If unscrubbed PII is ever found here, treat as a P0.
+    {
+      table: "gold_corpus_pairs",
+      reason:
+        "Art. 17(3)(d)/Art. 89 pseudonymised training corpus; user link SET NULL via source_queue_id",
+    },
 
-  // ── Declared in migration SQL but NOT present in the live prod schema
-  //    (verified absent in information_schema 2026-05-29). They hold no data
-  //    because they do not exist. The coverage_test migrations-fallback parser
-  //    still sees their CREATE TABLE statements, so they are listed here to
-  //    keep the canary honest. ⚠️ OWNER GATE: if the lawyer-partnership /
-  //    legacy-baseline migrations are ever applied to prod, MOVE these into
-  //    USER_DATA_TABLES — they carry user_id and would then retain PII.
-  { table: "lawyer_bookings", reason: "Declared in migration 20260516200000 but NOT deployed to prod (no live table). Re-classify into USER_DATA_TABLES if the partner-booking feature is migrated." },
-  { table: "checker_reports", reason: "Declared in baseline 001 but NOT in live prod schema. Re-classify into USER_DATA_TABLES if ever deployed." },
-  { table: "email_connections", reason: "Declared in baseline 001 but NOT in live prod schema (superseded by email_threads/email_messages). Re-classify if ever deployed." },
-];
+    // ── Declared in migration SQL but NOT present in the live prod schema
+    //    (verified absent in information_schema 2026-05-29). They hold no data
+    //    because they do not exist. The coverage_test migrations-fallback parser
+    //    still sees their CREATE TABLE statements, so they are listed here to
+    //    keep the canary honest. ⚠️ OWNER GATE: if the lawyer-partnership /
+    //    legacy-baseline migrations are ever applied to prod, MOVE these into
+    //    USER_DATA_TABLES — they carry user_id and would then retain PII.
+    {
+      table: "lawyer_bookings",
+      reason:
+        "Declared in migration 20260516200000 but NOT deployed to prod (no live table). Re-classify into USER_DATA_TABLES if the partner-booking feature is migrated.",
+    },
+    {
+      table: "checker_reports",
+      reason:
+        "Declared in baseline 001 but NOT in live prod schema. Re-classify into USER_DATA_TABLES if ever deployed.",
+    },
+    {
+      table: "email_connections",
+      reason:
+        "Declared in baseline 001 but NOT in live prod schema (superseded by email_threads/email_messages). Re-classify if ever deployed.",
+    },
+  ];
 
 /** Storage buckets to sweep. Objects are listed by prefix `<userId>/`. */
 export const STORAGE_BUCKETS: ReadonlyArray<string> = [
@@ -340,7 +424,10 @@ export const STORAGE_BUCKETS: ReadonlyArray<string> = [
  */
 interface DeleteFrom {
   delete(): {
-    eq(col: string, val: unknown): Promise<{
+    eq(
+      col: string,
+      val: unknown
+    ): Promise<{
       // deno-lint-ignore no-explicit-any
       error: { message: string; code?: string } | null;
       // deno-lint-ignore no-explicit-any
@@ -361,7 +448,7 @@ export interface SupabaseAdminLike {
     from(bucket: string): {
       list(
         prefix: string,
-        opts?: { limit?: number; offset?: number },
+        opts?: { limit?: number; offset?: number }
       ): Promise<{
         // `id` is null/absent for synthetic folder rows, set for real
         // objects — that's how the recursive sweep tells them apart.
@@ -429,7 +516,7 @@ async function safeDelete(
   source: { from(table: string): DeleteFrom },
   table: string,
   userColumn: string,
-  userId: string,
+  userId: string
 ): Promise<TableResult> {
   try {
     const { error } = await source.from(table).delete().eq(userColumn, userId);
@@ -440,7 +527,7 @@ async function safeDelete(
           // Log the raw schema error server-side; the client-facing struct
           // gets a stable code (no relation/column name disclosure).
           console.error(
-            `[account-delete] DELETE_STRICT missing table/column on ${table} (${code}): ${error.message}`,
+            `[account-delete] DELETE_STRICT missing table/column on ${table} (${code}): ${error.message}`
           );
           return {
             table,
@@ -454,7 +541,9 @@ async function safeDelete(
       // Log the raw DB error server-side; surface only a stable code so we
       // don't disclose constraint/permission internals to the client.
       console.error(
-        `[account-delete] delete failed on ${table} (${error.code ?? "?"}): ${error.message}`,
+        `[account-delete] delete failed on ${table} (${error.code ?? "?"}): ${
+          error.message
+        }`
       );
       return { table, ok: false, error: "delete_failed" };
     }
@@ -473,7 +562,7 @@ async function safeDelete(
 async function sweepStorageBucket(
   sb: SupabaseAdminLike,
   bucket: string,
-  userId: string,
+  userId: string
 ): Promise<{ bucket: string; removed: number; error?: string }> {
   // ⚠️ Supabase Storage `.list(prefix)` is NON-RECURSIVE: it returns the
   // immediate children of `prefix` only. A folder child comes back as a row
@@ -495,7 +584,9 @@ async function sweepStorageBucket(
     let guard = 0;
     while (folders.length > 0) {
       if (guard++ > 100_000) {
-        console.error(`[account-delete] storage sweep guard tripped on ${bucket}`);
+        console.error(
+          `[account-delete] storage sweep guard tripped on ${bucket}`
+        );
         return { bucket, removed, error: "storage_sweep_guard" };
       }
       const prefix = folders.shift()!;
@@ -507,7 +598,9 @@ async function sweepStorageBucket(
           .from(bucket)
           .list(prefix, { limit: pageSize, offset });
         if (error) {
-          console.error(`[account-delete] storage list failed on ${bucket}/${prefix}: ${error.message}`);
+          console.error(
+            `[account-delete] storage list failed on ${bucket}/${prefix}: ${error.message}`
+          );
           return { bucket, removed, error: "storage_list_failed" };
         }
         if (!data || data.length === 0) break;
@@ -523,9 +616,13 @@ async function sweepStorageBucket(
           }
         }
         if (objectPaths.length > 0) {
-          const { error: rmErr } = await sb.storage.from(bucket).remove(objectPaths);
+          const { error: rmErr } = await sb.storage
+            .from(bucket)
+            .remove(objectPaths);
           if (rmErr) {
-            console.error(`[account-delete] storage remove failed on ${bucket}: ${rmErr.message}`);
+            console.error(
+              `[account-delete] storage remove failed on ${bucket}: ${rmErr.message}`
+            );
             return { bucket, removed, error: "storage_remove_failed" };
           }
           removed += objectPaths.length;
@@ -535,7 +632,9 @@ async function sweepStorageBucket(
     }
     return { bucket, removed };
   } catch (e) {
-    console.error(`[account-delete] storage sweep threw on ${bucket}: ${String(e)}`);
+    console.error(
+      `[account-delete] storage sweep threw on ${bucket}: ${String(e)}`
+    );
     return { bucket, removed: 0, error: "storage_sweep_failed" };
   }
 }
@@ -562,7 +661,7 @@ async function sweepStorageBucket(
  */
 export async function runAccountDelete(
   sb: SupabaseAdminLike,
-  userId: string,
+  userId: string
 ): Promise<DeleteAccountResult> {
   const tableResults: TableResult[] = [];
   for (const [table, col] of USER_DATA_TABLES) {
@@ -573,17 +672,20 @@ export async function runAccountDelete(
   // targets app.* and not public.* (a plain .from would 42P01). When the
   // mock client omits .schema (CI), fall back to sb.from — the in-memory
   // fake ignores schema anyway and the real client always has it.
-  const appSource = typeof sb.schema === "function"
-    ? sb.schema("app")
-    : { from: (t: string) => sb.from(t) };
+  const appSource =
+    typeof sb.schema === "function"
+      ? sb.schema("app")
+      : { from: (t: string) => sb.from(t) };
   for (const [table, col] of APP_SCHEMA_USER_DATA_TABLES) {
     const r = await safeDelete(appSource, table, col, userId);
     tableResults.push({ ...r, table: `app.${table}` });
   }
 
-  const storageResults: Array<
-    { bucket: string; removed: number; error?: string }
-  > = [];
+  const storageResults: Array<{
+    bucket: string;
+    removed: number;
+    error?: string;
+  }> = [];
   for (const bucket of STORAGE_BUCKETS) {
     storageResults.push(await sweepStorageBucket(sb, bucket, userId));
   }
@@ -612,9 +714,9 @@ export async function runAccountDelete(
     partial: anyFailure && (authUserDeleted || tableFailures.length === 0),
     deleted: authUserDeleted,
     message: authUserDeleted
-      ? (tableFailures.length === 0
+      ? tableFailures.length === 0
         ? "Account deleted"
-        : "Account auth row deleted but some app rows failed — retry recommended")
+        : "Account auth row deleted but some app rows failed — retry recommended"
       : "Account data wiped but auth row not yet deleted — please retry",
     table_results: tableResults,
     storage_results: storageResults,

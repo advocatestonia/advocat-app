@@ -178,6 +178,20 @@ class SettingsScreen extends ConsumerWidget {
             ),
             onTap: () => context.push(AppRoutes.aiMemory),
           ),
+          // Data Fortress Pillar 3 — transparent self-audit. The user sees a
+          // tamper-evident log of who/what/when accessed their data, with a
+          // local chain-integrity check. Hidden in demo (no real account).
+          if (!ref.watch(isDemoModeProvider))
+            _SettingsTile(
+              icon: Icons.fact_check_outlined,
+              title: l.accessLogTile,
+              subtitle: l.accessLogTileSubtitle,
+              trailing: const Icon(
+                AppIcons.chevronRight,
+                color: AppColors.textTertiary,
+              ),
+              onTap: () => context.push(AppRoutes.accessLog),
+            ),
           // GDPR Art. 15 — self-service data access. Calls dsar-export edge
           // fn, which assembles a JSON of every personal-data row and writes
           // a row to dsar_requests (Art. 12(3) audit trail).
