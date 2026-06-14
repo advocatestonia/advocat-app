@@ -1765,11 +1765,6 @@ serve(
           // planner can actually invoke legal_lookup. Then re-enable the
           // verifier here with real tool calls (drain _legalLookupLog
           // properly, not []).
-          if (
-            false /* TODO(dept5): re-enable when legal_planner.ts plumbs tools */
-          ) {
-            // intentionally disabled — see comment above
-          }
 
           if (
             persistMessageId !== null &&
