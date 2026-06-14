@@ -8221,6 +8221,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deadlines scanned'**
   String get accessActionDeadlineScan;
+
+  /// No description provided for @breachAlertTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Security alert on your data'**
+  String get breachAlertTitle;
+
+  /// No description provided for @breachAlertBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34).'**
+  String get breachAlertBody;
 }
 
 class _AppLocalizationsDelegate

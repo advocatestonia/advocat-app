@@ -198,6 +198,7 @@ NO_JWT_FNS=(
   deadline-radar-eu
   triage-retry-tick
   alert-tick
+  breach-tick
   oauth-callback
   law-search
   landmark-search

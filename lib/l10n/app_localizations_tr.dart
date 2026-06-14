@@ -4642,4 +4642,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get accessActionDeadlineScan => 'Deadlines scanned';
+
+  @override
+  String get breachAlertTitle => 'Security alert on your data';
+
+  @override
+  String get breachAlertBody =>
+      'Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34).';
 }

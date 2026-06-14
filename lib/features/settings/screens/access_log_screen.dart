@@ -22,6 +22,7 @@ class _AccessLogScreenState extends ConsumerState<AccessLogScreen> {
 
   List<AccessLogEntry>? _entries;
   ChainVerification? _chain;
+  List<BreachAlertEntry> _breaches = const [];
   bool _loading = true;
   String? _error;
 
@@ -39,10 +40,17 @@ class _AccessLogScreenState extends ConsumerState<AccessLogScreen> {
     try {
       final entries = await _service.fetch(limit: 100);
       final chain = _service.verifyChain(entries);
+      // Breach alerts are GDPR Art. 34 — surface them prominently. Best-effort:
+      // a failure here must not hide the access log itself.
+      List<BreachAlertEntry> breaches = const [];
+      try {
+        breaches = await _service.fetchBreachAlerts();
+      } catch (_) {/* ignore — log still shows */}
       if (!mounted) return;
       setState(() {
         _entries = entries;
         _chain = chain;
+        _breaches = breaches;
         _loading = false;
       });
     } catch (e) {
@@ -94,6 +102,10 @@ class _AccessLogScreenState extends ConsumerState<AccessLogScreen> {
           height: 1.5,
         )),
         const SizedBox(height: AppSpacing.md),
+        if (_breaches.isNotEmpty) ...[
+          _BreachBanner(breaches: _breaches, l: l),
+          const SizedBox(height: AppSpacing.md),
+        ],
         _IntegrityBanner(chain: _chain, l: l),
         const SizedBox(height: AppSpacing.md),
         if (entries.isEmpty)
@@ -136,6 +148,66 @@ class _IntegrityBanner extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _BreachBanner extends StatelessWidget {
+  const _BreachBanner({required this.breaches, required this.l});
+  final List<BreachAlertEntry> breaches;
+  final AppLocalizations l;
+
+  @override
+  Widget build(BuildContext context) {
+    const color = AppColors.error;
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.sm),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.gpp_maybe_outlined, color: color, size: 20),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  l.breachAlertTitle,
+                  style: const TextStyle(
+                    color: color,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(l.breachAlertBody, style: const TextStyle(
+            color: color,
+            fontSize: 12,
+            height: 1.4,
+          )),
+          for (final b in breaches)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                '• ${_fmt(b.detectedAt)} — ${b.kind} (${b.severity})',
+                style: const TextStyle(color: color, fontSize: 12),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  static String _fmt(DateTime ts) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${ts.year}-${two(ts.month)}-${two(ts.day)} '
+        '${two(ts.hour)}:${two(ts.minute)}';
   }
 }
 

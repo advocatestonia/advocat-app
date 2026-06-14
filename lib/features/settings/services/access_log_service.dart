@@ -31,6 +31,28 @@ class AccessLogEntry {
       );
 }
 
+/// A breach alert affecting this user (GDPR Art. 34).
+class BreachAlertEntry {
+  BreachAlertEntry({
+    required this.detectedAt,
+    required this.kind,
+    required this.severity,
+    required this.evidence,
+  });
+
+  final DateTime detectedAt;
+  final String kind;
+  final String severity;
+  final Map<String, dynamic> evidence;
+
+  factory BreachAlertEntry.fromMap(Map<String, dynamic> m) => BreachAlertEntry(
+        detectedAt: DateTime.parse(m['detected_at'] as String).toLocal(),
+        kind: (m['kind'] as String?) ?? '',
+        severity: (m['severity'] as String?) ?? 'high',
+        evidence: (m['evidence'] as Map?)?.cast<String, dynamic>() ?? const {},
+      );
+}
+
 /// Result of verifying the hash chain over the loaded page.
 class ChainVerification {
   const ChainVerification({required this.intact, required this.brokenAt});
@@ -46,6 +68,17 @@ class ChainVerification {
 class AccessLogService {
   AccessLogService(this._client);
   final SupabaseClient _client;
+
+  /// Fetch breach alerts affecting THIS user (GDPR Art. 34 transparency).
+  /// Returns newest-first; empty when none (the common case).
+  Future<List<BreachAlertEntry>> fetchBreachAlerts() async {
+    final res = await _client.rpc('get_my_breach_alerts');
+    if (res is! List) return const [];
+    return res
+        .whereType<Map>()
+        .map((e) => BreachAlertEntry.fromMap(e.cast<String, dynamic>()))
+        .toList();
+  }
 
   /// Fetch a page of the caller's own access log, newest first.
   Future<List<AccessLogEntry>> fetch({

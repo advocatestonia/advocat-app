@@ -2226,5 +2226,7 @@
     "accessActionStaffRead": "Reviewed by a staff member",
     "accessActionExport": "Data exported",
     "accessActionEmailTriage": "Email triaged",
-    "accessActionDeadlineScan": "Deadlines scanned"
+    "accessActionDeadlineScan": "Deadlines scanned",
+    "breachAlertTitle": "Security alert on your data",
+    "breachAlertBody": "Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34)."
 }
