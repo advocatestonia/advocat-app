@@ -54,13 +54,13 @@ export interface GmailTokenRow extends TokenRow {
 export async function loadGmailToken(
   // deno-lint-ignore no-explicit-any
   supabase: any,
-  userId: string,
+  userId: string
 ): Promise<GmailTokenRow | null> {
   try {
     const { data, error } = await supabase
       .from("user_oauth_tokens")
       .select(
-        "user_id, access_token, refresh_token, email, expires_at, provider",
+        "user_id, access_token, refresh_token, email, expires_at, provider"
       )
       .eq("user_id", userId)
       .eq("provider", "gmail")
@@ -93,11 +93,11 @@ export async function refreshGmailToken(
   // deno-lint-ignore no-explicit-any
   supabase: any,
   userId: string,
-  refreshToken: string,
+  refreshToken: string
 ): Promise<string | null> {
   if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
     console.warn(
-      "gmail_token: cannot refresh — GOOGLE_CLIENT_ID/SECRET not configured.",
+      "gmail_token: cannot refresh — GOOGLE_CLIENT_ID/SECRET not configured."
     );
     return null;
   }
@@ -117,8 +117,12 @@ export async function refreshGmailToken(
     return null;
   }
   if (!resp.ok) {
-    const body = await resp.text();
-    console.warn(`gmail_token: refresh ${resp.status} — ${body}`);
+    // Drain the body so the connection is released, but do NOT log it: the
+    // OAuth token endpoint can echo request parameters (incl. the refresh
+    // token) back in some error responses. Status code alone is enough to
+    // triage a refresh failure.
+    await resp.text().catch(() => "");
+    console.warn(`gmail_token: refresh failed with status ${resp.status}`);
     return null;
   }
   let data: GoogleRefreshResponse;
@@ -161,7 +165,7 @@ export async function ensureFreshToken(
   supabase: any,
   userId: string,
   row: TokenRow,
-  now: number = Date.now(),
+  now: number = Date.now()
 ): Promise<string | null> {
   if (!shouldRefresh(row, now)) return row.access_token;
   if (!row.refresh_token) {

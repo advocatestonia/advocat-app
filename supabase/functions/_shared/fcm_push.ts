@@ -94,7 +94,9 @@ async function getAccessToken(sa: ServiceAccount): Promise<string | null> {
 
   const enc = (obj: unknown) =>
     btoa(JSON.stringify(obj))
-      .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
   const signingInput = `${enc(header)}.${enc(claims)}`;
 
   let signatureBytes: ArrayBuffer;
@@ -105,12 +107,12 @@ async function getAccessToken(sa: ServiceAccount): Promise<string | null> {
       pkcs8,
       { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
       false,
-      ["sign"],
+      ["sign"]
     );
     signatureBytes = await crypto.subtle.sign(
       "RSASSA-PKCS1-v1_5",
       key,
-      new TextEncoder().encode(signingInput),
+      new TextEncoder().encode(signingInput)
     );
   } catch (e) {
     console.warn(`fcm_push: JWT signing failed: ${e}`);
@@ -124,15 +126,19 @@ async function getAccessToken(sa: ServiceAccount): Promise<string | null> {
     resp = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body:
-        `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
+      body: `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${jwt}`,
     });
   } catch (e) {
     console.warn(`fcm_push: token fetch failed: ${e}`);
     return null;
   }
   if (!resp.ok) {
-    console.warn(`fcm_push: token endpoint ${resp.status}: ${await resp.text()}`);
+    // Drain the body to release the connection, but do NOT log it: a failed
+    // jwt-bearer token exchange can reflect the signed `assertion` JWT (which
+    // grants service-account access) back in the error response. Status is
+    // enough to triage.
+    await resp.text().catch(() => "");
+    console.warn(`fcm_push: token endpoint returned status ${resp.status}`);
     return null;
   }
   const data = await resp.json();
@@ -177,11 +183,11 @@ export async function sendPush(params: FcmPushParams): Promise<FcmPushResult> {
       {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ message }),
-      },
+      }
     );
   } catch (e) {
     return { ok: false, error: `fcm_fetch_failed:${String(e).slice(0, 100)}` };
