@@ -112,23 +112,24 @@ function makeFakeSb(state: FakeState): SupabaseAdminLike {
                 error: { message: state.storageListError },
               });
             }
-            const objs = state.storage.get(bucket)?.get(prefix) ?? [];
+            const all = state.storage.get(bucket)?.get(prefix) ?? [];
             const offset = opts?.offset ?? 0;
             const limit = opts?.limit ?? 1000;
-            // Stable-snapshot listing: production's sweepStorageBucket pages a
-            // prefix with a MONOTONICALLY ADVANCING offset and explicitly
-            // documents that "the listing for a given prefix is stable across
-            // pages here, so a moving offset is correct". So `.list()` must
-            // page over the ORIGINAL ordering for the whole sweep — removals
-            // (tombstones) must NOT shrink/renumber the listing mid-sweep, or
-            // a moving offset would skip objects (a mock artefact, not a prod
-            // bug). Tombstones are tracked separately and only checked AFTER
-            // the sweep via remainingStorage().
+            // REMOVAL-REFLECTING listing — verified against live Supabase
+            // Storage (2026-06-14): `.list(offset)` excludes already-removed
+            // objects, so survivors shift DOWN as the sweep deletes. We model
+            // exactly that: list over (original MINUS tombstoned). This is why
+            // the prod sweep must use a DRAIN loop (re-list offset 0 after
+            // remove), not a monotonic offset — a moving offset over a
+            // shrinking listing skips ~pageSize survivors per page (the real
+            // GDPR Art. 17 bug this test now guards against).
             //
             // Production also distinguishes folders (id == null) from real
             // objects (non-null id). Our flat fixtures are all real objects →
             // every listed entry gets a non-null `id`.
-            const page = objs
+            const gone = state.removedStorage?.get(bucket)?.get(prefix);
+            const live = gone ? all.filter((n) => !gone.has(n)) : all;
+            const page = live
               .slice(offset, offset + limit)
               .map((name, i) => ({ name, id: `obj-${offset + i}` }));
             return Promise.resolve({ data: page, error: null });

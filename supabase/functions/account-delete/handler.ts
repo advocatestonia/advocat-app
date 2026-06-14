@@ -590,10 +590,26 @@ async function sweepStorageBucket(
         return { bucket, removed, error: "storage_sweep_guard" };
       }
       const prefix = folders.shift()!;
-      // Page through this prefix. offset advances because we do NOT remove
-      // folder rows (they aren't objects) — the listing for a given prefix is
-      // stable across pages here, so a moving offset is correct.
-      for (let offset = 0; offset < 1_000_000; offset += pageSize) {
+      // Page through this prefix with a DRAIN loop.
+      //
+      // VERIFIED on live Supabase Storage (2026-06-14): `.list(offset)`
+      // reflects prior `.remove()`s IMMEDIATELY — removed objects vanish and
+      // the survivors shift down. So a monotonically-advancing offset is WRONG:
+      // after deleting page 1 (pageSize objects), the survivors move into
+      // offset [0..pageSize), and reading offset=pageSize returns [] → the
+      // loop breaks and leaves every object past the first page un-deleted.
+      // That was a real GDPR Art. 17 incomplete-erasure bug for any prefix
+      // with > pageSize objects.
+      //
+      // DRAIN instead:
+      //   - had removable objects? remove them, then RE-LIST at the SAME
+      //     offset (survivors shifted into this window). Do NOT advance.
+      //   - page was all folders (nothing removed)? advance past them so we
+      //     don't loop forever on the same synthetic folder rows.
+      // An iteration guard bounds the worst case.
+      let offset = 0;
+      let iterations = 0;
+      while (iterations++ < 1_000_000) {
         const { data, error } = await sb.storage
           .from(bucket)
           .list(prefix, { limit: pageSize, offset });
@@ -626,8 +642,13 @@ async function sweepStorageBucket(
             return { bucket, removed, error: "storage_remove_failed" };
           }
           removed += objectPaths.length;
+          // Drained this window — survivors shift in at the same offset.
+          // Re-list WITHOUT advancing offset (this is the fix).
+          continue;
         }
+        // Page was all folders (nothing removed): advance past them.
         if (data.length < pageSize) break;
+        offset += pageSize;
       }
     }
     return { bucket, removed };
