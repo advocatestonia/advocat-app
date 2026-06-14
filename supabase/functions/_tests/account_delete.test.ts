@@ -47,6 +47,14 @@ interface FakeState {
   tables: Map<string, Map<string, number>>;
   // bucket -> userPrefix -> object names
   storage: Map<string, Map<string, string[]>>;
+  // bucket -> userPrefix -> tombstoned (removed) object names. Modelling
+  // removal as a tombstone (rather than splicing the source array) keeps the
+  // listing ORDER + length stable across pages, which is the contract the
+  // production sweepStorageBucket relies on ("the listing for a given prefix
+  // is stable across pages here, so a moving offset is correct"). Splicing the
+  // backing array would shift indices under the paginator and skip objects —
+  // an artefact of the mock, not of prod.
+  removedStorage?: Map<string, Map<string, Set<string>>>;
   // user IDs successfully deleted from auth.users
   authDeleted: Set<string>;
   // forced errors
@@ -54,6 +62,20 @@ interface FakeState {
   storageListError?: string;
   storageRemoveError?: string;
   authDeleteError?: string;
+}
+
+// Count of objects that still survive in a bucket/prefix after the sweep
+// (original objects minus tombstones). Used by assertions in place of reading
+// the mutated backing array directly.
+function remainingStorage(
+  state: FakeState,
+  bucket: string,
+  prefix: string
+): number {
+  const all = state.storage.get(bucket)?.get(prefix) ?? [];
+  const gone = state.removedStorage?.get(bucket)?.get(prefix);
+  if (!gone) return all.length;
+  return all.filter((n) => !gone.has(n)).length;
 }
 
 function makeFakeSb(state: FakeState): SupabaseAdminLike {
@@ -93,8 +115,22 @@ function makeFakeSb(state: FakeState): SupabaseAdminLike {
             const objs = state.storage.get(bucket)?.get(prefix) ?? [];
             const offset = opts?.offset ?? 0;
             const limit = opts?.limit ?? 1000;
-            const page = objs.slice(offset, offset + limit)
-              .map((name) => ({ name }));
+            // Stable-snapshot listing: production's sweepStorageBucket pages a
+            // prefix with a MONOTONICALLY ADVANCING offset and explicitly
+            // documents that "the listing for a given prefix is stable across
+            // pages here, so a moving offset is correct". So `.list()` must
+            // page over the ORIGINAL ordering for the whole sweep — removals
+            // (tombstones) must NOT shrink/renumber the listing mid-sweep, or
+            // a moving offset would skip objects (a mock artefact, not a prod
+            // bug). Tombstones are tracked separately and only checked AFTER
+            // the sweep via remainingStorage().
+            //
+            // Production also distinguishes folders (id == null) from real
+            // objects (non-null id). Our flat fixtures are all real objects →
+            // every listed entry gets a non-null `id`.
+            const page = objs
+              .slice(offset, offset + limit)
+              .map((name, i) => ({ name, id: `obj-${offset + i}` }));
             return Promise.resolve({ data: page, error: null });
           },
           remove(paths: string[]) {
@@ -103,15 +139,25 @@ function makeFakeSb(state: FakeState): SupabaseAdminLike {
                 error: { message: state.storageRemoveError },
               });
             }
-            // Mutate the underlying lists so subsequent list() returns empty.
+            // Tombstone removed objects (do NOT splice the backing array) so
+            // the paginated listing stays index-stable for the rest of the
+            // sweep — see the stable-snapshot note in list() above.
+            state.removedStorage ??= new Map();
             for (const p of paths) {
               const [prefix, ...rest] = p.split("/");
               const name = rest.join("/");
-              const userBucket = state.storage.get(bucket);
-              if (!userBucket) continue;
-              const arr = userBucket.get(prefix);
-              if (!arr) continue;
-              userBucket.set(prefix, arr.filter((n) => n !== name));
+              if (!state.storage.get(bucket)?.has(prefix)) continue;
+              let buckets = state.removedStorage.get(bucket);
+              if (!buckets) {
+                buckets = new Map();
+                state.removedStorage.set(bucket, buckets);
+              }
+              let gone = buckets.get(prefix);
+              if (!gone) {
+                gone = new Set();
+                buckets.set(prefix, gone);
+              }
+              gone.add(name);
             }
             return Promise.resolve({ error: null });
           },
@@ -150,69 +196,75 @@ Deno.test("A01 — USER_DATA_TABLES covers core personal-data surfaces", () => {
   const tables = USER_DATA_TABLES.map(([t]) => t);
   // Spot-check the load-bearing tables. If any of these gets removed by a
   // refactor, a reviewer must rewrite the test consciously.
-  for (
-    const required of [
-      "chat_messages",
-      "documents",
-      "cases",
-      "deadlines",
-      "user_drafts",
-      "email_threads",
-      "user_oauth_tokens",
-      "user_encryption_keys",
-      "profiles",
-      "dsar_requests",
-      "b2b_signals",
-    ]
-  ) {
+  for (const required of [
+    "chat_messages",
+    "documents",
+    "cases",
+    "deadlines",
+    "user_drafts",
+    "email_threads",
+    "user_oauth_tokens",
+    "user_encryption_keys",
+    "profiles",
+    "dsar_requests",
+    "b2b_signals",
+  ]) {
     assert(
       tables.includes(required),
-      `USER_DATA_TABLES must list ${required} (GDPR Art. 17)`,
+      `USER_DATA_TABLES must list ${required} (GDPR Art. 17)`
     );
   }
   // profiles must be last (FK parent → cascade-safe ordering).
   assertEquals(
     tables[tables.length - 1],
     "profiles",
-    "profiles should be last so FK children are wiped first",
+    "profiles should be last so FK children are wiped first"
   );
 });
 
-Deno.test("A02 — happy path: tables wiped, storage swept, auth deleted", async () => {
-  const state = emptyState();
-  // Seed a row in every table.
-  for (const [t] of USER_DATA_TABLES) {
-    state.tables.set(t, new Map([[UID, 1]]));
-  }
-  // Seed storage with 3 objects under <UID>/.
-  for (const b of STORAGE_BUCKETS) {
-    state.storage.set(b, new Map([[UID, ["a.pdf", "b.pdf", "c.pdf"]]]));
-  }
-  const sb = makeFakeSb(state);
+Deno.test(
+  "A02 — happy path: tables wiped, storage swept, auth deleted",
+  async () => {
+    const state = emptyState();
+    // Seed a row in every table.
+    for (const [t] of USER_DATA_TABLES) {
+      state.tables.set(t, new Map([[UID, 1]]));
+    }
+    // Seed storage with 3 objects under <UID>/.
+    for (const b of STORAGE_BUCKETS) {
+      state.storage.set(b, new Map([[UID, ["a.pdf", "b.pdf", "c.pdf"]]]));
+    }
+    const sb = makeFakeSb(state);
 
-  const result = await runAccountDelete(sb, UID);
+    const result = await runAccountDelete(sb, UID);
 
-  assert(result.ok, "expected ok=true");
-  assert(result.deleted, "expected deleted=true");
-  assertEquals(result.auth_user_deleted, true);
-  assertEquals(result.partial, false, "no partial when everything succeeded");
-  assertEquals(result.table_results.filter((r) => !r.ok).length, 0);
-  assertEquals(result.storage_results.filter((r) => r.error).length, 0);
-  // Every table emptied.
-  for (const [t] of USER_DATA_TABLES) {
-    assert(
-      !state.tables.get(t)?.has(UID),
-      `row in ${t} should be deleted`,
-    );
+    assert(result.ok, "expected ok=true");
+    assert(result.deleted, "expected deleted=true");
+    assertEquals(result.auth_user_deleted, true);
+    assertEquals(result.partial, false, "no partial when everything succeeded");
+    assertEquals(result.table_results.filter((r) => !r.ok).length, 0);
+    assertEquals(result.storage_results.filter((r) => r.error).length, 0);
+    // Every table emptied.
+    for (const [t] of USER_DATA_TABLES) {
+      assert(!state.tables.get(t)?.has(UID), `row in ${t} should be deleted`);
+    }
+    // Storage emptied (all 3 objects tombstoned by the sweep).
+    for (const b of STORAGE_BUCKETS) {
+      assertEquals(remainingStorage(state, b, UID), 0);
+    }
+    // The sweep also reports it removed all 3 objects per bucket.
+    for (const sr of result.storage_results) {
+      assertEquals(
+        sr.removed,
+        3,
+        `bucket ${sr.bucket} should report 3 removed`
+      );
+    }
+    // Auth row gone.
+    assert(state.authDeleted.has(UID));
+    assertStringIncludes(result.message, "Account deleted");
   }
-  // Storage emptied.
-  for (const b of STORAGE_BUCKETS) {
-    assertEquals(state.storage.get(b)?.get(UID)?.length, 0);
-  }
-  // Auth row gone.
-  assert(state.authDeleted.has(UID));
-  assertStringIncludes(result.message, "Account deleted");
-});
+);
 
 Deno.test("A03 — tolerates 42P01 missing-table without failure", async () => {
   const state = emptyState();
@@ -268,27 +320,30 @@ Deno.test(
     // client retries; `partial` flags that auth succeeded but data lingers.
     assert(!result.ok, "ok=false when any table failed (retry semantics)");
     assertEquals(result.partial, true);
-  },
+  }
 );
 
-Deno.test("A06 — auth delete fails → partial=true, app data still wiped", async () => {
-  const state = emptyState();
-  for (const [t] of USER_DATA_TABLES) {
-    state.tables.set(t, new Map([[UID, 1]]));
-  }
-  state.authDeleteError = "Service unavailable";
-  const sb = makeFakeSb(state);
-  const result = await runAccountDelete(sb, UID);
+Deno.test(
+  "A06 — auth delete fails → partial=true, app data still wiped",
+  async () => {
+    const state = emptyState();
+    for (const [t] of USER_DATA_TABLES) {
+      state.tables.set(t, new Map([[UID, 1]]));
+    }
+    state.authDeleteError = "Service unavailable";
+    const sb = makeFakeSb(state);
+    const result = await runAccountDelete(sb, UID);
 
-  assert(!result.ok, "ok=false when auth row remains");
-  assertEquals(result.auth_user_deleted, false);
-  assertEquals(result.auth_error, "Service unavailable");
-  // App data IS wiped, so client should retry safely.
-  for (const [t] of USER_DATA_TABLES) {
-    assert(!state.tables.get(t)?.has(UID), `${t} should still be wiped`);
+    assert(!result.ok, "ok=false when auth row remains");
+    assertEquals(result.auth_user_deleted, false);
+    assertEquals(result.auth_error, "Service unavailable");
+    // App data IS wiped, so client should retry safely.
+    for (const [t] of USER_DATA_TABLES) {
+      assert(!state.tables.get(t)?.has(UID), `${t} should still be wiped`);
+    }
+    assertStringIncludes(result.message, "retry");
   }
-  assertStringIncludes(result.message, "retry");
-});
+);
 
 Deno.test("A07 — storage remove failure surfaces as partial", async () => {
   const state = emptyState();
@@ -316,7 +371,7 @@ Deno.test("A08 — storage pagination handles >1 page", async () => {
 
   const bucketResult = result.storage_results[0];
   assertEquals(bucketResult.removed, 2500, "every object should be removed");
-  assertEquals(state.storage.get(STORAGE_BUCKETS[0])!.get(UID)!.length, 0);
+  assertEquals(remainingStorage(state, STORAGE_BUCKETS[0], UID), 0);
 });
 
 Deno.test("A09 — idempotent: second call on same user is safe", async () => {
@@ -334,20 +389,23 @@ Deno.test("A09 — idempotent: second call on same user is safe", async () => {
   const second = await runAccountDelete(sb, UID);
   assert(
     state.authDeleted.has(UID),
-    "second call must re-issue auth.admin.deleteUser",
+    "second call must re-issue auth.admin.deleteUser"
   );
   assert(second.ok);
 });
 
-Deno.test("A10 — handler source documents GDPR Art. 17 + App Store 5.1.1(v)", async () => {
-  const src = await Deno.readTextFile(
-    new URL("../account-delete/handler.ts", import.meta.url),
-  );
-  assertStringIncludes(src, "Art. 17");
-  assertStringIncludes(src, "5.1.1(v)");
-  assertStringIncludes(
-    src,
-    "hard delete",
-    "must NOT be a soft-delete (App Store 5.1.1(v) requires actual deletion)",
-  );
-});
+Deno.test(
+  "A10 — handler source documents GDPR Art. 17 + App Store 5.1.1(v)",
+  async () => {
+    const src = await Deno.readTextFile(
+      new URL("../account-delete/handler.ts", import.meta.url)
+    );
+    assertStringIncludes(src, "Art. 17");
+    assertStringIncludes(src, "5.1.1(v)");
+    assertStringIncludes(
+      src,
+      "hard delete",
+      "must NOT be a soft-delete (App Store 5.1.1(v) requires actual deletion)"
+    );
+  }
+);

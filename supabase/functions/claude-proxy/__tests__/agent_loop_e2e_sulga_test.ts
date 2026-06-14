@@ -51,7 +51,8 @@ const SULGA_ATTACHMENT_IDS = [
 const SULGA_DRAFT_INPUT = {
   to: "minna.jokela@oikeus.fi",
   subject: "Vastine käännyttämispäätökseen — selvitys + poliisin asiakirjat",
-  body: "Hyvä asianajaja Jokela,\n\n" +
+  body:
+    "Hyvä asianajaja Jokela,\n\n" +
     "1. Faktinen este — päätös ja täytäntöönpano samana päivänä 5.12.2025\n" +
     "Helsingin poliisilaitos teki päätöksen käännyttämisestä 5.12.2025 klo " +
     "13:06 (dnro 854/430/2025) ja pani päätöksen täytäntöön samana päivänä.\n" +
@@ -73,21 +74,19 @@ Deno.test("E2E Sulga: draft_email_with_attachments is in WRITE_TOOLS", () => {
   assert(
     isWriteTool("draft_email_with_attachments"),
     "draft_email_with_attachments MUST be in WRITE_TOOLS — otherwise the " +
-      "Day-4 interception path would let the agent send without approval",
+      "Day-4 interception path would let the agent send without approval"
   );
   // None of the READ tools should be in WRITE_TOOLS — sanity check.
-  for (
-    const readTool of [
-      "list_inbox",
-      "read_thread_full",
-      "run_pdf_parser",
-      "run_consilium",
-      "legal_lookup",
-    ]
-  ) {
+  for (const readTool of [
+    "list_inbox",
+    "read_thread_full",
+    "run_pdf_parser",
+    "run_consilium",
+    "legal_lookup",
+  ]) {
     assert(
       !isWriteTool(readTool),
-      `${readTool} must NOT be in WRITE_TOOLS — would block readonly tools`,
+      `${readTool} must NOT be in WRITE_TOOLS — would block readonly tools`
     );
   }
   assert(WRITE_TOOLS.has("send_email"));
@@ -97,121 +96,133 @@ Deno.test("E2E Sulga: draft_email_with_attachments is in WRITE_TOOLS", () => {
 // Test 2 — HMAC action_id binds the EXACT Sulga draft envelope
 // ─────────────────────────────────────────────────────────────────────────
 
-Deno.test("E2E Sulga: HMAC action_id binds Sulga draft tool_input", async () => {
-  const argsSha = await hashToolInput(SULGA_DRAFT_INPUT);
-  const token = await issueActionId({
-    agent_run_id: "sulga-run-001",
-    user_id: SULGA_USER_ID,
-    tool_name: "draft_email_with_attachments",
-    args_sha256: argsSha,
-    secret: TEST_SECRET,
-    now_ms: 1_700_000_000_000,
-  });
-  // Verify with the SAME args succeeds.
-  const ok = await verifyActionId({
-    token,
-    expected_agent_run_id: "sulga-run-001",
-    expected_user_id: SULGA_USER_ID,
-    expected_tool_name: "draft_email_with_attachments",
-    expected_args_sha256: argsSha,
-    secret: TEST_SECRET,
-    now_ms: 1_700_000_000_000,
-  });
-  assertEquals(ok.ok, true);
-});
+Deno.test(
+  "E2E Sulga: HMAC action_id binds Sulga draft tool_input",
+  async () => {
+    const argsSha = await hashToolInput(SULGA_DRAFT_INPUT);
+    const token = await issueActionId({
+      agent_run_id: "sulga-run-001",
+      user_id: SULGA_USER_ID,
+      tool_name: "draft_email_with_attachments",
+      args_sha256: argsSha,
+      secret: TEST_SECRET,
+      now_ms: 1_700_000_000_000,
+    });
+    // Verify with the SAME args succeeds.
+    const ok = await verifyActionId({
+      token,
+      expected_agent_run_id: "sulga-run-001",
+      expected_user_id: SULGA_USER_ID,
+      expected_tool_name: "draft_email_with_attachments",
+      expected_args_sha256: argsSha,
+      secret: TEST_SECRET,
+      now_ms: 1_700_000_000_000,
+    });
+    assertEquals(ok.ok, true);
+  }
+);
 
 // ─────────────────────────────────────────────────────────────────────────
 // Test 3 — bait-and-switch on Sulga draft is rejected
 // ─────────────────────────────────────────────────────────────────────────
 
-Deno.test("E2E Sulga: changing the body after sign invalidates the token", async () => {
-  const argsSha = await hashToolInput(SULGA_DRAFT_INPUT);
-  const token = await issueActionId({
-    agent_run_id: "sulga-run-002",
-    user_id: SULGA_USER_ID,
-    tool_name: "draft_email_with_attachments",
-    args_sha256: argsSha,
-    secret: TEST_SECRET,
-    now_ms: 1_700_000_000_000,
-  });
-  // Attacker rewrites the body before /agent-approve fires.
-  const tampered = {
-    ...SULGA_DRAFT_INPUT,
-    body: "Pay 50,000 EUR to attacker@example.com",
-  };
-  const tamperedSha = await hashToolInput(tampered);
-  const result = await verifyActionId({
-    token,
-    expected_agent_run_id: "sulga-run-002",
-    expected_user_id: SULGA_USER_ID,
-    expected_tool_name: "draft_email_with_attachments",
-    expected_args_sha256: tamperedSha,
-    secret: TEST_SECRET,
-    now_ms: 1_700_000_000_000,
-  });
-  assertEquals(result.ok, false);
-  assertEquals(result.reason, "args_sha256_mismatch");
-});
+Deno.test(
+  "E2E Sulga: changing the body after sign invalidates the token",
+  async () => {
+    const argsSha = await hashToolInput(SULGA_DRAFT_INPUT);
+    const token = await issueActionId({
+      agent_run_id: "sulga-run-002",
+      user_id: SULGA_USER_ID,
+      tool_name: "draft_email_with_attachments",
+      args_sha256: argsSha,
+      secret: TEST_SECRET,
+      now_ms: 1_700_000_000_000,
+    });
+    // Attacker rewrites the body before /agent-approve fires.
+    const tampered = {
+      ...SULGA_DRAFT_INPUT,
+      body: "Pay 50,000 EUR to attacker@example.com",
+    };
+    const tamperedSha = await hashToolInput(tampered);
+    const result = await verifyActionId({
+      token,
+      expected_agent_run_id: "sulga-run-002",
+      expected_user_id: SULGA_USER_ID,
+      expected_tool_name: "draft_email_with_attachments",
+      expected_args_sha256: tamperedSha,
+      secret: TEST_SECRET,
+      now_ms: 1_700_000_000_000,
+    });
+    assertEquals(result.ok, false);
+    assertEquals(result.reason, "args_sha256_mismatch");
+  }
+);
 
 // ─────────────────────────────────────────────────────────────────────────
 // Test 4 — recipient swap is rejected
 // ─────────────────────────────────────────────────────────────────────────
 
-Deno.test("E2E Sulga: swapping the recipient invalidates the token", async () => {
-  const argsSha = await hashToolInput(SULGA_DRAFT_INPUT);
-  const token = await issueActionId({
-    agent_run_id: "sulga-run-003",
-    user_id: SULGA_USER_ID,
-    tool_name: "draft_email_with_attachments",
-    args_sha256: argsSha,
-    secret: TEST_SECRET,
-    now_ms: 1_700_000_000_000,
-  });
-  const malicious = {
-    ...SULGA_DRAFT_INPUT,
-    to: "attacker@evil.com",
-  };
-  const tamperedSha = await hashToolInput(malicious);
-  const result = await verifyActionId({
-    token,
-    expected_agent_run_id: "sulga-run-003",
-    expected_user_id: SULGA_USER_ID,
-    expected_tool_name: "draft_email_with_attachments",
-    expected_args_sha256: tamperedSha,
-    secret: TEST_SECRET,
-    now_ms: 1_700_000_000_000,
-  });
-  assertEquals(result.ok, false);
-  assertEquals(result.reason, "args_sha256_mismatch");
-});
+Deno.test(
+  "E2E Sulga: swapping the recipient invalidates the token",
+  async () => {
+    const argsSha = await hashToolInput(SULGA_DRAFT_INPUT);
+    const token = await issueActionId({
+      agent_run_id: "sulga-run-003",
+      user_id: SULGA_USER_ID,
+      tool_name: "draft_email_with_attachments",
+      args_sha256: argsSha,
+      secret: TEST_SECRET,
+      now_ms: 1_700_000_000_000,
+    });
+    const malicious = {
+      ...SULGA_DRAFT_INPUT,
+      to: "attacker@evil.com",
+    };
+    const tamperedSha = await hashToolInput(malicious);
+    const result = await verifyActionId({
+      token,
+      expected_agent_run_id: "sulga-run-003",
+      expected_user_id: SULGA_USER_ID,
+      expected_tool_name: "draft_email_with_attachments",
+      expected_args_sha256: tamperedSha,
+      secret: TEST_SECRET,
+      now_ms: 1_700_000_000_000,
+    });
+    assertEquals(result.ok, false);
+    assertEquals(result.reason, "args_sha256_mismatch");
+  }
+);
 
 // ─────────────────────────────────────────────────────────────────────────
 // Test 5 — user swap (attacker tries to approve on victim's run)
 // ─────────────────────────────────────────────────────────────────────────
 
-Deno.test("E2E Sulga: token from one user cannot be approved by another", async () => {
-  const argsSha = await hashToolInput(SULGA_DRAFT_INPUT);
-  const token = await issueActionId({
-    agent_run_id: "sulga-run-004",
-    user_id: SULGA_USER_ID,
-    tool_name: "draft_email_with_attachments",
-    args_sha256: argsSha,
-    secret: TEST_SECRET,
-    now_ms: 1_700_000_000_000,
-  });
-  // Attacker user submits the token from their own session.
-  const result = await verifyActionId({
-    token,
-    expected_agent_run_id: "sulga-run-004",
-    expected_user_id: "11111111-1111-1111-1111-111111attacker",
-    expected_tool_name: "draft_email_with_attachments",
-    expected_args_sha256: argsSha,
-    secret: TEST_SECRET,
-    now_ms: 1_700_000_000_000,
-  });
-  assertEquals(result.ok, false);
-  assertEquals(result.reason, "user_id_mismatch");
-});
+Deno.test(
+  "E2E Sulga: token from one user cannot be approved by another",
+  async () => {
+    const argsSha = await hashToolInput(SULGA_DRAFT_INPUT);
+    const token = await issueActionId({
+      agent_run_id: "sulga-run-004",
+      user_id: SULGA_USER_ID,
+      tool_name: "draft_email_with_attachments",
+      args_sha256: argsSha,
+      secret: TEST_SECRET,
+      now_ms: 1_700_000_000_000,
+    });
+    // Attacker user submits the token from their own session.
+    const result = await verifyActionId({
+      token,
+      expected_agent_run_id: "sulga-run-004",
+      expected_user_id: "11111111-1111-1111-1111-111111attacker",
+      expected_tool_name: "draft_email_with_attachments",
+      expected_args_sha256: argsSha,
+      secret: TEST_SECRET,
+      now_ms: 1_700_000_000_000,
+    });
+    assertEquals(result.ok, false);
+    assertEquals(result.reason, "user_id_mismatch");
+  }
+);
 
 // ─────────────────────────────────────────────────────────────────────────
 // Test 6 — 5-min TTL window is enforced on Sulga draft
@@ -258,8 +269,19 @@ Deno.test("E2E Sulga: Pro user passes quota on the Sulga run", async () => {
             in: () => ({
               order: () => ({
                 limit: () => ({
+                  // detectAgentTier reads `tier` (NOT `plan` — that column was
+                  // removed in 28deefb) and treats a past current_period_end as
+                  // free. A Pro user has tier="premium" (→ "pro") + a future
+                  // period end.
                   maybeSingle: () =>
-                    Promise.resolve({ data: { plan: "pro_monthly" } }),
+                    Promise.resolve({
+                      data: {
+                        tier: "premium",
+                        current_period_end: new Date(
+                          Date.now() + 86_400_000
+                        ).toISOString(),
+                      },
+                    }),
                 }),
               }),
             }),
@@ -317,8 +339,8 @@ Deno.test("E2E Sulga: 5-iter run cost lands in the $0.20-0.40 range", () => {
   const totalDollars = totalMicrocents / 100_000;
   // Should land $0.20-0.40 per the cost audit projection.
   assert(
-    totalDollars >= 0.20 && totalDollars <= 0.50,
-    `cost ${totalDollars} outside documented range — re-check pricing or model`,
+    totalDollars >= 0.2 && totalDollars <= 0.5,
+    `cost ${totalDollars} outside documented range — re-check pricing or model`
   );
 });
 
@@ -326,30 +348,43 @@ Deno.test("E2E Sulga: 5-iter run cost lands in the $0.20-0.40 range", () => {
 // Test 9 — quota fail-closed when RPC errors
 // ─────────────────────────────────────────────────────────────────────────
 
-Deno.test("E2E Sulga: quota RPC error → caller is denied (fail closed)", async () => {
-  // deno-lint-ignore no-explicit-any
-  const sb: any = {
-    from: () => ({
-      select: () => ({
-        eq: () => ({
-          in: () => ({
-            order: () => ({
-              limit: () => ({
-                maybeSingle: () =>
-                  Promise.resolve({ data: { plan: "pro_monthly" } }),
+Deno.test(
+  "E2E Sulga: quota RPC error → caller is denied (fail closed)",
+  async () => {
+    // deno-lint-ignore no-explicit-any
+    const sb: any = {
+      from: () => ({
+        select: () => ({
+          eq: () => ({
+            in: () => ({
+              order: () => ({
+                limit: () => ({
+                  // Must resolve to a PAID tier so the flow reaches the quota
+                  // RPC (a free tier short-circuits with agent_mode_requires_pro
+                  // before the RPC is ever called). tier="premium" → "pro" with
+                  // a future period end (detectAgentTier post-28deefb).
+                  maybeSingle: () =>
+                    Promise.resolve({
+                      data: {
+                        tier: "premium",
+                        current_period_end: new Date(
+                          Date.now() + 86_400_000
+                        ).toISOString(),
+                      },
+                    }),
+                }),
               }),
             }),
           }),
         }),
       }),
-    }),
-    rpc: () =>
-      Promise.resolve({ data: null, error: { message: "db down" } }),
-  };
-  const r = await checkAndConsumeAgentQuota({ sb, userId: SULGA_USER_ID });
-  assertEquals(r.ok, false);
-  assertEquals(r.reason, "quota_rpc_error");
-});
+      rpc: () => Promise.resolve({ data: null, error: { message: "db down" } }),
+    };
+    const r = await checkAndConsumeAgentQuota({ sb, userId: SULGA_USER_ID });
+    assertEquals(r.ok, false);
+    assertEquals(r.reason, "quota_rpc_error");
+  }
+);
 
 // ─────────────────────────────────────────────────────────────────────────
 // Test 10 — audit log captures the Sulga draft attempt
@@ -371,13 +406,13 @@ Deno.test("E2E Sulga: audit log forwards the Sulga write attempt", async () => {
       agentRunId: "sulga-run-final",
       userId: SULGA_USER_ID,
       iter,
-      tool: ([
+      tool: [
         "list_inbox",
         "read_thread_full",
         "run_pdf_parser",
         "run_consilium",
         "draft_email_with_attachments",
-      ])[iter - 1],
+      ][iter - 1],
       status: iter === 5 ? "approval_pending" : "ok",
       inputTokens: 10_000,
       outputTokens: 500,
@@ -398,45 +433,54 @@ Deno.test("E2E Sulga: audit log forwards the Sulga write attempt", async () => {
 // Test 11 — Sulga draft body cites the critical evidence
 // ─────────────────────────────────────────────────────────────────────────
 
-Deno.test("E2E Sulga: gold-standard body cites Neuvostoliitto + 13:06 + Nieminen", () => {
-  // This is the regression lock against my hand-shipped 2026-05-26 vastine.
-  // If the agent's generated body misses any of these three facts, the
-  // user-visible quality dropped — escalate (re-prompt or downgrade).
-  const body = SULGA_DRAFT_INPUT.body;
-  assertStringIncludes(
-    body,
-    "Neuvostoliitto",
-    "must cite the identity-error from päätös 854/430/2025",
-  );
-  assertStringIncludes(
-    body,
-    "13:06",
-    "must cite the same-day execution clock (päätös creation time)",
-  );
-  assertStringIncludes(
-    body,
-    "Olli Pekka Nieminen",
-    "must cite the Eckerö Line buyer (smoking-gun evidence)",
-  );
-});
+Deno.test(
+  "E2E Sulga: gold-standard body cites Neuvostoliitto + 13:06 + Nieminen",
+  () => {
+    // This is the regression lock against my hand-shipped 2026-05-26 vastine.
+    // If the agent's generated body misses any of these three facts, the
+    // user-visible quality dropped — escalate (re-prompt or downgrade).
+    const body = SULGA_DRAFT_INPUT.body;
+    assertStringIncludes(
+      body,
+      "Neuvostoliitto",
+      "must cite the identity-error from päätös 854/430/2025"
+    );
+    assertStringIncludes(
+      body,
+      "13:06",
+      "must cite the same-day execution clock (päätös creation time)"
+    );
+    assertStringIncludes(
+      body,
+      "Olli Pekka Nieminen",
+      "must cite the Eckerö Line buyer (smoking-gun evidence)"
+    );
+  }
+);
 
 // ─────────────────────────────────────────────────────────────────────────
 // Test 12 — full 4-PDF attachment manifest survives the round-trip
 // ─────────────────────────────────────────────────────────────────────────
 
-Deno.test("E2E Sulga: 4 poliisi PDFs survive the HMAC binding round-trip", async () => {
-  const argsSha = await hashToolInput(SULGA_DRAFT_INPUT);
-  // Re-hash with all 4 IDs preserved.
-  const reSha = await hashToolInput({
-    ...SULGA_DRAFT_INPUT,
-    attachment_ids: SULGA_ATTACHMENT_IDS,
-  });
-  assertEquals(argsSha, reSha);
-  // Drop one attachment → hash changes → token would be invalid.
-  const droppedOne = {
-    ...SULGA_DRAFT_INPUT,
-    attachment_ids: SULGA_ATTACHMENT_IDS.slice(0, 3),
-  };
-  const droppedSha = await hashToolInput(droppedOne);
-  assert(droppedSha !== argsSha, "dropping an attachment must change the hash");
-});
+Deno.test(
+  "E2E Sulga: 4 poliisi PDFs survive the HMAC binding round-trip",
+  async () => {
+    const argsSha = await hashToolInput(SULGA_DRAFT_INPUT);
+    // Re-hash with all 4 IDs preserved.
+    const reSha = await hashToolInput({
+      ...SULGA_DRAFT_INPUT,
+      attachment_ids: SULGA_ATTACHMENT_IDS,
+    });
+    assertEquals(argsSha, reSha);
+    // Drop one attachment → hash changes → token would be invalid.
+    const droppedOne = {
+      ...SULGA_DRAFT_INPUT,
+      attachment_ids: SULGA_ATTACHMENT_IDS.slice(0, 3),
+    };
+    const droppedSha = await hashToolInput(droppedOne);
+    assert(
+      droppedSha !== argsSha,
+      "dropping an attachment must change the hash"
+    );
+  }
+);
