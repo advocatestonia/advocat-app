@@ -141,8 +141,8 @@ void main() {
       expect(result.value!.accepted, isFalse);
     });
 
-    testWidgets('shows error message when revision future throws',
-        (tester) async {
+    testWidgets('shows a localized error (not raw exception) when revision '
+        'future throws', (tester) async {
       await tester.pumpWidget(_wrap(AiRevisionDialog(
         selectedText: 'oops',
         onRequestRevision: (_) async {
@@ -151,7 +151,10 @@ void main() {
       )));
       await tester.tap(find.byKey(const Key('ai_revision_run_btn')));
       await tester.pumpAndSettle();
-      expect(find.textContaining('backend exploded'), findsOneWidget);
+      // Users must never see the raw exception text — only a friendly,
+      // localized message (aiErrorGeneric).
+      expect(find.textContaining('backend exploded'), findsNothing);
+      expect(find.textContaining('Temporary AI error'), findsOneWidget);
     });
   });
 }

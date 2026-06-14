@@ -569,7 +569,7 @@ class _DraftingStudioScreenState extends ConsumerState<DraftingStudioScreen> {
       body: _busy && _draft == null
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(child: Text(_error!))
+              ? Center(child: Text(l10n.genericError))
               : Column(
                   children: <Widget>[
                     DraftToolbar(

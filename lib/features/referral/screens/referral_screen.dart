@@ -73,7 +73,6 @@ class _ReferralScreenState extends ConsumerState<ReferralScreen> {
         child: statsAsync.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (e, _) => _ErrorState(
-            message: e.toString(),
             onRetry: () => ref.invalidate(referralStatsProvider),
           ),
           data: (stats) => _ReferralBody(stats: stats),
@@ -623,8 +622,7 @@ class _AntiFraudFootnote extends StatelessWidget {
 // ─── Error state ───────────────────────────────────────────────────────────
 
 class _ErrorState extends StatelessWidget {
-  const _ErrorState({required this.message, required this.onRetry});
-  final String message;
+  const _ErrorState({required this.onRetry});
   final VoidCallback onRetry;
 
   @override

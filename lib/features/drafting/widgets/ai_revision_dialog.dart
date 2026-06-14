@@ -136,7 +136,7 @@ class _AiRevisionDialogState extends State<AiRevisionDialog> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Text(
-                      _error!,
+                      l10n.aiErrorGeneric,
                       style: TextStyle(color: theme.colorScheme.error),
                     ),
                   ),
