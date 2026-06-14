@@ -738,4 +738,46 @@ class SupabaseService {
     };
     return const JsonEncoder.withIndent('  ').convert(exportData);
   }
+
+  // ── Case-type checklists ──────────────────────────────────────────────
+  //
+  // Static "what to do next" roadmap per case type. Backed by
+  // `get_case_checklist` / `toggle_checklist_item` RPCs (migration
+  // 20260601120000_case_checklists.sql). Pure RLS + RPC — no LLM, no cron.
+
+  /// Returns the ordered checklist for a case as a raw jsonb list
+  /// (each element: {item_id, step_order, title, description,
+  /// deadline_days, done}). Empty list in demo mode or on any error so
+  /// the caller can render an empty/hidden panel rather than crash.
+  Future<List<dynamic>> getCaseChecklist(String caseId) async {
+    if (isDemo) return const [];
+    requireUuid(caseId, 'getCaseChecklist');
+    final response = await _client.rpc(
+      'get_case_checklist',
+      params: {'p_case_id': caseId},
+    );
+    if (response is List) return response;
+    return const [];
+  }
+
+  /// Toggles one checklist item's `done` flag for the given case.
+  /// Returns true on success. No-op (false) in demo mode.
+  Future<bool> toggleChecklistItem({
+    required String caseId,
+    required String itemId,
+    required bool done,
+  }) async {
+    if (isDemo) return false;
+    requireUuid(caseId, 'toggleChecklistItem');
+    requireUuid(itemId, 'toggleChecklistItem');
+    final response = await _client.rpc(
+      'toggle_checklist_item',
+      params: {
+        'p_case_id': caseId,
+        'p_item_id': itemId,
+        'p_done': done,
+      },
+    );
+    return response is Map && response['ok'] == true;
+  }
 }

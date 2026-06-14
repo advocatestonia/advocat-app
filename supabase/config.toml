@@ -248,3 +248,9 @@ import_map = "./functions/import_map.json"
 
 [functions.winback-send]
 import_map = "./functions/import_map.json"
+
+[functions.case-followups]
+import_map = "./functions/import_map.json"
+
+[functions.followup-tick]
+import_map = "./functions/import_map.json"

@@ -104,6 +104,12 @@ export const USER_DATA_TABLES: ReadonlyArray<readonly [string, string]> = [
   ["user_drafts", "user_id"],
   ["vault_tags", "user_id"],
 
+  // ── New feature tables (product-expansion 2026-06-14). All hold user-PII
+  //    and must be wiped on erasure (Art. 17). ───────────────────────────────
+  ["case_followups", "user_id"], // soft next-step tasks per case
+  ["checklist_progress", "user_id"], // per-user checklist completion state
+  ["user_doc_chunks", "user_id"], // semantic-search embeddings of own docs
+
   // ── B2B silent signals. ──────────────────────────────────────────────────
   ["b2b_signals", "user_id"],
 

@@ -56,6 +56,11 @@ import '../features/rights/screens/rights_detail_screen.dart';
 import '../features/legal_aid/screens/legal_aid_calculator_screen.dart';
 import '../features/profile/screens/ai_memory_screen.dart';
 import '../features/settings/screens/access_log_screen.dart';
+import '../features/case_dossier/case_dossier_screen.dart';
+import '../features/checklists/screens/case_checklist_screen.dart';
+import '../features/contract_review/screens/contract_compare_screen.dart';
+import '../features/doc_search/screens/doc_search_screen.dart';
+import '../features/legal_templates/screens/legal_templates_gallery_screen.dart';
 import '../features/referral/screens/referral_screen.dart';
 import '../features/referral/screens/referral_landing_screen.dart';
 import '../features/lawyer_verification/screens/lawyer_verification_screen.dart';
@@ -181,6 +186,12 @@ abstract final class AppRoutes {
   static const String legalAid = '/legal-aid';
   static const String aiMemory = '/profile/ai-memory';
   static const String accessLog = '/profile/access-log';
+  // New feature routes (product-expansion 2026-06-14).
+  static const String caseDossier = '/cases/:id/dossier';
+  static const String caseChecklist = '/cases/:id/checklist';
+  static const String contractCompare = '/contract-compare';
+  static const String docSearch = '/doc-search';
+  static const String legalTemplates = '/templates';
 
   /// Referral program ("Invite friends"). Reached from Settings and from
   /// the after-Contract-Review CTA chip.
@@ -431,6 +442,26 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (context, state) {
               final id = state.pathParameters['id']!;
               return CaseTimelineScreen(caseId: id);
+            },
+          ),
+          // Feature: one-click PDF dossier export for the case.
+          GoRoute(
+            path: 'dossier',
+            name: 'caseDossier',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              final title =
+                  state.extra is String ? state.extra as String : null;
+              return CaseDossierScreen(caseId: id, caseTitle: title);
+            },
+          ),
+          // Feature: case-type action-plan checklist.
+          GoRoute(
+            path: 'checklist',
+            name: 'caseChecklist',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return CaseChecklistScreen(caseId: id);
             },
           ),
         ],
@@ -708,6 +739,24 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.accessLog,
         name: 'accessLog',
         builder: (context, state) => const AccessLogScreen(),
+      ),
+      // Feature: Contract Version Compare — diff two versions of a contract.
+      GoRoute(
+        path: AppRoutes.contractCompare,
+        name: 'contractCompare',
+        builder: (context, state) => const ContractCompareScreen(),
+      ),
+      // Feature: Semantic search over the user's own documents.
+      GoRoute(
+        path: AppRoutes.docSearch,
+        name: 'docSearch',
+        builder: (context, state) => const DocSearchScreen(),
+      ),
+      // Feature: Legal Template Library (curated fill-in forms).
+      GoRoute(
+        path: AppRoutes.legalTemplates,
+        name: 'legalTemplates',
+        builder: (context, state) => const LegalTemplatesGalleryScreen(),
       ),
       GoRoute(
         path: AppRoutes.referral,

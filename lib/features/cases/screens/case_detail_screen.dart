@@ -14,6 +14,8 @@ import '../../../shared/widgets/max_width_wrapper.dart';
 import '../providers/cases_provider.dart';
 import '../../deadlines/providers/deadlines_provider.dart';
 import '../../documents/providers/documents_provider.dart';
+import '../../case_followups/case_followups_section.dart';
+import '../../checklists/widgets/checklist_summary_card.dart';
 
 // ---------------------------------------------------------------------------
 // Case Detail Screen
@@ -127,9 +129,25 @@ class CaseDetailScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
 
-                    // ── Timeline section ──────────────────────────────
+                    // ── Next steps (soft follow-ups) ──────────────────
+                    // Distinct from Deadlines: user/AI-authored soft tasks.
                     _EntranceAnimation(
                       delay: 4,
+                      child: CaseFollowupsSection(caseId: caseId),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+
+                    // ── Action plan (case-type checklist) ─────────────
+                    // Self-hides when no roadmap matches the case type.
+                    _EntranceAnimation(
+                      delay: 5,
+                      child: ChecklistSummaryCard(caseId: caseId),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+
+                    // ── Timeline section ──────────────────────────────
+                    _EntranceAnimation(
+                      delay: 6,
                       child: _TimelineSection(
                         legalCase: legalCase,
                         caseId: caseId,

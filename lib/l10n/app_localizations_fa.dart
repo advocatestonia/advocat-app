@@ -4654,4 +4654,318 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get breachAlertBody =>
       'Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34).';
+
+  @override
+  String get caseDossierTitle => 'Export case dossier';
+
+  @override
+  String get caseDossierSubtitle =>
+      'One PDF with everything — facts, chronology, deadlines and documents — to hand to a lawyer, a court, or a complaint body.';
+
+  @override
+  String get caseDossierTileTitle => 'Export dossier (PDF)';
+
+  @override
+  String get caseDossierTileSubtitle =>
+      'Hand the whole case to a lawyer or court in one file';
+
+  @override
+  String get caseDossierSectionsHeading => 'Include in the dossier';
+
+  @override
+  String get caseDossierSectionFacts => 'Case facts';
+
+  @override
+  String get caseDossierSectionFactsHint => 'Always included';
+
+  @override
+  String get caseDossierSectionTimeline => 'Chronology';
+
+  @override
+  String get caseDossierSectionDeadlines => 'Deadlines';
+
+  @override
+  String get caseDossierSectionDocuments => 'Documents';
+
+  @override
+  String get caseDossierSectionAiSummary => 'AI summary';
+
+  @override
+  String get caseDossierExportButton => 'Export PDF';
+
+  @override
+  String get caseDossierExporting => 'Building your dossier…';
+
+  @override
+  String get caseDossierSuccess => 'Dossier ready. Open or share the file.';
+
+  @override
+  String get caseDossierOpen => 'Open dossier';
+
+  @override
+  String get caseDossierError =>
+      'Could not build the dossier. Please try again.';
+
+  @override
+  String get caseDossierErrorNotOwned => 'This case could not be found.';
+
+  @override
+  String get caseDossierDisclaimer =>
+      'The dossier reproduces your case data as recorded. Review it before sharing.';
+
+  @override
+  String get followupsTitle => 'Next steps';
+
+  @override
+  String get followupsSubtitle => 'Practical tasks to keep your case moving';
+
+  @override
+  String get followupsEmpty => 'No follow-up steps yet.';
+
+  @override
+  String get followupsEmptyDesc =>
+      'Add a step, or let the AI suggest what to do next.';
+
+  @override
+  String get followupsAdd => 'Add step';
+
+  @override
+  String get followupsSuggest => 'Suggest steps';
+
+  @override
+  String get followupsSuggestNone =>
+      'No suggestions right now. Try after chatting about the case.';
+
+  @override
+  String get followupsSuggestTitle => 'Suggested next steps';
+
+  @override
+  String get followupsAddPrompt => 'Add the steps you want to keep:';
+
+  @override
+  String get followupsNewTitleHint => 'What needs to be done?';
+
+  @override
+  String get followupsNewDetailHint => 'Optional note (why / what to attach)';
+
+  @override
+  String get followupsDueOptional => 'Remind me on (optional)';
+
+  @override
+  String get followupsOverdue => 'Overdue';
+
+  @override
+  String followupsDueOn(Object date) {
+    return 'Due $date';
+  }
+
+  @override
+  String get followupsDone => 'Done';
+
+  @override
+  String get followupsSnooze => 'Snooze';
+
+  @override
+  String get followupsSnooze1Week => 'Remind in a week';
+
+  @override
+  String get followupsDismiss => 'Dismiss';
+
+  @override
+  String get followupsLoadError => 'Could not load next steps';
+
+  @override
+  String get followupsAiBadge => 'AI';
+
+  @override
+  String get contractCompareTitle => 'Compare versions';
+
+  @override
+  String get contractCompareIntro =>
+      'Upload two versions of the same contract. We highlight what changed and whether each change helps or hurts you.';
+
+  @override
+  String get contractCompareOldVersion => 'Old version (v1)';
+
+  @override
+  String get contractCompareNewVersion => 'New version (v2)';
+
+  @override
+  String get contractCompareCta => 'Compare versions';
+
+  @override
+  String get contractCompareAdverse => 'Adverse';
+
+  @override
+  String get contractCompareFavorable => 'Favorable';
+
+  @override
+  String get contractCompareNeutral => 'Neutral';
+
+  @override
+  String get contractCompareBefore => 'Before';
+
+  @override
+  String get contractCompareAfter => 'After';
+
+  @override
+  String get contractCompareTruncated =>
+      'Long contract — only the first part of each version was compared.';
+
+  @override
+  String get contractCompareNoChanges =>
+      'No material changes detected between the two versions.';
+
+  @override
+  String get docSearchTitle => 'Search my documents';
+
+  @override
+  String get docSearchHint => 'e.g. where was the deposit mentioned';
+
+  @override
+  String get docSearchSubtitle =>
+      'Semantic search across your vault and case files';
+
+  @override
+  String get docSearchIdle =>
+      'Search the contents of your own documents — not just titles.';
+
+  @override
+  String get docSearchNoResults => 'No matches found in your documents.';
+
+  @override
+  String get docSearchError => 'Search failed. Please try again.';
+
+  @override
+  String get docSearchUntitled => 'Untitled document';
+
+  @override
+  String get docSearchKindCase => 'Case document';
+
+  @override
+  String get docSearchKindVault => 'Vault document';
+
+  @override
+  String get docSearchMenuTitle => 'Search my documents';
+
+  @override
+  String get docSearchMenuSubtitle =>
+      'Find anything in your own files by meaning';
+
+  @override
+  String get legalTemplatesTitle => 'Template library';
+
+  @override
+  String get legalTemplatesMenuLabel => 'Templates';
+
+  @override
+  String get legalTemplatesSubtitle =>
+      'Pick a ready-made form, fill in a few details, and we\'ll create a draft you can edit and export.';
+
+  @override
+  String get legalTemplatesDisclaimer =>
+      'These are general sample forms, not individual legal advice. Review and adapt before sending.';
+
+  @override
+  String get legalTemplatesSampleBadge => 'Sample';
+
+  @override
+  String get legalTemplatesEmpty => 'No templates for this filter yet.';
+
+  @override
+  String get legalTemplatesError =>
+      'Couldn\'t load templates. Please try again.';
+
+  @override
+  String get legalTemplatesFilterAll => 'All';
+
+  @override
+  String get legalTemplatesJurisdictionFi => 'Finland';
+
+  @override
+  String get legalTemplatesJurisdictionEe => 'Estonia';
+
+  @override
+  String get legalTemplatesCategoryComplaint => 'Complaints';
+
+  @override
+  String get legalTemplatesCategoryAppeal => 'Appeals';
+
+  @override
+  String get legalTemplatesCategoryApplication => 'Applications';
+
+  @override
+  String get legalTemplatesCategoryClaim => 'Claims';
+
+  @override
+  String get legalTemplatesCategoryRequest => 'Requests';
+
+  @override
+  String get legalTemplatesFillTitle => 'Fill in the details';
+
+  @override
+  String get legalTemplatesFillIntro =>
+      'We\'ll auto-fill your name and case details. Complete the fields below.';
+
+  @override
+  String get legalTemplatesFieldRequired => 'This field is required';
+
+  @override
+  String get legalTemplatesCreateDraft => 'Create draft';
+
+  @override
+  String get legalTemplatesCreating => 'Creating draft…';
+
+  @override
+  String get legalTemplatesCreateFailed =>
+      'Couldn\'t create the draft. Please try again.';
+
+  @override
+  String get legalTemplatesUnresolvedWarning =>
+      'Some fields are still blank and are marked with ____ in the draft. You can complete them in the editor.';
+
+  @override
+  String get legalTemplatesFieldRecipient => 'Recipient (authority / landlord)';
+
+  @override
+  String get legalTemplatesFieldAddress => 'Your postal address';
+
+  @override
+  String get legalTemplatesFieldSubject => 'Subject';
+
+  @override
+  String get legalTemplatesFieldDescription => 'Description of the matter';
+
+  @override
+  String get legalTemplatesFieldDemand => 'What you are asking for';
+
+  @override
+  String get checklistActionPlan => 'Action plan';
+
+  @override
+  String get checklistActionPlanSubtitle => 'Steps for this type of case';
+
+  @override
+  String checklistProgress(Object completed, Object total) {
+    return '$completed of $total steps done';
+  }
+
+  @override
+  String get checklistAllDone => 'All steps complete';
+
+  @override
+  String get checklistEmpty =>
+      'No action plan is available for this case type yet.';
+
+  @override
+  String checklistDeadlineDays(Object days) {
+    return '$days days';
+  }
+
+  @override
+  String get checklistDisclaimer =>
+      'This is general information, not legal advice. Deadlines are statutory defaults — confirm the exact date for your case.';
+
+  @override
+  String get checklistViewPlan => 'View plan';
 }

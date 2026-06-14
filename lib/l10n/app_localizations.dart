@@ -8233,6 +8233,582 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34).'**
   String get breachAlertBody;
+
+  /// No description provided for @caseDossierTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export case dossier'**
+  String get caseDossierTitle;
+
+  /// No description provided for @caseDossierSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'One PDF with everything — facts, chronology, deadlines and documents — to hand to a lawyer, a court, or a complaint body.'**
+  String get caseDossierSubtitle;
+
+  /// No description provided for @caseDossierTileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export dossier (PDF)'**
+  String get caseDossierTileTitle;
+
+  /// No description provided for @caseDossierTileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hand the whole case to a lawyer or court in one file'**
+  String get caseDossierTileSubtitle;
+
+  /// No description provided for @caseDossierSectionsHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Include in the dossier'**
+  String get caseDossierSectionsHeading;
+
+  /// No description provided for @caseDossierSectionFacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Case facts'**
+  String get caseDossierSectionFacts;
+
+  /// No description provided for @caseDossierSectionFactsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Always included'**
+  String get caseDossierSectionFactsHint;
+
+  /// No description provided for @caseDossierSectionTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Chronology'**
+  String get caseDossierSectionTimeline;
+
+  /// No description provided for @caseDossierSectionDeadlines.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadlines'**
+  String get caseDossierSectionDeadlines;
+
+  /// No description provided for @caseDossierSectionDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get caseDossierSectionDocuments;
+
+  /// No description provided for @caseDossierSectionAiSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'AI summary'**
+  String get caseDossierSectionAiSummary;
+
+  /// No description provided for @caseDossierExportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Export PDF'**
+  String get caseDossierExportButton;
+
+  /// No description provided for @caseDossierExporting.
+  ///
+  /// In en, this message translates to:
+  /// **'Building your dossier…'**
+  String get caseDossierExporting;
+
+  /// No description provided for @caseDossierSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Dossier ready. Open or share the file.'**
+  String get caseDossierSuccess;
+
+  /// No description provided for @caseDossierOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open dossier'**
+  String get caseDossierOpen;
+
+  /// No description provided for @caseDossierError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not build the dossier. Please try again.'**
+  String get caseDossierError;
+
+  /// No description provided for @caseDossierErrorNotOwned.
+  ///
+  /// In en, this message translates to:
+  /// **'This case could not be found.'**
+  String get caseDossierErrorNotOwned;
+
+  /// No description provided for @caseDossierDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'The dossier reproduces your case data as recorded. Review it before sharing.'**
+  String get caseDossierDisclaimer;
+
+  /// No description provided for @followupsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Next steps'**
+  String get followupsTitle;
+
+  /// No description provided for @followupsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Practical tasks to keep your case moving'**
+  String get followupsSubtitle;
+
+  /// No description provided for @followupsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No follow-up steps yet.'**
+  String get followupsEmpty;
+
+  /// No description provided for @followupsEmptyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a step, or let the AI suggest what to do next.'**
+  String get followupsEmptyDesc;
+
+  /// No description provided for @followupsAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add step'**
+  String get followupsAdd;
+
+  /// No description provided for @followupsSuggest.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest steps'**
+  String get followupsSuggest;
+
+  /// No description provided for @followupsSuggestNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No suggestions right now. Try after chatting about the case.'**
+  String get followupsSuggestNone;
+
+  /// No description provided for @followupsSuggestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested next steps'**
+  String get followupsSuggestTitle;
+
+  /// No description provided for @followupsAddPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Add the steps you want to keep:'**
+  String get followupsAddPrompt;
+
+  /// No description provided for @followupsNewTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What needs to be done?'**
+  String get followupsNewTitleHint;
+
+  /// No description provided for @followupsNewDetailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional note (why / what to attach)'**
+  String get followupsNewDetailHint;
+
+  /// No description provided for @followupsDueOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me on (optional)'**
+  String get followupsDueOptional;
+
+  /// No description provided for @followupsOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get followupsOverdue;
+
+  /// No description provided for @followupsDueOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String followupsDueOn(Object date);
+
+  /// No description provided for @followupsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get followupsDone;
+
+  /// No description provided for @followupsSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze'**
+  String get followupsSnooze;
+
+  /// No description provided for @followupsSnooze1Week.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind in a week'**
+  String get followupsSnooze1Week;
+
+  /// No description provided for @followupsDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get followupsDismiss;
+
+  /// No description provided for @followupsLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load next steps'**
+  String get followupsLoadError;
+
+  /// No description provided for @followupsAiBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'AI'**
+  String get followupsAiBadge;
+
+  /// No description provided for @contractCompareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare versions'**
+  String get contractCompareTitle;
+
+  /// No description provided for @contractCompareIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload two versions of the same contract. We highlight what changed and whether each change helps or hurts you.'**
+  String get contractCompareIntro;
+
+  /// No description provided for @contractCompareOldVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Old version (v1)'**
+  String get contractCompareOldVersion;
+
+  /// No description provided for @contractCompareNewVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'New version (v2)'**
+  String get contractCompareNewVersion;
+
+  /// No description provided for @contractCompareCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare versions'**
+  String get contractCompareCta;
+
+  /// No description provided for @contractCompareAdverse.
+  ///
+  /// In en, this message translates to:
+  /// **'Adverse'**
+  String get contractCompareAdverse;
+
+  /// No description provided for @contractCompareFavorable.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorable'**
+  String get contractCompareFavorable;
+
+  /// No description provided for @contractCompareNeutral.
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral'**
+  String get contractCompareNeutral;
+
+  /// No description provided for @contractCompareBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Before'**
+  String get contractCompareBefore;
+
+  /// No description provided for @contractCompareAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'After'**
+  String get contractCompareAfter;
+
+  /// No description provided for @contractCompareTruncated.
+  ///
+  /// In en, this message translates to:
+  /// **'Long contract — only the first part of each version was compared.'**
+  String get contractCompareTruncated;
+
+  /// No description provided for @contractCompareNoChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'No material changes detected between the two versions.'**
+  String get contractCompareNoChanges;
+
+  /// No description provided for @docSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search my documents'**
+  String get docSearchTitle;
+
+  /// No description provided for @docSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. where was the deposit mentioned'**
+  String get docSearchHint;
+
+  /// No description provided for @docSearchSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Semantic search across your vault and case files'**
+  String get docSearchSubtitle;
+
+  /// No description provided for @docSearchIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search the contents of your own documents — not just titles.'**
+  String get docSearchIdle;
+
+  /// No description provided for @docSearchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No matches found in your documents.'**
+  String get docSearchNoResults;
+
+  /// No description provided for @docSearchError.
+  ///
+  /// In en, this message translates to:
+  /// **'Search failed. Please try again.'**
+  String get docSearchError;
+
+  /// No description provided for @docSearchUntitled.
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled document'**
+  String get docSearchUntitled;
+
+  /// No description provided for @docSearchKindCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Case document'**
+  String get docSearchKindCase;
+
+  /// No description provided for @docSearchKindVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Vault document'**
+  String get docSearchKindVault;
+
+  /// No description provided for @docSearchMenuTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search my documents'**
+  String get docSearchMenuTitle;
+
+  /// No description provided for @docSearchMenuSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find anything in your own files by meaning'**
+  String get docSearchMenuSubtitle;
+
+  /// No description provided for @legalTemplatesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Template library'**
+  String get legalTemplatesTitle;
+
+  /// No description provided for @legalTemplatesMenuLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Templates'**
+  String get legalTemplatesMenuLabel;
+
+  /// No description provided for @legalTemplatesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a ready-made form, fill in a few details, and we\'ll create a draft you can edit and export.'**
+  String get legalTemplatesSubtitle;
+
+  /// No description provided for @legalTemplatesDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'These are general sample forms, not individual legal advice. Review and adapt before sending.'**
+  String get legalTemplatesDisclaimer;
+
+  /// No description provided for @legalTemplatesSampleBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample'**
+  String get legalTemplatesSampleBadge;
+
+  /// No description provided for @legalTemplatesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No templates for this filter yet.'**
+  String get legalTemplatesEmpty;
+
+  /// No description provided for @legalTemplatesError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load templates. Please try again.'**
+  String get legalTemplatesError;
+
+  /// No description provided for @legalTemplatesFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get legalTemplatesFilterAll;
+
+  /// No description provided for @legalTemplatesJurisdictionFi.
+  ///
+  /// In en, this message translates to:
+  /// **'Finland'**
+  String get legalTemplatesJurisdictionFi;
+
+  /// No description provided for @legalTemplatesJurisdictionEe.
+  ///
+  /// In en, this message translates to:
+  /// **'Estonia'**
+  String get legalTemplatesJurisdictionEe;
+
+  /// No description provided for @legalTemplatesCategoryComplaint.
+  ///
+  /// In en, this message translates to:
+  /// **'Complaints'**
+  String get legalTemplatesCategoryComplaint;
+
+  /// No description provided for @legalTemplatesCategoryAppeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeals'**
+  String get legalTemplatesCategoryAppeal;
+
+  /// No description provided for @legalTemplatesCategoryApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications'**
+  String get legalTemplatesCategoryApplication;
+
+  /// No description provided for @legalTemplatesCategoryClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'Claims'**
+  String get legalTemplatesCategoryClaim;
+
+  /// No description provided for @legalTemplatesCategoryRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get legalTemplatesCategoryRequest;
+
+  /// No description provided for @legalTemplatesFillTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in the details'**
+  String get legalTemplatesFillTitle;
+
+  /// No description provided for @legalTemplatesFillIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll auto-fill your name and case details. Complete the fields below.'**
+  String get legalTemplatesFillIntro;
+
+  /// No description provided for @legalTemplatesFieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get legalTemplatesFieldRequired;
+
+  /// No description provided for @legalTemplatesCreateDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Create draft'**
+  String get legalTemplatesCreateDraft;
+
+  /// No description provided for @legalTemplatesCreating.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating draft…'**
+  String get legalTemplatesCreating;
+
+  /// No description provided for @legalTemplatesCreateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t create the draft. Please try again.'**
+  String get legalTemplatesCreateFailed;
+
+  /// No description provided for @legalTemplatesUnresolvedWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Some fields are still blank and are marked with ____ in the draft. You can complete them in the editor.'**
+  String get legalTemplatesUnresolvedWarning;
+
+  /// No description provided for @legalTemplatesFieldRecipient.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient (authority / landlord)'**
+  String get legalTemplatesFieldRecipient;
+
+  /// No description provided for @legalTemplatesFieldAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Your postal address'**
+  String get legalTemplatesFieldAddress;
+
+  /// No description provided for @legalTemplatesFieldSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Subject'**
+  String get legalTemplatesFieldSubject;
+
+  /// No description provided for @legalTemplatesFieldDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description of the matter'**
+  String get legalTemplatesFieldDescription;
+
+  /// No description provided for @legalTemplatesFieldDemand.
+  ///
+  /// In en, this message translates to:
+  /// **'What you are asking for'**
+  String get legalTemplatesFieldDemand;
+
+  /// No description provided for @checklistActionPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Action plan'**
+  String get checklistActionPlan;
+
+  /// No description provided for @checklistActionPlanSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps for this type of case'**
+  String get checklistActionPlanSubtitle;
+
+  /// No description provided for @checklistProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {total} steps done'**
+  String checklistProgress(Object completed, Object total);
+
+  /// No description provided for @checklistAllDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All steps complete'**
+  String get checklistAllDone;
+
+  /// No description provided for @checklistEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No action plan is available for this case type yet.'**
+  String get checklistEmpty;
+
+  /// No description provided for @checklistDeadlineDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
+  String checklistDeadlineDays(Object days);
+
+  /// No description provided for @checklistDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'This is general information, not legal advice. Deadlines are statutory defaults — confirm the exact date for your case.'**
+  String get checklistDisclaimer;
+
+  /// No description provided for @checklistViewPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'View plan'**
+  String get checklistViewPlan;
 }
 
 class _AppLocalizationsDelegate
