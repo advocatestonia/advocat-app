@@ -16,6 +16,7 @@ import '../models/draft_model.dart';
 import '../services/draft_service.dart';
 import 'draft_templates_screen.dart';
 import 'drafting_studio_screen.dart';
+import '../../legal_templates/screens/legal_templates_gallery_screen.dart';
 
 final myDraftsProvider = FutureProvider.autoDispose<List<Draft>>((ref) async {
   return ref.watch(draftServiceProvider).listMyDrafts();
@@ -31,7 +32,24 @@ class DraftsListScreen extends ConsumerWidget {
 
     return SecureScreenScope(
       child: Scaffold(
-      appBar: AppBar(title: Text(l10n.draftingDraftsList)),
+      appBar: AppBar(
+        title: Text(l10n.draftingDraftsList),
+        actions: [
+          IconButton(
+            // Curated legal-form library (kantelu/valitus/kaebus/avaldus)
+            // with server-side auto-fill — distinct from the FAB's blank
+            // draft-template picker.
+            key: const Key('drafts_list_templates_action'),
+            tooltip: l10n.legalTemplatesMenuLabel,
+            icon: const Icon(Icons.library_books_outlined),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const LegalTemplatesGalleryScreen(),
+              ),
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         key: const Key('drafts_list_new_fab'),
         onPressed: () => _openTemplates(context),

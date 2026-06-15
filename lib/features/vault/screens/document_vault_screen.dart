@@ -138,6 +138,15 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
         ),
         backgroundColor: AppColors.surface,
         elevation: 0,
+        actions: [
+          IconButton(
+            // Semantic content search — find by meaning, not just filename.
+            key: const ValueKey('vault_semantic_search_button'),
+            tooltip: l10n.docSearchMenuTitle,
+            icon: const Icon(Icons.manage_search),
+            onPressed: () => context.push(AppRoutes.docSearch),
+          ),
+        ],
       ),
       body: Column(
         children: [

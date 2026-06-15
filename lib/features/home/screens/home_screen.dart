@@ -1101,6 +1101,15 @@ class _QuickActions extends StatelessWidget {
                 color: AppColors.accent,
                 onTap: () => context.push(AppRoutes.contractReview),
               ),
+              // Contract Version Compare — diff two versions of a contract.
+              // Builds on the same upload + analysis pipeline; sits next to
+              // Contract Review for discoverability.
+              _QuickActionButton(
+                icon: Icons.compare_arrows_rounded,
+                label: l.contractCompareTitle,
+                color: AppColors.accent,
+                onTap: () => context.push(AppRoutes.contractCompare),
+              ),
             ],
           ),
         ],

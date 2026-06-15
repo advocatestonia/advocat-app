@@ -550,6 +550,14 @@ class _ActionTilesRow extends StatelessWidget {
             color: AppColors.accentDark,
             onTap: () => context.push('/chat/$caseId'),
           ),
+          // Export a one-click PDF dossier (facts + chronology + deadlines +
+          // documents) to hand to a lawyer, court, or complaint body.
+          _AnimatedActionTile(
+            icon: Icons.picture_as_pdf_outlined,
+            label: l.caseDossierTileTitle,
+            color: AppColors.primary,
+            onTap: () => context.push('/cases/$caseId/dossier'),
+          ),
         ],
       ),
     );
