@@ -5072,4 +5072,577 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get checklistViewPlan => 'View plan';
+
+  @override
+  String get explainPlainTitle => 'Explain in plain words';
+
+  @override
+  String get explainPlainIntro =>
+      'Paste an official letter, decision, or contract and we\'ll explain what it means and what it asks you to do — in plain language.';
+
+  @override
+  String get explainPlainLevelFriend => 'Like to a friend';
+
+  @override
+  String get explainPlainLevelTerms => 'Keep legal terms';
+
+  @override
+  String get explainPlainInputHint => 'Paste the legal text here…';
+
+  @override
+  String get explainPlainSubmit => 'Explain';
+
+  @override
+  String get explainPlainWorking => 'Explaining…';
+
+  @override
+  String get explainPlainTldr => 'Bottom line';
+
+  @override
+  String get explainPlainBreakdown => 'What it says, part by part';
+
+  @override
+  String get explainPlainGlossary => 'Tricky terms explained';
+
+  @override
+  String get explainPlainNextSteps => 'What you can do next';
+
+  @override
+  String get explainPlainOpenInCorpus => 'Look up in the law library';
+
+  @override
+  String get explainPlainEmptyResult =>
+      'No explanation could be produced for this text. Try pasting a longer or clearer excerpt.';
+
+  @override
+  String get explainPlainQuotaTitle =>
+      'You\'ve used your free explanations this month';
+
+  @override
+  String get explainPlainQuotaBody =>
+      'Free accounts get 3 explanations per month. Upgrade to Pro for unlimited explanations.';
+
+  @override
+  String get explainPlainUpgradeCta => 'Upgrade to Pro';
+
+  @override
+  String get explainPlainError =>
+      'Something went wrong while explaining this text. Please try again.';
+
+  @override
+  String get explainPlainRetry => 'Try again';
+
+  @override
+  String get demandLetterTitle => 'Demand letter';
+
+  @override
+  String get demandLetterSubtitle =>
+      'Create a formal pre-court demand (maksuvaatimus / nõudekiri).';
+
+  @override
+  String get demandLetterStepType => 'Type of claim';
+
+  @override
+  String get demandLetterStepParties => 'Parties';
+
+  @override
+  String get demandLetterStepClaim => 'Amount & basis';
+
+  @override
+  String get demandLetterStepDeadline => 'Deadline';
+
+  @override
+  String get demandLetterStepReview => 'Review & generate';
+
+  @override
+  String get demandLetterClaimDepositReturn => 'Return of rental deposit';
+
+  @override
+  String get demandLetterClaimUnpaidWage => 'Unpaid wages';
+
+  @override
+  String get demandLetterClaimFineDispute => 'Dispute a fine / charge';
+
+  @override
+  String get demandLetterClaimGeneric => 'Other monetary claim';
+
+  @override
+  String get demandLetterJurisdiction => 'Jurisdiction';
+
+  @override
+  String get demandLetterLanguage => 'Letter language';
+
+  @override
+  String get demandLetterRecipientName => 'Recipient name';
+
+  @override
+  String get demandLetterRecipientAddress => 'Recipient address (optional)';
+
+  @override
+  String get demandLetterSenderName => 'Your name';
+
+  @override
+  String get demandLetterSenderAddress => 'Your address / email (optional)';
+
+  @override
+  String get demandLetterAmount => 'Amount';
+
+  @override
+  String get demandLetterCurrency => 'Currency';
+
+  @override
+  String get demandLetterBasis => 'What happened (basis of the claim)';
+
+  @override
+  String get demandLetterBasisHint =>
+      'Describe the facts: dates, amounts, what was agreed and what went wrong.';
+
+  @override
+  String get demandLetterDeadline => 'Payment deadline';
+
+  @override
+  String get demandLetterDeadlineHint => 'e.g. 14 days from today';
+
+  @override
+  String get demandLetterReference => 'Reference (optional)';
+
+  @override
+  String get demandLetterGenerate => 'Generate letter';
+
+  @override
+  String get demandLetterGenerating => 'Generating…';
+
+  @override
+  String get demandLetterGenerateFailed =>
+      'Couldn\'t generate the letter. Please try again.';
+
+  @override
+  String get demandLetterFieldRequired => 'This field is required';
+
+  @override
+  String get demandLetterNext => 'Next';
+
+  @override
+  String get demandLetterBack => 'Back';
+
+  @override
+  String get demandLetterPreviewTitle => 'Your letter';
+
+  @override
+  String get demandLetterCopy => 'Copy text';
+
+  @override
+  String get demandLetterCopied => 'Letter copied to clipboard';
+
+  @override
+  String get demandLetterExportPdf => 'Export PDF';
+
+  @override
+  String get demandLetterExporting => 'Exporting…';
+
+  @override
+  String get demandLetterExportFailed =>
+      'Couldn\'t export the document. Please try again.';
+
+  @override
+  String get demandLetterSendEmail => 'Send via email';
+
+  @override
+  String get demandLetterNormsTitle => 'Legal references';
+
+  @override
+  String get demandLetterDisclaimer =>
+      'This letter is prepared on your behalf as a general template. It is not legal advice or an act of a licensed attorney. Review it before sending — no letter is sent automatically.';
+
+  @override
+  String get demandLetterMenuTile => 'Demand letter';
+
+  @override
+  String get calcHubTitle => 'Legal calculators';
+
+  @override
+  String get calcHubSubtitle => 'Quick estimates before your next step';
+
+  @override
+  String get calcHubJurisdiction => 'Jurisdiction';
+
+  @override
+  String calcRatesAsOf(Object date) {
+    return 'Rates as of $date';
+  }
+
+  @override
+  String get calcRatesOffline => 'Showing cached rates (offline)';
+
+  @override
+  String get calcIndicativeBanner =>
+      'Indicative estimate only — not an official calculation or legal advice.';
+
+  @override
+  String get calcCalculate => 'Calculate';
+
+  @override
+  String get calcResult => 'Result';
+
+  @override
+  String get calcFormula => 'How this is calculated';
+
+  @override
+  String get calcSource => 'Source';
+
+  @override
+  String get calcSeveranceTitle => 'Severance / notice';
+
+  @override
+  String get calcSeveranceDesc =>
+      'Estimate severance pay and notice period on redundancy';
+
+  @override
+  String get calcSeveranceSalary => 'Gross monthly salary';
+
+  @override
+  String get calcSeveranceTenure => 'Years of service';
+
+  @override
+  String get calcSeveranceTotal => 'Estimated severance';
+
+  @override
+  String get calcSeveranceNotice => 'Notice period';
+
+  @override
+  String get calcSeveranceGenerateDemand => 'Draft a demand letter';
+
+  @override
+  String get calcLimitationTitle => 'Limitation & appeal deadlines';
+
+  @override
+  String get calcLimitationDesc =>
+      'Check whether a claim or appeal period has expired';
+
+  @override
+  String get calcLimitationType => 'Type of period';
+
+  @override
+  String get calcLimitationStart => 'Start date (event / decision)';
+
+  @override
+  String get calcLimitationPickDate => 'Pick date';
+
+  @override
+  String get calcLimitationDeadline => 'Deadline';
+
+  @override
+  String get calcLimitationExpired => 'Period has expired';
+
+  @override
+  String calcLimitationDaysLeft(Object days) {
+    return '$days days remaining';
+  }
+
+  @override
+  String get calcLimitationShifted =>
+      'Shifted to the next working day (weekend/holiday).';
+
+  @override
+  String get calcLimitationAddDeadline => 'Add to deadlines';
+
+  @override
+  String get calcStateFeeTitle => 'Court / state fees';
+
+  @override
+  String get calcStateFeeDesc => 'Reference filing fees by court and stage';
+
+  @override
+  String get calcChildSupportTitle => 'Child support (orientation)';
+
+  @override
+  String get calcChildSupportDesc =>
+      'Rough orientation figure — the real amount is set case by case';
+
+  @override
+  String get calcChildSupportNet => 'Payer\'s net monthly income';
+
+  @override
+  String get calcChildSupportChildren => 'Number of children';
+
+  @override
+  String get calcChildSupportPerChild => 'Per child';
+
+  @override
+  String get calcChildSupportTotal => 'Total monthly';
+
+  @override
+  String get calcChildSupportWarning =>
+      'Highly variable. Courts decide on the child\'s needs and both parents\' ability to pay. Use as a starting point only.';
+
+  @override
+  String get docCollectTitle => 'Documents to collect';
+
+  @override
+  String get docCollectSubtitle =>
+      'Gather these before you apply or go to court';
+
+  @override
+  String get docCollectPickPrompt => 'What is your situation?';
+
+  @override
+  String get docCollectProblemResidence => 'Residence permit';
+
+  @override
+  String get docCollectProblemTenant => 'Renting / eviction';
+
+  @override
+  String get docCollectProblemDismissal => 'Dismissal at work';
+
+  @override
+  String get docCollectProblemInheritance => 'Inheritance';
+
+  @override
+  String get docCollectProblemDivorce => 'Divorce';
+
+  @override
+  String docCollectProgress(Object collected, Object total) {
+    return '$collected of $total collected';
+  }
+
+  @override
+  String get docCollectAllDone => 'Everything collected';
+
+  @override
+  String get docCollectEmpty =>
+      'No document list is available for this situation yet.';
+
+  @override
+  String get docCollectOptional => 'Optional';
+
+  @override
+  String get docCollectWhereLabel => 'Where to get it';
+
+  @override
+  String get docCollectWhyLabel => 'Why it\'s needed';
+
+  @override
+  String get docCollectAttach => 'Attach a file';
+
+  @override
+  String get docCollectAttached => 'File attached';
+
+  @override
+  String get docCollectChangeFile => 'Change file';
+
+  @override
+  String get docCollectRemoveFile => 'Remove file';
+
+  @override
+  String get docCollectNoFiles => 'You haven\'t uploaded any documents yet.';
+
+  @override
+  String get docCollectPickFileTitle => 'Choose an uploaded document';
+
+  @override
+  String get docCollectExport => 'Export list';
+
+  @override
+  String get docCollectExportSubject => 'My document checklist';
+
+  @override
+  String get docCollectAiTitle => 'Need something specific?';
+
+  @override
+  String get docCollectAiHint =>
+      'Describe your situation and we\'ll suggest any extra documents.';
+
+  @override
+  String get docCollectAiField => 'Describe your situation';
+
+  @override
+  String get docCollectAiButton => 'Suggest extra documents';
+
+  @override
+  String get docCollectAiLoading => 'Thinking…';
+
+  @override
+  String get docCollectAiEmpty =>
+      'No extra documents suggested — the basic list looks complete for your description.';
+
+  @override
+  String get docCollectAiSuggestionsTitle => 'Suggested extra documents';
+
+  @override
+  String get docCollectDisclaimer =>
+      'This is a basic list of commonly required documents — your situation may need more or fewer. It is general information, not legal advice.';
+
+  @override
+  String get docCollectRetry => 'Try again';
+
+  @override
+  String get renewalTitle => 'Renewal Radar';
+
+  @override
+  String get renewalSubtitle =>
+      'Track when your permits, passport, insurance and other documents expire. We\'ll remind you 90, 30 and 7 days before each renewal.';
+
+  @override
+  String get renewalAdd => 'Add document';
+
+  @override
+  String get renewalEditTitle => 'Edit document';
+
+  @override
+  String get renewalSave => 'Save';
+
+  @override
+  String get renewalRequired => 'Required';
+
+  @override
+  String get renewalPickDate => 'Pick expiry date';
+
+  @override
+  String get renewalLoadError =>
+      'Could not load your documents. Pull to refresh.';
+
+  @override
+  String get renewalEmptyTitle => 'No documents tracked yet';
+
+  @override
+  String get renewalEmptyBody =>
+      'Add your residence permit, passport, insurance or licence and we\'ll watch the expiry dates for you.';
+
+  @override
+  String get renewalGuideHint => 'How to renew →';
+
+  @override
+  String get renewalFieldType => 'Document type';
+
+  @override
+  String get renewalFieldLabel => 'Label';
+
+  @override
+  String get renewalFieldNumber => 'Document number (optional)';
+
+  @override
+  String get renewalFieldJurisdiction => 'Issuing country';
+
+  @override
+  String get renewalFieldExpiry => 'Expiry date';
+
+  @override
+  String get renewalWindow90 => '90 days';
+
+  @override
+  String get renewalWindow30 => '30 days';
+
+  @override
+  String get renewalWindow7 => '7 days';
+
+  @override
+  String get renewalExpiresToday => 'Expires today';
+
+  @override
+  String renewalExpiresInDays(Object date, Object days) {
+    return 'Expires in $days days · $date';
+  }
+
+  @override
+  String renewalExpiredOn(Object date) {
+    return 'Expired on $date';
+  }
+
+  @override
+  String get renewalTypeResidencePermit => 'Residence permit';
+
+  @override
+  String get renewalTypePassport => 'Passport';
+
+  @override
+  String get renewalTypeIdCard => 'ID card';
+
+  @override
+  String get renewalTypeVisa => 'Visa';
+
+  @override
+  String get renewalTypeDrivingLicence => 'Driving licence';
+
+  @override
+  String get renewalTypeInsurance => 'Insurance';
+
+  @override
+  String get renewalTypeWorkPermit => 'Work permit';
+
+  @override
+  String get renewalTypeOther => 'Other';
+
+  @override
+  String get costEstimateTitle => 'Cost & Risk Estimator';
+
+  @override
+  String get costEstimateSubtitle =>
+      'Get a rough idea of what a case might cost, how long it could take, and whether it is worth pursuing.';
+
+  @override
+  String get costEstimateCaseTypeLabel => 'Type of case';
+
+  @override
+  String get costEstimateCaseTypeHint =>
+      'e.g. unpaid invoice, wrongful dismissal, deposit dispute';
+
+  @override
+  String get costEstimateJurisdictionLabel => 'Jurisdiction';
+
+  @override
+  String get costEstimateAmountLabel => 'Amount in dispute (optional)';
+
+  @override
+  String get costEstimateAmountHint => 'e.g. 12500';
+
+  @override
+  String get costEstimateDescriptionLabel =>
+      'Briefly describe the situation (optional)';
+
+  @override
+  String get costEstimateB2bToggle => 'Lead-qualification card (B2B)';
+
+  @override
+  String get costEstimateB2bSubtitle =>
+      'Compact output for quickly triaging an inbound client.';
+
+  @override
+  String get costEstimateSubmit => 'Estimate my case';
+
+  @override
+  String get costEstimateDisclaimer =>
+      'Rough estimate only — not a prediction, guarantee, or legal advice. Actual costs and outcomes vary case by case.';
+
+  @override
+  String get costEstimateCostsHeading => 'Estimated costs';
+
+  @override
+  String get costEstimateCourtFee => 'Court / state fee';
+
+  @override
+  String get costEstimateLawyerFee => 'Lawyer fee';
+
+  @override
+  String get costEstimateTotal => 'Total (approx.)';
+
+  @override
+  String get costEstimateDuration => 'Time to first resolution';
+
+  @override
+  String get costEstimateMonthsSuffix => 'months';
+
+  @override
+  String get costEstimateFactorsFor => 'In your favour';
+
+  @override
+  String get costEstimateFactorsAgainst => 'Working against you';
+
+  @override
+  String get costEstimateStrengthWorth => 'Likely worth pursuing';
+
+  @override
+  String get costEstimateStrengthContested => 'Contested — could go either way';
+
+  @override
+  String get costEstimateStrengthWeak => 'Weak — proceed with caution';
 }

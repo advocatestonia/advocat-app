@@ -8809,6 +8809,1074 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View plan'**
   String get checklistViewPlan;
+
+  /// No description provided for @explainPlainTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explain in plain words'**
+  String get explainPlainTitle;
+
+  /// No description provided for @explainPlainIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste an official letter, decision, or contract and we\'ll explain what it means and what it asks you to do — in plain language.'**
+  String get explainPlainIntro;
+
+  /// No description provided for @explainPlainLevelFriend.
+  ///
+  /// In en, this message translates to:
+  /// **'Like to a friend'**
+  String get explainPlainLevelFriend;
+
+  /// No description provided for @explainPlainLevelTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep legal terms'**
+  String get explainPlainLevelTerms;
+
+  /// No description provided for @explainPlainInputHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the legal text here…'**
+  String get explainPlainInputHint;
+
+  /// No description provided for @explainPlainSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Explain'**
+  String get explainPlainSubmit;
+
+  /// No description provided for @explainPlainWorking.
+  ///
+  /// In en, this message translates to:
+  /// **'Explaining…'**
+  String get explainPlainWorking;
+
+  /// No description provided for @explainPlainTldr.
+  ///
+  /// In en, this message translates to:
+  /// **'Bottom line'**
+  String get explainPlainTldr;
+
+  /// No description provided for @explainPlainBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'What it says, part by part'**
+  String get explainPlainBreakdown;
+
+  /// No description provided for @explainPlainGlossary.
+  ///
+  /// In en, this message translates to:
+  /// **'Tricky terms explained'**
+  String get explainPlainGlossary;
+
+  /// No description provided for @explainPlainNextSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'What you can do next'**
+  String get explainPlainNextSteps;
+
+  /// No description provided for @explainPlainOpenInCorpus.
+  ///
+  /// In en, this message translates to:
+  /// **'Look up in the law library'**
+  String get explainPlainOpenInCorpus;
+
+  /// No description provided for @explainPlainEmptyResult.
+  ///
+  /// In en, this message translates to:
+  /// **'No explanation could be produced for this text. Try pasting a longer or clearer excerpt.'**
+  String get explainPlainEmptyResult;
+
+  /// No description provided for @explainPlainQuotaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve used your free explanations this month'**
+  String get explainPlainQuotaTitle;
+
+  /// No description provided for @explainPlainQuotaBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Free accounts get 3 explanations per month. Upgrade to Pro for unlimited explanations.'**
+  String get explainPlainQuotaBody;
+
+  /// No description provided for @explainPlainUpgradeCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Pro'**
+  String get explainPlainUpgradeCta;
+
+  /// No description provided for @explainPlainError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while explaining this text. Please try again.'**
+  String get explainPlainError;
+
+  /// No description provided for @explainPlainRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get explainPlainRetry;
+
+  /// No description provided for @demandLetterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Demand letter'**
+  String get demandLetterTitle;
+
+  /// No description provided for @demandLetterSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a formal pre-court demand (maksuvaatimus / nõudekiri).'**
+  String get demandLetterSubtitle;
+
+  /// No description provided for @demandLetterStepType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of claim'**
+  String get demandLetterStepType;
+
+  /// No description provided for @demandLetterStepParties.
+  ///
+  /// In en, this message translates to:
+  /// **'Parties'**
+  String get demandLetterStepParties;
+
+  /// No description provided for @demandLetterStepClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount & basis'**
+  String get demandLetterStepClaim;
+
+  /// No description provided for @demandLetterStepDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline'**
+  String get demandLetterStepDeadline;
+
+  /// No description provided for @demandLetterStepReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Review & generate'**
+  String get demandLetterStepReview;
+
+  /// No description provided for @demandLetterClaimDepositReturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Return of rental deposit'**
+  String get demandLetterClaimDepositReturn;
+
+  /// No description provided for @demandLetterClaimUnpaidWage.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid wages'**
+  String get demandLetterClaimUnpaidWage;
+
+  /// No description provided for @demandLetterClaimFineDispute.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispute a fine / charge'**
+  String get demandLetterClaimFineDispute;
+
+  /// No description provided for @demandLetterClaimGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Other monetary claim'**
+  String get demandLetterClaimGeneric;
+
+  /// No description provided for @demandLetterJurisdiction.
+  ///
+  /// In en, this message translates to:
+  /// **'Jurisdiction'**
+  String get demandLetterJurisdiction;
+
+  /// No description provided for @demandLetterLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Letter language'**
+  String get demandLetterLanguage;
+
+  /// No description provided for @demandLetterRecipientName.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient name'**
+  String get demandLetterRecipientName;
+
+  /// No description provided for @demandLetterRecipientAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient address (optional)'**
+  String get demandLetterRecipientAddress;
+
+  /// No description provided for @demandLetterSenderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get demandLetterSenderName;
+
+  /// No description provided for @demandLetterSenderAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Your address / email (optional)'**
+  String get demandLetterSenderAddress;
+
+  /// No description provided for @demandLetterAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get demandLetterAmount;
+
+  /// No description provided for @demandLetterCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get demandLetterCurrency;
+
+  /// No description provided for @demandLetterBasis.
+  ///
+  /// In en, this message translates to:
+  /// **'What happened (basis of the claim)'**
+  String get demandLetterBasis;
+
+  /// No description provided for @demandLetterBasisHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the facts: dates, amounts, what was agreed and what went wrong.'**
+  String get demandLetterBasisHint;
+
+  /// No description provided for @demandLetterDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment deadline'**
+  String get demandLetterDeadline;
+
+  /// No description provided for @demandLetterDeadlineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 14 days from today'**
+  String get demandLetterDeadlineHint;
+
+  /// No description provided for @demandLetterReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference (optional)'**
+  String get demandLetterReference;
+
+  /// No description provided for @demandLetterGenerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate letter'**
+  String get demandLetterGenerate;
+
+  /// No description provided for @demandLetterGenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating…'**
+  String get demandLetterGenerating;
+
+  /// No description provided for @demandLetterGenerateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t generate the letter. Please try again.'**
+  String get demandLetterGenerateFailed;
+
+  /// No description provided for @demandLetterFieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get demandLetterFieldRequired;
+
+  /// No description provided for @demandLetterNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get demandLetterNext;
+
+  /// No description provided for @demandLetterBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get demandLetterBack;
+
+  /// No description provided for @demandLetterPreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your letter'**
+  String get demandLetterPreviewTitle;
+
+  /// No description provided for @demandLetterCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy text'**
+  String get demandLetterCopy;
+
+  /// No description provided for @demandLetterCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Letter copied to clipboard'**
+  String get demandLetterCopied;
+
+  /// No description provided for @demandLetterExportPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Export PDF'**
+  String get demandLetterExportPdf;
+
+  /// No description provided for @demandLetterExporting.
+  ///
+  /// In en, this message translates to:
+  /// **'Exporting…'**
+  String get demandLetterExporting;
+
+  /// No description provided for @demandLetterExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t export the document. Please try again.'**
+  String get demandLetterExportFailed;
+
+  /// No description provided for @demandLetterSendEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send via email'**
+  String get demandLetterSendEmail;
+
+  /// No description provided for @demandLetterNormsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal references'**
+  String get demandLetterNormsTitle;
+
+  /// No description provided for @demandLetterDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'This letter is prepared on your behalf as a general template. It is not legal advice or an act of a licensed attorney. Review it before sending — no letter is sent automatically.'**
+  String get demandLetterDisclaimer;
+
+  /// No description provided for @demandLetterMenuTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Demand letter'**
+  String get demandLetterMenuTile;
+
+  /// No description provided for @calcHubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal calculators'**
+  String get calcHubTitle;
+
+  /// No description provided for @calcHubSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick estimates before your next step'**
+  String get calcHubSubtitle;
+
+  /// No description provided for @calcHubJurisdiction.
+  ///
+  /// In en, this message translates to:
+  /// **'Jurisdiction'**
+  String get calcHubJurisdiction;
+
+  /// No description provided for @calcRatesAsOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Rates as of {date}'**
+  String calcRatesAsOf(Object date);
+
+  /// No description provided for @calcRatesOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing cached rates (offline)'**
+  String get calcRatesOffline;
+
+  /// No description provided for @calcIndicativeBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Indicative estimate only — not an official calculation or legal advice.'**
+  String get calcIndicativeBanner;
+
+  /// No description provided for @calcCalculate.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate'**
+  String get calcCalculate;
+
+  /// No description provided for @calcResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Result'**
+  String get calcResult;
+
+  /// No description provided for @calcFormula.
+  ///
+  /// In en, this message translates to:
+  /// **'How this is calculated'**
+  String get calcFormula;
+
+  /// No description provided for @calcSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get calcSource;
+
+  /// No description provided for @calcSeveranceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Severance / notice'**
+  String get calcSeveranceTitle;
+
+  /// No description provided for @calcSeveranceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimate severance pay and notice period on redundancy'**
+  String get calcSeveranceDesc;
+
+  /// No description provided for @calcSeveranceSalary.
+  ///
+  /// In en, this message translates to:
+  /// **'Gross monthly salary'**
+  String get calcSeveranceSalary;
+
+  /// No description provided for @calcSeveranceTenure.
+  ///
+  /// In en, this message translates to:
+  /// **'Years of service'**
+  String get calcSeveranceTenure;
+
+  /// No description provided for @calcSeveranceTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated severance'**
+  String get calcSeveranceTotal;
+
+  /// No description provided for @calcSeveranceNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Notice period'**
+  String get calcSeveranceNotice;
+
+  /// No description provided for @calcSeveranceGenerateDemand.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft a demand letter'**
+  String get calcSeveranceGenerateDemand;
+
+  /// No description provided for @calcLimitationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Limitation & appeal deadlines'**
+  String get calcLimitationTitle;
+
+  /// No description provided for @calcLimitationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Check whether a claim or appeal period has expired'**
+  String get calcLimitationDesc;
+
+  /// No description provided for @calcLimitationType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of period'**
+  String get calcLimitationType;
+
+  /// No description provided for @calcLimitationStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date (event / decision)'**
+  String get calcLimitationStart;
+
+  /// No description provided for @calcLimitationPickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick date'**
+  String get calcLimitationPickDate;
+
+  /// No description provided for @calcLimitationDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline'**
+  String get calcLimitationDeadline;
+
+  /// No description provided for @calcLimitationExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Period has expired'**
+  String get calcLimitationExpired;
+
+  /// No description provided for @calcLimitationDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days remaining'**
+  String calcLimitationDaysLeft(Object days);
+
+  /// No description provided for @calcLimitationShifted.
+  ///
+  /// In en, this message translates to:
+  /// **'Shifted to the next working day (weekend/holiday).'**
+  String get calcLimitationShifted;
+
+  /// No description provided for @calcLimitationAddDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to deadlines'**
+  String get calcLimitationAddDeadline;
+
+  /// No description provided for @calcStateFeeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Court / state fees'**
+  String get calcStateFeeTitle;
+
+  /// No description provided for @calcStateFeeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference filing fees by court and stage'**
+  String get calcStateFeeDesc;
+
+  /// No description provided for @calcChildSupportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Child support (orientation)'**
+  String get calcChildSupportTitle;
+
+  /// No description provided for @calcChildSupportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Rough orientation figure — the real amount is set case by case'**
+  String get calcChildSupportDesc;
+
+  /// No description provided for @calcChildSupportNet.
+  ///
+  /// In en, this message translates to:
+  /// **'Payer\'s net monthly income'**
+  String get calcChildSupportNet;
+
+  /// No description provided for @calcChildSupportChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of children'**
+  String get calcChildSupportChildren;
+
+  /// No description provided for @calcChildSupportPerChild.
+  ///
+  /// In en, this message translates to:
+  /// **'Per child'**
+  String get calcChildSupportPerChild;
+
+  /// No description provided for @calcChildSupportTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total monthly'**
+  String get calcChildSupportTotal;
+
+  /// No description provided for @calcChildSupportWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Highly variable. Courts decide on the child\'s needs and both parents\' ability to pay. Use as a starting point only.'**
+  String get calcChildSupportWarning;
+
+  /// No description provided for @docCollectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents to collect'**
+  String get docCollectTitle;
+
+  /// No description provided for @docCollectSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gather these before you apply or go to court'**
+  String get docCollectSubtitle;
+
+  /// No description provided for @docCollectPickPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'What is your situation?'**
+  String get docCollectPickPrompt;
+
+  /// No description provided for @docCollectProblemResidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Residence permit'**
+  String get docCollectProblemResidence;
+
+  /// No description provided for @docCollectProblemTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Renting / eviction'**
+  String get docCollectProblemTenant;
+
+  /// No description provided for @docCollectProblemDismissal.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismissal at work'**
+  String get docCollectProblemDismissal;
+
+  /// No description provided for @docCollectProblemInheritance.
+  ///
+  /// In en, this message translates to:
+  /// **'Inheritance'**
+  String get docCollectProblemInheritance;
+
+  /// No description provided for @docCollectProblemDivorce.
+  ///
+  /// In en, this message translates to:
+  /// **'Divorce'**
+  String get docCollectProblemDivorce;
+
+  /// No description provided for @docCollectProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{collected} of {total} collected'**
+  String docCollectProgress(Object collected, Object total);
+
+  /// No description provided for @docCollectAllDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything collected'**
+  String get docCollectAllDone;
+
+  /// No description provided for @docCollectEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No document list is available for this situation yet.'**
+  String get docCollectEmpty;
+
+  /// No description provided for @docCollectOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get docCollectOptional;
+
+  /// No description provided for @docCollectWhereLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Where to get it'**
+  String get docCollectWhereLabel;
+
+  /// No description provided for @docCollectWhyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Why it\'s needed'**
+  String get docCollectWhyLabel;
+
+  /// No description provided for @docCollectAttach.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach a file'**
+  String get docCollectAttach;
+
+  /// No description provided for @docCollectAttached.
+  ///
+  /// In en, this message translates to:
+  /// **'File attached'**
+  String get docCollectAttached;
+
+  /// No description provided for @docCollectChangeFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Change file'**
+  String get docCollectChangeFile;
+
+  /// No description provided for @docCollectRemoveFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove file'**
+  String get docCollectRemoveFile;
+
+  /// No description provided for @docCollectNoFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t uploaded any documents yet.'**
+  String get docCollectNoFiles;
+
+  /// No description provided for @docCollectPickFileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an uploaded document'**
+  String get docCollectPickFileTitle;
+
+  /// No description provided for @docCollectExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export list'**
+  String get docCollectExport;
+
+  /// No description provided for @docCollectExportSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'My document checklist'**
+  String get docCollectExportSubject;
+
+  /// No description provided for @docCollectAiTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Need something specific?'**
+  String get docCollectAiTitle;
+
+  /// No description provided for @docCollectAiHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your situation and we\'ll suggest any extra documents.'**
+  String get docCollectAiHint;
+
+  /// No description provided for @docCollectAiField.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your situation'**
+  String get docCollectAiField;
+
+  /// No description provided for @docCollectAiButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest extra documents'**
+  String get docCollectAiButton;
+
+  /// No description provided for @docCollectAiLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Thinking…'**
+  String get docCollectAiLoading;
+
+  /// No description provided for @docCollectAiEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No extra documents suggested — the basic list looks complete for your description.'**
+  String get docCollectAiEmpty;
+
+  /// No description provided for @docCollectAiSuggestionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested extra documents'**
+  String get docCollectAiSuggestionsTitle;
+
+  /// No description provided for @docCollectDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a basic list of commonly required documents — your situation may need more or fewer. It is general information, not legal advice.'**
+  String get docCollectDisclaimer;
+
+  /// No description provided for @docCollectRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get docCollectRetry;
+
+  /// No description provided for @renewalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Renewal Radar'**
+  String get renewalTitle;
+
+  /// No description provided for @renewalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track when your permits, passport, insurance and other documents expire. We\'ll remind you 90, 30 and 7 days before each renewal.'**
+  String get renewalSubtitle;
+
+  /// No description provided for @renewalAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add document'**
+  String get renewalAdd;
+
+  /// No description provided for @renewalEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit document'**
+  String get renewalEditTitle;
+
+  /// No description provided for @renewalSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get renewalSave;
+
+  /// No description provided for @renewalRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get renewalRequired;
+
+  /// No description provided for @renewalPickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick expiry date'**
+  String get renewalPickDate;
+
+  /// No description provided for @renewalLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your documents. Pull to refresh.'**
+  String get renewalLoadError;
+
+  /// No description provided for @renewalEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents tracked yet'**
+  String get renewalEmptyTitle;
+
+  /// No description provided for @renewalEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your residence permit, passport, insurance or licence and we\'ll watch the expiry dates for you.'**
+  String get renewalEmptyBody;
+
+  /// No description provided for @renewalGuideHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How to renew →'**
+  String get renewalGuideHint;
+
+  /// No description provided for @renewalFieldType.
+  ///
+  /// In en, this message translates to:
+  /// **'Document type'**
+  String get renewalFieldType;
+
+  /// No description provided for @renewalFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Label'**
+  String get renewalFieldLabel;
+
+  /// No description provided for @renewalFieldNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Document number (optional)'**
+  String get renewalFieldNumber;
+
+  /// No description provided for @renewalFieldJurisdiction.
+  ///
+  /// In en, this message translates to:
+  /// **'Issuing country'**
+  String get renewalFieldJurisdiction;
+
+  /// No description provided for @renewalFieldExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry date'**
+  String get renewalFieldExpiry;
+
+  /// No description provided for @renewalWindow90.
+  ///
+  /// In en, this message translates to:
+  /// **'90 days'**
+  String get renewalWindow90;
+
+  /// No description provided for @renewalWindow30.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days'**
+  String get renewalWindow30;
+
+  /// No description provided for @renewalWindow7.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get renewalWindow7;
+
+  /// No description provided for @renewalExpiresToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires today'**
+  String get renewalExpiresToday;
+
+  /// No description provided for @renewalExpiresInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in {days} days · {date}'**
+  String renewalExpiresInDays(Object date, Object days);
+
+  /// No description provided for @renewalExpiredOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired on {date}'**
+  String renewalExpiredOn(Object date);
+
+  /// No description provided for @renewalTypeResidencePermit.
+  ///
+  /// In en, this message translates to:
+  /// **'Residence permit'**
+  String get renewalTypeResidencePermit;
+
+  /// No description provided for @renewalTypePassport.
+  ///
+  /// In en, this message translates to:
+  /// **'Passport'**
+  String get renewalTypePassport;
+
+  /// No description provided for @renewalTypeIdCard.
+  ///
+  /// In en, this message translates to:
+  /// **'ID card'**
+  String get renewalTypeIdCard;
+
+  /// No description provided for @renewalTypeVisa.
+  ///
+  /// In en, this message translates to:
+  /// **'Visa'**
+  String get renewalTypeVisa;
+
+  /// No description provided for @renewalTypeDrivingLicence.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving licence'**
+  String get renewalTypeDrivingLicence;
+
+  /// No description provided for @renewalTypeInsurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance'**
+  String get renewalTypeInsurance;
+
+  /// No description provided for @renewalTypeWorkPermit.
+  ///
+  /// In en, this message translates to:
+  /// **'Work permit'**
+  String get renewalTypeWorkPermit;
+
+  /// No description provided for @renewalTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get renewalTypeOther;
+
+  /// No description provided for @costEstimateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost & Risk Estimator'**
+  String get costEstimateTitle;
+
+  /// No description provided for @costEstimateSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a rough idea of what a case might cost, how long it could take, and whether it is worth pursuing.'**
+  String get costEstimateSubtitle;
+
+  /// No description provided for @costEstimateCaseTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type of case'**
+  String get costEstimateCaseTypeLabel;
+
+  /// No description provided for @costEstimateCaseTypeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. unpaid invoice, wrongful dismissal, deposit dispute'**
+  String get costEstimateCaseTypeHint;
+
+  /// No description provided for @costEstimateJurisdictionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Jurisdiction'**
+  String get costEstimateJurisdictionLabel;
+
+  /// No description provided for @costEstimateAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount in dispute (optional)'**
+  String get costEstimateAmountLabel;
+
+  /// No description provided for @costEstimateAmountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 12500'**
+  String get costEstimateAmountHint;
+
+  /// No description provided for @costEstimateDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Briefly describe the situation (optional)'**
+  String get costEstimateDescriptionLabel;
+
+  /// No description provided for @costEstimateB2bToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lead-qualification card (B2B)'**
+  String get costEstimateB2bToggle;
+
+  /// No description provided for @costEstimateB2bSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact output for quickly triaging an inbound client.'**
+  String get costEstimateB2bSubtitle;
+
+  /// No description provided for @costEstimateSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimate my case'**
+  String get costEstimateSubmit;
+
+  /// No description provided for @costEstimateDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Rough estimate only — not a prediction, guarantee, or legal advice. Actual costs and outcomes vary case by case.'**
+  String get costEstimateDisclaimer;
+
+  /// No description provided for @costEstimateCostsHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated costs'**
+  String get costEstimateCostsHeading;
+
+  /// No description provided for @costEstimateCourtFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Court / state fee'**
+  String get costEstimateCourtFee;
+
+  /// No description provided for @costEstimateLawyerFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Lawyer fee'**
+  String get costEstimateLawyerFee;
+
+  /// No description provided for @costEstimateTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total (approx.)'**
+  String get costEstimateTotal;
+
+  /// No description provided for @costEstimateDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to first resolution'**
+  String get costEstimateDuration;
+
+  /// No description provided for @costEstimateMonthsSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'months'**
+  String get costEstimateMonthsSuffix;
+
+  /// No description provided for @costEstimateFactorsFor.
+  ///
+  /// In en, this message translates to:
+  /// **'In your favour'**
+  String get costEstimateFactorsFor;
+
+  /// No description provided for @costEstimateFactorsAgainst.
+  ///
+  /// In en, this message translates to:
+  /// **'Working against you'**
+  String get costEstimateFactorsAgainst;
+
+  /// No description provided for @costEstimateStrengthWorth.
+  ///
+  /// In en, this message translates to:
+  /// **'Likely worth pursuing'**
+  String get costEstimateStrengthWorth;
+
+  /// No description provided for @costEstimateStrengthContested.
+  ///
+  /// In en, this message translates to:
+  /// **'Contested — could go either way'**
+  String get costEstimateStrengthContested;
+
+  /// No description provided for @costEstimateStrengthWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak — proceed with caution'**
+  String get costEstimateStrengthWeak;
 }
 
 class _AppLocalizationsDelegate

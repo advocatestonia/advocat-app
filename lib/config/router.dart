@@ -61,6 +61,14 @@ import '../features/checklists/screens/case_checklist_screen.dart';
 import '../features/contract_review/screens/contract_compare_screen.dart';
 import '../features/doc_search/screens/doc_search_screen.dart';
 import '../features/legal_templates/screens/legal_templates_gallery_screen.dart';
+// Wave-2 features.
+import '../features/plain_language/screens/plain_language_screen.dart';
+import '../features/demand_letter/screens/demand_letter_wizard_screen.dart';
+import '../features/calculators/screens/calculators_hub_screen.dart';
+import '../features/doc_collection/screens/doc_collection_screen.dart';
+import '../features/doc_collection/models/doc_requirement.dart';
+import '../features/renewals/screens/renewals_screen.dart';
+import '../features/cost_estimator/screens/cost_estimator_screen.dart';
 import '../features/referral/screens/referral_screen.dart';
 import '../features/referral/screens/referral_landing_screen.dart';
 import '../features/lawyer_verification/screens/lawyer_verification_screen.dart';
@@ -192,6 +200,13 @@ abstract final class AppRoutes {
   static const String contractCompare = '/contract-compare';
   static const String docSearch = '/doc-search';
   static const String legalTemplates = '/templates';
+  // Wave-2 feature routes (2026-06-15).
+  static const String explainPlain = '/explain';
+  static const String demandLetter = '/demand-letter';
+  static const String calculators = '/calculators';
+  static const String docCollection = '/doc-collection';
+  static const String renewals = '/renewals';
+  static const String costEstimator = '/cost-estimator';
 
   /// Referral program ("Invite friends"). Reached from Settings and from
   /// the after-Contract-Review CTA chip.
@@ -374,6 +389,15 @@ final routerProvider = Provider<GoRouter>((ref) {
             name: 'deadlines',
             pageBuilder: (context, state) => const NoTransitionPage(
               child: DeadlinesScreen(),
+            ),
+          ),
+          // Wave-2: Renewal Radar — expiry tracking of personal documents
+          // (permit/passport/insurance) with 90/30/7-day reminders.
+          GoRoute(
+            path: AppRoutes.renewals,
+            name: 'renewals',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: RenewalsScreen(),
             ),
           ),
           // EU corpus phase 2 — Landmark Explorer route. Standalone screen
@@ -757,6 +781,45 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.legalTemplates,
         name: 'legalTemplates',
         builder: (context, state) => const LegalTemplatesGalleryScreen(),
+      ),
+      // Wave-2: Plain-Language Explainer — paste/select legal text → plain
+      // explanation. ?text= pre-fills, ?caseId= links to a case.
+      GoRoute(
+        path: AppRoutes.explainPlain,
+        name: 'explainPlain',
+        builder: (context, state) => PlainLanguageScreen(
+          initialText: state.uri.queryParameters['text'],
+          caseId: state.uri.queryParameters['caseId'],
+        ),
+      ),
+      // Wave-2: Demand-Letter Generator — guided wizard.
+      GoRoute(
+        path: AppRoutes.demandLetter,
+        name: 'demandLetter',
+        builder: (context, state) => DemandLetterWizardScreen(
+          caseId: state.uri.queryParameters['caseId'],
+        ),
+      ),
+      // Wave-2: Legal Calculators Hub.
+      GoRoute(
+        path: AppRoutes.calculators,
+        name: 'calculators',
+        builder: (context, state) => const CalculatorsHubScreen(),
+      ),
+      // Wave-2: Document-Collection Checklist. ?type= deep-links a problem.
+      GoRoute(
+        path: AppRoutes.docCollection,
+        name: 'docCollection',
+        builder: (context, state) => DocCollectionScreen(
+          initialProblemType:
+              DocProblemType.fromKey(state.uri.queryParameters['type']),
+        ),
+      ),
+      // Wave-2: Case Cost & Risk Estimator.
+      GoRoute(
+        path: AppRoutes.costEstimator,
+        name: 'costEstimator',
+        builder: (context, state) => const CostEstimatorScreen(),
       ),
       GoRoute(
         path: AppRoutes.referral,

@@ -110,6 +110,13 @@ export const USER_DATA_TABLES: ReadonlyArray<readonly [string, string]> = [
   ["checklist_progress", "user_id"], // per-user checklist completion state
   ["user_doc_chunks", "user_id"], // semantic-search embeddings of own docs
 
+  // ── Wave-2 feature tables (2026-06-15). All hold user-PII (Art. 17). ───────
+  ["explain_requests", "user_id"], // plain-language explainer history
+  ["demand_letters", "user_id"], // generated demand letters
+  ["doc_collection_progress", "user_id"], // document-collection checklist state
+  ["renewable_documents", "user_id"], // renewal radar tracked documents
+  ["case_estimates", "user_id"], // case cost/risk estimates
+
   // ── B2B silent signals. ──────────────────────────────────────────────────
   ["b2b_signals", "user_id"],
 
