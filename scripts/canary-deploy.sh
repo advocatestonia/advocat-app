@@ -199,6 +199,7 @@ NO_JWT_FNS=(
   triage-retry-tick
   alert-tick
   breach-tick
+  followup-tick
   oauth-callback
   law-search
   landmark-search
