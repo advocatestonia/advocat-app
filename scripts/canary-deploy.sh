@@ -200,6 +200,7 @@ NO_JWT_FNS=(
   alert-tick
   breach-tick
   followup-tick
+  renewal-tick
   oauth-callback
   law-search
   landmark-search
