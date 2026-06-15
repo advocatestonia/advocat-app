@@ -1112,6 +1112,52 @@ class _QuickActions extends StatelessWidget {
               ),
             ],
           ),
+
+          // Wave-2 tools row — self-service helpers. Wrap so 6 tiles flow
+          // onto multiple lines on narrow screens.
+          const SizedBox(height: AppSpacing.sm),
+          Wrap(
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            children: [
+              _QuickActionButton(
+                icon: Icons.lightbulb_outline,
+                label: l.explainPlainTitle,
+                color: AppColors.info,
+                onTap: () => context.push(AppRoutes.explainPlain),
+              ),
+              _QuickActionButton(
+                icon: Icons.calculate_outlined,
+                label: l.calcHubTitle,
+                color: AppColors.primary,
+                onTap: () => context.push(AppRoutes.calculators),
+              ),
+              _QuickActionButton(
+                icon: Icons.mail_outline,
+                label: l.demandLetterTitle,
+                color: AppColors.accentDark,
+                onTap: () => context.push(AppRoutes.demandLetter),
+              ),
+              _QuickActionButton(
+                icon: Icons.checklist_rtl_outlined,
+                label: l.docCollectTitle,
+                color: AppColors.primary,
+                onTap: () => context.push(AppRoutes.docCollection),
+              ),
+              _QuickActionButton(
+                icon: Icons.event_repeat_outlined,
+                label: l.renewalTitle,
+                color: AppColors.accent,
+                onTap: () => context.push(AppRoutes.renewals),
+              ),
+              _QuickActionButton(
+                icon: Icons.insights_outlined,
+                label: l.costEstimateTitle,
+                color: AppColors.info,
+                onTap: () => context.push(AppRoutes.costEstimator),
+              ),
+            ],
+          ),
         ],
       ),
     );
