@@ -51,13 +51,18 @@ begin
   begin
     alter table public.agent_runs
       drop constraint if exists agent_runs_status_check;
+    -- Superset of the existing prod constraint (which carries in_progress +
+    -- expired, both live statuses the agent loop uses) PLUS the new
+    -- 'invalidated' terminal status. Must not narrow the allowed set.
     alter table public.agent_runs
       add constraint agent_runs_status_check
       check (status in (
+        'in_progress',
         'awaiting_approval',
         'completed',
         'errored',
         'rejected',
+        'expired',
         'invalidated'
       ));
   exception
@@ -92,7 +97,7 @@ begin
       )
     )
   where status = 'awaiting_approval'
-    and (created_at < now() - interval '1 hour'
+    and (started_at < now() - interval '1 hour'
       or updated_at < now() - interval '1 hour');
 
   get diagnostics v_count = row_count;
