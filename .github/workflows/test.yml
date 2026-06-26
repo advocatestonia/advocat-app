@@ -1,0 +1,88 @@
+name: Tests
+
+# ============================================================================
+# Runs the Flutter unit/widget suite and the Deno edge-function tests on every
+# PR and push to main. Closes the gap found in the 2026-06-26 full audit: the
+# repo had a large, substantive test corpus (300+ Flutter + 200+ Deno tests)
+# but NO CI workflow executed it, and canary-deploy.sh promotes to prod after
+# only HTTP smoke probes — so a widget/edge-fn regression that still returns
+# HTTP 200 could ship undetected.
+#
+# Two independent jobs so a Flutter failure doesn't mask a Deno failure (and
+# vice versa). Both are blocking by default.
+# ============================================================================
+
+on:
+  pull_request:
+    paths:
+      - "lib/**"
+      - "test/**"
+      - "supabase/functions/**"
+      - "pubspec.yaml"
+      - "pubspec.lock"
+      - "deno.json"
+      - "deno.lock"
+      - ".github/workflows/test.yml"
+  push:
+    branches: [main]
+    paths:
+      - "lib/**"
+      - "test/**"
+      - "supabase/functions/**"
+      - "pubspec.yaml"
+      - "deno.json"
+  workflow_dispatch: {}
+
+# Least-privilege: tests only read the repo.
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  flutter:
+    name: Flutter unit + widget tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Verify code generation is up to date (l10n)
+        run: flutter gen-l10n
+
+      - name: Run tests
+        run: flutter test --concurrency=4 --reporter expanded
+
+  deno:
+    name: Deno edge-function tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Run edge-function tests
+        # Run from the repo root so the root deno.json (which wires the shared
+        # supabase/functions/import_map.json) is auto-discovered — bare
+        # specifiers like @sentry/deno resolve without an explicit flag.
+        # --allow-all because some tests stub fetch/env; no network is hit
+        # (handlers are unit-tested with injected fakes). --no-check keeps the
+        # run fast; type errors are caught by the editor / deno check locally.
+        run: deno test --allow-all --no-check supabase/functions/
