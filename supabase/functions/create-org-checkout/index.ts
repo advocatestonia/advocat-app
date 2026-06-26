@@ -82,7 +82,7 @@ serve(async (req) => {
     supabase,
     gate.user.id,
     gate.user.email,
-    { minRole: "owner" },
+    { minRole: "owner" }
   );
   if (orgGate.kind === "deny") return orgGate.response;
   const ctx = orgGate.ctx;
@@ -104,7 +104,7 @@ serve(async (req) => {
   const { data: org, error: orgErr } = await supabase
     .from("organizations")
     .select(
-      "id, name, country, billing_email, vat_id, stripe_customer_id, plan, status",
+      "id, name, country, billing_email, vat_id, stripe_customer_id, plan, status"
     )
     .eq("id", ctx.org_id)
     .maybeSingle();
@@ -118,6 +118,38 @@ serve(async (req) => {
         ...(org.country ? [] : ["country"]),
         ...(org.billing_email ? [] : ["billing_email"]),
       ],
+    });
+  }
+
+  // ── Already-subscribed guard ──────────────────────────────────────────
+  // This endpoint opens a Checkout for a *new* org subscription only. If the
+  // org already has a live Stripe subscription, a re-click here would create a
+  // SECOND active subscription = double-charge. Plan/seat changes for an
+  // existing subscription must go through the Billing Portal (see header).
+  //
+  // Authoritative signal: organizations.status (enum: trial/active/past_due/
+  // canceled/suspended), set to 'active' by stripe-webhook activateOrgSubscription
+  // and to 'past_due' when payment lapses. Both states mean a Stripe
+  // subscription already exists. We DO NOT gate on legitimate first-checkout
+  // states (trial / canceled / suspended / null) so re-subscribing after a
+  // cancellation still works. We also cross-check the dedicated org_subscriptions
+  // table for an active/past_due row in case the org row drifted.
+  const orgStatus = (org.status as string | null) ?? null;
+  let alreadySubscribed = orgStatus === "active" || orgStatus === "past_due";
+  if (!alreadySubscribed) {
+    const { data: existingSub } = await supabase
+      .from("org_subscriptions")
+      .select("status")
+      .eq("org_id", org.id)
+      .in("status", ["active", "past_due"])
+      .limit(1)
+      .maybeSingle();
+    if (existingSub) alreadySubscribed = true;
+  }
+  if (alreadySubscribed) {
+    return jsonError("Org already has an active subscription", 409, {
+      reason: "org_already_subscribed",
+      detail: "Use the Billing Portal to change plan or seats.",
     });
   }
 
@@ -160,14 +192,17 @@ serve(async (req) => {
       const res = await fetch("https://api.stripe.com/v1/customers", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${STRIPE_SECRET_KEY}`,
+          Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: params,
         signal: AbortSignal.timeout(10_000),
       });
       if (!res.ok) {
-        console.error("[create-org-checkout] customer create failed:", res.status);
+        console.error(
+          "[create-org-checkout] customer create failed:",
+          res.status
+        );
         return jsonError("Could not initialise billing", 502, {
           reason: "stripe_customer_create_failed",
         });
@@ -199,7 +234,7 @@ serve(async (req) => {
     {
       success: `${APP_URL}/team/billing/success`,
       cancel: `${APP_URL}/team/billing/cancel`,
-    },
+    }
   );
   if (!redirects.ok) {
     return jsonError("invalid redirect URL", 400, { reason: redirects.reason });
@@ -216,9 +251,14 @@ serve(async (req) => {
   params.append("payment_method_types[]", "link");
   params.append("line_items[0][price_data][currency]", "eur");
   params.append("line_items[0][price_data][unit_amount]", String(price.amount));
-  params.append("line_items[0][price_data][recurring][interval]", price.interval);
-  params.append("line_items[0][price_data][product_data][name]",
-    `Advocat ${plan[0].toUpperCase()}${plan.slice(1)} — per seat`);
+  params.append(
+    "line_items[0][price_data][recurring][interval]",
+    price.interval
+  );
+  params.append(
+    "line_items[0][price_data][product_data][name]",
+    `Advocat ${plan[0].toUpperCase()}${plan.slice(1)} — per seat`
+  );
   params.append("line_items[0][quantity]", String(seats));
   // Metadata is critical: the webhook routes by org_id presence.
   params.append("metadata[org_id]", org.id);
@@ -235,7 +275,7 @@ serve(async (req) => {
     const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${STRIPE_SECRET_KEY}`,
+        Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: params,
@@ -243,7 +283,10 @@ serve(async (req) => {
     });
     session = await res.json();
     if (!res.ok || session.error) {
-      console.error("[create-org-checkout] session create failed:", session.error?.code);
+      console.error(
+        "[create-org-checkout] session create failed:",
+        session.error?.code
+      );
       return jsonError("Failed to create checkout session", 502, {
         reason: "checkout_session_failed",
       });
@@ -259,7 +302,12 @@ serve(async (req) => {
     org_id: org.id,
     actor_user_id: ctx.user_id,
     action: "checkout_started",
-    details: { plan, billing_period: billingPeriod, seats, session_id: session.id },
+    details: {
+      plan,
+      billing_period: billingPeriod,
+      seats,
+      session_id: session.id,
+    },
     req,
   });
 

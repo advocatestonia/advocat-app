@@ -836,6 +836,54 @@ serve(
       // demand (over-quota is 200+allowed:false), so fail-open is an
       // availability tradeoff for real backend incidents, not a bypass.
       const authHeader = req.headers.get("Authorization") ?? "";
+
+      // ── Refund "7 AI responses" counter (Art.16(m) waiver leg) ────────────
+      // increment_message_count() bumps subscriptions.messages_used_count and
+      // flips refund_eligible=false once the 7-message cap is reached. It is
+      // SECURITY DEFINER + uses auth.uid() internally and only touches rows
+      // with status in ('active','trialing'), so it MUST run with the USER's
+      // JWT (not the service-role key). For anon callers the RPC would raise
+      // ('authentication required'), so we skip them entirely; for free-tier
+      // authenticated users it is a harmless no-op (returns 0, no row matched).
+      //
+      // Idempotency: this closure fires at most ONCE per request regardless of
+      // how many success returns call it (a single turn must count once). It is
+      // called from every terminal path that delivered a real assistant
+      // response — Claude streaming/non-streaming, the legal-planner branch,
+      // the consilium stream, and the Llama / credit-exhausted fallbacks — but
+      // NEVER on error / 4xx / early-return paths. Best-effort: failures are
+      // logged and swallowed so a counter hiccup can never break the chat.
+      let messageCountIncremented = false;
+      const incrementMessageCountOnce = async (): Promise<void> => {
+        if (messageCountIncremented) return;
+        if (isAnon || !authHeader) return;
+        messageCountIncremented = true;
+        try {
+          // User-JWT client (mirrors loadActiveCase): the per-request
+          // Authorization header makes the RPC execute as the calling user so
+          // auth.uid() resolves and the active/trialing guard applies.
+          const sb = createClient(SUPABASE_URL, "", {
+            global: { headers: { Authorization: authHeader } },
+            auth: { persistSession: false, autoRefreshToken: false },
+          });
+          const { error } = await sb.rpc("increment_message_count");
+          if (error) {
+            console.warn(
+              `claude-proxy: increment_message_count error: ${String(
+                error.message ?? error
+              ).slice(0, 200)}`
+            );
+          }
+        } catch (e) {
+          console.warn(
+            `claude-proxy: increment_message_count threw: ${String(e).slice(
+              0,
+              200
+            )}`
+          );
+        }
+      };
+
       const quotaAllowed = await checkQuota(authHeader);
       if (!quotaAllowed.ok) {
         // 402 Payment Required — semantic match for "out of free quota".
@@ -1607,6 +1655,8 @@ serve(
               );
             }
 
+            // Consilium delivered a streaming assistant response — count once.
+            incrementMessageCountOnce();
             return new Response(readable, {
               status: 200,
               headers: {
@@ -1652,6 +1702,9 @@ serve(
           });
 
           if (loopResult.kind === "blocked") {
+            // Planner delivered a clarifying question to the user — that is a
+            // real assistant response, so count it once toward the refund cap.
+            incrementMessageCountOnce();
             return new Response(
               JSON.stringify({
                 mode: "legal_planner",
@@ -1887,6 +1940,8 @@ serve(
               ? { category: haltDetection.category }
               : undefined,
           };
+          // Planner produced a completed assistant answer — count once.
+          incrementMessageCountOnce();
           return new Response(JSON.stringify(augmented), {
             status: 200,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -2146,6 +2201,10 @@ serve(
           });
         }
 
+        // Model returned a successful (2xx) stream — count this AI response
+        // toward the refund cap once. Fire-and-forget; never blocks the reply.
+        incrementMessageCountOnce();
+
         // ── Streaming citations (Pkg 2 closeout, design §9 risk #2) ────────
         // Wrap the upstream Anthropic SSE pipe with a TransformStream that
         // (a) forwards every byte unchanged so the Flutter UI keeps rendering
@@ -2292,6 +2351,9 @@ serve(
 
       // Happy path: forward Anthropic's JSON augmented with grounded citations.
       if (claudeResponse.ok) {
+        // Model returned a successful (2xx) response — count it toward the
+        // refund cap once. Fire-and-forget; never blocks the reply.
+        incrementMessageCountOnce();
         const result = (await claudeResponse.json()) as {
           content?: unknown;
           stop_reason?: string;

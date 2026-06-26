@@ -37,8 +37,22 @@ import {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const CRON_SECRET = Deno.env.get("CRON_SECRET");
-const DEFAULT_USER_TZ = Deno.env.get("ADVOCAT_DEFAULT_TZ") ||
-  "Europe/Helsinki";
+const DEFAULT_USER_TZ = Deno.env.get("ADVOCAT_DEFAULT_TZ") || "Europe/Helsinki";
+
+// Email channel (critical-deadline reminders). Uses the Resend transactional
+// path directly — NOT the send-email edge fn (that one requires a per-user JWT
+// + Gmail-OAuth/approval and cannot be driven cross-user from a service-role
+// cron). The from-domain mirrors the already-verified domain used by
+// weekly-digest-send / winback-send, so no new domain verification is needed.
+//
+// If RESEND_API_KEY is unset the email channel fails SOFT: we do not insert a
+// log row, so the row is retried on a future tick once the secret is set
+// (rather than being permanently stamped delivered=false). push + in_app remain
+// the safety net in the meantime.
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const DEADLINE_EMAIL_FROM =
+  Deno.env.get("DEADLINE_EMAIL_FROM") || "Advocat <hello@advocat.ee>";
+const APP_BASE_URL = Deno.env.get("APP_BASE_URL") || "https://advocat.ee/app";
 
 /** Hard cap on rows scanned per tick. Defends against an unlikely runaway
  * (a single user creating 10k deadlines). */
@@ -81,7 +95,9 @@ serve(async (req: Request) => {
     .eq("status", "active")
     .select("id");
   if (missedErr) {
-    console.warn(`deadline-radar-tick: missed-sweep error: ${missedErr.message}`);
+    console.warn(
+      `deadline-radar-tick: missed-sweep error: ${missedErr.message}`
+    );
   }
   const missedCount = missedData?.length ?? 0;
 
@@ -90,7 +106,9 @@ serve(async (req: Request) => {
   const latest = new Date(now.getTime() + 35 * 86400 * 1000).toISOString();
   const { data: rows, error: scanErr } = await supabase
     .from("case_deadlines")
-    .select("id, case_id, user_id, title, deadline_at, priority, status, source")
+    .select(
+      "id, case_id, user_id, title, deadline_at, priority, status, source"
+    )
     .eq("status", "active")
     .gte("deadline_at", earliest)
     .lte("deadline_at", latest)
@@ -139,7 +157,7 @@ serve(async (req: Request) => {
           row.id,
           row.user_id,
           threshold,
-          "push",
+          "push"
         );
         if (inserted) {
           const pushResult = await dispatchPush(row, threshold);
@@ -149,13 +167,15 @@ serve(async (req: Request) => {
             threshold,
             "push",
             pushResult.delivered,
-            pushResult.error,
+            pushResult.error
           );
           pushed += 1;
         }
       } catch (e) {
         errors += 1;
-        console.warn(`deadline-radar-tick: push insert: ${String(e).slice(0, 200)}`);
+        console.warn(
+          `deadline-radar-tick: push insert: ${String(e).slice(0, 200)}`
+        );
       }
 
       // In-app: always.
@@ -165,11 +185,18 @@ serve(async (req: Request) => {
           row.id,
           row.user_id,
           threshold,
-          "in_app",
+          "in_app"
         );
         if (inserted) {
           await insertInAppNotification(supabase, row, threshold);
-          await markDelivered(supabase, row.id, threshold, "in_app", true, null);
+          await markDelivered(
+            supabase,
+            row.id,
+            threshold,
+            "in_app",
+            true,
+            null
+          );
           inApped += 1;
         }
       } catch (e) {
@@ -177,8 +204,20 @@ serve(async (req: Request) => {
         console.warn(`deadline-radar-tick: in_app: ${String(e).slice(0, 200)}`);
       }
 
-      // Email: critical priority + critical threshold only. Reuse
-      // existing send-email edge fn pattern (architect §6).
+      // Email: critical priority + critical threshold only. Sends a
+      // generic, PII-free reminder via the Resend transactional path
+      // (see dispatchEmail). The send is attempted FIRST; the log row is
+      // only committed on a DEFINITIVE outcome:
+      //   * sent      → row stays, delivered=true.
+      //   * permanent → row stays, delivered=false + reason
+      //                 (no_email_on_file / email_disabled_by_user /
+      //                  resend_4xx:… / email_not_configured-as-permanent? no).
+      //   * transient → row is REMOVED so a future tick retries
+      //                 (resend_unreachable / resend_5xx / resend_not_configured).
+      // This mirrors the push channel's "don't permanently mark a transient
+      // failure" intent, but goes one step further: because the unique
+      // constraint would otherwise block all retries, we DELETE the just-
+      // claimed slot on a transient failure instead of leaving a poisoned row.
       if (row.priority === "critical" && isCritical(threshold)) {
         try {
           const inserted = await tryInsertLogRow(
@@ -186,26 +225,32 @@ serve(async (req: Request) => {
             row.id,
             row.user_id,
             threshold,
-            "email",
+            "email"
           );
           if (inserted) {
-            // Real send-email invocation is wired by infra/owner once
-            // the edge fn URL + auth pattern is stable. Today we mark
-            // the log row pending so the owner can audit which deadlines
-            // would have been emailed.
-            await markDelivered(
-              supabase,
-              row.id,
-              threshold,
-              "email",
-              false,
-              "email_pending_owner_wiring",
-            );
-            emailed += 1;
+            const result = await dispatchEmail(supabase, row, threshold);
+            if (result.outcome === "transient") {
+              // Release the claimed slot so a future tick can retry.
+              // (e.g. RESEND_API_KEY not yet set, or Resend 5xx/unreachable.)
+              await deleteLogRow(supabase, row.id, threshold, "email");
+            } else {
+              // sent | permanent: commit the outcome.
+              await markDelivered(
+                supabase,
+                row.id,
+                threshold,
+                "email",
+                result.outcome === "sent",
+                result.error
+              );
+              if (result.outcome === "sent") emailed += 1;
+            }
           }
         } catch (e) {
           errors += 1;
-          console.warn(`deadline-radar-tick: email: ${String(e).slice(0, 200)}`);
+          console.warn(
+            `deadline-radar-tick: email: ${String(e).slice(0, 200)}`
+          );
         }
       }
     }
@@ -244,17 +289,15 @@ async function tryInsertLogRow(
   deadlineId: string,
   userId: string,
   threshold: Threshold,
-  channel: "push" | "email" | "in_app",
+  channel: "push" | "email" | "in_app"
 ): Promise<boolean> {
-  const { error } = await supabase
-    .from("deadline_notification_log")
-    .insert({
-      deadline_id: deadlineId,
-      user_id: userId,
-      threshold,
-      channel,
-      delivered: false,
-    });
+  const { error } = await supabase.from("deadline_notification_log").insert({
+    deadline_id: deadlineId,
+    user_id: userId,
+    threshold,
+    channel,
+    delivered: false,
+  });
   if (error) {
     // 23505 = unique_violation. Expected when this threshold was already
     // logged — quietly return false.
@@ -262,6 +305,27 @@ async function tryInsertLogRow(
     throw error;
   }
   return true;
+}
+
+/** Remove a previously-claimed log row. Used by the email channel to release
+ * the (deadline_id, threshold, channel) slot after a TRANSIENT failure so a
+ * future tick retries the send, rather than leaving a permanent
+ * delivered=false row that the unique constraint would never let us retry.
+ * Best-effort. */
+// deno-lint-ignore no-explicit-any
+async function deleteLogRow(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  deadlineId: string,
+  threshold: Threshold,
+  channel: "push" | "email" | "in_app"
+): Promise<void> {
+  await supabase
+    .from("deadline_notification_log")
+    .delete()
+    .eq("deadline_id", deadlineId)
+    .eq("threshold", threshold)
+    .eq("channel", channel);
 }
 
 /** Mark an existing log row's delivery state. Best-effort. */
@@ -273,7 +337,7 @@ async function markDelivered(
   threshold: Threshold,
   channel: "push" | "email" | "in_app",
   delivered: boolean,
-  error: string | null,
+  error: string | null
 ): Promise<void> {
   await supabase
     .from("deadline_notification_log")
@@ -291,7 +355,7 @@ async function insertInAppNotification(
   // deno-lint-ignore no-explicit-any
   supabase: any,
   row: DeadlineRow,
-  threshold: Threshold,
+  threshold: Threshold
 ): Promise<void> {
   await supabase.from("notifications").insert({
     user_id: row.user_id,
@@ -327,7 +391,7 @@ interface PushDispatchResult {
  */
 async function dispatchPush(
   row: DeadlineRow,
-  threshold: Threshold,
+  threshold: Threshold
 ): Promise<PushDispatchResult> {
   if (!CRON_SECRET) {
     return { delivered: false, error: "cron_secret_missing" };
@@ -406,4 +470,175 @@ function thresholdTitle(t: Threshold): string {
     case "morning_of":
       return "Deadline today";
   }
+}
+
+// =============================================================================
+// Email channel
+// =============================================================================
+
+interface EmailDispatchResult {
+  /** sent → delivered=true; permanent → delivered=false (commit, no retry);
+   *  transient → release the slot so a future tick retries. */
+  outcome: "sent" | "permanent" | "transient";
+  /** delivery_error column value (null on success). PII-free by construction. */
+  error: string | null;
+}
+
+/** Dispatch a PII-free critical-deadline reminder email via the Resend
+ * transactional path.
+ *
+ * PII discipline (architect §11 / FIX-5):
+ *   * The user's email address is fetched from `public.users` via the
+ *     service-role client ONLY at send time and is handed straight to Resend.
+ *     It is never written to deadline_notification_log, never logged, and
+ *     never returned in the function's JSON summary.
+ *   * The message body contains NO case details — only a generic
+ *     "you have a critical legal deadline" line + a deep link into the app +
+ *     an unsubscribe link. The recipient resolves the actual deadline by
+ *     opening the app (mirrors the push/in_app payload discipline).
+ *
+ * Outcome mapping (load-bearing for the retry contract):
+ *   * RESEND_API_KEY unset .................. transient (degrade to pending;
+ *                                              retry once the secret is set).
+ *   * user has no email on file ............. permanent (no_email_on_file).
+ *   * notification_preferences.all_email_disabled
+ *                                       ...... permanent (email_disabled_by_user).
+ *   * Resend 2xx ............................ sent.
+ *   * Resend 4xx (bad address etc.) ........ permanent (resend_4xx:…) — a retry
+ *                                              would just fail identically.
+ *   * Resend 5xx / network / timeout ....... transient (resend_unreachable… /
+ *                                              resend_5xx:…) — retry next tick.
+ */
+async function dispatchEmail(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  row: DeadlineRow,
+  threshold: Threshold
+): Promise<EmailDispatchResult> {
+  // Fail SOFT (transient) if no transactional sender is configured: leaving the
+  // slot unclaimed means a future tick retries once RESEND_API_KEY is set,
+  // instead of permanently stamping delivered=false. push + in_app cover the
+  // gap in the meantime.
+  if (!RESEND_API_KEY) {
+    return { outcome: "transient", error: "resend_not_configured" };
+  }
+
+  // Resolve the recipient address at send time (never persisted/logged).
+  let toEmail: string | null = null;
+  try {
+    const { data: u } = await supabase
+      .from("users")
+      .select("email")
+      .eq("id", row.user_id)
+      .maybeSingle();
+    toEmail = (u?.email as string | null) ?? null;
+  } catch (e) {
+    // Treat a DB blip on the lookup as transient — a future tick can retry.
+    return {
+      outcome: "transient",
+      error: `email_lookup_failed:${String(e).slice(0, 60)}`,
+    };
+  }
+  if (!toEmail) {
+    return { outcome: "permanent", error: "no_email_on_file" };
+  }
+
+  // Respect the user's email opt-out + obtain an unsubscribe token (lazy-create
+  // the prefs row so the unsubscribe link always works). Mirrors winback-send.
+  let unsubToken: string | null = null;
+  try {
+    const { data: prefs } = await supabase
+      .from("notification_preferences")
+      .select("unsubscribe_token, all_email_disabled")
+      .eq("user_id", row.user_id)
+      .maybeSingle();
+    if (prefs?.all_email_disabled) {
+      return { outcome: "permanent", error: "email_disabled_by_user" };
+    }
+    unsubToken = (prefs?.unsubscribe_token as string | null) ?? null;
+    if (!prefs) {
+      const { data: created } = await supabase
+        .from("notification_preferences")
+        .insert({ user_id: row.user_id })
+        .select("unsubscribe_token")
+        .single();
+      unsubToken = (created?.unsubscribe_token as string | null) ?? null;
+    }
+  } catch (_e) {
+    // prefs lookup is best-effort; absence of an opt-out row defaults to
+    // opted-in. Do not block the critical-deadline send on it.
+  }
+
+  const subject = thresholdTitle(threshold);
+  const deepLink = `${APP_BASE_URL}/cases/${row.case_id}/deadlines/${row.id}`;
+  const unsubUrl = unsubToken
+    ? `${APP_BASE_URL}/unsubscribe?token=${encodeURIComponent(
+        unsubToken
+      )}&kind=deadline`
+    : null;
+
+  // PII-free body: no case title, no party names, no date — just a generic
+  // critical-deadline nudge + deep link. The user sees the detail in-app.
+  const text = [
+    "You have a critical legal deadline approaching.",
+    "",
+    "Open Advocat to view it:",
+    deepLink,
+    ...(unsubUrl ? ["", "To stop deadline emails: " + unsubUrl] : []),
+  ].join("\n");
+  const html = [
+    `<p>You have a <strong>critical legal deadline</strong> approaching.</p>`,
+    `<p><a href="${deepLink}">Open Advocat to view it</a>.</p>`,
+    ...(unsubUrl
+      ? [
+          `<p style="color:#888;font-size:12px">` +
+            `<a href="${unsubUrl}">Stop deadline emails</a></p>`,
+        ]
+      : []),
+  ].join("");
+
+  let resp: Response;
+  try {
+    resp = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: DEADLINE_EMAIL_FROM,
+        to: [toEmail],
+        subject,
+        text,
+        html,
+      }),
+      signal: AbortSignal.timeout(15_000),
+    });
+  } catch (e) {
+    // Network / timeout → transient, retry next tick.
+    return {
+      outcome: "transient",
+      error: `resend_unreachable:${String(e).slice(0, 80)}`,
+    };
+  }
+
+  if (resp.ok) {
+    // Drain the body so the connection can be reused; we don't need the id.
+    await resp.text().catch(() => "");
+    return { outcome: "sent", error: null };
+  }
+
+  const errText = await resp.text().catch(() => "");
+  if (resp.status >= 500) {
+    // Provider-side outage → transient, retry next tick.
+    return {
+      outcome: "transient",
+      error: `resend_${resp.status}:${errText.slice(0, 80)}`,
+    };
+  }
+  // 4xx (e.g. invalid recipient) → permanent; a retry would fail identically.
+  return {
+    outcome: "permanent",
+    error: `resend_${resp.status}:${errText.slice(0, 80)}`,
+  };
 }
