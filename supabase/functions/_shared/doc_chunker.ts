@@ -20,6 +20,8 @@
 //                                 at ~2.4 chars/token).
 // -----------------------------------------------------------------------------
 
+import { scrubText } from "./llm_egress/scrub_body.ts";
+
 export const TARGET_CHARS = 1000;
 export const OVERLAP_CHARS = 150;
 export const MAX_CHARS = 8000;
@@ -192,9 +194,18 @@ export async function embedTexts(
     );
   }
 
-  const inputs = texts.map((t) =>
-    t.length > MAX_CHARS ? t.slice(0, MAX_CHARS) : t
-  );
+  // GDPR / Data Fortress: this is the ONE embedding egress to OpenAI (a US
+  // sub-processor). Both the index path (doc-indexer) and the query path
+  // (doc-semantic-search) flow through here, so scrubbing in this single place
+  // keeps index and query in the SAME scrub-space (no recall loss) while
+  // ensuring no raw isikukood/HETU/IBAN/name/Art.9 text from a user's PRIVATE
+  // documents ever reaches OpenAI. full:true is correct — embeddings don't
+  // need name fidelity. The stored user_doc_chunks.text column keeps the RAW
+  // text (under RLS) for UI highlighting; only this outbound copy is scrubbed.
+  const inputs = texts.map((t) => {
+    const capped = t.length > MAX_CHARS ? t.slice(0, MAX_CHARS) : t;
+    return scrubText(capped, { full: true });
+  });
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 60_000);

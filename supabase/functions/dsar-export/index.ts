@@ -52,10 +52,13 @@ async function safeSelect(
   table: string,
   userColumn: string,
   userId: string,
-  opts: { redactColumns?: string[] } = {},
+  opts: { redactColumns?: string[] } = {}
 ): Promise<unknown[]> {
   try {
-    const { data, error } = await sb.from(table).select("*").eq(userColumn, userId);
+    const { data, error } = await sb
+      .from(table)
+      .select("*")
+      .eq(userColumn, userId);
     if (error) {
       // 42P01 = undefined_table, 42703 = undefined_column. Both are acceptable
       // (table not deployed in this env). Anything else we surface to the log.
@@ -95,15 +98,20 @@ async function safeSelectByParentIds(
   sb: SbClient,
   table: string,
   fkColumn: string,
-  parentIds: string[],
+  parentIds: string[]
 ): Promise<unknown[]> {
   if (!parentIds.length) return [];
   try {
-    const { data, error } = await sb.from(table).select("*").in(fkColumn, parentIds);
+    const { data, error } = await sb
+      .from(table)
+      .select("*")
+      .in(fkColumn, parentIds);
     if (error) {
       const code = (error as { code?: string }).code;
       if (code !== "42P01" && code !== "42703") {
-        console.warn(`[dsar-export] ${table} (by ${fkColumn}) read failed: ${error.message}`);
+        console.warn(
+          `[dsar-export] ${table} (by ${fkColumn}) read failed: ${error.message}`
+        );
       }
       return [];
     }
@@ -229,6 +237,24 @@ interface ExportPayload {
    * 15(1). Includes `signal_type`, `score`, `payload`, `occurred_at`.
    */
   b2b_signals: unknown[];
+  /**
+   * Product-expansion feature tables (waves 1+2, 2026-06). All hold personal
+   * data and are disclosed under Art. 15(1). MUST stay in sync with the
+   * account-delete USER_DATA_TABLES list (Art. 17) — the new_features_export
+   * coverage test asserts they don't drift.
+   * NOTE: user_doc_chunks holds private-document embeddings; per Art. 15(4) we
+   * disclose its EXISTENCE + metadata (count/created_at), not the raw vectors.
+   */
+  new_features: {
+    case_followups: unknown[];
+    checklist_progress: unknown[];
+    explain_requests: unknown[];
+    demand_letters: unknown[];
+    doc_collection_progress: unknown[];
+    renewable_documents: unknown[];
+    case_estimates: unknown[];
+    user_doc_chunks_meta: { count: number };
+  };
   sharing: {
     shared_results: unknown[];
     referral_codes: unknown[];
@@ -317,39 +343,121 @@ serve(async (req) => {
     // Sequential await blocks keep the function under the Promise.all limit
     // and make it trivial to grep for "what does the DSAR include?". The
     // perf cost is negligible — each query is a single indexed lookup.
-    const account = await sb.from("profiles").select("*").eq("id", userId)
-      .maybeSingle().then((r: { data: unknown }) => r.data ?? null);
+    const account = await sb
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .maybeSingle()
+      .then((r: { data: unknown }) => r.data ?? null);
 
     // ── Chat history ─────────────────────────────────────────────────────
-    const chatMessages = await safeSelect(sb, "chat_messages", "user_id", userId);
-    const chatCitations = await safeSelect(sb, "chat_message_citations", "user_id", userId);
-    const chatFeedback = await safeSelect(sb, "message_feedback", "user_id", userId);
+    const chatMessages = await safeSelect(
+      sb,
+      "chat_messages",
+      "user_id",
+      userId
+    );
+    const chatCitations = await safeSelect(
+      sb,
+      "chat_message_citations",
+      "user_id",
+      userId
+    );
+    const chatFeedback = await safeSelect(
+      sb,
+      "message_feedback",
+      "user_id",
+      userId
+    );
     // chat_planner_traces has no user_id column — link is message_id →
     // chat_messages(id). Read by the user's own message IDs (Art. 15).
     const chatPlannerTraces = await safeSelectByParentIds(
-      sb, "chat_planner_traces", "message_id", idsOf(chatMessages),
+      sb,
+      "chat_planner_traces",
+      "message_id",
+      idsOf(chatMessages)
     );
-    const caseChatSessions = await safeSelect(sb, "case_chat_sessions", "user_id", userId);
+    const caseChatSessions = await safeSelect(
+      sb,
+      "case_chat_sessions",
+      "user_id",
+      userId
+    );
 
     // ── Cases ─────────────────────────────────────────────────────────────
     const cases = await safeSelect(sb, "cases", "user_id", userId);
     const userCases = await safeSelect(sb, "user_cases", "user_id", userId);
-    const caseDocuments = await safeSelect(sb, "case_documents", "user_id", userId);
-    const caseDeadlines = await safeSelect(sb, "case_deadlines", "user_id", userId);
-    const caseTimelineEvents = await safeSelect(sb, "case_timeline_events", "user_id", userId);
+    const caseDocuments = await safeSelect(
+      sb,
+      "case_documents",
+      "user_id",
+      userId
+    );
+    const caseDeadlines = await safeSelect(
+      sb,
+      "case_deadlines",
+      "user_id",
+      userId
+    );
+    const caseTimelineEvents = await safeSelect(
+      sb,
+      "case_timeline_events",
+      "user_id",
+      userId
+    );
     const casePhase = await safeSelect(sb, "case_phase", "user_id", userId);
     const caseFacts = await safeSelect(sb, "case_facts", "user_id", userId);
     const caseFile = await safeSelect(sb, "case_file", "user_id", userId);
-    const caseFileEvents = await safeSelect(sb, "case_file_events", "user_id", userId);
-    const caseFileParties = await safeSelect(sb, "case_file_parties", "user_id", userId);
-    const caseFileDeadlines = await safeSelect(sb, "case_file_deadlines", "user_id", userId);
-    const checkerReports = await safeSelect(sb, "checker_reports", "user_id", userId);
+    const caseFileEvents = await safeSelect(
+      sb,
+      "case_file_events",
+      "user_id",
+      userId
+    );
+    const caseFileParties = await safeSelect(
+      sb,
+      "case_file_parties",
+      "user_id",
+      userId
+    );
+    const caseFileDeadlines = await safeSelect(
+      sb,
+      "case_file_deadlines",
+      "user_id",
+      userId
+    );
+    const checkerReports = await safeSelect(
+      sb,
+      "checker_reports",
+      "user_id",
+      userId
+    );
 
     // ── Legacy docs + correspondence ─────────────────────────────────────
-    const legacyDocuments = await safeSelect(sb, "documents", "user_id", userId);
-    const legacyDeadlines = await safeSelect(sb, "deadlines", "user_id", userId);
-    const correspondence = await safeSelect(sb, "correspondence", "user_id", userId);
-    const correspondenceAudit = await safeSelect(sb, "correspondence_audit", "user_id", userId);
+    const legacyDocuments = await safeSelect(
+      sb,
+      "documents",
+      "user_id",
+      userId
+    );
+    const legacyDeadlines = await safeSelect(
+      sb,
+      "deadlines",
+      "user_id",
+      userId
+    );
+    const correspondence = await safeSelect(
+      sb,
+      "correspondence",
+      "user_id",
+      userId
+    );
+    const correspondenceAudit = await safeSelect(
+      sb,
+      "correspondence_audit",
+      "user_id",
+      userId
+    );
 
     // ── Vault ────────────────────────────────────────────────────────────
     // vault_document_tags has no user_id column — link is document_id →
@@ -357,122 +465,380 @@ serve(async (req) => {
     const vaultTags = await safeSelect(sb, "vault_tags", "user_id", userId);
 
     // ── Email agent ──────────────────────────────────────────────────────
-    const emailThreads = await safeSelect(sb, "email_threads", "user_id", userId);
-    const emailMessages = await safeSelect(sb, "email_messages", "user_id", userId);
-    const emailAttachments = await safeSelect(sb, "email_attachments", "user_id", userId);
-    const emailTriage = await safeSelect(sb, "email_triage_results", "user_id", userId);
-    const emailTriageLawyerOpinions = await safeSelect(sb, "email_triage_lawyer_opinions", "user_id", userId);
-    const triageProposedActions = await safeSelect(sb, "triage_proposed_actions", "user_id", userId);
+    const emailThreads = await safeSelect(
+      sb,
+      "email_threads",
+      "user_id",
+      userId
+    );
+    const emailMessages = await safeSelect(
+      sb,
+      "email_messages",
+      "user_id",
+      userId
+    );
+    const emailAttachments = await safeSelect(
+      sb,
+      "email_attachments",
+      "user_id",
+      userId
+    );
+    const emailTriage = await safeSelect(
+      sb,
+      "email_triage_results",
+      "user_id",
+      userId
+    );
+    const emailTriageLawyerOpinions = await safeSelect(
+      sb,
+      "email_triage_lawyer_opinions",
+      "user_id",
+      userId
+    );
+    const triageProposedActions = await safeSelect(
+      sb,
+      "triage_proposed_actions",
+      "user_id",
+      userId
+    );
     // The durable triage retry queue lives in the NON-public `app` schema
     // (app.email_triage_queue, migration 20260528040000). The old read here
     // targeted a non-existent `public.email_retry_queue` and silently returned
     // [] — so the user's queue rows (thread_id + payload) were absent from the
     // Art. 15 export. Read the real table via .schema("app"). Mirror of the
     // Art. 17 erasure added to account-delete (APP_SCHEMA_USER_DATA_TABLES).
-    const emailRetryQueue = typeof sb.schema === "function"
-      ? await safeSelect(sb.schema("app"), "email_triage_queue", "user_id", userId)
-      : [];
-    const emailConnections = await safeSelect(sb, "email_connections", "user_id", userId);
-    const emailUserSettings = await safeSelect(sb, "email_user_settings", "user_id", userId);
+    const emailRetryQueue =
+      typeof sb.schema === "function"
+        ? await safeSelect(
+            sb.schema("app"),
+            "email_triage_queue",
+            "user_id",
+            userId
+          )
+        : [];
+    const emailConnections = await safeSelect(
+      sb,
+      "email_connections",
+      "user_id",
+      userId
+    );
+    const emailUserSettings = await safeSelect(
+      sb,
+      "email_user_settings",
+      "user_id",
+      userId
+    );
 
     // ── Drafting ─────────────────────────────────────────────────────────
     const userDrafts = await safeSelect(sb, "user_drafts", "user_id", userId);
     // draft_versions has no user_id column — link is draft_id → user_drafts(id).
     const draftVersions = await safeSelectByParentIds(
-      sb, "draft_versions", "draft_id", idsOf(userDrafts),
+      sb,
+      "draft_versions",
+      "draft_id",
+      idsOf(userDrafts)
     );
     // vault_document_tags has no user_id column — link is document_id →
     // documents(id). legacyDocuments is fetched above.
     const vaultDocumentTags = await safeSelectByParentIds(
-      sb, "vault_document_tags", "document_id", idsOf(legacyDocuments),
+      sb,
+      "vault_document_tags",
+      "document_id",
+      idsOf(legacyDocuments)
     );
     // gold_corpus_queue holds the user's raw question keyed on source_user_id.
-    const goldCorpusQueue = await safeSelect(sb, "gold_corpus_queue", "source_user_id", userId);
+    const goldCorpusQueue = await safeSelect(
+      sb,
+      "gold_corpus_queue",
+      "source_user_id",
+      userId
+    );
 
     // ── AI memory + agent loop ───────────────────────────────────────────
     const aiMemory = await safeSelect(sb, "user_ai_memory", "user_id", userId);
-    const conversationSummaries = await safeSelect(sb, "conversation_summaries", "user_id", userId);
+    const conversationSummaries = await safeSelect(
+      sb,
+      "conversation_summaries",
+      "user_id",
+      userId
+    );
     const agentRuns = await safeSelect(sb, "agent_runs", "user_id", userId);
     const agentQuota = await safeSelect(sb, "agent_quota", "user_id", userId);
-    const agentAuditLog = await safeSelect(sb, "agent_audit_log", "user_id", userId);
-    const agentIntentions = await safeSelect(sb, "agent_intentions", "user_id", userId);
+    const agentAuditLog = await safeSelect(
+      sb,
+      "agent_audit_log",
+      "user_id",
+      userId
+    );
+    const agentIntentions = await safeSelect(
+      sb,
+      "agent_intentions",
+      "user_id",
+      userId
+    );
 
     // ── Consilium + contract review + advice corrections ─────────────────
-    const consiliumRuns = await safeSelect(sb, "consilium_runs", "user_id", userId);
-    const contractReviews = await safeSelect(sb, "contract_reviews", "user_id", userId);
-    const contractAnalysisJobs = await safeSelect(sb, "contract_analysis_jobs", "user_id", userId);
-    const adviceCorrections = await safeSelect(sb, "advice_corrections", "user_id", userId);
-    const adviceDigest = await safeSelect(sb, "advice_digest", "user_id", userId);
+    const consiliumRuns = await safeSelect(
+      sb,
+      "consilium_runs",
+      "user_id",
+      userId
+    );
+    const contractReviews = await safeSelect(
+      sb,
+      "contract_reviews",
+      "user_id",
+      userId
+    );
+    const contractAnalysisJobs = await safeSelect(
+      sb,
+      "contract_analysis_jobs",
+      "user_id",
+      userId
+    );
+    const adviceCorrections = await safeSelect(
+      sb,
+      "advice_corrections",
+      "user_id",
+      userId
+    );
+    const adviceDigest = await safeSelect(
+      sb,
+      "advice_digest",
+      "user_id",
+      userId
+    );
 
     // ── Notifications ────────────────────────────────────────────────────
-    const notifications = await safeSelect(sb, "notifications", "user_id", userId);
-    const notificationPreferences = await safeSelect(sb, "notification_preferences", "user_id", userId);
+    const notifications = await safeSelect(
+      sb,
+      "notifications",
+      "user_id",
+      userId
+    );
+    const notificationPreferences = await safeSelect(
+      sb,
+      "notification_preferences",
+      "user_id",
+      userId
+    );
     const pushEvents = await safeSelect(sb, "push_events", "user_id", userId);
-    const deadlineNotificationLog = await safeSelect(sb, "deadline_notification_log", "user_id", userId);
+    const deadlineNotificationLog = await safeSelect(
+      sb,
+      "deadline_notification_log",
+      "user_id",
+      userId
+    );
 
     // ── Account settings + usage telemetry ───────────────────────────────
-    const userSettings = await safeSelect(sb, "user_settings", "user_id", userId);
-    const userEngagement = await safeSelect(sb, "user_engagement", "user_id", userId);
+    const userSettings = await safeSelect(
+      sb,
+      "user_settings",
+      "user_id",
+      userId
+    );
+    const userEngagement = await safeSelect(
+      sb,
+      "user_engagement",
+      "user_id",
+      userId
+    );
     const userQuotas = await safeSelect(sb, "user_quotas", "user_id", userId);
     const voiceUsage = await safeSelect(sb, "voice_usage", "user_id", userId);
     const aiUsage = await safeSelect(sb, "ai_usage", "user_id", userId);
 
     // ── Lawyer bookings ──────────────────────────────────────────────────
-    const lawyerBookings = await safeSelect(sb, "lawyer_bookings", "user_id", userId);
+    const lawyerBookings = await safeSelect(
+      sb,
+      "lawyer_bookings",
+      "user_id",
+      userId
+    );
 
     // ── Identity / OAuth ─────────────────────────────────────────────────
     // user_oauth_tokens: PRESENCE is part of the DSAR, but the live
     // access/refresh tokens are credentials — never disclose under
     // Art. 15(4) (rights of third parties / security).
-    const oauthTokens = await safeSelect(sb, "user_oauth_tokens", "user_id", userId, {
-      redactColumns: [
-        "access_token",
-        "refresh_token",
-        "id_token",
-        "encrypted_access_token",
-        "encrypted_refresh_token",
-      ],
-    });
+    const oauthTokens = await safeSelect(
+      sb,
+      "user_oauth_tokens",
+      "user_id",
+      userId,
+      {
+        redactColumns: [
+          "access_token",
+          "refresh_token",
+          "id_token",
+          "encrypted_access_token",
+          "encrypted_refresh_token",
+        ],
+      }
+    );
     // SECURITY (Art. 15(4)): the wrapped data-encryption key is credential
     // material — never disclose it. The real column is `encrypted_key`; the
     // previous list ("wrapped_dek"/"wrap_iv"/"wrap_tag") matched NO actual
     // column, so the wrapped DEK was leaking into the export in cleartext.
-    const encryptionKeys = await safeSelect(sb, "user_encryption_keys", "user_id", userId, {
-      redactColumns: ["encrypted_key"],
-    });
+    const encryptionKeys = await safeSelect(
+      sb,
+      "user_encryption_keys",
+      "user_id",
+      userId,
+      {
+        redactColumns: ["encrypted_key"],
+      }
+    );
 
     // ── Consents ─────────────────────────────────────────────────────────
-    const dpaAcceptances = await safeSelect(sb, "dpa_acceptances", "user_id", userId);
-    const sensitiveConsents = await safeSelect(sb, "sensitive_consents", "user_id", userId);
-    const disclaimerAcks = await safeSelect(sb, "disclaimer_acknowledgments", "user_id", userId);
+    const dpaAcceptances = await safeSelect(
+      sb,
+      "dpa_acceptances",
+      "user_id",
+      userId
+    );
+    const sensitiveConsents = await safeSelect(
+      sb,
+      "sensitive_consents",
+      "user_id",
+      userId
+    );
+    const disclaimerAcks = await safeSelect(
+      sb,
+      "disclaimer_acknowledgments",
+      "user_id",
+      userId
+    );
     const consentLog = await safeSelect(sb, "consent_log", "user_id", userId);
     // Retained post-deletion under Art. 17(3)(e). Disclosed under Art. 15(1).
-    const attorneyPrivilegeAcceptance = await safeSelect(sb, "attorney_privilege_acceptance", "user_id", userId);
+    const attorneyPrivilegeAcceptance = await safeSelect(
+      sb,
+      "attorney_privilege_acceptance",
+      "user_id",
+      userId
+    );
 
     // ── Payments. subscriptions carries Stripe customer + product IDs,
     //    never raw PAN — Stripe SDK never returns it. Safe to include.
     //    `payments` table doesn't actually exist (audit P0-7); replaced
     //    with `subscriptions` + `apple_iap_transactions`.
-    const subscriptions = await safeSelect(sb, "subscriptions", "user_id", userId);
-    const appleIapTransactions = await safeSelect(sb, "apple_iap_transactions", "user_id", userId);
+    const subscriptions = await safeSelect(
+      sb,
+      "subscriptions",
+      "user_id",
+      userId
+    );
+    const appleIapTransactions = await safeSelect(
+      sb,
+      "apple_iap_transactions",
+      "user_id",
+      userId
+    );
 
     // ── B2B signals ──────────────────────────────────────────────────────
     const b2bSignals = await safeSelect(sb, "b2b_signals", "user_id", userId);
 
+    // ── Product-expansion feature tables (Art. 15). Keep in sync with the
+    //    account-delete USER_DATA_TABLES list (Art. 17).
+    const caseFollowups = await safeSelect(
+      sb,
+      "case_followups",
+      "user_id",
+      userId
+    );
+    const checklistProgress = await safeSelect(
+      sb,
+      "checklist_progress",
+      "user_id",
+      userId
+    );
+    const explainRequests = await safeSelect(
+      sb,
+      "explain_requests",
+      "user_id",
+      userId
+    );
+    const demandLetters = await safeSelect(
+      sb,
+      "demand_letters",
+      "user_id",
+      userId
+    );
+    const docCollectionProgress = await safeSelect(
+      sb,
+      "doc_collection_progress",
+      "user_id",
+      userId
+    );
+    const renewableDocuments = await safeSelect(
+      sb,
+      "renewable_documents",
+      "user_id",
+      userId
+    );
+    const caseEstimates = await safeSelect(
+      sb,
+      "case_estimates",
+      "user_id",
+      userId
+    );
+    // user_doc_chunks: disclose EXISTENCE + count per Art. 15(4) — not the raw
+    // embedding vectors (which are derived, high-volume, and low-utility to the
+    // subject).
+    const docChunks = await safeSelect(
+      sb,
+      "user_doc_chunks",
+      "user_id",
+      userId
+    );
+
     // ── Sharing + referrals. `referral_attributions` has TWO user-id
     //    columns: read both perspectives so the DSAR is complete.
-    const sharedResults = await safeSelect(sb, "shared_results", "user_id", userId);
-    const referralCodes = await safeSelect(sb, "referral_codes", "user_id", userId);
-    const referralAsInvitee = await safeSelect(sb, "referral_attributions", "referred_user_id", userId);
-    const referralAsInviter = await safeSelect(sb, "referral_attributions", "inviter_user_id", userId);
+    const sharedResults = await safeSelect(
+      sb,
+      "shared_results",
+      "user_id",
+      userId
+    );
+    const referralCodes = await safeSelect(
+      sb,
+      "referral_codes",
+      "user_id",
+      userId
+    );
+    const referralAsInvitee = await safeSelect(
+      sb,
+      "referral_attributions",
+      "referred_user_id",
+      userId
+    );
+    const referralAsInviter = await safeSelect(
+      sb,
+      "referral_attributions",
+      "inviter_user_id",
+      userId
+    );
 
     // ── Support + experimentation ────────────────────────────────────────
-    const supportTickets = await safeSelect(sb, "support_tickets", "user_id", userId);
-    const abAssignments = await safeSelect(sb, "ab_assignments", "user_id", userId);
+    const supportTickets = await safeSelect(
+      sb,
+      "support_tickets",
+      "user_id",
+      userId
+    );
+    const abAssignments = await safeSelect(
+      sb,
+      "ab_assignments",
+      "user_id",
+      userId
+    );
     const abEvents = await safeSelect(sb, "ab_events", "user_id", userId);
 
     // ── Audit logs ───────────────────────────────────────────────────────
-    const dsarHistory = await safeSelect(sb, "dsar_requests", "user_id", userId);
+    const dsarHistory = await safeSelect(
+      sb,
+      "dsar_requests",
+      "user_id",
+      userId
+    );
     // Generic platform audit log is retained post-deletion but the user has
     // an Art. 15 right to know it exists (with their entries).
     const auditLog = await safeSelect(sb, "audit_log", "user_id", userId);
@@ -580,6 +946,16 @@ serve(async (req) => {
       },
       feedback: chatFeedback,
       b2b_signals: b2bSignals,
+      new_features: {
+        case_followups: caseFollowups,
+        checklist_progress: checklistProgress,
+        explain_requests: explainRequests,
+        demand_letters: demandLetters,
+        doc_collection_progress: docCollectionProgress,
+        renewable_documents: renewableDocuments,
+        case_estimates: caseEstimates,
+        user_doc_chunks_meta: { count: docChunks.length },
+      },
       sharing: {
         shared_results: sharedResults,
         referral_codes: referralCodes,
@@ -647,7 +1023,7 @@ serve(async (req) => {
           ...corsHeaders,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
   }
 
