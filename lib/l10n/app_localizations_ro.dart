@@ -4647,946 +4647,964 @@ class AppLocalizationsRo extends AppLocalizations {
       'Actualizarea parolei a eșuat. Te rugăm să încerci din nou.';
 
   @override
-  String get accessLogTile => 'Access log';
+  String get accessLogTile => 'Jurnal de acces';
 
   @override
-  String get accessLogTileSubtitle => 'See who and what accessed your data';
+  String get accessLogTileSubtitle =>
+      'Vedeți cine și ce a accesat datele dumneavoastră';
 
   @override
-  String get accessLogTitle => 'Access log for my data';
+  String get accessLogTitle => 'Jurnal de acces la datele mele';
 
   @override
   String get accessLogIntro =>
-      'A transparent, tamper-evident record of every time your data was accessed or processed — including by our AI. You can verify it has not been altered.';
+      'O evidență transparentă și inviolabilă a fiecărei accesări sau prelucrări a datelor dumneavoastră — inclusiv de către sistemul nostru de inteligență artificială. Puteți verifica faptul că nu a fost modificată.';
 
   @override
-  String get accessLogEmpty => 'No access events yet.';
+  String get accessLogEmpty => 'Încă nu există evenimente de acces.';
 
   @override
   String get accessLogError =>
-      'Could not load your access log. Pull down to retry.';
+      'Jurnalul de acces nu a putut fi încărcat. Trageți în jos pentru a reîncerca.';
 
   @override
   String get accessLogIntegrityOk =>
-      'Integrity verified — the log links form an unbroken chain.';
+      'Integritate verificată — verigile jurnalului formează un lanț neîntrerupt.';
 
   @override
   String get accessLogIntegrityBroken =>
-      'Warning: the log chain is broken. Some entries may have been removed or reordered. Please contact support.';
+      'Avertisment: lanțul jurnalului este întrerupt. Este posibil ca unele înregistrări să fi fost eliminate sau reordonate. Vă rugăm să contactați asistența.';
 
   @override
   String get accessActionLlmEgress =>
-      'Sent to AI for processing (pseudonymized)';
+      'Trimis către inteligența artificială pentru prelucrare (pseudonimizat)';
 
   @override
-  String get accessActionAiAnalysis => 'Analyzed by AI';
+  String get accessActionAiAnalysis => 'Analizat de inteligența artificială';
 
   @override
-  String get accessActionDocumentParse => 'Document parsed';
+  String get accessActionDocumentParse => 'Document procesat';
 
   @override
-  String get accessActionStaffRead => 'Reviewed by a staff member';
+  String get accessActionStaffRead => 'Examinat de un membru al personalului';
 
   @override
-  String get accessActionExport => 'Data exported';
+  String get accessActionExport => 'Date exportate';
 
   @override
-  String get accessActionEmailTriage => 'Email triaged';
+  String get accessActionEmailTriage => 'E-mail triat';
 
   @override
-  String get accessActionDeadlineScan => 'Deadlines scanned';
+  String get accessActionDeadlineScan => 'Termene scanate';
 
   @override
-  String get breachAlertTitle => 'Security alert on your data';
+  String get breachAlertTitle =>
+      'Alertă de securitate privind datele dumneavoastră';
 
   @override
   String get breachAlertBody =>
-      'Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34).';
+      'Monitorizarea noastră automată a detectat un acces neobișnuit care implică datele dumneavoastră. Îl analizăm și vă vom notifica cu privire la orice incident confirmat, conform legii (art. 34 RGPD).';
 
   @override
-  String get caseDossierTitle => 'Export case dossier';
+  String get caseDossierTitle => 'Exportați dosarul cauzei';
 
   @override
   String get caseDossierSubtitle =>
-      'One PDF with everything — facts, chronology, deadlines and documents — to hand to a lawyer, a court, or a complaint body.';
+      'Un singur PDF cu tot — fapte, cronologie, termene și documente — pentru a-l preda unui avocat, unei instanțe sau unui organism de soluționare a plângerilor.';
 
   @override
-  String get caseDossierTileTitle => 'Export dossier (PDF)';
+  String get caseDossierTileTitle => 'Exportați dosarul (PDF)';
 
   @override
   String get caseDossierTileSubtitle =>
-      'Hand the whole case to a lawyer or court in one file';
+      'Predați întreaga cauză unui avocat sau unei instanțe într-un singur fișier';
 
   @override
-  String get caseDossierSectionsHeading => 'Include in the dossier';
+  String get caseDossierSectionsHeading => 'Includeți în dosar';
 
   @override
-  String get caseDossierSectionFacts => 'Case facts';
+  String get caseDossierSectionFacts => 'Faptele cauzei';
 
   @override
-  String get caseDossierSectionFactsHint => 'Always included';
+  String get caseDossierSectionFactsHint => 'Întotdeauna inclus';
 
   @override
-  String get caseDossierSectionTimeline => 'Chronology';
+  String get caseDossierSectionTimeline => 'Cronologie';
 
   @override
-  String get caseDossierSectionDeadlines => 'Deadlines';
+  String get caseDossierSectionDeadlines => 'Termene';
 
   @override
-  String get caseDossierSectionDocuments => 'Documents';
+  String get caseDossierSectionDocuments => 'Documente';
 
   @override
-  String get caseDossierSectionAiSummary => 'AI summary';
+  String get caseDossierSectionAiSummary =>
+      'Rezumat generat de inteligența artificială';
 
   @override
-  String get caseDossierExportButton => 'Export PDF';
+  String get caseDossierExportButton => 'Exportați PDF';
 
   @override
-  String get caseDossierExporting => 'Building your dossier…';
+  String get caseDossierExporting => 'Se generează dosarul…';
 
   @override
-  String get caseDossierSuccess => 'Dossier ready. Open or share the file.';
+  String get caseDossierSuccess =>
+      'Dosarul este gata. Deschideți sau partajați fișierul.';
 
   @override
-  String get caseDossierOpen => 'Open dossier';
+  String get caseDossierOpen => 'Deschideți dosarul';
 
   @override
   String get caseDossierError =>
-      'Could not build the dossier. Please try again.';
+      'Dosarul nu a putut fi generat. Vă rugăm să încercați din nou.';
 
   @override
-  String get caseDossierErrorNotOwned => 'This case could not be found.';
+  String get caseDossierErrorNotOwned => 'Această cauză nu a putut fi găsită.';
 
   @override
   String get caseDossierDisclaimer =>
-      'The dossier reproduces your case data as recorded. Review it before sharing.';
+      'Dosarul reproduce datele cauzei dumneavoastră așa cum au fost înregistrate. Verificați-l înainte de a-l partaja.';
 
   @override
-  String get followupsTitle => 'Next steps';
+  String get followupsTitle => 'Pașii următori';
 
   @override
-  String get followupsSubtitle => 'Practical tasks to keep your case moving';
+  String get followupsSubtitle =>
+      'Sarcini practice pentru a menține cauza în desfășurare';
 
   @override
-  String get followupsEmpty => 'No follow-up steps yet.';
+  String get followupsEmpty => 'Încă nu există pași de urmărit.';
 
   @override
   String get followupsEmptyDesc =>
-      'Add a step, or let the AI suggest what to do next.';
+      'Adăugați un pas sau lăsați inteligența artificială să sugereze ce trebuie făcut în continuare.';
 
   @override
-  String get followupsAdd => 'Add step';
+  String get followupsAdd => 'Adăugați un pas';
 
   @override
-  String get followupsSuggest => 'Suggest steps';
+  String get followupsSuggest => 'Sugerați pași';
 
   @override
   String get followupsSuggestNone =>
-      'No suggestions right now. Try after chatting about the case.';
+      'Nicio sugestie momentan. Încercați după ce discutați despre cauză.';
 
   @override
-  String get followupsSuggestTitle => 'Suggested next steps';
+  String get followupsSuggestTitle => 'Pași următori sugerați';
 
   @override
-  String get followupsAddPrompt => 'Add the steps you want to keep:';
+  String get followupsAddPrompt =>
+      'Adăugați pașii pe care doriți să îi păstrați:';
 
   @override
-  String get followupsNewTitleHint => 'What needs to be done?';
+  String get followupsNewTitleHint => 'Ce trebuie făcut?';
 
   @override
-  String get followupsNewDetailHint => 'Optional note (why / what to attach)';
+  String get followupsNewDetailHint => 'Notă opțională (de ce / ce să atașați)';
 
   @override
-  String get followupsDueOptional => 'Remind me on (optional)';
+  String get followupsDueOptional => 'Amintește-mi la (opțional)';
 
   @override
-  String get followupsOverdue => 'Overdue';
+  String get followupsOverdue => 'Întârziat';
 
   @override
-  String followupsDueOn(Object date) {
-    return 'Due $date';
+  String followupsDueOn(String date) {
+    return 'Termen $date';
   }
 
   @override
-  String get followupsDone => 'Done';
+  String get followupsDone => 'Finalizat';
 
   @override
-  String get followupsSnooze => 'Snooze';
+  String get followupsSnooze => 'Amână';
 
   @override
-  String get followupsSnooze1Week => 'Remind in a week';
+  String get followupsSnooze1Week => 'Amintește-mi peste o săptămână';
 
   @override
-  String get followupsDismiss => 'Dismiss';
+  String get followupsDismiss => 'Respinge';
 
   @override
-  String get followupsLoadError => 'Could not load next steps';
+  String get followupsLoadError => 'Pașii următori nu au putut fi încărcați';
 
   @override
-  String get followupsAiBadge => 'AI';
+  String get followupsAiBadge => 'IA';
 
   @override
-  String get contractCompareTitle => 'Compare versions';
+  String get contractCompareTitle => 'Comparați versiunile';
 
   @override
   String get contractCompareIntro =>
-      'Upload two versions of the same contract. We highlight what changed and whether each change helps or hurts you.';
+      'Încărcați două versiuni ale aceluiași contract. Evidențiem ce s-a modificat și dacă fiecare modificare vă avantajează sau vă dezavantajează.';
 
   @override
-  String get contractCompareOldVersion => 'Old version (v1)';
+  String get contractCompareOldVersion => 'Versiunea veche (v1)';
 
   @override
-  String get contractCompareNewVersion => 'New version (v2)';
+  String get contractCompareNewVersion => 'Versiunea nouă (v2)';
 
   @override
-  String get contractCompareCta => 'Compare versions';
+  String get contractCompareCta => 'Comparați versiunile';
 
   @override
-  String get contractCompareAdverse => 'Adverse';
+  String get contractCompareAdverse => 'Nefavorabil';
 
   @override
-  String get contractCompareFavorable => 'Favorable';
+  String get contractCompareFavorable => 'Favorabil';
 
   @override
-  String get contractCompareNeutral => 'Neutral';
+  String get contractCompareNeutral => 'Neutru';
 
   @override
-  String get contractCompareBefore => 'Before';
+  String get contractCompareBefore => 'Înainte';
 
   @override
-  String get contractCompareAfter => 'After';
+  String get contractCompareAfter => 'După';
 
   @override
   String get contractCompareTruncated =>
-      'Long contract — only the first part of each version was compared.';
+      'Contract lung — a fost comparată doar prima parte a fiecărei versiuni.';
 
   @override
   String get contractCompareNoChanges =>
-      'No material changes detected between the two versions.';
+      'Nu au fost detectate modificări semnificative între cele două versiuni.';
 
   @override
-  String get docSearchTitle => 'Search my documents';
+  String get docSearchTitle => 'Căutați în documentele mele';
 
   @override
-  String get docSearchHint => 'e.g. where was the deposit mentioned';
+  String get docSearchHint => 'de ex. unde a fost menționat avansul';
 
   @override
   String get docSearchSubtitle =>
-      'Semantic search across your vault and case files';
+      'Căutare semantică în seiful și dosarele dumneavoastră';
 
   @override
   String get docSearchIdle =>
-      'Search the contents of your own documents — not just titles.';
+      'Căutați în conținutul propriilor documente — nu doar în titluri.';
 
   @override
-  String get docSearchNoResults => 'No matches found in your documents.';
+  String get docSearchNoResults =>
+      'Nicio potrivire găsită în documentele dumneavoastră.';
 
   @override
-  String get docSearchError => 'Search failed. Please try again.';
+  String get docSearchError =>
+      'Căutarea a eșuat. Vă rugăm să încercați din nou.';
 
   @override
-  String get docSearchUntitled => 'Untitled document';
+  String get docSearchUntitled => 'Document fără titlu';
 
   @override
-  String get docSearchKindCase => 'Case document';
+  String get docSearchKindCase => 'Document al cauzei';
 
   @override
-  String get docSearchKindVault => 'Vault document';
+  String get docSearchKindVault => 'Document din seif';
 
   @override
-  String get docSearchMenuTitle => 'Search my documents';
+  String get docSearchMenuTitle => 'Căutați în documentele mele';
 
   @override
   String get docSearchMenuSubtitle =>
-      'Find anything in your own files by meaning';
+      'Găsiți orice în propriile fișiere după sens';
 
   @override
-  String get legalTemplatesTitle => 'Template library';
+  String get legalTemplatesTitle => 'Bibliotecă de modele';
 
   @override
-  String get legalTemplatesMenuLabel => 'Templates';
+  String get legalTemplatesMenuLabel => 'Modele';
 
   @override
   String get legalTemplatesSubtitle =>
-      'Pick a ready-made form, fill in a few details, and we\'ll create a draft you can edit and export.';
+      'Alegeți un formular gata făcut, completați câteva detalii, iar noi vom crea un proiect pe care îl puteți edita și exporta.';
 
   @override
   String get legalTemplatesDisclaimer =>
-      'These are general sample forms, not individual legal advice. Review and adapt before sending.';
+      'Acestea sunt formulare-model generale, nu consultanță juridică individuală. Verificați-le și adaptați-le înainte de a le trimite.';
 
   @override
-  String get legalTemplatesSampleBadge => 'Sample';
+  String get legalTemplatesSampleBadge => 'Model';
 
   @override
-  String get legalTemplatesEmpty => 'No templates for this filter yet.';
+  String get legalTemplatesEmpty =>
+      'Încă nu există modele pentru acest filtru.';
 
   @override
   String get legalTemplatesError =>
-      'Couldn\'t load templates. Please try again.';
+      'Modelele nu au putut fi încărcate. Vă rugăm să încercați din nou.';
 
   @override
-  String get legalTemplatesFilterAll => 'All';
+  String get legalTemplatesFilterAll => 'Toate';
 
   @override
-  String get legalTemplatesJurisdictionFi => 'Finland';
+  String get legalTemplatesJurisdictionFi => 'Finlanda';
 
   @override
   String get legalTemplatesJurisdictionEe => 'Estonia';
 
   @override
-  String get legalTemplatesCategoryComplaint => 'Complaints';
+  String get legalTemplatesCategoryComplaint => 'Plângeri';
 
   @override
-  String get legalTemplatesCategoryAppeal => 'Appeals';
+  String get legalTemplatesCategoryAppeal => 'Recursuri';
 
   @override
-  String get legalTemplatesCategoryApplication => 'Applications';
+  String get legalTemplatesCategoryApplication => 'Cereri';
 
   @override
-  String get legalTemplatesCategoryClaim => 'Claims';
+  String get legalTemplatesCategoryClaim => 'Pretenții';
 
   @override
-  String get legalTemplatesCategoryRequest => 'Requests';
+  String get legalTemplatesCategoryRequest => 'Solicitări';
 
   @override
-  String get legalTemplatesFillTitle => 'Fill in the details';
+  String get legalTemplatesFillTitle => 'Completați detaliile';
 
   @override
   String get legalTemplatesFillIntro =>
-      'We\'ll auto-fill your name and case details. Complete the fields below.';
+      'Vom completa automat numele dumneavoastră și detaliile cauzei. Completați câmpurile de mai jos.';
 
   @override
-  String get legalTemplatesFieldRequired => 'This field is required';
+  String get legalTemplatesFieldRequired => 'Acest câmp este obligatoriu';
 
   @override
-  String get legalTemplatesCreateDraft => 'Create draft';
+  String get legalTemplatesCreateDraft => 'Creați proiectul';
 
   @override
-  String get legalTemplatesCreating => 'Creating draft…';
+  String get legalTemplatesCreating => 'Se creează proiectul…';
 
   @override
   String get legalTemplatesCreateFailed =>
-      'Couldn\'t create the draft. Please try again.';
+      'Proiectul nu a putut fi creat. Vă rugăm să încercați din nou.';
 
   @override
   String get legalTemplatesUnresolvedWarning =>
-      'Some fields are still blank and are marked with ____ in the draft. You can complete them in the editor.';
+      'Unele câmpuri sunt încă necompletate și sunt marcate cu ____ în proiect. Le puteți completa în editor.';
 
   @override
-  String get legalTemplatesFieldRecipient => 'Recipient (authority / landlord)';
+  String get legalTemplatesFieldRecipient =>
+      'Destinatar (autoritate / proprietar)';
 
   @override
-  String get legalTemplatesFieldAddress => 'Your postal address';
+  String get legalTemplatesFieldAddress => 'Adresa dumneavoastră poștală';
 
   @override
-  String get legalTemplatesFieldSubject => 'Subject';
+  String get legalTemplatesFieldSubject => 'Obiect';
 
   @override
-  String get legalTemplatesFieldDescription => 'Description of the matter';
+  String get legalTemplatesFieldDescription => 'Descrierea cauzei';
 
   @override
-  String get legalTemplatesFieldDemand => 'What you are asking for';
+  String get legalTemplatesFieldDemand => 'Ce solicitați';
 
   @override
-  String get checklistActionPlan => 'Action plan';
+  String get checklistActionPlan => 'Plan de acțiune';
 
   @override
-  String get checklistActionPlanSubtitle => 'Steps for this type of case';
+  String get checklistActionPlanSubtitle => 'Pași pentru acest tip de cauză';
 
   @override
-  String checklistProgress(Object completed, Object total) {
-    return '$completed of $total steps done';
+  String checklistProgress(int completed, int total) {
+    return '$completed din $total pași finalizați';
   }
 
   @override
-  String get checklistAllDone => 'All steps complete';
+  String get checklistAllDone => 'Toți pașii sunt finalizați';
 
   @override
   String get checklistEmpty =>
-      'No action plan is available for this case type yet.';
+      'Încă nu este disponibil un plan de acțiune pentru acest tip de cauză.';
 
   @override
-  String checklistDeadlineDays(Object days) {
-    return '$days days';
+  String checklistDeadlineDays(int days) {
+    return '$days zile';
   }
 
   @override
   String get checklistDisclaimer =>
-      'This is general information, not legal advice. Deadlines are statutory defaults — confirm the exact date for your case.';
+      'Aceasta este o informație generală, nu consultanță juridică. Termenele sunt valori legale implicite — confirmați data exactă pentru cauza dumneavoastră.';
 
   @override
-  String get checklistViewPlan => 'View plan';
+  String get checklistViewPlan => 'Vizualizați planul';
 
   @override
-  String get explainPlainTitle => 'Explain in plain words';
+  String get explainPlainTitle => 'Explicați pe înțelesul tuturor';
 
   @override
   String get explainPlainIntro =>
-      'Paste an official letter, decision, or contract and we\'ll explain what it means and what it asks you to do — in plain language.';
+      'Lipiți o scrisoare oficială, o decizie sau un contract, iar noi vă vom explica ce înseamnă și ce vă solicită să faceți — într-un limbaj simplu.';
 
   @override
-  String get explainPlainLevelFriend => 'Like to a friend';
+  String get explainPlainLevelFriend => 'Ca pentru un prieten';
 
   @override
-  String get explainPlainLevelTerms => 'Keep legal terms';
+  String get explainPlainLevelTerms => 'Păstrați termenii juridici';
 
   @override
-  String get explainPlainInputHint => 'Paste the legal text here…';
+  String get explainPlainInputHint => 'Lipiți textul juridic aici…';
 
   @override
-  String get explainPlainSubmit => 'Explain';
+  String get explainPlainSubmit => 'Explicați';
 
   @override
-  String get explainPlainWorking => 'Explaining…';
+  String get explainPlainWorking => 'Se explică…';
 
   @override
-  String get explainPlainTldr => 'Bottom line';
+  String get explainPlainTldr => 'Pe scurt';
 
   @override
-  String get explainPlainBreakdown => 'What it says, part by part';
+  String get explainPlainBreakdown => 'Ce spune, parte cu parte';
 
   @override
-  String get explainPlainGlossary => 'Tricky terms explained';
+  String get explainPlainGlossary => 'Termeni dificili explicați';
 
   @override
-  String get explainPlainNextSteps => 'What you can do next';
+  String get explainPlainNextSteps => 'Ce puteți face în continuare';
 
   @override
-  String get explainPlainOpenInCorpus => 'Look up in the law library';
+  String get explainPlainOpenInCorpus => 'Căutați în biblioteca juridică';
 
   @override
   String get explainPlainEmptyResult =>
-      'No explanation could be produced for this text. Try pasting a longer or clearer excerpt.';
+      'Nu s-a putut genera o explicație pentru acest text. Încercați să lipiți un fragment mai lung sau mai clar.';
 
   @override
   String get explainPlainQuotaTitle =>
-      'You\'ve used your free explanations this month';
+      'Ați folosit explicațiile gratuite din această lună';
 
   @override
   String get explainPlainQuotaBody =>
-      'Free accounts get 3 explanations per month. Upgrade to Pro for unlimited explanations.';
+      'Conturile gratuite primesc 3 explicații pe lună. Treceți la Pro pentru explicații nelimitate.';
 
   @override
-  String get explainPlainUpgradeCta => 'Upgrade to Pro';
+  String get explainPlainUpgradeCta => 'Treceți la Pro';
 
   @override
   String get explainPlainError =>
-      'Something went wrong while explaining this text. Please try again.';
+      'A apărut o eroare la explicarea acestui text. Vă rugăm să încercați din nou.';
 
   @override
-  String get explainPlainRetry => 'Try again';
+  String get explainPlainRetry => 'Încercați din nou';
 
   @override
-  String get demandLetterTitle => 'Demand letter';
+  String get demandLetterTitle => 'Scrisoare de punere în întârziere';
 
   @override
   String get demandLetterSubtitle =>
-      'Create a formal pre-court demand (maksuvaatimus / nõudekiri).';
+      'Creați o somație formală prealabilă procesului (maksuvaatimus / nõudekiri).';
 
   @override
-  String get demandLetterStepType => 'Type of claim';
+  String get demandLetterStepType => 'Tipul pretenției';
 
   @override
-  String get demandLetterStepParties => 'Parties';
+  String get demandLetterStepParties => 'Părți';
 
   @override
-  String get demandLetterStepClaim => 'Amount & basis';
+  String get demandLetterStepClaim => 'Sumă și temei';
 
   @override
-  String get demandLetterStepDeadline => 'Deadline';
+  String get demandLetterStepDeadline => 'Termen';
 
   @override
-  String get demandLetterStepReview => 'Review & generate';
+  String get demandLetterStepReview => 'Verificare și generare';
 
   @override
-  String get demandLetterClaimDepositReturn => 'Return of rental deposit';
+  String get demandLetterClaimDepositReturn => 'Restituirea garanției locative';
 
   @override
-  String get demandLetterClaimUnpaidWage => 'Unpaid wages';
+  String get demandLetterClaimUnpaidWage => 'Salarii neplătite';
 
   @override
-  String get demandLetterClaimFineDispute => 'Dispute a fine / charge';
+  String get demandLetterClaimFineDispute =>
+      'Contestarea unei amenzi / unui debit';
 
   @override
-  String get demandLetterClaimGeneric => 'Other monetary claim';
+  String get demandLetterClaimGeneric => 'Altă pretenție bănească';
 
   @override
-  String get demandLetterJurisdiction => 'Jurisdiction';
+  String get demandLetterJurisdiction => 'Jurisdicție';
 
   @override
-  String get demandLetterLanguage => 'Letter language';
+  String get demandLetterLanguage => 'Limba scrisorii';
 
   @override
-  String get demandLetterRecipientName => 'Recipient name';
+  String get demandLetterRecipientName => 'Numele destinatarului';
 
   @override
-  String get demandLetterRecipientAddress => 'Recipient address (optional)';
+  String get demandLetterRecipientAddress => 'Adresa destinatarului (opțional)';
 
   @override
-  String get demandLetterSenderName => 'Your name';
+  String get demandLetterSenderName => 'Numele dumneavoastră';
 
   @override
-  String get demandLetterSenderAddress => 'Your address / email (optional)';
+  String get demandLetterSenderAddress =>
+      'Adresa dumneavoastră / e-mailul (opțional)';
 
   @override
-  String get demandLetterAmount => 'Amount';
+  String get demandLetterAmount => 'Sumă';
 
   @override
-  String get demandLetterCurrency => 'Currency';
+  String get demandLetterCurrency => 'Monedă';
 
   @override
-  String get demandLetterBasis => 'What happened (basis of the claim)';
+  String get demandLetterBasis => 'Ce s-a întâmplat (temeiul pretenției)';
 
   @override
   String get demandLetterBasisHint =>
-      'Describe the facts: dates, amounts, what was agreed and what went wrong.';
+      'Descrieți faptele: date, sume, ce s-a convenit și ce a mers greșit.';
 
   @override
-  String get demandLetterDeadline => 'Payment deadline';
+  String get demandLetterDeadline => 'Termen de plată';
 
   @override
-  String get demandLetterDeadlineHint => 'e.g. 14 days from today';
+  String get demandLetterDeadlineHint => 'de ex. 14 zile de astăzi';
 
   @override
-  String get demandLetterReference => 'Reference (optional)';
+  String get demandLetterReference => 'Referință (opțional)';
 
   @override
-  String get demandLetterGenerate => 'Generate letter';
+  String get demandLetterGenerate => 'Generați scrisoarea';
 
   @override
-  String get demandLetterGenerating => 'Generating…';
+  String get demandLetterGenerating => 'Se generează…';
 
   @override
   String get demandLetterGenerateFailed =>
-      'Couldn\'t generate the letter. Please try again.';
+      'Scrisoarea nu a putut fi generată. Vă rugăm să încercați din nou.';
 
   @override
-  String get demandLetterFieldRequired => 'This field is required';
+  String get demandLetterFieldRequired => 'Acest câmp este obligatoriu';
 
   @override
-  String get demandLetterNext => 'Next';
+  String get demandLetterNext => 'Înainte';
 
   @override
-  String get demandLetterBack => 'Back';
+  String get demandLetterBack => 'Înapoi';
 
   @override
-  String get demandLetterPreviewTitle => 'Your letter';
+  String get demandLetterPreviewTitle => 'Scrisoarea dumneavoastră';
 
   @override
-  String get demandLetterCopy => 'Copy text';
+  String get demandLetterCopy => 'Copiați textul';
 
   @override
-  String get demandLetterCopied => 'Letter copied to clipboard';
+  String get demandLetterCopied => 'Scrisoarea a fost copiată în clipboard';
 
   @override
-  String get demandLetterExportPdf => 'Export PDF';
+  String get demandLetterExportPdf => 'Exportați PDF';
 
   @override
-  String get demandLetterExporting => 'Exporting…';
+  String get demandLetterExporting => 'Se exportă…';
 
   @override
   String get demandLetterExportFailed =>
-      'Couldn\'t export the document. Please try again.';
+      'Documentul nu a putut fi exportat. Vă rugăm să încercați din nou.';
 
   @override
-  String get demandLetterSendEmail => 'Send via email';
+  String get demandLetterSendEmail => 'Trimiteți prin e-mail';
 
   @override
-  String get demandLetterNormsTitle => 'Legal references';
+  String get demandLetterNormsTitle => 'Referințe juridice';
 
   @override
   String get demandLetterDisclaimer =>
-      'This letter is prepared on your behalf as a general template. It is not legal advice or an act of a licensed attorney. Review it before sending — no letter is sent automatically.';
+      'Această scrisoare este întocmită în numele dumneavoastră ca model general. Nu reprezintă consultanță juridică sau un act al unui avocat autorizat. Verificați-o înainte de a o trimite — nicio scrisoare nu este trimisă automat.';
 
   @override
-  String get demandLetterMenuTile => 'Demand letter';
+  String get demandLetterMenuTile => 'Scrisoare de punere în întârziere';
 
   @override
-  String get calcHubTitle => 'Legal calculators';
+  String get calcHubTitle => 'Calculatoare juridice';
 
   @override
-  String get calcHubSubtitle => 'Quick estimates before your next step';
+  String get calcHubSubtitle => 'Estimări rapide înaintea pasului următor';
 
   @override
-  String get calcHubJurisdiction => 'Jurisdiction';
+  String get calcHubJurisdiction => 'Jurisdicție';
 
   @override
-  String calcRatesAsOf(Object date) {
-    return 'Rates as of $date';
+  String calcRatesAsOf(String date) {
+    return 'Tarife valabile la data $date';
   }
 
   @override
-  String get calcRatesOffline => 'Showing cached rates (offline)';
+  String get calcRatesOffline =>
+      'Se afișează tarifele din memoria cache (offline)';
 
   @override
   String get calcIndicativeBanner =>
-      'Indicative estimate only — not an official calculation or legal advice.';
+      'Doar estimare orientativă — nu este un calcul oficial sau consultanță juridică.';
 
   @override
-  String get calcCalculate => 'Calculate';
+  String get calcCalculate => 'Calculați';
 
   @override
-  String get calcResult => 'Result';
+  String get calcResult => 'Rezultat';
 
   @override
-  String get calcFormula => 'How this is calculated';
+  String get calcFormula => 'Cum se calculează';
 
   @override
-  String get calcSource => 'Source';
+  String get calcSource => 'Sursă';
 
   @override
-  String get calcSeveranceTitle => 'Severance / notice';
+  String get calcSeveranceTitle => 'Indemnizație / preaviz';
 
   @override
   String get calcSeveranceDesc =>
-      'Estimate severance pay and notice period on redundancy';
+      'Estimați indemnizația de concediere și perioada de preaviz în caz de disponibilizare';
 
   @override
-  String get calcSeveranceSalary => 'Gross monthly salary';
+  String get calcSeveranceSalary => 'Salariu lunar brut';
 
   @override
-  String get calcSeveranceTenure => 'Years of service';
+  String get calcSeveranceTenure => 'Ani de vechime';
 
   @override
-  String get calcSeveranceTotal => 'Estimated severance';
+  String get calcSeveranceTotal => 'Indemnizație estimată';
 
   @override
-  String get calcSeveranceNotice => 'Notice period';
+  String get calcSeveranceNotice => 'Perioadă de preaviz';
 
   @override
-  String get calcSeveranceGenerateDemand => 'Draft a demand letter';
+  String get calcSeveranceGenerateDemand =>
+      'Întocmiți o scrisoare de punere în întârziere';
 
   @override
-  String get calcLimitationTitle => 'Limitation & appeal deadlines';
+  String get calcLimitationTitle => 'Termene de prescripție și de recurs';
 
   @override
   String get calcLimitationDesc =>
-      'Check whether a claim or appeal period has expired';
+      'Verificați dacă un termen de formulare a unei pretenții sau a unui recurs a expirat';
 
   @override
-  String get calcLimitationType => 'Type of period';
+  String get calcLimitationType => 'Tipul termenului';
 
   @override
-  String get calcLimitationStart => 'Start date (event / decision)';
+  String get calcLimitationStart => 'Data de început (eveniment / decizie)';
 
   @override
-  String get calcLimitationPickDate => 'Pick date';
+  String get calcLimitationPickDate => 'Alegeți data';
 
   @override
-  String get calcLimitationDeadline => 'Deadline';
+  String get calcLimitationDeadline => 'Termen';
 
   @override
-  String get calcLimitationExpired => 'Period has expired';
+  String get calcLimitationExpired => 'Termenul a expirat';
 
   @override
-  String calcLimitationDaysLeft(Object days) {
-    return '$days days remaining';
+  String calcLimitationDaysLeft(int days) {
+    return '$days zile rămase';
   }
 
   @override
   String get calcLimitationShifted =>
-      'Shifted to the next working day (weekend/holiday).';
+      'Mutat în următoarea zi lucrătoare (weekend/sărbătoare).';
 
   @override
-  String get calcLimitationAddDeadline => 'Add to deadlines';
+  String get calcLimitationAddDeadline => 'Adăugați la termene';
 
   @override
-  String get calcStateFeeTitle => 'Court / state fees';
+  String get calcStateFeeTitle => 'Taxe judiciare / de stat';
 
   @override
-  String get calcStateFeeDesc => 'Reference filing fees by court and stage';
+  String get calcStateFeeDesc =>
+      'Taxe de înregistrare orientative, după instanță și etapă';
 
   @override
-  String get calcChildSupportTitle => 'Child support (orientation)';
+  String get calcChildSupportTitle => 'Pensie de întreținere (orientativ)';
 
   @override
   String get calcChildSupportDesc =>
-      'Rough orientation figure — the real amount is set case by case';
+      'Cifră orientativă aproximativă — cuantumul real se stabilește de la caz la caz';
 
   @override
-  String get calcChildSupportNet => 'Payer\'s net monthly income';
+  String get calcChildSupportNet => 'Venitul lunar net al plătitorului';
 
   @override
-  String get calcChildSupportChildren => 'Number of children';
+  String get calcChildSupportChildren => 'Numărul de copii';
 
   @override
-  String get calcChildSupportPerChild => 'Per child';
+  String get calcChildSupportPerChild => 'Per copil';
 
   @override
-  String get calcChildSupportTotal => 'Total monthly';
+  String get calcChildSupportTotal => 'Total lunar';
 
   @override
   String get calcChildSupportWarning =>
-      'Highly variable. Courts decide on the child\'s needs and both parents\' ability to pay. Use as a starting point only.';
+      'Foarte variabil. Instanțele decid în funcție de nevoile copilului și de capacitatea de plată a ambilor părinți. Utilizați doar ca punct de plecare.';
 
   @override
-  String get docCollectTitle => 'Documents to collect';
+  String get docCollectTitle => 'Documente de strâns';
 
   @override
   String get docCollectSubtitle =>
-      'Gather these before you apply or go to court';
+      'Adunați-le înainte de a depune cererea sau de a merge în instanță';
 
   @override
-  String get docCollectPickPrompt => 'What is your situation?';
+  String get docCollectPickPrompt => 'Care este situația dumneavoastră?';
 
   @override
-  String get docCollectProblemResidence => 'Residence permit';
+  String get docCollectProblemResidence => 'Permis de ședere';
 
   @override
-  String get docCollectProblemTenant => 'Renting / eviction';
+  String get docCollectProblemTenant => 'Închiriere / evacuare';
 
   @override
-  String get docCollectProblemDismissal => 'Dismissal at work';
+  String get docCollectProblemDismissal => 'Concediere la locul de muncă';
 
   @override
-  String get docCollectProblemInheritance => 'Inheritance';
+  String get docCollectProblemInheritance => 'Moștenire';
 
   @override
-  String get docCollectProblemDivorce => 'Divorce';
+  String get docCollectProblemDivorce => 'Divorț';
 
   @override
-  String docCollectProgress(Object collected, Object total) {
-    return '$collected of $total collected';
+  String docCollectProgress(int collected, int total) {
+    return '$collected din $total strânse';
   }
 
   @override
-  String get docCollectAllDone => 'Everything collected';
+  String get docCollectAllDone => 'Totul a fost strâns';
 
   @override
   String get docCollectEmpty =>
-      'No document list is available for this situation yet.';
+      'Încă nu este disponibilă o listă de documente pentru această situație.';
 
   @override
-  String get docCollectOptional => 'Optional';
+  String get docCollectOptional => 'Opțional';
 
   @override
-  String get docCollectWhereLabel => 'Where to get it';
+  String get docCollectWhereLabel => 'De unde îl obțineți';
 
   @override
-  String get docCollectWhyLabel => 'Why it\'s needed';
+  String get docCollectWhyLabel => 'De ce este necesar';
 
   @override
-  String get docCollectAttach => 'Attach a file';
+  String get docCollectAttach => 'Atașați un fișier';
 
   @override
-  String get docCollectAttached => 'File attached';
+  String get docCollectAttached => 'Fișier atașat';
 
   @override
-  String get docCollectChangeFile => 'Change file';
+  String get docCollectChangeFile => 'Schimbați fișierul';
 
   @override
-  String get docCollectRemoveFile => 'Remove file';
+  String get docCollectRemoveFile => 'Eliminați fișierul';
 
   @override
-  String get docCollectNoFiles => 'You haven\'t uploaded any documents yet.';
+  String get docCollectNoFiles => 'Încă nu ați încărcat niciun document.';
 
   @override
-  String get docCollectPickFileTitle => 'Choose an uploaded document';
+  String get docCollectPickFileTitle => 'Alegeți un document încărcat';
 
   @override
-  String get docCollectExport => 'Export list';
+  String get docCollectExport => 'Exportați lista';
 
   @override
-  String get docCollectExportSubject => 'My document checklist';
+  String get docCollectExportSubject =>
+      'Lista mea de verificare a documentelor';
 
   @override
-  String get docCollectAiTitle => 'Need something specific?';
+  String get docCollectAiTitle => 'Aveți nevoie de ceva anume?';
 
   @override
   String get docCollectAiHint =>
-      'Describe your situation and we\'ll suggest any extra documents.';
+      'Descrieți situația dumneavoastră, iar noi vă vom sugera eventuale documente suplimentare.';
 
   @override
-  String get docCollectAiField => 'Describe your situation';
+  String get docCollectAiField => 'Descrieți situația dumneavoastră';
 
   @override
-  String get docCollectAiButton => 'Suggest extra documents';
+  String get docCollectAiButton => 'Sugerați documente suplimentare';
 
   @override
-  String get docCollectAiLoading => 'Thinking…';
+  String get docCollectAiLoading => 'Se procesează…';
 
   @override
   String get docCollectAiEmpty =>
-      'No extra documents suggested — the basic list looks complete for your description.';
+      'Nu au fost sugerate documente suplimentare — lista de bază pare completă pentru descrierea dumneavoastră.';
 
   @override
-  String get docCollectAiSuggestionsTitle => 'Suggested extra documents';
+  String get docCollectAiSuggestionsTitle => 'Documente suplimentare sugerate';
 
   @override
   String get docCollectDisclaimer =>
-      'This is a basic list of commonly required documents — your situation may need more or fewer. It is general information, not legal advice.';
+      'Aceasta este o listă de bază a documentelor solicitate în mod obișnuit — situația dumneavoastră poate necesita mai multe sau mai puține. Este o informație generală, nu consultanță juridică.';
 
   @override
-  String get docCollectRetry => 'Try again';
+  String get docCollectRetry => 'Încercați din nou';
 
   @override
-  String get renewalTitle => 'Renewal Radar';
+  String get renewalTitle => 'Radar de reînnoire';
 
   @override
   String get renewalSubtitle =>
-      'Track when your permits, passport, insurance and other documents expire. We\'ll remind you 90, 30 and 7 days before each renewal.';
+      'Urmăriți când expiră permisele, pașaportul, asigurarea și alte documente. Vă vom reaminti cu 90, 30 și 7 zile înainte de fiecare reînnoire.';
 
   @override
-  String get renewalAdd => 'Add document';
+  String get renewalAdd => 'Adăugați un document';
 
   @override
-  String get renewalEditTitle => 'Edit document';
+  String get renewalEditTitle => 'Editați documentul';
 
   @override
-  String get renewalSave => 'Save';
+  String get renewalSave => 'Salvați';
 
   @override
-  String get renewalRequired => 'Required';
+  String get renewalRequired => 'Obligatoriu';
 
   @override
-  String get renewalPickDate => 'Pick expiry date';
+  String get renewalPickDate => 'Alegeți data de expirare';
 
   @override
   String get renewalLoadError =>
-      'Could not load your documents. Pull to refresh.';
+      'Documentele dumneavoastră nu au putut fi încărcate. Trageți pentru a reîmprospăta.';
 
   @override
-  String get renewalEmptyTitle => 'No documents tracked yet';
+  String get renewalEmptyTitle => 'Încă niciun document urmărit';
 
   @override
   String get renewalEmptyBody =>
-      'Add your residence permit, passport, insurance or licence and we\'ll watch the expiry dates for you.';
+      'Adăugați permisul de ședere, pașaportul, asigurarea sau permisul, iar noi vom urmări datele de expirare pentru dumneavoastră.';
 
   @override
-  String get renewalGuideHint => 'How to renew →';
+  String get renewalGuideHint => 'Cum se reînnoiește →';
 
   @override
-  String get renewalFieldType => 'Document type';
+  String get renewalFieldType => 'Tipul documentului';
 
   @override
-  String get renewalFieldLabel => 'Label';
+  String get renewalFieldLabel => 'Etichetă';
 
   @override
-  String get renewalFieldNumber => 'Document number (optional)';
+  String get renewalFieldNumber => 'Numărul documentului (opțional)';
 
   @override
-  String get renewalFieldJurisdiction => 'Issuing country';
+  String get renewalFieldJurisdiction => 'Țara emitentă';
 
   @override
-  String get renewalFieldExpiry => 'Expiry date';
+  String get renewalFieldExpiry => 'Data de expirare';
 
   @override
-  String get renewalWindow90 => '90 days';
+  String get renewalWindow90 => '90 de zile';
 
   @override
-  String get renewalWindow30 => '30 days';
+  String get renewalWindow30 => '30 de zile';
 
   @override
-  String get renewalWindow7 => '7 days';
+  String get renewalWindow7 => '7 zile';
 
   @override
-  String get renewalExpiresToday => 'Expires today';
+  String get renewalExpiresToday => 'Expiră astăzi';
 
   @override
-  String renewalExpiresInDays(Object date, Object days) {
-    return 'Expires in $days days · $date';
+  String renewalExpiresInDays(int days, String date) {
+    return 'Expiră peste $days zile · $date';
   }
 
   @override
-  String renewalExpiredOn(Object date) {
-    return 'Expired on $date';
+  String renewalExpiredOn(String date) {
+    return 'A expirat la $date';
   }
 
   @override
-  String get renewalTypeResidencePermit => 'Residence permit';
+  String get renewalTypeResidencePermit => 'Permis de ședere';
 
   @override
-  String get renewalTypePassport => 'Passport';
+  String get renewalTypePassport => 'Pașaport';
 
   @override
-  String get renewalTypeIdCard => 'ID card';
+  String get renewalTypeIdCard => 'Carte de identitate';
 
   @override
-  String get renewalTypeVisa => 'Visa';
+  String get renewalTypeVisa => 'Viză';
 
   @override
-  String get renewalTypeDrivingLicence => 'Driving licence';
+  String get renewalTypeDrivingLicence => 'Permis de conducere';
 
   @override
-  String get renewalTypeInsurance => 'Insurance';
+  String get renewalTypeInsurance => 'Asigurare';
 
   @override
-  String get renewalTypeWorkPermit => 'Work permit';
+  String get renewalTypeWorkPermit => 'Permis de muncă';
 
   @override
-  String get renewalTypeOther => 'Other';
+  String get renewalTypeOther => 'Altul';
 
   @override
-  String get costEstimateTitle => 'Cost & Risk Estimator';
+  String get costEstimateTitle => 'Estimator de costuri și riscuri';
 
   @override
   String get costEstimateSubtitle =>
-      'Get a rough idea of what a case might cost, how long it could take, and whether it is worth pursuing.';
+      'Aflați aproximativ cât ar putea costa o cauză, cât ar putea dura și dacă merită urmărită.';
 
   @override
-  String get costEstimateCaseTypeLabel => 'Type of case';
+  String get costEstimateCaseTypeLabel => 'Tipul cauzei';
 
   @override
   String get costEstimateCaseTypeHint =>
-      'e.g. unpaid invoice, wrongful dismissal, deposit dispute';
+      'de ex. factură neplătită, concediere abuzivă, litigiu privind garanția';
 
   @override
-  String get costEstimateJurisdictionLabel => 'Jurisdiction';
+  String get costEstimateJurisdictionLabel => 'Jurisdicție';
 
   @override
-  String get costEstimateAmountLabel => 'Amount in dispute (optional)';
+  String get costEstimateAmountLabel => 'Suma în litigiu (opțional)';
 
   @override
-  String get costEstimateAmountHint => 'e.g. 12500';
+  String get costEstimateAmountHint => 'de ex. 12500';
 
   @override
   String get costEstimateDescriptionLabel =>
-      'Briefly describe the situation (optional)';
+      'Descrieți pe scurt situația (opțional)';
 
   @override
-  String get costEstimateB2bToggle => 'Lead-qualification card (B2B)';
+  String get costEstimateB2bToggle =>
+      'Fișă de calificare a clienților potențiali (B2B)';
 
   @override
   String get costEstimateB2bSubtitle =>
-      'Compact output for quickly triaging an inbound client.';
+      'Rezultat compact pentru trierea rapidă a unui client nou.';
 
   @override
-  String get costEstimateSubmit => 'Estimate my case';
+  String get costEstimateSubmit => 'Estimați cauza mea';
 
   @override
   String get costEstimateDisclaimer =>
-      'Rough estimate only — not a prediction, guarantee, or legal advice. Actual costs and outcomes vary case by case.';
+      'Doar o estimare aproximativă — nu o predicție, o garanție sau consultanță juridică. Costurile și rezultatele reale variază de la caz la caz.';
 
   @override
-  String get costEstimateCostsHeading => 'Estimated costs';
+  String get costEstimateCostsHeading => 'Costuri estimate';
 
   @override
-  String get costEstimateCourtFee => 'Court / state fee';
+  String get costEstimateCourtFee => 'Taxă judiciară / de stat';
 
   @override
-  String get costEstimateLawyerFee => 'Lawyer fee';
+  String get costEstimateLawyerFee => 'Onorariu avocat';
 
   @override
-  String get costEstimateTotal => 'Total (approx.)';
+  String get costEstimateTotal => 'Total (aprox.)';
 
   @override
-  String get costEstimateDuration => 'Time to first resolution';
+  String get costEstimateDuration => 'Timp până la prima soluționare';
 
   @override
-  String get costEstimateMonthsSuffix => 'months';
+  String get costEstimateMonthsSuffix => 'luni';
 
   @override
-  String get costEstimateFactorsFor => 'In your favour';
+  String get costEstimateFactorsFor => 'În favoarea dumneavoastră';
 
   @override
-  String get costEstimateFactorsAgainst => 'Working against you';
+  String get costEstimateFactorsAgainst => 'În defavoarea dumneavoastră';
 
   @override
-  String get costEstimateStrengthWorth => 'Likely worth pursuing';
+  String get costEstimateStrengthWorth => 'Probabil merită urmărită';
 
   @override
-  String get costEstimateStrengthContested => 'Contested — could go either way';
+  String get costEstimateStrengthContested =>
+      'Contestată — poate evolua în oricare direcție';
 
   @override
-  String get costEstimateStrengthWeak => 'Weak — proceed with caution';
+  String get costEstimateStrengthWeak => 'Slabă — procedați cu prudență';
 }

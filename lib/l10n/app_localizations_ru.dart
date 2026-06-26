@@ -4671,946 +4671,950 @@ class AppLocalizationsRu extends AppLocalizations {
       'Не удалось обновить пароль. Попробуйте ещё раз.';
 
   @override
-  String get accessLogTile => 'Access log';
+  String get accessLogTile => 'Журнал доступа';
 
   @override
-  String get accessLogTileSubtitle => 'See who and what accessed your data';
+  String get accessLogTileSubtitle => 'Кто и как обращался к вашим данным';
 
   @override
-  String get accessLogTitle => 'Access log for my data';
+  String get accessLogTitle => 'Журнал доступа к моим данным';
 
   @override
   String get accessLogIntro =>
-      'A transparent, tamper-evident record of every time your data was accessed or processed — including by our AI. You can verify it has not been altered.';
+      'Прозрачная защищённая от подделки запись каждого обращения к вашим данным или их обработки — в том числе нашим ИИ. Вы можете убедиться, что записи не изменялись.';
 
   @override
-  String get accessLogEmpty => 'No access events yet.';
+  String get accessLogEmpty => 'Событий доступа пока нет.';
 
   @override
   String get accessLogError =>
-      'Could not load your access log. Pull down to retry.';
+      'Не удалось загрузить журнал доступа. Потяните вниз, чтобы повторить.';
 
   @override
   String get accessLogIntegrityOk =>
-      'Integrity verified — the log links form an unbroken chain.';
+      'Целостность подтверждена — записи журнала образуют непрерывную цепочку.';
 
   @override
   String get accessLogIntegrityBroken =>
-      'Warning: the log chain is broken. Some entries may have been removed or reordered. Please contact support.';
+      'Внимание: цепочка журнала нарушена. Часть записей могла быть удалена или переставлена. Обратитесь в поддержку.';
 
   @override
   String get accessActionLlmEgress =>
-      'Sent to AI for processing (pseudonymized)';
+      'Отправлено в ИИ для обработки (псевдонимизировано)';
 
   @override
-  String get accessActionAiAnalysis => 'Analyzed by AI';
+  String get accessActionAiAnalysis => 'Проанализировано ИИ';
 
   @override
-  String get accessActionDocumentParse => 'Document parsed';
+  String get accessActionDocumentParse => 'Документ обработан';
 
   @override
-  String get accessActionStaffRead => 'Reviewed by a staff member';
+  String get accessActionStaffRead => 'Просмотрено сотрудником';
 
   @override
-  String get accessActionExport => 'Data exported';
+  String get accessActionExport => 'Данные экспортированы';
 
   @override
-  String get accessActionEmailTriage => 'Email triaged';
+  String get accessActionEmailTriage => 'Письмо обработано';
 
   @override
-  String get accessActionDeadlineScan => 'Deadlines scanned';
+  String get accessActionDeadlineScan => 'Сроки просканированы';
 
   @override
-  String get breachAlertTitle => 'Security alert on your data';
+  String get breachAlertTitle => 'Предупреждение о безопасности ваших данных';
 
   @override
   String get breachAlertBody =>
-      'Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34).';
+      'Наш автоматический мониторинг обнаружил необычное обращение к вашим данным. Мы изучаем ситуацию и уведомим вас о любом подтверждённом инциденте, как того требует закон (ст. 34 GDPR).';
 
   @override
-  String get caseDossierTitle => 'Export case dossier';
+  String get caseDossierTitle => 'Экспорт досье по делу';
 
   @override
   String get caseDossierSubtitle =>
-      'One PDF with everything — facts, chronology, deadlines and documents — to hand to a lawyer, a court, or a complaint body.';
+      'Один PDF со всем сразу — факты, хронология, сроки и документы — чтобы передать юристу, в суд или в надзорный орган.';
 
   @override
-  String get caseDossierTileTitle => 'Export dossier (PDF)';
+  String get caseDossierTileTitle => 'Экспорт досье (PDF)';
 
   @override
   String get caseDossierTileSubtitle =>
-      'Hand the whole case to a lawyer or court in one file';
+      'Передайте всё дело юристу или в суд одним файлом';
 
   @override
-  String get caseDossierSectionsHeading => 'Include in the dossier';
+  String get caseDossierSectionsHeading => 'Включить в досье';
 
   @override
-  String get caseDossierSectionFacts => 'Case facts';
+  String get caseDossierSectionFacts => 'Факты по делу';
 
   @override
-  String get caseDossierSectionFactsHint => 'Always included';
+  String get caseDossierSectionFactsHint => 'Включается всегда';
 
   @override
-  String get caseDossierSectionTimeline => 'Chronology';
+  String get caseDossierSectionTimeline => 'Хронология';
 
   @override
-  String get caseDossierSectionDeadlines => 'Deadlines';
+  String get caseDossierSectionDeadlines => 'Сроки';
 
   @override
-  String get caseDossierSectionDocuments => 'Documents';
+  String get caseDossierSectionDocuments => 'Документы';
 
   @override
-  String get caseDossierSectionAiSummary => 'AI summary';
+  String get caseDossierSectionAiSummary => 'Сводка ИИ';
 
   @override
-  String get caseDossierExportButton => 'Export PDF';
+  String get caseDossierExportButton => 'Экспорт PDF';
 
   @override
-  String get caseDossierExporting => 'Building your dossier…';
+  String get caseDossierExporting => 'Формируем досье…';
 
   @override
-  String get caseDossierSuccess => 'Dossier ready. Open or share the file.';
+  String get caseDossierSuccess =>
+      'Досье готово. Откройте или поделитесь файлом.';
 
   @override
-  String get caseDossierOpen => 'Open dossier';
+  String get caseDossierOpen => 'Открыть досье';
 
   @override
   String get caseDossierError =>
-      'Could not build the dossier. Please try again.';
+      'Не удалось сформировать досье. Попробуйте снова.';
 
   @override
-  String get caseDossierErrorNotOwned => 'This case could not be found.';
+  String get caseDossierErrorNotOwned => 'Это дело не найдено.';
 
   @override
   String get caseDossierDisclaimer =>
-      'The dossier reproduces your case data as recorded. Review it before sharing.';
+      'Досье воспроизводит данные вашего дела в том виде, как они записаны. Проверьте его перед отправкой.';
 
   @override
-  String get followupsTitle => 'Next steps';
+  String get followupsTitle => 'Дальнейшие шаги';
 
   @override
-  String get followupsSubtitle => 'Practical tasks to keep your case moving';
+  String get followupsSubtitle =>
+      'Практические задачи, чтобы двигать дело вперёд';
 
   @override
-  String get followupsEmpty => 'No follow-up steps yet.';
+  String get followupsEmpty => 'Дальнейших шагов пока нет.';
 
   @override
   String get followupsEmptyDesc =>
-      'Add a step, or let the AI suggest what to do next.';
+      'Добавьте шаг или позвольте ИИ предложить, что делать дальше.';
 
   @override
-  String get followupsAdd => 'Add step';
+  String get followupsAdd => 'Добавить шаг';
 
   @override
-  String get followupsSuggest => 'Suggest steps';
+  String get followupsSuggest => 'Предложить шаги';
 
   @override
   String get followupsSuggestNone =>
-      'No suggestions right now. Try after chatting about the case.';
+      'Сейчас предложений нет. Попробуйте после обсуждения дела в чате.';
 
   @override
-  String get followupsSuggestTitle => 'Suggested next steps';
+  String get followupsSuggestTitle => 'Предлагаемые дальнейшие шаги';
 
   @override
-  String get followupsAddPrompt => 'Add the steps you want to keep:';
+  String get followupsAddPrompt => 'Добавьте шаги, которые хотите сохранить:';
 
   @override
-  String get followupsNewTitleHint => 'What needs to be done?';
+  String get followupsNewTitleHint => 'Что нужно сделать?';
 
   @override
-  String get followupsNewDetailHint => 'Optional note (why / what to attach)';
+  String get followupsNewDetailHint =>
+      'Заметка (необязательно): зачем / что приложить';
 
   @override
-  String get followupsDueOptional => 'Remind me on (optional)';
+  String get followupsDueOptional => 'Напомнить (необязательно)';
 
   @override
-  String get followupsOverdue => 'Overdue';
+  String get followupsOverdue => 'Просрочено';
 
   @override
-  String followupsDueOn(Object date) {
-    return 'Due $date';
+  String followupsDueOn(String date) {
+    return 'Срок: $date';
   }
 
   @override
-  String get followupsDone => 'Done';
+  String get followupsDone => 'Готово';
 
   @override
-  String get followupsSnooze => 'Snooze';
+  String get followupsSnooze => 'Отложить';
 
   @override
-  String get followupsSnooze1Week => 'Remind in a week';
+  String get followupsSnooze1Week => 'Напомнить через неделю';
 
   @override
-  String get followupsDismiss => 'Dismiss';
+  String get followupsDismiss => 'Скрыть';
 
   @override
-  String get followupsLoadError => 'Could not load next steps';
+  String get followupsLoadError => 'Не удалось загрузить дальнейшие шаги';
 
   @override
-  String get followupsAiBadge => 'AI';
+  String get followupsAiBadge => 'ИИ';
 
   @override
-  String get contractCompareTitle => 'Compare versions';
+  String get contractCompareTitle => 'Сравнить версии';
 
   @override
   String get contractCompareIntro =>
-      'Upload two versions of the same contract. We highlight what changed and whether each change helps or hurts you.';
+      'Загрузите две версии одного договора. Мы выделим, что изменилось и идёт ли каждое изменение вам на пользу или во вред.';
 
   @override
-  String get contractCompareOldVersion => 'Old version (v1)';
+  String get contractCompareOldVersion => 'Старая версия (v1)';
 
   @override
-  String get contractCompareNewVersion => 'New version (v2)';
+  String get contractCompareNewVersion => 'Новая версия (v2)';
 
   @override
-  String get contractCompareCta => 'Compare versions';
+  String get contractCompareCta => 'Сравнить версии';
 
   @override
-  String get contractCompareAdverse => 'Adverse';
+  String get contractCompareAdverse => 'Невыгодно';
 
   @override
-  String get contractCompareFavorable => 'Favorable';
+  String get contractCompareFavorable => 'Выгодно';
 
   @override
-  String get contractCompareNeutral => 'Neutral';
+  String get contractCompareNeutral => 'Нейтрально';
 
   @override
-  String get contractCompareBefore => 'Before';
+  String get contractCompareBefore => 'Было';
 
   @override
-  String get contractCompareAfter => 'After';
+  String get contractCompareAfter => 'Стало';
 
   @override
   String get contractCompareTruncated =>
-      'Long contract — only the first part of each version was compared.';
+      'Длинный договор — сравнена только первая часть каждой версии.';
 
   @override
   String get contractCompareNoChanges =>
-      'No material changes detected between the two versions.';
+      'Существенных изменений между версиями не обнаружено.';
 
   @override
-  String get docSearchTitle => 'Search my documents';
+  String get docSearchTitle => 'Поиск по моим документам';
 
   @override
-  String get docSearchHint => 'e.g. where was the deposit mentioned';
+  String get docSearchHint => 'напр., где упоминался задаток';
 
   @override
   String get docSearchSubtitle =>
-      'Semantic search across your vault and case files';
+      'Смысловой поиск по вашему хранилищу и материалам дел';
 
   @override
   String get docSearchIdle =>
-      'Search the contents of your own documents — not just titles.';
+      'Ищите по содержимому ваших документов, а не только по названиям.';
 
   @override
-  String get docSearchNoResults => 'No matches found in your documents.';
+  String get docSearchNoResults => 'В ваших документах совпадений не найдено.';
 
   @override
-  String get docSearchError => 'Search failed. Please try again.';
+  String get docSearchError => 'Поиск не удался. Попробуйте снова.';
 
   @override
-  String get docSearchUntitled => 'Untitled document';
+  String get docSearchUntitled => 'Документ без названия';
 
   @override
-  String get docSearchKindCase => 'Case document';
+  String get docSearchKindCase => 'Документ по делу';
 
   @override
-  String get docSearchKindVault => 'Vault document';
+  String get docSearchKindVault => 'Документ из хранилища';
 
   @override
-  String get docSearchMenuTitle => 'Search my documents';
+  String get docSearchMenuTitle => 'Поиск по моим документам';
 
   @override
   String get docSearchMenuSubtitle =>
-      'Find anything in your own files by meaning';
+      'Найдите что угодно в своих файлах по смыслу';
 
   @override
-  String get legalTemplatesTitle => 'Template library';
+  String get legalTemplatesTitle => 'Библиотека шаблонов';
 
   @override
-  String get legalTemplatesMenuLabel => 'Templates';
+  String get legalTemplatesMenuLabel => 'Шаблоны';
 
   @override
   String get legalTemplatesSubtitle =>
-      'Pick a ready-made form, fill in a few details, and we\'ll create a draft you can edit and export.';
+      'Выберите готовую форму, заполните несколько полей — и мы создадим черновик, который можно отредактировать и экспортировать.';
 
   @override
   String get legalTemplatesDisclaimer =>
-      'These are general sample forms, not individual legal advice. Review and adapt before sending.';
+      'Это типовые образцы форм, а не индивидуальная юридическая консультация. Проверьте и адаптируйте перед отправкой.';
 
   @override
-  String get legalTemplatesSampleBadge => 'Sample';
+  String get legalTemplatesSampleBadge => 'Образец';
 
   @override
-  String get legalTemplatesEmpty => 'No templates for this filter yet.';
+  String get legalTemplatesEmpty => 'Шаблонов для этого фильтра пока нет.';
 
   @override
   String get legalTemplatesError =>
-      'Couldn\'t load templates. Please try again.';
+      'Не удалось загрузить шаблоны. Попробуйте снова.';
 
   @override
-  String get legalTemplatesFilterAll => 'All';
+  String get legalTemplatesFilterAll => 'Все';
 
   @override
-  String get legalTemplatesJurisdictionFi => 'Finland';
+  String get legalTemplatesJurisdictionFi => 'Финляндия';
 
   @override
-  String get legalTemplatesJurisdictionEe => 'Estonia';
+  String get legalTemplatesJurisdictionEe => 'Эстония';
 
   @override
-  String get legalTemplatesCategoryComplaint => 'Complaints';
+  String get legalTemplatesCategoryComplaint => 'Жалобы';
 
   @override
-  String get legalTemplatesCategoryAppeal => 'Appeals';
+  String get legalTemplatesCategoryAppeal => 'Апелляции';
 
   @override
-  String get legalTemplatesCategoryApplication => 'Applications';
+  String get legalTemplatesCategoryApplication => 'Заявления';
 
   @override
-  String get legalTemplatesCategoryClaim => 'Claims';
+  String get legalTemplatesCategoryClaim => 'Требования';
 
   @override
-  String get legalTemplatesCategoryRequest => 'Requests';
+  String get legalTemplatesCategoryRequest => 'Запросы';
 
   @override
-  String get legalTemplatesFillTitle => 'Fill in the details';
+  String get legalTemplatesFillTitle => 'Заполните поля';
 
   @override
   String get legalTemplatesFillIntro =>
-      'We\'ll auto-fill your name and case details. Complete the fields below.';
+      'Мы автоматически подставим ваше имя и данные дела. Заполните поля ниже.';
 
   @override
-  String get legalTemplatesFieldRequired => 'This field is required';
+  String get legalTemplatesFieldRequired => 'Это поле обязательно';
 
   @override
-  String get legalTemplatesCreateDraft => 'Create draft';
+  String get legalTemplatesCreateDraft => 'Создать черновик';
 
   @override
-  String get legalTemplatesCreating => 'Creating draft…';
+  String get legalTemplatesCreating => 'Создаём черновик…';
 
   @override
   String get legalTemplatesCreateFailed =>
-      'Couldn\'t create the draft. Please try again.';
+      'Не удалось создать черновик. Попробуйте снова.';
 
   @override
   String get legalTemplatesUnresolvedWarning =>
-      'Some fields are still blank and are marked with ____ in the draft. You can complete them in the editor.';
+      'Некоторые поля остались пустыми и отмечены в черновике как ____. Вы можете заполнить их в редакторе.';
 
   @override
-  String get legalTemplatesFieldRecipient => 'Recipient (authority / landlord)';
+  String get legalTemplatesFieldRecipient =>
+      'Получатель (орган / арендодатель)';
 
   @override
-  String get legalTemplatesFieldAddress => 'Your postal address';
+  String get legalTemplatesFieldAddress => 'Ваш почтовый адрес';
 
   @override
-  String get legalTemplatesFieldSubject => 'Subject';
+  String get legalTemplatesFieldSubject => 'Тема';
 
   @override
-  String get legalTemplatesFieldDescription => 'Description of the matter';
+  String get legalTemplatesFieldDescription => 'Описание вопроса';
 
   @override
-  String get legalTemplatesFieldDemand => 'What you are asking for';
+  String get legalTemplatesFieldDemand => 'Что вы требуете';
 
   @override
-  String get checklistActionPlan => 'Action plan';
+  String get checklistActionPlan => 'План действий';
 
   @override
-  String get checklistActionPlanSubtitle => 'Steps for this type of case';
+  String get checklistActionPlanSubtitle => 'Шаги для этого типа дела';
 
   @override
-  String checklistProgress(Object completed, Object total) {
-    return '$completed of $total steps done';
+  String checklistProgress(int completed, int total) {
+    return 'Выполнено $completed из $total шагов';
   }
 
   @override
-  String get checklistAllDone => 'All steps complete';
+  String get checklistAllDone => 'Все шаги выполнены';
 
   @override
-  String get checklistEmpty =>
-      'No action plan is available for this case type yet.';
+  String get checklistEmpty => 'Для этого типа дела плана действий пока нет.';
 
   @override
-  String checklistDeadlineDays(Object days) {
-    return '$days days';
+  String checklistDeadlineDays(int days) {
+    return '$days дн.';
   }
 
   @override
   String get checklistDisclaimer =>
-      'This is general information, not legal advice. Deadlines are statutory defaults — confirm the exact date for your case.';
+      'Это общая информация, а не юридическая консультация. Сроки указаны по умолчанию согласно закону — уточните точную дату для вашего дела.';
 
   @override
-  String get checklistViewPlan => 'View plan';
+  String get checklistViewPlan => 'Открыть план';
 
   @override
-  String get explainPlainTitle => 'Explain in plain words';
+  String get explainPlainTitle => 'Объяснить простыми словами';
 
   @override
   String get explainPlainIntro =>
-      'Paste an official letter, decision, or contract and we\'ll explain what it means and what it asks you to do — in plain language.';
+      'Вставьте официальное письмо, решение или договор — и мы простым языком объясним, что это значит и что от вас требуется.';
 
   @override
-  String get explainPlainLevelFriend => 'Like to a friend';
+  String get explainPlainLevelFriend => 'Как другу';
 
   @override
-  String get explainPlainLevelTerms => 'Keep legal terms';
+  String get explainPlainLevelTerms => 'Сохранить юридические термины';
 
   @override
-  String get explainPlainInputHint => 'Paste the legal text here…';
+  String get explainPlainInputHint => 'Вставьте сюда юридический текст…';
 
   @override
-  String get explainPlainSubmit => 'Explain';
+  String get explainPlainSubmit => 'Объяснить';
 
   @override
-  String get explainPlainWorking => 'Explaining…';
+  String get explainPlainWorking => 'Объясняем…';
 
   @override
-  String get explainPlainTldr => 'Bottom line';
+  String get explainPlainTldr => 'Главное';
 
   @override
-  String get explainPlainBreakdown => 'What it says, part by part';
+  String get explainPlainBreakdown => 'Что здесь сказано, по частям';
 
   @override
-  String get explainPlainGlossary => 'Tricky terms explained';
+  String get explainPlainGlossary => 'Сложные термины простыми словами';
 
   @override
-  String get explainPlainNextSteps => 'What you can do next';
+  String get explainPlainNextSteps => 'Что вы можете сделать дальше';
 
   @override
-  String get explainPlainOpenInCorpus => 'Look up in the law library';
+  String get explainPlainOpenInCorpus => 'Найти в библиотеке законов';
 
   @override
   String get explainPlainEmptyResult =>
-      'No explanation could be produced for this text. Try pasting a longer or clearer excerpt.';
+      'Для этого текста не удалось составить объяснение. Попробуйте вставить более длинный или понятный фрагмент.';
 
   @override
   String get explainPlainQuotaTitle =>
-      'You\'ve used your free explanations this month';
+      'Вы использовали бесплатные объяснения на этот месяц';
 
   @override
   String get explainPlainQuotaBody =>
-      'Free accounts get 3 explanations per month. Upgrade to Pro for unlimited explanations.';
+      'На бесплатном тарифе доступно 3 объяснения в месяц. Оформите Pro для безлимитных объяснений.';
 
   @override
-  String get explainPlainUpgradeCta => 'Upgrade to Pro';
+  String get explainPlainUpgradeCta => 'Оформить Pro';
 
   @override
   String get explainPlainError =>
-      'Something went wrong while explaining this text. Please try again.';
+      'При объяснении этого текста что-то пошло не так. Попробуйте снова.';
 
   @override
-  String get explainPlainRetry => 'Try again';
+  String get explainPlainRetry => 'Повторить';
 
   @override
-  String get demandLetterTitle => 'Demand letter';
+  String get demandLetterTitle => 'Претензия';
 
   @override
   String get demandLetterSubtitle =>
-      'Create a formal pre-court demand (maksuvaatimus / nõudekiri).';
+      'Составьте официальную досудебную претензию (maksuvaatimus / nõudekiri).';
 
   @override
-  String get demandLetterStepType => 'Type of claim';
+  String get demandLetterStepType => 'Вид требования';
 
   @override
-  String get demandLetterStepParties => 'Parties';
+  String get demandLetterStepParties => 'Стороны';
 
   @override
-  String get demandLetterStepClaim => 'Amount & basis';
+  String get demandLetterStepClaim => 'Сумма и основание';
 
   @override
-  String get demandLetterStepDeadline => 'Deadline';
+  String get demandLetterStepDeadline => 'Срок';
 
   @override
-  String get demandLetterStepReview => 'Review & generate';
+  String get demandLetterStepReview => 'Проверка и формирование';
 
   @override
-  String get demandLetterClaimDepositReturn => 'Return of rental deposit';
+  String get demandLetterClaimDepositReturn => 'Возврат залога по аренде';
 
   @override
-  String get demandLetterClaimUnpaidWage => 'Unpaid wages';
+  String get demandLetterClaimUnpaidWage => 'Невыплаченная зарплата';
 
   @override
-  String get demandLetterClaimFineDispute => 'Dispute a fine / charge';
+  String get demandLetterClaimFineDispute => 'Оспаривание штрафа / начисления';
 
   @override
-  String get demandLetterClaimGeneric => 'Other monetary claim';
+  String get demandLetterClaimGeneric => 'Иное денежное требование';
 
   @override
-  String get demandLetterJurisdiction => 'Jurisdiction';
+  String get demandLetterJurisdiction => 'Юрисдикция';
 
   @override
-  String get demandLetterLanguage => 'Letter language';
+  String get demandLetterLanguage => 'Язык письма';
 
   @override
-  String get demandLetterRecipientName => 'Recipient name';
+  String get demandLetterRecipientName => 'Имя получателя';
 
   @override
-  String get demandLetterRecipientAddress => 'Recipient address (optional)';
+  String get demandLetterRecipientAddress => 'Адрес получателя (необязательно)';
 
   @override
-  String get demandLetterSenderName => 'Your name';
+  String get demandLetterSenderName => 'Ваше имя';
 
   @override
-  String get demandLetterSenderAddress => 'Your address / email (optional)';
+  String get demandLetterSenderAddress => 'Ваш адрес / e-mail (необязательно)';
 
   @override
-  String get demandLetterAmount => 'Amount';
+  String get demandLetterAmount => 'Сумма';
 
   @override
-  String get demandLetterCurrency => 'Currency';
+  String get demandLetterCurrency => 'Валюта';
 
   @override
-  String get demandLetterBasis => 'What happened (basis of the claim)';
+  String get demandLetterBasis => 'Что произошло (основание требования)';
 
   @override
   String get demandLetterBasisHint =>
-      'Describe the facts: dates, amounts, what was agreed and what went wrong.';
+      'Опишите факты: даты, суммы, о чём договаривались и что пошло не так.';
 
   @override
-  String get demandLetterDeadline => 'Payment deadline';
+  String get demandLetterDeadline => 'Срок оплаты';
 
   @override
-  String get demandLetterDeadlineHint => 'e.g. 14 days from today';
+  String get demandLetterDeadlineHint => 'напр., 14 дней с сегодняшнего дня';
 
   @override
-  String get demandLetterReference => 'Reference (optional)';
+  String get demandLetterReference => 'Референс (необязательно)';
 
   @override
-  String get demandLetterGenerate => 'Generate letter';
+  String get demandLetterGenerate => 'Сформировать письмо';
 
   @override
-  String get demandLetterGenerating => 'Generating…';
+  String get demandLetterGenerating => 'Формируем…';
 
   @override
   String get demandLetterGenerateFailed =>
-      'Couldn\'t generate the letter. Please try again.';
+      'Не удалось сформировать письмо. Попробуйте снова.';
 
   @override
-  String get demandLetterFieldRequired => 'This field is required';
+  String get demandLetterFieldRequired => 'Это поле обязательно';
 
   @override
-  String get demandLetterNext => 'Next';
+  String get demandLetterNext => 'Далее';
 
   @override
-  String get demandLetterBack => 'Back';
+  String get demandLetterBack => 'Назад';
 
   @override
-  String get demandLetterPreviewTitle => 'Your letter';
+  String get demandLetterPreviewTitle => 'Ваше письмо';
 
   @override
-  String get demandLetterCopy => 'Copy text';
+  String get demandLetterCopy => 'Скопировать текст';
 
   @override
-  String get demandLetterCopied => 'Letter copied to clipboard';
+  String get demandLetterCopied => 'Письмо скопировано в буфер обмена';
 
   @override
-  String get demandLetterExportPdf => 'Export PDF';
+  String get demandLetterExportPdf => 'Экспорт PDF';
 
   @override
-  String get demandLetterExporting => 'Exporting…';
+  String get demandLetterExporting => 'Экспортируем…';
 
   @override
   String get demandLetterExportFailed =>
-      'Couldn\'t export the document. Please try again.';
+      'Не удалось экспортировать документ. Попробуйте снова.';
 
   @override
-  String get demandLetterSendEmail => 'Send via email';
+  String get demandLetterSendEmail => 'Отправить по e-mail';
 
   @override
-  String get demandLetterNormsTitle => 'Legal references';
+  String get demandLetterNormsTitle => 'Ссылки на нормы права';
 
   @override
   String get demandLetterDisclaimer =>
-      'This letter is prepared on your behalf as a general template. It is not legal advice or an act of a licensed attorney. Review it before sending — no letter is sent automatically.';
+      'Это письмо подготовлено от вашего имени как типовой шаблон. Оно не является юридической консультацией или действием лицензированного адвоката. Проверьте его перед отправкой — ни одно письмо не отправляется автоматически.';
 
   @override
-  String get demandLetterMenuTile => 'Demand letter';
+  String get demandLetterMenuTile => 'Претензия';
 
   @override
-  String get calcHubTitle => 'Legal calculators';
+  String get calcHubTitle => 'Юридические калькуляторы';
 
   @override
-  String get calcHubSubtitle => 'Quick estimates before your next step';
+  String get calcHubSubtitle => 'Быстрые расчёты перед следующим шагом';
 
   @override
-  String get calcHubJurisdiction => 'Jurisdiction';
+  String get calcHubJurisdiction => 'Юрисдикция';
 
   @override
-  String calcRatesAsOf(Object date) {
-    return 'Rates as of $date';
+  String calcRatesAsOf(String date) {
+    return 'Ставки по состоянию на $date';
   }
 
   @override
-  String get calcRatesOffline => 'Showing cached rates (offline)';
+  String get calcRatesOffline => 'Показаны сохранённые ставки (офлайн)';
 
   @override
   String get calcIndicativeBanner =>
-      'Indicative estimate only — not an official calculation or legal advice.';
+      'Только ориентировочный расчёт — не официальное вычисление и не юридическая консультация.';
 
   @override
-  String get calcCalculate => 'Calculate';
+  String get calcCalculate => 'Рассчитать';
 
   @override
-  String get calcResult => 'Result';
+  String get calcResult => 'Результат';
 
   @override
-  String get calcFormula => 'How this is calculated';
+  String get calcFormula => 'Как это рассчитано';
 
   @override
-  String get calcSource => 'Source';
+  String get calcSource => 'Источник';
 
   @override
-  String get calcSeveranceTitle => 'Severance / notice';
+  String get calcSeveranceTitle => 'Выходное пособие / уведомление';
 
   @override
   String get calcSeveranceDesc =>
-      'Estimate severance pay and notice period on redundancy';
+      'Оцените выходное пособие и срок уведомления при сокращении';
 
   @override
-  String get calcSeveranceSalary => 'Gross monthly salary';
+  String get calcSeveranceSalary => 'Месячная зарплата брутто';
 
   @override
-  String get calcSeveranceTenure => 'Years of service';
+  String get calcSeveranceTenure => 'Стаж работы (лет)';
 
   @override
-  String get calcSeveranceTotal => 'Estimated severance';
+  String get calcSeveranceTotal => 'Расчётное пособие';
 
   @override
-  String get calcSeveranceNotice => 'Notice period';
+  String get calcSeveranceNotice => 'Срок уведомления';
 
   @override
-  String get calcSeveranceGenerateDemand => 'Draft a demand letter';
+  String get calcSeveranceGenerateDemand => 'Составить претензию';
 
   @override
-  String get calcLimitationTitle => 'Limitation & appeal deadlines';
+  String get calcLimitationTitle => 'Сроки давности и обжалования';
 
   @override
   String get calcLimitationDesc =>
-      'Check whether a claim or appeal period has expired';
+      'Проверьте, не истёк ли срок для требования или обжалования';
 
   @override
-  String get calcLimitationType => 'Type of period';
+  String get calcLimitationType => 'Вид срока';
 
   @override
-  String get calcLimitationStart => 'Start date (event / decision)';
+  String get calcLimitationStart => 'Дата начала (событие / решение)';
 
   @override
-  String get calcLimitationPickDate => 'Pick date';
+  String get calcLimitationPickDate => 'Выбрать дату';
 
   @override
-  String get calcLimitationDeadline => 'Deadline';
+  String get calcLimitationDeadline => 'Крайний срок';
 
   @override
-  String get calcLimitationExpired => 'Period has expired';
+  String get calcLimitationExpired => 'Срок истёк';
 
   @override
-  String calcLimitationDaysLeft(Object days) {
-    return '$days days remaining';
+  String calcLimitationDaysLeft(int days) {
+    return 'Осталось $days дн.';
   }
 
   @override
   String get calcLimitationShifted =>
-      'Shifted to the next working day (weekend/holiday).';
+      'Перенесено на следующий рабочий день (выходной/праздник).';
 
   @override
-  String get calcLimitationAddDeadline => 'Add to deadlines';
+  String get calcLimitationAddDeadline => 'Добавить в сроки';
 
   @override
-  String get calcStateFeeTitle => 'Court / state fees';
+  String get calcStateFeeTitle => 'Судебные / государственные пошлины';
 
   @override
-  String get calcStateFeeDesc => 'Reference filing fees by court and stage';
+  String get calcStateFeeDesc => 'Справочные пошлины по судам и стадиям';
 
   @override
-  String get calcChildSupportTitle => 'Child support (orientation)';
+  String get calcChildSupportTitle => 'Алименты (ориентир)';
 
   @override
   String get calcChildSupportDesc =>
-      'Rough orientation figure — the real amount is set case by case';
+      'Примерный ориентировочный размер — реальная сумма определяется в каждом деле отдельно';
 
   @override
-  String get calcChildSupportNet => 'Payer\'s net monthly income';
+  String get calcChildSupportNet => 'Чистый месячный доход плательщика';
 
   @override
-  String get calcChildSupportChildren => 'Number of children';
+  String get calcChildSupportChildren => 'Количество детей';
 
   @override
-  String get calcChildSupportPerChild => 'Per child';
+  String get calcChildSupportPerChild => 'На одного ребёнка';
 
   @override
-  String get calcChildSupportTotal => 'Total monthly';
+  String get calcChildSupportTotal => 'Итого в месяц';
 
   @override
   String get calcChildSupportWarning =>
-      'Highly variable. Courts decide on the child\'s needs and both parents\' ability to pay. Use as a starting point only.';
+      'Сильно варьируется. Суд исходит из потребностей ребёнка и платёжеспособности обоих родителей. Используйте лишь как отправную точку.';
 
   @override
-  String get docCollectTitle => 'Documents to collect';
+  String get docCollectTitle => 'Документы к сбору';
 
   @override
   String get docCollectSubtitle =>
-      'Gather these before you apply or go to court';
+      'Соберите это перед подачей заявления или обращением в суд';
 
   @override
-  String get docCollectPickPrompt => 'What is your situation?';
+  String get docCollectPickPrompt => 'Какая у вас ситуация?';
 
   @override
-  String get docCollectProblemResidence => 'Residence permit';
+  String get docCollectProblemResidence => 'Вид на жительство';
 
   @override
-  String get docCollectProblemTenant => 'Renting / eviction';
+  String get docCollectProblemTenant => 'Аренда / выселение';
 
   @override
-  String get docCollectProblemDismissal => 'Dismissal at work';
+  String get docCollectProblemDismissal => 'Увольнение с работы';
 
   @override
-  String get docCollectProblemInheritance => 'Inheritance';
+  String get docCollectProblemInheritance => 'Наследство';
 
   @override
-  String get docCollectProblemDivorce => 'Divorce';
+  String get docCollectProblemDivorce => 'Развод';
 
   @override
-  String docCollectProgress(Object collected, Object total) {
-    return '$collected of $total collected';
+  String docCollectProgress(int collected, int total) {
+    return 'Собрано $collected из $total';
   }
 
   @override
-  String get docCollectAllDone => 'Everything collected';
+  String get docCollectAllDone => 'Всё собрано';
 
   @override
-  String get docCollectEmpty =>
-      'No document list is available for this situation yet.';
+  String get docCollectEmpty => 'Списка документов для этой ситуации пока нет.';
 
   @override
-  String get docCollectOptional => 'Optional';
+  String get docCollectOptional => 'Необязательно';
 
   @override
-  String get docCollectWhereLabel => 'Where to get it';
+  String get docCollectWhereLabel => 'Где получить';
 
   @override
-  String get docCollectWhyLabel => 'Why it\'s needed';
+  String get docCollectWhyLabel => 'Зачем нужно';
 
   @override
-  String get docCollectAttach => 'Attach a file';
+  String get docCollectAttach => 'Прикрепить файл';
 
   @override
-  String get docCollectAttached => 'File attached';
+  String get docCollectAttached => 'Файл прикреплён';
 
   @override
-  String get docCollectChangeFile => 'Change file';
+  String get docCollectChangeFile => 'Заменить файл';
 
   @override
-  String get docCollectRemoveFile => 'Remove file';
+  String get docCollectRemoveFile => 'Удалить файл';
 
   @override
-  String get docCollectNoFiles => 'You haven\'t uploaded any documents yet.';
+  String get docCollectNoFiles => 'Вы ещё не загрузили ни одного документа.';
 
   @override
-  String get docCollectPickFileTitle => 'Choose an uploaded document';
+  String get docCollectPickFileTitle => 'Выберите загруженный документ';
 
   @override
-  String get docCollectExport => 'Export list';
+  String get docCollectExport => 'Экспорт списка';
 
   @override
-  String get docCollectExportSubject => 'My document checklist';
+  String get docCollectExportSubject => 'Мой чек-лист документов';
 
   @override
-  String get docCollectAiTitle => 'Need something specific?';
+  String get docCollectAiTitle => 'Нужно что-то конкретное?';
 
   @override
   String get docCollectAiHint =>
-      'Describe your situation and we\'ll suggest any extra documents.';
+      'Опишите свою ситуацию — и мы предложим дополнительные документы.';
 
   @override
-  String get docCollectAiField => 'Describe your situation';
+  String get docCollectAiField => 'Опишите свою ситуацию';
 
   @override
-  String get docCollectAiButton => 'Suggest extra documents';
+  String get docCollectAiButton => 'Предложить дополнительные документы';
 
   @override
-  String get docCollectAiLoading => 'Thinking…';
+  String get docCollectAiLoading => 'Думаем…';
 
   @override
   String get docCollectAiEmpty =>
-      'No extra documents suggested — the basic list looks complete for your description.';
+      'Дополнительных документов не предложено — базового списка для вашего описания достаточно.';
 
   @override
-  String get docCollectAiSuggestionsTitle => 'Suggested extra documents';
+  String get docCollectAiSuggestionsTitle =>
+      'Предлагаемые дополнительные документы';
 
   @override
   String get docCollectDisclaimer =>
-      'This is a basic list of commonly required documents — your situation may need more or fewer. It is general information, not legal advice.';
+      'Это базовый список наиболее часто требуемых документов — для вашей ситуации может понадобиться больше или меньше. Это общая информация, а не юридическая консультация.';
 
   @override
-  String get docCollectRetry => 'Try again';
+  String get docCollectRetry => 'Повторить';
 
   @override
-  String get renewalTitle => 'Renewal Radar';
+  String get renewalTitle => 'Радар продлений';
 
   @override
   String get renewalSubtitle =>
-      'Track when your permits, passport, insurance and other documents expire. We\'ll remind you 90, 30 and 7 days before each renewal.';
+      'Отслеживайте, когда истекают ваши разрешения, паспорт, страховка и другие документы. Мы напомним за 90, 30 и 7 дней до каждого продления.';
 
   @override
-  String get renewalAdd => 'Add document';
+  String get renewalAdd => 'Добавить документ';
 
   @override
-  String get renewalEditTitle => 'Edit document';
+  String get renewalEditTitle => 'Изменить документ';
 
   @override
-  String get renewalSave => 'Save';
+  String get renewalSave => 'Сохранить';
 
   @override
-  String get renewalRequired => 'Required';
+  String get renewalRequired => 'Обязательно';
 
   @override
-  String get renewalPickDate => 'Pick expiry date';
+  String get renewalPickDate => 'Выбрать дату окончания';
 
   @override
   String get renewalLoadError =>
-      'Could not load your documents. Pull to refresh.';
+      'Не удалось загрузить ваши документы. Потяните, чтобы обновить.';
 
   @override
-  String get renewalEmptyTitle => 'No documents tracked yet';
+  String get renewalEmptyTitle => 'Отслеживаемых документов пока нет';
 
   @override
   String get renewalEmptyBody =>
-      'Add your residence permit, passport, insurance or licence and we\'ll watch the expiry dates for you.';
+      'Добавьте вид на жительство, паспорт, страховку или права — и мы будем следить за датами окончания за вас.';
 
   @override
-  String get renewalGuideHint => 'How to renew →';
+  String get renewalGuideHint => 'Как продлить →';
 
   @override
-  String get renewalFieldType => 'Document type';
+  String get renewalFieldType => 'Тип документа';
 
   @override
-  String get renewalFieldLabel => 'Label';
+  String get renewalFieldLabel => 'Название';
 
   @override
-  String get renewalFieldNumber => 'Document number (optional)';
+  String get renewalFieldNumber => 'Номер документа (необязательно)';
 
   @override
-  String get renewalFieldJurisdiction => 'Issuing country';
+  String get renewalFieldJurisdiction => 'Страна выдачи';
 
   @override
-  String get renewalFieldExpiry => 'Expiry date';
+  String get renewalFieldExpiry => 'Дата окончания';
 
   @override
-  String get renewalWindow90 => '90 days';
+  String get renewalWindow90 => '90 дней';
 
   @override
-  String get renewalWindow30 => '30 days';
+  String get renewalWindow30 => '30 дней';
 
   @override
-  String get renewalWindow7 => '7 days';
+  String get renewalWindow7 => '7 дней';
 
   @override
-  String get renewalExpiresToday => 'Expires today';
+  String get renewalExpiresToday => 'Истекает сегодня';
 
   @override
-  String renewalExpiresInDays(Object date, Object days) {
-    return 'Expires in $days days · $date';
+  String renewalExpiresInDays(int days, String date) {
+    return 'Истекает через $days дн. · $date';
   }
 
   @override
-  String renewalExpiredOn(Object date) {
-    return 'Expired on $date';
+  String renewalExpiredOn(String date) {
+    return 'Истёк $date';
   }
 
   @override
-  String get renewalTypeResidencePermit => 'Residence permit';
+  String get renewalTypeResidencePermit => 'Вид на жительство';
 
   @override
-  String get renewalTypePassport => 'Passport';
+  String get renewalTypePassport => 'Паспорт';
 
   @override
-  String get renewalTypeIdCard => 'ID card';
+  String get renewalTypeIdCard => 'ID-карта';
 
   @override
-  String get renewalTypeVisa => 'Visa';
+  String get renewalTypeVisa => 'Виза';
 
   @override
-  String get renewalTypeDrivingLicence => 'Driving licence';
+  String get renewalTypeDrivingLicence => 'Водительские права';
 
   @override
-  String get renewalTypeInsurance => 'Insurance';
+  String get renewalTypeInsurance => 'Страховка';
 
   @override
-  String get renewalTypeWorkPermit => 'Work permit';
+  String get renewalTypeWorkPermit => 'Разрешение на работу';
 
   @override
-  String get renewalTypeOther => 'Other';
+  String get renewalTypeOther => 'Другое';
 
   @override
-  String get costEstimateTitle => 'Cost & Risk Estimator';
+  String get costEstimateTitle => 'Оценка стоимости и рисков';
 
   @override
   String get costEstimateSubtitle =>
-      'Get a rough idea of what a case might cost, how long it could take, and whether it is worth pursuing.';
+      'Получите примерное представление о том, сколько может стоить дело, как долго оно может идти и стоит ли его вести.';
 
   @override
-  String get costEstimateCaseTypeLabel => 'Type of case';
+  String get costEstimateCaseTypeLabel => 'Тип дела';
 
   @override
   String get costEstimateCaseTypeHint =>
-      'e.g. unpaid invoice, wrongful dismissal, deposit dispute';
+      'напр., неоплаченный счёт, незаконное увольнение, спор о залоге';
 
   @override
-  String get costEstimateJurisdictionLabel => 'Jurisdiction';
+  String get costEstimateJurisdictionLabel => 'Юрисдикция';
 
   @override
-  String get costEstimateAmountLabel => 'Amount in dispute (optional)';
+  String get costEstimateAmountLabel => 'Сумма спора (необязательно)';
 
   @override
-  String get costEstimateAmountHint => 'e.g. 12500';
+  String get costEstimateAmountHint => 'напр., 12500';
 
   @override
   String get costEstimateDescriptionLabel =>
-      'Briefly describe the situation (optional)';
+      'Кратко опишите ситуацию (необязательно)';
 
   @override
-  String get costEstimateB2bToggle => 'Lead-qualification card (B2B)';
+  String get costEstimateB2bToggle => 'Карточка квалификации лида (B2B)';
 
   @override
   String get costEstimateB2bSubtitle =>
-      'Compact output for quickly triaging an inbound client.';
+      'Компактный результат для быстрой оценки входящего клиента.';
 
   @override
-  String get costEstimateSubmit => 'Estimate my case';
+  String get costEstimateSubmit => 'Оценить моё дело';
 
   @override
   String get costEstimateDisclaimer =>
-      'Rough estimate only — not a prediction, guarantee, or legal advice. Actual costs and outcomes vary case by case.';
+      'Только примерная оценка — не прогноз, не гарантия и не юридическая консультация. Реальные расходы и исход зависят от конкретного дела.';
 
   @override
-  String get costEstimateCostsHeading => 'Estimated costs';
+  String get costEstimateCostsHeading => 'Оценочные расходы';
 
   @override
-  String get costEstimateCourtFee => 'Court / state fee';
+  String get costEstimateCourtFee => 'Судебная / государственная пошлина';
 
   @override
-  String get costEstimateLawyerFee => 'Lawyer fee';
+  String get costEstimateLawyerFee => 'Гонорар юриста';
 
   @override
-  String get costEstimateTotal => 'Total (approx.)';
+  String get costEstimateTotal => 'Итого (примерно)';
 
   @override
-  String get costEstimateDuration => 'Time to first resolution';
+  String get costEstimateDuration => 'Срок до первого решения';
 
   @override
-  String get costEstimateMonthsSuffix => 'months';
+  String get costEstimateMonthsSuffix => 'мес.';
 
   @override
-  String get costEstimateFactorsFor => 'In your favour';
+  String get costEstimateFactorsFor => 'В вашу пользу';
 
   @override
-  String get costEstimateFactorsAgainst => 'Working against you';
+  String get costEstimateFactorsAgainst => 'Против вас';
 
   @override
-  String get costEstimateStrengthWorth => 'Likely worth pursuing';
+  String get costEstimateStrengthWorth => 'Вероятно, стоит вести';
 
   @override
-  String get costEstimateStrengthContested => 'Contested — could go either way';
+  String get costEstimateStrengthContested =>
+      'Спорно — может пойти в любую сторону';
 
   @override
-  String get costEstimateStrengthWeak => 'Weak — proceed with caution';
+  String get costEstimateStrengthWeak => 'Слабо — действуйте осторожно';
 }

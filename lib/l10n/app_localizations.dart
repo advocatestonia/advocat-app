@@ -8424,7 +8424,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Due {date}'**
-  String followupsDueOn(Object date);
+  String followupsDueOn(String date);
 
   /// No description provided for @followupsDone.
   ///
@@ -8778,7 +8778,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{completed} of {total} steps done'**
-  String checklistProgress(Object completed, Object total);
+  String checklistProgress(int completed, int total);
 
   /// No description provided for @checklistAllDone.
   ///
@@ -8796,7 +8796,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{days} days'**
-  String checklistDeadlineDays(Object days);
+  String checklistDeadlineDays(int days);
 
   /// No description provided for @checklistDisclaimer.
   ///
@@ -9180,7 +9180,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Rates as of {date}'**
-  String calcRatesAsOf(Object date);
+  String calcRatesAsOf(String date);
 
   /// No description provided for @calcRatesOffline.
   ///
@@ -9306,7 +9306,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{days} days remaining'**
-  String calcLimitationDaysLeft(Object days);
+  String calcLimitationDaysLeft(int days);
 
   /// No description provided for @calcLimitationShifted.
   ///
@@ -9426,7 +9426,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{collected} of {total} collected'**
-  String docCollectProgress(Object collected, Object total);
+  String docCollectProgress(int collected, int total);
 
   /// No description provided for @docCollectAllDone.
   ///
@@ -9684,13 +9684,13 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Expires in {days} days · {date}'**
-  String renewalExpiresInDays(Object date, Object days);
+  String renewalExpiresInDays(int days, String date);
 
   /// No description provided for @renewalExpiredOn.
   ///
   /// In en, this message translates to:
   /// **'Expired on {date}'**
-  String renewalExpiredOn(Object date);
+  String renewalExpiredOn(String date);
 
   /// No description provided for @renewalTypeResidencePermit.
   ///

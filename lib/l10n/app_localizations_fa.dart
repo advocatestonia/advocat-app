@@ -4599,946 +4599,950 @@ class AppLocalizationsFa extends AppLocalizations {
       'به‌روزرسانی رمز عبور ناموفق بود. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get accessLogTile => 'Access log';
+  String get accessLogTile => 'گزارش دسترسی';
 
   @override
-  String get accessLogTileSubtitle => 'See who and what accessed your data';
+  String get accessLogTileSubtitle =>
+      'ببینید چه کسی و چه چیزی به داده‌های شما دسترسی داشته است';
 
   @override
-  String get accessLogTitle => 'Access log for my data';
+  String get accessLogTitle => 'گزارش دسترسی به داده‌های من';
 
   @override
   String get accessLogIntro =>
-      'A transparent, tamper-evident record of every time your data was accessed or processed — including by our AI. You can verify it has not been altered.';
+      'سابقه‌ای شفاف و دستکاری‌ناپذیر از هر بار که به داده‌های شما دسترسی یا پردازش انجام شده است — از جمله توسط هوش مصنوعی ما. می‌توانید تأیید کنید که این سابقه تغییر نکرده است.';
 
   @override
-  String get accessLogEmpty => 'No access events yet.';
+  String get accessLogEmpty => 'هنوز هیچ رویداد دسترسی ثبت نشده است.';
 
   @override
   String get accessLogError =>
-      'Could not load your access log. Pull down to retry.';
+      'بارگذاری گزارش دسترسی شما ممکن نشد. برای تلاش مجدد به پایین بکشید.';
 
   @override
   String get accessLogIntegrityOk =>
-      'Integrity verified — the log links form an unbroken chain.';
+      'یکپارچگی تأیید شد — پیوندهای گزارش زنجیره‌ای پیوسته را تشکیل می‌دهند.';
 
   @override
   String get accessLogIntegrityBroken =>
-      'Warning: the log chain is broken. Some entries may have been removed or reordered. Please contact support.';
+      'هشدار: زنجیره گزارش شکسته است. ممکن است برخی موارد حذف یا جابجا شده باشند. لطفاً با پشتیبانی تماس بگیرید.';
 
   @override
   String get accessActionLlmEgress =>
-      'Sent to AI for processing (pseudonymized)';
+      'برای پردازش به هوش مصنوعی ارسال شد (نام‌زدایی‌شده)';
 
   @override
-  String get accessActionAiAnalysis => 'Analyzed by AI';
+  String get accessActionAiAnalysis => 'توسط هوش مصنوعی تحلیل شد';
 
   @override
-  String get accessActionDocumentParse => 'Document parsed';
+  String get accessActionDocumentParse => 'سند تجزیه شد';
 
   @override
-  String get accessActionStaffRead => 'Reviewed by a staff member';
+  String get accessActionStaffRead => 'توسط یکی از کارکنان بررسی شد';
 
   @override
-  String get accessActionExport => 'Data exported';
+  String get accessActionExport => 'داده‌ها برون‌بری شد';
 
   @override
-  String get accessActionEmailTriage => 'Email triaged';
+  String get accessActionEmailTriage => 'ایمیل دسته‌بندی شد';
 
   @override
-  String get accessActionDeadlineScan => 'Deadlines scanned';
+  String get accessActionDeadlineScan => 'مهلت‌ها بررسی شدند';
 
   @override
-  String get breachAlertTitle => 'Security alert on your data';
+  String get breachAlertTitle => 'هشدار امنیتی درباره داده‌های شما';
 
   @override
   String get breachAlertBody =>
-      'Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34).';
+      'پایش خودکار ما دسترسی غیرعادی به داده‌های شما را شناسایی کرد. ما در حال بررسی آن هستیم و در صورت تأیید هرگونه حادثه، مطابق قانون (ماده ۳۴ GDPR) به شما اطلاع خواهیم داد.';
 
   @override
-  String get caseDossierTitle => 'Export case dossier';
+  String get caseDossierTitle => 'برون‌بری پرونده کامل';
 
   @override
   String get caseDossierSubtitle =>
-      'One PDF with everything — facts, chronology, deadlines and documents — to hand to a lawyer, a court, or a complaint body.';
+      'یک فایل PDF با همه چیز — حقایق، گاه‌شماری، مهلت‌ها و اسناد — برای ارائه به وکیل، دادگاه یا مرجع شکایت.';
 
   @override
-  String get caseDossierTileTitle => 'Export dossier (PDF)';
+  String get caseDossierTileTitle => 'برون‌بری پرونده (PDF)';
 
   @override
   String get caseDossierTileSubtitle =>
-      'Hand the whole case to a lawyer or court in one file';
+      'کل پرونده را در یک فایل به وکیل یا دادگاه تحویل دهید';
 
   @override
-  String get caseDossierSectionsHeading => 'Include in the dossier';
+  String get caseDossierSectionsHeading => 'موارد قابل درج در پرونده';
 
   @override
-  String get caseDossierSectionFacts => 'Case facts';
+  String get caseDossierSectionFacts => 'حقایق پرونده';
 
   @override
-  String get caseDossierSectionFactsHint => 'Always included';
+  String get caseDossierSectionFactsHint => 'همیشه درج می‌شود';
 
   @override
-  String get caseDossierSectionTimeline => 'Chronology';
+  String get caseDossierSectionTimeline => 'گاه‌شماری';
 
   @override
-  String get caseDossierSectionDeadlines => 'Deadlines';
+  String get caseDossierSectionDeadlines => 'مهلت‌ها';
 
   @override
-  String get caseDossierSectionDocuments => 'Documents';
+  String get caseDossierSectionDocuments => 'اسناد';
 
   @override
-  String get caseDossierSectionAiSummary => 'AI summary';
+  String get caseDossierSectionAiSummary => 'خلاصه هوش مصنوعی';
 
   @override
-  String get caseDossierExportButton => 'Export PDF';
+  String get caseDossierExportButton => 'برون‌بری PDF';
 
   @override
-  String get caseDossierExporting => 'Building your dossier…';
+  String get caseDossierExporting => 'در حال ساخت پرونده شما…';
 
   @override
-  String get caseDossierSuccess => 'Dossier ready. Open or share the file.';
+  String get caseDossierSuccess =>
+      'پرونده آماده است. فایل را باز کنید یا به اشتراک بگذارید.';
 
   @override
-  String get caseDossierOpen => 'Open dossier';
+  String get caseDossierOpen => 'باز کردن پرونده';
 
   @override
   String get caseDossierError =>
-      'Could not build the dossier. Please try again.';
+      'ساخت پرونده ممکن نشد. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get caseDossierErrorNotOwned => 'This case could not be found.';
+  String get caseDossierErrorNotOwned => 'این پرونده یافت نشد.';
 
   @override
   String get caseDossierDisclaimer =>
-      'The dossier reproduces your case data as recorded. Review it before sharing.';
+      'این پرونده داده‌های شما را همان‌گونه که ثبت شده بازتولید می‌کند. پیش از اشتراک‌گذاری آن را بررسی کنید.';
 
   @override
-  String get followupsTitle => 'Next steps';
+  String get followupsTitle => 'گام‌های بعدی';
 
   @override
-  String get followupsSubtitle => 'Practical tasks to keep your case moving';
+  String get followupsSubtitle => 'وظایف عملی برای پیشبرد پرونده شما';
 
   @override
-  String get followupsEmpty => 'No follow-up steps yet.';
+  String get followupsEmpty => 'هنوز هیچ گام پیگیری وجود ندارد.';
 
   @override
   String get followupsEmptyDesc =>
-      'Add a step, or let the AI suggest what to do next.';
+      'گامی اضافه کنید، یا بگذارید هوش مصنوعی اقدام بعدی را پیشنهاد دهد.';
 
   @override
-  String get followupsAdd => 'Add step';
+  String get followupsAdd => 'افزودن گام';
 
   @override
-  String get followupsSuggest => 'Suggest steps';
+  String get followupsSuggest => 'پیشنهاد گام‌ها';
 
   @override
   String get followupsSuggestNone =>
-      'No suggestions right now. Try after chatting about the case.';
+      'در حال حاضر پیشنهادی نیست. پس از گفتگو درباره پرونده دوباره امتحان کنید.';
 
   @override
-  String get followupsSuggestTitle => 'Suggested next steps';
+  String get followupsSuggestTitle => 'گام‌های بعدی پیشنهادی';
 
   @override
-  String get followupsAddPrompt => 'Add the steps you want to keep:';
+  String get followupsAddPrompt =>
+      'گام‌هایی را که می‌خواهید نگه دارید اضافه کنید:';
 
   @override
-  String get followupsNewTitleHint => 'What needs to be done?';
+  String get followupsNewTitleHint => 'چه کاری باید انجام شود؟';
 
   @override
-  String get followupsNewDetailHint => 'Optional note (why / what to attach)';
+  String get followupsNewDetailHint =>
+      'یادداشت اختیاری (چرا / چه چیزی پیوست شود)';
 
   @override
-  String get followupsDueOptional => 'Remind me on (optional)';
+  String get followupsDueOptional => 'به من یادآوری کن در (اختیاری)';
 
   @override
-  String get followupsOverdue => 'Overdue';
+  String get followupsOverdue => 'گذشته از مهلت';
 
   @override
-  String followupsDueOn(Object date) {
-    return 'Due $date';
+  String followupsDueOn(String date) {
+    return 'موعد $date';
   }
 
   @override
-  String get followupsDone => 'Done';
+  String get followupsDone => 'انجام شد';
 
   @override
-  String get followupsSnooze => 'Snooze';
+  String get followupsSnooze => 'به تعویق انداختن';
 
   @override
-  String get followupsSnooze1Week => 'Remind in a week';
+  String get followupsSnooze1Week => 'یک هفته دیگر یادآوری کن';
 
   @override
-  String get followupsDismiss => 'Dismiss';
+  String get followupsDismiss => 'نادیده گرفتن';
 
   @override
-  String get followupsLoadError => 'Could not load next steps';
+  String get followupsLoadError => 'بارگذاری گام‌های بعدی ممکن نشد';
 
   @override
-  String get followupsAiBadge => 'AI';
+  String get followupsAiBadge => 'هوش مصنوعی';
 
   @override
-  String get contractCompareTitle => 'Compare versions';
+  String get contractCompareTitle => 'مقایسه نسخه‌ها';
 
   @override
   String get contractCompareIntro =>
-      'Upload two versions of the same contract. We highlight what changed and whether each change helps or hurts you.';
+      'دو نسخه از یک قرارداد را بارگذاری کنید. ما تغییرات را برجسته می‌کنیم و نشان می‌دهیم که هر تغییر به نفع شماست یا به ضرر شما.';
 
   @override
-  String get contractCompareOldVersion => 'Old version (v1)';
+  String get contractCompareOldVersion => 'نسخه قدیمی (v1)';
 
   @override
-  String get contractCompareNewVersion => 'New version (v2)';
+  String get contractCompareNewVersion => 'نسخه جدید (v2)';
 
   @override
-  String get contractCompareCta => 'Compare versions';
+  String get contractCompareCta => 'مقایسه نسخه‌ها';
 
   @override
-  String get contractCompareAdverse => 'Adverse';
+  String get contractCompareAdverse => 'نامساعد';
 
   @override
-  String get contractCompareFavorable => 'Favorable';
+  String get contractCompareFavorable => 'مساعد';
 
   @override
-  String get contractCompareNeutral => 'Neutral';
+  String get contractCompareNeutral => 'خنثی';
 
   @override
-  String get contractCompareBefore => 'Before';
+  String get contractCompareBefore => 'پیش از';
 
   @override
-  String get contractCompareAfter => 'After';
+  String get contractCompareAfter => 'پس از';
 
   @override
   String get contractCompareTruncated =>
-      'Long contract — only the first part of each version was compared.';
+      'قرارداد طولانی — تنها بخش نخست هر نسخه مقایسه شد.';
 
   @override
   String get contractCompareNoChanges =>
-      'No material changes detected between the two versions.';
+      'هیچ تغییر اساسی میان دو نسخه شناسایی نشد.';
 
   @override
-  String get docSearchTitle => 'Search my documents';
+  String get docSearchTitle => 'جستجو در اسناد من';
 
   @override
-  String get docSearchHint => 'e.g. where was the deposit mentioned';
+  String get docSearchHint => 'مثلاً جایی که ودیعه ذکر شده بود';
 
   @override
-  String get docSearchSubtitle =>
-      'Semantic search across your vault and case files';
+  String get docSearchSubtitle => 'جستجوی معنایی در گاوصندوق و پرونده‌های شما';
 
   @override
   String get docSearchIdle =>
-      'Search the contents of your own documents — not just titles.';
+      'محتوای اسناد خود را جستجو کنید — نه فقط عنوان‌ها.';
 
   @override
-  String get docSearchNoResults => 'No matches found in your documents.';
+  String get docSearchNoResults => 'هیچ تطابقی در اسناد شما یافت نشد.';
 
   @override
-  String get docSearchError => 'Search failed. Please try again.';
+  String get docSearchError => 'جستجو ناموفق بود. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get docSearchUntitled => 'Untitled document';
+  String get docSearchUntitled => 'سند بدون عنوان';
 
   @override
-  String get docSearchKindCase => 'Case document';
+  String get docSearchKindCase => 'سند پرونده';
 
   @override
-  String get docSearchKindVault => 'Vault document';
+  String get docSearchKindVault => 'سند گاوصندوق';
 
   @override
-  String get docSearchMenuTitle => 'Search my documents';
+  String get docSearchMenuTitle => 'جستجو در اسناد من';
 
   @override
   String get docSearchMenuSubtitle =>
-      'Find anything in your own files by meaning';
+      'هر چیزی را در فایل‌های خود بر اساس معنا بیابید';
 
   @override
-  String get legalTemplatesTitle => 'Template library';
+  String get legalTemplatesTitle => 'کتابخانه قالب‌ها';
 
   @override
-  String get legalTemplatesMenuLabel => 'Templates';
+  String get legalTemplatesMenuLabel => 'قالب‌ها';
 
   @override
   String get legalTemplatesSubtitle =>
-      'Pick a ready-made form, fill in a few details, and we\'ll create a draft you can edit and export.';
+      'یک فرم آماده انتخاب کنید، چند مورد را پر کنید، و ما پیش‌نویسی می‌سازیم که می‌توانید ویرایش و برون‌بری کنید.';
 
   @override
   String get legalTemplatesDisclaimer =>
-      'These are general sample forms, not individual legal advice. Review and adapt before sending.';
+      'این‌ها فرم‌های نمونه عمومی هستند، نه مشاوره حقوقی فردی. پیش از ارسال بررسی و تطبیق دهید.';
 
   @override
-  String get legalTemplatesSampleBadge => 'Sample';
+  String get legalTemplatesSampleBadge => 'نمونه';
 
   @override
-  String get legalTemplatesEmpty => 'No templates for this filter yet.';
+  String get legalTemplatesEmpty => 'هنوز قالبی برای این فیلتر وجود ندارد.';
 
   @override
   String get legalTemplatesError =>
-      'Couldn\'t load templates. Please try again.';
+      'بارگذاری قالب‌ها ممکن نشد. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get legalTemplatesFilterAll => 'All';
+  String get legalTemplatesFilterAll => 'همه';
 
   @override
-  String get legalTemplatesJurisdictionFi => 'Finland';
+  String get legalTemplatesJurisdictionFi => 'فنلاند';
 
   @override
-  String get legalTemplatesJurisdictionEe => 'Estonia';
+  String get legalTemplatesJurisdictionEe => 'استونی';
 
   @override
-  String get legalTemplatesCategoryComplaint => 'Complaints';
+  String get legalTemplatesCategoryComplaint => 'شکایت‌ها';
 
   @override
-  String get legalTemplatesCategoryAppeal => 'Appeals';
+  String get legalTemplatesCategoryAppeal => 'تجدیدنظرها';
 
   @override
-  String get legalTemplatesCategoryApplication => 'Applications';
+  String get legalTemplatesCategoryApplication => 'درخواست‌ها';
 
   @override
-  String get legalTemplatesCategoryClaim => 'Claims';
+  String get legalTemplatesCategoryClaim => 'دعاوی';
 
   @override
-  String get legalTemplatesCategoryRequest => 'Requests';
+  String get legalTemplatesCategoryRequest => 'تقاضاها';
 
   @override
-  String get legalTemplatesFillTitle => 'Fill in the details';
+  String get legalTemplatesFillTitle => 'جزئیات را پر کنید';
 
   @override
   String get legalTemplatesFillIntro =>
-      'We\'ll auto-fill your name and case details. Complete the fields below.';
+      'ما نام و جزئیات پرونده شما را به‌طور خودکار پر می‌کنیم. فیلدهای زیر را تکمیل کنید.';
 
   @override
-  String get legalTemplatesFieldRequired => 'This field is required';
+  String get legalTemplatesFieldRequired => 'این فیلد الزامی است';
 
   @override
-  String get legalTemplatesCreateDraft => 'Create draft';
+  String get legalTemplatesCreateDraft => 'ساخت پیش‌نویس';
 
   @override
-  String get legalTemplatesCreating => 'Creating draft…';
+  String get legalTemplatesCreating => 'در حال ساخت پیش‌نویس…';
 
   @override
   String get legalTemplatesCreateFailed =>
-      'Couldn\'t create the draft. Please try again.';
+      'ساخت پیش‌نویس ممکن نشد. لطفاً دوباره تلاش کنید.';
 
   @override
   String get legalTemplatesUnresolvedWarning =>
-      'Some fields are still blank and are marked with ____ in the draft. You can complete them in the editor.';
+      'برخی فیلدها هنوز خالی‌اند و در پیش‌نویس با ____ مشخص شده‌اند. می‌توانید آن‌ها را در ویرایشگر تکمیل کنید.';
 
   @override
-  String get legalTemplatesFieldRecipient => 'Recipient (authority / landlord)';
+  String get legalTemplatesFieldRecipient => 'گیرنده (مرجع / موجر)';
 
   @override
-  String get legalTemplatesFieldAddress => 'Your postal address';
+  String get legalTemplatesFieldAddress => 'نشانی پستی شما';
 
   @override
-  String get legalTemplatesFieldSubject => 'Subject';
+  String get legalTemplatesFieldSubject => 'موضوع';
 
   @override
-  String get legalTemplatesFieldDescription => 'Description of the matter';
+  String get legalTemplatesFieldDescription => 'شرح موضوع';
 
   @override
-  String get legalTemplatesFieldDemand => 'What you are asking for';
+  String get legalTemplatesFieldDemand => 'آنچه درخواست می‌کنید';
 
   @override
-  String get checklistActionPlan => 'Action plan';
+  String get checklistActionPlan => 'برنامه اقدام';
 
   @override
-  String get checklistActionPlanSubtitle => 'Steps for this type of case';
+  String get checklistActionPlanSubtitle => 'گام‌های این نوع پرونده';
 
   @override
-  String checklistProgress(Object completed, Object total) {
-    return '$completed of $total steps done';
+  String checklistProgress(int completed, int total) {
+    return '$completed از $total گام انجام شد';
   }
 
   @override
-  String get checklistAllDone => 'All steps complete';
+  String get checklistAllDone => 'همه گام‌ها کامل شد';
 
   @override
   String get checklistEmpty =>
-      'No action plan is available for this case type yet.';
+      'هنوز برنامه اقدامی برای این نوع پرونده در دسترس نیست.';
 
   @override
-  String checklistDeadlineDays(Object days) {
-    return '$days days';
+  String checklistDeadlineDays(int days) {
+    return '$days روز';
   }
 
   @override
   String get checklistDisclaimer =>
-      'This is general information, not legal advice. Deadlines are statutory defaults — confirm the exact date for your case.';
+      'این اطلاعات عمومی است، نه مشاوره حقوقی. مهلت‌ها مقادیر پیش‌فرض قانونی هستند — تاریخ دقیق پرونده خود را تأیید کنید.';
 
   @override
-  String get checklistViewPlan => 'View plan';
+  String get checklistViewPlan => 'مشاهده برنامه';
 
   @override
-  String get explainPlainTitle => 'Explain in plain words';
+  String get explainPlainTitle => 'توضیح به زبان ساده';
 
   @override
   String get explainPlainIntro =>
-      'Paste an official letter, decision, or contract and we\'ll explain what it means and what it asks you to do — in plain language.';
+      'یک نامه رسمی، تصمیم یا قرارداد را جای‌گذاری کنید و ما به زبان ساده توضیح می‌دهیم که معنای آن چیست و از شما چه می‌خواهد.';
 
   @override
-  String get explainPlainLevelFriend => 'Like to a friend';
+  String get explainPlainLevelFriend => 'مثل گفتن به یک دوست';
 
   @override
-  String get explainPlainLevelTerms => 'Keep legal terms';
+  String get explainPlainLevelTerms => 'حفظ اصطلاحات حقوقی';
 
   @override
-  String get explainPlainInputHint => 'Paste the legal text here…';
+  String get explainPlainInputHint => 'متن حقوقی را اینجا جای‌گذاری کنید…';
 
   @override
-  String get explainPlainSubmit => 'Explain';
+  String get explainPlainSubmit => 'توضیح بده';
 
   @override
-  String get explainPlainWorking => 'Explaining…';
+  String get explainPlainWorking => 'در حال توضیح…';
 
   @override
-  String get explainPlainTldr => 'Bottom line';
+  String get explainPlainTldr => 'جمع‌بندی';
 
   @override
-  String get explainPlainBreakdown => 'What it says, part by part';
+  String get explainPlainBreakdown => 'آنچه می‌گوید، بخش به بخش';
 
   @override
-  String get explainPlainGlossary => 'Tricky terms explained';
+  String get explainPlainGlossary => 'اصطلاحات دشوار توضیح‌داده‌شده';
 
   @override
-  String get explainPlainNextSteps => 'What you can do next';
+  String get explainPlainNextSteps => 'کاری که می‌توانید بعد انجام دهید';
 
   @override
-  String get explainPlainOpenInCorpus => 'Look up in the law library';
+  String get explainPlainOpenInCorpus => 'جستجو در کتابخانه قوانین';
 
   @override
   String get explainPlainEmptyResult =>
-      'No explanation could be produced for this text. Try pasting a longer or clearer excerpt.';
+      'توضیحی برای این متن تولید نشد. متن طولانی‌تر یا روشن‌تری را جای‌گذاری کنید.';
 
   @override
   String get explainPlainQuotaTitle =>
-      'You\'ve used your free explanations this month';
+      'شما توضیحات رایگان این ماه خود را استفاده کرده‌اید';
 
   @override
   String get explainPlainQuotaBody =>
-      'Free accounts get 3 explanations per month. Upgrade to Pro for unlimited explanations.';
+      'حساب‌های رایگان ماهانه ۳ توضیح دریافت می‌کنند. برای توضیحات نامحدود به Pro ارتقا دهید.';
 
   @override
-  String get explainPlainUpgradeCta => 'Upgrade to Pro';
+  String get explainPlainUpgradeCta => 'ارتقا به Pro';
 
   @override
   String get explainPlainError =>
-      'Something went wrong while explaining this text. Please try again.';
+      'هنگام توضیح این متن خطایی رخ داد. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get explainPlainRetry => 'Try again';
+  String get explainPlainRetry => 'تلاش مجدد';
 
   @override
-  String get demandLetterTitle => 'Demand letter';
+  String get demandLetterTitle => 'نامه مطالبه';
 
   @override
   String get demandLetterSubtitle =>
-      'Create a formal pre-court demand (maksuvaatimus / nõudekiri).';
+      'یک مطالبه رسمی پیش از دادگاه ایجاد کنید (maksuvaatimus / nõudekiri).';
 
   @override
-  String get demandLetterStepType => 'Type of claim';
+  String get demandLetterStepType => 'نوع دعوا';
 
   @override
-  String get demandLetterStepParties => 'Parties';
+  String get demandLetterStepParties => 'طرفین';
 
   @override
-  String get demandLetterStepClaim => 'Amount & basis';
+  String get demandLetterStepClaim => 'مبلغ و مبنا';
 
   @override
-  String get demandLetterStepDeadline => 'Deadline';
+  String get demandLetterStepDeadline => 'مهلت';
 
   @override
-  String get demandLetterStepReview => 'Review & generate';
+  String get demandLetterStepReview => 'بررسی و تولید';
 
   @override
-  String get demandLetterClaimDepositReturn => 'Return of rental deposit';
+  String get demandLetterClaimDepositReturn => 'بازگشت ودیعه اجاره';
 
   @override
-  String get demandLetterClaimUnpaidWage => 'Unpaid wages';
+  String get demandLetterClaimUnpaidWage => 'دستمزد پرداخت‌نشده';
 
   @override
-  String get demandLetterClaimFineDispute => 'Dispute a fine / charge';
+  String get demandLetterClaimFineDispute => 'اعتراض به جریمه / هزینه';
 
   @override
-  String get demandLetterClaimGeneric => 'Other monetary claim';
+  String get demandLetterClaimGeneric => 'سایر دعاوی مالی';
 
   @override
-  String get demandLetterJurisdiction => 'Jurisdiction';
+  String get demandLetterJurisdiction => 'حوزه قضایی';
 
   @override
-  String get demandLetterLanguage => 'Letter language';
+  String get demandLetterLanguage => 'زبان نامه';
 
   @override
-  String get demandLetterRecipientName => 'Recipient name';
+  String get demandLetterRecipientName => 'نام گیرنده';
 
   @override
-  String get demandLetterRecipientAddress => 'Recipient address (optional)';
+  String get demandLetterRecipientAddress => 'نشانی گیرنده (اختیاری)';
 
   @override
-  String get demandLetterSenderName => 'Your name';
+  String get demandLetterSenderName => 'نام شما';
 
   @override
-  String get demandLetterSenderAddress => 'Your address / email (optional)';
+  String get demandLetterSenderAddress => 'نشانی / ایمیل شما (اختیاری)';
 
   @override
-  String get demandLetterAmount => 'Amount';
+  String get demandLetterAmount => 'مبلغ';
 
   @override
-  String get demandLetterCurrency => 'Currency';
+  String get demandLetterCurrency => 'واحد پول';
 
   @override
-  String get demandLetterBasis => 'What happened (basis of the claim)';
+  String get demandLetterBasis => 'آنچه رخ داد (مبنای دعوا)';
 
   @override
   String get demandLetterBasisHint =>
-      'Describe the facts: dates, amounts, what was agreed and what went wrong.';
+      'حقایق را شرح دهید: تاریخ‌ها، مبالغ، آنچه توافق شده و آنچه اشتباه پیش رفته است.';
 
   @override
-  String get demandLetterDeadline => 'Payment deadline';
+  String get demandLetterDeadline => 'مهلت پرداخت';
 
   @override
-  String get demandLetterDeadlineHint => 'e.g. 14 days from today';
+  String get demandLetterDeadlineHint => 'مثلاً ۱۴ روز از امروز';
 
   @override
-  String get demandLetterReference => 'Reference (optional)';
+  String get demandLetterReference => 'شماره مرجع (اختیاری)';
 
   @override
-  String get demandLetterGenerate => 'Generate letter';
+  String get demandLetterGenerate => 'تولید نامه';
 
   @override
-  String get demandLetterGenerating => 'Generating…';
+  String get demandLetterGenerating => 'در حال تولید…';
 
   @override
   String get demandLetterGenerateFailed =>
-      'Couldn\'t generate the letter. Please try again.';
+      'تولید نامه ممکن نشد. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get demandLetterFieldRequired => 'This field is required';
+  String get demandLetterFieldRequired => 'این فیلد الزامی است';
 
   @override
-  String get demandLetterNext => 'Next';
+  String get demandLetterNext => 'بعدی';
 
   @override
-  String get demandLetterBack => 'Back';
+  String get demandLetterBack => 'بازگشت';
 
   @override
-  String get demandLetterPreviewTitle => 'Your letter';
+  String get demandLetterPreviewTitle => 'نامه شما';
 
   @override
-  String get demandLetterCopy => 'Copy text';
+  String get demandLetterCopy => 'کپی متن';
 
   @override
-  String get demandLetterCopied => 'Letter copied to clipboard';
+  String get demandLetterCopied => 'نامه در کلیپ‌بورد کپی شد';
 
   @override
-  String get demandLetterExportPdf => 'Export PDF';
+  String get demandLetterExportPdf => 'برون‌بری PDF';
 
   @override
-  String get demandLetterExporting => 'Exporting…';
+  String get demandLetterExporting => 'در حال برون‌بری…';
 
   @override
   String get demandLetterExportFailed =>
-      'Couldn\'t export the document. Please try again.';
+      'برون‌بری سند ممکن نشد. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get demandLetterSendEmail => 'Send via email';
+  String get demandLetterSendEmail => 'ارسال از طریق ایمیل';
 
   @override
-  String get demandLetterNormsTitle => 'Legal references';
+  String get demandLetterNormsTitle => 'ارجاعات حقوقی';
 
   @override
   String get demandLetterDisclaimer =>
-      'This letter is prepared on your behalf as a general template. It is not legal advice or an act of a licensed attorney. Review it before sending — no letter is sent automatically.';
+      'این نامه به‌عنوان یک قالب عمومی از طرف شما تهیه شده است. این مشاوره حقوقی یا اقدام یک وکیل پروانه‌دار نیست. پیش از ارسال آن را بررسی کنید — هیچ نامه‌ای به‌طور خودکار ارسال نمی‌شود.';
 
   @override
-  String get demandLetterMenuTile => 'Demand letter';
+  String get demandLetterMenuTile => 'نامه مطالبه';
 
   @override
-  String get calcHubTitle => 'Legal calculators';
+  String get calcHubTitle => 'ماشین‌حساب‌های حقوقی';
 
   @override
-  String get calcHubSubtitle => 'Quick estimates before your next step';
+  String get calcHubSubtitle => 'برآوردهای سریع پیش از گام بعدی شما';
 
   @override
-  String get calcHubJurisdiction => 'Jurisdiction';
+  String get calcHubJurisdiction => 'حوزه قضایی';
 
   @override
-  String calcRatesAsOf(Object date) {
-    return 'Rates as of $date';
+  String calcRatesAsOf(String date) {
+    return 'نرخ‌ها به تاریخ $date';
   }
 
   @override
-  String get calcRatesOffline => 'Showing cached rates (offline)';
+  String get calcRatesOffline => 'نمایش نرخ‌های ذخیره‌شده (آفلاین)';
 
   @override
   String get calcIndicativeBanner =>
-      'Indicative estimate only — not an official calculation or legal advice.';
+      'تنها برآورد تقریبی — نه محاسبه رسمی و نه مشاوره حقوقی.';
 
   @override
-  String get calcCalculate => 'Calculate';
+  String get calcCalculate => 'محاسبه';
 
   @override
-  String get calcResult => 'Result';
+  String get calcResult => 'نتیجه';
 
   @override
-  String get calcFormula => 'How this is calculated';
+  String get calcFormula => 'نحوه محاسبه این مقدار';
 
   @override
-  String get calcSource => 'Source';
+  String get calcSource => 'منبع';
 
   @override
-  String get calcSeveranceTitle => 'Severance / notice';
+  String get calcSeveranceTitle => 'حق سنوات / اخطار';
 
   @override
-  String get calcSeveranceDesc =>
-      'Estimate severance pay and notice period on redundancy';
+  String get calcSeveranceDesc => 'برآورد حق سنوات و دوره اخطار در تعدیل نیرو';
 
   @override
-  String get calcSeveranceSalary => 'Gross monthly salary';
+  String get calcSeveranceSalary => 'حقوق ناخالص ماهانه';
 
   @override
-  String get calcSeveranceTenure => 'Years of service';
+  String get calcSeveranceTenure => 'سال‌های خدمت';
 
   @override
-  String get calcSeveranceTotal => 'Estimated severance';
+  String get calcSeveranceTotal => 'حق سنوات برآوردی';
 
   @override
-  String get calcSeveranceNotice => 'Notice period';
+  String get calcSeveranceNotice => 'دوره اخطار';
 
   @override
-  String get calcSeveranceGenerateDemand => 'Draft a demand letter';
+  String get calcSeveranceGenerateDemand => 'تهیه نامه مطالبه';
 
   @override
-  String get calcLimitationTitle => 'Limitation & appeal deadlines';
+  String get calcLimitationTitle => 'مهلت‌های مرور زمان و تجدیدنظر';
 
   @override
   String get calcLimitationDesc =>
-      'Check whether a claim or appeal period has expired';
+      'بررسی کنید که آیا مهلت دعوا یا تجدیدنظر منقضی شده است';
 
   @override
-  String get calcLimitationType => 'Type of period';
+  String get calcLimitationType => 'نوع مهلت';
 
   @override
-  String get calcLimitationStart => 'Start date (event / decision)';
+  String get calcLimitationStart => 'تاریخ شروع (رویداد / تصمیم)';
 
   @override
-  String get calcLimitationPickDate => 'Pick date';
+  String get calcLimitationPickDate => 'انتخاب تاریخ';
 
   @override
-  String get calcLimitationDeadline => 'Deadline';
+  String get calcLimitationDeadline => 'مهلت';
 
   @override
-  String get calcLimitationExpired => 'Period has expired';
+  String get calcLimitationExpired => 'مهلت منقضی شده است';
 
   @override
-  String calcLimitationDaysLeft(Object days) {
-    return '$days days remaining';
+  String calcLimitationDaysLeft(int days) {
+    return '$days روز باقی‌مانده';
   }
 
   @override
   String get calcLimitationShifted =>
-      'Shifted to the next working day (weekend/holiday).';
+      'به روز کاری بعد منتقل شد (آخر هفته/تعطیل).';
 
   @override
-  String get calcLimitationAddDeadline => 'Add to deadlines';
+  String get calcLimitationAddDeadline => 'افزودن به مهلت‌ها';
 
   @override
-  String get calcStateFeeTitle => 'Court / state fees';
+  String get calcStateFeeTitle => 'هزینه‌های دادگاه / دولتی';
 
   @override
-  String get calcStateFeeDesc => 'Reference filing fees by court and stage';
+  String get calcStateFeeDesc =>
+      'هزینه‌های مرجع ثبت دادخواست بر اساس دادگاه و مرحله';
 
   @override
-  String get calcChildSupportTitle => 'Child support (orientation)';
+  String get calcChildSupportTitle => 'نفقه فرزند (تقریبی)';
 
   @override
   String get calcChildSupportDesc =>
-      'Rough orientation figure — the real amount is set case by case';
+      'رقم تقریبی برای جهت‌گیری — مبلغ واقعی موردبه‌مورد تعیین می‌شود';
 
   @override
-  String get calcChildSupportNet => 'Payer\'s net monthly income';
+  String get calcChildSupportNet => 'درآمد خالص ماهانه پرداخت‌کننده';
 
   @override
-  String get calcChildSupportChildren => 'Number of children';
+  String get calcChildSupportChildren => 'تعداد فرزندان';
 
   @override
-  String get calcChildSupportPerChild => 'Per child';
+  String get calcChildSupportPerChild => 'به ازای هر فرزند';
 
   @override
-  String get calcChildSupportTotal => 'Total monthly';
+  String get calcChildSupportTotal => 'مجموع ماهانه';
 
   @override
   String get calcChildSupportWarning =>
-      'Highly variable. Courts decide on the child\'s needs and both parents\' ability to pay. Use as a starting point only.';
+      'بسیار متغیر است. دادگاه‌ها بر اساس نیازهای فرزند و توان پرداخت هر دو والد تصمیم می‌گیرند. تنها به‌عنوان نقطه شروع استفاده کنید.';
 
   @override
-  String get docCollectTitle => 'Documents to collect';
+  String get docCollectTitle => 'اسنادی که باید گردآوری شوند';
 
   @override
   String get docCollectSubtitle =>
-      'Gather these before you apply or go to court';
+      'این‌ها را پیش از درخواست یا مراجعه به دادگاه گردآوری کنید';
 
   @override
-  String get docCollectPickPrompt => 'What is your situation?';
+  String get docCollectPickPrompt => 'وضعیت شما چیست؟';
 
   @override
-  String get docCollectProblemResidence => 'Residence permit';
+  String get docCollectProblemResidence => 'اجازه اقامت';
 
   @override
-  String get docCollectProblemTenant => 'Renting / eviction';
+  String get docCollectProblemTenant => 'اجاره‌نشینی / تخلیه';
 
   @override
-  String get docCollectProblemDismissal => 'Dismissal at work';
+  String get docCollectProblemDismissal => 'اخراج از کار';
 
   @override
-  String get docCollectProblemInheritance => 'Inheritance';
+  String get docCollectProblemInheritance => 'ارث';
 
   @override
-  String get docCollectProblemDivorce => 'Divorce';
+  String get docCollectProblemDivorce => 'طلاق';
 
   @override
-  String docCollectProgress(Object collected, Object total) {
-    return '$collected of $total collected';
+  String docCollectProgress(int collected, int total) {
+    return '$collected از $total گردآوری شد';
   }
 
   @override
-  String get docCollectAllDone => 'Everything collected';
+  String get docCollectAllDone => 'همه چیز گردآوری شد';
 
   @override
   String get docCollectEmpty =>
-      'No document list is available for this situation yet.';
+      'هنوز فهرست اسنادی برای این وضعیت در دسترس نیست.';
 
   @override
-  String get docCollectOptional => 'Optional';
+  String get docCollectOptional => 'اختیاری';
 
   @override
-  String get docCollectWhereLabel => 'Where to get it';
+  String get docCollectWhereLabel => 'محل تهیه';
 
   @override
-  String get docCollectWhyLabel => 'Why it\'s needed';
+  String get docCollectWhyLabel => 'چرا لازم است';
 
   @override
-  String get docCollectAttach => 'Attach a file';
+  String get docCollectAttach => 'پیوست فایل';
 
   @override
-  String get docCollectAttached => 'File attached';
+  String get docCollectAttached => 'فایل پیوست شد';
 
   @override
-  String get docCollectChangeFile => 'Change file';
+  String get docCollectChangeFile => 'تغییر فایل';
 
   @override
-  String get docCollectRemoveFile => 'Remove file';
+  String get docCollectRemoveFile => 'حذف فایل';
 
   @override
-  String get docCollectNoFiles => 'You haven\'t uploaded any documents yet.';
+  String get docCollectNoFiles => 'شما هنوز هیچ سندی بارگذاری نکرده‌اید.';
 
   @override
-  String get docCollectPickFileTitle => 'Choose an uploaded document';
+  String get docCollectPickFileTitle => 'یک سند بارگذاری‌شده انتخاب کنید';
 
   @override
-  String get docCollectExport => 'Export list';
+  String get docCollectExport => 'برون‌بری فهرست';
 
   @override
-  String get docCollectExportSubject => 'My document checklist';
+  String get docCollectExportSubject => 'فهرست اسناد من';
 
   @override
-  String get docCollectAiTitle => 'Need something specific?';
+  String get docCollectAiTitle => 'به چیز خاصی نیاز دارید؟';
 
   @override
   String get docCollectAiHint =>
-      'Describe your situation and we\'ll suggest any extra documents.';
+      'وضعیت خود را شرح دهید و ما اسناد اضافی را پیشنهاد می‌دهیم.';
 
   @override
-  String get docCollectAiField => 'Describe your situation';
+  String get docCollectAiField => 'وضعیت خود را شرح دهید';
 
   @override
-  String get docCollectAiButton => 'Suggest extra documents';
+  String get docCollectAiButton => 'پیشنهاد اسناد اضافی';
 
   @override
-  String get docCollectAiLoading => 'Thinking…';
+  String get docCollectAiLoading => 'در حال فکر کردن…';
 
   @override
   String get docCollectAiEmpty =>
-      'No extra documents suggested — the basic list looks complete for your description.';
+      'سند اضافی پیشنهاد نشد — فهرست پایه برای شرح شما کامل به نظر می‌رسد.';
 
   @override
-  String get docCollectAiSuggestionsTitle => 'Suggested extra documents';
+  String get docCollectAiSuggestionsTitle => 'اسناد اضافی پیشنهادی';
 
   @override
   String get docCollectDisclaimer =>
-      'This is a basic list of commonly required documents — your situation may need more or fewer. It is general information, not legal advice.';
+      'این یک فهرست پایه از اسناد رایج موردنیاز است — وضعیت شما ممکن است به اسناد بیشتر یا کمتری نیاز داشته باشد. این اطلاعات عمومی است، نه مشاوره حقوقی.';
 
   @override
-  String get docCollectRetry => 'Try again';
+  String get docCollectRetry => 'تلاش مجدد';
 
   @override
-  String get renewalTitle => 'Renewal Radar';
+  String get renewalTitle => 'رادار تمدید';
 
   @override
   String get renewalSubtitle =>
-      'Track when your permits, passport, insurance and other documents expire. We\'ll remind you 90, 30 and 7 days before each renewal.';
+      'پیگیری کنید که اجازه‌ها، گذرنامه، بیمه و سایر اسناد شما چه زمانی منقضی می‌شوند. ما ۹۰، ۳۰ و ۷ روز پیش از هر تمدید به شما یادآوری می‌کنیم.';
 
   @override
-  String get renewalAdd => 'Add document';
+  String get renewalAdd => 'افزودن سند';
 
   @override
-  String get renewalEditTitle => 'Edit document';
+  String get renewalEditTitle => 'ویرایش سند';
 
   @override
-  String get renewalSave => 'Save';
+  String get renewalSave => 'ذخیره';
 
   @override
-  String get renewalRequired => 'Required';
+  String get renewalRequired => 'الزامی';
 
   @override
-  String get renewalPickDate => 'Pick expiry date';
+  String get renewalPickDate => 'انتخاب تاریخ انقضا';
 
   @override
   String get renewalLoadError =>
-      'Could not load your documents. Pull to refresh.';
+      'بارگذاری اسناد شما ممکن نشد. برای تازه‌سازی بکشید.';
 
   @override
-  String get renewalEmptyTitle => 'No documents tracked yet';
+  String get renewalEmptyTitle => 'هنوز سندی پیگیری نمی‌شود';
 
   @override
   String get renewalEmptyBody =>
-      'Add your residence permit, passport, insurance or licence and we\'ll watch the expiry dates for you.';
+      'اجازه اقامت، گذرنامه، بیمه یا گواهی‌نامه خود را اضافه کنید و ما تاریخ انقضا را برای شما زیر نظر می‌گیریم.';
 
   @override
-  String get renewalGuideHint => 'How to renew →';
+  String get renewalGuideHint => 'نحوه تمدید ←';
 
   @override
-  String get renewalFieldType => 'Document type';
+  String get renewalFieldType => 'نوع سند';
 
   @override
-  String get renewalFieldLabel => 'Label';
+  String get renewalFieldLabel => 'برچسب';
 
   @override
-  String get renewalFieldNumber => 'Document number (optional)';
+  String get renewalFieldNumber => 'شماره سند (اختیاری)';
 
   @override
-  String get renewalFieldJurisdiction => 'Issuing country';
+  String get renewalFieldJurisdiction => 'کشور صادرکننده';
 
   @override
-  String get renewalFieldExpiry => 'Expiry date';
+  String get renewalFieldExpiry => 'تاریخ انقضا';
 
   @override
-  String get renewalWindow90 => '90 days';
+  String get renewalWindow90 => '۹۰ روز';
 
   @override
-  String get renewalWindow30 => '30 days';
+  String get renewalWindow30 => '۳۰ روز';
 
   @override
-  String get renewalWindow7 => '7 days';
+  String get renewalWindow7 => '۷ روز';
 
   @override
-  String get renewalExpiresToday => 'Expires today';
+  String get renewalExpiresToday => 'امروز منقضی می‌شود';
 
   @override
-  String renewalExpiresInDays(Object date, Object days) {
-    return 'Expires in $days days · $date';
+  String renewalExpiresInDays(int days, String date) {
+    return 'انقضا تا $days روز دیگر · $date';
   }
 
   @override
-  String renewalExpiredOn(Object date) {
-    return 'Expired on $date';
+  String renewalExpiredOn(String date) {
+    return 'منقضی شده در $date';
   }
 
   @override
-  String get renewalTypeResidencePermit => 'Residence permit';
+  String get renewalTypeResidencePermit => 'اجازه اقامت';
 
   @override
-  String get renewalTypePassport => 'Passport';
+  String get renewalTypePassport => 'گذرنامه';
 
   @override
-  String get renewalTypeIdCard => 'ID card';
+  String get renewalTypeIdCard => 'کارت شناسایی';
 
   @override
-  String get renewalTypeVisa => 'Visa';
+  String get renewalTypeVisa => 'روادید';
 
   @override
-  String get renewalTypeDrivingLicence => 'Driving licence';
+  String get renewalTypeDrivingLicence => 'گواهی‌نامه رانندگی';
 
   @override
-  String get renewalTypeInsurance => 'Insurance';
+  String get renewalTypeInsurance => 'بیمه';
 
   @override
-  String get renewalTypeWorkPermit => 'Work permit';
+  String get renewalTypeWorkPermit => 'اجازه کار';
 
   @override
-  String get renewalTypeOther => 'Other';
+  String get renewalTypeOther => 'سایر';
 
   @override
-  String get costEstimateTitle => 'Cost & Risk Estimator';
+  String get costEstimateTitle => 'برآوردگر هزینه و ریسک';
 
   @override
   String get costEstimateSubtitle =>
-      'Get a rough idea of what a case might cost, how long it could take, and whether it is worth pursuing.';
+      'تصوری تقریبی از هزینه احتمالی یک پرونده، مدت‌زمان آن و اینکه آیا ارزش پیگیری دارد به دست آورید.';
 
   @override
-  String get costEstimateCaseTypeLabel => 'Type of case';
+  String get costEstimateCaseTypeLabel => 'نوع پرونده';
 
   @override
   String get costEstimateCaseTypeHint =>
-      'e.g. unpaid invoice, wrongful dismissal, deposit dispute';
+      'مثلاً فاکتور پرداخت‌نشده، اخراج غیرقانونی، اختلاف بر سر ودیعه';
 
   @override
-  String get costEstimateJurisdictionLabel => 'Jurisdiction';
+  String get costEstimateJurisdictionLabel => 'حوزه قضایی';
 
   @override
-  String get costEstimateAmountLabel => 'Amount in dispute (optional)';
+  String get costEstimateAmountLabel => 'مبلغ مورد اختلاف (اختیاری)';
 
   @override
-  String get costEstimateAmountHint => 'e.g. 12500';
+  String get costEstimateAmountHint => 'مثلاً ۱۲۵۰۰';
 
   @override
   String get costEstimateDescriptionLabel =>
-      'Briefly describe the situation (optional)';
+      'وضعیت را به‌طور خلاصه شرح دهید (اختیاری)';
 
   @override
-  String get costEstimateB2bToggle => 'Lead-qualification card (B2B)';
+  String get costEstimateB2bToggle => 'کارت ارزیابی سرنخ (B2B)';
 
   @override
   String get costEstimateB2bSubtitle =>
-      'Compact output for quickly triaging an inbound client.';
+      'خروجی فشرده برای دسته‌بندی سریع یک مشتری ورودی.';
 
   @override
-  String get costEstimateSubmit => 'Estimate my case';
+  String get costEstimateSubmit => 'پرونده من را برآورد کن';
 
   @override
   String get costEstimateDisclaimer =>
-      'Rough estimate only — not a prediction, guarantee, or legal advice. Actual costs and outcomes vary case by case.';
+      'تنها برآورد تقریبی — نه پیش‌بینی، نه تضمین و نه مشاوره حقوقی. هزینه‌ها و نتایج واقعی موردبه‌مورد متفاوت است.';
 
   @override
-  String get costEstimateCostsHeading => 'Estimated costs';
+  String get costEstimateCostsHeading => 'هزینه‌های برآوردی';
 
   @override
-  String get costEstimateCourtFee => 'Court / state fee';
+  String get costEstimateCourtFee => 'هزینه دادگاه / دولتی';
 
   @override
-  String get costEstimateLawyerFee => 'Lawyer fee';
+  String get costEstimateLawyerFee => 'حق‌الوکاله';
 
   @override
-  String get costEstimateTotal => 'Total (approx.)';
+  String get costEstimateTotal => 'مجموع (تقریبی)';
 
   @override
-  String get costEstimateDuration => 'Time to first resolution';
+  String get costEstimateDuration => 'زمان تا نخستین رأی';
 
   @override
-  String get costEstimateMonthsSuffix => 'months';
+  String get costEstimateMonthsSuffix => 'ماه';
 
   @override
-  String get costEstimateFactorsFor => 'In your favour';
+  String get costEstimateFactorsFor => 'به نفع شما';
 
   @override
-  String get costEstimateFactorsAgainst => 'Working against you';
+  String get costEstimateFactorsAgainst => 'به ضرر شما';
 
   @override
-  String get costEstimateStrengthWorth => 'Likely worth pursuing';
+  String get costEstimateStrengthWorth => 'احتمالاً ارزش پیگیری دارد';
 
   @override
-  String get costEstimateStrengthContested => 'Contested — could go either way';
+  String get costEstimateStrengthContested =>
+      'محل اختلاف — می‌تواند به هر سو برود';
 
   @override
-  String get costEstimateStrengthWeak => 'Weak — proceed with caution';
+  String get costEstimateStrengthWeak => 'ضعیف — با احتیاط پیش بروید';
 }

@@ -4756,7 +4756,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get followupsOverdue => 'Overdue';
 
   @override
-  String followupsDueOn(Object date) {
+  String followupsDueOn(String date) {
     return 'Due $date';
   }
 
@@ -4947,7 +4947,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checklistActionPlanSubtitle => 'Steps for this type of case';
 
   @override
-  String checklistProgress(Object completed, Object total) {
+  String checklistProgress(int completed, int total) {
     return '$completed of $total steps done';
   }
 
@@ -4959,7 +4959,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'No action plan is available for this case type yet.';
 
   @override
-  String checklistDeadlineDays(Object days) {
+  String checklistDeadlineDays(int days) {
     return '$days days';
   }
 
@@ -5164,7 +5164,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calcHubJurisdiction => 'Jurisdiction';
 
   @override
-  String calcRatesAsOf(Object date) {
+  String calcRatesAsOf(String date) {
     return 'Rates as of $date';
   }
 
@@ -5232,7 +5232,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calcLimitationExpired => 'Period has expired';
 
   @override
-  String calcLimitationDaysLeft(Object days) {
+  String calcLimitationDaysLeft(int days) {
     return '$days days remaining';
   }
 
@@ -5298,7 +5298,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get docCollectProblemDivorce => 'Divorce';
 
   @override
-  String docCollectProgress(Object collected, Object total) {
+  String docCollectProgress(int collected, int total) {
     return '$collected of $total collected';
   }
 
@@ -5436,12 +5436,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get renewalExpiresToday => 'Expires today';
 
   @override
-  String renewalExpiresInDays(Object date, Object days) {
+  String renewalExpiresInDays(int days, String date) {
     return 'Expires in $days days · $date';
   }
 
   @override
-  String renewalExpiredOn(Object date) {
+  String renewalExpiredOn(String date) {
     return 'Expired on $date';
   }
 

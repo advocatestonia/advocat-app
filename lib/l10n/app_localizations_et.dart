@@ -4612,946 +4612,953 @@ class AppLocalizationsEt extends AppLocalizations {
       'Parooli uuendamine ebaõnnestus. Palun proovi uuesti.';
 
   @override
-  String get accessLogTile => 'Access log';
+  String get accessLogTile => 'Juurdepääsulogi';
 
   @override
-  String get accessLogTileSubtitle => 'See who and what accessed your data';
+  String get accessLogTileSubtitle =>
+      'Vaadake, kes ja mis teie andmetele juurde pääses';
 
   @override
-  String get accessLogTitle => 'Access log for my data';
+  String get accessLogTitle => 'Minu andmete juurdepääsulogi';
 
   @override
   String get accessLogIntro =>
-      'A transparent, tamper-evident record of every time your data was accessed or processed — including by our AI. You can verify it has not been altered.';
+      'Läbipaistev ja võltsimiskindel kirje iga kord, kui teie andmetele juurde pääseti või neid töödeldi — sealhulgas meie AI poolt. Saate kontrollida, et seda pole muudetud.';
 
   @override
-  String get accessLogEmpty => 'No access events yet.';
+  String get accessLogEmpty => 'Juurdepääsusündmusi veel pole.';
 
   @override
   String get accessLogError =>
-      'Could not load your access log. Pull down to retry.';
+      'Juurdepääsulogi ei õnnestunud laadida. Tõmmake alla, et uuesti proovida.';
 
   @override
   String get accessLogIntegrityOk =>
-      'Integrity verified — the log links form an unbroken chain.';
+      'Terviklikkus kinnitatud — logi lülid moodustavad katkematu ahela.';
 
   @override
   String get accessLogIntegrityBroken =>
-      'Warning: the log chain is broken. Some entries may have been removed or reordered. Please contact support.';
+      'Hoiatus: logi ahel on katkenud. Mõned kirjed võivad olla eemaldatud või ümber järjestatud. Palun võtke ühendust tugiteenusega.';
 
   @override
   String get accessActionLlmEgress =>
-      'Sent to AI for processing (pseudonymized)';
+      'Saadetud AI-le töötlemiseks (pseudonüümitult)';
 
   @override
-  String get accessActionAiAnalysis => 'Analyzed by AI';
+  String get accessActionAiAnalysis => 'AI poolt analüüsitud';
 
   @override
-  String get accessActionDocumentParse => 'Document parsed';
+  String get accessActionDocumentParse => 'Dokument töödeldud';
 
   @override
-  String get accessActionStaffRead => 'Reviewed by a staff member';
+  String get accessActionStaffRead => 'Töötaja poolt üle vaadatud';
 
   @override
-  String get accessActionExport => 'Data exported';
+  String get accessActionExport => 'Andmed eksporditud';
 
   @override
-  String get accessActionEmailTriage => 'Email triaged';
+  String get accessActionEmailTriage => 'E-kiri sorteeritud';
 
   @override
-  String get accessActionDeadlineScan => 'Deadlines scanned';
+  String get accessActionDeadlineScan => 'Tähtajad skannitud';
 
   @override
-  String get breachAlertTitle => 'Security alert on your data';
+  String get breachAlertTitle => 'Turvahoiatus teie andmete kohta';
 
   @override
   String get breachAlertBody =>
-      'Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34).';
+      'Meie automaatne seire tuvastas teie andmetega seotud ebatavalise juurdepääsu. Vaatame selle üle ja teavitame teid igast kinnitatud intsidendist seaduses nõutud korras (GDPR art 34).';
 
   @override
-  String get caseDossierTitle => 'Export case dossier';
+  String get caseDossierTitle => 'Ekspordi juhtumitoimik';
 
   @override
   String get caseDossierSubtitle =>
-      'One PDF with everything — facts, chronology, deadlines and documents — to hand to a lawyer, a court, or a complaint body.';
+      'Üks PDF kõigega — asjaolud, kronoloogia, tähtajad ja dokumendid — mille saab anda advokaadile, kohtule või kaebusi menetlevale asutusele.';
 
   @override
-  String get caseDossierTileTitle => 'Export dossier (PDF)';
+  String get caseDossierTileTitle => 'Ekspordi toimik (PDF)';
 
   @override
   String get caseDossierTileSubtitle =>
-      'Hand the whole case to a lawyer or court in one file';
+      'Andke kogu juhtum advokaadile või kohtule ühe failina';
 
   @override
-  String get caseDossierSectionsHeading => 'Include in the dossier';
+  String get caseDossierSectionsHeading => 'Lisa toimikusse';
 
   @override
-  String get caseDossierSectionFacts => 'Case facts';
+  String get caseDossierSectionFacts => 'Juhtumi asjaolud';
 
   @override
-  String get caseDossierSectionFactsHint => 'Always included';
+  String get caseDossierSectionFactsHint => 'Alati kaasatud';
 
   @override
-  String get caseDossierSectionTimeline => 'Chronology';
+  String get caseDossierSectionTimeline => 'Kronoloogia';
 
   @override
-  String get caseDossierSectionDeadlines => 'Deadlines';
+  String get caseDossierSectionDeadlines => 'Tähtajad';
 
   @override
-  String get caseDossierSectionDocuments => 'Documents';
+  String get caseDossierSectionDocuments => 'Dokumendid';
 
   @override
-  String get caseDossierSectionAiSummary => 'AI summary';
+  String get caseDossierSectionAiSummary => 'AI kokkuvõte';
 
   @override
-  String get caseDossierExportButton => 'Export PDF';
+  String get caseDossierExportButton => 'Ekspordi PDF';
 
   @override
-  String get caseDossierExporting => 'Building your dossier…';
+  String get caseDossierExporting => 'Koostame teie toimikut…';
 
   @override
-  String get caseDossierSuccess => 'Dossier ready. Open or share the file.';
+  String get caseDossierSuccess => 'Toimik on valmis. Avage või jagage faili.';
 
   @override
-  String get caseDossierOpen => 'Open dossier';
+  String get caseDossierOpen => 'Ava toimik';
 
   @override
   String get caseDossierError =>
-      'Could not build the dossier. Please try again.';
+      'Toimikut ei õnnestunud koostada. Palun proovige uuesti.';
 
   @override
-  String get caseDossierErrorNotOwned => 'This case could not be found.';
+  String get caseDossierErrorNotOwned => 'Seda juhtumit ei leitud.';
 
   @override
   String get caseDossierDisclaimer =>
-      'The dossier reproduces your case data as recorded. Review it before sharing.';
+      'Toimik esitab teie juhtumi andmed nii, nagu need on salvestatud. Vaadake see enne jagamist üle.';
 
   @override
-  String get followupsTitle => 'Next steps';
+  String get followupsTitle => 'Järgmised sammud';
 
   @override
-  String get followupsSubtitle => 'Practical tasks to keep your case moving';
+  String get followupsSubtitle =>
+      'Praktilised ülesanded, et juhtumit edasi viia';
 
   @override
-  String get followupsEmpty => 'No follow-up steps yet.';
+  String get followupsEmpty => 'Järelsamme veel pole.';
 
   @override
   String get followupsEmptyDesc =>
-      'Add a step, or let the AI suggest what to do next.';
+      'Lisage samm või laske AI-l soovitada, mida edasi teha.';
 
   @override
-  String get followupsAdd => 'Add step';
+  String get followupsAdd => 'Lisa samm';
 
   @override
-  String get followupsSuggest => 'Suggest steps';
+  String get followupsSuggest => 'Soovita samme';
 
   @override
   String get followupsSuggestNone =>
-      'No suggestions right now. Try after chatting about the case.';
+      'Praegu soovitusi pole. Proovige pärast juhtumi üle vestlemist.';
 
   @override
-  String get followupsSuggestTitle => 'Suggested next steps';
+  String get followupsSuggestTitle => 'Soovitatud järgmised sammud';
 
   @override
-  String get followupsAddPrompt => 'Add the steps you want to keep:';
+  String get followupsAddPrompt => 'Lisage sammud, mida soovite jälgida:';
 
   @override
-  String get followupsNewTitleHint => 'What needs to be done?';
+  String get followupsNewTitleHint => 'Mida on vaja teha?';
 
   @override
-  String get followupsNewDetailHint => 'Optional note (why / what to attach)';
+  String get followupsNewDetailHint => 'Valikuline märkus (miks / mida lisada)';
 
   @override
-  String get followupsDueOptional => 'Remind me on (optional)';
+  String get followupsDueOptional => 'Tuleta meelde (valikuline)';
 
   @override
-  String get followupsOverdue => 'Overdue';
+  String get followupsOverdue => 'Tähtaeg möödas';
 
   @override
-  String followupsDueOn(Object date) {
-    return 'Due $date';
+  String followupsDueOn(String date) {
+    return 'Tähtaeg $date';
   }
 
   @override
-  String get followupsDone => 'Done';
+  String get followupsDone => 'Tehtud';
 
   @override
-  String get followupsSnooze => 'Snooze';
+  String get followupsSnooze => 'Lükka edasi';
 
   @override
-  String get followupsSnooze1Week => 'Remind in a week';
+  String get followupsSnooze1Week => 'Tuleta meelde nädala pärast';
 
   @override
-  String get followupsDismiss => 'Dismiss';
+  String get followupsDismiss => 'Eira';
 
   @override
-  String get followupsLoadError => 'Could not load next steps';
+  String get followupsLoadError => 'Järgmisi samme ei õnnestunud laadida';
 
   @override
   String get followupsAiBadge => 'AI';
 
   @override
-  String get contractCompareTitle => 'Compare versions';
+  String get contractCompareTitle => 'Võrdle versioone';
 
   @override
   String get contractCompareIntro =>
-      'Upload two versions of the same contract. We highlight what changed and whether each change helps or hurts you.';
+      'Laadige üles sama lepingu kaks versiooni. Toome esile, mis muutus ja kas iga muudatus on teile kasuks või kahjuks.';
 
   @override
-  String get contractCompareOldVersion => 'Old version (v1)';
+  String get contractCompareOldVersion => 'Vana versioon (v1)';
 
   @override
-  String get contractCompareNewVersion => 'New version (v2)';
+  String get contractCompareNewVersion => 'Uus versioon (v2)';
 
   @override
-  String get contractCompareCta => 'Compare versions';
+  String get contractCompareCta => 'Võrdle versioone';
 
   @override
-  String get contractCompareAdverse => 'Adverse';
+  String get contractCompareAdverse => 'Ebasoodne';
 
   @override
-  String get contractCompareFavorable => 'Favorable';
+  String get contractCompareFavorable => 'Soodne';
 
   @override
-  String get contractCompareNeutral => 'Neutral';
+  String get contractCompareNeutral => 'Neutraalne';
 
   @override
-  String get contractCompareBefore => 'Before';
+  String get contractCompareBefore => 'Enne';
 
   @override
-  String get contractCompareAfter => 'After';
+  String get contractCompareAfter => 'Pärast';
 
   @override
   String get contractCompareTruncated =>
-      'Long contract — only the first part of each version was compared.';
+      'Pikk leping — võrreldi ainult iga versiooni esimest osa.';
 
   @override
   String get contractCompareNoChanges =>
-      'No material changes detected between the two versions.';
+      'Kahe versiooni vahel olulisi muudatusi ei tuvastatud.';
 
   @override
-  String get docSearchTitle => 'Search my documents';
+  String get docSearchTitle => 'Otsi minu dokumentidest';
 
   @override
-  String get docSearchHint => 'e.g. where was the deposit mentioned';
+  String get docSearchHint => 'nt kus mainiti tagatisraha';
 
   @override
   String get docSearchSubtitle =>
-      'Semantic search across your vault and case files';
+      'Semantiline otsing teie hoidlast ja juhtumifailidest';
 
   @override
   String get docSearchIdle =>
-      'Search the contents of your own documents — not just titles.';
+      'Otsige oma dokumentide sisust — mitte ainult pealkirjadest.';
 
   @override
-  String get docSearchNoResults => 'No matches found in your documents.';
+  String get docSearchNoResults => 'Teie dokumentidest vasteid ei leitud.';
 
   @override
-  String get docSearchError => 'Search failed. Please try again.';
+  String get docSearchError => 'Otsing ebaõnnestus. Palun proovige uuesti.';
 
   @override
-  String get docSearchUntitled => 'Untitled document';
+  String get docSearchUntitled => 'Pealkirjata dokument';
 
   @override
-  String get docSearchKindCase => 'Case document';
+  String get docSearchKindCase => 'Juhtumi dokument';
 
   @override
-  String get docSearchKindVault => 'Vault document';
+  String get docSearchKindVault => 'Hoidla dokument';
 
   @override
-  String get docSearchMenuTitle => 'Search my documents';
+  String get docSearchMenuTitle => 'Otsi minu dokumentidest';
 
   @override
   String get docSearchMenuSubtitle =>
-      'Find anything in your own files by meaning';
+      'Leidke oma failidest kõik tähenduse järgi';
 
   @override
-  String get legalTemplatesTitle => 'Template library';
+  String get legalTemplatesTitle => 'Mallide kogu';
 
   @override
-  String get legalTemplatesMenuLabel => 'Templates';
+  String get legalTemplatesMenuLabel => 'Mallid';
 
   @override
   String get legalTemplatesSubtitle =>
-      'Pick a ready-made form, fill in a few details, and we\'ll create a draft you can edit and export.';
+      'Valige valmis vorm, täitke mõned andmed ja loome teile mustandi, mida saate muuta ja eksportida.';
 
   @override
   String get legalTemplatesDisclaimer =>
-      'These are general sample forms, not individual legal advice. Review and adapt before sending.';
+      'Need on üldised näidisvormid, mitte individuaalne õigusnõustamine. Vaadake üle ja kohandage enne saatmist.';
 
   @override
-  String get legalTemplatesSampleBadge => 'Sample';
+  String get legalTemplatesSampleBadge => 'Näidis';
 
   @override
-  String get legalTemplatesEmpty => 'No templates for this filter yet.';
+  String get legalTemplatesEmpty => 'Selle filtri jaoks malle veel pole.';
 
   @override
   String get legalTemplatesError =>
-      'Couldn\'t load templates. Please try again.';
+      'Malle ei õnnestunud laadida. Palun proovige uuesti.';
 
   @override
-  String get legalTemplatesFilterAll => 'All';
+  String get legalTemplatesFilterAll => 'Kõik';
 
   @override
-  String get legalTemplatesJurisdictionFi => 'Finland';
+  String get legalTemplatesJurisdictionFi => 'Soome';
 
   @override
-  String get legalTemplatesJurisdictionEe => 'Estonia';
+  String get legalTemplatesJurisdictionEe => 'Eesti';
 
   @override
-  String get legalTemplatesCategoryComplaint => 'Complaints';
+  String get legalTemplatesCategoryComplaint => 'Kaebused';
 
   @override
-  String get legalTemplatesCategoryAppeal => 'Appeals';
+  String get legalTemplatesCategoryAppeal => 'Edasikaebused';
 
   @override
-  String get legalTemplatesCategoryApplication => 'Applications';
+  String get legalTemplatesCategoryApplication => 'Avaldused';
 
   @override
-  String get legalTemplatesCategoryClaim => 'Claims';
+  String get legalTemplatesCategoryClaim => 'Nõuded';
 
   @override
-  String get legalTemplatesCategoryRequest => 'Requests';
+  String get legalTemplatesCategoryRequest => 'Taotlused';
 
   @override
-  String get legalTemplatesFillTitle => 'Fill in the details';
+  String get legalTemplatesFillTitle => 'Täitke andmed';
 
   @override
   String get legalTemplatesFillIntro =>
-      'We\'ll auto-fill your name and case details. Complete the fields below.';
+      'Täidame automaatselt teie nime ja juhtumi andmed. Täitke allolevad väljad.';
 
   @override
-  String get legalTemplatesFieldRequired => 'This field is required';
+  String get legalTemplatesFieldRequired => 'See väli on kohustuslik';
 
   @override
-  String get legalTemplatesCreateDraft => 'Create draft';
+  String get legalTemplatesCreateDraft => 'Loo mustand';
 
   @override
-  String get legalTemplatesCreating => 'Creating draft…';
+  String get legalTemplatesCreating => 'Loome mustandit…';
 
   @override
   String get legalTemplatesCreateFailed =>
-      'Couldn\'t create the draft. Please try again.';
+      'Mustandit ei õnnestunud luua. Palun proovige uuesti.';
 
   @override
   String get legalTemplatesUnresolvedWarning =>
-      'Some fields are still blank and are marked with ____ in the draft. You can complete them in the editor.';
+      'Mõned väljad on endiselt tühjad ja on mustandis tähistatud märgiga ____. Saate need redaktoris täita.';
 
   @override
-  String get legalTemplatesFieldRecipient => 'Recipient (authority / landlord)';
+  String get legalTemplatesFieldRecipient =>
+      'Saaja (ametiasutus / üürileandja)';
 
   @override
-  String get legalTemplatesFieldAddress => 'Your postal address';
+  String get legalTemplatesFieldAddress => 'Teie postiaadress';
 
   @override
-  String get legalTemplatesFieldSubject => 'Subject';
+  String get legalTemplatesFieldSubject => 'Pealkiri';
 
   @override
-  String get legalTemplatesFieldDescription => 'Description of the matter';
+  String get legalTemplatesFieldDescription => 'Asja kirjeldus';
 
   @override
-  String get legalTemplatesFieldDemand => 'What you are asking for';
+  String get legalTemplatesFieldDemand => 'Mida te nõuate';
 
   @override
-  String get checklistActionPlan => 'Action plan';
+  String get checklistActionPlan => 'Tegevuskava';
 
   @override
-  String get checklistActionPlanSubtitle => 'Steps for this type of case';
+  String get checklistActionPlanSubtitle => 'Sammud seda tüüpi juhtumi jaoks';
 
   @override
-  String checklistProgress(Object completed, Object total) {
-    return '$completed of $total steps done';
+  String checklistProgress(int completed, int total) {
+    return '$completed sammu $total-st tehtud';
   }
 
   @override
-  String get checklistAllDone => 'All steps complete';
+  String get checklistAllDone => 'Kõik sammud tehtud';
 
   @override
   String get checklistEmpty =>
-      'No action plan is available for this case type yet.';
+      'Selle juhtumi tüübi jaoks tegevuskava veel pole.';
 
   @override
-  String checklistDeadlineDays(Object days) {
-    return '$days days';
+  String checklistDeadlineDays(int days) {
+    return '$days päeva';
   }
 
   @override
   String get checklistDisclaimer =>
-      'This is general information, not legal advice. Deadlines are statutory defaults — confirm the exact date for your case.';
+      'See on üldine teave, mitte õigusnõustamine. Tähtajad on seadusjärgsed vaikeväärtused — kinnitage oma juhtumi täpne kuupäev.';
 
   @override
-  String get checklistViewPlan => 'View plan';
+  String get checklistViewPlan => 'Vaata kava';
 
   @override
-  String get explainPlainTitle => 'Explain in plain words';
+  String get explainPlainTitle => 'Selgita lihtsate sõnadega';
 
   @override
   String get explainPlainIntro =>
-      'Paste an official letter, decision, or contract and we\'ll explain what it means and what it asks you to do — in plain language.';
+      'Kleepige ametlik kiri, otsus või leping ja selgitame, mida see tähendab ja mida teilt nõutakse — lihtsas keeles.';
 
   @override
-  String get explainPlainLevelFriend => 'Like to a friend';
+  String get explainPlainLevelFriend => 'Nagu sõbrale';
 
   @override
-  String get explainPlainLevelTerms => 'Keep legal terms';
+  String get explainPlainLevelTerms => 'Säilita õigusterminid';
 
   @override
-  String get explainPlainInputHint => 'Paste the legal text here…';
+  String get explainPlainInputHint => 'Kleepige õigustekst siia…';
 
   @override
-  String get explainPlainSubmit => 'Explain';
+  String get explainPlainSubmit => 'Selgita';
 
   @override
-  String get explainPlainWorking => 'Explaining…';
+  String get explainPlainWorking => 'Selgitame…';
 
   @override
-  String get explainPlainTldr => 'Bottom line';
+  String get explainPlainTldr => 'Lühidalt';
 
   @override
-  String get explainPlainBreakdown => 'What it says, part by part';
+  String get explainPlainBreakdown => 'Mida see ütleb, osa haaval';
 
   @override
-  String get explainPlainGlossary => 'Tricky terms explained';
+  String get explainPlainGlossary => 'Keerulised terminid lahti seletatud';
 
   @override
-  String get explainPlainNextSteps => 'What you can do next';
+  String get explainPlainNextSteps => 'Mida saate edasi teha';
 
   @override
-  String get explainPlainOpenInCorpus => 'Look up in the law library';
+  String get explainPlainOpenInCorpus => 'Otsi seaduste kogust';
 
   @override
   String get explainPlainEmptyResult =>
-      'No explanation could be produced for this text. Try pasting a longer or clearer excerpt.';
+      'Selle teksti kohta selgitust ei õnnestunud koostada. Proovige kleepida pikem või selgem katkend.';
 
   @override
   String get explainPlainQuotaTitle =>
-      'You\'ve used your free explanations this month';
+      'Olete ära kasutanud oma tasuta selgitused sel kuul';
 
   @override
   String get explainPlainQuotaBody =>
-      'Free accounts get 3 explanations per month. Upgrade to Pro for unlimited explanations.';
+      'Tasuta kontod saavad 3 selgitust kuus. Uuendage Pro-le piiramatute selgituste jaoks.';
 
   @override
-  String get explainPlainUpgradeCta => 'Upgrade to Pro';
+  String get explainPlainUpgradeCta => 'Uuenda Pro-le';
 
   @override
   String get explainPlainError =>
-      'Something went wrong while explaining this text. Please try again.';
+      'Selle teksti selgitamisel läks midagi valesti. Palun proovige uuesti.';
 
   @override
-  String get explainPlainRetry => 'Try again';
+  String get explainPlainRetry => 'Proovi uuesti';
 
   @override
-  String get demandLetterTitle => 'Demand letter';
+  String get demandLetterTitle => 'Nõudekiri';
 
   @override
   String get demandLetterSubtitle =>
-      'Create a formal pre-court demand (maksuvaatimus / nõudekiri).';
+      'Koostage ametlik kohtueelne nõue (maksuvaatimus / nõudekiri).';
 
   @override
-  String get demandLetterStepType => 'Type of claim';
+  String get demandLetterStepType => 'Nõude liik';
 
   @override
-  String get demandLetterStepParties => 'Parties';
+  String get demandLetterStepParties => 'Pooled';
 
   @override
-  String get demandLetterStepClaim => 'Amount & basis';
+  String get demandLetterStepClaim => 'Summa ja alus';
 
   @override
-  String get demandLetterStepDeadline => 'Deadline';
+  String get demandLetterStepDeadline => 'Tähtaeg';
 
   @override
-  String get demandLetterStepReview => 'Review & generate';
+  String get demandLetterStepReview => 'Vaata üle ja koosta';
 
   @override
-  String get demandLetterClaimDepositReturn => 'Return of rental deposit';
+  String get demandLetterClaimDepositReturn => 'Üüritagatise tagastamine';
 
   @override
-  String get demandLetterClaimUnpaidWage => 'Unpaid wages';
+  String get demandLetterClaimUnpaidWage => 'Maksmata töötasu';
 
   @override
-  String get demandLetterClaimFineDispute => 'Dispute a fine / charge';
+  String get demandLetterClaimFineDispute => 'Trahvi / tasu vaidlustamine';
 
   @override
-  String get demandLetterClaimGeneric => 'Other monetary claim';
+  String get demandLetterClaimGeneric => 'Muu rahaline nõue';
 
   @override
-  String get demandLetterJurisdiction => 'Jurisdiction';
+  String get demandLetterJurisdiction => 'Jurisdiktsioon';
 
   @override
-  String get demandLetterLanguage => 'Letter language';
+  String get demandLetterLanguage => 'Kirja keel';
 
   @override
-  String get demandLetterRecipientName => 'Recipient name';
+  String get demandLetterRecipientName => 'Saaja nimi';
 
   @override
-  String get demandLetterRecipientAddress => 'Recipient address (optional)';
+  String get demandLetterRecipientAddress => 'Saaja aadress (valikuline)';
 
   @override
-  String get demandLetterSenderName => 'Your name';
+  String get demandLetterSenderName => 'Teie nimi';
 
   @override
-  String get demandLetterSenderAddress => 'Your address / email (optional)';
+  String get demandLetterSenderAddress => 'Teie aadress / e-post (valikuline)';
 
   @override
-  String get demandLetterAmount => 'Amount';
+  String get demandLetterAmount => 'Summa';
 
   @override
-  String get demandLetterCurrency => 'Currency';
+  String get demandLetterCurrency => 'Valuuta';
 
   @override
-  String get demandLetterBasis => 'What happened (basis of the claim)';
+  String get demandLetterBasis => 'Mis juhtus (nõude alus)';
 
   @override
   String get demandLetterBasisHint =>
-      'Describe the facts: dates, amounts, what was agreed and what went wrong.';
+      'Kirjeldage asjaolusid: kuupäevad, summad, milles kokku lepiti ja mis läks valesti.';
 
   @override
-  String get demandLetterDeadline => 'Payment deadline';
+  String get demandLetterDeadline => 'Maksetähtaeg';
 
   @override
-  String get demandLetterDeadlineHint => 'e.g. 14 days from today';
+  String get demandLetterDeadlineHint => 'nt 14 päeva tänasest';
 
   @override
-  String get demandLetterReference => 'Reference (optional)';
+  String get demandLetterReference => 'Viide (valikuline)';
 
   @override
-  String get demandLetterGenerate => 'Generate letter';
+  String get demandLetterGenerate => 'Koosta kiri';
 
   @override
-  String get demandLetterGenerating => 'Generating…';
+  String get demandLetterGenerating => 'Koostame…';
 
   @override
   String get demandLetterGenerateFailed =>
-      'Couldn\'t generate the letter. Please try again.';
+      'Kirja ei õnnestunud koostada. Palun proovige uuesti.';
 
   @override
-  String get demandLetterFieldRequired => 'This field is required';
+  String get demandLetterFieldRequired => 'See väli on kohustuslik';
 
   @override
-  String get demandLetterNext => 'Next';
+  String get demandLetterNext => 'Edasi';
 
   @override
-  String get demandLetterBack => 'Back';
+  String get demandLetterBack => 'Tagasi';
 
   @override
-  String get demandLetterPreviewTitle => 'Your letter';
+  String get demandLetterPreviewTitle => 'Teie kiri';
 
   @override
-  String get demandLetterCopy => 'Copy text';
+  String get demandLetterCopy => 'Kopeeri tekst';
 
   @override
-  String get demandLetterCopied => 'Letter copied to clipboard';
+  String get demandLetterCopied => 'Kiri kopeeritud lõikelauale';
 
   @override
-  String get demandLetterExportPdf => 'Export PDF';
+  String get demandLetterExportPdf => 'Ekspordi PDF';
 
   @override
-  String get demandLetterExporting => 'Exporting…';
+  String get demandLetterExporting => 'Ekspordime…';
 
   @override
   String get demandLetterExportFailed =>
-      'Couldn\'t export the document. Please try again.';
+      'Dokumenti ei õnnestunud eksportida. Palun proovige uuesti.';
 
   @override
-  String get demandLetterSendEmail => 'Send via email';
+  String get demandLetterSendEmail => 'Saada e-postiga';
 
   @override
-  String get demandLetterNormsTitle => 'Legal references';
+  String get demandLetterNormsTitle => 'Õiguslikud viited';
 
   @override
   String get demandLetterDisclaimer =>
-      'This letter is prepared on your behalf as a general template. It is not legal advice or an act of a licensed attorney. Review it before sending — no letter is sent automatically.';
+      'See kiri on koostatud teie nimel üldise mallina. See ei ole õigusnõustamine ega litsentseeritud advokaadi toiming. Vaadake see enne saatmist üle — ühtegi kirja ei saadeta automaatselt.';
 
   @override
-  String get demandLetterMenuTile => 'Demand letter';
+  String get demandLetterMenuTile => 'Nõudekiri';
 
   @override
-  String get calcHubTitle => 'Legal calculators';
+  String get calcHubTitle => 'Õiguskalkulaatorid';
 
   @override
-  String get calcHubSubtitle => 'Quick estimates before your next step';
+  String get calcHubSubtitle => 'Kiired hinnangud enne järgmist sammu';
 
   @override
-  String get calcHubJurisdiction => 'Jurisdiction';
+  String get calcHubJurisdiction => 'Jurisdiktsioon';
 
   @override
-  String calcRatesAsOf(Object date) {
-    return 'Rates as of $date';
+  String calcRatesAsOf(String date) {
+    return 'Määrad seisuga $date';
   }
 
   @override
-  String get calcRatesOffline => 'Showing cached rates (offline)';
+  String get calcRatesOffline =>
+      'Kuvatakse vahemällu salvestatud määrad (võrguühenduseta)';
 
   @override
   String get calcIndicativeBanner =>
-      'Indicative estimate only — not an official calculation or legal advice.';
+      'Ainult orienteeruv hinnang — mitte ametlik arvutus ega õigusnõustamine.';
 
   @override
-  String get calcCalculate => 'Calculate';
+  String get calcCalculate => 'Arvuta';
 
   @override
-  String get calcResult => 'Result';
+  String get calcResult => 'Tulemus';
 
   @override
-  String get calcFormula => 'How this is calculated';
+  String get calcFormula => 'Kuidas seda arvutatakse';
 
   @override
-  String get calcSource => 'Source';
+  String get calcSource => 'Allikas';
 
   @override
-  String get calcSeveranceTitle => 'Severance / notice';
+  String get calcSeveranceTitle => 'Hüvitis / etteteatamine';
 
   @override
   String get calcSeveranceDesc =>
-      'Estimate severance pay and notice period on redundancy';
+      'Hinnake koondamishüvitist ja etteteatamistähtaega koondamisel';
 
   @override
-  String get calcSeveranceSalary => 'Gross monthly salary';
+  String get calcSeveranceSalary => 'Brutokuupalk';
 
   @override
-  String get calcSeveranceTenure => 'Years of service';
+  String get calcSeveranceTenure => 'Tööstaaž aastates';
 
   @override
-  String get calcSeveranceTotal => 'Estimated severance';
+  String get calcSeveranceTotal => 'Hinnanguline hüvitis';
 
   @override
-  String get calcSeveranceNotice => 'Notice period';
+  String get calcSeveranceNotice => 'Etteteatamistähtaeg';
 
   @override
-  String get calcSeveranceGenerateDemand => 'Draft a demand letter';
+  String get calcSeveranceGenerateDemand => 'Koosta nõudekiri';
 
   @override
-  String get calcLimitationTitle => 'Limitation & appeal deadlines';
+  String get calcLimitationTitle => 'Aegumis- ja kaebetähtajad';
 
   @override
   String get calcLimitationDesc =>
-      'Check whether a claim or appeal period has expired';
+      'Kontrollige, kas nõude- või kaebetähtaeg on möödunud';
 
   @override
-  String get calcLimitationType => 'Type of period';
+  String get calcLimitationType => 'Tähtaja liik';
 
   @override
-  String get calcLimitationStart => 'Start date (event / decision)';
+  String get calcLimitationStart => 'Alguskuupäev (sündmus / otsus)';
 
   @override
-  String get calcLimitationPickDate => 'Pick date';
+  String get calcLimitationPickDate => 'Vali kuupäev';
 
   @override
-  String get calcLimitationDeadline => 'Deadline';
+  String get calcLimitationDeadline => 'Tähtaeg';
 
   @override
-  String get calcLimitationExpired => 'Period has expired';
+  String get calcLimitationExpired => 'Tähtaeg on möödunud';
 
   @override
-  String calcLimitationDaysLeft(Object days) {
-    return '$days days remaining';
+  String calcLimitationDaysLeft(int days) {
+    return '$days päeva jäänud';
   }
 
   @override
   String get calcLimitationShifted =>
-      'Shifted to the next working day (weekend/holiday).';
+      'Nihutatud järgmisele tööpäevale (nädalavahetus/püha).';
 
   @override
-  String get calcLimitationAddDeadline => 'Add to deadlines';
+  String get calcLimitationAddDeadline => 'Lisa tähtaegadesse';
 
   @override
-  String get calcStateFeeTitle => 'Court / state fees';
+  String get calcStateFeeTitle => 'Kohtu- / riigilõivud';
 
   @override
-  String get calcStateFeeDesc => 'Reference filing fees by court and stage';
+  String get calcStateFeeDesc =>
+      'Riigilõivude teatmik kohtu ja menetlusastme järgi';
 
   @override
-  String get calcChildSupportTitle => 'Child support (orientation)';
+  String get calcChildSupportTitle => 'Elatis (orienteeruv)';
 
   @override
   String get calcChildSupportDesc =>
-      'Rough orientation figure — the real amount is set case by case';
+      'Ligikaudne orienteeruv summa — tegelik summa määratakse igal juhtumil eraldi';
 
   @override
-  String get calcChildSupportNet => 'Payer\'s net monthly income';
+  String get calcChildSupportNet => 'Maksja netokuusissetulek';
 
   @override
-  String get calcChildSupportChildren => 'Number of children';
+  String get calcChildSupportChildren => 'Laste arv';
 
   @override
-  String get calcChildSupportPerChild => 'Per child';
+  String get calcChildSupportPerChild => 'Lapse kohta';
 
   @override
-  String get calcChildSupportTotal => 'Total monthly';
+  String get calcChildSupportTotal => 'Kokku kuus';
 
   @override
   String get calcChildSupportWarning =>
-      'Highly variable. Courts decide on the child\'s needs and both parents\' ability to pay. Use as a starting point only.';
+      'Väga muutlik. Kohtud otsustavad lapse vajaduste ja mõlema vanema maksevõime põhjal. Kasutage ainult lähtepunktina.';
 
   @override
-  String get docCollectTitle => 'Documents to collect';
+  String get docCollectTitle => 'Kogutavad dokumendid';
 
   @override
   String get docCollectSubtitle =>
-      'Gather these before you apply or go to court';
+      'Koguge need enne taotluse esitamist või kohtusse pöördumist';
 
   @override
-  String get docCollectPickPrompt => 'What is your situation?';
+  String get docCollectPickPrompt => 'Milline on teie olukord?';
 
   @override
-  String get docCollectProblemResidence => 'Residence permit';
+  String get docCollectProblemResidence => 'Elamisluba';
 
   @override
-  String get docCollectProblemTenant => 'Renting / eviction';
+  String get docCollectProblemTenant => 'Üürimine / väljatõstmine';
 
   @override
-  String get docCollectProblemDismissal => 'Dismissal at work';
+  String get docCollectProblemDismissal => 'Töölt vabastamine';
 
   @override
-  String get docCollectProblemInheritance => 'Inheritance';
+  String get docCollectProblemInheritance => 'Pärimine';
 
   @override
-  String get docCollectProblemDivorce => 'Divorce';
+  String get docCollectProblemDivorce => 'Lahutus';
 
   @override
-  String docCollectProgress(Object collected, Object total) {
-    return '$collected of $total collected';
+  String docCollectProgress(int collected, int total) {
+    return '$collected kogutud $total-st';
   }
 
   @override
-  String get docCollectAllDone => 'Everything collected';
+  String get docCollectAllDone => 'Kõik kogutud';
 
   @override
   String get docCollectEmpty =>
-      'No document list is available for this situation yet.';
+      'Selle olukorra jaoks dokumentide loendit veel pole.';
 
   @override
-  String get docCollectOptional => 'Optional';
+  String get docCollectOptional => 'Valikuline';
 
   @override
-  String get docCollectWhereLabel => 'Where to get it';
+  String get docCollectWhereLabel => 'Kust saada';
 
   @override
-  String get docCollectWhyLabel => 'Why it\'s needed';
+  String get docCollectWhyLabel => 'Miks seda vaja on';
 
   @override
-  String get docCollectAttach => 'Attach a file';
+  String get docCollectAttach => 'Lisa fail';
 
   @override
-  String get docCollectAttached => 'File attached';
+  String get docCollectAttached => 'Fail lisatud';
 
   @override
-  String get docCollectChangeFile => 'Change file';
+  String get docCollectChangeFile => 'Muuda faili';
 
   @override
-  String get docCollectRemoveFile => 'Remove file';
+  String get docCollectRemoveFile => 'Eemalda fail';
 
   @override
-  String get docCollectNoFiles => 'You haven\'t uploaded any documents yet.';
+  String get docCollectNoFiles =>
+      'Te pole veel ühtegi dokumenti üles laadinud.';
 
   @override
-  String get docCollectPickFileTitle => 'Choose an uploaded document';
+  String get docCollectPickFileTitle => 'Vali üleslaaditud dokument';
 
   @override
-  String get docCollectExport => 'Export list';
+  String get docCollectExport => 'Ekspordi loend';
 
   @override
-  String get docCollectExportSubject => 'My document checklist';
+  String get docCollectExportSubject => 'Minu dokumentide kontrollnimekiri';
 
   @override
-  String get docCollectAiTitle => 'Need something specific?';
+  String get docCollectAiTitle => 'Vajate midagi konkreetset?';
 
   @override
   String get docCollectAiHint =>
-      'Describe your situation and we\'ll suggest any extra documents.';
+      'Kirjeldage oma olukorda ja soovitame lisadokumente.';
 
   @override
-  String get docCollectAiField => 'Describe your situation';
+  String get docCollectAiField => 'Kirjeldage oma olukorda';
 
   @override
-  String get docCollectAiButton => 'Suggest extra documents';
+  String get docCollectAiButton => 'Soovita lisadokumente';
 
   @override
-  String get docCollectAiLoading => 'Thinking…';
+  String get docCollectAiLoading => 'Mõtleme…';
 
   @override
   String get docCollectAiEmpty =>
-      'No extra documents suggested — the basic list looks complete for your description.';
+      'Lisadokumente ei soovitatud — põhinimekiri tundub teie kirjelduse jaoks täielik.';
 
   @override
-  String get docCollectAiSuggestionsTitle => 'Suggested extra documents';
+  String get docCollectAiSuggestionsTitle => 'Soovitatud lisadokumendid';
 
   @override
   String get docCollectDisclaimer =>
-      'This is a basic list of commonly required documents — your situation may need more or fewer. It is general information, not legal advice.';
+      'See on põhinimekiri tavaliselt nõutavatest dokumentidest — teie olukord võib vajada rohkem või vähem. See on üldine teave, mitte õigusnõustamine.';
 
   @override
-  String get docCollectRetry => 'Try again';
+  String get docCollectRetry => 'Proovi uuesti';
 
   @override
-  String get renewalTitle => 'Renewal Radar';
+  String get renewalTitle => 'Pikendamise radar';
 
   @override
   String get renewalSubtitle =>
-      'Track when your permits, passport, insurance and other documents expire. We\'ll remind you 90, 30 and 7 days before each renewal.';
+      'Jälgige, millal teie load, pass, kindlustus ja muud dokumendid aeguvad. Tuletame meelde 90, 30 ja 7 päeva enne iga pikendamist.';
 
   @override
-  String get renewalAdd => 'Add document';
+  String get renewalAdd => 'Lisa dokument';
 
   @override
-  String get renewalEditTitle => 'Edit document';
+  String get renewalEditTitle => 'Muuda dokumenti';
 
   @override
-  String get renewalSave => 'Save';
+  String get renewalSave => 'Salvesta';
 
   @override
-  String get renewalRequired => 'Required';
+  String get renewalRequired => 'Kohustuslik';
 
   @override
-  String get renewalPickDate => 'Pick expiry date';
+  String get renewalPickDate => 'Vali aegumiskuupäev';
 
   @override
   String get renewalLoadError =>
-      'Could not load your documents. Pull to refresh.';
+      'Teie dokumente ei õnnestunud laadida. Tõmmake värskendamiseks.';
 
   @override
-  String get renewalEmptyTitle => 'No documents tracked yet';
+  String get renewalEmptyTitle => 'Dokumente veel ei jälgita';
 
   @override
   String get renewalEmptyBody =>
-      'Add your residence permit, passport, insurance or licence and we\'ll watch the expiry dates for you.';
+      'Lisage oma elamisluba, pass, kindlustus või juhiluba ja jälgime teie eest aegumiskuupäevi.';
 
   @override
-  String get renewalGuideHint => 'How to renew →';
+  String get renewalGuideHint => 'Kuidas pikendada →';
 
   @override
-  String get renewalFieldType => 'Document type';
+  String get renewalFieldType => 'Dokumendi liik';
 
   @override
-  String get renewalFieldLabel => 'Label';
+  String get renewalFieldLabel => 'Silt';
 
   @override
-  String get renewalFieldNumber => 'Document number (optional)';
+  String get renewalFieldNumber => 'Dokumendi number (valikuline)';
 
   @override
-  String get renewalFieldJurisdiction => 'Issuing country';
+  String get renewalFieldJurisdiction => 'Väljaandev riik';
 
   @override
-  String get renewalFieldExpiry => 'Expiry date';
+  String get renewalFieldExpiry => 'Aegumiskuupäev';
 
   @override
-  String get renewalWindow90 => '90 days';
+  String get renewalWindow90 => '90 päeva';
 
   @override
-  String get renewalWindow30 => '30 days';
+  String get renewalWindow30 => '30 päeva';
 
   @override
-  String get renewalWindow7 => '7 days';
+  String get renewalWindow7 => '7 päeva';
 
   @override
-  String get renewalExpiresToday => 'Expires today';
+  String get renewalExpiresToday => 'Aegub täna';
 
   @override
-  String renewalExpiresInDays(Object date, Object days) {
-    return 'Expires in $days days · $date';
+  String renewalExpiresInDays(int days, String date) {
+    return 'Aegub $days päeva pärast · $date';
   }
 
   @override
-  String renewalExpiredOn(Object date) {
-    return 'Expired on $date';
+  String renewalExpiredOn(String date) {
+    return 'Aegus $date';
   }
 
   @override
-  String get renewalTypeResidencePermit => 'Residence permit';
+  String get renewalTypeResidencePermit => 'Elamisluba';
 
   @override
-  String get renewalTypePassport => 'Passport';
+  String get renewalTypePassport => 'Pass';
 
   @override
-  String get renewalTypeIdCard => 'ID card';
+  String get renewalTypeIdCard => 'ID-kaart';
 
   @override
-  String get renewalTypeVisa => 'Visa';
+  String get renewalTypeVisa => 'Viisa';
 
   @override
-  String get renewalTypeDrivingLicence => 'Driving licence';
+  String get renewalTypeDrivingLicence => 'Juhiluba';
 
   @override
-  String get renewalTypeInsurance => 'Insurance';
+  String get renewalTypeInsurance => 'Kindlustus';
 
   @override
-  String get renewalTypeWorkPermit => 'Work permit';
+  String get renewalTypeWorkPermit => 'Tööluba';
 
   @override
-  String get renewalTypeOther => 'Other';
+  String get renewalTypeOther => 'Muu';
 
   @override
-  String get costEstimateTitle => 'Cost & Risk Estimator';
+  String get costEstimateTitle => 'Kulu- ja riskihindaja';
 
   @override
   String get costEstimateSubtitle =>
-      'Get a rough idea of what a case might cost, how long it could take, and whether it is worth pursuing.';
+      'Saage ligikaudne ettekujutus, mida juhtum võib maksta, kui kaua see võib kesta ja kas seda tasub ette võtta.';
 
   @override
-  String get costEstimateCaseTypeLabel => 'Type of case';
+  String get costEstimateCaseTypeLabel => 'Juhtumi tüüp';
 
   @override
   String get costEstimateCaseTypeHint =>
-      'e.g. unpaid invoice, wrongful dismissal, deposit dispute';
+      'nt maksmata arve, õigusvastane töölt vabastamine, tagatise vaidlus';
 
   @override
-  String get costEstimateJurisdictionLabel => 'Jurisdiction';
+  String get costEstimateJurisdictionLabel => 'Jurisdiktsioon';
 
   @override
-  String get costEstimateAmountLabel => 'Amount in dispute (optional)';
+  String get costEstimateAmountLabel => 'Vaidlusalune summa (valikuline)';
 
   @override
-  String get costEstimateAmountHint => 'e.g. 12500';
+  String get costEstimateAmountHint => 'nt 12500';
 
   @override
   String get costEstimateDescriptionLabel =>
-      'Briefly describe the situation (optional)';
+      'Kirjeldage lühidalt olukorda (valikuline)';
 
   @override
-  String get costEstimateB2bToggle => 'Lead-qualification card (B2B)';
+  String get costEstimateB2bToggle => 'Kliendi kvalifitseerimise kaart (B2B)';
 
   @override
   String get costEstimateB2bSubtitle =>
-      'Compact output for quickly triaging an inbound client.';
+      'Kompaktne väljund saabuva kliendi kiireks sorteerimiseks.';
 
   @override
-  String get costEstimateSubmit => 'Estimate my case';
+  String get costEstimateSubmit => 'Hinda minu juhtumit';
 
   @override
   String get costEstimateDisclaimer =>
-      'Rough estimate only — not a prediction, guarantee, or legal advice. Actual costs and outcomes vary case by case.';
+      'Ainult ligikaudne hinnang — mitte ennustus, garantii ega õigusnõustamine. Tegelikud kulud ja tulemused on juhtumiti erinevad.';
 
   @override
-  String get costEstimateCostsHeading => 'Estimated costs';
+  String get costEstimateCostsHeading => 'Hinnangulised kulud';
 
   @override
-  String get costEstimateCourtFee => 'Court / state fee';
+  String get costEstimateCourtFee => 'Kohtu- / riigilõiv';
 
   @override
-  String get costEstimateLawyerFee => 'Lawyer fee';
+  String get costEstimateLawyerFee => 'Advokaaditasu';
 
   @override
-  String get costEstimateTotal => 'Total (approx.)';
+  String get costEstimateTotal => 'Kokku (ligikaudu)';
 
   @override
-  String get costEstimateDuration => 'Time to first resolution';
+  String get costEstimateDuration => 'Aeg esimese lahenduseni';
 
   @override
-  String get costEstimateMonthsSuffix => 'months';
+  String get costEstimateMonthsSuffix => 'kuud';
 
   @override
-  String get costEstimateFactorsFor => 'In your favour';
+  String get costEstimateFactorsFor => 'Teie kasuks';
 
   @override
-  String get costEstimateFactorsAgainst => 'Working against you';
+  String get costEstimateFactorsAgainst => 'Teie vastu';
 
   @override
-  String get costEstimateStrengthWorth => 'Likely worth pursuing';
+  String get costEstimateStrengthWorth => 'Tõenäoliselt tasub ette võtta';
 
   @override
-  String get costEstimateStrengthContested => 'Contested — could go either way';
+  String get costEstimateStrengthContested =>
+      'Vaieldav — võib minna kummalegi poole';
 
   @override
-  String get costEstimateStrengthWeak => 'Weak — proceed with caution';
+  String get costEstimateStrengthWeak => 'Nõrk — toimige ettevaatlikult';
 }

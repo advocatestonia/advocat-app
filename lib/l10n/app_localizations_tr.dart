@@ -4594,946 +4594,950 @@ class AppLocalizationsTr extends AppLocalizations {
   String get newPasswordError => 'Şifre güncellenemedi. Lütfen tekrar deneyin.';
 
   @override
-  String get accessLogTile => 'Access log';
+  String get accessLogTile => 'Erişim kaydı';
 
   @override
-  String get accessLogTileSubtitle => 'See who and what accessed your data';
+  String get accessLogTileSubtitle =>
+      'Verilerinize kimin ve neyin eriştiğini görün';
 
   @override
-  String get accessLogTitle => 'Access log for my data';
+  String get accessLogTitle => 'Verilerime ilişkin erişim kaydı';
 
   @override
   String get accessLogIntro =>
-      'A transparent, tamper-evident record of every time your data was accessed or processed — including by our AI. You can verify it has not been altered.';
+      'Verilerinize her erişildiğinde veya verileriniz her işlendiğinde — yapay zekamız dahil — tutulan, şeffaf ve değiştirilemez bir kayıt. Kaydın değiştirilmediğini doğrulayabilirsiniz.';
 
   @override
-  String get accessLogEmpty => 'No access events yet.';
+  String get accessLogEmpty => 'Henüz erişim olayı yok.';
 
   @override
   String get accessLogError =>
-      'Could not load your access log. Pull down to retry.';
+      'Erişim kaydınız yüklenemedi. Yeniden denemek için aşağı çekin.';
 
   @override
   String get accessLogIntegrityOk =>
-      'Integrity verified — the log links form an unbroken chain.';
+      'Bütünlük doğrulandı — kayıt bağlantıları kesintisiz bir zincir oluşturuyor.';
 
   @override
   String get accessLogIntegrityBroken =>
-      'Warning: the log chain is broken. Some entries may have been removed or reordered. Please contact support.';
+      'Uyarı: kayıt zinciri kırılmış. Bazı kayıtlar kaldırılmış veya yeniden sıralanmış olabilir. Lütfen destek ekibiyle iletişime geçin.';
 
   @override
   String get accessActionLlmEgress =>
-      'Sent to AI for processing (pseudonymized)';
+      'İşlenmek üzere yapay zekaya gönderildi (takma adlandırılmış)';
 
   @override
-  String get accessActionAiAnalysis => 'Analyzed by AI';
+  String get accessActionAiAnalysis => 'Yapay zeka tarafından analiz edildi';
 
   @override
-  String get accessActionDocumentParse => 'Document parsed';
+  String get accessActionDocumentParse => 'Belge ayrıştırıldı';
 
   @override
-  String get accessActionStaffRead => 'Reviewed by a staff member';
+  String get accessActionStaffRead => 'Bir personel tarafından incelendi';
 
   @override
-  String get accessActionExport => 'Data exported';
+  String get accessActionExport => 'Veriler dışa aktarıldı';
 
   @override
-  String get accessActionEmailTriage => 'Email triaged';
+  String get accessActionEmailTriage => 'E-posta önceliklendirildi';
 
   @override
-  String get accessActionDeadlineScan => 'Deadlines scanned';
+  String get accessActionDeadlineScan => 'Süreler tarandı';
 
   @override
-  String get breachAlertTitle => 'Security alert on your data';
+  String get breachAlertTitle => 'Verilerinize ilişkin güvenlik uyarısı';
 
   @override
   String get breachAlertBody =>
-      'Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34).';
+      'Otomatik izleme sistemimiz, verilerinizle ilgili olağan dışı bir erişim tespit etti. Durumu inceliyoruz ve doğrulanan herhangi bir olayı yasaların gerektirdiği şekilde size bildireceğiz (GDPR Madde 34).';
 
   @override
-  String get caseDossierTitle => 'Export case dossier';
+  String get caseDossierTitle => 'Dava dosyasını dışa aktar';
 
   @override
   String get caseDossierSubtitle =>
-      'One PDF with everything — facts, chronology, deadlines and documents — to hand to a lawyer, a court, or a complaint body.';
+      'Bir avukata, mahkemeye veya şikayet merciine sunmak için her şeyi içeren tek bir PDF — olgular, kronoloji, süreler ve belgeler.';
 
   @override
-  String get caseDossierTileTitle => 'Export dossier (PDF)';
+  String get caseDossierTileTitle => 'Dosyayı dışa aktar (PDF)';
 
   @override
   String get caseDossierTileSubtitle =>
-      'Hand the whole case to a lawyer or court in one file';
+      'Davanın tamamını tek bir dosyayla avukata veya mahkemeye sunun';
 
   @override
-  String get caseDossierSectionsHeading => 'Include in the dossier';
+  String get caseDossierSectionsHeading => 'Dosyaya dahil edilecekler';
 
   @override
-  String get caseDossierSectionFacts => 'Case facts';
+  String get caseDossierSectionFacts => 'Dava olguları';
 
   @override
-  String get caseDossierSectionFactsHint => 'Always included';
+  String get caseDossierSectionFactsHint => 'Her zaman dahildir';
 
   @override
-  String get caseDossierSectionTimeline => 'Chronology';
+  String get caseDossierSectionTimeline => 'Kronoloji';
 
   @override
-  String get caseDossierSectionDeadlines => 'Deadlines';
+  String get caseDossierSectionDeadlines => 'Süreler';
 
   @override
-  String get caseDossierSectionDocuments => 'Documents';
+  String get caseDossierSectionDocuments => 'Belgeler';
 
   @override
-  String get caseDossierSectionAiSummary => 'AI summary';
+  String get caseDossierSectionAiSummary => 'Yapay zeka özeti';
 
   @override
-  String get caseDossierExportButton => 'Export PDF';
+  String get caseDossierExportButton => 'PDF olarak dışa aktar';
 
   @override
-  String get caseDossierExporting => 'Building your dossier…';
+  String get caseDossierExporting => 'Dosyanız oluşturuluyor…';
 
   @override
-  String get caseDossierSuccess => 'Dossier ready. Open or share the file.';
+  String get caseDossierSuccess => 'Dosya hazır. Dosyayı açın veya paylaşın.';
 
   @override
-  String get caseDossierOpen => 'Open dossier';
+  String get caseDossierOpen => 'Dosyayı aç';
 
   @override
-  String get caseDossierError =>
-      'Could not build the dossier. Please try again.';
+  String get caseDossierError => 'Dosya oluşturulamadı. Lütfen tekrar deneyin.';
 
   @override
-  String get caseDossierErrorNotOwned => 'This case could not be found.';
+  String get caseDossierErrorNotOwned => 'Bu dava bulunamadı.';
 
   @override
   String get caseDossierDisclaimer =>
-      'The dossier reproduces your case data as recorded. Review it before sharing.';
+      'Dosya, dava verilerinizi kayıtlı olduğu şekilde yansıtır. Paylaşmadan önce inceleyin.';
 
   @override
-  String get followupsTitle => 'Next steps';
+  String get followupsTitle => 'Sonraki adımlar';
 
   @override
-  String get followupsSubtitle => 'Practical tasks to keep your case moving';
+  String get followupsSubtitle => 'Davanızı ilerletmek için pratik görevler';
 
   @override
-  String get followupsEmpty => 'No follow-up steps yet.';
+  String get followupsEmpty => 'Henüz takip adımı yok.';
 
   @override
   String get followupsEmptyDesc =>
-      'Add a step, or let the AI suggest what to do next.';
+      'Bir adım ekleyin veya yapay zekanın bir sonraki adımı önermesine izin verin.';
 
   @override
-  String get followupsAdd => 'Add step';
+  String get followupsAdd => 'Adım ekle';
 
   @override
-  String get followupsSuggest => 'Suggest steps';
+  String get followupsSuggest => 'Adım öner';
 
   @override
   String get followupsSuggestNone =>
-      'No suggestions right now. Try after chatting about the case.';
+      'Şu anda öneri yok. Dava hakkında sohbet ettikten sonra tekrar deneyin.';
 
   @override
-  String get followupsSuggestTitle => 'Suggested next steps';
+  String get followupsSuggestTitle => 'Önerilen sonraki adımlar';
 
   @override
-  String get followupsAddPrompt => 'Add the steps you want to keep:';
+  String get followupsAddPrompt => 'Saklamak istediğiniz adımları ekleyin:';
 
   @override
-  String get followupsNewTitleHint => 'What needs to be done?';
+  String get followupsNewTitleHint => 'Ne yapılması gerekiyor?';
 
   @override
-  String get followupsNewDetailHint => 'Optional note (why / what to attach)';
+  String get followupsNewDetailHint =>
+      'İsteğe bağlı not (neden / neyin ekleneceği)';
 
   @override
-  String get followupsDueOptional => 'Remind me on (optional)';
+  String get followupsDueOptional => 'Bana hatırlat (isteğe bağlı)';
 
   @override
-  String get followupsOverdue => 'Overdue';
+  String get followupsOverdue => 'Süresi geçti';
 
   @override
-  String followupsDueOn(Object date) {
-    return 'Due $date';
+  String followupsDueOn(String date) {
+    return 'Son tarih: $date';
   }
 
   @override
-  String get followupsDone => 'Done';
+  String get followupsDone => 'Tamamlandı';
 
   @override
-  String get followupsSnooze => 'Snooze';
+  String get followupsSnooze => 'Ertele';
 
   @override
-  String get followupsSnooze1Week => 'Remind in a week';
+  String get followupsSnooze1Week => 'Bir hafta sonra hatırlat';
 
   @override
-  String get followupsDismiss => 'Dismiss';
+  String get followupsDismiss => 'Yoksay';
 
   @override
-  String get followupsLoadError => 'Could not load next steps';
+  String get followupsLoadError => 'Sonraki adımlar yüklenemedi';
 
   @override
-  String get followupsAiBadge => 'AI';
+  String get followupsAiBadge => 'Yapay zeka';
 
   @override
-  String get contractCompareTitle => 'Compare versions';
+  String get contractCompareTitle => 'Sürümleri karşılaştır';
 
   @override
   String get contractCompareIntro =>
-      'Upload two versions of the same contract. We highlight what changed and whether each change helps or hurts you.';
+      'Aynı sözleşmenin iki sürümünü yükleyin. Neyin değiştiğini ve her değişikliğin lehinize mi yoksa aleyhinize mi olduğunu vurgularız.';
 
   @override
-  String get contractCompareOldVersion => 'Old version (v1)';
+  String get contractCompareOldVersion => 'Eski sürüm (v1)';
 
   @override
-  String get contractCompareNewVersion => 'New version (v2)';
+  String get contractCompareNewVersion => 'Yeni sürüm (v2)';
 
   @override
-  String get contractCompareCta => 'Compare versions';
+  String get contractCompareCta => 'Sürümleri karşılaştır';
 
   @override
-  String get contractCompareAdverse => 'Adverse';
+  String get contractCompareAdverse => 'Aleyhte';
 
   @override
-  String get contractCompareFavorable => 'Favorable';
+  String get contractCompareFavorable => 'Lehte';
 
   @override
-  String get contractCompareNeutral => 'Neutral';
+  String get contractCompareNeutral => 'Nötr';
 
   @override
-  String get contractCompareBefore => 'Before';
+  String get contractCompareBefore => 'Önce';
 
   @override
-  String get contractCompareAfter => 'After';
+  String get contractCompareAfter => 'Sonra';
 
   @override
   String get contractCompareTruncated =>
-      'Long contract — only the first part of each version was compared.';
+      'Uzun sözleşme — her sürümün yalnızca ilk bölümü karşılaştırıldı.';
 
   @override
   String get contractCompareNoChanges =>
-      'No material changes detected between the two versions.';
+      'İki sürüm arasında esaslı bir değişiklik tespit edilmedi.';
 
   @override
-  String get docSearchTitle => 'Search my documents';
+  String get docSearchTitle => 'Belgelerimde ara';
 
   @override
-  String get docSearchHint => 'e.g. where was the deposit mentioned';
+  String get docSearchHint => 'örn. depozito nerede belirtildi';
 
   @override
   String get docSearchSubtitle =>
-      'Semantic search across your vault and case files';
+      'Kasanız ve dava dosyalarınız genelinde anlamsal arama';
 
   @override
   String get docSearchIdle =>
-      'Search the contents of your own documents — not just titles.';
+      'Yalnızca başlıklarda değil, kendi belgelerinizin içeriğinde arama yapın.';
 
   @override
-  String get docSearchNoResults => 'No matches found in your documents.';
+  String get docSearchNoResults => 'Belgelerinizde eşleşme bulunamadı.';
 
   @override
-  String get docSearchError => 'Search failed. Please try again.';
+  String get docSearchError => 'Arama başarısız oldu. Lütfen tekrar deneyin.';
 
   @override
-  String get docSearchUntitled => 'Untitled document';
+  String get docSearchUntitled => 'Başlıksız belge';
 
   @override
-  String get docSearchKindCase => 'Case document';
+  String get docSearchKindCase => 'Dava belgesi';
 
   @override
-  String get docSearchKindVault => 'Vault document';
+  String get docSearchKindVault => 'Kasa belgesi';
 
   @override
-  String get docSearchMenuTitle => 'Search my documents';
+  String get docSearchMenuTitle => 'Belgelerimde ara';
 
   @override
   String get docSearchMenuSubtitle =>
-      'Find anything in your own files by meaning';
+      'Kendi dosyalarınızda her şeyi anlamına göre bulun';
 
   @override
-  String get legalTemplatesTitle => 'Template library';
+  String get legalTemplatesTitle => 'Şablon kütüphanesi';
 
   @override
-  String get legalTemplatesMenuLabel => 'Templates';
+  String get legalTemplatesMenuLabel => 'Şablonlar';
 
   @override
   String get legalTemplatesSubtitle =>
-      'Pick a ready-made form, fill in a few details, and we\'ll create a draft you can edit and export.';
+      'Hazır bir form seçin, birkaç ayrıntıyı doldurun; düzenleyip dışa aktarabileceğiniz bir taslak oluşturalım.';
 
   @override
   String get legalTemplatesDisclaimer =>
-      'These are general sample forms, not individual legal advice. Review and adapt before sending.';
+      'Bunlar genel örnek formlardır, bireysel hukuki danışmanlık değildir. Göndermeden önce inceleyip uyarlayın.';
 
   @override
-  String get legalTemplatesSampleBadge => 'Sample';
+  String get legalTemplatesSampleBadge => 'Örnek';
 
   @override
-  String get legalTemplatesEmpty => 'No templates for this filter yet.';
+  String get legalTemplatesEmpty => 'Bu filtre için henüz şablon yok.';
 
   @override
   String get legalTemplatesError =>
-      'Couldn\'t load templates. Please try again.';
+      'Şablonlar yüklenemedi. Lütfen tekrar deneyin.';
 
   @override
-  String get legalTemplatesFilterAll => 'All';
+  String get legalTemplatesFilterAll => 'Tümü';
 
   @override
-  String get legalTemplatesJurisdictionFi => 'Finland';
+  String get legalTemplatesJurisdictionFi => 'Finlandiya';
 
   @override
-  String get legalTemplatesJurisdictionEe => 'Estonia';
+  String get legalTemplatesJurisdictionEe => 'Estonya';
 
   @override
-  String get legalTemplatesCategoryComplaint => 'Complaints';
+  String get legalTemplatesCategoryComplaint => 'Şikayetler';
 
   @override
-  String get legalTemplatesCategoryAppeal => 'Appeals';
+  String get legalTemplatesCategoryAppeal => 'İtirazlar';
 
   @override
-  String get legalTemplatesCategoryApplication => 'Applications';
+  String get legalTemplatesCategoryApplication => 'Başvurular';
 
   @override
-  String get legalTemplatesCategoryClaim => 'Claims';
+  String get legalTemplatesCategoryClaim => 'Talepler';
 
   @override
-  String get legalTemplatesCategoryRequest => 'Requests';
+  String get legalTemplatesCategoryRequest => 'İstekler';
 
   @override
-  String get legalTemplatesFillTitle => 'Fill in the details';
+  String get legalTemplatesFillTitle => 'Ayrıntıları doldurun';
 
   @override
   String get legalTemplatesFillIntro =>
-      'We\'ll auto-fill your name and case details. Complete the fields below.';
+      'Adınızı ve dava ayrıntılarınızı otomatik dolduracağız. Aşağıdaki alanları tamamlayın.';
 
   @override
-  String get legalTemplatesFieldRequired => 'This field is required';
+  String get legalTemplatesFieldRequired => 'Bu alan zorunludur';
 
   @override
-  String get legalTemplatesCreateDraft => 'Create draft';
+  String get legalTemplatesCreateDraft => 'Taslak oluştur';
 
   @override
-  String get legalTemplatesCreating => 'Creating draft…';
+  String get legalTemplatesCreating => 'Taslak oluşturuluyor…';
 
   @override
   String get legalTemplatesCreateFailed =>
-      'Couldn\'t create the draft. Please try again.';
+      'Taslak oluşturulamadı. Lütfen tekrar deneyin.';
 
   @override
   String get legalTemplatesUnresolvedWarning =>
-      'Some fields are still blank and are marked with ____ in the draft. You can complete them in the editor.';
+      'Bazı alanlar hâlâ boş ve taslakta ____ ile işaretlenmiştir. Bunları düzenleyicide tamamlayabilirsiniz.';
 
   @override
-  String get legalTemplatesFieldRecipient => 'Recipient (authority / landlord)';
+  String get legalTemplatesFieldRecipient => 'Alıcı (makam / ev sahibi)';
 
   @override
-  String get legalTemplatesFieldAddress => 'Your postal address';
+  String get legalTemplatesFieldAddress => 'Posta adresiniz';
 
   @override
-  String get legalTemplatesFieldSubject => 'Subject';
+  String get legalTemplatesFieldSubject => 'Konu';
 
   @override
-  String get legalTemplatesFieldDescription => 'Description of the matter';
+  String get legalTemplatesFieldDescription => 'Konunun açıklaması';
 
   @override
-  String get legalTemplatesFieldDemand => 'What you are asking for';
+  String get legalTemplatesFieldDemand => 'Talebiniz';
 
   @override
-  String get checklistActionPlan => 'Action plan';
+  String get checklistActionPlan => 'Eylem planı';
 
   @override
-  String get checklistActionPlanSubtitle => 'Steps for this type of case';
+  String get checklistActionPlanSubtitle => 'Bu tür davalar için adımlar';
 
   @override
-  String checklistProgress(Object completed, Object total) {
-    return '$completed of $total steps done';
+  String checklistProgress(int completed, int total) {
+    return '$total adımdan $completed tanesi tamamlandı';
   }
 
   @override
-  String get checklistAllDone => 'All steps complete';
+  String get checklistAllDone => 'Tüm adımlar tamamlandı';
 
   @override
   String get checklistEmpty =>
-      'No action plan is available for this case type yet.';
+      'Bu dava türü için henüz bir eylem planı mevcut değil.';
 
   @override
-  String checklistDeadlineDays(Object days) {
-    return '$days days';
+  String checklistDeadlineDays(int days) {
+    return '$days gün';
   }
 
   @override
   String get checklistDisclaimer =>
-      'This is general information, not legal advice. Deadlines are statutory defaults — confirm the exact date for your case.';
+      'Bu genel bilgidir, hukuki danışmanlık değildir. Süreler yasal varsayılan değerlerdir — davanız için kesin tarihi teyit edin.';
 
   @override
-  String get checklistViewPlan => 'View plan';
+  String get checklistViewPlan => 'Planı görüntüle';
 
   @override
-  String get explainPlainTitle => 'Explain in plain words';
+  String get explainPlainTitle => 'Sade bir dille açıkla';
 
   @override
   String get explainPlainIntro =>
-      'Paste an official letter, decision, or contract and we\'ll explain what it means and what it asks you to do — in plain language.';
+      'Resmi bir mektubu, kararı veya sözleşmeyi yapıştırın; ne anlama geldiğini ve sizden ne yapmanızı istediğini sade bir dille açıklayalım.';
 
   @override
-  String get explainPlainLevelFriend => 'Like to a friend';
+  String get explainPlainLevelFriend => 'Bir arkadaşa anlatır gibi';
 
   @override
-  String get explainPlainLevelTerms => 'Keep legal terms';
+  String get explainPlainLevelTerms => 'Hukuki terimleri koru';
 
   @override
-  String get explainPlainInputHint => 'Paste the legal text here…';
+  String get explainPlainInputHint => 'Hukuki metni buraya yapıştırın…';
 
   @override
-  String get explainPlainSubmit => 'Explain';
+  String get explainPlainSubmit => 'Açıkla';
 
   @override
-  String get explainPlainWorking => 'Explaining…';
+  String get explainPlainWorking => 'Açıklanıyor…';
 
   @override
-  String get explainPlainTldr => 'Bottom line';
+  String get explainPlainTldr => 'Özetle';
 
   @override
-  String get explainPlainBreakdown => 'What it says, part by part';
+  String get explainPlainBreakdown => 'Bölüm bölüm ne söylüyor';
 
   @override
-  String get explainPlainGlossary => 'Tricky terms explained';
+  String get explainPlainGlossary => 'Zor terimlerin açıklaması';
 
   @override
-  String get explainPlainNextSteps => 'What you can do next';
+  String get explainPlainNextSteps => 'Bundan sonra ne yapabilirsiniz';
 
   @override
-  String get explainPlainOpenInCorpus => 'Look up in the law library';
+  String get explainPlainOpenInCorpus => 'Hukuk kütüphanesinde ara';
 
   @override
   String get explainPlainEmptyResult =>
-      'No explanation could be produced for this text. Try pasting a longer or clearer excerpt.';
+      'Bu metin için bir açıklama üretilemedi. Daha uzun veya daha net bir bölüm yapıştırmayı deneyin.';
 
   @override
   String get explainPlainQuotaTitle =>
-      'You\'ve used your free explanations this month';
+      'Bu ay için ücretsiz açıklamalarınızı kullandınız';
 
   @override
   String get explainPlainQuotaBody =>
-      'Free accounts get 3 explanations per month. Upgrade to Pro for unlimited explanations.';
+      'Ücretsiz hesaplar ayda 3 açıklama alır. Sınırsız açıklama için Pro\'ya yükseltin.';
 
   @override
-  String get explainPlainUpgradeCta => 'Upgrade to Pro';
+  String get explainPlainUpgradeCta => 'Pro\'ya yükselt';
 
   @override
   String get explainPlainError =>
-      'Something went wrong while explaining this text. Please try again.';
+      'Bu metni açıklarken bir sorun oluştu. Lütfen tekrar deneyin.';
 
   @override
-  String get explainPlainRetry => 'Try again';
+  String get explainPlainRetry => 'Tekrar dene';
 
   @override
-  String get demandLetterTitle => 'Demand letter';
+  String get demandLetterTitle => 'İhtarname';
 
   @override
   String get demandLetterSubtitle =>
-      'Create a formal pre-court demand (maksuvaatimus / nõudekiri).';
+      'Resmi bir mahkeme öncesi ihtarname oluşturun (maksuvaatimus / nõudekiri).';
 
   @override
-  String get demandLetterStepType => 'Type of claim';
+  String get demandLetterStepType => 'Talep türü';
 
   @override
-  String get demandLetterStepParties => 'Parties';
+  String get demandLetterStepParties => 'Taraflar';
 
   @override
-  String get demandLetterStepClaim => 'Amount & basis';
+  String get demandLetterStepClaim => 'Tutar ve dayanak';
 
   @override
-  String get demandLetterStepDeadline => 'Deadline';
+  String get demandLetterStepDeadline => 'Süre';
 
   @override
-  String get demandLetterStepReview => 'Review & generate';
+  String get demandLetterStepReview => 'İncele ve oluştur';
 
   @override
-  String get demandLetterClaimDepositReturn => 'Return of rental deposit';
+  String get demandLetterClaimDepositReturn => 'Kira depozitosunun iadesi';
 
   @override
-  String get demandLetterClaimUnpaidWage => 'Unpaid wages';
+  String get demandLetterClaimUnpaidWage => 'Ödenmemiş ücretler';
 
   @override
-  String get demandLetterClaimFineDispute => 'Dispute a fine / charge';
+  String get demandLetterClaimFineDispute => 'Bir cezaya / ücrete itiraz';
 
   @override
-  String get demandLetterClaimGeneric => 'Other monetary claim';
+  String get demandLetterClaimGeneric => 'Diğer parasal talep';
 
   @override
-  String get demandLetterJurisdiction => 'Jurisdiction';
+  String get demandLetterJurisdiction => 'Yargı yetkisi';
 
   @override
-  String get demandLetterLanguage => 'Letter language';
+  String get demandLetterLanguage => 'Mektup dili';
 
   @override
-  String get demandLetterRecipientName => 'Recipient name';
+  String get demandLetterRecipientName => 'Alıcı adı';
 
   @override
-  String get demandLetterRecipientAddress => 'Recipient address (optional)';
+  String get demandLetterRecipientAddress => 'Alıcı adresi (isteğe bağlı)';
 
   @override
-  String get demandLetterSenderName => 'Your name';
+  String get demandLetterSenderName => 'Adınız';
 
   @override
-  String get demandLetterSenderAddress => 'Your address / email (optional)';
+  String get demandLetterSenderAddress =>
+      'Adresiniz / e-postanız (isteğe bağlı)';
 
   @override
-  String get demandLetterAmount => 'Amount';
+  String get demandLetterAmount => 'Tutar';
 
   @override
-  String get demandLetterCurrency => 'Currency';
+  String get demandLetterCurrency => 'Para birimi';
 
   @override
-  String get demandLetterBasis => 'What happened (basis of the claim)';
+  String get demandLetterBasis => 'Ne oldu (talebin dayanağı)';
 
   @override
   String get demandLetterBasisHint =>
-      'Describe the facts: dates, amounts, what was agreed and what went wrong.';
+      'Olguları açıklayın: tarihler, tutarlar, neyin kararlaştırıldığı ve neyin ters gittiği.';
 
   @override
-  String get demandLetterDeadline => 'Payment deadline';
+  String get demandLetterDeadline => 'Ödeme süresi';
 
   @override
-  String get demandLetterDeadlineHint => 'e.g. 14 days from today';
+  String get demandLetterDeadlineHint => 'örn. bugünden itibaren 14 gün';
 
   @override
-  String get demandLetterReference => 'Reference (optional)';
+  String get demandLetterReference => 'Referans (isteğe bağlı)';
 
   @override
-  String get demandLetterGenerate => 'Generate letter';
+  String get demandLetterGenerate => 'Mektubu oluştur';
 
   @override
-  String get demandLetterGenerating => 'Generating…';
+  String get demandLetterGenerating => 'Oluşturuluyor…';
 
   @override
   String get demandLetterGenerateFailed =>
-      'Couldn\'t generate the letter. Please try again.';
+      'Mektup oluşturulamadı. Lütfen tekrar deneyin.';
 
   @override
-  String get demandLetterFieldRequired => 'This field is required';
+  String get demandLetterFieldRequired => 'Bu alan zorunludur';
 
   @override
-  String get demandLetterNext => 'Next';
+  String get demandLetterNext => 'İleri';
 
   @override
-  String get demandLetterBack => 'Back';
+  String get demandLetterBack => 'Geri';
 
   @override
-  String get demandLetterPreviewTitle => 'Your letter';
+  String get demandLetterPreviewTitle => 'Mektubunuz';
 
   @override
-  String get demandLetterCopy => 'Copy text';
+  String get demandLetterCopy => 'Metni kopyala';
 
   @override
-  String get demandLetterCopied => 'Letter copied to clipboard';
+  String get demandLetterCopied => 'Mektup panoya kopyalandı';
 
   @override
-  String get demandLetterExportPdf => 'Export PDF';
+  String get demandLetterExportPdf => 'PDF olarak dışa aktar';
 
   @override
-  String get demandLetterExporting => 'Exporting…';
+  String get demandLetterExporting => 'Dışa aktarılıyor…';
 
   @override
   String get demandLetterExportFailed =>
-      'Couldn\'t export the document. Please try again.';
+      'Belge dışa aktarılamadı. Lütfen tekrar deneyin.';
 
   @override
-  String get demandLetterSendEmail => 'Send via email';
+  String get demandLetterSendEmail => 'E-posta ile gönder';
 
   @override
-  String get demandLetterNormsTitle => 'Legal references';
+  String get demandLetterNormsTitle => 'Hukuki referanslar';
 
   @override
   String get demandLetterDisclaimer =>
-      'This letter is prepared on your behalf as a general template. It is not legal advice or an act of a licensed attorney. Review it before sending — no letter is sent automatically.';
+      'Bu mektup, genel bir şablon olarak sizin adınıza hazırlanmıştır. Hukuki danışmanlık veya lisanslı bir avukatın işlemi değildir. Göndermeden önce inceleyin — hiçbir mektup otomatik olarak gönderilmez.';
 
   @override
-  String get demandLetterMenuTile => 'Demand letter';
+  String get demandLetterMenuTile => 'İhtarname';
 
   @override
-  String get calcHubTitle => 'Legal calculators';
+  String get calcHubTitle => 'Hukuki hesaplayıcılar';
 
   @override
-  String get calcHubSubtitle => 'Quick estimates before your next step';
+  String get calcHubSubtitle => 'Bir sonraki adımınızdan önce hızlı tahminler';
 
   @override
-  String get calcHubJurisdiction => 'Jurisdiction';
+  String get calcHubJurisdiction => 'Yargı yetkisi';
 
   @override
-  String calcRatesAsOf(Object date) {
-    return 'Rates as of $date';
+  String calcRatesAsOf(String date) {
+    return '$date tarihli oranlar';
   }
 
   @override
-  String get calcRatesOffline => 'Showing cached rates (offline)';
+  String get calcRatesOffline =>
+      'Önbelleğe alınmış oranlar gösteriliyor (çevrimdışı)';
 
   @override
   String get calcIndicativeBanner =>
-      'Indicative estimate only — not an official calculation or legal advice.';
+      'Yalnızca yaklaşık bir tahmin — resmi bir hesaplama veya hukuki danışmanlık değildir.';
 
   @override
-  String get calcCalculate => 'Calculate';
+  String get calcCalculate => 'Hesapla';
 
   @override
-  String get calcResult => 'Result';
+  String get calcResult => 'Sonuç';
 
   @override
-  String get calcFormula => 'How this is calculated';
+  String get calcFormula => 'Bu nasıl hesaplanır';
 
   @override
-  String get calcSource => 'Source';
+  String get calcSource => 'Kaynak';
 
   @override
-  String get calcSeveranceTitle => 'Severance / notice';
+  String get calcSeveranceTitle => 'Kıdem / ihbar';
 
   @override
   String get calcSeveranceDesc =>
-      'Estimate severance pay and notice period on redundancy';
+      'İşten çıkarmada kıdem tazminatını ve ihbar süresini tahmin edin';
 
   @override
-  String get calcSeveranceSalary => 'Gross monthly salary';
+  String get calcSeveranceSalary => 'Brüt aylık maaş';
 
   @override
-  String get calcSeveranceTenure => 'Years of service';
+  String get calcSeveranceTenure => 'Hizmet yılı';
 
   @override
-  String get calcSeveranceTotal => 'Estimated severance';
+  String get calcSeveranceTotal => 'Tahmini kıdem tazminatı';
 
   @override
-  String get calcSeveranceNotice => 'Notice period';
+  String get calcSeveranceNotice => 'İhbar süresi';
 
   @override
-  String get calcSeveranceGenerateDemand => 'Draft a demand letter';
+  String get calcSeveranceGenerateDemand => 'İhtarname taslağı oluştur';
 
   @override
-  String get calcLimitationTitle => 'Limitation & appeal deadlines';
+  String get calcLimitationTitle => 'Zamanaşımı ve itiraz süreleri';
 
   @override
   String get calcLimitationDesc =>
-      'Check whether a claim or appeal period has expired';
+      'Bir talep veya itiraz süresinin dolup dolmadığını kontrol edin';
 
   @override
-  String get calcLimitationType => 'Type of period';
+  String get calcLimitationType => 'Süre türü';
 
   @override
-  String get calcLimitationStart => 'Start date (event / decision)';
+  String get calcLimitationStart => 'Başlangıç tarihi (olay / karar)';
 
   @override
-  String get calcLimitationPickDate => 'Pick date';
+  String get calcLimitationPickDate => 'Tarih seç';
 
   @override
-  String get calcLimitationDeadline => 'Deadline';
+  String get calcLimitationDeadline => 'Son tarih';
 
   @override
-  String get calcLimitationExpired => 'Period has expired';
+  String get calcLimitationExpired => 'Süre dolmuştur';
 
   @override
-  String calcLimitationDaysLeft(Object days) {
-    return '$days days remaining';
+  String calcLimitationDaysLeft(int days) {
+    return '$days gün kaldı';
   }
 
   @override
   String get calcLimitationShifted =>
-      'Shifted to the next working day (weekend/holiday).';
+      'Bir sonraki iş gününe kaydırıldı (hafta sonu/tatil).';
 
   @override
-  String get calcLimitationAddDeadline => 'Add to deadlines';
+  String get calcLimitationAddDeadline => 'Sürelere ekle';
 
   @override
-  String get calcStateFeeTitle => 'Court / state fees';
+  String get calcStateFeeTitle => 'Mahkeme / devlet harçları';
 
   @override
-  String get calcStateFeeDesc => 'Reference filing fees by court and stage';
+  String get calcStateFeeDesc =>
+      'Mahkeme ve aşamaya göre başvuru harçları referansı';
 
   @override
-  String get calcChildSupportTitle => 'Child support (orientation)';
+  String get calcChildSupportTitle => 'Nafaka (yönlendirme amaçlı)';
 
   @override
   String get calcChildSupportDesc =>
-      'Rough orientation figure — the real amount is set case by case';
+      'Kabaca bir yönlendirme rakamı — gerçek tutar dava bazında belirlenir';
 
   @override
-  String get calcChildSupportNet => 'Payer\'s net monthly income';
+  String get calcChildSupportNet => 'Ödeyenin aylık net geliri';
 
   @override
-  String get calcChildSupportChildren => 'Number of children';
+  String get calcChildSupportChildren => 'Çocuk sayısı';
 
   @override
-  String get calcChildSupportPerChild => 'Per child';
+  String get calcChildSupportPerChild => 'Çocuk başına';
 
   @override
-  String get calcChildSupportTotal => 'Total monthly';
+  String get calcChildSupportTotal => 'Aylık toplam';
 
   @override
   String get calcChildSupportWarning =>
-      'Highly variable. Courts decide on the child\'s needs and both parents\' ability to pay. Use as a starting point only.';
+      'Büyük ölçüde değişkendir. Mahkemeler çocuğun ihtiyaçlarına ve her iki ebeveynin ödeme gücüne göre karar verir. Yalnızca bir başlangıç noktası olarak kullanın.';
 
   @override
-  String get docCollectTitle => 'Documents to collect';
+  String get docCollectTitle => 'Toplanacak belgeler';
 
   @override
   String get docCollectSubtitle =>
-      'Gather these before you apply or go to court';
+      'Başvuru yapmadan veya mahkemeye gitmeden önce bunları toplayın';
 
   @override
-  String get docCollectPickPrompt => 'What is your situation?';
+  String get docCollectPickPrompt => 'Durumunuz nedir?';
 
   @override
-  String get docCollectProblemResidence => 'Residence permit';
+  String get docCollectProblemResidence => 'Oturma izni';
 
   @override
-  String get docCollectProblemTenant => 'Renting / eviction';
+  String get docCollectProblemTenant => 'Kira / tahliye';
 
   @override
-  String get docCollectProblemDismissal => 'Dismissal at work';
+  String get docCollectProblemDismissal => 'İşten çıkarılma';
 
   @override
-  String get docCollectProblemInheritance => 'Inheritance';
+  String get docCollectProblemInheritance => 'Miras';
 
   @override
-  String get docCollectProblemDivorce => 'Divorce';
+  String get docCollectProblemDivorce => 'Boşanma';
 
   @override
-  String docCollectProgress(Object collected, Object total) {
-    return '$collected of $total collected';
+  String docCollectProgress(int collected, int total) {
+    return '$total belgeden $collected tanesi toplandı';
   }
 
   @override
-  String get docCollectAllDone => 'Everything collected';
+  String get docCollectAllDone => 'Her şey toplandı';
 
   @override
   String get docCollectEmpty =>
-      'No document list is available for this situation yet.';
+      'Bu durum için henüz bir belge listesi mevcut değil.';
 
   @override
-  String get docCollectOptional => 'Optional';
+  String get docCollectOptional => 'İsteğe bağlı';
 
   @override
-  String get docCollectWhereLabel => 'Where to get it';
+  String get docCollectWhereLabel => 'Nereden alınır';
 
   @override
-  String get docCollectWhyLabel => 'Why it\'s needed';
+  String get docCollectWhyLabel => 'Neden gerekli';
 
   @override
-  String get docCollectAttach => 'Attach a file';
+  String get docCollectAttach => 'Dosya ekle';
 
   @override
-  String get docCollectAttached => 'File attached';
+  String get docCollectAttached => 'Dosya eklendi';
 
   @override
-  String get docCollectChangeFile => 'Change file';
+  String get docCollectChangeFile => 'Dosyayı değiştir';
 
   @override
-  String get docCollectRemoveFile => 'Remove file';
+  String get docCollectRemoveFile => 'Dosyayı kaldır';
 
   @override
-  String get docCollectNoFiles => 'You haven\'t uploaded any documents yet.';
+  String get docCollectNoFiles => 'Henüz hiç belge yüklemediniz.';
 
   @override
-  String get docCollectPickFileTitle => 'Choose an uploaded document';
+  String get docCollectPickFileTitle => 'Yüklenmiş bir belge seçin';
 
   @override
-  String get docCollectExport => 'Export list';
+  String get docCollectExport => 'Listeyi dışa aktar';
 
   @override
-  String get docCollectExportSubject => 'My document checklist';
+  String get docCollectExportSubject => 'Belge kontrol listem';
 
   @override
-  String get docCollectAiTitle => 'Need something specific?';
+  String get docCollectAiTitle => 'Belirli bir şeye mi ihtiyacınız var?';
 
   @override
-  String get docCollectAiHint =>
-      'Describe your situation and we\'ll suggest any extra documents.';
+  String get docCollectAiHint => 'Durumunuzu açıklayın; ek belgeler önerelim.';
 
   @override
-  String get docCollectAiField => 'Describe your situation';
+  String get docCollectAiField => 'Durumunuzu açıklayın';
 
   @override
-  String get docCollectAiButton => 'Suggest extra documents';
+  String get docCollectAiButton => 'Ek belge öner';
 
   @override
-  String get docCollectAiLoading => 'Thinking…';
+  String get docCollectAiLoading => 'Düşünülüyor…';
 
   @override
   String get docCollectAiEmpty =>
-      'No extra documents suggested — the basic list looks complete for your description.';
+      'Ek belge önerilmedi — temel liste açıklamanız için yeterli görünüyor.';
 
   @override
-  String get docCollectAiSuggestionsTitle => 'Suggested extra documents';
+  String get docCollectAiSuggestionsTitle => 'Önerilen ek belgeler';
 
   @override
   String get docCollectDisclaimer =>
-      'This is a basic list of commonly required documents — your situation may need more or fewer. It is general information, not legal advice.';
+      'Bu, yaygın olarak istenen belgelerin temel bir listesidir — durumunuz daha fazla veya daha az belge gerektirebilir. Bu genel bilgidir, hukuki danışmanlık değildir.';
 
   @override
-  String get docCollectRetry => 'Try again';
+  String get docCollectRetry => 'Tekrar dene';
 
   @override
-  String get renewalTitle => 'Renewal Radar';
+  String get renewalTitle => 'Yenileme Radarı';
 
   @override
   String get renewalSubtitle =>
-      'Track when your permits, passport, insurance and other documents expire. We\'ll remind you 90, 30 and 7 days before each renewal.';
+      'İzinlerinizin, pasaportunuzun, sigortanızın ve diğer belgelerinizin ne zaman sona ereceğini takip edin. Her yenilemeden 90, 30 ve 7 gün önce size hatırlatırız.';
 
   @override
-  String get renewalAdd => 'Add document';
+  String get renewalAdd => 'Belge ekle';
 
   @override
-  String get renewalEditTitle => 'Edit document';
+  String get renewalEditTitle => 'Belgeyi düzenle';
 
   @override
-  String get renewalSave => 'Save';
+  String get renewalSave => 'Kaydet';
 
   @override
-  String get renewalRequired => 'Required';
+  String get renewalRequired => 'Zorunlu';
 
   @override
-  String get renewalPickDate => 'Pick expiry date';
+  String get renewalPickDate => 'Son geçerlilik tarihi seç';
 
   @override
   String get renewalLoadError =>
-      'Could not load your documents. Pull to refresh.';
+      'Belgeleriniz yüklenemedi. Yenilemek için çekin.';
 
   @override
-  String get renewalEmptyTitle => 'No documents tracked yet';
+  String get renewalEmptyTitle => 'Henüz takip edilen belge yok';
 
   @override
   String get renewalEmptyBody =>
-      'Add your residence permit, passport, insurance or licence and we\'ll watch the expiry dates for you.';
+      'Oturma izninizi, pasaportunuzu, sigortanızı veya ruhsatınızı ekleyin; son geçerlilik tarihlerini sizin için izleyelim.';
 
   @override
-  String get renewalGuideHint => 'How to renew →';
+  String get renewalGuideHint => 'Nasıl yenilenir →';
 
   @override
-  String get renewalFieldType => 'Document type';
+  String get renewalFieldType => 'Belge türü';
 
   @override
-  String get renewalFieldLabel => 'Label';
+  String get renewalFieldLabel => 'Etiket';
 
   @override
-  String get renewalFieldNumber => 'Document number (optional)';
+  String get renewalFieldNumber => 'Belge numarası (isteğe bağlı)';
 
   @override
-  String get renewalFieldJurisdiction => 'Issuing country';
+  String get renewalFieldJurisdiction => 'Düzenleyen ülke';
 
   @override
-  String get renewalFieldExpiry => 'Expiry date';
+  String get renewalFieldExpiry => 'Son geçerlilik tarihi';
 
   @override
-  String get renewalWindow90 => '90 days';
+  String get renewalWindow90 => '90 gün';
 
   @override
-  String get renewalWindow30 => '30 days';
+  String get renewalWindow30 => '30 gün';
 
   @override
-  String get renewalWindow7 => '7 days';
+  String get renewalWindow7 => '7 gün';
 
   @override
-  String get renewalExpiresToday => 'Expires today';
+  String get renewalExpiresToday => 'Bugün sona eriyor';
 
   @override
-  String renewalExpiresInDays(Object date, Object days) {
-    return 'Expires in $days days · $date';
+  String renewalExpiresInDays(int days, String date) {
+    return '$days gün içinde sona eriyor · $date';
   }
 
   @override
-  String renewalExpiredOn(Object date) {
-    return 'Expired on $date';
+  String renewalExpiredOn(String date) {
+    return '$date tarihinde sona erdi';
   }
 
   @override
-  String get renewalTypeResidencePermit => 'Residence permit';
+  String get renewalTypeResidencePermit => 'Oturma izni';
 
   @override
-  String get renewalTypePassport => 'Passport';
+  String get renewalTypePassport => 'Pasaport';
 
   @override
-  String get renewalTypeIdCard => 'ID card';
+  String get renewalTypeIdCard => 'Kimlik kartı';
 
   @override
-  String get renewalTypeVisa => 'Visa';
+  String get renewalTypeVisa => 'Vize';
 
   @override
-  String get renewalTypeDrivingLicence => 'Driving licence';
+  String get renewalTypeDrivingLicence => 'Sürücü belgesi';
 
   @override
-  String get renewalTypeInsurance => 'Insurance';
+  String get renewalTypeInsurance => 'Sigorta';
 
   @override
-  String get renewalTypeWorkPermit => 'Work permit';
+  String get renewalTypeWorkPermit => 'Çalışma izni';
 
   @override
-  String get renewalTypeOther => 'Other';
+  String get renewalTypeOther => 'Diğer';
 
   @override
-  String get costEstimateTitle => 'Cost & Risk Estimator';
+  String get costEstimateTitle => 'Maliyet ve Risk Tahmincisi';
 
   @override
   String get costEstimateSubtitle =>
-      'Get a rough idea of what a case might cost, how long it could take, and whether it is worth pursuing.';
+      'Bir davanın ne kadara mal olabileceği, ne kadar sürebileceği ve takip etmeye değip değmeyeceği hakkında kabaca bir fikir edinin.';
 
   @override
-  String get costEstimateCaseTypeLabel => 'Type of case';
+  String get costEstimateCaseTypeLabel => 'Dava türü';
 
   @override
   String get costEstimateCaseTypeHint =>
-      'e.g. unpaid invoice, wrongful dismissal, deposit dispute';
+      'örn. ödenmemiş fatura, haksız işten çıkarma, depozito anlaşmazlığı';
 
   @override
-  String get costEstimateJurisdictionLabel => 'Jurisdiction';
+  String get costEstimateJurisdictionLabel => 'Yargı yetkisi';
 
   @override
-  String get costEstimateAmountLabel => 'Amount in dispute (optional)';
+  String get costEstimateAmountLabel => 'Uyuşmazlık tutarı (isteğe bağlı)';
 
   @override
-  String get costEstimateAmountHint => 'e.g. 12500';
+  String get costEstimateAmountHint => 'örn. 12500';
 
   @override
   String get costEstimateDescriptionLabel =>
-      'Briefly describe the situation (optional)';
+      'Durumu kısaca açıklayın (isteğe bağlı)';
 
   @override
-  String get costEstimateB2bToggle => 'Lead-qualification card (B2B)';
+  String get costEstimateB2bToggle => 'Müşteri değerlendirme kartı (B2B)';
 
   @override
   String get costEstimateB2bSubtitle =>
-      'Compact output for quickly triaging an inbound client.';
+      'Gelen bir müşteriyi hızlıca önceliklendirmek için kompakt çıktı.';
 
   @override
-  String get costEstimateSubmit => 'Estimate my case';
+  String get costEstimateSubmit => 'Davamı tahmin et';
 
   @override
   String get costEstimateDisclaimer =>
-      'Rough estimate only — not a prediction, guarantee, or legal advice. Actual costs and outcomes vary case by case.';
+      'Yalnızca kabaca bir tahmin — bir öngörü, garanti veya hukuki danışmanlık değildir. Gerçek maliyetler ve sonuçlar dava bazında değişir.';
 
   @override
-  String get costEstimateCostsHeading => 'Estimated costs';
+  String get costEstimateCostsHeading => 'Tahmini maliyetler';
 
   @override
-  String get costEstimateCourtFee => 'Court / state fee';
+  String get costEstimateCourtFee => 'Mahkeme / devlet harcı';
 
   @override
-  String get costEstimateLawyerFee => 'Lawyer fee';
+  String get costEstimateLawyerFee => 'Avukatlık ücreti';
 
   @override
-  String get costEstimateTotal => 'Total (approx.)';
+  String get costEstimateTotal => 'Toplam (yaklaşık)';
 
   @override
-  String get costEstimateDuration => 'Time to first resolution';
+  String get costEstimateDuration => 'İlk sonuca kadar geçen süre';
 
   @override
-  String get costEstimateMonthsSuffix => 'months';
+  String get costEstimateMonthsSuffix => 'ay';
 
   @override
-  String get costEstimateFactorsFor => 'In your favour';
+  String get costEstimateFactorsFor => 'Lehinize';
 
   @override
-  String get costEstimateFactorsAgainst => 'Working against you';
+  String get costEstimateFactorsAgainst => 'Aleyhinize';
 
   @override
-  String get costEstimateStrengthWorth => 'Likely worth pursuing';
+  String get costEstimateStrengthWorth => 'Takip etmeye değer olabilir';
 
   @override
-  String get costEstimateStrengthContested => 'Contested — could go either way';
+  String get costEstimateStrengthContested =>
+      'İhtilaflı — her iki yöne de gidebilir';
 
   @override
-  String get costEstimateStrengthWeak => 'Weak — proceed with caution';
+  String get costEstimateStrengthWeak => 'Zayıf — dikkatli ilerleyin';
 }

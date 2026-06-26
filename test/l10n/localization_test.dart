@@ -28,19 +28,24 @@ Set<String> _placeholders(String value) {
   final arg = RegExp(r'\{([a-zA-Z][a-zA-Z0-9_]*),\s*(?:plural|select)');
   final args = arg.allMatches(value).map((m) => m.group(1)!).toSet();
 
-  // Strip branch bodies so their inner text (and any nested literals) can't be
-  // mistaken for a placeholder. A branch is a selector (=0 / one / other / a
-  // word) immediately followed by a `{...}` body. We blank the body.
-  final branch = RegExp(r'(=\d+|[a-zA-Z]+)\s*\{[^{}]*\}');
+  // Branch-body stripping only makes sense INSIDE an ICU plural/select
+  // construct, where a selector (=0 / one / other / a word) is immediately
+  // followed by a `{...}` body whose inner text is a translatable literal, not
+  // a placeholder. In a PLAIN interpolation string (no plural/select), every
+  // `{name}` is a real placeholder — and a leading translated word like
+  // `Liko {days}` / `no {total}` must NOT be mistaken for a branch selector.
+  // So only run the branch strip when the value actually contains plural/select.
   var stripped = value;
-  String prev;
-  do {
-    prev = stripped;
-    stripped = stripped.replaceAll(branch, '');
-  } while (stripped != prev);
+  if (args.isNotEmpty) {
+    final branch = RegExp(r'(=\d+|[a-zA-Z]+)\s*\{[^{}]*\}');
+    String prev;
+    do {
+      prev = stripped;
+      stripped = stripped.replaceAll(branch, '');
+    } while (stripped != prev);
+  }
 
-  // Whatever bare `{name}` remains in the stripped string is a real
-  // interpolation placeholder.
+  // Whatever bare `{name}` remains is a real interpolation placeholder.
   final named = RegExp(r'\{([a-zA-Z][a-zA-Z0-9_]*)\}');
   final names = named.allMatches(stripped).map((m) => m.group(1)!).toSet();
 

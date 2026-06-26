@@ -4639,946 +4639,951 @@ class AppLocalizationsLv extends AppLocalizations {
       'Neizdevās atjaunināt paroli. Lūdzu, mēģiniet vēlreiz.';
 
   @override
-  String get accessLogTile => 'Access log';
+  String get accessLogTile => 'Piekļuves žurnāls';
 
   @override
-  String get accessLogTileSubtitle => 'See who and what accessed your data';
+  String get accessLogTileSubtitle => 'Skatiet, kas un kā piekļuva jūsu datiem';
 
   @override
-  String get accessLogTitle => 'Access log for my data';
+  String get accessLogTitle => 'Manu datu piekļuves žurnāls';
 
   @override
   String get accessLogIntro =>
-      'A transparent, tamper-evident record of every time your data was accessed or processed — including by our AI. You can verify it has not been altered.';
+      'Caurspīdīgs, pret viltojumiem aizsargāts ieraksts par katru reizi, kad jūsu datiem piekļuva vai tie tika apstrādāti — tostarp ar mūsu MI. Jūs varat pārbaudīt, ka tas nav mainīts.';
 
   @override
-  String get accessLogEmpty => 'No access events yet.';
+  String get accessLogEmpty => 'Vēl nav piekļuves notikumu.';
 
   @override
   String get accessLogError =>
-      'Could not load your access log. Pull down to retry.';
+      'Neizdevās ielādēt piekļuves žurnālu. Pavelciet uz leju, lai mēģinātu vēlreiz.';
 
   @override
   String get accessLogIntegrityOk =>
-      'Integrity verified — the log links form an unbroken chain.';
+      'Integritāte pārbaudīta — žurnāla saites veido nepārtrauktu ķēdi.';
 
   @override
   String get accessLogIntegrityBroken =>
-      'Warning: the log chain is broken. Some entries may have been removed or reordered. Please contact support.';
+      'Brīdinājums: žurnāla ķēde ir pārtraukta. Daži ieraksti, iespējams, ir noņemti vai pārkārtoti. Lūdzu, sazinieties ar atbalsta dienestu.';
 
   @override
-  String get accessActionLlmEgress =>
-      'Sent to AI for processing (pseudonymized)';
+  String get accessActionLlmEgress => 'Nosūtīts MI apstrādei (pseidonimizēts)';
 
   @override
-  String get accessActionAiAnalysis => 'Analyzed by AI';
+  String get accessActionAiAnalysis => 'Analizējis MI';
 
   @override
-  String get accessActionDocumentParse => 'Document parsed';
+  String get accessActionDocumentParse => 'Dokuments apstrādāts';
 
   @override
-  String get accessActionStaffRead => 'Reviewed by a staff member';
+  String get accessActionStaffRead => 'Pārskatījis darbinieks';
 
   @override
-  String get accessActionExport => 'Data exported';
+  String get accessActionExport => 'Dati eksportēti';
 
   @override
-  String get accessActionEmailTriage => 'Email triaged';
+  String get accessActionEmailTriage => 'E-pasts šķirots';
 
   @override
-  String get accessActionDeadlineScan => 'Deadlines scanned';
+  String get accessActionDeadlineScan => 'Termiņi noskenēti';
 
   @override
-  String get breachAlertTitle => 'Security alert on your data';
+  String get breachAlertTitle => 'Drošības brīdinājums par jūsu datiem';
 
   @override
   String get breachAlertBody =>
-      'Our automated monitoring detected unusual access involving your data. We are reviewing it and will notify you of any confirmed incident as required by law (GDPR Art. 34).';
+      'Mūsu automatizētā uzraudzība konstatēja neparastu piekļuvi jūsu datiem. Mēs to izvērtējam un paziņosim jums par jebkuru apstiprinātu incidentu, kā to nosaka likums (VDAR 34. pants).';
 
   @override
-  String get caseDossierTitle => 'Export case dossier';
+  String get caseDossierTitle => 'Eksportēt lietas dokumentāciju';
 
   @override
   String get caseDossierSubtitle =>
-      'One PDF with everything — facts, chronology, deadlines and documents — to hand to a lawyer, a court, or a complaint body.';
+      'Viens PDF ar visu — faktiem, hronoloģiju, termiņiem un dokumentiem — ko nodot advokātam, tiesai vai sūdzību iestādei.';
 
   @override
-  String get caseDossierTileTitle => 'Export dossier (PDF)';
+  String get caseDossierTileTitle => 'Eksportēt dokumentāciju (PDF)';
 
   @override
   String get caseDossierTileSubtitle =>
-      'Hand the whole case to a lawyer or court in one file';
+      'Nodod visu lietu advokātam vai tiesai vienā failā';
 
   @override
-  String get caseDossierSectionsHeading => 'Include in the dossier';
+  String get caseDossierSectionsHeading => 'Iekļaut dokumentācijā';
 
   @override
-  String get caseDossierSectionFacts => 'Case facts';
+  String get caseDossierSectionFacts => 'Lietas fakti';
 
   @override
-  String get caseDossierSectionFactsHint => 'Always included';
+  String get caseDossierSectionFactsHint => 'Vienmēr iekļauts';
 
   @override
-  String get caseDossierSectionTimeline => 'Chronology';
+  String get caseDossierSectionTimeline => 'Hronoloģija';
 
   @override
-  String get caseDossierSectionDeadlines => 'Deadlines';
+  String get caseDossierSectionDeadlines => 'Termiņi';
 
   @override
-  String get caseDossierSectionDocuments => 'Documents';
+  String get caseDossierSectionDocuments => 'Dokumenti';
 
   @override
-  String get caseDossierSectionAiSummary => 'AI summary';
+  String get caseDossierSectionAiSummary => 'MI kopsavilkums';
 
   @override
-  String get caseDossierExportButton => 'Export PDF';
+  String get caseDossierExportButton => 'Eksportēt PDF';
 
   @override
-  String get caseDossierExporting => 'Building your dossier…';
+  String get caseDossierExporting => 'Veido jūsu dokumentāciju…';
 
   @override
-  String get caseDossierSuccess => 'Dossier ready. Open or share the file.';
+  String get caseDossierSuccess =>
+      'Dokumentācija gatava. Atveriet vai kopīgojiet failu.';
 
   @override
-  String get caseDossierOpen => 'Open dossier';
+  String get caseDossierOpen => 'Atvērt dokumentāciju';
 
   @override
   String get caseDossierError =>
-      'Could not build the dossier. Please try again.';
+      'Neizdevās izveidot dokumentāciju. Lūdzu, mēģiniet vēlreiz.';
 
   @override
-  String get caseDossierErrorNotOwned => 'This case could not be found.';
+  String get caseDossierErrorNotOwned => 'Šo lietu neizdevās atrast.';
 
   @override
   String get caseDossierDisclaimer =>
-      'The dossier reproduces your case data as recorded. Review it before sharing.';
+      'Dokumentācija atveido jūsu lietas datus tādus, kā tie reģistrēti. Pārskatiet to pirms kopīgošanas.';
 
   @override
-  String get followupsTitle => 'Next steps';
+  String get followupsTitle => 'Nākamie soļi';
 
   @override
-  String get followupsSubtitle => 'Practical tasks to keep your case moving';
+  String get followupsSubtitle =>
+      'Praktiski uzdevumi, lai virzītu jūsu lietu uz priekšu';
 
   @override
-  String get followupsEmpty => 'No follow-up steps yet.';
+  String get followupsEmpty => 'Vēl nav turpmāko soļu.';
 
   @override
   String get followupsEmptyDesc =>
-      'Add a step, or let the AI suggest what to do next.';
+      'Pievienojiet soli vai ļaujiet MI ieteikt, ko darīt tālāk.';
 
   @override
-  String get followupsAdd => 'Add step';
+  String get followupsAdd => 'Pievienot soli';
 
   @override
-  String get followupsSuggest => 'Suggest steps';
+  String get followupsSuggest => 'Ieteikt soļus';
 
   @override
   String get followupsSuggestNone =>
-      'No suggestions right now. Try after chatting about the case.';
+      'Pašlaik ieteikumu nav. Mēģiniet pēc sarunas par lietu.';
 
   @override
-  String get followupsSuggestTitle => 'Suggested next steps';
+  String get followupsSuggestTitle => 'Ieteiktie nākamie soļi';
 
   @override
-  String get followupsAddPrompt => 'Add the steps you want to keep:';
+  String get followupsAddPrompt =>
+      'Pievienojiet soļus, kurus vēlaties saglabāt:';
 
   @override
-  String get followupsNewTitleHint => 'What needs to be done?';
+  String get followupsNewTitleHint => 'Kas ir jāizdara?';
 
   @override
-  String get followupsNewDetailHint => 'Optional note (why / what to attach)';
+  String get followupsNewDetailHint =>
+      'Neobligāta piezīme (kāpēc / ko pievienot)';
 
   @override
-  String get followupsDueOptional => 'Remind me on (optional)';
+  String get followupsDueOptional => 'Atgādināt (neobligāti)';
 
   @override
-  String get followupsOverdue => 'Overdue';
+  String get followupsOverdue => 'Nokavēts';
 
   @override
-  String followupsDueOn(Object date) {
-    return 'Due $date';
+  String followupsDueOn(String date) {
+    return 'Termiņš $date';
   }
 
   @override
-  String get followupsDone => 'Done';
+  String get followupsDone => 'Pabeigts';
 
   @override
-  String get followupsSnooze => 'Snooze';
+  String get followupsSnooze => 'Atlikt';
 
   @override
-  String get followupsSnooze1Week => 'Remind in a week';
+  String get followupsSnooze1Week => 'Atgādināt pēc nedēļas';
 
   @override
-  String get followupsDismiss => 'Dismiss';
+  String get followupsDismiss => 'Noraidīt';
 
   @override
-  String get followupsLoadError => 'Could not load next steps';
+  String get followupsLoadError => 'Neizdevās ielādēt nākamos soļus';
 
   @override
-  String get followupsAiBadge => 'AI';
+  String get followupsAiBadge => 'MI';
 
   @override
-  String get contractCompareTitle => 'Compare versions';
+  String get contractCompareTitle => 'Salīdzināt versijas';
 
   @override
   String get contractCompareIntro =>
-      'Upload two versions of the same contract. We highlight what changed and whether each change helps or hurts you.';
+      'Augšupielādējiet divas viena un tā paša līguma versijas. Mēs izceļam, kas ir mainījies un vai katra izmaiņa jums palīdz vai kaitē.';
 
   @override
-  String get contractCompareOldVersion => 'Old version (v1)';
+  String get contractCompareOldVersion => 'Vecā versija (v1)';
 
   @override
-  String get contractCompareNewVersion => 'New version (v2)';
+  String get contractCompareNewVersion => 'Jaunā versija (v2)';
 
   @override
-  String get contractCompareCta => 'Compare versions';
+  String get contractCompareCta => 'Salīdzināt versijas';
 
   @override
-  String get contractCompareAdverse => 'Adverse';
+  String get contractCompareAdverse => 'Nelabvēlīgs';
 
   @override
-  String get contractCompareFavorable => 'Favorable';
+  String get contractCompareFavorable => 'Labvēlīgs';
 
   @override
-  String get contractCompareNeutral => 'Neutral';
+  String get contractCompareNeutral => 'Neitrāls';
 
   @override
-  String get contractCompareBefore => 'Before';
+  String get contractCompareBefore => 'Pirms';
 
   @override
-  String get contractCompareAfter => 'After';
+  String get contractCompareAfter => 'Pēc';
 
   @override
   String get contractCompareTruncated =>
-      'Long contract — only the first part of each version was compared.';
+      'Garš līgums — salīdzināta tika tikai katras versijas pirmā daļa.';
 
   @override
   String get contractCompareNoChanges =>
-      'No material changes detected between the two versions.';
+      'Starp abām versijām būtiskas izmaiņas nav konstatētas.';
 
   @override
-  String get docSearchTitle => 'Search my documents';
+  String get docSearchTitle => 'Meklēt manos dokumentos';
 
   @override
-  String get docSearchHint => 'e.g. where was the deposit mentioned';
+  String get docSearchHint => 'piem., kur tika minēts depozīts';
 
   @override
   String get docSearchSubtitle =>
-      'Semantic search across your vault and case files';
+      'Semantiskā meklēšana jūsu glabātavā un lietas failos';
 
   @override
   String get docSearchIdle =>
-      'Search the contents of your own documents — not just titles.';
+      'Meklējiet savu dokumentu saturā — ne tikai virsrakstos.';
 
   @override
-  String get docSearchNoResults => 'No matches found in your documents.';
+  String get docSearchNoResults =>
+      'Jūsu dokumentos atbilstības netika atrastas.';
 
   @override
-  String get docSearchError => 'Search failed. Please try again.';
+  String get docSearchError => 'Meklēšana neizdevās. Lūdzu, mēģiniet vēlreiz.';
 
   @override
-  String get docSearchUntitled => 'Untitled document';
+  String get docSearchUntitled => 'Dokuments bez nosaukuma';
 
   @override
-  String get docSearchKindCase => 'Case document';
+  String get docSearchKindCase => 'Lietas dokuments';
 
   @override
-  String get docSearchKindVault => 'Vault document';
+  String get docSearchKindVault => 'Glabātavas dokuments';
 
   @override
-  String get docSearchMenuTitle => 'Search my documents';
+  String get docSearchMenuTitle => 'Meklēt manos dokumentos';
 
   @override
-  String get docSearchMenuSubtitle =>
-      'Find anything in your own files by meaning';
+  String get docSearchMenuSubtitle => 'Atrodiet jebko savos failos pēc nozīmes';
 
   @override
-  String get legalTemplatesTitle => 'Template library';
+  String get legalTemplatesTitle => 'Veidņu bibliotēka';
 
   @override
-  String get legalTemplatesMenuLabel => 'Templates';
+  String get legalTemplatesMenuLabel => 'Veidnes';
 
   @override
   String get legalTemplatesSubtitle =>
-      'Pick a ready-made form, fill in a few details, and we\'ll create a draft you can edit and export.';
+      'Izvēlieties gatavu veidlapu, aizpildiet dažas detaļas, un mēs izveidosim melnrakstu, ko varat rediģēt un eksportēt.';
 
   @override
   String get legalTemplatesDisclaimer =>
-      'These are general sample forms, not individual legal advice. Review and adapt before sending.';
+      'Šīs ir vispārīgas paraugveidlapas, nevis individuāla juridiska konsultācija. Pārskatiet un pielāgojiet pirms nosūtīšanas.';
 
   @override
-  String get legalTemplatesSampleBadge => 'Sample';
+  String get legalTemplatesSampleBadge => 'Paraugs';
 
   @override
-  String get legalTemplatesEmpty => 'No templates for this filter yet.';
+  String get legalTemplatesEmpty => 'Šim filtram vēl nav veidņu.';
 
   @override
   String get legalTemplatesError =>
-      'Couldn\'t load templates. Please try again.';
+      'Neizdevās ielādēt veidnes. Lūdzu, mēģiniet vēlreiz.';
 
   @override
-  String get legalTemplatesFilterAll => 'All';
+  String get legalTemplatesFilterAll => 'Visas';
 
   @override
-  String get legalTemplatesJurisdictionFi => 'Finland';
+  String get legalTemplatesJurisdictionFi => 'Somija';
 
   @override
-  String get legalTemplatesJurisdictionEe => 'Estonia';
+  String get legalTemplatesJurisdictionEe => 'Igaunija';
 
   @override
-  String get legalTemplatesCategoryComplaint => 'Complaints';
+  String get legalTemplatesCategoryComplaint => 'Sūdzības';
 
   @override
-  String get legalTemplatesCategoryAppeal => 'Appeals';
+  String get legalTemplatesCategoryAppeal => 'Apelācijas';
 
   @override
-  String get legalTemplatesCategoryApplication => 'Applications';
+  String get legalTemplatesCategoryApplication => 'Pieteikumi';
 
   @override
-  String get legalTemplatesCategoryClaim => 'Claims';
+  String get legalTemplatesCategoryClaim => 'Prasības';
 
   @override
-  String get legalTemplatesCategoryRequest => 'Requests';
+  String get legalTemplatesCategoryRequest => 'Pieprasījumi';
 
   @override
-  String get legalTemplatesFillTitle => 'Fill in the details';
+  String get legalTemplatesFillTitle => 'Aizpildiet detaļas';
 
   @override
   String get legalTemplatesFillIntro =>
-      'We\'ll auto-fill your name and case details. Complete the fields below.';
+      'Mēs automātiski aizpildīsim jūsu vārdu un lietas datus. Aizpildiet zemāk esošos laukus.';
 
   @override
-  String get legalTemplatesFieldRequired => 'This field is required';
+  String get legalTemplatesFieldRequired => 'Šis lauks ir obligāts';
 
   @override
-  String get legalTemplatesCreateDraft => 'Create draft';
+  String get legalTemplatesCreateDraft => 'Izveidot melnrakstu';
 
   @override
-  String get legalTemplatesCreating => 'Creating draft…';
+  String get legalTemplatesCreating => 'Veido melnrakstu…';
 
   @override
   String get legalTemplatesCreateFailed =>
-      'Couldn\'t create the draft. Please try again.';
+      'Neizdevās izveidot melnrakstu. Lūdzu, mēģiniet vēlreiz.';
 
   @override
   String get legalTemplatesUnresolvedWarning =>
-      'Some fields are still blank and are marked with ____ in the draft. You can complete them in the editor.';
+      'Daži lauki joprojām ir tukši un melnrakstā ir atzīmēti ar ____. Jūs varat tos aizpildīt redaktorā.';
 
   @override
-  String get legalTemplatesFieldRecipient => 'Recipient (authority / landlord)';
+  String get legalTemplatesFieldRecipient => 'Saņēmējs (iestāde / izīrētājs)';
 
   @override
-  String get legalTemplatesFieldAddress => 'Your postal address';
+  String get legalTemplatesFieldAddress => 'Jūsu pasta adrese';
 
   @override
-  String get legalTemplatesFieldSubject => 'Subject';
+  String get legalTemplatesFieldSubject => 'Temats';
 
   @override
-  String get legalTemplatesFieldDescription => 'Description of the matter';
+  String get legalTemplatesFieldDescription => 'Lietas apraksts';
 
   @override
-  String get legalTemplatesFieldDemand => 'What you are asking for';
+  String get legalTemplatesFieldDemand => 'Ko jūs pieprasāt';
 
   @override
-  String get checklistActionPlan => 'Action plan';
+  String get checklistActionPlan => 'Rīcības plāns';
 
   @override
-  String get checklistActionPlanSubtitle => 'Steps for this type of case';
+  String get checklistActionPlanSubtitle => 'Soļi šāda veida lietai';
 
   @override
-  String checklistProgress(Object completed, Object total) {
-    return '$completed of $total steps done';
+  String checklistProgress(int completed, int total) {
+    return 'Pabeigti $completed no $total soļiem';
   }
 
   @override
-  String get checklistAllDone => 'All steps complete';
+  String get checklistAllDone => 'Visi soļi pabeigti';
 
   @override
   String get checklistEmpty =>
-      'No action plan is available for this case type yet.';
+      'Šim lietas veidam vēl nav pieejams rīcības plāns.';
 
   @override
-  String checklistDeadlineDays(Object days) {
-    return '$days days';
+  String checklistDeadlineDays(int days) {
+    return '$days dienas';
   }
 
   @override
   String get checklistDisclaimer =>
-      'This is general information, not legal advice. Deadlines are statutory defaults — confirm the exact date for your case.';
+      'Šī ir vispārīga informācija, nevis juridiska konsultācija. Termiņi ir likumā noteiktās noklusētās vērtības — apstipriniet precīzu datumu savai lietai.';
 
   @override
-  String get checklistViewPlan => 'View plan';
+  String get checklistViewPlan => 'Skatīt plānu';
 
   @override
-  String get explainPlainTitle => 'Explain in plain words';
+  String get explainPlainTitle => 'Paskaidrot vienkāršos vārdos';
 
   @override
   String get explainPlainIntro =>
-      'Paste an official letter, decision, or contract and we\'ll explain what it means and what it asks you to do — in plain language.';
+      'Ielīmējiet oficiālu vēstuli, lēmumu vai līgumu, un mēs paskaidrosim, ko tas nozīmē un ko tas no jums prasa — vienkāršā valodā.';
 
   @override
-  String get explainPlainLevelFriend => 'Like to a friend';
+  String get explainPlainLevelFriend => 'Kā draugam';
 
   @override
-  String get explainPlainLevelTerms => 'Keep legal terms';
+  String get explainPlainLevelTerms => 'Saglabāt juridiskos terminus';
 
   @override
-  String get explainPlainInputHint => 'Paste the legal text here…';
+  String get explainPlainInputHint => 'Ielīmējiet juridisko tekstu šeit…';
 
   @override
-  String get explainPlainSubmit => 'Explain';
+  String get explainPlainSubmit => 'Paskaidrot';
 
   @override
-  String get explainPlainWorking => 'Explaining…';
+  String get explainPlainWorking => 'Skaidro…';
 
   @override
-  String get explainPlainTldr => 'Bottom line';
+  String get explainPlainTldr => 'Galvenais';
 
   @override
-  String get explainPlainBreakdown => 'What it says, part by part';
+  String get explainPlainBreakdown => 'Ko tas saka, pa daļām';
 
   @override
-  String get explainPlainGlossary => 'Tricky terms explained';
+  String get explainPlainGlossary => 'Sarežģītie termini paskaidroti';
 
   @override
-  String get explainPlainNextSteps => 'What you can do next';
+  String get explainPlainNextSteps => 'Ko jūs varat darīt tālāk';
 
   @override
-  String get explainPlainOpenInCorpus => 'Look up in the law library';
+  String get explainPlainOpenInCorpus => 'Meklēt likumu bibliotēkā';
 
   @override
   String get explainPlainEmptyResult =>
-      'No explanation could be produced for this text. Try pasting a longer or clearer excerpt.';
+      'Šim tekstam neizdevās sniegt paskaidrojumu. Mēģiniet ielīmēt garāku vai skaidrāku fragmentu.';
 
   @override
   String get explainPlainQuotaTitle =>
-      'You\'ve used your free explanations this month';
+      'Šomēnes esat izmantojis savus bezmaksas paskaidrojumus';
 
   @override
   String get explainPlainQuotaBody =>
-      'Free accounts get 3 explanations per month. Upgrade to Pro for unlimited explanations.';
+      'Bezmaksas konti saņem 3 paskaidrojumus mēnesī. Jauniniet uz Pro, lai saņemtu neierobežotus paskaidrojumus.';
 
   @override
-  String get explainPlainUpgradeCta => 'Upgrade to Pro';
+  String get explainPlainUpgradeCta => 'Jaunināt uz Pro';
 
   @override
   String get explainPlainError =>
-      'Something went wrong while explaining this text. Please try again.';
+      'Skaidrojot šo tekstu, radās kļūda. Lūdzu, mēģiniet vēlreiz.';
 
   @override
-  String get explainPlainRetry => 'Try again';
+  String get explainPlainRetry => 'Mēģināt vēlreiz';
 
   @override
-  String get demandLetterTitle => 'Demand letter';
+  String get demandLetterTitle => 'Pretenzijas vēstule';
 
   @override
   String get demandLetterSubtitle =>
-      'Create a formal pre-court demand (maksuvaatimus / nõudekiri).';
+      'Izveidojiet oficiālu pirmstiesas pretenziju (maksuvaatimus / nõudekiri).';
 
   @override
-  String get demandLetterStepType => 'Type of claim';
+  String get demandLetterStepType => 'Prasības veids';
 
   @override
-  String get demandLetterStepParties => 'Parties';
+  String get demandLetterStepParties => 'Puses';
 
   @override
-  String get demandLetterStepClaim => 'Amount & basis';
+  String get demandLetterStepClaim => 'Summa un pamatojums';
 
   @override
-  String get demandLetterStepDeadline => 'Deadline';
+  String get demandLetterStepDeadline => 'Termiņš';
 
   @override
-  String get demandLetterStepReview => 'Review & generate';
+  String get demandLetterStepReview => 'Pārskatīt un ģenerēt';
 
   @override
-  String get demandLetterClaimDepositReturn => 'Return of rental deposit';
+  String get demandLetterClaimDepositReturn => 'Īres depozīta atmaksa';
 
   @override
-  String get demandLetterClaimUnpaidWage => 'Unpaid wages';
+  String get demandLetterClaimUnpaidWage => 'Neizmaksāta alga';
 
   @override
-  String get demandLetterClaimFineDispute => 'Dispute a fine / charge';
+  String get demandLetterClaimFineDispute => 'Apstrīdēt sodu / maksājumu';
 
   @override
-  String get demandLetterClaimGeneric => 'Other monetary claim';
+  String get demandLetterClaimGeneric => 'Cita naudas prasība';
 
   @override
-  String get demandLetterJurisdiction => 'Jurisdiction';
+  String get demandLetterJurisdiction => 'Jurisdikcija';
 
   @override
-  String get demandLetterLanguage => 'Letter language';
+  String get demandLetterLanguage => 'Vēstules valoda';
 
   @override
-  String get demandLetterRecipientName => 'Recipient name';
+  String get demandLetterRecipientName => 'Saņēmēja vārds';
 
   @override
-  String get demandLetterRecipientAddress => 'Recipient address (optional)';
+  String get demandLetterRecipientAddress => 'Saņēmēja adrese (neobligāti)';
 
   @override
-  String get demandLetterSenderName => 'Your name';
+  String get demandLetterSenderName => 'Jūsu vārds';
 
   @override
-  String get demandLetterSenderAddress => 'Your address / email (optional)';
+  String get demandLetterSenderAddress => 'Jūsu adrese / e-pasts (neobligāti)';
 
   @override
-  String get demandLetterAmount => 'Amount';
+  String get demandLetterAmount => 'Summa';
 
   @override
-  String get demandLetterCurrency => 'Currency';
+  String get demandLetterCurrency => 'Valūta';
 
   @override
-  String get demandLetterBasis => 'What happened (basis of the claim)';
+  String get demandLetterBasis => 'Kas notika (prasības pamatojums)';
 
   @override
   String get demandLetterBasisHint =>
-      'Describe the facts: dates, amounts, what was agreed and what went wrong.';
+      'Aprakstiet faktus: datumus, summas, kas tika norunāts un kas nogāja greizi.';
 
   @override
-  String get demandLetterDeadline => 'Payment deadline';
+  String get demandLetterDeadline => 'Maksājuma termiņš';
 
   @override
-  String get demandLetterDeadlineHint => 'e.g. 14 days from today';
+  String get demandLetterDeadlineHint => 'piem., 14 dienas no šodienas';
 
   @override
-  String get demandLetterReference => 'Reference (optional)';
+  String get demandLetterReference => 'Atsauce (neobligāti)';
 
   @override
-  String get demandLetterGenerate => 'Generate letter';
+  String get demandLetterGenerate => 'Ģenerēt vēstuli';
 
   @override
-  String get demandLetterGenerating => 'Generating…';
+  String get demandLetterGenerating => 'Ģenerē…';
 
   @override
   String get demandLetterGenerateFailed =>
-      'Couldn\'t generate the letter. Please try again.';
+      'Neizdevās ģenerēt vēstuli. Lūdzu, mēģiniet vēlreiz.';
 
   @override
-  String get demandLetterFieldRequired => 'This field is required';
+  String get demandLetterFieldRequired => 'Šis lauks ir obligāts';
 
   @override
-  String get demandLetterNext => 'Next';
+  String get demandLetterNext => 'Tālāk';
 
   @override
-  String get demandLetterBack => 'Back';
+  String get demandLetterBack => 'Atpakaļ';
 
   @override
-  String get demandLetterPreviewTitle => 'Your letter';
+  String get demandLetterPreviewTitle => 'Jūsu vēstule';
 
   @override
-  String get demandLetterCopy => 'Copy text';
+  String get demandLetterCopy => 'Kopēt tekstu';
 
   @override
-  String get demandLetterCopied => 'Letter copied to clipboard';
+  String get demandLetterCopied => 'Vēstule nokopēta starpliktuvē';
 
   @override
-  String get demandLetterExportPdf => 'Export PDF';
+  String get demandLetterExportPdf => 'Eksportēt PDF';
 
   @override
-  String get demandLetterExporting => 'Exporting…';
+  String get demandLetterExporting => 'Eksportē…';
 
   @override
   String get demandLetterExportFailed =>
-      'Couldn\'t export the document. Please try again.';
+      'Neizdevās eksportēt dokumentu. Lūdzu, mēģiniet vēlreiz.';
 
   @override
-  String get demandLetterSendEmail => 'Send via email';
+  String get demandLetterSendEmail => 'Nosūtīt pa e-pastu';
 
   @override
-  String get demandLetterNormsTitle => 'Legal references';
+  String get demandLetterNormsTitle => 'Juridiskās atsauces';
 
   @override
   String get demandLetterDisclaimer =>
-      'This letter is prepared on your behalf as a general template. It is not legal advice or an act of a licensed attorney. Review it before sending — no letter is sent automatically.';
+      'Šī vēstule ir sagatavota jūsu vārdā kā vispārīga veidne. Tā nav juridiska konsultācija vai licencēta advokāta darbība. Pārskatiet to pirms nosūtīšanas — neviena vēstule netiek nosūtīta automātiski.';
 
   @override
-  String get demandLetterMenuTile => 'Demand letter';
+  String get demandLetterMenuTile => 'Pretenzijas vēstule';
 
   @override
-  String get calcHubTitle => 'Legal calculators';
+  String get calcHubTitle => 'Juridiskie kalkulatori';
 
   @override
-  String get calcHubSubtitle => 'Quick estimates before your next step';
+  String get calcHubSubtitle => 'Ātri aprēķini pirms nākamā soļa';
 
   @override
-  String get calcHubJurisdiction => 'Jurisdiction';
+  String get calcHubJurisdiction => 'Jurisdikcija';
 
   @override
-  String calcRatesAsOf(Object date) {
-    return 'Rates as of $date';
+  String calcRatesAsOf(String date) {
+    return 'Likmes uz $date';
   }
 
   @override
-  String get calcRatesOffline => 'Showing cached rates (offline)';
+  String get calcRatesOffline => 'Rāda kešotās likmes (bezsaistē)';
 
   @override
   String get calcIndicativeBanner =>
-      'Indicative estimate only — not an official calculation or legal advice.';
+      'Tikai indikatīvs aprēķins — nav oficiāls aprēķins vai juridiska konsultācija.';
 
   @override
-  String get calcCalculate => 'Calculate';
+  String get calcCalculate => 'Aprēķināt';
 
   @override
-  String get calcResult => 'Result';
+  String get calcResult => 'Rezultāts';
 
   @override
-  String get calcFormula => 'How this is calculated';
+  String get calcFormula => 'Kā tas tiek aprēķināts';
 
   @override
-  String get calcSource => 'Source';
+  String get calcSource => 'Avots';
 
   @override
-  String get calcSeveranceTitle => 'Severance / notice';
+  String get calcSeveranceTitle => 'Atlaišanas pabalsts / uzteikums';
 
   @override
   String get calcSeveranceDesc =>
-      'Estimate severance pay and notice period on redundancy';
+      'Aprēķiniet atlaišanas pabalstu un uzteikuma termiņu darbinieku skaita samazināšanas gadījumā';
 
   @override
-  String get calcSeveranceSalary => 'Gross monthly salary';
+  String get calcSeveranceSalary => 'Bruto mēneša alga';
 
   @override
-  String get calcSeveranceTenure => 'Years of service';
+  String get calcSeveranceTenure => 'Darba stāža gadi';
 
   @override
-  String get calcSeveranceTotal => 'Estimated severance';
+  String get calcSeveranceTotal => 'Aprēķinātais atlaišanas pabalsts';
 
   @override
-  String get calcSeveranceNotice => 'Notice period';
+  String get calcSeveranceNotice => 'Uzteikuma termiņš';
 
   @override
-  String get calcSeveranceGenerateDemand => 'Draft a demand letter';
+  String get calcSeveranceGenerateDemand => 'Sagatavot pretenzijas vēstuli';
 
   @override
-  String get calcLimitationTitle => 'Limitation & appeal deadlines';
+  String get calcLimitationTitle => 'Noilguma un apelācijas termiņi';
 
   @override
   String get calcLimitationDesc =>
-      'Check whether a claim or appeal period has expired';
+      'Pārbaudiet, vai prasības vai apelācijas termiņš ir beidzies';
 
   @override
-  String get calcLimitationType => 'Type of period';
+  String get calcLimitationType => 'Termiņa veids';
 
   @override
-  String get calcLimitationStart => 'Start date (event / decision)';
+  String get calcLimitationStart => 'Sākuma datums (notikums / lēmums)';
 
   @override
-  String get calcLimitationPickDate => 'Pick date';
+  String get calcLimitationPickDate => 'Izvēlēties datumu';
 
   @override
-  String get calcLimitationDeadline => 'Deadline';
+  String get calcLimitationDeadline => 'Termiņš';
 
   @override
-  String get calcLimitationExpired => 'Period has expired';
+  String get calcLimitationExpired => 'Termiņš ir beidzies';
 
   @override
-  String calcLimitationDaysLeft(Object days) {
-    return '$days days remaining';
+  String calcLimitationDaysLeft(int days) {
+    return 'Atlikušas $days dienas';
   }
 
   @override
   String get calcLimitationShifted =>
-      'Shifted to the next working day (weekend/holiday).';
+      'Pārcelts uz nākamo darba dienu (nedēļas nogale/svētki).';
 
   @override
-  String get calcLimitationAddDeadline => 'Add to deadlines';
+  String get calcLimitationAddDeadline => 'Pievienot termiņiem';
 
   @override
-  String get calcStateFeeTitle => 'Court / state fees';
+  String get calcStateFeeTitle => 'Tiesas / valsts nodevas';
 
   @override
-  String get calcStateFeeDesc => 'Reference filing fees by court and stage';
+  String get calcStateFeeDesc =>
+      'Atsauces uz pieteikuma nodevām pēc tiesas un stadijas';
 
   @override
-  String get calcChildSupportTitle => 'Child support (orientation)';
+  String get calcChildSupportTitle => 'Uzturlīdzekļi (orientējoši)';
 
   @override
   String get calcChildSupportDesc =>
-      'Rough orientation figure — the real amount is set case by case';
+      'Aptuvens orientējošs skaitlis — reālo summu nosaka katrā lietā atsevišķi';
 
   @override
-  String get calcChildSupportNet => 'Payer\'s net monthly income';
+  String get calcChildSupportNet => 'Maksātāja neto mēneša ienākumi';
 
   @override
-  String get calcChildSupportChildren => 'Number of children';
+  String get calcChildSupportChildren => 'Bērnu skaits';
 
   @override
-  String get calcChildSupportPerChild => 'Per child';
+  String get calcChildSupportPerChild => 'Uz vienu bērnu';
 
   @override
-  String get calcChildSupportTotal => 'Total monthly';
+  String get calcChildSupportTotal => 'Kopā mēnesī';
 
   @override
   String get calcChildSupportWarning =>
-      'Highly variable. Courts decide on the child\'s needs and both parents\' ability to pay. Use as a starting point only.';
+      'Ļoti mainīgs. Tiesas lemj pēc bērna vajadzībām un abu vecāku maksātspējas. Izmantojiet tikai kā sākumpunktu.';
 
   @override
-  String get docCollectTitle => 'Documents to collect';
+  String get docCollectTitle => 'Savācamie dokumenti';
 
   @override
   String get docCollectSubtitle =>
-      'Gather these before you apply or go to court';
+      'Savāciet tos pirms pieteikuma iesniegšanas vai vēršanās tiesā';
 
   @override
-  String get docCollectPickPrompt => 'What is your situation?';
+  String get docCollectPickPrompt => 'Kāda ir jūsu situācija?';
 
   @override
-  String get docCollectProblemResidence => 'Residence permit';
+  String get docCollectProblemResidence => 'Uzturēšanās atļauja';
 
   @override
-  String get docCollectProblemTenant => 'Renting / eviction';
+  String get docCollectProblemTenant => 'Īre / izlikšana';
 
   @override
-  String get docCollectProblemDismissal => 'Dismissal at work';
+  String get docCollectProblemDismissal => 'Atlaišana no darba';
 
   @override
-  String get docCollectProblemInheritance => 'Inheritance';
+  String get docCollectProblemInheritance => 'Mantošana';
 
   @override
-  String get docCollectProblemDivorce => 'Divorce';
+  String get docCollectProblemDivorce => 'Laulības šķiršana';
 
   @override
-  String docCollectProgress(Object collected, Object total) {
-    return '$collected of $total collected';
+  String docCollectProgress(int collected, int total) {
+    return 'Savākti $collected no $total';
   }
 
   @override
-  String get docCollectAllDone => 'Everything collected';
+  String get docCollectAllDone => 'Viss savākts';
 
   @override
   String get docCollectEmpty =>
-      'No document list is available for this situation yet.';
+      'Šai situācijai vēl nav pieejams dokumentu saraksts.';
 
   @override
-  String get docCollectOptional => 'Optional';
+  String get docCollectOptional => 'Neobligāts';
 
   @override
-  String get docCollectWhereLabel => 'Where to get it';
+  String get docCollectWhereLabel => 'Kur to iegūt';
 
   @override
-  String get docCollectWhyLabel => 'Why it\'s needed';
+  String get docCollectWhyLabel => 'Kāpēc tas ir vajadzīgs';
 
   @override
-  String get docCollectAttach => 'Attach a file';
+  String get docCollectAttach => 'Pievienot failu';
 
   @override
-  String get docCollectAttached => 'File attached';
+  String get docCollectAttached => 'Fails pievienots';
 
   @override
-  String get docCollectChangeFile => 'Change file';
+  String get docCollectChangeFile => 'Mainīt failu';
 
   @override
-  String get docCollectRemoveFile => 'Remove file';
+  String get docCollectRemoveFile => 'Noņemt failu';
 
   @override
-  String get docCollectNoFiles => 'You haven\'t uploaded any documents yet.';
+  String get docCollectNoFiles =>
+      'Jūs vēl neesat augšupielādējis nevienu dokumentu.';
 
   @override
-  String get docCollectPickFileTitle => 'Choose an uploaded document';
+  String get docCollectPickFileTitle => 'Izvēlieties augšupielādētu dokumentu';
 
   @override
-  String get docCollectExport => 'Export list';
+  String get docCollectExport => 'Eksportēt sarakstu';
 
   @override
-  String get docCollectExportSubject => 'My document checklist';
+  String get docCollectExportSubject => 'Mans dokumentu kontrolsaraksts';
 
   @override
-  String get docCollectAiTitle => 'Need something specific?';
+  String get docCollectAiTitle => 'Vajag kaut ko konkrētu?';
 
   @override
   String get docCollectAiHint =>
-      'Describe your situation and we\'ll suggest any extra documents.';
+      'Aprakstiet savu situāciju, un mēs ieteiksim papildu dokumentus.';
 
   @override
-  String get docCollectAiField => 'Describe your situation';
+  String get docCollectAiField => 'Aprakstiet savu situāciju';
 
   @override
-  String get docCollectAiButton => 'Suggest extra documents';
+  String get docCollectAiButton => 'Ieteikt papildu dokumentus';
 
   @override
-  String get docCollectAiLoading => 'Thinking…';
+  String get docCollectAiLoading => 'Domā…';
 
   @override
   String get docCollectAiEmpty =>
-      'No extra documents suggested — the basic list looks complete for your description.';
+      'Papildu dokumenti netika ieteikti — pamatsaraksts jūsu aprakstam šķiet pilnīgs.';
 
   @override
-  String get docCollectAiSuggestionsTitle => 'Suggested extra documents';
+  String get docCollectAiSuggestionsTitle => 'Ieteiktie papildu dokumenti';
 
   @override
   String get docCollectDisclaimer =>
-      'This is a basic list of commonly required documents — your situation may need more or fewer. It is general information, not legal advice.';
+      'Šis ir pamatsaraksts ar parasti nepieciešamajiem dokumentiem — jūsu situācijai var būt vajadzīgs vairāk vai mazāk. Tā ir vispārīga informācija, nevis juridiska konsultācija.';
 
   @override
-  String get docCollectRetry => 'Try again';
+  String get docCollectRetry => 'Mēģināt vēlreiz';
 
   @override
-  String get renewalTitle => 'Renewal Radar';
+  String get renewalTitle => 'Atjaunošanas radars';
 
   @override
   String get renewalSubtitle =>
-      'Track when your permits, passport, insurance and other documents expire. We\'ll remind you 90, 30 and 7 days before each renewal.';
+      'Sekojiet līdzi, kad beidzas jūsu atļaujas, pase, apdrošināšana un citi dokumenti. Mēs atgādināsim 90, 30 un 7 dienas pirms katras atjaunošanas.';
 
   @override
-  String get renewalAdd => 'Add document';
+  String get renewalAdd => 'Pievienot dokumentu';
 
   @override
-  String get renewalEditTitle => 'Edit document';
+  String get renewalEditTitle => 'Rediģēt dokumentu';
 
   @override
-  String get renewalSave => 'Save';
+  String get renewalSave => 'Saglabāt';
 
   @override
-  String get renewalRequired => 'Required';
+  String get renewalRequired => 'Obligāts';
 
   @override
-  String get renewalPickDate => 'Pick expiry date';
+  String get renewalPickDate => 'Izvēlieties derīguma termiņa datumu';
 
   @override
   String get renewalLoadError =>
-      'Could not load your documents. Pull to refresh.';
+      'Neizdevās ielādēt jūsu dokumentus. Pavelciet, lai atsvaidzinātu.';
 
   @override
-  String get renewalEmptyTitle => 'No documents tracked yet';
+  String get renewalEmptyTitle => 'Vēl netiek uzraudzīts neviens dokuments';
 
   @override
   String get renewalEmptyBody =>
-      'Add your residence permit, passport, insurance or licence and we\'ll watch the expiry dates for you.';
+      'Pievienojiet savu uzturēšanās atļauju, pasi, apdrošināšanu vai licenci, un mēs sekosim līdzi derīguma termiņiem.';
 
   @override
-  String get renewalGuideHint => 'How to renew →';
+  String get renewalGuideHint => 'Kā atjaunot →';
 
   @override
-  String get renewalFieldType => 'Document type';
+  String get renewalFieldType => 'Dokumenta veids';
 
   @override
-  String get renewalFieldLabel => 'Label';
+  String get renewalFieldLabel => 'Apzīmējums';
 
   @override
-  String get renewalFieldNumber => 'Document number (optional)';
+  String get renewalFieldNumber => 'Dokumenta numurs (neobligāti)';
 
   @override
-  String get renewalFieldJurisdiction => 'Issuing country';
+  String get renewalFieldJurisdiction => 'Izdevējvalsts';
 
   @override
-  String get renewalFieldExpiry => 'Expiry date';
+  String get renewalFieldExpiry => 'Derīguma termiņa datums';
 
   @override
-  String get renewalWindow90 => '90 days';
+  String get renewalWindow90 => '90 dienas';
 
   @override
-  String get renewalWindow30 => '30 days';
+  String get renewalWindow30 => '30 dienas';
 
   @override
-  String get renewalWindow7 => '7 days';
+  String get renewalWindow7 => '7 dienas';
 
   @override
-  String get renewalExpiresToday => 'Expires today';
+  String get renewalExpiresToday => 'Beidzas šodien';
 
   @override
-  String renewalExpiresInDays(Object date, Object days) {
-    return 'Expires in $days days · $date';
+  String renewalExpiresInDays(int days, String date) {
+    return 'Beidzas pēc $days dienām · $date';
   }
 
   @override
-  String renewalExpiredOn(Object date) {
-    return 'Expired on $date';
+  String renewalExpiredOn(String date) {
+    return 'Beidzās $date';
   }
 
   @override
-  String get renewalTypeResidencePermit => 'Residence permit';
+  String get renewalTypeResidencePermit => 'Uzturēšanās atļauja';
 
   @override
-  String get renewalTypePassport => 'Passport';
+  String get renewalTypePassport => 'Pase';
 
   @override
-  String get renewalTypeIdCard => 'ID card';
+  String get renewalTypeIdCard => 'Personas apliecība';
 
   @override
-  String get renewalTypeVisa => 'Visa';
+  String get renewalTypeVisa => 'Vīza';
 
   @override
-  String get renewalTypeDrivingLicence => 'Driving licence';
+  String get renewalTypeDrivingLicence => 'Vadītāja apliecība';
 
   @override
-  String get renewalTypeInsurance => 'Insurance';
+  String get renewalTypeInsurance => 'Apdrošināšana';
 
   @override
-  String get renewalTypeWorkPermit => 'Work permit';
+  String get renewalTypeWorkPermit => 'Darba atļauja';
 
   @override
-  String get renewalTypeOther => 'Other';
+  String get renewalTypeOther => 'Cits';
 
   @override
-  String get costEstimateTitle => 'Cost & Risk Estimator';
+  String get costEstimateTitle => 'Izmaksu un risku novērtētājs';
 
   @override
   String get costEstimateSubtitle =>
-      'Get a rough idea of what a case might cost, how long it could take, and whether it is worth pursuing.';
+      'Gūstiet aptuvenu priekšstatu par to, cik lietai varētu izmaksāt, cik ilgi tā varētu ilgt un vai ir vērts to virzīt.';
 
   @override
-  String get costEstimateCaseTypeLabel => 'Type of case';
+  String get costEstimateCaseTypeLabel => 'Lietas veids';
 
   @override
   String get costEstimateCaseTypeHint =>
-      'e.g. unpaid invoice, wrongful dismissal, deposit dispute';
+      'piem., neapmaksāts rēķins, nelikumīga atlaišana, depozīta strīds';
 
   @override
-  String get costEstimateJurisdictionLabel => 'Jurisdiction';
+  String get costEstimateJurisdictionLabel => 'Jurisdikcija';
 
   @override
-  String get costEstimateAmountLabel => 'Amount in dispute (optional)';
+  String get costEstimateAmountLabel => 'Strīda summa (neobligāti)';
 
   @override
-  String get costEstimateAmountHint => 'e.g. 12500';
+  String get costEstimateAmountHint => 'piem., 12500';
 
   @override
   String get costEstimateDescriptionLabel =>
-      'Briefly describe the situation (optional)';
+      'Īsi aprakstiet situāciju (neobligāti)';
 
   @override
-  String get costEstimateB2bToggle => 'Lead-qualification card (B2B)';
+  String get costEstimateB2bToggle => 'Klienta kvalifikācijas karte (B2B)';
 
   @override
   String get costEstimateB2bSubtitle =>
-      'Compact output for quickly triaging an inbound client.';
+      'Kompakts pārskats ienākoša klienta ātrai izvērtēšanai.';
 
   @override
-  String get costEstimateSubmit => 'Estimate my case';
+  String get costEstimateSubmit => 'Novērtēt manu lietu';
 
   @override
   String get costEstimateDisclaimer =>
-      'Rough estimate only — not a prediction, guarantee, or legal advice. Actual costs and outcomes vary case by case.';
+      'Tikai aptuvens novērtējums — nav prognoze, garantija vai juridiska konsultācija. Faktiskās izmaksas un iznākumi katrā lietā atšķiras.';
 
   @override
-  String get costEstimateCostsHeading => 'Estimated costs';
+  String get costEstimateCostsHeading => 'Aprēķinātās izmaksas';
 
   @override
-  String get costEstimateCourtFee => 'Court / state fee';
+  String get costEstimateCourtFee => 'Tiesas / valsts nodeva';
 
   @override
-  String get costEstimateLawyerFee => 'Lawyer fee';
+  String get costEstimateLawyerFee => 'Advokāta honorārs';
 
   @override
-  String get costEstimateTotal => 'Total (approx.)';
+  String get costEstimateTotal => 'Kopā (aptuveni)';
 
   @override
-  String get costEstimateDuration => 'Time to first resolution';
+  String get costEstimateDuration => 'Laiks līdz pirmajam risinājumam';
 
   @override
-  String get costEstimateMonthsSuffix => 'months';
+  String get costEstimateMonthsSuffix => 'mēneši';
 
   @override
-  String get costEstimateFactorsFor => 'In your favour';
+  String get costEstimateFactorsFor => 'Jums par labu';
 
   @override
-  String get costEstimateFactorsAgainst => 'Working against you';
+  String get costEstimateFactorsAgainst => 'Pret jums';
 
   @override
-  String get costEstimateStrengthWorth => 'Likely worth pursuing';
+  String get costEstimateStrengthWorth => 'Visticamāk, ir vērts virzīt';
 
   @override
-  String get costEstimateStrengthContested => 'Contested — could go either way';
+  String get costEstimateStrengthContested => 'Apstrīdams — var noiet abējādi';
 
   @override
-  String get costEstimateStrengthWeak => 'Weak — proceed with caution';
+  String get costEstimateStrengthWeak => 'Vājš — rīkojieties piesardzīgi';
 }
