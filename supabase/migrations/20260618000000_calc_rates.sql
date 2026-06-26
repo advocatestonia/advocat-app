@@ -113,7 +113,7 @@ values
        jsonb_build_object('key', 'damages', 'label', 'Vahingonkorvaus', 'days', null, 'years', 3, 'norm', 'VanhL 728/2003 §7'),
        jsonb_build_object('key', 'civil_appeal', 'label', 'Valitus käräjäoikeudesta hovioikeuteen', 'days', 30, 'years', null, 'norm', 'OK 1734 25:5'),
        jsonb_build_object('key', 'admin_appeal', 'label', 'Valitus hallintopäätöksestä', 'days', 30, 'years', null, 'norm', 'OikeudenkäyntiHL 808/2019 §13'),
-       jsonb_build_object('key', 'echr', 'label', 'Valitus Euroopan ihmisoikeustuomioistuimeen', 'days', 120, 'years', null, 'norm', 'ECHR Art. 35 (4kk)')
+       jsonb_build_object('key', 'echr', 'label', 'Valitus Euroopan ihmisoikeustuomioistuimeen', 'days', null, 'years', null, 'months', 4, 'norm', 'ECHR Art. 35 (4kk)')
      )
    ),
    null, date '2026-01-01',
@@ -175,7 +175,7 @@ values
        jsonb_build_object('key', 'damages', 'label', 'Kahju hüvitamise nõue', 'days', null, 'years', 3, 'norm', 'TsÜS §150'),
        jsonb_build_object('key', 'civil_appeal', 'label', 'Apellatsioonkaebus maakohtu otsusele', 'days', 30, 'years', null, 'norm', 'TsMS §632 lg 1'),
        jsonb_build_object('key', 'admin_appeal', 'label', 'Kaebus haldusakti peale', 'days', 30, 'years', null, 'norm', 'HKMS §46'),
-       jsonb_build_object('key', 'echr', 'label', 'Kaebus Euroopa Inimõiguste Kohtusse', 'days', 120, 'years', null, 'norm', 'EIÕK art 35 (4 kuud)')
+       jsonb_build_object('key', 'echr', 'label', 'Kaebus Euroopa Inimõiguste Kohtusse', 'days', null, 'years', null, 'months', 4, 'norm', 'EIÕK art 35 (4 kuud)')
      )
    ),
    null, date '2026-01-01',

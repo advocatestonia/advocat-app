@@ -145,20 +145,25 @@ SeveranceResult finnishNotice({
 
 /// Compute a limitation / appeal deadline from a [start] event date.
 ///
-/// Exactly one of [days] / [years] must be provided. The raw statutory date is
-/// then shifted forward off weekends and national holidays (the universal
-/// procedural rule in FI/EE: a deadline that lands on a non-working day moves to
-/// the next working day).
+/// Exactly one of [days] / [years] / [months] must be provided. [months] uses
+/// calendar-month arithmetic (e.g. ECHR Art. 35 §1 = 4 months, NOT 120 days),
+/// clamping a non-existent target day (31 Oct + 4mo → "31 Feb") to that month's
+/// last valid day. The raw statutory date is then shifted forward off weekends
+/// and national holidays (the universal procedural rule in FI/EE: a deadline
+/// that lands on a non-working day moves to the next working day).
 LimitationResult limitationDeadline({
   required DateTime start,
   int? days,
   int? years,
+  int? months,
   required String jurisdiction,
   required String norm,
   DateTime? now,
 }) {
-  assert((days == null) != (years == null),
-      'Provide exactly one of days / years');
+  assert(
+    [days, years, months].where((v) => v != null).length == 1,
+    'Provide exactly one of days / years / months',
+  );
   final ref = now ?? DateTime.now();
   // Normalise to date-only to avoid time-of-day off-by-one.
   final s = DateTime(start.year, start.month, start.day);
@@ -166,6 +171,15 @@ LimitationResult limitationDeadline({
   DateTime raw;
   if (years != null) {
     raw = DateTime(s.year + years, s.month, s.day);
+  } else if (months != null) {
+    // Calendar-month arithmetic (ECHR Art. 35 §1 = 4 months, NOT 120 days).
+    // A day that doesn't exist in the target month (31 Oct + 4mo → "31 Feb")
+    // clamps to that month's last valid day — the conservative, never-early
+    // choice for a strict non-extendable window.
+    final targetMonth = s.month + months;
+    final lastDayOfTarget = DateTime(s.year, targetMonth + 1, 0).day;
+    final clampedDay = s.day > lastDayOfTarget ? lastDayOfTarget : s.day;
+    raw = DateTime(s.year, targetMonth, clampedDay);
   } else {
     raw = s.add(Duration(days: days!));
   }

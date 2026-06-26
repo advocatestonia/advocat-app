@@ -22,6 +22,10 @@ class LimitationPeriod {
   final String label;
   final int? days;
   final int? years;
+  // Calendar months (e.g. ECHR Art. 35 §1 = 4 months, NOT 120 days). Months
+  // are added calendar-wise, not as a fixed day count — a strict
+  // non-extendable window must never land early.
+  final int? months;
   final String norm;
   const LimitationPeriod({
     required this.key,
@@ -29,6 +33,7 @@ class LimitationPeriod {
     required this.norm,
     this.days,
     this.years,
+    this.months,
   });
 }
 
@@ -102,6 +107,7 @@ class CalcRates {
             norm: m['norm'] as String? ?? '',
             days: (m['days'] as num?)?.toInt(),
             years: (m['years'] as num?)?.toInt(),
+            months: (m['months'] as num?)?.toInt(),
           );
         }).toList();
         limSrc = limRow['source_label'] as String? ?? limSrc;
@@ -177,7 +183,7 @@ const Map<String, CalcRates> kFallbackRates = {
       LimitationPeriod(
           key: 'echr',
           label: 'Valitus Euroopan ihmisoikeustuomioistuimeen',
-          days: 120,
+          months: 4,
           norm: 'ECHR Art. 35 (4kk)'),
     ],
     childSupportFloor: 195.31,
@@ -228,7 +234,7 @@ const Map<String, CalcRates> kFallbackRates = {
       LimitationPeriod(
           key: 'echr',
           label: 'Kaebus Euroopa Inimõiguste Kohtusse',
-          days: 120,
+          months: 4,
           norm: 'EIÕK art 35 (4 kuud)'),
     ],
     childSupportFloor: 209.20,

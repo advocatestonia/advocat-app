@@ -40,6 +40,7 @@ class _LimitationCalculatorScreenState
       start: start,
       days: period.days,
       years: period.years,
+      months: period.months,
       jurisdiction: widget.jurisdiction,
       norm: period.norm,
     );
