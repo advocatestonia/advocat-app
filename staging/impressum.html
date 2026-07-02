@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum / Kontaktid / Yhteystiedot | Advocat</title>
+    <meta name="description" content="Advocat (Vorantis OÜ) legal imprint / Impressum / yhteystiedot — service provider identification per EE KMS §4, FI §171 sähköisestä viestinnästä, DE DDG §5, AT §5 ECG.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://advocat.ee/impressum.html">
+    <link rel="alternate" hreflang="et" href="https://advocat.ee/impressum.html">
+    <link rel="alternate" hreflang="fi" href="https://advocat.ee/impressum.html">
+    <link rel="alternate" hreflang="en" href="https://advocat.ee/impressum.html">
+    <link rel="alternate" hreflang="de" href="https://advocat.ee/impressum.html">
+    <link rel="alternate" hreflang="fr" href="https://advocat.ee/impressum.html">
+    <link rel="alternate" hreflang="x-default" href="https://advocat.ee/impressum.html">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.6; }
+        a { color: #0A8F6C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 900px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo img { height: 80px; width: auto; }
+        .logo-text {
+            font-size: 28px; font-weight: 700; letter-spacing: -0.3px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; color: transparent;
+            line-height: 1; margin-left: -4px; transform: translateY(2px);
+        }
+        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:hover { color: #fff; text-decoration: none; }
+
+        .hero { background: linear-gradient(135deg, #1A2B4A 0%, #0A8F6C 100%); padding: 56px 20px 48px; text-align: center; color: #fff; }
+        .hero h1, .hero .hero-title { font-size: 32px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; line-height: 1.2; }
+        .hero p { font-size: 15px; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+
+        .lang-switch { background: #fff; border-bottom: 1px solid #E5E8EE; padding: 14px 20px; text-align: center; position: sticky; top: 112px; z-index: 50; }
+        .lang-switch button {
+            display: inline-block; margin: 0 4px; padding: 7px 18px; border-radius: 999px;
+            font-family: inherit; font-size: 13px; font-weight: 600;
+            background: transparent; color: #1A2B4A; border: 1.5px solid #E5E8EE;
+            cursor: pointer; transition: all .15s;
+        }
+        .lang-switch button:hover { border-color: #0A8F6C; color: #0A8F6C; }
+        .lang-switch button.active { background: #1A2B4A; color: #fff; border-color: #1A2B4A; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 36px 20px 60px; }
+        .doc-meta { font-size: 13px; color: #5A6A7A; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #E5E8EE; }
+        .doc-meta strong { color: #1A2B4A; }
+
+        h2 { font-size: 22px; font-weight: 700; color: #1A2B4A; margin: 36px 0 14px; letter-spacing: -0.2px; }
+        h2:first-of-type { margin-top: 8px; }
+        h3 { font-size: 16px; font-weight: 600; color: #1A2B4A; margin: 20px 0 8px; }
+        p { font-size: 15px; color: #2C3E50; margin-bottom: 12px; }
+        ul, ol { padding-left: 22px; margin-bottom: 14px; }
+        li { font-size: 15px; color: #2C3E50; margin-bottom: 6px; }
+        strong { color: #1A2B4A; }
+
+        .callout {
+            background: #E8F5E9; border-left: 4px solid #0A8F6C;
+            padding: 16px 18px; border-radius: 0 8px 8px 0; margin: 18px 0;
+        }
+        .callout strong { color: #0A6E54; }
+        .callout-warn {
+            background: #FFF4E5; border-left: 4px solid #E07B00;
+            padding: 16px 18px; border-radius: 0 8px 8px 0; margin: 18px 0;
+        }
+        .callout-warn strong { color: #B25E00; }
+        .callout-key {
+            background: #1A2B4A; color: #fff;
+            padding: 18px 20px; border-radius: 10px; margin: 18px 0;
+        }
+        .callout-key strong { color: #B8E6D9; }
+
+        .contact-box { background: #fff; border: 1px solid #E5E8EE; border-radius: 10px; padding: 18px 20px; margin: 18px 0; }
+        .contact-box strong { display: block; margin-bottom: 4px; }
+
+        [data-lang]:not(.active-lang) { display: none; }
+
+        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.55); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.85); margin: 0 10px; }
+        .footer a:hover { color: #B8E6D9; text-decoration: none; }
+        .footer-links { margin-bottom: 10px; }
+
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 24px; }
+            .hero { padding: 44px 20px 36px; }
+            .lang-switch { top: 96px; padding: 10px 12px; }
+            .lang-switch button { font-size: 12px; padding: 6px 12px; margin: 0 2px; }
+            h2 { font-size: 19px; }
+            .container { padding: 28px 18px 48px; }
+        }
+        @media (max-width: 600px) {
+            .logo img { height: 56px; }
+            .logo-text { font-size: 22px; }
+            .header-nav a { margin-left: 14px; font-size: 13px; }
+        }
+    </style>
+<!-- Cookie consent (W2-13): per-jurisdiction granular banner. MUST load before
+     _utm_capture.js and _analytics.js so consent gates every pixel. -->
+<script src="/_cookie_consent.js" defer></script>
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-inner">
+        <a href="/" class="logo" aria-label="Advocat home">
+            <img src="/blog/logo_shield.png" alt="Advocat shield" width="80" height="80">
+            <span class="logo-text">Advocat</span>
+        </a>
+        <nav class="header-nav">
+            <a href="/">Home</a>
+            <a href="/blog/">Blog</a>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <h1 data-lang="et" class="active-lang">Kontaktid (Impressum)</h1>
+    <div class="hero-title" data-lang="fi" role="heading" aria-level="1">Yhteystiedot</div>
+    <div class="hero-title" data-lang="en" role="heading" aria-level="1">Imprint / Legal Notice</div>
+    <div class="hero-title" data-lang="de" role="heading" aria-level="1">Impressum</div>
+    <div class="hero-title" data-lang="fr" role="heading" aria-level="1">Mentions légales</div>
+    <p data-lang="et" class="active-lang">Teenuse osutaja identifitseerimine — KMS §4, FI §171, DE DDG §5, AT §5 ECG</p>
+    <p data-lang="fi">Palveluntarjoajan tunnistaminen — sähköisen viestinnän palveluista annetun lain §171</p>
+    <p data-lang="en">Service provider identification — required under EE KMS §4, FI §171, DE DDG §5, AT §5 ECG</p>
+    <p data-lang="de">Anbieterkennzeichnung nach DDG §5 (vormals TMG §5), §18 MStV, §5 ECG (AT)</p>
+    <p data-lang="fr">Identification du prestataire — conformément aux obligations du droit de l'UE</p>
+</section>
+
+<div class="lang-switch" role="group" aria-label="Language">
+    <button type="button" class="active" data-lang-btn="et" onclick="switchLang('et')">Eesti</button>
+    <button type="button" data-lang-btn="fi" onclick="switchLang('fi')">Suomi</button>
+    <button type="button" data-lang-btn="en" onclick="switchLang('en')">English</button>
+    <button type="button" data-lang-btn="de" onclick="switchLang('de')">Deutsch</button>
+    <button type="button" data-lang-btn="fr" onclick="switchLang('fr')">Français</button>
+</div>
+
+<!-- ============================================================== -->
+<!-- ESTONIAN — Infoühiskonna teenuse seadus § 4                     -->
+<!-- ============================================================== -->
+<main class="container" data-lang="et">
+    <div class="doc-meta">
+        <p><strong>Jõustub:</strong> 28. mai 2026</p>
+        <p><strong>Õiguslik alus:</strong> Infoühiskonna teenuse seadus § 4; Äriseadustik § 12; KMS § 4</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>Lühidalt:</strong> Advocat'i pakub Vorantis OÜ (registrikood 17098992), äriühing Tallinnas. Vorantis OÜ <strong>ei ole advokaadibüroo Advokatuuriseaduse § 47 mõttes</strong> ega osuta õigusabi. Teenus on AI-põhine tarkvaratööriist.
+    </div>
+
+    <h2>1. Teenuse osutaja</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        Registrikood: 17098992<br>
+        Juriidiline aadress: Tornimäe tn 5, 15010 Tallinn, Eesti<br>
+        Ettevõtlusvorm: osaühing<br>
+        Registreerimise koht: Eesti Äriregister (Tartu Maakohus)<br>
+        Asutamise kuupäev: 2024
+    </div>
+
+    <h2>2. Juhatus / esindusõiguslikud isikud</h2>
+    <div class="contact-box">
+        Juhatuse liige: Dmitri Sulga<br>
+        Esindusõigus: juhatuse liige esindab äriühingut üksinda
+    </div>
+
+    <h2>3. Kontaktandmed</h2>
+    <div class="contact-box">
+        <strong>Üldkontakt:</strong> <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        <strong>Andmekaitse:</strong> <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a><br>
+        <strong>Juriidilised küsimused:</strong> <a href="mailto:legal@advocat.ee">legal@advocat.ee</a><br>
+        <strong>Veebileht:</strong> <a href="https://advocat.ee">https://advocat.ee</a>
+    </div>
+
+    <h2>4. Käibemaksukohustuslase number (KMKR)</h2>
+    <div class="contact-box">
+        KMKR-nr: <strong>ei ole KMKR-kohustuslane</strong> (KMS § 19 lõike 1 künnis ei ole ületatud; vabatahtlik registreerimine kaalumisel — KMS § 20)
+    </div>
+
+    <h2>5. Järelevalveasutused</h2>
+    <ul>
+        <li><strong>Andmekaitse Inspektsioon (AKI)</strong> — andmekaitseküsimustes — Tatari 39, 10134 Tallinn, <a href="mailto:info@aki.ee">info@aki.ee</a>, <a href="https://www.aki.ee" target="_blank" rel="noopener">www.aki.ee</a></li>
+        <li><strong>Tarbijakaitse ja Tehnilise Järelevalve Amet (TTJA)</strong> — tarbijakaitse küsimustes — Endla 10a, 10122 Tallinn, <a href="https://ttja.ee" target="_blank" rel="noopener">ttja.ee</a></li>
+        <li><strong>Maksu- ja Tolliamet (MTA)</strong> — maksuasjades — <a href="https://www.emta.ee" target="_blank" rel="noopener">www.emta.ee</a></li>
+    </ul>
+
+    <h2>6. Õiguslik kvalifikatsioon — KRIITILINE</h2>
+    <div class="callout-warn">
+        <strong>Vorantis OÜ EI OLE advokaadibüroo Advokatuuriseaduse § 47 tähenduses ning ei osuta õigusteenust Advokatuuriseaduse § 40 mõttes.</strong> Brändinimi "Advocat" on tarkvaratoote nimi — ei tähenda advokaaditegevust ega liikmelisust Eesti Advokatuuris. Advocat'i kasutamine ei loo kliendi-advokaadi suhet ega advokaadisaladust (Advokatuuriseaduse § 45). Konkreetse õigusabi saamiseks pöörduge palun registreeritud advokaadi või vandeadvokaadi poole.
+    </div>
+
+    <h2>7. Vaidluste lahendamine</h2>
+    <p>Tarbijavaidluste lahendamiseks vt eraldi lehte: <a href="/dispute-resolution.html">Vaidluste lahendamine</a>. EL ODR-platvorm: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>.</p>
+
+    <h2>8. Kohaldatav õigus</h2>
+    <p>Vorantis OÜ tegevusele kohaldub Eesti Vabariigi õigus ning Euroopa Liidu õigus. Tarbijatele kohaldatakse lisaks nende elukohariigi imperatiivseid tarbijakaitsenorme.</p>
+</main>
+
+<!-- ============================================================== -->
+<!-- FINNISH — Laki sähköisen viestinnän palveluista § 171           -->
+<!-- ============================================================== -->
+<main class="container" data-lang="fi">
+    <div class="doc-meta">
+        <p><strong>Voimassa:</strong> 28. toukokuuta 2026</p>
+        <p><strong>Oikeusperusta:</strong> Laki sähköisen viestinnän palveluista (917/2014) § 171; Kuluttajansuojalaki 2 luku</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>Lyhyesti:</strong> Advocat-palvelun tarjoaa Vorantis OÜ, virolainen osakeyhtiö (rekisterinumero 17098992). Vorantis OÜ <strong>ei ole asianajotoimisto eikä lupalakimies</strong> Suomen lain mukaisesti — palvelu on AI-pohjainen ohjelmistotyökalu, ei oikeudellisten palvelujen tarjoaja.
+    </div>
+
+    <h2>1. Palveluntarjoaja</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        Rekisterinumero (EE): 17098992<br>
+        Y-tunnus (FI): ei ole rekisteröity Suomessa<br>
+        Kotipaikka: Tallinna, Viro<br>
+        Osoite: Tornimäe tn 5, 15010 Tallinn, Eesti<br>
+        Yhtiömuoto: osaühing (osakeyhtiötä vastaava)<br>
+        Rekisteröintipaikka: Viron kaupparekisteri (Tartu Maakohus)
+    </div>
+
+    <h2>2. Vastuuhenkilö / hallitus</h2>
+    <div class="contact-box">
+        Hallituksen jäsen: Dmitri Sulga<br>
+        Edustusoikeus: hallituksen jäsen edustaa yhtiötä yksin<br>
+        Sähköisen viestinnän palveluista § 171: <strong>vastuuhenkilö Dmitri Sulga</strong>
+    </div>
+
+    <h2>3. Yhteystiedot</h2>
+    <div class="contact-box">
+        <strong>Yleinen yhteydenotto:</strong> <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        <strong>Tietosuoja:</strong> <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a><br>
+        <strong>Oikeudelliset asiat:</strong> <a href="mailto:legal@advocat.ee">legal@advocat.ee</a><br>
+        <strong>Verkkosivu:</strong> <a href="https://advocat.ee">https://advocat.ee</a>
+    </div>
+
+    <h2>4. Arvonlisäverotunniste (ALV)</h2>
+    <div class="contact-box">
+        EU VAT-numero: ei rekisteröity (kynnysarvoa ei vielä ylitetty); rajat ylittävässä B2C-myynnissä siirrytään tarvittaessa OSS Union -järjestelmään suomalaisten kuluttajien osalta (ALV 25,5 %).
+    </div>
+
+    <h2>5. Valvontaviranomaiset</h2>
+    <ul>
+        <li><strong>Tietosuojavaltuutetun toimisto (TSV)</strong> — tietosuoja-asioissa — Lintulahdenkuja 4, 00530 Helsinki, <a href="https://tietosuoja.fi" target="_blank" rel="noopener">tietosuoja.fi</a></li>
+        <li><strong>Kilpailu- ja kuluttajavirasto (KKV)</strong> — kuluttajansuojassa — Lintulahdenkuja 4, 00530 Helsinki, <a href="https://kkv.fi" target="_blank" rel="noopener">kkv.fi</a></li>
+        <li><strong>Traficom</strong> — sähköisen viestinnän palvelut § 171 mukaisesti — <a href="https://traficom.fi" target="_blank" rel="noopener">traficom.fi</a></li>
+        <li><strong>Verohallinto</strong> — verotusasioissa — <a href="https://vero.fi" target="_blank" rel="noopener">vero.fi</a></li>
+        <li>Vorantis OÜ on rekisteröity Virossa; <strong>kotivaltion valvontaviranomainen</strong> on Andmekaitse Inspektsioon (AKI), Tatari 39, 10134 Tallinn, Viro</li>
+    </ul>
+
+    <h2>6. Oikeudellinen luonnehdinta — KRIITTINEN</h2>
+    <div class="callout-warn">
+        <strong>Vorantis OÜ EI ole asianajotoimisto (asianajajista annetun lain 496/1958 mukainen) eikä lupalakimies (luvan saaneista oikeudenkäyntiavustajista annetun lain 715/2011 § 2 mukainen).</strong> Tuotenimi "Advocat" on ohjelmistotuotteen nimi, ei viittaus asianajajaan tai asianajopalvelujen tarjoamiseen. Advocat-palvelun käyttö ei luo asianajajan ja päämiehen välistä suhdetta eikä asianajosalaisuutta (OK 17:13). Tarvitset asianajajan tai lupalakimiehen oikeudelliseen edustukseen tai oikeudelliseen neuvontaan yksittäistapauksessa — palvelu on tiedonhaku- ja asiakirjojen valmistelutyökalu.
+    </div>
+
+    <h2>7. Riitojen ratkaisu</h2>
+    <p>Kuluttajariitojen ratkaisemista koskeva tietoa: <a href="/dispute-resolution.html">Riitojen ratkaisu</a>. EU:n verkkovälitteinen riidanratkaisualusta (ODR): <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>.</p>
+
+    <h2>8. Sovellettava laki</h2>
+    <p>Vorantis OÜ:n toimintaan sovelletaan Viron lakia ja Euroopan unionin oikeutta. Suomalaisiin kuluttajiin sovelletaan lisäksi Suomen kuluttajansuojalain pakottavia säännöksiä.</p>
+</main>
+
+<!-- ============================================================== -->
+<!-- ENGLISH                                                         -->
+<!-- ============================================================== -->
+<main class="container" data-lang="en">
+    <div class="doc-meta">
+        <p><strong>Effective:</strong> 28 May 2026</p>
+        <p><strong>Legal basis:</strong> EE Information Society Services Act §4; FI Act on Electronic Communications Services §171; DE DDG §5; AT §5 ECG</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>In short:</strong> Advocat is operated by Vorantis OÜ, an Estonian limited liability company (registry code 17098992). Vorantis OÜ <strong>is not a law firm</strong> and does not provide legal services. The product is an AI-based software tool.
+    </div>
+
+    <h2>1. Service provider</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        Company registry code: 17098992<br>
+        Registered office: Tornimäe tn 5, 15010 Tallinn, Estonia<br>
+        Legal form: osaühing (private limited company)<br>
+        Place of registration: Estonian Commercial Register (Tartu County Court)
+    </div>
+
+    <h2>2. Management board / authorised representatives</h2>
+    <div class="contact-box">
+        Board member: Dmitri Sulga<br>
+        Authority: board member represents the company individually
+    </div>
+
+    <h2>3. Contact details</h2>
+    <div class="contact-box">
+        <strong>General contact:</strong> <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        <strong>Data protection contact:</strong> <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a><br>
+        <strong>Legal:</strong> <a href="mailto:legal@advocat.ee">legal@advocat.ee</a><br>
+        <strong>Website:</strong> <a href="https://advocat.ee">https://advocat.ee</a>
+    </div>
+
+    <h2>4. VAT identification</h2>
+    <div class="contact-box">
+        EU VAT number: <strong>not VAT-registered at present</strong> (KMS §19(1) threshold not yet exceeded; voluntary registration under consideration per KMS §20). Once required, VAT will be applied per the customer's place of supply (Council Directive 2006/112/EC).
+    </div>
+
+    <h2>5. Supervisory authorities</h2>
+    <ul>
+        <li><strong>Estonian Data Protection Inspectorate (AKI)</strong> — Tatari 39, 10134 Tallinn, Estonia — <a href="mailto:info@aki.ee">info@aki.ee</a>, <a href="https://www.aki.ee" target="_blank" rel="noopener">aki.ee</a></li>
+        <li><strong>Estonian Consumer Protection and Technical Regulatory Authority (TTJA)</strong> — Endla 10a, 10122 Tallinn — <a href="https://ttja.ee" target="_blank" rel="noopener">ttja.ee</a></li>
+        <li><strong>Estonian Tax and Customs Board (MTA)</strong> — <a href="https://www.emta.ee" target="_blank" rel="noopener">emta.ee</a></li>
+        <li>For Finland consumers: <strong>FI Data Protection Ombudsman (TSV)</strong>, <strong>Finnish Competition and Consumer Authority (KKV)</strong></li>
+    </ul>
+
+    <h2>6. Legal status — IMPORTANT</h2>
+    <div class="callout-warn">
+        <strong>Vorantis OÜ is NOT a law firm and does NOT provide legal services as defined under EE Bar Association Act §40 and §47, FI Advocates Act 496/1958, FI Authorised Legal Counsel Act 715/2011, DE BRAO, AT RAO, or CH BGFA.</strong> The product name "Advocat" is a software product name; it does not denote bar membership or legal practice. Using Advocat does not create an attorney-client relationship and is not protected by attorney-client privilege (legal professional privilege). For individual legal advice, please consult a qualified attorney in your jurisdiction.
+    </div>
+
+    <h2>7. Dispute resolution</h2>
+    <p>See our dedicated <a href="/dispute-resolution.html">Dispute Resolution</a> page. EU Online Dispute Resolution platform: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>.</p>
+
+    <h2>8. Governing law</h2>
+    <p>Estonian law and applicable EU law govern Vorantis OÜ's operations. Mandatory consumer protection provisions of the consumer's country of residence apply additionally.</p>
+</main>
+
+<!-- ============================================================== -->
+<!-- GERMAN — DDG § 5 + § 18 MStV                                    -->
+<!-- ============================================================== -->
+<main class="container" data-lang="de">
+    <div class="doc-meta">
+        <p><strong>Stand:</strong> 28. Mai 2026</p>
+        <p><strong>Rechtsgrundlage:</strong> DDG § 5 (zuvor TMG § 5); § 18 Abs. 2 MStV; §§ 312 ff. BGB</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>Kurzfassung:</strong> Anbieter ist die Vorantis OÜ, eine estnische Kapitalgesellschaft mit Sitz in Tallinn. Die Vorantis OÜ ist <strong>kein Anbieter von Rechtsdienstleistungen</strong> im Sinne des deutschen Rechtsdienstleistungsgesetzes (RDG). Der Dienst stellt ein KI-gestütztes Software-Werkzeug bereit; es erfolgt keine Rechtsberatung im Einzelfall.
+    </div>
+
+    <h2>1. Anbieter / Diensteanbieter</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        Registrikood (estnische Registernummer): 17098992<br>
+        Sitz: Tornimäe tn 5, 15010 Tallinn, Estland<br>
+        Rechtsform: osaühing (vergleichbar mit einer GmbH)<br>
+        Registergericht: Estnisches Handelsregister (Tartu Maakohus)
+    </div>
+
+    <h2>2. Vertretungsberechtigte Geschäftsführung</h2>
+    <div class="contact-box">
+        Vorstand / Geschäftsführer: Dmitri Sulga<br>
+        Einzelvertretungsberechtigt
+    </div>
+
+    <h2>3. Kontakt</h2>
+    <div class="contact-box">
+        <strong>E-Mail (allgemein):</strong> <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        <strong>Datenschutz:</strong> <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a><br>
+        <strong>Rechtliches:</strong> <a href="mailto:legal@advocat.ee">legal@advocat.ee</a><br>
+        <strong>Webseite:</strong> <a href="https://advocat.ee">https://advocat.ee</a>
+    </div>
+
+    <h2>4. Umsatzsteuer-Identifikationsnummer (USt-IdNr.)</h2>
+    <div class="contact-box">
+        USt-IdNr.: <strong>derzeit nicht umsatzsteuerlich registriert</strong> (Schwellenwert nicht erreicht). Bei Überschreitung erfolgt Registrierung über das OSS-Union-Verfahren in Estland; deutsche Verbraucherumsätze werden dann mit deutscher Umsatzsteuer abgerechnet.
+    </div>
+
+    <h2>5. Aufsichtsbehörden</h2>
+    <ul>
+        <li><strong>Heimatstaat-Datenschutzbehörde:</strong> Andmekaitse Inspektsioon (AKI), Tatari 39, 10134 Tallinn, Estland, <a href="mailto:info@aki.ee">info@aki.ee</a></li>
+        <li><strong>Für deutsche Verbraucher zuständig:</strong> Die jeweils zuständige Landesdatenschutzbehörde am Wohnsitz des Verbrauchers (kooperative Aufsicht über One-Stop-Shop)</li>
+        <li><strong>Wirtschaftsaufsicht:</strong> Maksu- ja Tolliamet (MTA), Estland</li>
+    </ul>
+
+    <h2>6. Verantwortlicher i.S.d. § 18 Abs. 2 MStV</h2>
+    <div class="contact-box">
+        Dmitri Sulga, c/o Vorantis OÜ, Tornimäe tn 5, 15010 Tallinn, Estland
+    </div>
+
+    <h2>7. Berufsrechtliche Angaben — WICHTIG</h2>
+    <div class="callout-warn">
+        <strong>Die Vorantis OÜ ist KEIN Rechtsanwalt, keine Rechtsanwaltskanzlei und kein registrierter Inkassodienstleister nach § 10 RDG.</strong> Der Dienst stellt keine Rechtsdienstleistung im Sinne des § 2 Abs. 1 RDG dar; es findet insbesondere keine rechtliche Prüfung des Einzelfalls statt, die einer rechtsberatenden Tätigkeit gleichkäme. Die durch das System erzeugten Inhalte sind allgemeine rechtliche Informationen und KI-generierte Textentwürfe. Für eine konkrete Rechtsberatung wenden Sie sich bitte an einen in Deutschland zugelassenen Rechtsanwalt. Der Markenname "Advocat" ist ein Produktname und impliziert keine Anwaltszulassung.
+    </div>
+
+    <h2>8. Berufshaftpflichtversicherung</h2>
+    <p>Vorantis OÜ unterhält eine allgemeine Betriebs- und Tech-E&amp;O-Versicherung; eine Berufshaftpflichtversicherung im Sinne des § 51 BRAO besteht nicht und ist nicht erforderlich, da keine Rechtsdienstleistung erbracht wird.</p>
+
+    <h2>9. Hinweis zur Online-Streitbeilegung (Art. 14 ODR-VO)</h2>
+    <p>Plattform der EU-Kommission zur Online-Streitbeilegung: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>. Weitere Informationen siehe <a href="/dispute-resolution.html">Streitbeilegung</a>. Wir sind weder bereit noch verpflichtet, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen (§ 36 VSBG).</p>
+
+    <h2>10. Haftungsausschluss KI / Disclaimer</h2>
+    <p>Die durch den Dienst erzeugten Inhalte werden von einem KI-System generiert und können fehlerhaft, unvollständig oder veraltet sein. Sie ersetzen keine Beratung durch einen zugelassenen Rechtsanwalt. Die Vorantis OÜ übernimmt keine Gewähr für die Richtigkeit oder Vollständigkeit von KI-generierten Inhalten.</p>
+</main>
+
+<!-- ============================================================== -->
+<!-- AUSTRIAN — § 5 ECG + § 25 MedienG (separate from DE)            -->
+<!-- ============================================================== -->
+<main class="container" data-lang="fr">
+    <div class="doc-meta">
+        <p><strong>En vigueur depuis :</strong> 28 mai 2026</p>
+        <p><strong>Base légale :</strong> obligations d'identification du prestataire au titre du droit de l'UE</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>En bref :</strong> Advocat est exploité par Vorantis OÜ, société à responsabilité limitée estonienne (code registre 17098992). Vorantis OÜ <strong>n'est pas un cabinet d'avocats</strong> et ne fournit pas de services juridiques. Le produit est un outil logiciel basé sur l'IA.
+    </div>
+
+    <h2>1. Prestataire de services</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        Code registre (EE) : 17098992<br>
+        Siège social : Tornimäe tn 5, 15010 Tallinn, Estonie<br>
+        Forme juridique : osaühing (équivalent SARL)<br>
+        Registre du commerce : Registre commercial estonien (Tartu Maakohus)
+    </div>
+
+    <h2>2. Direction</h2>
+    <div class="contact-box">
+        Membre du conseil : Dmitri Sulga<br>
+        Pouvoir de représentation individuel
+    </div>
+
+    <h2>3. Coordonnées</h2>
+    <div class="contact-box">
+        <strong>Contact général :</strong> <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        <strong>Protection des données :</strong> <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a><br>
+        <strong>Juridique :</strong> <a href="mailto:legal@advocat.ee">legal@advocat.ee</a><br>
+        <strong>Site web :</strong> <a href="https://advocat.ee">https://advocat.ee</a>
+    </div>
+
+    <h2>4. Numéro de TVA</h2>
+    <div class="contact-box">
+        TVA : non encore assujetti (seuil non atteint). Lors de l'assujettissement, la TVA française applicable aux consommateurs sera collectée via le régime OSS Union depuis l'Estonie.
+    </div>
+
+    <h2>5. Autorités de surveillance</h2>
+    <ul>
+        <li><strong>Andmekaitse Inspektsioon (AKI)</strong> — autorité estonienne de protection des données — Tatari 39, 10134 Tallinn, Estonie</li>
+        <li><strong>Pour les consommateurs en France :</strong> CNIL (protection des données) et DGCCRF (consommation)</li>
+    </ul>
+
+    <h2>6. Statut juridique — IMPORTANT</h2>
+    <div class="callout-warn">
+        <strong>Vorantis OÜ n'est pas un cabinet d'avocats inscrit au barreau et ne pratique pas le droit.</strong> Le nom de produit « Advocat » est un nom commercial et n'implique aucune inscription au barreau ni aucun droit d'exercer la profession d'avocat. L'utilisation d'Advocat ne crée pas de relation avocat-client ni de secret professionnel. Pour des conseils juridiques individuels, veuillez consulter un avocat inscrit au barreau de votre ressort.
+    </div>
+
+    <h2>7. Résolution des litiges</h2>
+    <p>Plateforme de résolution en ligne des litiges de l'UE : <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr</a>. Voir aussi notre page <a href="/dispute-resolution.html">Résolution des litiges</a>.</p>
+
+    <h2>8. Droit applicable</h2>
+    <p>Le droit estonien et le droit de l'Union européenne s'appliquent. Les dispositions impératives de protection des consommateurs du pays de résidence du consommateur s'appliquent en outre.</p>
+</main>
+
+<!-- ============================================================== -->
+<!-- AT Block (appended to DE main but separable)                    -->
+<!-- ============================================================== -->
+
+<footer class="footer">
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/cookies.html">Cookies</a>
+        <a href="/impressum.html">Impressum</a>
+        <a href="/withdrawal-form.html">Withdrawal</a>
+        <a href="/dispute-resolution.html">Disputes</a>
+    </div>
+    <div>&copy; 2026 Vorantis OÜ. Reg 17098992. Tornimäe tn 5, 15010 Tallinn, Estonia.</div>
+</footer>
+
+<script>
+function switchLang(lang) {
+    document.querySelectorAll('[data-lang]').forEach(function(el) {
+        el.classList.toggle('active-lang', el.getAttribute('data-lang') === lang);
+    });
+    document.querySelectorAll('[data-lang-btn]').forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === lang);
+    });
+    document.documentElement.lang = lang;
+    try { localStorage.setItem('advocat-legal-lang', lang); } catch (e) {}
+}
+(function() {
+    var lang = 'et';
+    try {
+        var saved = localStorage.getItem('advocat-legal-lang');
+        if (saved && ['et', 'fi', 'en', 'de', 'fr'].indexOf(saved) !== -1) {
+            lang = saved;
+        } else {
+            var nav = (navigator.language || '').toLowerCase();
+            if (nav.startsWith('et')) lang = 'et';
+            else if (nav.startsWith('fi')) lang = 'fi';
+            else if (nav.startsWith('de')) lang = 'de';
+            else if (nav.startsWith('fr')) lang = 'fr';
+            else lang = 'en';
+        }
+    } catch (e) {}
+    if (lang !== 'et') switchLang(lang);
+})();
+</script>
+
+</body>
+</html>

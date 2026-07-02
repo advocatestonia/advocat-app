@@ -1,0 +1,75 @@
+{
+  "act": "RekS",
+  "name": "Reklaamiseadus",
+  "name_en": "Advertising Act",
+  "source": "https://www.riigiteataja.ee/akt/RekS",
+  "fetched_at": "2026-04-21T00:00:00Z",
+  "consolidated_version": "2026-03-16",
+  "sections": [
+    {
+      "paragraph": "§ 8",
+      "title": "Reklaam, mis on suunatud lastele",
+      "body": "Advertising directed at children: must not create feelings of inferiority, exploit trust, include frightening elements or direct purchase appeals.",
+      "chapter": "2 Üldnõuded"
+    },
+    {
+      "paragraph": "§ 9",
+      "title": "Reklaamimise keeld õppeasutustes",
+      "body": "Advertising prohibited in educational facilities during instructional time (exceptions for public health messaging, educational events).",
+      "chapter": "2 Üldnõuded"
+    },
+    {
+      "paragraph": "§ 17",
+      "title": "Tubakatoote reklaami keeld",
+      "body": "Tobacco advertising prohibited. Limited exceptions for trade publications.",
+      "chapter": "3 Keelud"
+    },
+    {
+      "paragraph": "§ 18",
+      "title": "Narkootiliste ja psühhotroopsete ainete reklaami keeld",
+      "body": "Narcotic/psychotropic substances: complete prohibition except medicinal use by qualified professionals.",
+      "chapter": "3 Keelud"
+    },
+    {
+      "paragraph": "§ 19",
+      "title": "Relvade ja laskemoona reklaam",
+      "body": "Firearms/ammunition: restricted to sales locations, trade shows, specialised publications.",
+      "chapter": "3 Keelud"
+    },
+    {
+      "paragraph": "§ 21",
+      "title": "Hasartmängu reklaam",
+      "body": "Gambling advertising requires valid operating licence. Specific restrictions on toto, skill games, lotteries.",
+      "chapter": "3 Keelud"
+    },
+    {
+      "paragraph": "§ 22",
+      "title": "Tervishoiuteenuse reklaam",
+      "body": "Healthcare services: comprehensive ban including artificial reproduction services.",
+      "chapter": "3 Keelud"
+    },
+    {
+      "paragraph": "§ 28",
+      "title": "Alkoholi reklaam",
+      "body": "Alcohol advertising: mandatory health warning 'Tähelepanu! Tegemist on alkoholiga...'; prohibition on depicting consumption/social success; banned from schools, sports facilities, youth venues, broadcast media 7am-10pm.",
+      "chapter": "3 Keelud"
+    },
+    {
+      "paragraph": "§ 30",
+      "title": "Järelevalve",
+      "body": "Supervisory authority: Consumer Protection and Technical Inspection Authority (TTJA) under administrative law procedures.",
+      "chapter": "4 Järelevalve"
+    },
+    {
+      "paragraph": "§ 31",
+      "title": "Sunniraha",
+      "body": "Fines up to €400,000 for organisations; coercive measures under Administrative Enforcement Act.",
+      "chapter": "4 Järelevalve"
+    }
+  ],
+  "max_fine_organisation_eur": 400000,
+  "supervisory_authority": "TTJA (Tarbijakaitse ja Tehnilise Järelevalve Amet)",
+  "critical_for_immigrants": false,
+  "audience_priority": "low",
+  "cross_references": ["TKS", "MeeS"]
+}

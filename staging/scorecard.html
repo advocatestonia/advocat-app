@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advocat AI Quality Scorecard — Public, monthly, includes failures</title>
+  <meta name="description" content="Advocat AI publishes its own legal-quality eval results monthly — including the things we got wrong. Triple-LLM judged. 30-item Estonia + Finland + EU truth set.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://advocat.ee/scorecard.html">
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <meta property="og:title" content="Advocat AI Quality Scorecard — verified by triple-LLM judges">
+  <meta property="og:description" content="The first legal AI with a public monthly scorecard. Including failures and fixes. Radical transparency, by design.">
+  <meta property="og:image" content="https://advocat.ee/logo.png">
+  <meta property="og:url" content="https://advocat.ee/scorecard.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Advocat AI Quality Scorecard">
+  <meta name="twitter:description" content="Public legal-AI eval. Including failures. Triple-LLM judged. Re-run monthly.">
+  <meta name="twitter:image" content="https://advocat.ee/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #0F1B35;
+      --navy2:  #1A2B4A;
+      --teal:   #0D9488;
+      --teal2:  #0B7A70;
+      --teal3:  #14B8A6;
+      --bg:     #FFFFFF;
+      --bg2:    #F8F9FA;
+      --bg3:    #F1F3F5;
+      --line:   #E5E7EB;
+      --line2:  #D1D5DB;
+      --text:   #111827;
+      --muted:  #6B7280;
+      --faint:  #9CA3AF;
+      --error:  #DC2626;
+      --warn:   #D97706;
+      --warn2:  #F59E0B;
+      --green:  #059669;
+      --green2: #10B981;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: var(--bg2);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
+    }
+    code, .mono { font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; }
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ===== Header (matches privacy.html / blog header pattern) ===== */
+    .header {
+      background: var(--navy2);
+      padding: 14px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
+    .logo img { height: 64px; width: auto; }
+    .logo-text {
+      font-size: 24px; font-weight: 700; letter-spacing: -0.3px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; color: transparent;
+      line-height: 1; margin-left: -2px; transform: translateY(2px);
+    }
+    .header-nav { display: flex; gap: 22px; align-items: center; }
+    .header-nav a {
+      color: rgba(255,255,255,0.82);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .header-nav a:hover { color: #fff; text-decoration: none; }
+    .header-nav a.cta {
+      background: var(--teal);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+    .header-nav a.cta:hover { background: var(--teal2); }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 50%, #0a8f6c 110%);
+      color: #fff;
+      padding: 64px 24px 56px;
+      text-align: center;
+    }
+    .hero-inner { max-width: 880px; margin: 0 auto; }
+    .badge {
+      display: inline-block;
+      background: rgba(20, 184, 166, 0.18);
+      color: var(--teal3);
+      border: 1px solid rgba(20, 184, 166, 0.35);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .hero .sub {
+      font-size: 17px;
+      color: rgba(255,255,255,0.78);
+      max-width: 640px;
+      margin: 0 auto 28px;
+      line-height: 1.55;
+    }
+    .hero-meta {
+      display: inline-flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+    }
+    .hero-meta span strong { color: #fff; font-weight: 600; }
+
+    /* ===== Container & sections ===== */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+    .section { margin-bottom: 48px; }
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+    .section-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    /* ===== Metric cards ===== */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .metric-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px 22px;
+      transition: box-shadow .15s, transform .15s;
+    }
+    .metric-card:hover {
+      box-shadow: 0 6px 24px rgba(15, 27, 53, 0.06);
+    }
+    .metric-card .label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 10px;
+      min-height: 36px;
+    }
+    .metric-card .value {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .metric-card .value .unit {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+    .metric-card .compare {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .metric-card .compare .vs {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .metric-card .delta {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .delta.positive { background: rgba(16,185,129,0.12); color: var(--green); }
+    .delta.negative { background: rgba(220,38,38,0.12); color: var(--error); }
+    .delta.flat { background: rgba(107,114,128,0.12); color: var(--muted); }
+    .metric-card .note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--warn);
+      font-style: italic;
+      line-height: 1.45;
+    }
+    .metric-card.regression {
+      border-color: rgba(220,38,38,0.32);
+      background: linear-gradient(180deg, rgba(220,38,38,0.025), #fff);
+    }
+
+    /* ===== Comparison table ===== */
+    .table-wrap {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; min-width: 640px; }
+    th, td {
+      text-align: left;
+      padding: 14px 18px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    th {
+      background: var(--bg3);
+      color: var(--navy);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: var(--bg2); }
+    td.num { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--navy); }
+    td.muted { color: var(--muted); }
+    .src-note { font-size: 11px; color: var(--muted); font-style: italic; }
+
+    /* ===== Mistakes feed ===== */
+    .mistake {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 12px;
+    }
+    .mistake-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .mistake-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .tier-pill {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .tier-pill.gold { background: #fef3c7; color: #92400e; }
+    .tier-pill.statute { background: #dbeafe; color: #1e40af; }
+    .tier-pill.adversarial { background: #fce7f3; color: #9d174d; }
+    .status-pill {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .status-pill.shipped { background: rgba(16,185,129,0.14); color: var(--green); }
+    .status-pill.in_flight { background: rgba(245,158,11,0.16); color: #b45309; }
+    .status-pill.investigating { background: rgba(107,114,128,0.14); color: var(--muted); }
+    .mistake-q {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .mistake-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 6px 0;
+    }
+    .mistake-row .key {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      padding-top: 2px;
+    }
+    .mistake-row .wrong { color: var(--error); }
+    .mistake-row .right { color: var(--green); }
+
+    /* ===== Approach list ===== */
+    .approach-list {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 24px;
+    }
+    .approach-list li {
+      list-style: none;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .approach-list li:last-child { border-bottom: 0; }
+    .approach-list li::before {
+      content: "→";
+      color: var(--teal);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ===== Honesty callout ===== */
+    .honesty {
+      background: linear-gradient(135deg, rgba(217, 119, 6, 0.06), rgba(217, 119, 6, 0.02));
+      border: 1px solid rgba(217, 119, 6, 0.25);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 36px;
+    }
+    .honesty .title {
+      font-size: 13px;
+      color: var(--warn);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .honesty p {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    /* ===== CTA ===== */
+    .cta-block {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 40px 32px;
+      text-align: center;
+      margin-top: 48px;
+    }
+    .cta-block h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      margin-bottom: 10px;
+    }
+    .cta-block p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 22px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--teal);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      transition: background .15s, transform .15s;
+    }
+    .cta-btn:hover { background: var(--teal2); text-decoration: none; transform: translateY(-1px); }
+
+    /* ===== Footer ===== */
+    .footer {
+      background: var(--navy2);
+      color: rgba(255,255,255,0.6);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .footer a { color: rgba(255,255,255,0.82); }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 640px) {
+      .hero { padding: 48px 18px 40px; }
+      .hero h1 { font-size: 28px; }
+      .hero .sub { font-size: 15px; }
+      .container { padding: 32px 18px; }
+      .section-title { font-size: 20px; }
+      .header-nav a:not(.cta) { display: none; }
+      .metric-card .value { font-size: 26px; }
+      .mistake-row { grid-template-columns: 1fr; gap: 2px; }
+    }
+  </style>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Cookie consent (W2-13): per-jurisdiction granular banner. MUST load before
+     _utm_capture.js and _analytics.js so consent gates every pixel. -->
+<script src="/_cookie_consent.js" defer></script>
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <img src="/logo.png" alt="Advocat" />
+      <span class="logo-text">Advocat</span>
+    </a>
+    <nav class="header-nav">
+      <a href="/scorecard/methodology.html">Methodology</a>
+      <a href="/blog/">Blog</a>
+      <a href="/app.html" class="cta">Open app</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="badge" id="updated-badge">Loading…</span>
+    <h1>Advocat AI Quality Scorecard</h1>
+    <p class="sub">
+      We're the first legal AI that publishes its own eval results — monthly,
+      including the things we got wrong. No marketing numbers. No cherry-picking.
+      Just what three LLM judges scored, with the failure tier left in.
+    </p>
+    <div class="hero-meta">
+      <span><strong id="meta-build">v4.1</strong> · current build</span>
+      <span><strong id="meta-items">30</strong> · truth-set items</span>
+      <span><strong id="meta-judges">3</strong> · judges</span>
+      <span><strong id="meta-next">2026-06-01</strong> · next run</span>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+
+  <!-- Honesty callout -->
+  <div class="honesty">
+    <div class="title">⚠ Honest reading of this page</div>
+    <p>
+      On the gold tier (real cases like the owner's) Advocat scores roughly the same as a bare Sonnet API call.
+      Our win is concentrated on <strong>adversarial robustness</strong> — refusing fake citations and repealed
+      statutes. On pure statute lookups we currently <strong>regress 3.9%</strong> vs the baseline. That number
+      is on this page because the moat is honesty, not optics. Fix is in flight.
+    </p>
+  </div>
+
+  <!-- Headline metrics -->
+  <section class="section">
+    <h2 class="section-title">How smart is Advocat right now?</h2>
+    <p class="section-sub">
+      Measured on a 30-item legal truth set (Estonia + Finland + EU). Scores are 1–5 means across
+      five rubric axes, averaged across judges. Lower-is-better metrics are clearly labelled.
+    </p>
+    <div class="metric-grid" id="metric-grid"></div>
+  </section>
+
+  <!-- Industry comparison -->
+  <section class="section">
+    <h2 class="section-title">vs the published industry baseline</h2>
+    <p class="section-sub">
+      Where independent published numbers exist for raw-LLM legal output and commercial legal AI,
+      we cite the source. We do not invent comparator numbers we can't verify.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Advocat v4</th>
+            <th>Comparator</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody id="industry-table"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Recent mistakes -->
+  <section class="section">
+    <h2 class="section-title">Last mistakes we caught (and what we did about them)</h2>
+    <p class="section-sub">
+      Every failure visible to the eval is logged here within the run that caught it.
+      Status is real: <span class="status-pill shipped">shipped</span> means the fix is on production;
+      <span class="status-pill in_flight">in flight</span> means the fix is being worked on;
+      <span class="status-pill investigating">investigating</span> means we don't yet know why.
+    </p>
+    <div id="mistakes-feed"></div>
+  </section>
+
+  <!-- Approach -->
+  <section class="section">
+    <h2 class="section-title">How the evaluation actually works</h2>
+    <p class="section-sub">
+      <a href="/scorecard/methodology.html">→ Full methodology &amp; judge rubric</a>
+    </p>
+    <ul class="approach-list" id="approach-list"></ul>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2>Try Advocat on your own legal question</h2>
+    <p>
+      First conversation is free. No card required. If we get something wrong, it will show up on this page next month.
+    </p>
+    <a href="/app.html" class="cta-btn">Open Advocat →</a>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <p>
+    Advocat is built by Vorantis OÜ in Tallinn, Estonia. ·
+    <a href="/scorecard/methodology.html">Methodology</a> ·
+    <a href="/privacy.html">Privacy</a> ·
+    <a href="/terms.html">Terms</a> ·
+    Disagree with a score? <a id="challenge-link" href="mailto:support@advocat.ee">Challenge it</a>.
+  </p>
+</footer>
+
+<script>
+(async function () {
+  let data;
+  try {
+    const r = await fetch('/scorecard-data.json', { cache: 'no-store' });
+    data = await r.json();
+  } catch (e) {
+    document.getElementById('metric-grid').innerHTML =
+      '<p style="color:#6b7280">Scorecard data unavailable. Try refreshing.</p>';
+    return;
+  }
+
+  // ----- Hero meta -----
+  const updated = new Date(data.last_updated).toLocaleDateString('en-GB', {
+    year: 'numeric', month: 'short', day: 'numeric'
+  });
+  document.getElementById('updated-badge').textContent =
+    'Last verified: ' + updated;
+  document.getElementById('meta-build').textContent = data.build_version;
+  document.getElementById('meta-items').textContent = data.truth_set.total_items;
+  document.getElementById('meta-judges').textContent =
+    (data.judge_setup.match(/\+/g) || []).length + 1;
+  document.getElementById('meta-next').textContent = data.next_run_planned;
+
+  // ----- Headline metrics -----
+  const fmtScore = (v, axis) => {
+    if (axis && axis.includes('hallucination')) return (v * 100).toFixed(1) + '%';
+    return Number(v).toFixed(2);
+  };
+  const fmtDelta = (pct) => {
+    if (pct === 0 || pct === null) return { txt: 'flat', cls: 'flat' };
+    const sign = pct > 0 ? '+' : '';
+    const cls = pct > 0 ? 'positive' : 'negative';
+    return { txt: sign + pct.toFixed(1) + '% vs bare Sonnet', cls };
+  };
+
+  const grid = document.getElementById('metric-grid');
+  for (const m of data.headline_metrics) {
+    const delta = fmtDelta(m.advocat_delta_pct);
+    const isRegression = m.is_regression;
+    const compareKey = Object.keys(m.comparators)[0];
+    const compareVal = m.comparators[compareKey];
+    const compareLabel = compareKey === 'sonnet_bare_via_api'
+      ? 'Bare Sonnet 4 (API)'
+      : compareKey;
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="metric-card ${isRegression ? 'regression' : ''}">
+        <div class="label">${m.label}</div>
+        <div class="value">
+          ${fmtScore(m.advocat_v4, m.axis)}
+          <span class="unit">/ 5</span>
+        </div>
+        <div class="compare">
+          <span class="vs">${compareLabel}:</span>
+          ${fmtScore(compareVal, m.axis)} / 5
+        </div>
+        <div class="delta ${delta.cls}">${delta.txt}</div>
+        ${m.note ? `<div class="note">${m.note}</div>` : ''}
+      </div>
+    `);
+  }
+
+  // ----- Industry comparison -----
+  const industry = document.getElementById('industry-table');
+  // Advocat v4 hallucination rate is derived: citation_validity score 1.80/5 →
+  // "missing citation" on most items. We don't claim a single percentage on
+  // this page because the eval measures *quality of citation* (1-5), not
+  // a binary hallucination y/n. We surface only what we can verify.
+  for (const ref of data.industry_references) {
+    industry.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td>${ref.metric}</td>
+        <td class="num muted">not directly comparable — see methodology</td>
+        <td class="num">${ref.value_range}</td>
+        <td><a href="${ref.source_url}" target="_blank" rel="noopener" class="src-note">${ref.source}</a></td>
+      </tr>
+    `);
+  }
+  industry.insertAdjacentHTML('beforeend', `
+    <tr>
+      <td colspan="4" class="src-note" style="padding: 14px 18px; color: #6b7280; line-height: 1.5;">
+        We deliberately do not publish a single "Advocat hallucination rate %". The Stanford RegLab study
+        measured binary hallucination on a different dataset; our internal eval scores citation quality on a
+        1–5 rubric. Direct comparison would be misleading. Methodology page explains the rubric.
+      </td>
+    </tr>
+  `);
+
+  // ----- Mistakes feed -----
+  const feed = document.getElementById('mistakes-feed');
+  for (const m of data.recent_mistakes) {
+    feed.insertAdjacentHTML('beforeend', `
+      <div class="mistake">
+        <div class="mistake-head">
+          <span class="mistake-date">${m.date}</span>
+          <span class="tier-pill ${m.tier}">${m.tier}</span>
+          <span class="status-pill ${m.fix_status}">${m.fix_status.replace('_', ' ')}</span>
+          <span class="src-note">item ${m.item_id}</span>
+        </div>
+        <div class="mistake-q">${m.question_redacted}</div>
+        <div class="mistake-row">
+          <div class="key">We said</div>
+          <div class="wrong">${m.what_advocat_said}</div>
+        </div>
+        <div class="mistake-row">
+          <div class="key">Correct</div>
+          <div class="right">${m.what_it_should_be}</div>
+        </div>
+        <div class="mistake-row">
+          <div class="key">Fix</div>
+          <div>${m.fix_description}</div>
+        </div>
+      </div>
+    `);
+  }
+
+  // ----- Approach -----
+  const approach = document.getElementById('approach-list');
+  for (const note of data.approach_notes) {
+    approach.insertAdjacentHTML('beforeend', `<li>${note}</li>`);
+  }
+
+  // ----- Challenge mailto -----
+  document.getElementById('challenge-link').href =
+    'mailto:' + data.challenge_email +
+    '?subject=Scorecard%20challenge%20%E2%80%94%20' +
+    encodeURIComponent(data.last_updated);
+})();
+</script>
+
+</body>
+</html>

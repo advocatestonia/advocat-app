@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Advocat for Law Firms — Multi-seat workspaces, white-label, audit log</title>
+<meta name="description" content="Advocat for law firms: shared cases, role-based access, white-label deployment, DPA + SLA + audit log. Tell us about your firm and we will reach out within 24h.">
+<!-- Intentionally noindex: this is a quiet sales-led page reachable only from -->
+<!-- a small footer link and direct sales outreach. We do not want SEO traffic. -->
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://advocat.ee/for-firms.html">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<!-- Match consumer landing typography -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Sentry browser SDK: JS error monitoring + Web Vitals (PII-scrubbed).
+     DSN placeholder in _sentry_config.js is sed-replaced by canary-deploy.sh.
+     Falls back to a no-op if DSN unset. CDN bundle pinned 8.42.0 + SRI. -->
+<script src="/_sentry_config.js"></script>
+<script src="https://browser.sentry-cdn.com/8.42.0/bundle.tracing.replay.min.js"
+        integrity="sha384-1iMWRnx+u4Ya0s0sszeZUlZe15phFiYR+oG3VwP4dnVbyRNKmXTy1oA2EMnohM1F"
+        crossorigin="anonymous"
+        defer></script>
+<script src="/_sentry_init.js" defer></script>
+
+<style>
+/* ── DESIGN TOKENS (mirrored from /index.html) ───────────────────────── */
+:root {
+  --navy:   #0F1B35;
+  --navy2:  #1A2B4A;
+  --teal:   #0D9488;
+  --teal2:  #0B7A70;
+  --teal3:  #14B8A6;
+  --bg:     #FFFFFF;
+  --bg2:    #F8F9FA;
+  --bg3:    #F1F3F5;
+  --line:   #E5E7EB;
+  --text:   #111827;
+  --muted:  #6B7280;
+  --faint:  #9CA3AF;
+  --error:  #DC2626;
+  --green:  #059669;
+  --radius: 14px;
+  --radius-lg: 22px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+img, svg { display: block; max-width: 100%; }
+
+.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.container-sm { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+.ff-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+.ff-nav-inner {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.ff-brand { display: flex; align-items: center; gap: 10px; }
+.ff-brand img { height: 26px; width: auto; }
+.ff-brand-label { font-weight: 700; font-size: 15px; color: var(--text); }
+.ff-brand-tag {
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); padding: 3px 8px; border: 1px solid var(--line);
+  border-radius: 999px; margin-left: 4px;
+}
+.ff-nav-right { display: flex; align-items: center; gap: 14px; }
+.ff-back {
+  font-size: 13.5px; color: var(--muted);
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px; border-radius: 8px; transition: color .15s, background .15s;
+}
+.ff-back:hover { color: var(--text); background: var(--bg2); }
+.ff-back svg { width: 14px; height: 14px; }
+
+/* Lang dropdown — minimal */
+.ff-lang { position: relative; }
+.ff-lang-btn {
+  height: 32px; padding: 0 10px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 12px; font-weight: 600; color: var(--muted);
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.ff-lang-btn:hover { border-color: var(--teal); color: var(--teal); }
+.ff-lang-menu {
+  position: absolute; top: calc(100% + 6px); right: 0;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 10px; padding: 6px; min-width: 160px;
+  box-shadow: 0 8px 32px rgba(15,27,53,.08);
+  display: none; max-height: 280px; overflow: auto;
+}
+.ff-lang-menu.open { display: block; }
+.ff-lang-menu button {
+  display: flex; justify-content: space-between; align-items: center;
+  width: 100%; padding: 8px 10px; border: none; background: none;
+  border-radius: 6px; cursor: pointer; font-size: 13px; color: var(--text);
+  text-align: left;
+}
+.ff-lang-menu button:hover { background: var(--bg2); }
+.ff-lang-menu button.active { background: var(--bg3); color: var(--teal); font-weight: 600; }
+.ff-lang-menu .code { font-size: 11px; color: var(--faint); letter-spacing: .04em; }
+
+/* ── HERO ───────────────────────────────────────────────────────────── */
+.ff-hero {
+  padding: 72px 0 56px;
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--bg2) 100%);
+  border-bottom: 1px solid var(--line);
+}
+.ff-eyebrow {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--teal);
+  padding: 5px 12px;
+  background: rgba(13,148,136,.08);
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+.ff-hero h1 {
+  font-size: clamp(30px, 5vw, 46px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -.02em;
+  color: var(--navy);
+  margin: 0 0 16px;
+  max-width: 820px;
+}
+.ff-hero h1 em { font-style: normal; color: var(--teal); }
+.ff-hero p.sub {
+  font-size: clamp(16px, 1.7vw, 18px);
+  color: var(--muted);
+  margin: 0 0 8px;
+  max-width: 680px;
+  line-height: 1.55;
+}
+
+/* ── CARDS ──────────────────────────────────────────────────────────── */
+.ff-cards-section { padding: 56px 0 24px; }
+.ff-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.ff-card {
+  padding: 28px 24px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.ff-card:hover {
+  border-color: var(--teal);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px -8px rgba(13,148,136,.15);
+}
+.ff-card-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(13,148,136,.08);
+  color: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+.ff-card-icon svg { width: 20px; height: 20px; }
+.ff-card h3 {
+  font-size: 17px; font-weight: 700;
+  color: var(--text);
+  margin: 0 0 8px;
+  letter-spacing: -.01em;
+}
+.ff-card p {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ── FORM ───────────────────────────────────────────────────────────── */
+.ff-form-section {
+  padding: 56px 0 80px;
+  background: var(--bg2);
+  border-top: 1px solid var(--line);
+  margin-top: 32px;
+}
+.ff-form-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 36px 36px 32px;
+  box-shadow: 0 4px 24px rgba(15,27,53,.04);
+}
+.ff-form-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 6px;
+  letter-spacing: -.01em;
+}
+.ff-form-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 28px;
+}
+.ff-form .row { margin-bottom: 18px; }
+.ff-form .row.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.ff-form label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: .01em;
+}
+.ff-form label .req { color: var(--error); margin-left: 2px; }
+.ff-form input[type=text],
+.ff-form input[type=email],
+.ff-form select,
+.ff-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  font-size: 14.5px;
+  color: var(--text);
+  transition: border-color .15s, box-shadow .15s;
+  -webkit-appearance: none; appearance: none;
+}
+.ff-form select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%236B7280' d='M5 6 0 0h10z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+.ff-form textarea { resize: vertical; min-height: 90px; max-height: 280px; }
+.ff-form input:focus,
+.ff-form select:focus,
+.ff-form textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(13,148,136,.12);
+}
+.ff-form .group {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.ff-form .chip {
+  display: inline-flex; align-items: center;
+  padding: 8px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+  transition: all .15s;
+}
+.ff-form .chip input { position: absolute; opacity: 0; pointer-events: none; }
+.ff-form .chip:hover { border-color: var(--teal); color: var(--teal); }
+.ff-form .chip.checked {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: #fff;
+}
+.ff-form .hint { font-size: 12px; color: var(--faint); margin-top: 6px; }
+
+/* v2 — Consent checkbox row */
+.ff-consent-row { margin-top: 4px; margin-bottom: 8px; }
+.ff-consent {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: var(--muted); line-height: 1.5;
+  cursor: pointer;
+}
+.ff-consent input[type=checkbox] {
+  margin-top: 3px;
+  width: 16px; height: 16px;
+  accent-color: var(--teal);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.ff-consent-error {
+  display: none;
+  margin: 6px 0 0 26px;
+  font-size: 12px;
+  color: var(--error);
+}
+.ff-consent-row.error .ff-consent-error { display: block; }
+.ff-consent-row.error .ff-consent { color: var(--error); }
+
+/* Honeypot — hidden from humans, present for bots */
+.ff-hp {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px; height: 1px; opacity: 0;
+  pointer-events: none;
+}
+
+.ff-submit-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; margin-top: 8px;
+}
+.ff-submit {
+  background: var(--teal);
+  color: #fff;
+  height: 46px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: background .15s, transform .15s, box-shadow .15s;
+}
+.ff-submit:hover:not(:disabled) {
+  background: var(--teal2);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(13,148,136,.3);
+}
+.ff-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+.ff-privacy {
+  font-size: 12px;
+  color: var(--muted);
+  max-width: 320px;
+  line-height: 1.5;
+}
+.ff-privacy a { color: var(--teal); text-decoration: underline; text-underline-offset: 2px; }
+
+.ff-status { margin-top: 18px; }
+.ff-status .ok, .ff-status .err {
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  display: none;
+}
+.ff-status .ok { background: rgba(5,150,105,.08); color: var(--green); border: 1px solid rgba(5,150,105,.25); }
+.ff-status .err { background: rgba(220,38,38,.06); color: var(--error); border: 1px solid rgba(220,38,38,.2); }
+.ff-status.show-ok .ok,
+.ff-status.show-err .err { display: block; }
+
+/* ── FOOTER ─────────────────────────────────────────────────────────── */
+.ff-foot {
+  padding: 28px 0 36px;
+  border-top: 1px solid var(--line);
+  background: #fff;
+  text-align: center;
+}
+.ff-foot p { font-size: 12.5px; color: var(--muted); margin: 0; }
+.ff-foot a { color: var(--teal); }
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────────── */
+@media (max-width: 820px) {
+  .ff-cards { grid-template-columns: 1fr; gap: 16px; }
+  .ff-form-card { padding: 26px 20px; }
+  .ff-form .row.two { grid-template-columns: 1fr; }
+  .ff-submit-row { flex-direction: column; align-items: stretch; }
+  .ff-privacy { max-width: none; }
+  .ff-submit { justify-content: center; width: 100%; }
+  .ff-hero { padding: 56px 0 40px; }
+  .ff-brand-tag { display: none; }
+}
+
+/* RTL support */
+html[dir=rtl] .ff-back svg { transform: scaleX(-1); }
+html[dir=rtl] .ff-lang-menu { right: auto; left: 0; }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────────────────────── -->
+<header class="ff-nav">
+  <div class="container ff-nav-inner">
+    <a href="/" class="ff-brand" aria-label="Advocat">
+      <img src="/logo.png" alt="Advocat">
+      <span class="ff-brand-label">Advocat</span>
+      <span class="ff-brand-tag" data-i18n="ff.tag">For Firms</span>
+    </a>
+    <div class="ff-nav-right">
+      <a href="/" class="ff-back" data-i18n="ff.back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        <span>Back to main site</span>
+      </a>
+      <div class="ff-lang">
+        <button class="ff-lang-btn" id="ff-lang-toggle" aria-haspopup="true" aria-expanded="false">
+          <span id="ff-lang-current">EN</span>
+        </button>
+        <div class="ff-lang-menu" id="ff-lang-menu" role="menu"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ───────────────────────────────────────────────────────────── -->
+<section class="ff-hero">
+  <div class="container">
+    <span class="ff-eyebrow" data-i18n="ff.eyebrow">Advocat for Law Firms</span>
+    <h1 data-i18n-html="ff.h1">Deploy <em>Advocat</em> across your firm.</h1>
+    <p class="sub" data-i18n="ff.sub">
+      A private workspace for your team: shared cases, role-based access, optional white-label deployment,
+      and the compliance paperwork your IT and risk teams already ask for.
+    </p>
+  </div>
+</section>
+
+<!-- ── 3 CARDS ────────────────────────────────────────────────────────── -->
+<section class="ff-cards-section">
+  <div class="container">
+    <div class="ff-cards">
+      <div class="ff-card">
+        <div class="ff-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 data-i18n="ff.card1.title">Multi-seat workspaces</h3>
+        <p data-i18n="ff.card1.body">Shared case files across associates, paralegals and partners. Role-based access, per-matter permissions, internal handoff notes.</p>
+      </div>
+      <div class="ff-card">
+        <div class="ff-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <h3 data-i18n="ff.card2.title">White-label options</h3>
+        <p data-i18n="ff.card2.body">Run Advocat on your firm&rsquo;s domain with your branding, your colours, your logo. Optional on-prem deployment for sensitive practice areas.</p>
+      </div>
+      <div class="ff-card">
+        <div class="ff-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3 data-i18n="ff.card3.title">Audit log, DPA &amp; SLA</h3>
+        <p data-i18n="ff.card3.body">Full audit trail of every AI interaction. DPA, processor agreement and uptime SLA included by default. EU data residency (Frankfurt).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LEAD FORM ──────────────────────────────────────────────────────── -->
+<section class="ff-form-section">
+  <div class="container-sm">
+    <div class="ff-form-card">
+      <h2 class="ff-form-title" data-i18n="ff.form.title">Tell us about your firm</h2>
+      <p class="ff-form-sub" data-i18n="ff.form.sub">A short note. We&rsquo;ll reach out within one business day.</p>
+
+      <form class="ff-form" id="ff-form" novalidate>
+        <!-- Honeypot: matches the support-ticket edge fn `_hp` field. -->
+        <div class="ff-hp" aria-hidden="true">
+          <label>Leave this field empty
+            <input type="text" name="_hp" tabindex="-1" autocomplete="off">
+          </label>
+        </div>
+
+        <div class="row two">
+          <div>
+            <label for="ff-name" data-i18n="ff.form.name">Your name <span class="req">*</span></label>
+            <input id="ff-name" name="name" type="text" required maxlength="120" autocomplete="name">
+          </div>
+          <div>
+            <label for="ff-email" data-i18n="ff.form.email">Work email <span class="req">*</span></label>
+            <input id="ff-email" name="email" type="email" required maxlength="200" autocomplete="email">
+          </div>
+        </div>
+
+        <div class="row two">
+          <div>
+            <label for="ff-firm" data-i18n="ff.form.firm">Firm name <span class="req">*</span></label>
+            <input id="ff-firm" name="firm" type="text" required maxlength="160" autocomplete="organization">
+          </div>
+          <div>
+            <label for="ff-country" data-i18n="ff.form.country">Country</label>
+            <select id="ff-country" name="country">
+              <option value="EE">Estonia</option>
+              <option value="FI">Finland</option>
+              <option value="LV">Latvia</option>
+              <option value="LT">Lithuania</option>
+              <option value="DE">Germany</option>
+              <option value="SE">Sweden</option>
+              <option value="PL">Poland</option>
+              <option value="other" data-i18n="ff.form.country.other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <label data-i18n="ff.form.team">Team size</label>
+          <div class="group" id="ff-team-group" role="radiogroup" aria-label="Team size">
+            <label class="chip"><input type="radio" name="team" value="1" checked><span>1</span></label>
+            <label class="chip"><input type="radio" name="team" value="2-5"><span>2&ndash;5</span></label>
+            <label class="chip"><input type="radio" name="team" value="6-15"><span>6&ndash;15</span></label>
+            <label class="chip"><input type="radio" name="team" value="15+"><span>15+</span></label>
+          </div>
+        </div>
+
+        <div class="row">
+          <label data-i18n="ff.form.practices">Practice areas</label>
+          <div class="group" id="ff-practices-group">
+            <label class="chip"><input type="checkbox" name="practices" value="immigration"><span data-i18n="ff.prac.immigration">Immigration</span></label>
+            <label class="chip"><input type="checkbox" name="practices" value="corporate"><span data-i18n="ff.prac.corporate">Corporate</span></label>
+            <label class="chip"><input type="checkbox" name="practices" value="litigation"><span data-i18n="ff.prac.litigation">Litigation</span></label>
+            <label class="chip"><input type="checkbox" name="practices" value="family"><span data-i18n="ff.prac.family">Family</span></label>
+            <label class="chip"><input type="checkbox" name="practices" value="criminal"><span data-i18n="ff.prac.criminal">Criminal</span></label>
+            <label class="chip"><input type="checkbox" name="practices" value="labor"><span data-i18n="ff.prac.labor">Labor</span></label>
+            <label class="chip"><input type="checkbox" name="practices" value="tax"><span data-i18n="ff.prac.tax">Tax</span></label>
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="ff-pain" data-i18n="ff.form.pain">Biggest pain today (optional)</label>
+          <textarea id="ff-pain" name="pain" maxlength="1200" rows="4" data-i18n-placeholder="ff.form.pain.ph" placeholder="e.g. associates spend hours summarising case files; deadline tracking is manual; junior immigration intake is repetitive."></textarea>
+          <p class="hint" data-i18n="ff.form.pain.hint">One or two sentences are plenty.</p>
+        </div>
+
+        <!-- v2 (2026-05-25): explicit GDPR Art. 6(1)(a) consent. Required to submit. -->
+        <div class="row ff-consent-row">
+          <label class="ff-consent">
+            <input id="ff-consent" type="checkbox" name="consent">
+            <span data-i18n="ff.form.consent">I agree Advocat OÜ may contact me about law-firm offerings. I can withdraw consent at any time.</span>
+          </label>
+          <p id="ff-consent-error" class="ff-consent-error" data-i18n="ff.form.consent.required">Please confirm you agree to be contacted before submitting.</p>
+        </div>
+
+        <div class="ff-submit-row">
+          <button type="submit" class="ff-submit" id="ff-submit">
+            <span data-i18n="ff.form.submit">Request a conversation</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </button>
+          <p class="ff-privacy" data-i18n-html="ff.form.privacy">
+            We use your details only to reply. See our <a href="/privacy.html" target="_blank" rel="noopener">privacy policy</a>.
+          </p>
+        </div>
+
+        <div class="ff-status" id="ff-status" aria-live="polite">
+          <div class="ok" data-i18n-html="ff.status.ok">Thanks &mdash; we&rsquo;ll reach out within 24 hours.</div>
+          <div class="err" data-i18n-html="ff.status.err">Something went wrong. Please try again, or email <a href="mailto:support@advocat.ee">support@advocat.ee</a>.</div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────── -->
+<footer class="ff-foot">
+  <div class="container">
+    <p>
+      &copy; 2026 Vorantis O&Uuml; &middot; Tallinn, Estonia &middot;
+      <a href="/">advocat.ee</a> &middot;
+      <a href="/privacy.html">Privacy</a> &middot;
+      <a href="/terms.html">Terms</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── i18n dictionary (EN + ET + RU + FI + DE; others fall back to EN) ───
+  var LANGS = [
+    { code: 'en', label: 'English' },
+    { code: 'et', label: 'Eesti' },
+    { code: 'ru', label: 'Русский' },
+    { code: 'fi', label: 'Suomi' },
+    { code: 'de', label: 'Deutsch' },
+    { code: 'sv', label: 'Svenska' },
+    { code: 'fr', label: 'Français' },
+    { code: 'es', label: 'Español' },
+    { code: 'it', label: 'Italiano' },
+    { code: 'pl', label: 'Polski' },
+    { code: 'lv', label: 'Latviešu' },
+    { code: 'lt', label: 'Lietuvių' },
+    { code: 'uk', label: 'Українська' },
+    { code: 'ro', label: 'Română' },
+    { code: 'tr', label: 'Türkçe' },
+    { code: 'ar', label: 'العربية' },
+    { code: 'fa', label: 'فارسی' }
+  ];
+  var RTL = { ar: true, fa: true };
+
+  var I18N = {
+    en: {
+      'ff.tag': 'For Firms',
+      'ff.back': 'Back to main site',
+      'ff.eyebrow': 'Advocat for Law Firms',
+      'ff.h1': 'Deploy <em>Advocat</em> across your firm.',
+      'ff.sub': "A private workspace for your team: shared cases, role-based access, optional white-label deployment, and the compliance paperwork your IT and risk teams already ask for.",
+      'ff.card1.title': 'Multi-seat workspaces',
+      'ff.card1.body': 'Shared case files across associates, paralegals and partners. Role-based access, per-matter permissions, internal handoff notes.',
+      'ff.card2.title': 'White-label options',
+      'ff.card2.body': "Run Advocat on your firm's domain with your branding, your colours, your logo. Optional on-prem deployment for sensitive practice areas.",
+      'ff.card3.title': 'Audit log, DPA & SLA',
+      'ff.card3.body': 'Full audit trail of every AI interaction. DPA, processor agreement and uptime SLA included by default. EU data residency (Frankfurt).',
+      'ff.form.title': 'Tell us about your firm',
+      'ff.form.sub': "A short note. We'll reach out within one business day.",
+      'ff.form.name': 'Your name',
+      'ff.form.email': 'Work email',
+      'ff.form.firm': 'Firm name',
+      'ff.form.country': 'Country',
+      'ff.form.country.other': 'Other',
+      'ff.form.team': 'Team size',
+      'ff.form.practices': 'Practice areas',
+      'ff.prac.immigration': 'Immigration',
+      'ff.prac.corporate': 'Corporate',
+      'ff.prac.litigation': 'Litigation',
+      'ff.prac.family': 'Family',
+      'ff.prac.criminal': 'Criminal',
+      'ff.prac.labor': 'Labor',
+      'ff.prac.tax': 'Tax',
+      'ff.form.pain': 'Biggest pain today (optional)',
+      'ff.form.pain.ph': 'e.g. associates spend hours summarising case files; deadline tracking is manual; junior immigration intake is repetitive.',
+      'ff.form.pain.hint': 'One or two sentences are plenty.',
+      'ff.form.submit': 'Request a conversation',
+      'ff.form.consent': 'I agree Advocat OÜ may contact me about law-firm offerings. I can withdraw consent at any time.',
+      'ff.form.consent.required': 'Please confirm you agree to be contacted before submitting.',
+      'ff.form.privacy': 'We use your details only to reply. See our <a href="/privacy.html" target="_blank" rel="noopener">privacy policy</a>.',
+      'ff.status.ok': "Thanks — we'll reach out within 24 hours.",
+      'ff.status.err': 'Something went wrong. Please try again, or email <a href="mailto:support@advocat.ee">support@advocat.ee</a>.'
+    },
+    et: {
+      'ff.tag': 'Büroodele',
+      'ff.back': 'Tagasi avalehele',
+      'ff.eyebrow': 'Advocat õigusbüroodele',
+      'ff.h1': 'Võta <em>Advocat</em> kasutusele kogu büroos.',
+      'ff.sub': 'Privaatne tööruum sinu meeskonnale: ühised toimikud, rollipõhine ligipääs, valikuline white-label juurutus ning kompliansidokumendid, mida IT- ja riskimeeskonnad nõuavad.',
+      'ff.card1.title': 'Mitme kasutaja töökeskkonnad',
+      'ff.card1.body': 'Jagatud toimikud assistentide, paralegaalide ja partnerite vahel. Rollipõhine ligipääs, asjapõhised õigused, sisemised üleandmismärkmed.',
+      'ff.card2.title': 'White-label valikud',
+      'ff.card2.body': 'Käivita Advocat oma büroo domeenil oma brändi, värvide ja logoga. Tundlike praktikate jaoks valikuline on-prem juurutus.',
+      'ff.card3.title': 'Auditilogi, DPA ja SLA',
+      'ff.card3.body': 'Iga AI-suhtluse täielik auditijälg. DPA, töötlejaleping ja kättesaadavuse SLA on vaikimisi kaasas. EL andmete asukoht (Frankfurt).',
+      'ff.form.title': 'Räägi meile oma büroost',
+      'ff.form.sub': 'Lühike sõnum. Vastame ühe tööpäeva jooksul.',
+      'ff.form.name': 'Sinu nimi',
+      'ff.form.email': 'Töökoht e-post',
+      'ff.form.firm': 'Büroo nimi',
+      'ff.form.country': 'Riik',
+      'ff.form.country.other': 'Muu',
+      'ff.form.team': 'Meeskonna suurus',
+      'ff.form.practices': 'Praktikavaldkonnad',
+      'ff.prac.immigration': 'Migratsioon',
+      'ff.prac.corporate': 'Äriõigus',
+      'ff.prac.litigation': 'Kohtuvaidlused',
+      'ff.prac.family': 'Pereõigus',
+      'ff.prac.criminal': 'Karistusõigus',
+      'ff.prac.labor': 'Tööõigus',
+      'ff.prac.tax': 'Maksuõigus',
+      'ff.form.pain': 'Suurim valupunkt täna (valikuline)',
+      'ff.form.pain.ph': 'nt assistendid kulutavad tunde toimikute kokkuvõtetele; tähtaegade jälgimine on käsitsi; algtaseme migratsiooniintervjuud on korduvad.',
+      'ff.form.pain.hint': 'Üks-kaks lauset on piisav.',
+      'ff.form.submit': 'Küsi vestlust',
+      'ff.form.consent': 'Nõustun, et Advocat OÜ võib minuga ühendust võtta büroodele suunatud pakkumiste osas. Saan nõusoleku igal ajal tagasi võtta.',
+      'ff.form.consent.required': 'Palun kinnitage enne saatmist, et nõustute meiega ühendust võtmisega.',
+      'ff.form.privacy': 'Kasutame andmeid ainult sulle vastamiseks. Vaata <a href="/privacy.html" target="_blank" rel="noopener">privaatsuspoliitikat</a>.',
+      'ff.status.ok': 'Aitäh — võtame 24 tunni jooksul ühendust.',
+      'ff.status.err': 'Midagi läks valesti. Palun proovi uuesti või kirjuta <a href="mailto:support@advocat.ee">support@advocat.ee</a>.'
+    },
+    ru: {
+      'ff.tag': 'Для бюро',
+      'ff.back': 'Назад на главную',
+      'ff.eyebrow': 'Advocat для юридических фирм',
+      'ff.h1': 'Разверните <em>Advocat</em> по всей вашей фирме.',
+      'ff.sub': 'Приватное рабочее пространство для команды: общие дела, ролевой доступ, опциональный white-label и комплаенс-документы, которые требуют ваши IT- и риск-команды.',
+      'ff.card1.title': 'Многопользовательские workspace',
+      'ff.card1.body': 'Общие дела для ассистентов, помощников и партнёров. Ролевой доступ, права на уровне дела, внутренние заметки передачи.',
+      'ff.card2.title': 'White-label варианты',
+      'ff.card2.body': 'Запустите Advocat на домене вашей фирмы с вашим брендом, цветами и логотипом. Для чувствительных практик — опциональное on-prem развёртывание.',
+      'ff.card3.title': 'Аудит, DPA и SLA',
+      'ff.card3.body': 'Полный аудит-трейл каждого AI-взаимодействия. DPA, договор о процессинге и SLA по умолчанию. Хранение данных в ЕС (Франкфурт).',
+      'ff.form.title': 'Расскажите о вашей фирме',
+      'ff.form.sub': 'Короткое сообщение. Ответим в течение одного рабочего дня.',
+      'ff.form.name': 'Ваше имя',
+      'ff.form.email': 'Рабочий e-mail',
+      'ff.form.firm': 'Название фирмы',
+      'ff.form.country': 'Страна',
+      'ff.form.country.other': 'Другая',
+      'ff.form.team': 'Размер команды',
+      'ff.form.practices': 'Направления практики',
+      'ff.prac.immigration': 'Миграция',
+      'ff.prac.corporate': 'Корпоративное',
+      'ff.prac.litigation': 'Судебные споры',
+      'ff.prac.family': 'Семейное',
+      'ff.prac.criminal': 'Уголовное',
+      'ff.prac.labor': 'Трудовое',
+      'ff.prac.tax': 'Налоговое',
+      'ff.form.pain': 'Главная боль сегодня (необязательно)',
+      'ff.form.pain.ph': 'например: ассистенты тратят часы на резюме дел; дедлайны отслеживаются вручную; первичные интервью по миграции повторяются.',
+      'ff.form.pain.hint': 'Одного-двух предложений достаточно.',
+      'ff.form.submit': 'Запросить разговор',
+      'ff.form.consent': 'Я согласен(на), что Advocat OÜ может связаться со мной по поводу предложений для юр.фирм. Согласие можно отозвать в любое время.',
+      'ff.form.consent.required': 'Пожалуйста, подтвердите согласие на связь перед отправкой.',
+      'ff.form.privacy': 'Используем данные только чтобы ответить. См. <a href="/privacy.html" target="_blank" rel="noopener">политику приватности</a>.',
+      'ff.status.ok': 'Спасибо — свяжемся в течение 24 часов.',
+      'ff.status.err': 'Что-то пошло не так. Попробуйте ещё раз или напишите на <a href="mailto:support@advocat.ee">support@advocat.ee</a>.'
+    },
+    fi: {
+      'ff.tag': 'Toimistoille',
+      'ff.back': 'Takaisin pääsivulle',
+      'ff.eyebrow': 'Advocat asianajotoimistoille',
+      'ff.h1': 'Ota <em>Advocat</em> käyttöön koko toimistossasi.',
+      'ff.sub': 'Yksityinen työtila tiimillesi: jaetut asiakirjat, roolipohjainen pääsy, vapaaehtoinen white-label-käyttöönotto ja vaatimustenmukaisuusasiakirjat, joita IT- ja riskitiimit pyytävät.',
+      'ff.card1.title': 'Monikäyttäjäiset työtilat',
+      'ff.card1.body': 'Jaetut asianhallinta-aineistot avustajien, lakimiesharjoittelijoiden ja osakkaiden välillä. Roolipohjainen pääsy, asiakohtaiset oikeudet, sisäiset luovutusmuistiot.',
+      'ff.card2.title': 'White-label-vaihtoehdot',
+      'ff.card2.body': 'Käytä Advocatia toimistosi omalla verkkotunnuksella omalla brändilläsi, väreillä ja logolla. Herkille käytännönaloille valinnainen on-prem-käyttöönotto.',
+      'ff.card3.title': 'Auditointiloki, DPA ja SLA',
+      'ff.card3.body': 'Kaikkien AI-vuorovaikutusten täysi auditointijälki. DPA, käsittelijäsopimus ja käytettävyys-SLA mukana oletuksena. EU-tietojen sijainti (Frankfurt).',
+      'ff.form.title': 'Kerro toimistostasi',
+      'ff.form.sub': 'Lyhyt viesti riittää. Vastaamme yhden työpäivän kuluessa.',
+      'ff.form.name': 'Nimesi',
+      'ff.form.email': 'Työsähköposti',
+      'ff.form.firm': 'Toimiston nimi',
+      'ff.form.country': 'Maa',
+      'ff.form.country.other': 'Muu',
+      'ff.form.team': 'Tiimin koko',
+      'ff.form.practices': 'Käytännönalat',
+      'ff.prac.immigration': 'Maahanmuutto',
+      'ff.prac.corporate': 'Yritysjuridiikka',
+      'ff.prac.litigation': 'Riidanratkaisu',
+      'ff.prac.family': 'Perheoikeus',
+      'ff.prac.criminal': 'Rikosoikeus',
+      'ff.prac.labor': 'Työoikeus',
+      'ff.prac.tax': 'Vero-oikeus',
+      'ff.form.pain': 'Suurin kipupiste tällä hetkellä (vapaaehtoinen)',
+      'ff.form.pain.ph': 'esim. avustajat käyttävät tunteja asiakirjojen tiivistämiseen; määräaikojen seuranta on manuaalista; maahanmuutto-intake on toistuvaa.',
+      'ff.form.pain.hint': 'Yksi tai kaksi lausetta riittää.',
+      'ff.form.submit': 'Pyydä keskustelu',
+      'ff.form.consent': 'Hyväksyn, että Advocat OÜ voi ottaa minuun yhteyttä lakitoimistoille suunnatuista tarjouksista. Voin peruuttaa suostumuksen milloin tahansa.',
+      'ff.form.consent.required': 'Vahvista ennen lähettämistä, että hyväksyt yhteydenoton.',
+      'ff.form.privacy': 'Käytämme tietoja vain vastauksen lähettämiseen. Lue <a href="/privacy.html" target="_blank" rel="noopener">tietosuojaseloste</a>.',
+      'ff.status.ok': 'Kiitos — otamme yhteyttä 24 tunnin sisällä.',
+      'ff.status.err': 'Jotain meni pieleen. Yritä uudelleen tai lähetä viesti osoitteeseen <a href="mailto:support@advocat.ee">support@advocat.ee</a>.'
+    },
+    de: {
+      'ff.tag': 'Für Kanzleien',
+      'ff.back': 'Zurück zur Hauptseite',
+      'ff.eyebrow': 'Advocat für Anwaltskanzleien',
+      'ff.h1': 'Setzen Sie <em>Advocat</em> in Ihrer Kanzlei ein.',
+      'ff.sub': 'Ein privater Arbeitsbereich für Ihr Team: gemeinsame Akten, rollenbasierter Zugriff, optionales White-Label-Deployment und die Compliance-Unterlagen, die Ihre IT- und Risikoteams ohnehin verlangen.',
+      'ff.card1.title': 'Mehrplatz-Arbeitsbereiche',
+      'ff.card1.body': 'Geteilte Akten zwischen Associates, Paralegals und Partnern. Rollenbasierter Zugriff, mandantenspezifische Berechtigungen, interne Übergabe-Notizen.',
+      'ff.card2.title': 'White-Label-Optionen',
+      'ff.card2.body': 'Betreiben Sie Advocat unter Ihrer Kanzlei-Domain mit Ihrem Branding, Ihren Farben, Ihrem Logo. Für sensible Bereiche optionales On-Prem-Deployment.',
+      'ff.card3.title': 'Audit-Log, AVV & SLA',
+      'ff.card3.body': 'Vollständige Audit-Spur jeder KI-Interaktion. AVV, Auftragsverarbeitungsvertrag und Verfügbarkeits-SLA standardmäßig enthalten. EU-Datenresidenz (Frankfurt).',
+      'ff.form.title': 'Erzählen Sie uns von Ihrer Kanzlei',
+      'ff.form.sub': 'Eine kurze Nachricht. Wir melden uns innerhalb eines Werktages.',
+      'ff.form.name': 'Ihr Name',
+      'ff.form.email': 'Geschäftliche E-Mail',
+      'ff.form.firm': 'Kanzleiname',
+      'ff.form.country': 'Land',
+      'ff.form.country.other': 'Sonstige',
+      'ff.form.team': 'Teamgröße',
+      'ff.form.practices': 'Rechtsgebiete',
+      'ff.prac.immigration': 'Migrationsrecht',
+      'ff.prac.corporate': 'Gesellschaftsrecht',
+      'ff.prac.litigation': 'Prozessführung',
+      'ff.prac.family': 'Familienrecht',
+      'ff.prac.criminal': 'Strafrecht',
+      'ff.prac.labor': 'Arbeitsrecht',
+      'ff.prac.tax': 'Steuerrecht',
+      'ff.form.pain': 'Größter Schmerzpunkt heute (optional)',
+      'ff.form.pain.ph': 'z. B. Associates verbringen Stunden mit Aktenzusammenfassungen; Fristenverwaltung ist manuell; Erstgespräche im Migrationsrecht wiederholen sich.',
+      'ff.form.pain.hint': 'Ein, zwei Sätze genügen.',
+      'ff.form.submit': 'Gespräch anfragen',
+      'ff.form.consent': 'Ich willige ein, dass Advocat OÜ mich zu Kanzleiangeboten kontaktieren darf. Ich kann meine Einwilligung jederzeit widerrufen.',
+      'ff.form.consent.required': 'Bitte bestätigen Sie die Kontaktaufnahme vor dem Absenden.',
+      'ff.form.privacy': 'Wir verwenden Ihre Angaben nur zur Antwort. Siehe <a href="/privacy.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.',
+      'ff.status.ok': 'Danke — wir melden uns innerhalb von 24 Stunden.',
+      'ff.status.err': 'Etwas ist schiefgelaufen. Bitte erneut versuchen oder E-Mail an <a href="mailto:support@advocat.ee">support@advocat.ee</a>.'
+    }
+  };
+
+  var TR = {};
+  var CUR_LANG = 'en';
+
+  function tr (key) {
+    return (TR[key] !== undefined) ? TR[key]
+      : (I18N.en[key] !== undefined ? I18N.en[key] : key);
+  }
+
+  function applyTranslations () {
+    var en = I18N.en;
+    var cur = I18N[CUR_LANG] || {};
+    for (var k in TR) { delete TR[k]; }
+    Object.keys(en).forEach(function (k) {
+      TR[k] = (cur[k] !== undefined ? cur[k] : en[k]);
+    });
+
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      el.textContent = tr(el.getAttribute('data-i18n'));
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+      el.innerHTML = tr(el.getAttribute('data-i18n-html'));
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+      el.setAttribute('placeholder', tr(el.getAttribute('data-i18n-placeholder')));
+    });
+    document.getElementById('ff-lang-current').textContent = CUR_LANG.toUpperCase();
+    document.querySelectorAll('#ff-lang-menu button').forEach(function (b) {
+      b.classList.toggle('active', b.dataset.lang === CUR_LANG);
+    });
+  }
+
+  function setLang (code) {
+    CUR_LANG = code;
+    document.documentElement.lang = code;
+    document.documentElement.dir = RTL[code] ? 'rtl' : 'ltr';
+    try { localStorage.setItem('advocat-landing-lang', code); } catch (e) { /* private mode */ }
+    applyTranslations();
+  }
+
+  // Build lang dropdown
+  (function buildLangs () {
+    var menu = document.getElementById('ff-lang-menu');
+    LANGS.forEach(function (l) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.dataset.lang = l.code;
+      b.innerHTML = '<span>' + l.label + '</span><span class="code">' + l.code.toUpperCase() + '</span>';
+      b.onclick = function () {
+        setLang(l.code);
+        menu.classList.remove('open');
+      };
+      menu.appendChild(b);
+    });
+    var tog = document.getElementById('ff-lang-toggle');
+    tog.addEventListener('click', function (e) {
+      e.stopPropagation();
+      menu.classList.toggle('open');
+      tog.setAttribute('aria-expanded', menu.classList.contains('open') ? 'true' : 'false');
+    });
+    document.addEventListener('click', function () { menu.classList.remove('open'); });
+  })();
+
+  // Pick initial lang: ?lang= → localStorage → navigator → 'en'
+  (function pickInitialLang () {
+    var pick = null;
+    try {
+      var url = new URL(window.location.href);
+      var q = url.searchParams.get('lang');
+      if (q && I18N[q]) pick = q;
+    } catch (e) { /* noop */ }
+    if (!pick) {
+      try { var saved = localStorage.getItem('advocat-landing-lang');
+        if (saved && I18N[saved]) pick = saved; } catch (e) { /* noop */ }
+    }
+    if (!pick) {
+      var nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
+      if (I18N[nav]) pick = nav;
+    }
+    setLang(pick || 'en');
+  })();
+
+  // ── Chip styling reacts to input state ───────────────────────────────
+  function wireChips (groupId) {
+    var group = document.getElementById(groupId);
+    if (!group) return;
+    function refresh () {
+      group.querySelectorAll('.chip').forEach(function (chip) {
+        var inp = chip.querySelector('input');
+        if (!inp) return;
+        chip.classList.toggle('checked', inp.checked);
+      });
+    }
+    group.addEventListener('change', refresh);
+    refresh();
+  }
+  wireChips('ff-team-group');
+  wireChips('ff-practices-group');
+
+  // v2: clear the consent error inline as soon as the user ticks the box.
+  (function wireConsent () {
+    var box = document.getElementById('ff-consent');
+    var row = document.querySelector('.ff-consent-row');
+    if (!box || !row) return;
+    box.addEventListener('change', function () {
+      if (box.checked) row.classList.remove('error');
+    });
+  })();
+
+  // ── Form submit ──────────────────────────────────────────────────────
+  var SUPABASE_FN_BASE =
+    (window.ADVOCAT_FUNCTIONS_BASE) ||
+    'https://okgnkucgwsytsondrjye.supabase.co/functions/v1';
+
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function setStatus (state) {
+    var box = document.getElementById('ff-status');
+    box.classList.remove('show-ok', 'show-err');
+    if (state === 'ok') box.classList.add('show-ok');
+    if (state === 'err') box.classList.add('show-err');
+  }
+
+  function submitForm (ev) {
+    ev.preventDefault();
+    setStatus('none');
+
+    var form = document.getElementById('ff-form');
+    var fd = new FormData(form);
+
+    // Honeypot — if filled, silently pretend success and never POST.
+    var hp = (fd.get('_hp') || '').toString();
+    if (hp.length > 0) { setStatus('ok'); form.reset(); return; }
+
+    var name = (fd.get('name') || '').toString().trim();
+    var email = (fd.get('email') || '').toString().trim().toLowerCase();
+    var firm = (fd.get('firm') || '').toString().trim();
+    var team = (fd.get('team') || '1').toString();
+    var country = (fd.get('country') || '').toString();
+    var pain = (fd.get('pain') || '').toString().trim();
+    var practices = fd.getAll('practices').map(String);
+
+    if (!name || !firm) { setStatus('err'); return; }
+    if (!EMAIL_RE.test(email)) { setStatus('err'); return; }
+
+    // v2 (2026-05-25) — explicit GDPR Art. 6(1)(a) consent enforcement.
+    // Inline error stays in the consent row so the user can fix it
+    // without losing the rest of the form.
+    var consentRow = document.querySelector('.ff-consent-row');
+    var consentBox = document.getElementById('ff-consent');
+    if (!consentBox || !consentBox.checked) {
+      if (consentRow) consentRow.classList.add('error');
+      return;
+    }
+    if (consentRow) consentRow.classList.remove('error');
+
+    // The support-ticket edge fn natively accepts category=b2b_inquiry and
+    // structured firm_name / team_size / practices fields (added 2026-05-26
+    // for the in-app B2B lead modal). We reuse the same schema here so the
+    // landing-side lead drops into the same Telegram queue with the
+    // `[B2B LEAD]` prefix.
+    //
+    // The free-form `message` field carries the bits the structured columns
+    // do not cover (name, country, pain). The fn enforces 10..2000 chars on
+    // `message`, so we always include at least the name + country header.
+    var messageLines = [
+      'Name: ' + name,
+      'Country: ' + (country || '—'),
+      'Pain: ' + (pain || '—'),
+      'Page lang: ' + CUR_LANG
+    ];
+    var message = messageLines.join('\n').slice(0, 2000);
+
+    var payload = {
+      category: 'b2b_inquiry',
+      email: email,
+      message: message,
+      contact_channel: 'email',
+      page_url: 'https://advocat.ee/for-firms.html',
+      language: (navigator.language || CUR_LANG || 'en').slice(0, 8),
+      firm_name: firm,
+      team_size: team,
+      practices: practices,
+      _hp: ''
+    };
+
+    var btn = document.getElementById('ff-submit');
+    btn.disabled = true;
+
+    fetch(SUPABASE_FN_BASE + '/support-ticket', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    }).then(function (data) {
+      if (data && data.ok) {
+        setStatus('ok');
+        form.reset();
+        // Reset chip styling after .reset()
+        wireChips('ff-team-group');
+        wireChips('ff-practices-group');
+      } else {
+        setStatus('err');
+      }
+    }).catch(function () {
+      setStatus('err');
+    }).finally(function () {
+      btn.disabled = false;
+    });
+  }
+
+  document.getElementById('ff-form').addEventListener('submit', submitForm);
+})();
+</script>
+
+</body>
+</html>

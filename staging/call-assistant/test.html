@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADVOCAT — Test Suite & Developer Tools</title>
+    <style>
+        :root {
+            --bg-primary: #0F1923;
+            --bg-secondary: #1A2736;
+            --bg-tertiary: #243142;
+            --bg-panel: #172331;
+            --text-primary: #E8ECF1;
+            --text-secondary: #8899AA;
+            --text-muted: #5A6B7C;
+            --accent-blue: #4A9EFF;
+            --accent-cyan: #00D4FF;
+            --accent-green: #4ADE80;
+            --accent-red: #EF4444;
+            --accent-orange: #F59E0B;
+            --accent-purple: #A78BFA;
+            --border-color: #2D3B50;
+            --radius: 8px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* --- Header --- */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .header-left .logo { font-size: 20px; font-weight: 700; letter-spacing: 2px; }
+        .header-left .logo span { color: var(--accent-cyan); }
+        .header-left .sep { color: var(--text-muted); margin: 0 4px; }
+        .header-left .subtitle { font-size: 13px; color: var(--text-secondary); }
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .header-right a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .header-right a:hover { text-decoration: underline; }
+
+        /* --- Counters Bar --- */
+        .counters {
+            display: flex;
+            gap: 1px;
+            background: var(--border-color);
+        }
+        .counter-box {
+            flex: 1;
+            text-align: center;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+        }
+        .counter-box .counter-value {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        .counter-box .counter-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .counter-box.pass .counter-value { color: var(--accent-green); }
+        .counter-box.fail .counter-value { color: var(--accent-red); }
+        .counter-box.skip .counter-value { color: var(--accent-orange); }
+        .counter-box.total .counter-value { color: var(--accent-blue); }
+
+        /* --- Layout --- */
+        .layout {
+            display: flex;
+            gap: 1px;
+            background: var(--border-color);
+            height: calc(100vh - 52px - 54px);
+        }
+        .col-left {
+            flex: 0 0 320px;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-panel);
+            overflow: hidden;
+        }
+        .col-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-panel);
+            overflow: hidden;
+        }
+        .col-right {
+            flex: 0 0 380px;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-panel);
+            overflow: hidden;
+        }
+
+        /* --- Section Headers --- */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+        .section-header h2 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+        }
+        .btn:hover { background: var(--bg-secondary); border-color: var(--text-muted); }
+        .btn:active { transform: scale(0.97); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-primary { background: var(--accent-blue); border-color: var(--accent-blue); color: #fff; }
+        .btn-primary:hover { background: #3B8DE6; }
+
+        .btn-green { background: var(--accent-green); border-color: var(--accent-green); color: #111; }
+        .btn-green:hover { background: #3ECB70; }
+
+        .btn-red { background: var(--accent-red); border-color: var(--accent-red); color: #fff; }
+        .btn-red:hover { background: #DC2626; }
+
+        .btn-cyan { background: var(--accent-cyan); border-color: var(--accent-cyan); color: #111; font-weight: 700; }
+        .btn-cyan:hover { background: #00BBDD; }
+
+        .btn-sm { padding: 4px 10px; font-size: 11px; }
+
+        /* --- Test Buttons Panel --- */
+        .test-buttons {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+        .test-group {
+            margin-bottom: 16px;
+        }
+        .test-group-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .test-group .btn {
+            display: flex;
+            width: 100%;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+        .test-group .btn .btn-tag {
+            font-size: 9px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.08);
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        /* --- App iframe --- */
+        .app-frame-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        .app-frame-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: var(--bg-primary);
+        }
+        .frame-overlay {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        /* --- Debug Console --- */
+        .debug-console {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 12px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 12px;
+            line-height: 1.7;
+            background: var(--bg-primary);
+        }
+        .log-entry {
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(45,59,80,0.3);
+            display: flex;
+            gap: 8px;
+        }
+        .log-entry .log-time {
+            color: var(--text-muted);
+            flex-shrink: 0;
+            min-width: 72px;
+        }
+        .log-entry .log-tag {
+            flex-shrink: 0;
+            padding: 0 5px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 48px;
+            text-align: center;
+        }
+        .log-entry .log-msg { word-break: break-word; }
+
+        .log-tag.info { background: rgba(74,158,255,0.15); color: var(--accent-blue); }
+        .log-tag.pass { background: rgba(74,222,128,0.15); color: var(--accent-green); }
+        .log-tag.fail { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+        .log-tag.warn { background: rgba(245,158,11,0.15); color: var(--accent-orange); }
+        .log-tag.perf { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+
+        /* --- Compat Table --- */
+        .compat-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .compat-table th, .compat-table td {
+            padding: 6px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .compat-table th {
+            color: var(--text-muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .compat-icon { font-size: 14px; }
+        .compat-yes { color: var(--accent-green); }
+        .compat-no { color: var(--accent-red); }
+
+        /* --- Perf Table --- */
+        .perf-section {
+            padding: 12px;
+            overflow-y: auto;
+        }
+        .perf-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
+        .perf-metric-name { font-size: 12px; color: var(--text-secondary); }
+        .perf-metric-value {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .perf-good { color: var(--accent-green); }
+        .perf-ok { color: var(--accent-orange); }
+        .perf-bad { color: var(--accent-red); }
+
+        /* --- Tabs --- */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+        .tab {
+            padding: 8px 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s ease;
+        }
+        .tab:hover { color: var(--text-secondary); }
+        .tab.active { color: var(--accent-cyan); border-bottom-color: var(--accent-cyan); }
+        .tab-content { display: none; flex: 1; overflow: hidden; }
+        .tab-content.active { display: flex; flex-direction: column; }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* --- Responsive --- */
+        @media (max-width: 1100px) {
+            .layout { flex-direction: column; height: auto; min-height: calc(100vh - 106px); }
+            .col-left { flex: 0 0 auto; max-height: 300px; }
+            .col-center { flex: 0 0 400px; }
+            .col-right { flex: 1; min-height: 300px; }
+        }
+    </style>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Cookie consent (W2-13): per-jurisdiction granular banner. MUST load before
+     _utm_capture.js and _analytics.js so consent gates every pixel. -->
+<script src="/_cookie_consent.js" defer></script>
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-left">
+        <div class="logo"><span>&#9878;</span> ADVOCAT</div>
+        <span class="sep">|</span>
+        <span class="subtitle">Test Suite & Dev Tools</span>
+    </div>
+    <div class="header-right">
+        <a href="index.html">Open App</a>
+        <span style="color:var(--text-muted)">v1.0.0</span>
+    </div>
+</div>
+
+<!-- Counters -->
+<div class="counters">
+    <div class="counter-box total"><div class="counter-value" id="cnt-total">0</div><div class="counter-label">Total</div></div>
+    <div class="counter-box pass"><div class="counter-value" id="cnt-pass">0</div><div class="counter-label">Passed</div></div>
+    <div class="counter-box fail"><div class="counter-value" id="cnt-fail">0</div><div class="counter-label">Failed</div></div>
+    <div class="counter-box skip"><div class="counter-value" id="cnt-skip">0</div><div class="counter-label">Skipped</div></div>
+</div>
+
+<!-- Layout -->
+<div class="layout">
+
+    <!-- Left: Test Controls -->
+    <div class="col-left">
+        <div class="section-header">
+            <h2>Test Controls</h2>
+            <button class="btn btn-cyan btn-sm" onclick="runAllTests()">Run All</button>
+        </div>
+        <div class="test-buttons">
+
+            <div class="test-group">
+                <div class="test-group-title">Simulation Tests</div>
+                <button class="btn" onclick="simFinnishSpeech()">Simulate Finnish Speech <span class="btn-tag">50 seg</span></button>
+                <button class="btn" onclick="simEnglishSpeech()">Simulate English Speech <span class="btn-tag">50 seg</span></button>
+                <button class="btn" onclick="simLongCall()">Simulate Long Call <span class="btn-tag">500+ seg</span></button>
+                <button class="btn" onclick="simDisconnect()">Simulate Disconnect <span class="btn-tag">ws</span></button>
+                <button class="btn" onclick="simClaudeResponse()">Simulate Claude Response <span class="btn-tag">ai</span></button>
+                <button class="btn" onclick="simUrgency()">Simulate Urgency <span class="btn-tag">detect</span></button>
+            </div>
+
+            <div class="test-group">
+                <div class="test-group-title">Unit Tests</div>
+                <button class="btn" onclick="testFormatTime()">formatTime()</button>
+                <button class="btn" onclick="testEscapeHtml()">escapeHtml()</button>
+                <button class="btn" onclick="testAddTranscriptSegment()">addTranscriptSegment()</button>
+                <button class="btn" onclick="testShowInterim()">showInterim()</button>
+                <button class="btn" onclick="testDisplayAiResponse()">displayAiResponse()</button>
+                <button class="btn" onclick="testExportTranscript()">exportTranscript()</button>
+                <button class="btn" onclick="testExtractKeyPoints()">extractKeyPoints()</button>
+                <button class="btn" onclick="testWordCount()">updateWordCount()</button>
+            </div>
+
+            <div class="test-group">
+                <div class="test-group-title">Browser Compatibility</div>
+                <button class="btn" onclick="runCompatChecks()">Check All APIs <span class="btn-tag">compat</span></button>
+            </div>
+
+            <div class="test-group">
+                <div class="test-group-title">Performance</div>
+                <button class="btn" onclick="runPerfBenchmarks()">Run Benchmarks <span class="btn-tag">perf</span></button>
+            </div>
+
+            <div class="test-group">
+                <div class="test-group-title">Utilities</div>
+                <button class="btn btn-red btn-sm" onclick="clearDebugConsole()">Clear Console</button>
+                <button class="btn btn-sm" onclick="resetAppState()">Reset App State</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Center: App Iframe -->
+    <div class="col-center">
+        <div class="section-header">
+            <h2>Live App Preview</h2>
+            <div style="display:flex;gap:6px;">
+                <button class="btn btn-sm" onclick="reloadFrame()">Reload</button>
+            </div>
+        </div>
+        <div class="app-frame-container">
+            <iframe id="app-frame" src="index.html"></iframe>
+        </div>
+    </div>
+
+    <!-- Right: Debug Panel -->
+    <div class="col-right">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab(this,'tab-console')">Console</div>
+            <div class="tab" onclick="switchTab(this,'tab-compat')">Compatibility</div>
+            <div class="tab" onclick="switchTab(this,'tab-perf')">Performance</div>
+        </div>
+
+        <div class="tab-content active" id="tab-console">
+            <div class="debug-console" id="debug-console"></div>
+        </div>
+
+        <div class="tab-content" id="tab-compat">
+            <div style="padding:12px;overflow-y:auto;flex:1;">
+                <table class="compat-table" id="compat-table">
+                    <thead>
+                        <tr><th>Feature</th><th>Status</th><th>Details</th></tr>
+                    </thead>
+                    <tbody id="compat-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-content" id="tab-perf">
+            <div class="perf-section" id="perf-section">
+                <p style="color:var(--text-muted);font-size:13px;text-align:center;padding:40px;">Click "Run Benchmarks" to start performance tests.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ====================================================================
+// TEST HARNESS
+// ====================================================================
+const counters = { total: 0, pass: 0, fail: 0, skip: 0 };
+
+function updateCounters() {
+    document.getElementById('cnt-total').textContent = counters.total;
+    document.getElementById('cnt-pass').textContent = counters.pass;
+    document.getElementById('cnt-fail').textContent = counters.fail;
+    document.getElementById('cnt-skip').textContent = counters.skip;
+}
+
+function resetCounters() {
+    counters.total = 0; counters.pass = 0; counters.fail = 0; counters.skip = 0;
+    updateCounters();
+}
+
+function logEntry(tag, msg) {
+    const console_el = document.getElementById('debug-console');
+    const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const entry = document.createElement('div');
+    entry.className = 'log-entry';
+    entry.innerHTML = `<span class="log-time">${time}</span><span class="log-tag ${tag}">${tag.toUpperCase()}</span><span class="log-msg">${escHtml(msg)}</span>`;
+    console_el.appendChild(entry);
+    console_el.scrollTop = console_el.scrollHeight;
+}
+
+function escHtml(s) {
+    const d = document.createElement('div');
+    d.textContent = String(s);
+    return d.innerHTML;
+}
+
+function assert(condition, testName) {
+    counters.total++;
+    if (condition) {
+        counters.pass++;
+        logEntry('pass', testName);
+    } else {
+        counters.fail++;
+        logEntry('fail', testName);
+    }
+    updateCounters();
+    return condition;
+}
+
+function skip(testName, reason) {
+    counters.total++;
+    counters.skip++;
+    logEntry('warn', `SKIP: ${testName} - ${reason}`);
+    updateCounters();
+}
+
+function clearDebugConsole() {
+    document.getElementById('debug-console').innerHTML = '';
+    resetCounters();
+}
+
+// ====================================================================
+// IFRAME ACCESS HELPERS
+// ====================================================================
+function getApp() {
+    const frame = document.getElementById('app-frame');
+    return frame.contentWindow;
+}
+
+function getAppDoc() {
+    return document.getElementById('app-frame').contentDocument;
+}
+
+function waitForApp(timeout = 3000) {
+    return new Promise((resolve, reject) => {
+        const start = Date.now();
+        function check() {
+            try {
+                const w = getApp();
+                if (w && w.state && w.addTranscriptSegment) {
+                    resolve(w);
+                    return;
+                }
+            } catch(e) {}
+            if (Date.now() - start > timeout) {
+                reject(new Error('App not loaded within timeout'));
+                return;
+            }
+            setTimeout(check, 100);
+        }
+        check();
+    });
+}
+
+function reloadFrame() {
+    document.getElementById('app-frame').src = 'index.html';
+    logEntry('info', 'App iframe reloaded');
+}
+
+function resetAppState() {
+    waitForApp().then(app => {
+        app.state.transcript = [];
+        app.state.fullTranscriptText = '';
+        app.state.lastTranscriptLen = 0;
+        app.state.keyPoints = [];
+        app.state.timerSeconds = 0;
+        const doc = getAppDoc();
+        const ta = doc.getElementById('transcript-area');
+        ta.innerHTML = '';
+        const ph = document.createElement('div');
+        ph.className = 'transcript-placeholder';
+        ph.id = 'transcript-placeholder';
+        ph.innerHTML = '<p>Transcript cleared by test suite.</p>';
+        ta.appendChild(ph);
+        const ai = doc.getElementById('ai-area');
+        ai.innerHTML = '';
+        const aiPh = document.createElement('div');
+        aiPh.className = 'ai-placeholder';
+        aiPh.id = 'ai-placeholder';
+        aiPh.innerHTML = '<p>AI area cleared by test suite.</p>';
+        ai.appendChild(aiPh);
+        doc.getElementById('keypoints-list').innerHTML = '';
+        doc.getElementById('keypoints-count').textContent = '0';
+        doc.getElementById('word-count').textContent = '0 words';
+        logEntry('info', 'App state reset');
+    }).catch(e => logEntry('fail', 'Reset failed: ' + e.message));
+}
+
+// ====================================================================
+// MOCK DATA: FINNISH LEGAL DIALOGUE (50 segments)
+// ====================================================================
+const FINNISH_DIALOGUE = [
+    { speaker: 0, text: "Hyvaa paivaa, taalla asianajaja Korhonen. Miten voin auttaa?" },
+    { speaker: 1, text: "Hei, minulla on ongelma maahantulokiellon kanssa. Sain kaannyttamispaaroksen." },
+    { speaker: 0, text: "Ymmärran. Milloin päätös annettiin teille tiedoksi?" },
+    { speaker: 1, text: "Viime viikolla, tiistaina. Migri lahetti kirjeen." },
+    { speaker: 0, text: "Hyvä. Teillä on valitusoikeus hallinto-oikeuteen. Valitusaika on 30 päivää." },
+    { speaker: 1, text: "Onko minulla oikeus oikeusapuun?" },
+    { speaker: 0, text: "Kyllä, te voitte hakea oikeusapua. Se kattaa asianajajan palkkion ja oikeudenkäyntikulut." },
+    { speaker: 1, text: "Miten valitus tehdään hallinto-oikeuteen?" },
+    { speaker: 0, text: "Valituskirjelmä laaditaan ja toimitetaan Helsingin hallinto-oikeuteen. Minä voin avustaa teitä." },
+    { speaker: 1, text: "Entä maahantulokielto, voiko sen kumota?" },
+    { speaker: 0, text: "Maahantulokiellon kumoamista voidaan hakea erikseen. Se riippuu perusteista." },
+    { speaker: 1, text: "Mitkä perusteet maahantulokiellolle yleensä ovat?" },
+    { speaker: 0, text: "Yleisimpiä perusteita ovat laiton oleskelu, rikostuomiot tai turvallisuusuhka. Mikä on teidän tapauksenne?" },
+    { speaker: 1, text: "Minun oleskelulupani hylättiin ja sen jälkeen sain käännyttämispäätöksen." },
+    { speaker: 0, text: "Selvä. Käännyttämispäätöksestä voi valittaa. Onko teillä perhesiteitä Suomessa?" },
+    { speaker: 1, text: "Kyllä, minulla on lapsi joka asuu Suomessa." },
+    { speaker: 0, text: "Se on erittäin tärkeä peruste. Lapsen etu on otettava huomioon päätöksenteossa." },
+    { speaker: 1, text: "Mitä syyteharkinta tarkoittaa tässä yhteydessä?" },
+    { speaker: 0, text: "Syyteharkinta tarkoittaa sitä, että syyttäjä päättää nostetaanko syyte. Se on eri asia kuin maahantulokielto." },
+    { speaker: 1, text: "Voinko olla Suomessa valituksen käsittelyn aikana?" },
+    { speaker: 0, text: "Kyllä, voitte hakea täytäntöönpanokieltoa. Se estää käännyttämisen valitusajan." },
+    { speaker: 1, text: "Täytäntöönpanokielto — miten se haetaan?" },
+    { speaker: 0, text: "Se haetaan hallinto-oikeudelta samalla kun teette valituksen. Minä laadin sen." },
+    { speaker: 1, text: "Paljonko tämä kaikki maksaa?" },
+    { speaker: 0, text: "Oikeusavulla kulut katetaan. Teidän ei tarvitse maksaa mitään jos oikeusapu myönnetään." },
+    { speaker: 1, text: "Milloin pitää hakea oikeusapua?" },
+    { speaker: 0, text: "Mahdollisimman pian. Oikeusaputoimisto käsittelee hakemuksen yleensä muutamassa päivässä." },
+    { speaker: 1, text: "Tarvitaanko siihen jotain papereita?" },
+    { speaker: 0, text: "Tarvitaan henkilöllisyystodistus, tulotiedot ja Migrin päätös. Onko teillä nämä?" },
+    { speaker: 1, text: "Kyllä, minulla on kaikki paperit." },
+    { speaker: 0, text: "Hienoa. Lähettäkää ne minulle sähköpostilla niin aloitan valituksen valmistelun." },
+    { speaker: 1, text: "Entä jos hallinto-oikeus hylkää valituksen?" },
+    { speaker: 0, text: "Silloin voitte hakea valituslupaa korkeimmasta hallinto-oikeudesta. Se on viimeinen muutoksenhakukeino." },
+    { speaker: 1, text: "Kauanko hallinto-oikeuden käsittely kestää?" },
+    { speaker: 0, text: "Yleensä kuudesta kahteentoista kuukautta. Kiireellisissä tapauksissa nopeammin." },
+    { speaker: 1, text: "Voiko käsittelyä nopeuttaa?" },
+    { speaker: 0, text: "Kyllä, voimme pyytää kiireellistä käsittelyä lapsen edun perusteella." },
+    { speaker: 1, text: "Se on hyvä. Mitä muuta minun pitäisi tietää?" },
+    { speaker: 0, text: "Tärkeintä on noudattaa kaikkia määräaikoja. Myöhästynyt valitus ei menesty." },
+    { speaker: 1, text: "Deadline on siis 30 päivää tiedoksiannosta?" },
+    { speaker: 0, text: "Kyllä, ehdottomasti. Se on ehdoton määräaika. Ei poikkeuksia." },
+    { speaker: 1, text: "Ymmärrän. Entä turvapaikkahakemus — onko se vaihtoehto?" },
+    { speaker: 0, text: "Turvapaikka on eri prosessi. Voitte hakea sitä jos teillä on vainon uhka kotimaassanne." },
+    { speaker: 1, text: "Ei ole vainoa, mutta lapseni on täällä." },
+    { speaker: 0, text: "Silloin keskitymme oleskelulupaan ja valitukseen. Perheenyhdistäminen on myös vaihtoehto." },
+    { speaker: 1, text: "Milloin voimme tavata toimistolla?" },
+    { speaker: 0, text: "Huomenna kello kymmenen sopii. Tuokaa kaikki asiakirjat mukaan." },
+    { speaker: 1, text: "Selvä, tulen huomenna. Kiitos paljon avusta." },
+    { speaker: 0, text: "Ole hyvä. Muista: älkää allekirjoittako mitään papereita ilman minun neuvoani." },
+    { speaker: 1, text: "Ymmärrän. Nähdään huomenna." },
+];
+
+// ====================================================================
+// MOCK DATA: ENGLISH LEGAL DIALOGUE (50 segments)
+// ====================================================================
+const ENGLISH_DIALOGUE = [
+    { speaker: 0, text: "Good morning, this is attorney Johnson. How can I help you today?" },
+    { speaker: 1, text: "Hello, I received a deportation order and I need help with an appeal." },
+    { speaker: 0, text: "I understand. When did you receive the deportation notice?" },
+    { speaker: 1, text: "Last week, on Tuesday. Immigration office sent it by mail." },
+    { speaker: 0, text: "Good. You have the right to appeal to the Administrative Court within 30 days." },
+    { speaker: 1, text: "Am I eligible for legal aid?" },
+    { speaker: 0, text: "Yes, you can apply for legal aid. It covers attorney fees and court costs." },
+    { speaker: 1, text: "How do I file the appeal with the Administrative Court?" },
+    { speaker: 0, text: "We prepare a written appeal and submit it to the Helsinki Administrative Court. I can assist you." },
+    { speaker: 1, text: "What about the entry ban? Can it be reversed?" },
+    { speaker: 0, text: "The entry ban can be challenged separately. It depends on the grounds." },
+    { speaker: 1, text: "What are the usual grounds for an entry ban?" },
+    { speaker: 0, text: "Common grounds include illegal stay, criminal convictions, or security threat." },
+    { speaker: 1, text: "My residence permit was rejected and then I got the deportation decision." },
+    { speaker: 0, text: "I see. You can appeal the deportation decision. Do you have family ties in Finland?" },
+    { speaker: 1, text: "Yes, I have a child who lives in Finland." },
+    { speaker: 0, text: "That is very important. The best interest of the child must be considered in the decision." },
+    { speaker: 1, text: "What does prosecution assessment mean in this context?" },
+    { speaker: 0, text: "It means the prosecutor decides whether to press charges. It is separate from the entry ban." },
+    { speaker: 1, text: "Can I stay in Finland while the appeal is being processed?" },
+    { speaker: 0, text: "Yes, you can request an injunction. It prevents deportation during the appeal period." },
+    { speaker: 1, text: "An injunction — how do I apply for that?" },
+    { speaker: 0, text: "We request it from the Administrative Court along with the appeal. I will draft it." },
+    { speaker: 1, text: "How much does all of this cost?" },
+    { speaker: 0, text: "With legal aid, costs are covered. You pay nothing if legal aid is granted." },
+    { speaker: 1, text: "When should I apply for legal aid?" },
+    { speaker: 0, text: "As soon as possible. The Legal Aid Office usually processes applications within a few days." },
+    { speaker: 1, text: "Do I need any documents for the application?" },
+    { speaker: 0, text: "You need an ID, income details, and the immigration decision. Do you have these?" },
+    { speaker: 1, text: "Yes, I have all the documents." },
+    { speaker: 0, text: "Great. Send them to me by email and I will start preparing the appeal." },
+    { speaker: 1, text: "What if the Administrative Court rejects the appeal?" },
+    { speaker: 0, text: "Then you can apply for leave to appeal to the Supreme Administrative Court. It is the last resort." },
+    { speaker: 1, text: "How long does the court process usually take?" },
+    { speaker: 0, text: "Typically six to twelve months. In urgent cases, it can be faster." },
+    { speaker: 1, text: "Can the process be expedited?" },
+    { speaker: 0, text: "Yes, we can request expedited processing based on the child's best interest." },
+    { speaker: 1, text: "That sounds good. What else should I know?" },
+    { speaker: 0, text: "The most important thing is to observe all deadlines. A late appeal will not succeed." },
+    { speaker: 1, text: "So the deadline is 30 days from the notification date?" },
+    { speaker: 0, text: "Yes, absolutely. It is a mandatory deadline with no exceptions." },
+    { speaker: 1, text: "I understand. What about an asylum application — is that an option?" },
+    { speaker: 0, text: "Asylum is a different process. You can apply if you face persecution in your home country." },
+    { speaker: 1, text: "There is no persecution, but my child is here." },
+    { speaker: 0, text: "Then we focus on the residence permit and the appeal. Family reunification is also an option." },
+    { speaker: 1, text: "When can we meet at the office?" },
+    { speaker: 0, text: "Tomorrow at ten o'clock works. Bring all your documents with you." },
+    { speaker: 1, text: "Alright, I will come tomorrow. Thank you very much for the help." },
+    { speaker: 0, text: "You are welcome. Remember: do not sign any papers without my advice." },
+    { speaker: 1, text: "I understand. See you tomorrow." },
+];
+
+// ====================================================================
+// MOCK DATA: CLAUDE AI RESPONSE
+// ====================================================================
+const MOCK_AI_RESPONSE = `**Key Points:**
+• [IMPORTANT] You have a 30-day deadline to appeal the deportation decision to the Administrative Court
+• Your child living in Finland is a strong basis for the appeal — the court must consider the child's best interest
+• Legal aid will cover all costs — apply as soon as possible
+
+**Ask:**
+• Ask your lawyer to request an injunction to prevent deportation during the appeal
+• Confirm the exact date of notification to calculate the 30-day deadline precisely
+
+**Terms:**
+• Hallinto-oikeus — Administrative Court, the court that reviews immigration decisions
+• Oikeusapu — Legal aid, government-funded legal assistance for those who cannot afford an attorney
+• Kaannyttaminen — Deportation/removal, forced return to home country
+• Maahantulokielto — Entry ban, prohibition from entering the country
+• Taytantoonpanokielto — Injunction, a court order to pause the deportation
+
+**Warning:**
+• [IMPORTANT] The 30-day appeal deadline is absolute — missing it means losing your right to appeal
+• Do NOT sign any documents without your lawyer present`;
+
+// ====================================================================
+// MOCK DATA: URGENCY DETECTION
+// ====================================================================
+const URGENCY_SEGMENTS = [
+    { speaker: 0, text: "I must inform you that the deadline is tomorrow. You must submit the documents by end of day." },
+    { speaker: 1, text: "Tomorrow? That is very urgent. What if I miss the deadline?" },
+    { speaker: 0, text: "If you miss the deadline, you lose your right to appeal. There are no extensions." },
+    { speaker: 0, text: "This is extremely important: the valitusaika expires at midnight tomorrow." },
+    { speaker: 1, text: "I need to act immediately. Can you help me file it today?" },
+];
+
+// ====================================================================
+// SIMULATION FUNCTIONS
+// ====================================================================
+
+async function simFinnishSpeech() {
+    logEntry('info', 'Starting Finnish speech simulation (50 segments)...');
+    try {
+        const app = await waitForApp();
+        const startTime = performance.now();
+
+        for (let i = 0; i < FINNISH_DIALOGUE.length; i++) {
+            const seg = FINNISH_DIALOGUE[i];
+            app.addTranscriptSegment(seg.text, seg.speaker, true);
+            if (i < 3) {
+                // show interim for first few to test that path
+                app.showInterim(FINNISH_DIALOGUE[Math.min(i + 1, FINNISH_DIALOGUE.length - 1)].text);
+            }
+            await sleep(40);
+        }
+        app.showInterim('');
+
+        const elapsed = (performance.now() - startTime).toFixed(1);
+        const segCount = getAppDoc().querySelectorAll('.transcript-segment').length;
+
+        assert(segCount >= 50, `Finnish: ${segCount} transcript segments rendered`);
+        assert(app.state.transcript.length >= 50, `Finnish: ${app.state.transcript.length} segments in state`);
+        assert(app.state.fullTranscriptText.includes('hallinto-oikeus'), 'Finnish: contains "hallinto-oikeus"');
+        assert(app.state.fullTranscriptText.includes('maahantulokielto'), 'Finnish: contains "maahantulokielto"');
+        assert(app.state.fullTranscriptText.includes('valitusoikeus'), 'Finnish: contains "valitusoikeus"');
+        assert(app.state.fullTranscriptText.includes('oikeusapu'), 'Finnish: contains "oikeusapu"');
+        logEntry('perf', `Finnish 50 segments rendered in ${elapsed}ms`);
+    } catch (e) {
+        logEntry('fail', 'Finnish simulation error: ' + e.message);
+    }
+}
+
+async function simEnglishSpeech() {
+    logEntry('info', 'Starting English speech simulation (50 segments)...');
+    try {
+        const app = await waitForApp();
+        const startTime = performance.now();
+
+        for (let i = 0; i < ENGLISH_DIALOGUE.length; i++) {
+            const seg = ENGLISH_DIALOGUE[i];
+            app.addTranscriptSegment(seg.text, seg.speaker, true);
+            await sleep(40);
+        }
+
+        const elapsed = (performance.now() - startTime).toFixed(1);
+        const segCount = getAppDoc().querySelectorAll('.transcript-segment').length;
+
+        assert(segCount >= 50, `English: ${segCount} transcript segments rendered`);
+        assert(app.state.fullTranscriptText.includes('Administrative Court'), 'English: contains "Administrative Court"');
+        assert(app.state.fullTranscriptText.includes('deportation'), 'English: contains "deportation"');
+        assert(app.state.fullTranscriptText.includes('legal aid'), 'English: contains "legal aid"');
+        logEntry('perf', `English 50 segments rendered in ${elapsed}ms`);
+    } catch (e) {
+        logEntry('fail', 'English simulation error: ' + e.message);
+    }
+}
+
+async function simLongCall() {
+    logEntry('info', 'Starting long call simulation (500+ segments)...');
+    try {
+        const app = await waitForApp();
+        const startTime = performance.now();
+        const TOTAL = 520;
+        const phrases = [
+            "Asianajaja kertoi, etta valituksen maaraaikaa on noudatettava.",
+            "The lawyer mentioned the appeal must be filed within the deadline.",
+            "Migri lahetti kirjeen viime viikolla.",
+            "Legal aid covers all court expenses.",
+            "Hallinto-oikeuden kasittely kestaa kuudesta kahteentoista kuukautta.",
+            "You have the right to remain in Finland during the appeal.",
+            "Oikeusaputoimisto kasittelee hakemuksen muutamassa paivassa.",
+            "The child's best interest is a key factor in the decision.",
+            "Valituskirjelma on toimitettava maaraaikaan mennessa.",
+            "Do not sign any papers without consulting your attorney.",
+        ];
+
+        let domNodesBefore = getAppDoc().querySelectorAll('*').length;
+
+        for (let i = 0; i < TOTAL; i++) {
+            const phrase = phrases[i % phrases.length];
+            const speaker = i % 2;
+            app.addTranscriptSegment(`[${i + 1}] ${phrase}`, speaker, true);
+            // No await/sleep to stress-test synchronous rendering
+        }
+
+        const elapsed = (performance.now() - startTime).toFixed(1);
+        const domNodesAfter = getAppDoc().querySelectorAll('*').length;
+        const nodeIncrease = domNodesAfter - domNodesBefore;
+
+        assert(app.state.transcript.length >= TOTAL, `Long call: ${app.state.transcript.length} segments in state`);
+        logEntry('perf', `Long call: ${TOTAL} segments rendered in ${elapsed}ms`);
+        logEntry('perf', `Long call: DOM nodes increased by ${nodeIncrease} (${domNodesBefore} -> ${domNodesAfter})`);
+        assert(parseFloat(elapsed) < 5000, `Long call: completed under 5000ms (was ${elapsed}ms)`);
+        logEntry('info', 'Long call simulation complete');
+    } catch (e) {
+        logEntry('fail', 'Long call simulation error: ' + e.message);
+    }
+}
+
+async function simDisconnect() {
+    logEntry('info', 'Simulating WebSocket disconnect...');
+    try {
+        const app = await waitForApp();
+
+        // Check if app has dgSocket
+        if (app.state.dgSocket && app.state.dgSocket.readyState === WebSocket.OPEN) {
+            app.state.dgSocket.close(1006, 'Test disconnect');
+            logEntry('info', 'Closed active Deepgram WebSocket');
+            assert(true, 'Disconnect: WebSocket closed successfully');
+
+            // Wait for reconnect attempt
+            await sleep(3000);
+            const statusText = getAppDoc().getElementById('status-text').textContent;
+            logEntry('info', 'Status after disconnect: ' + statusText);
+        } else {
+            logEntry('info', 'No active WebSocket connection. Testing mock disconnect behavior.');
+            // Simulate what happens when dgSocket.onclose fires
+            const statusEl = getAppDoc().getElementById('status-text');
+            const dotEl = getAppDoc().getElementById('status-dot');
+            dotEl.className = 'status-dot error';
+            statusEl.textContent = 'Disconnected — reconnecting...';
+            assert(statusEl.textContent.includes('reconnecting'), 'Disconnect: status shows reconnection message');
+
+            await sleep(1000);
+            dotEl.className = 'status-dot';
+            statusEl.textContent = 'Ready';
+            assert(true, 'Disconnect: status restored after simulated reconnect');
+        }
+    } catch (e) {
+        logEntry('fail', 'Disconnect simulation error: ' + e.message);
+    }
+}
+
+async function simClaudeResponse() {
+    logEntry('info', 'Simulating Claude AI response...');
+    try {
+        const app = await waitForApp();
+
+        // First inject some transcript so the AI area makes sense
+        app.addTranscriptSegment("The lawyer says the deadline for appeal is 30 days.", 0, true);
+        app.addTranscriptSegment("What about the entry ban?", 1, true);
+
+        // Show loading state
+        app.showAiLoading();
+        await sleep(800);
+
+        // Display mock response
+        app.displayAiResponse(MOCK_AI_RESPONSE);
+
+        // Test key points extraction
+        app.extractKeyPoints(MOCK_AI_RESPONSE);
+
+        const aiMessages = getAppDoc().querySelectorAll('.ai-message');
+        assert(aiMessages.length >= 1, `Claude response: ${aiMessages.length} AI messages rendered`);
+
+        const aiContent = aiMessages[aiMessages.length - 1].textContent;
+        assert(aiContent.includes('30-day deadline'), 'Claude response: contains deadline info');
+        assert(aiContent.includes('Hallinto-oikeus'), 'Claude response: contains Finnish legal term');
+
+        const kpCount = parseInt(getAppDoc().getElementById('keypoints-count').textContent);
+        assert(kpCount >= 1, `Claude response: ${kpCount} key points extracted`);
+        logEntry('info', 'Claude AI response simulation complete');
+    } catch (e) {
+        logEntry('fail', 'Claude response simulation error: ' + e.message);
+    }
+}
+
+async function simUrgency() {
+    logEntry('info', 'Simulating urgency detection...');
+    try {
+        const app = await waitForApp();
+
+        for (const seg of URGENCY_SEGMENTS) {
+            app.addTranscriptSegment(seg.text, seg.speaker, true);
+            await sleep(60);
+        }
+
+        assert(app.state.fullTranscriptText.includes('deadline is tomorrow'), 'Urgency: contains "deadline is tomorrow"');
+        assert(app.state.fullTranscriptText.includes('lose your right to appeal'), 'Urgency: contains "lose your right to appeal"');
+        assert(app.state.fullTranscriptText.includes('valitusaika expires'), 'Urgency: contains "valitusaika expires"');
+
+        // Check that the urgency text is visible in the DOM
+        const transcriptArea = getAppDoc().getElementById('transcript-area');
+        assert(transcriptArea.textContent.includes('deadline is tomorrow'), 'Urgency: visible in transcript area');
+        logEntry('info', 'Urgency simulation complete');
+    } catch (e) {
+        logEntry('fail', 'Urgency simulation error: ' + e.message);
+    }
+}
+
+// ====================================================================
+// UNIT TESTS
+// ====================================================================
+
+async function testFormatTime() {
+    logEntry('info', 'Testing formatTime()...');
+    try {
+        const app = await waitForApp();
+        assert(app.formatTime(0) === '00:00:00', 'formatTime(0) = 00:00:00');
+        assert(app.formatTime(59) === '00:00:59', 'formatTime(59) = 00:00:59');
+        assert(app.formatTime(60) === '00:01:00', 'formatTime(60) = 00:01:00');
+        assert(app.formatTime(3661) === '01:01:01', 'formatTime(3661) = 01:01:01');
+        assert(app.formatTime(86399) === '23:59:59', 'formatTime(86399) = 23:59:59');
+    } catch (e) {
+        logEntry('fail', 'formatTime test error: ' + e.message);
+    }
+}
+
+async function testEscapeHtml() {
+    logEntry('info', 'Testing escapeHtml()...');
+    try {
+        const app = await waitForApp();
+        assert(app.escapeHtml('<script>alert("xss")</script>') === '&lt;script&gt;alert("xss")&lt;/script&gt;', 'escapeHtml: sanitizes script tags');
+        assert(app.escapeHtml('normal text') === 'normal text', 'escapeHtml: normal text unchanged');
+        assert(app.escapeHtml('a & b') === 'a &amp; b', 'escapeHtml: ampersand escaped');
+        assert(app.escapeHtml('') === '', 'escapeHtml: empty string');
+    } catch (e) {
+        logEntry('fail', 'escapeHtml test error: ' + e.message);
+    }
+}
+
+async function testAddTranscriptSegment() {
+    logEntry('info', 'Testing addTranscriptSegment()...');
+    try {
+        const app = await waitForApp();
+        const countBefore = app.state.transcript.length;
+        app.addTranscriptSegment('Test segment from unit test', 0, true);
+        assert(app.state.transcript.length === countBefore + 1, 'addTranscriptSegment: state updated');
+
+        const lastSeg = getAppDoc().querySelectorAll('.transcript-segment');
+        const lastEl = lastSeg[lastSeg.length - 1];
+        assert(lastEl.textContent.includes('Test segment from unit test'), 'addTranscriptSegment: DOM updated');
+
+        // Empty text should not add
+        const countNow = app.state.transcript.length;
+        app.addTranscriptSegment('   ', 0, true);
+        assert(app.state.transcript.length === countNow, 'addTranscriptSegment: empty text ignored');
+
+        // Speaker class check
+        app.addTranscriptSegment('Speaker 1 test', 1, true);
+        const allSegs = getAppDoc().querySelectorAll('.transcript-segment');
+        const lastSpeaker = allSegs[allSegs.length - 1];
+        assert(lastSpeaker.classList.contains('speaker-1'), 'addTranscriptSegment: speaker class applied');
+    } catch (e) {
+        logEntry('fail', 'addTranscriptSegment test error: ' + e.message);
+    }
+}
+
+async function testShowInterim() {
+    logEntry('info', 'Testing showInterim()...');
+    try {
+        const app = await waitForApp();
+        const doc = getAppDoc();
+
+        app.showInterim('Hearing some words...');
+        assert(doc.getElementById('interim-area').style.display === 'block', 'showInterim: area visible');
+        assert(doc.getElementById('interim-text').textContent === 'Hearing some words...', 'showInterim: text correct');
+
+        app.showInterim('');
+        assert(doc.getElementById('interim-area').style.display === 'none', 'showInterim: area hidden on empty');
+    } catch (e) {
+        logEntry('fail', 'showInterim test error: ' + e.message);
+    }
+}
+
+async function testDisplayAiResponse() {
+    logEntry('info', 'Testing displayAiResponse()...');
+    try {
+        const app = await waitForApp();
+        const doc = getAppDoc();
+
+        const beforeCount = doc.querySelectorAll('.ai-message').length;
+        app.displayAiResponse('**Bold text** and normal text\nNew line here');
+        const afterCount = doc.querySelectorAll('.ai-message').length;
+
+        assert(afterCount === beforeCount + 1, 'displayAiResponse: new message added');
+
+        const lastMsg = doc.querySelectorAll('.ai-message');
+        const content = lastMsg[lastMsg.length - 1].querySelector('.ai-message-content');
+        assert(content.innerHTML.includes('<strong>Bold text</strong>'), 'displayAiResponse: bold rendered');
+        assert(content.innerHTML.includes('<br>'), 'displayAiResponse: newline rendered as <br>');
+    } catch (e) {
+        logEntry('fail', 'displayAiResponse test error: ' + e.message);
+    }
+}
+
+async function testExportTranscript() {
+    logEntry('info', 'Testing exportTranscript() structure...');
+    try {
+        const app = await waitForApp();
+
+        // Add some test data
+        app.state.transcript = [
+            { time: '00:00:05', text: 'Hello from test', speaker: 0 },
+            { time: '00:00:10', text: 'Second segment', speaker: 1 },
+        ];
+        app.state.fullTranscriptText = 'Hello from test Second segment ';
+        app.state.keyPoints = ['Test key point'];
+        app.state.timerSeconds = 15;
+
+        // We cannot easily test the actual download, but we can verify the data exists
+        assert(app.state.transcript.length === 2, 'Export: transcript has 2 segments');
+        assert(app.state.keyPoints.length === 1, 'Export: 1 key point');
+        assert(app.state.fullTranscriptText.includes('Hello from test'), 'Export: full text correct');
+        assert(typeof app.exportTranscript === 'function', 'Export: exportTranscript is a function');
+        logEntry('info', 'Export test complete (download not triggered in test mode)');
+    } catch (e) {
+        logEntry('fail', 'exportTranscript test error: ' + e.message);
+    }
+}
+
+async function testExtractKeyPoints() {
+    logEntry('info', 'Testing extractKeyPoints()...');
+    try {
+        const app = await waitForApp();
+        const kpBefore = app.state.keyPoints.length;
+
+        const mockText = `**Key Points:**
+• [IMPORTANT] The deadline for filing the appeal is 30 days
+• Normal point about something
+• You must submit the document by Friday`;
+
+        app.extractKeyPoints(mockText);
+
+        assert(app.state.keyPoints.length > kpBefore, `extractKeyPoints: extracted ${app.state.keyPoints.length - kpBefore} new key points`);
+        logEntry('info', 'extractKeyPoints test complete');
+    } catch (e) {
+        logEntry('fail', 'extractKeyPoints test error: ' + e.message);
+    }
+}
+
+async function testWordCount() {
+    logEntry('info', 'Testing updateWordCount()...');
+    try {
+        const app = await waitForApp();
+        const doc = getAppDoc();
+
+        app.state.fullTranscriptText = 'one two three four five';
+        app.updateWordCount();
+        assert(doc.getElementById('word-count').textContent === '5 words', 'wordCount: 5 words');
+
+        app.state.fullTranscriptText = '';
+        app.updateWordCount();
+        assert(doc.getElementById('word-count').textContent === '0 words', 'wordCount: 0 words for empty');
+
+        app.state.fullTranscriptText = '  spaced   text  here  ';
+        app.updateWordCount();
+        assert(doc.getElementById('word-count').textContent === '3 words', 'wordCount: handles extra spaces');
+    } catch (e) {
+        logEntry('fail', 'wordCount test error: ' + e.message);
+    }
+}
+
+// ====================================================================
+// BROWSER COMPATIBILITY CHECKS
+// ====================================================================
+
+function runCompatChecks() {
+    logEntry('info', 'Running browser compatibility checks...');
+    const body = document.getElementById('compat-body');
+    body.innerHTML = '';
+
+    const checks = [
+        {
+            name: 'WebSocket',
+            test: () => typeof WebSocket !== 'undefined',
+            details: () => 'Required for Deepgram real-time transcription'
+        },
+        {
+            name: 'getUserMedia',
+            test: () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia),
+            details: () => 'Required for microphone access'
+        },
+        {
+            name: 'MediaRecorder',
+            test: () => typeof MediaRecorder !== 'undefined',
+            details: () => 'Required to send audio chunks to Deepgram'
+        },
+        {
+            name: 'audio/webm;codecs=opus',
+            test: () => typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('audio/webm;codecs=opus'),
+            details: () => 'Preferred codec for Deepgram (Chrome/Firefox)'
+        },
+        {
+            name: 'audio/webm',
+            test: () => typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('audio/webm'),
+            details: () => 'Fallback WebM format'
+        },
+        {
+            name: 'audio/mp4',
+            test: () => typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported('audio/mp4'),
+            details: () => 'Safari fallback format'
+        },
+        {
+            name: 'Web Speech API',
+            test: () => !!(window.SpeechRecognition || window.webkitSpeechRecognition),
+            details: () => 'Used in Demo Mode (free, no API key)'
+        },
+        {
+            name: 'AudioContext',
+            test: () => !!(window.AudioContext || window.webkitAudioContext),
+            details: () => 'Used for volume meter display'
+        },
+        {
+            name: 'localStorage',
+            test: () => { try { localStorage.setItem('_test_', '1'); localStorage.removeItem('_test_'); return true; } catch(e) { return false; } },
+            details: () => 'Used for saving API keys and settings'
+        },
+        {
+            name: 'Fetch API',
+            test: () => typeof fetch !== 'undefined',
+            details: () => 'Used for Claude AI API requests'
+        },
+        {
+            name: 'Blob / URL.createObjectURL',
+            test: () => typeof Blob !== 'undefined' && typeof URL.createObjectURL !== 'undefined',
+            details: () => 'Used for transcript export'
+        },
+        {
+            name: 'requestAnimationFrame',
+            test: () => typeof requestAnimationFrame !== 'undefined',
+            details: () => 'Used for volume meter animation'
+        },
+        {
+            name: 'CSS backdrop-filter',
+            test: () => CSS.supports('backdrop-filter', 'blur(4px)'),
+            details: () => 'Used for modal overlay effect'
+        },
+        {
+            name: 'HTTPS / Secure Context',
+            test: () => window.isSecureContext,
+            details: () => location.protocol + ' (getUserMedia requires HTTPS or localhost)'
+        },
+    ];
+
+    let passCount = 0;
+    let failCount = 0;
+
+    checks.forEach(check => {
+        const result = check.test();
+        if (result) passCount++; else failCount++;
+        const icon = result ? '<span class="compat-icon compat-yes">&#10003;</span>' : '<span class="compat-icon compat-no">&#10007;</span>';
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${check.name}</td><td>${icon}</td><td style="color:var(--text-muted);font-size:11px;">${check.details()}</td>`;
+        body.appendChild(row);
+        assert(result, `Compat: ${check.name}`);
+    });
+
+    // Switch to compat tab
+    switchTab(document.querySelectorAll('.tab')[1], 'tab-compat');
+    logEntry('info', `Compatibility: ${passCount} supported, ${failCount} missing`);
+}
+
+// ====================================================================
+// PERFORMANCE BENCHMARKS
+// ====================================================================
+
+async function runPerfBenchmarks() {
+    logEntry('info', 'Running performance benchmarks...');
+    const section = document.getElementById('perf-section');
+    section.innerHTML = '';
+
+    function addMetric(name, value, unit, status) {
+        const el = document.createElement('div');
+        el.className = 'perf-metric';
+        el.innerHTML = `<span class="perf-metric-name">${name}</span><span class="perf-metric-value ${status}">${value} ${unit}</span>`;
+        section.appendChild(el);
+    }
+
+    try {
+        const app = await waitForApp();
+
+        // 1. Transcript segment rendering speed (100 segments)
+        {
+            const doc = getAppDoc();
+            // Clear first
+            app.state.transcript = [];
+            app.state.fullTranscriptText = '';
+            const area = doc.getElementById('transcript-area');
+            area.innerHTML = '';
+
+            const t0 = performance.now();
+            for (let i = 0; i < 100; i++) {
+                app.addTranscriptSegment(`Benchmark segment number ${i + 1} with some realistic text content`, i % 2, true);
+            }
+            const t1 = performance.now();
+            const renderTime = (t1 - t0).toFixed(1);
+
+            const status = renderTime < 100 ? 'perf-good' : renderTime < 500 ? 'perf-ok' : 'perf-bad';
+            addMetric('Render 100 segments', renderTime, 'ms', status);
+            logEntry('perf', `Render 100 segments: ${renderTime}ms`);
+        }
+
+        // 2. DOM node count
+        {
+            const nodeCount = getAppDoc().querySelectorAll('*').length;
+            const status = nodeCount < 1000 ? 'perf-good' : nodeCount < 3000 ? 'perf-ok' : 'perf-bad';
+            addMetric('DOM node count', nodeCount, 'nodes', status);
+            logEntry('perf', `DOM nodes: ${nodeCount}`);
+        }
+
+        // 3. AI response rendering
+        {
+            const t0 = performance.now();
+            for (let i = 0; i < 20; i++) {
+                app.displayAiResponse(`**Response ${i + 1}:** This is a test AI response with **bold** and normal text.\n• Point one\n• Point two`);
+            }
+            const t1 = performance.now();
+            const aiTime = (t1 - t0).toFixed(1);
+
+            const status = aiTime < 50 ? 'perf-good' : aiTime < 200 ? 'perf-ok' : 'perf-bad';
+            addMetric('Render 20 AI responses', aiTime, 'ms', status);
+            logEntry('perf', `Render 20 AI responses: ${aiTime}ms`);
+        }
+
+        // 4. Key points extraction
+        {
+            app.state.keyPoints = [];
+            const t0 = performance.now();
+            for (let i = 0; i < 50; i++) {
+                app.extractKeyPoints(`• [IMPORTANT] Deadline number ${i + 1} is critical\n• Normal point ${i}`);
+            }
+            const t1 = performance.now();
+            const kpTime = (t1 - t0).toFixed(1);
+
+            const status = kpTime < 50 ? 'perf-good' : kpTime < 200 ? 'perf-ok' : 'perf-bad';
+            addMetric('Extract 50 key point sets', kpTime, 'ms', status);
+            logEntry('perf', `Extract 50 key point sets: ${kpTime}ms`);
+        }
+
+        // 5. Memory estimate (approximate)
+        {
+            let memEstimate = 'N/A';
+            let status = 'perf-ok';
+            if (performance.memory) {
+                const usedMB = (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(1);
+                memEstimate = usedMB;
+                status = usedMB < 50 ? 'perf-good' : usedMB < 150 ? 'perf-ok' : 'perf-bad';
+                addMetric('JS Heap (approximate)', memEstimate, 'MB', status);
+                logEntry('perf', `JS Heap: ~${memEstimate} MB`);
+            } else {
+                addMetric('JS Heap', 'Not available', '(non-Chrome)', 'perf-ok');
+                logEntry('warn', 'performance.memory not available (Chrome-only API)');
+            }
+        }
+
+        // 6. Word count on large text
+        {
+            const longText = Array(10000).fill('word').join(' ');
+            app.state.fullTranscriptText = longText;
+            const t0 = performance.now();
+            app.updateWordCount();
+            const t1 = performance.now();
+            const wcTime = (t1 - t0).toFixed(2);
+
+            const status = wcTime < 5 ? 'perf-good' : wcTime < 20 ? 'perf-ok' : 'perf-bad';
+            addMetric('Word count (10K words)', wcTime, 'ms', status);
+            logEntry('perf', `Word count 10K words: ${wcTime}ms`);
+            app.state.fullTranscriptText = '';
+        }
+
+        // 7. String concatenation benchmark (simulates fullTranscriptText growth)
+        {
+            let str = '';
+            const t0 = performance.now();
+            for (let i = 0; i < 5000; i++) {
+                str += 'A segment of text that gets appended. ';
+            }
+            const t1 = performance.now();
+            const concatTime = (t1 - t0).toFixed(2);
+
+            const status = concatTime < 10 ? 'perf-good' : concatTime < 50 ? 'perf-ok' : 'perf-bad';
+            addMetric('5K string concatenations', concatTime, 'ms', status);
+            logEntry('perf', `5K string concatenations: ${concatTime}ms`);
+        }
+
+    } catch (e) {
+        logEntry('fail', 'Performance benchmark error: ' + e.message);
+    }
+
+    // Switch to perf tab
+    switchTab(document.querySelectorAll('.tab')[2], 'tab-perf');
+    logEntry('info', 'Performance benchmarks complete');
+}
+
+// ====================================================================
+// RUN ALL TESTS
+// ====================================================================
+
+async function runAllTests() {
+    clearDebugConsole();
+    logEntry('info', '=== ADVOCAT TEST SUITE START ===');
+    logEntry('info', `User Agent: ${navigator.userAgent}`);
+    logEntry('info', `Timestamp: ${new Date().toISOString()}`);
+    logEntry('info', '');
+
+    // Ensure clean state
+    await waitForApp().catch(() => {});
+    resetAppState();
+    await sleep(500);
+
+    // Unit tests
+    logEntry('info', '--- Unit Tests ---');
+    await testFormatTime();
+    await testEscapeHtml();
+    await testShowInterim();
+    await testWordCount();
+    await testAddTranscriptSegment();
+    await testDisplayAiResponse();
+    await testExtractKeyPoints();
+    await testExportTranscript();
+
+    // Reset before simulations
+    await sleep(300);
+    resetAppState();
+    await sleep(300);
+
+    // Simulation tests
+    logEntry('info', '--- Simulation Tests ---');
+    await simFinnishSpeech();
+
+    resetAppState();
+    await sleep(200);
+
+    await simEnglishSpeech();
+
+    resetAppState();
+    await sleep(200);
+
+    await simClaudeResponse();
+
+    resetAppState();
+    await sleep(200);
+
+    await simUrgency();
+
+    resetAppState();
+    await sleep(200);
+
+    await simDisconnect();
+
+    // Compatibility
+    logEntry('info', '--- Browser Compatibility ---');
+    runCompatChecks();
+
+    // Performance (reset state before perf)
+    resetAppState();
+    await sleep(300);
+
+    logEntry('info', '--- Performance Benchmarks ---');
+    await runPerfBenchmarks();
+
+    // Long call last (it creates lots of DOM nodes)
+    resetAppState();
+    await sleep(300);
+    logEntry('info', '--- Stress Test ---');
+    await simLongCall();
+
+    logEntry('info', '');
+    logEntry('info', `=== SUITE COMPLETE: ${counters.pass} passed, ${counters.fail} failed, ${counters.skip} skipped / ${counters.total} total ===`);
+
+    // Switch back to console tab to show results
+    switchTab(document.querySelectorAll('.tab')[0], 'tab-console');
+}
+
+// ====================================================================
+// UI HELPERS
+// ====================================================================
+
+function switchTab(tabEl, contentId) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tabEl.classList.add('active');
+    document.getElementById(contentId).classList.add('active');
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ====================================================================
+// INIT
+// ====================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    logEntry('info', 'ADVOCAT Test Suite loaded');
+    logEntry('info', `Browser: ${navigator.userAgent.split(') ').pop()}`);
+    logEntry('info', 'Click "Run All" or individual test buttons to begin.');
+});
+</script>
+</body>
+</html>

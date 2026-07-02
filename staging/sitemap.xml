@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://advocat.ee/</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/?lang=fi"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/app.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/lawyers.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/call-assistant/index.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/privacy.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/terms.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Public quality scorecard (radical-transparency moat) -->
+  <url>
+    <loc>https://advocat.ee/scorecard.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/scorecard/methodology.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
+  <!-- Blog index pages (trilingual) -->
+  <url>
+    <loc>https://advocat.ee/blog/</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/en/</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/"/>
+  </url>
+
+  <!-- 1. Domestic violence / Perevagivald (ET+RU+EN) -->
+  <url>
+    <loc>https://advocat.ee/blog/perevagivald-abi.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/perevagivald-abi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/domashnee-nasilie.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/domestic-violence-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/domashnee-nasilie.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/perevagivald-abi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/domashnee-nasilie.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/domestic-violence-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/en/domestic-violence-estonia.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/perevagivald-abi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/domashnee-nasilie.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/domestic-violence-estonia.html"/>
+  </url>
+
+  <!-- 2. Alimony / Elatis (ET+RU only) -->
+  <url>
+    <loc>https://advocat.ee/blog/elatis-eestis.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/elatis-eestis.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/alimenty-estoniya.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/alimenty-estoniya.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/elatis-eestis.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/alimenty-estoniya.html"/>
+  </url>
+
+  <!-- 3. Internet fraud / Internetipettus (ET+RU+EN) -->
+  <url>
+    <loc>https://advocat.ee/blog/internetipettus.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/internetipettus.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/internet-moshennichestvo.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/online-fraud-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/internet-moshennichestvo.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/internetipettus.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/internet-moshennichestvo.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/online-fraud-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/en/online-fraud-estonia.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/internetipettus.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/internet-moshennichestvo.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/online-fraud-estonia.html"/>
+  </url>
+
+  <!-- 4. Wrongful dismissal / Toooigus (ET+RU+EN) -->
+  <url>
+    <loc>https://advocat.ee/blog/toooigus-vallandamine.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/toooigus-vallandamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/nezakonnoe-uvolnenie.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/employee-rights-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/nezakonnoe-uvolnenie.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/toooigus-vallandamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/nezakonnoe-uvolnenie.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/employee-rights-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/en/employee-rights-estonia.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/toooigus-vallandamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/nezakonnoe-uvolnenie.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/employee-rights-estonia.html"/>
+  </url>
+
+  <!-- 5. Cyberbullying / Kuberkiusamine (ET+RU only) -->
+  <url>
+    <loc>https://advocat.ee/blog/kuberkiusamine.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kuberkiusamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/kiberbulling.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/kiberbulling.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kuberkiusamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/kiberbulling.html"/>
+  </url>
+
+  <!-- 6. Stalking / Jalitamine (ET+RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/jalitamine-kaitse.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/jalitamine-kaitse.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/presledovanie-stalking.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/presledovanie-stalking.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/jalitamine-kaitse.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/presledovanie-stalking.html"/>
+  </url>
+
+  <!-- 7. Free legal aid / Tasuta oigusabi (ET+RU+EN) -->
+  <url>
+    <loc>https://advocat.ee/blog/tasuta-oigusabi.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tasuta-oigusabi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/besplatnaya-pomosh.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/free-legal-aid-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/besplatnaya-pomosh.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tasuta-oigusabi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/besplatnaya-pomosh.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/free-legal-aid-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/en/free-legal-aid-estonia.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tasuta-oigusabi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/besplatnaya-pomosh.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/free-legal-aid-estonia.html"/>
+  </url>
+
+  <!-- 8. Consumer rights / Tarbijakaitse (ET+RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/tarbijakaitse-oigused.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tarbijakaitse-oigused.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/prava-potrebitelya.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/prava-potrebitelya.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tarbijakaitse-oigused.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/prava-potrebitelya.html"/>
+  </url>
+
+  <!-- 9. Assault / Peksmine (ET+RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/peksmine-ohvri-oigused.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/peksmine-ohvri-oigused.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/poboi-nasiliye.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/poboi-nasiliye.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/peksmine-ohvri-oigused.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/poboi-nasiliye.html"/>
+  </url>
+
+  <!-- 10. Deportation / Valjasaatmine (ET+RU+EN) -->
+  <url>
+    <loc>https://advocat.ee/blog/valjasaatmine-vaidlustamine.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/valjasaatmine-vaidlustamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/deportaciya-obzhalovanie.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/deportation-appeal-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/deportaciya-obzhalovanie.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/valjasaatmine-vaidlustamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/deportaciya-obzhalovanie.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/deportation-appeal-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/en/deportation-appeal-estonia.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/valjasaatmine-vaidlustamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/deportaciya-obzhalovanie.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/deportation-appeal-estonia.html"/>
+  </url>
+
+  <!-- 11. FAQ / KKK oigusabi (ET+RU+EN) -->
+  <url>
+    <loc>https://advocat.ee/blog/kkk-oigusabi.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kkk-oigusabi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/chasto-zadavaemye-voprosy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/faq-legal-help-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/chasto-zadavaemye-voprosy.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kkk-oigusabi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/chasto-zadavaemye-voprosy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/faq-legal-help-estonia.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/en/faq-legal-help-estonia.html</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kkk-oigusabi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/chasto-zadavaemye-voprosy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/faq-legal-help-estonia.html"/>
+  </url>
+
+  <!-- ============================================================ -->
+  <!-- SEO Wave 2 (2026-05-14): 15 deep-content articles ET+RU+FI    -->
+  <!-- ============================================================ -->
+
+  <!-- 12. Wrongful dismissal deep-dive / Tooandja vallandas mind (ET) -->
+  <url>
+    <loc>https://advocat.ee/blog/tooandja-vallandas-mind.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tooandja-vallandas-mind.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/uvolnenie-rabota-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/irtisanominen-suomessa-oikeudet.html"/>
+  </url>
+
+  <!-- 13. Rental contract termination / Uurileping lopetamine (ET) -->
+  <url>
+    <loc>https://advocat.ee/blog/uurileping-lopetamine.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/uurileping-lopetamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/dogovor-arendy-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/vuokrasopimus-paattaminen-suomi.html"/>
+  </url>
+
+  <!-- 14. Free legal aid 2026 (CRITICAL — SERP vacuum) / Tasuta oigusabi Eestis 2026 (ET) -->
+  <url>
+    <loc>https://advocat.ee/blog/tasuta-oigusabi-eestis-2026.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tasuta-oigusabi-eestis-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/besplatnaya-yuridicheskaya-pomoshch-estoniya-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/ilmainen-oikeusapu-suomi-2026.html"/>
+  </url>
+
+  <!-- 15. Alimony calculation 2026 / Elatis arvutamine 2026 (ET) -->
+  <url>
+    <loc>https://advocat.ee/blog/elatis-arvutamine-2026.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/elatis-arvutamine-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/alimenty-estoniya-raschet.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/elatusapu-suomi-laskeminen.html"/>
+  </url>
+
+  <!-- 16. Deportation order appeal / Valjasaatmiskorralduse vaidlustamine (ET) -->
+  <url>
+    <loc>https://advocat.ee/blog/valjasaatmiskorralduse-vaidlustamine.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/valjasaatmiskorralduse-vaidlustamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/vid-na-zhitelstvo-otkaz.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/oleskelulupa-hylkaaminen-valitus.html"/>
+  </url>
+
+  <!-- 17. Dismissal Estonia (RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/uvolnenie-rabota-estoniya.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tooandja-vallandas-mind.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/uvolnenie-rabota-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/irtisanominen-suomessa-oikeudet.html"/>
+  </url>
+
+  <!-- 18. Rental contract Estonia (RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/dogovor-arendy-estoniya.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/uurileping-lopetamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/dogovor-arendy-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/vuokrasopimus-paattaminen-suomi.html"/>
+  </url>
+
+  <!-- 19. Free legal aid 2026 (RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/besplatnaya-yuridicheskaya-pomoshch-estoniya-2026.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tasuta-oigusabi-eestis-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/besplatnaya-yuridicheskaya-pomoshch-estoniya-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/ilmainen-oikeusapu-suomi-2026.html"/>
+  </url>
+
+  <!-- 20. Alimony calculation (RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/alimenty-estoniya-raschet.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/elatis-arvutamine-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/alimenty-estoniya-raschet.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/elatusapu-suomi-laskeminen.html"/>
+  </url>
+
+  <!-- 21. Residence permit denial (RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/vid-na-zhitelstvo-otkaz.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/valjasaatmiskorralduse-vaidlustamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/vid-na-zhitelstvo-otkaz.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/oleskelulupa-hylkaaminen-valitus.html"/>
+  </url>
+
+  <!-- 22. Dismissal Finland (FI) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/irtisanominen-suomessa-oikeudet.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tooandja-vallandas-mind.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/uvolnenie-rabota-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/irtisanominen-suomessa-oikeudet.html"/>
+  </url>
+
+  <!-- 23. Rental contract termination Finland (FI) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/vuokrasopimus-paattaminen-suomi.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/uurileping-lopetamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/dogovor-arendy-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/vuokrasopimus-paattaminen-suomi.html"/>
+  </url>
+
+  <!-- 24. Free legal aid Finland 2026 (FI) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/ilmainen-oikeusapu-suomi-2026.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tasuta-oigusabi-eestis-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/besplatnaya-yuridicheskaya-pomoshch-estoniya-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/ilmainen-oikeusapu-suomi-2026.html"/>
+  </url>
+
+  <!-- 25. Child support Finland (FI) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/elatusapu-suomi-laskeminen.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/elatis-arvutamine-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/alimenty-estoniya-raschet.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/elatusapu-suomi-laskeminen.html"/>
+  </url>
+
+  <!-- 26. Residence permit denial appeal Finland (FI) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/oleskelulupa-hylkaaminen-valitus.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/valjasaatmiskorralduse-vaidlustamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/vid-na-zhitelstvo-otkaz.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/oleskelulupa-hylkaaminen-valitus.html"/>
+  </url>
+
+  <!-- ============================================================ -->
+  <!-- Free Legal Tools (2026-05-14): 4 standalone web apps         -->
+  <!-- ============================================================ -->
+
+  <!-- Tools index gallery -->
+  <url>
+    <loc>https://advocat.ee/tools/</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Tool 1: Alimony Calculator / Elatis Kalkulaator -->
+  <url>
+    <loc>https://advocat.ee/tools/elatis-kalkulaator.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Tool 2: Termination Notice Generator / Toolepingu Ulesutlemise Avaldus -->
+  <url>
+    <loc>https://advocat.ee/tools/toolepingu-ulesutlemise-avaldus.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Tool 3: Lease Termination Notice / Uurilepingu Lopetamise Teade -->
+  <url>
+    <loc>https://advocat.ee/tools/uurilepingu-lopetamise-teade.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Tool 4: Appeal Deadline Calculator / Vaidlustamise Tahtaja Kalkulaator -->
+  <url>
+    <loc>https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>

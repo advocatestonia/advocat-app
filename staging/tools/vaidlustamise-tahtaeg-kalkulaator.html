@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="meta.title">Vaidlustamise tähtaja kalkulaator — arvuta kaebamise tähtaeg | Advocat</title>
+    <meta name="description" data-i18n="meta.description" data-i18n-attr="content" content="Tasuta kalkulaator otsuse vaidlustamise tähtaja arvutamiseks. Töövaidluskomisjon, halduskohus, PPA, Migri.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html">
+    <link rel="alternate" hreflang="et" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=et">
+    <link rel="alternate" hreflang="en" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=en">
+    <link rel="alternate" hreflang="ru" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=ru">
+    <link rel="alternate" hreflang="fi" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=fi">
+    <link rel="alternate" hreflang="de" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=de">
+    <link rel="alternate" hreflang="fr" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=fr">
+    <link rel="alternate" hreflang="es" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=es">
+    <link rel="alternate" hreflang="it" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=it">
+    <link rel="alternate" hreflang="uk" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=uk">
+    <link rel="alternate" hreflang="lv" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=lv">
+    <link rel="alternate" hreflang="lt" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=lt">
+    <link rel="alternate" hreflang="pl" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=pl">
+    <link rel="alternate" hreflang="sv" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=sv">
+    <link rel="alternate" hreflang="ar" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=ar">
+    <link rel="alternate" hreflang="fa" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=fa">
+    <link rel="alternate" hreflang="tr" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=tr">
+    <link rel="alternate" hreflang="ro" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html?lang=ro">
+    <link rel="alternate" hreflang="x-default" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.6; }
+        a { color: #0A8F6C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+        .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo img { height: 80px; width: auto; }
+        .logo-text { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; line-height: 1; margin-left: -4px; transform: translateY(2px); }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:first-child { margin-left: 0; }
+        .header-nav a:hover { color: #fff; text-decoration: none; }
+        .lang-wrap { position: relative; }
+        .lang-btn { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; padding: 7px 12px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; letter-spacing: 0.04em; transition: background 0.15s; }
+        .lang-btn:hover { background: rgba(255,255,255,0.14); }
+        .lang-btn .caret { font-size: 10px; opacity: 0.7; }
+        .lang-menu { position: absolute; top: calc(100% + 8px); right: 0; background: #fff; border: 1px solid #E2E8F0; border-radius: 10px; box-shadow: 0 12px 32px -8px rgba(15,27,53,.18); padding: 6px; min-width: 200px; max-height: 360px; overflow-y: auto; z-index: 200; display: none; }
+        .lang-menu.open { display: block; }
+        .lang-menu button { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 6px; font-size: 14px; color: #1A2B4A; font-weight: 500; background: #fff; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+        .lang-menu button:hover { background: #F7F8FA; }
+        .lang-menu button.active { background: rgba(10,143,108,.08); color: #0A8F6C; font-weight: 700; }
+        .lang-menu .lang-code { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: #8A9AAA; }
+        [dir="rtl"] .lang-menu { right: auto; left: 0; }
+        .breadcrumb { max-width: 900px; margin: 24px auto 0; padding: 0 20px; font-size: 13px; color: #8A9AAA; }
+        .breadcrumb a { color: #0A8F6C; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+        .tool-header { margin: 24px 0 32px; text-align: center; }
+        .tool-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; background: #F0FDFA; color: #0A8F6C; margin-bottom: 16px; }
+        .tool-header h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 12px; color: #1A2B4A; }
+        .tool-header p { font-size: 17px; color: #5A6A7A; max-width: 640px; margin: 0 auto; }
+        .calc-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 24px rgba(26,43,74,0.08); border: 1px solid #E2E8F0; margin-bottom: 24px; }
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; color: #1A2B4A; margin-bottom: 8px; }
+        .form-group select, .form-group input { width: 100%; padding: 14px 16px; font-size: 16px; border: 1px solid #E2E8F0; border-radius: 10px; font-family: inherit; color: #1A2B4A; background: #fff; }
+        .form-group select:focus, .form-group input:focus { outline: none; border-color: #0A8F6C; box-shadow: 0 0 0 3px rgba(10,143,108,0.1); }
+        .form-group .helper { font-size: 13px; color: #8A9AAA; margin-top: 6px; }
+        .result-card { border-radius: 16px; padding: 36px 32px; margin-top: 24px; transition: all 0.3s; }
+        .result-card.green { background: linear-gradient(135deg, #F0FDFA 0%, #E6FFFA 100%); border: 2px solid #0A8F6C; }
+        .result-card.yellow { background: linear-gradient(135deg, #FFFAF0 0%, #FEF5E7 100%); border: 2px solid #D69E2E; }
+        .result-card.red { background: linear-gradient(135deg, #FFF5F5 0%, #FED7D7 100%); border: 2px solid #C53030; }
+        .result-card.expired { background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%); border: 2px solid #1A202C; color: #fff; }
+        .result-label { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .result-card.green .result-label { color: #0A8F6C; }
+        .result-card.yellow .result-label { color: #D69E2E; }
+        .result-card.red .result-label { color: #C53030; }
+        .result-card.expired .result-label { color: rgba(255,255,255,0.7); }
+        .result-deadline { font-size: 36px; font-weight: 800; color: #1A2B4A; line-height: 1.2; margin-bottom: 12px; }
+        .result-card.expired .result-deadline { color: #fff; }
+        .result-countdown { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+        .result-card.green .result-countdown { color: #0A8F6C; }
+        .result-card.yellow .result-countdown { color: #D69E2E; }
+        .result-card.red .result-countdown { color: #C53030; }
+        .result-card.expired .result-countdown { color: #FED7D7; }
+        .result-subtitle { font-size: 15px; color: #2D3748; margin-bottom: 16px; line-height: 1.7; }
+        .result-card.expired .result-subtitle { color: rgba(255,255,255,0.85); }
+        .consequence-box { background: rgba(255,255,255,0.7); border-radius: 10px; padding: 16px 20px; margin-top: 16px; font-size: 14px; line-height: 1.6; }
+        .result-card.expired .consequence-box { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); }
+        .consequence-box strong { color: #1A2B4A; }
+        .result-card.expired .consequence-box strong { color: #fff; }
+        .cta-box { background: linear-gradient(135deg, #1A2B4A 0%, #2C4274 100%); border-radius: 16px; padding: 36px 28px; margin: 36px 0; text-align: center; color: #fff; }
+        .cta-box h3 { font-size: 24px; margin-bottom: 10px; color: #fff; }
+        .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 20px; font-size: 16px; }
+        .cta-btn { display: inline-block; background: #0A8F6C; color: #fff; padding: 14px 36px; border-radius: 50px; font-size: 16px; font-weight: 700; transition: all 0.2s; }
+        .cta-btn:hover { background: #078a63; text-decoration: none; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10,143,108,0.3); }
+        .disclaimer { background: #FFFAF0; border-left: 4px solid #DD6B20; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; font-size: 14px; color: #5A6A7A; }
+        .disclaimer strong { color: #DD6B20; }
+        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.7); }
+        @media (max-width: 600px) {
+            .tool-header h1 { font-size: 26px; }
+            .logo img { height: 56px; }
+            .logo-text { font-size: 22px; }
+            .calc-card { padding: 20px; }
+            .result-card { padding: 24px 20px; }
+            .result-deadline { font-size: 28px; }
+            .result-countdown { font-size: 18px; }
+            .header-nav a { margin-left: 12px; font-size: 13px; }
+            .header-nav .nav-blog { display: none; }
+        }
+    </style>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Cookie consent (W2-13): per-jurisdiction granular banner. MUST load before
+     _utm_capture.js and _analytics.js so consent gates every pixel. -->
+<script src="/_cookie_consent.js" defer></script>
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="https://advocat.ee" class="logo"><img src="/blog/logo_shield.png" alt="Advocat"><span class="logo-text">Advocat</span></a>
+            <div class="header-right">
+                <nav class="header-nav">
+                    <a href="https://advocat.ee" data-i18n="nav.home">Avaleht</a>
+                    <a href="/tools/" data-i18n="nav.tools">Tööriistad</a>
+                    <a href="/blog/" class="nav-blog" data-i18n="nav.blog">Blogi</a>
+                    <a href="/app.html" data-i18n="nav.try">Proovi tasuta</a>
+                </nav>
+                <div class="lang-wrap">
+                    <button class="lang-btn" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
+                        <span id="lang-current">ET</span><span class="caret">▾</span>
+                    </button>
+                    <div class="lang-menu" id="lang-menu" role="menu"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="https://advocat.ee">Advocat</a> &rsaquo; <a href="/tools/" data-i18n="bc.tools">Tööriistad</a> &rsaquo; <span data-i18n="bc.here">Vaidlustamise tähtaja kalkulaator</span>
+    </div>
+
+    <div class="container">
+        <div class="tool-header">
+            <span class="tool-tag" data-i18n="hero.tag">Tasuta tööriist</span>
+            <h1 data-i18n="hero.title">Vaidlustamise tähtaja kalkulaator</h1>
+            <p data-i18n="hero.subtitle">Arvuta kaebamise tähtaeg otsuse kuupäeva järgi. Arvestab nädalavahetustega — kui tähtaeg langeb nädalavahetusele, pikeneb järgmise tööpäevani.</p>
+        </div>
+
+        <div class="calc-card">
+            <div class="form-group">
+                <label for="decisionType" data-i18n="form.decision_type">Otsuse tüüp *</label>
+                <select id="decisionType">
+                    <option value="tvk" data-i18n="opt.tvk">Töövaidluskomisjoni otsus → 30 päeva kohtusse</option>
+                    <option value="halduskohus" data-i18n="opt.halduskohus">Halduskohtu otsus → 30 päeva Riigikohtusse</option>
+                    <option value="ppa" data-i18n="opt.ppa">PPA elamisloa otsus → 30 päeva halduskohtusse</option>
+                    <option value="tax" data-i18n="opt.tax">Maksu- ja Tolliameti otsus → 30 päeva vaidekomisjoni</option>
+                    <option value="migri" data-i18n="opt.migri">Migri (Soome) otsus → 30 päeva halduskohtusse</option>
+                    <option value="eviction" data-i18n="opt.eviction">Väljatõstmise teade → 14 päeva</option>
+                    <option value="kho" data-i18n="opt.kho">KHO valitusluba (Soome) → 30 päeva</option>
+                    <option value="custom" data-i18n="opt.custom">Muu otsus — käsitsi tähtaeg</option>
+                </select>
+                <div class="helper" id="decisionHelper"></div>
+            </div>
+
+            <div class="form-group" id="customDaysGroup" style="display:none;">
+                <label for="customDays" data-i18n="form.custom_days">Tähtaja päevad</label>
+                <input type="number" id="customDays" min="1" max="365" value="30">
+            </div>
+
+            <div class="form-group">
+                <label for="decisionDate" data-i18n="form.decision_date">Otsuse kuupäev (kättesaamise päev) *</label>
+                <input type="date" id="decisionDate">
+                <div class="helper" data-i18n="form.decision_date_helper">Tähtaeg hakkab tavaliselt järgmisest tööpäevast (HMS § 33).</div>
+            </div>
+
+            <div class="result-card green" id="resultCard">
+                <div class="result-label" id="resultLabel" data-i18n="result.label">Sinu vaidlustamise tähtaeg</div>
+                <div class="result-deadline" id="resultDeadline">—</div>
+                <div class="result-countdown" id="resultCountdown">—</div>
+                <div class="result-subtitle" id="resultSubtitle" data-i18n="result.placeholder">Vali otsuse tüüp ja sisesta kuupäev.</div>
+                <div class="consequence-box" id="consequenceBox"></div>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <h3 data-i18n="cta.title">Tähtaeg läheneb? Advocat aitab kaebust koostada</h3>
+            <p data-i18n="cta.body">Vaie või kaebus on keeruline juriidiline dokument — Advocat AI aitab seda koostada ja õigeaegselt esitada. 17 keeles.</p>
+            <a href="/app.html?from=tahtaeg-kalkulaator" class="cta-btn" data-i18n="cta.btn">Saa Advocat õigusabi →</a>
+        </div>
+
+        <div class="disclaimer">
+            <strong data-i18n="disclaimer.label">Õiguslik märkus:</strong> <span data-i18n="disclaimer.body">See kalkulaator annab orienteeruva tähtaja HMS § 33, HKMS § 46 ja sektorispetsiifiliste seaduste alusel. Konkreetses olukorras kontrolli täpset tähtaega otsuse tekstist.</span>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; <span data-i18n="footer.copy">2026 Advocat. Kõik õigused kaitstud.</span> | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
+        <p style="margin-top:8px;"><strong data-i18n="disclaimer.label">Õiguslik märkus:</strong> <span data-i18n="footer.note">See tööriist on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.</span></p>
+    </footer>
+
+    <script>
+    window.__TOOL_I18N__ = {
+      et: {
+        'meta.title': 'Vaidlustamise tähtaja kalkulaator — arvuta kaebamise tähtaeg | Advocat',
+        'meta.description': 'Tasuta kalkulaator otsuse vaidlustamise tähtaja arvutamiseks. Töövaidluskomisjon, halduskohus, PPA, Migri.',
+        'nav.home': 'Avaleht', 'nav.tools': 'Tööriistad', 'nav.blog': 'Blogi', 'nav.try': 'Proovi tasuta',
+        'bc.tools': 'Tööriistad', 'bc.here': 'Vaidlustamise tähtaja kalkulaator',
+        'hero.tag': 'Tasuta tööriist', 'hero.title': 'Vaidlustamise tähtaja kalkulaator',
+        'hero.subtitle': 'Arvuta kaebamise tähtaeg otsuse kuupäeva järgi. Arvestab nädalavahetustega — kui tähtaeg langeb nädalavahetusele, pikeneb järgmise tööpäevani.',
+        'form.decision_type': 'Otsuse tüüp *',
+        'opt.tvk': 'Töövaidluskomisjoni otsus → 30 päeva kohtusse',
+        'opt.halduskohus': 'Halduskohtu otsus → 30 päeva Riigikohtusse',
+        'opt.ppa': 'PPA elamisloa otsus → 30 päeva halduskohtusse',
+        'opt.tax': 'Maksu- ja Tolliameti otsus → 30 päeva vaidekomisjoni',
+        'opt.migri': 'Migri (Soome) otsus → 30 päeva halduskohtusse',
+        'opt.eviction': 'Väljatõstmise teade → 14 päeva',
+        'opt.kho': 'KHO valitusluba (Soome) → 30 päeva',
+        'opt.custom': 'Muu otsus — käsitsi tähtaeg',
+        'helper.tvk': 'Töövaidluskomisjoni otsuse vaidlustamiseks pöördu maakohtu poole.',
+        'helper.halduskohus': 'Halduskohtu otsuse edasikaebamine kassatsiooni korras Riigikohtule.',
+        'helper.ppa': 'PPA elamisloa otsuse vaidlustamiseks pöördu halduskohtu poole.',
+        'helper.tax': 'Maksu- ja Tolliameti otsuse vaidlustamiseks esita vaie MTA vaidekomisjoni.',
+        'helper.migri': 'Migri otsuse (käännytys, oleskelulupa) vaidlustamiseks pöördu halduskohtu poole (HAO).',
+        'helper.eviction': 'Üürilepingu erakorralise ülesütlemise vaidlustamiseks pöördu kohtu poole.',
+        'helper.kho': 'HAO otsuse edasikaebamiseks esita KHO-le valituslupahakemus.',
+        'helper.custom': 'Käsitsi määratud tähtaeg. Kontrolli otsuse tekstist.',
+        'form.custom_days': 'Tähtaja päevad',
+        'form.decision_date': 'Otsuse kuupäev (kättesaamise päev) *',
+        'form.decision_date_helper': 'Tähtaeg hakkab tavaliselt järgmisest tööpäevast (HMS § 33).',
+        'result.label': 'Sinu vaidlustamise tähtaeg',
+        'result.label_full': 'Sinu vaidlustamise tähtaeg ({days} päeva, {law})',
+        'result.placeholder': 'Vali otsuse tüüp ja sisesta kuupäev.',
+        'count.expired': 'Tähtaeg möödas {n} päeva tagasi',
+        'count.today': 'Tähtaeg lõppeb täna!',
+        'count.urgent': '{n} päeva jäänud!',
+        'count.warn': '{n} päeva jäänud',
+        'count.ok': '{n} päeva jäänud',
+        'sub.expired': 'Tähtaeg lõppes {date}. Otsus on jõustunud. Erandlikult saab taotleda kohtul tähtaja ennistamist — pöördu kiiresti advokaadi poole.',
+        'sub.today': 'Sul on aega kuni täna keskööni. Pöördu kiiresti advokaadi poole — kaebus tuleb esitada täna.',
+        'sub.urgent': 'Tähtaeg läheneb kiiresti. Pöördu kohe advokaadi poole — kaebuse koostamine võtab aega.',
+        'sub.warn': 'Sul on veel aega, kuid ära viivita. Kaebuse koostamiseks on hea varuda vähemalt nädal aega.',
+        'sub.ok': 'Sul on piisavalt aega kaebuse ettevalmistamiseks. Kogu vajalikud dokumendid ja konsulteeri advokaadiga.',
+        'cons.future': '<strong>Mis juhtub, kui jätad tähtaja kasutamata?</strong><br>Kaotad õiguse otsust vaidlustada. Otsus jõustub lõplikult.',
+        'cons.expired': '<strong>Mis nüüd?</strong><br>Esita kohtule taotlus möödunud tähtaja ennistamiseks (TsMS § 67, HKMS § 71). Pead tõestama mõjuva takistuse: raske haigus, posti tõrge, vahistamine. Taotlus tuleb esitada 14 päeva jooksul takistuse möödumisest.',
+        'cta.title': 'Tähtaeg läheneb? Advocat aitab kaebust koostada',
+        'cta.body': 'Vaie või kaebus on keeruline juriidiline dokument — Advocat AI aitab seda koostada ja õigeaegselt esitada. 17 keeles.',
+        'cta.btn': 'Saa Advocat õigusabi →',
+        'disclaimer.label': 'Õiguslik märkus:',
+        'disclaimer.body': 'See kalkulaator annab orienteeruva tähtaja HMS § 33, HKMS § 46 ja sektorispetsiifiliste seaduste alusel. Konkreetses olukorras kontrolli täpset tähtaega otsuse tekstist.',
+        'footer.copy': '2026 Advocat. Kõik õigused kaitstud.',
+        'footer.note': 'See tööriist on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.'
+      },
+      en: {
+        'meta.title': 'Appeal deadline calculator — Estonia & Finland | Advocat',
+        'meta.description': 'Free calculator for the time limit to appeal a decision. Labour Dispute Committee, administrative court, PPA, Finnish Migri.',
+        'nav.home': 'Home', 'nav.tools': 'Tools', 'nav.blog': 'Blog', 'nav.try': 'Try free',
+        'bc.tools': 'Tools', 'bc.here': 'Appeal deadline calculator',
+        'hero.tag': 'Free tool', 'hero.title': 'Appeal deadline calculator',
+        'hero.subtitle': 'Calculate the time limit to appeal from the date of the decision. Accounts for weekends — if the deadline falls on a weekend, it extends to the next working day.',
+        'form.decision_type': 'Type of decision *',
+        'opt.tvk': 'Labour Dispute Committee decision → 30 days to court',
+        'opt.halduskohus': 'Administrative court decision → 30 days to the Supreme Court',
+        'opt.ppa': 'PPA residence permit decision → 30 days to administrative court',
+        'opt.tax': 'Tax & Customs Board decision → 30 days to the review committee',
+        'opt.migri': 'Migri (Finland) decision → 30 days to administrative court',
+        'opt.eviction': 'Eviction notice → 14 days',
+        'opt.kho': 'KHO leave to appeal (Finland) → 30 days',
+        'opt.custom': 'Other decision — set deadline manually',
+        'helper.tvk': 'To challenge a Labour Dispute Committee decision, file with the county court.',
+        'helper.halduskohus': 'Cassation appeal of an administrative court decision before the Supreme Court.',
+        'helper.ppa': 'To challenge a PPA residence permit decision, apply to the administrative court.',
+        'helper.tax': 'To challenge a Tax & Customs Board decision, file a review with the MTA review committee.',
+        'helper.migri': 'To challenge a Migri decision (käännytys, oleskelulupa), apply to the administrative court (HAO).',
+        'helper.eviction': 'To challenge an extraordinary lease termination, apply to the court.',
+        'helper.kho': 'To appeal a HAO decision, file an application for leave to appeal with the KHO.',
+        'helper.custom': 'Manually set deadline. Check the decision text.',
+        'form.custom_days': 'Number of days',
+        'form.decision_date': 'Decision date (date of receipt) *',
+        'form.decision_date_helper': 'The period usually starts on the next working day (HMS § 33).',
+        'result.label': 'Your appeal deadline',
+        'result.label_full': 'Your appeal deadline ({days} days, {law})',
+        'result.placeholder': 'Select a decision type and enter a date.',
+        'count.expired': 'Deadline passed {n} days ago',
+        'count.today': 'Deadline ends today!',
+        'count.urgent': '{n} days left!',
+        'count.warn': '{n} days left',
+        'count.ok': '{n} days left',
+        'sub.expired': 'The deadline ended on {date}. The decision is final. Restoration of an expired deadline is possible only in exceptional cases — contact a lawyer urgently.',
+        'sub.today': 'You have until midnight today. Contact a lawyer urgently — the appeal must be filed today.',
+        'sub.urgent': 'The deadline is approaching fast. Contact a lawyer now — drafting an appeal takes time.',
+        'sub.warn': 'You still have time, but do not delay. Plan for at least a week to prepare the appeal.',
+        'sub.ok': 'You have plenty of time to prepare the appeal. Gather the documents and consult a lawyer.',
+        'cons.future': '<strong>What happens if you miss the deadline?</strong><br>You lose the right to challenge the decision. The decision becomes final.',
+        'cons.expired': '<strong>What now?</strong><br>File a petition with the court to restore the expired deadline (TsMS § 67, HKMS § 71). You must prove a valid obstacle: serious illness, postal failure, detention. The petition must be filed within 14 days after the obstacle ends.',
+        'cta.title': 'Deadline approaching? Advocat helps draft the appeal',
+        'cta.body': 'A petition or appeal is a complex legal document — Advocat AI helps draft and file it on time. In 17 languages.',
+        'cta.btn': 'Get Advocat legal help →',
+        'disclaimer.label': 'Legal notice:',
+        'disclaimer.body': 'This calculator gives an indicative deadline under HMS § 33, HKMS § 46 and sector-specific laws. Always check the exact deadline in the text of the decision itself.',
+        'footer.copy': '2026 Advocat. All rights reserved.',
+        'footer.note': 'This tool is informational in nature and does not constitute individual legal advice.'
+      },
+      ru: {
+        'meta.title': 'Калькулятор сроков обжалования — Эстония и Финляндия | Advocat',
+        'meta.description': 'Бесплатный калькулятор срока обжалования решения. Комиссия по трудовым спорам, административный суд, PPA, Migri (Финляндия).',
+        'nav.home': 'Главная', 'nav.tools': 'Инструменты', 'nav.blog': 'Блог', 'nav.try': 'Попробовать бесплатно',
+        'bc.tools': 'Инструменты', 'bc.here': 'Калькулятор сроков обжалования',
+        'hero.tag': 'Бесплатный инструмент', 'hero.title': 'Калькулятор сроков обжалования',
+        'hero.subtitle': 'Рассчитайте срок обжалования по дате решения. Учитывает выходные — если срок выпадает на выходной, он продлевается до следующего рабочего дня.',
+        'form.decision_type': 'Тип решения *',
+        'opt.tvk': 'Решение Комиссии по трудовым спорам → 30 дней в суд',
+        'opt.halduskohus': 'Решение административного суда → 30 дней в Гос. суд',
+        'opt.ppa': 'Решение PPA по виду на жительство → 30 дней в адм. суд',
+        'opt.tax': 'Решение Налогово-таможенного департамента → 30 дней в комиссию по обжалованиям',
+        'opt.migri': 'Решение Migri (Финляндия) → 30 дней в адм. суд',
+        'opt.eviction': 'Уведомление о выселении → 14 дней',
+        'opt.kho': 'Разрешение KHO (Финляндия) → 30 дней',
+        'opt.custom': 'Иное решение — задать срок вручную',
+        'helper.tvk': 'Решение Комиссии по трудовым спорам обжалуется в уездном суде.',
+        'helper.halduskohus': 'Кассационное обжалование решения административного суда в Гос. суде.',
+        'helper.ppa': 'Решение PPA по виду на жительство обжалуется в административном суде.',
+        'helper.tax': 'Решение Налогово-таможенного департамента обжалуется в комиссию по обжалованиям MTA.',
+        'helper.migri': 'Решение Migri (käännytys, oleskelulupa) обжалуется в административном суде (HAO).',
+        'helper.eviction': 'Экстренное расторжение договора аренды обжалуется в суде.',
+        'helper.kho': 'Решение HAO обжалуется в KHO ходатайством о разрешении на обжалование.',
+        'helper.custom': 'Срок задан вручную. Проверьте текст решения.',
+        'form.custom_days': 'Количество дней',
+        'form.decision_date': 'Дата решения (день получения) *',
+        'form.decision_date_helper': 'Срок обычно начинается со следующего рабочего дня (HMS § 33).',
+        'result.label': 'Ваш срок обжалования',
+        'result.label_full': 'Ваш срок обжалования ({days} дн., {law})',
+        'result.placeholder': 'Выберите тип решения и введите дату.',
+        'count.expired': 'Срок истёк {n} дней назад',
+        'count.today': 'Срок истекает сегодня!',
+        'count.urgent': 'Осталось {n} дней!',
+        'count.warn': 'Осталось {n} дней',
+        'count.ok': 'Осталось {n} дней',
+        'sub.expired': 'Срок истёк {date}. Решение вступило в силу. Восстановление срока возможно только в исключительных случаях — срочно обратитесь к адвокату.',
+        'sub.today': 'У вас время до полуночи. Срочно обратитесь к адвокату — жалоба должна быть подана сегодня.',
+        'sub.urgent': 'Срок стремительно приближается. Срочно обратитесь к адвокату — составление жалобы требует времени.',
+        'sub.warn': 'Время ещё есть, но не тяните. На подготовку жалобы лучше иметь хотя бы неделю.',
+        'sub.ok': 'У вас достаточно времени, чтобы подготовить жалобу. Соберите документы и проконсультируйтесь с адвокатом.',
+        'cons.future': '<strong>Что будет, если пропустить срок?</strong><br>Вы теряете право оспорить решение. Решение становится окончательным.',
+        'cons.expired': '<strong>Что делать?</strong><br>Подайте в суд заявление о восстановлении пропущенного срока (TsMS § 67, HKMS § 71). Нужно доказать уважительное препятствие: тяжёлая болезнь, сбой почты, задержание. Заявление подаётся в течение 14 дней после прекращения препятствия.',
+        'cta.title': 'Срок приближается? Advocat поможет составить жалобу',
+        'cta.body': 'Возражение или жалоба — сложный юридический документ. Advocat AI поможет составить и подать вовремя. На 17 языках.',
+        'cta.btn': 'Получить помощь Advocat →',
+        'disclaimer.label': 'Юридическая оговорка:',
+        'disclaimer.body': 'Калькулятор даёт ориентировочный срок по HMS § 33, HKMS § 46 и отраслевым законам. В конкретной ситуации проверьте точный срок в тексте решения.',
+        'footer.copy': '2026 Advocat. Все права защищены.',
+        'footer.note': 'Инструмент носит информационный характер и не является индивидуальной юридической консультацией.'
+      },
+      fi: {
+        'meta.title': 'Valitusajan laskuri — Viro & Suomi | Advocat',
+        'meta.description': 'Ilmainen päätöksen valitusajan laskuri. Työriitalautakunta, hallinto-oikeus, PPA, Migrin päätökset.',
+        'nav.home': 'Etusivu', 'nav.tools': 'Työkalut', 'nav.blog': 'Blogi', 'nav.try': 'Kokeile ilmaiseksi',
+        'bc.tools': 'Työkalut', 'bc.here': 'Valitusajan laskuri',
+        'hero.tag': 'Ilmainen työkalu', 'hero.title': 'Valitusajan laskuri',
+        'hero.subtitle': 'Laske valitusaika päätöksen päiväyksen mukaan. Ottaa viikonloput huomioon — jos määräaika osuu viikonloppuun, se siirtyy seuraavaan arkipäivään.',
+        'form.decision_type': 'Päätöksen tyyppi *',
+        'opt.tvk': 'Työriitalautakunnan päätös → 30 päivää tuomioistuimeen',
+        'opt.halduskohus': 'Hallinto-oikeuden päätös → 30 päivää korkeimpaan oikeuteen',
+        'opt.ppa': 'PPA-oleskelulupapäätös → 30 päivää hallinto-oikeuteen',
+        'opt.tax': 'Vero- ja tullihallituksen päätös → 30 päivää oikaisulautakuntaan',
+        'opt.migri': 'Migrin päätös → 30 päivää hallinto-oikeuteen',
+        'opt.eviction': 'Häätöilmoitus → 14 päivää',
+        'opt.kho': 'KHO:n valituslupa → 30 päivää',
+        'opt.custom': 'Muu päätös — aseta määräaika itse',
+        'helper.tvk': 'Työriitalautakunnan päätöksestä valitetaan käräjäoikeuteen.',
+        'helper.halduskohus': 'Hallinto-oikeuden päätöksen kassaatiovalitus korkeimpaan oikeuteen.',
+        'helper.ppa': 'PPA-oleskelulupapäätöksestä valitetaan hallinto-oikeuteen.',
+        'helper.tax': 'Vero- ja tullihallituksen päätöksestä tehdään oikaisuvaatimus MTA:n oikaisulautakuntaan.',
+        'helper.migri': 'Migrin päätöksestä (käännytys, oleskelulupa) valitetaan hallinto-oikeuteen (HAO).',
+        'helper.eviction': 'Vuokrasopimuksen erityisestä irtisanomisesta valitetaan tuomioistuimeen.',
+        'helper.kho': 'HAO:n päätöksestä jätetään valituslupahakemus KHO:lle.',
+        'helper.custom': 'Itse asetettu määräaika. Tarkista päätöksen tekstistä.',
+        'form.custom_days': 'Päivien määrä',
+        'form.decision_date': 'Päätöksen päiväys (vastaanottopäivä) *',
+        'form.decision_date_helper': 'Määräaika alkaa yleensä seuraavasta arkipäivästä (HMS § 33).',
+        'result.label': 'Valitusaikasi',
+        'result.label_full': 'Valitusaikasi ({days} pv, {law})',
+        'result.placeholder': 'Valitse päätöksen tyyppi ja anna päivämäärä.',
+        'count.expired': 'Määräaika umpeutui {n} päivää sitten',
+        'count.today': 'Määräaika päättyy tänään!',
+        'count.urgent': '{n} päivää jäljellä!',
+        'count.warn': '{n} päivää jäljellä',
+        'count.ok': '{n} päivää jäljellä',
+        'sub.expired': 'Määräaika päättyi {date}. Päätös on lainvoimainen. Määräajan palauttaminen on mahdollista vain poikkeustapauksissa — ota pikaisesti yhteyttä asianajajaan.',
+        'sub.today': 'Aikaa on tämän vuorokauden loppuun. Ota välittömästi yhteyttä asianajajaan — valitus on tehtävä tänään.',
+        'sub.urgent': 'Määräaika lähestyy nopeasti. Ota heti yhteyttä asianajajaan — valituksen laatiminen vie aikaa.',
+        'sub.warn': 'Aikaa on vielä, mutta älä viivyttele. Valituksen valmisteluun kannattaa varata vähintään viikko.',
+        'sub.ok': 'Aikaa on riittävästi valituksen valmistelemiseen. Kerää asiakirjat ja ota yhteyttä asianajajaan.',
+        'cons.future': '<strong>Mitä tapahtuu, jos jätät määräajan käyttämättä?</strong><br>Menetät oikeuden riitauttaa päätös. Päätös tulee lopulliseksi.',
+        'cons.expired': '<strong>Mitä nyt?</strong><br>Tee tuomioistuimelle hakemus määräajan palauttamiseksi (TsMS § 67, HKMS § 71). Sinun on osoitettava pätevä este: vakava sairaus, postin viive, vapaudenmenetys. Hakemus on tehtävä 14 päivän kuluessa esteen päättymisestä.',
+        'cta.title': 'Määräaika lähestyy? Advocat auttaa valituksen laatimisessa',
+        'cta.body': 'Oikaisuvaatimus tai valitus on monimutkainen oikeudellinen asiakirja — Advocat AI auttaa laatimaan ja jättämään sen ajoissa. 17 kielellä.',
+        'cta.btn': 'Pyydä Advocatin apua →',
+        'disclaimer.label': 'Oikeudellinen huomautus:',
+        'disclaimer.body': 'Tämä laskuri antaa suuntaa-antavan määräajan HMS § 33, HKMS § 46 ja toimialakohtaisten lakien perusteella. Tarkista tarkka määräaika aina itse päätöksen tekstistä.',
+        'footer.copy': '2026 Advocat. Kaikki oikeudet pidätetään.',
+        'footer.note': 'Työkalu on luonteeltaan yleinen informatiivinen eikä ole henkilökohtaista oikeudellista neuvontaa.'
+      },
+      de: {
+        'meta.title': 'Rechtsmittelfristen-Rechner — Estland & Finnland | Advocat',
+        'meta.description': 'Kostenloser Rechner für die Frist zur Anfechtung einer Entscheidung. Arbeitsstreitkommission, Verwaltungsgericht, PPA, Migri.',
+        'nav.home': 'Startseite', 'nav.tools': 'Tools', 'nav.blog': 'Blog', 'nav.try': 'Kostenlos testen',
+        'bc.tools': 'Tools', 'bc.here': 'Fristenrechner für Rechtsmittel',
+        'hero.tag': 'Kostenloses Tool', 'hero.title': 'Fristenrechner für Rechtsmittel',
+        'hero.subtitle': 'Berechnen Sie die Frist anhand des Entscheidungsdatums. Wochenenden werden berücksichtigt — fällt das Fristende auf ein Wochenende, verlängert es sich bis zum nächsten Werktag.',
+        'form.decision_type': 'Art der Entscheidung *',
+        'opt.tvk': 'Beschluss der Arbeitsstreitkommission → 30 Tage zum Gericht',
+        'opt.halduskohus': 'Entscheidung des Verwaltungsgerichts → 30 Tage zum Staatsgericht',
+        'opt.ppa': 'PPA-Aufenthaltstitel-Entscheidung → 30 Tage zum Verwaltungsgericht',
+        'opt.tax': 'Entscheidung der Steuer- und Zollbehörde → 30 Tage zum Einspruchsausschuss',
+        'opt.migri': 'Migri (Finnland)-Entscheidung → 30 Tage zum Verwaltungsgericht',
+        'opt.eviction': 'Räumungskündigung → 14 Tage',
+        'opt.kho': 'KHO-Zulassung (Finnland) → 30 Tage',
+        'opt.custom': 'Andere Entscheidung — Frist manuell eingeben',
+        'helper.tvk': 'Gegen einen Beschluss der Arbeitsstreitkommission ist Klage beim Kreisgericht zu erheben.',
+        'helper.halduskohus': 'Kassationsbeschwerde gegen eine Entscheidung des Verwaltungsgerichts vor dem Staatsgericht.',
+        'helper.ppa': 'Eine PPA-Entscheidung wird vor dem Verwaltungsgericht angefochten.',
+        'helper.tax': 'Eine Entscheidung der Steuer- und Zollbehörde wird beim Einspruchsausschuss der MTA angefochten.',
+        'helper.migri': 'Eine Migri-Entscheidung (käännytys, oleskelulupa) wird vor dem Verwaltungsgericht (HAO) angefochten.',
+        'helper.eviction': 'Gegen die außerordentliche Mietkündigung ist Klage zu erheben.',
+        'helper.kho': 'Gegen eine HAO-Entscheidung wird beim KHO ein Antrag auf Berufungszulassung gestellt.',
+        'helper.custom': 'Manuell eingestellte Frist. Im Text der Entscheidung prüfen.',
+        'form.custom_days': 'Anzahl der Tage',
+        'form.decision_date': 'Datum der Entscheidung (Zustellungstag) *',
+        'form.decision_date_helper': 'Die Frist beginnt in der Regel am nächsten Werktag (HMS § 33).',
+        'result.label': 'Ihre Rechtsmittelfrist',
+        'result.label_full': 'Ihre Rechtsmittelfrist ({days} Tage, {law})',
+        'result.placeholder': 'Wählen Sie die Entscheidungsart und geben Sie ein Datum ein.',
+        'count.expired': 'Frist seit {n} Tagen abgelaufen',
+        'count.today': 'Frist endet heute!',
+        'count.urgent': '{n} Tage übrig!',
+        'count.warn': 'Noch {n} Tage',
+        'count.ok': 'Noch {n} Tage',
+        'sub.expired': 'Die Frist endete am {date}. Die Entscheidung ist rechtskräftig. Eine Wiedereinsetzung ist nur ausnahmsweise möglich — kontaktieren Sie dringend einen Anwalt.',
+        'sub.today': 'Sie haben Zeit bis Mitternacht. Kontaktieren Sie dringend einen Anwalt — das Rechtsmittel muss heute eingelegt werden.',
+        'sub.urgent': 'Die Frist läuft schnell ab. Kontaktieren Sie sofort einen Anwalt — eine Anfechtung zu verfassen braucht Zeit.',
+        'sub.warn': 'Sie haben noch Zeit, aber zögern Sie nicht. Planen Sie mindestens eine Woche für die Vorbereitung ein.',
+        'sub.ok': 'Sie haben genug Zeit für die Anfechtung. Sammeln Sie die Unterlagen und sprechen Sie mit einem Anwalt.',
+        'cons.future': '<strong>Was passiert, wenn Sie die Frist versäumen?</strong><br>Sie verlieren das Recht, die Entscheidung anzufechten. Sie wird rechtskräftig.',
+        'cons.expired': '<strong>Was nun?</strong><br>Stellen Sie beim Gericht einen Antrag auf Wiedereinsetzung in den vorigen Stand (TsMS § 67, HKMS § 71). Sie müssen einen triftigen Hinderungsgrund nachweisen: schwere Krankheit, Postzustellungsfehler, Haft. Antrag binnen 14 Tagen nach Wegfall des Hindernisses.',
+        'cta.title': 'Frist läuft? Advocat hilft bei der Anfechtung',
+        'cta.body': 'Einspruch oder Anfechtung ist ein komplexes Rechtsdokument — Advocat AI hilft beim Erstellen und rechtzeitigen Einreichen. In 17 Sprachen.',
+        'cta.btn': 'Advocat-Rechtshilfe holen →',
+        'disclaimer.label': 'Rechtlicher Hinweis:',
+        'disclaimer.body': 'Dieser Rechner liefert eine orientierende Frist nach HMS § 33, HKMS § 46 und sektorspezifischen Gesetzen. Prüfen Sie die genaue Frist stets im Wortlaut der Entscheidung.',
+        'footer.copy': '2026 Advocat. Alle Rechte vorbehalten.',
+        'footer.note': 'Dieses Tool ist allgemein informativ und stellt keine individuelle Rechtsberatung dar.'
+      },
+      fr: {
+        'meta.title': 'Calculateur de délais de recours — Estonie & Finlande | Advocat',
+        'meta.description': 'Calculateur gratuit du délai pour contester une décision. Commission des conflits du travail, tribunal administratif, PPA, Migri.',
+        'nav.home': 'Accueil', 'nav.tools': 'Outils', 'nav.blog': 'Blog', 'nav.try': 'Essayer gratuitement',
+        'bc.tools': 'Outils', 'bc.here': 'Calculateur de délais de recours',
+        'hero.tag': 'Outil gratuit', 'hero.title': 'Calculateur de délais de recours',
+        'hero.subtitle': 'Calculez le délai de recours à partir de la date de la décision. Les week-ends sont pris en compte — si le délai tombe un week-end, il est reporté au jour ouvrable suivant.',
+        'form.decision_type': 'Type de décision *',
+        'opt.tvk': 'Décision de la Commission des conflits du travail → 30 jours au tribunal',
+        'opt.halduskohus': 'Décision du tribunal administratif → 30 jours à la Cour suprême',
+        'opt.ppa': 'Décision PPA sur titre de séjour → 30 jours au tribunal administratif',
+        'opt.tax': 'Décision de l\'Administration fiscale et douanière → 30 jours au comité de révision',
+        'opt.migri': 'Décision Migri (Finlande) → 30 jours au tribunal administratif',
+        'opt.eviction': 'Avis d\'expulsion → 14 jours',
+        'opt.kho': 'Autorisation de pourvoi KHO (Finlande) → 30 jours',
+        'opt.custom': 'Autre décision — fixer le délai manuellement',
+        'helper.tvk': 'La décision de la Commission des conflits du travail se conteste devant le tribunal de comté.',
+        'helper.halduskohus': 'Recours en cassation contre une décision du tribunal administratif devant la Cour suprême.',
+        'helper.ppa': 'La décision PPA sur titre de séjour se conteste devant le tribunal administratif.',
+        'helper.tax': 'La décision de l\'Administration fiscale se conteste par recours auprès du comité de révision MTA.',
+        'helper.migri': 'La décision Migri (käännytys, oleskelulupa) se conteste devant le tribunal administratif (HAO).',
+        'helper.eviction': 'La résiliation extraordinaire du bail se conteste devant le tribunal.',
+        'helper.kho': 'Pour contester une décision HAO, déposez une demande d\'autorisation de pourvoi auprès de la KHO.',
+        'helper.custom': 'Délai défini manuellement. Vérifiez le texte de la décision.',
+        'form.custom_days': 'Nombre de jours',
+        'form.decision_date': 'Date de la décision (date de réception) *',
+        'form.decision_date_helper': 'Le délai commence en général le jour ouvrable suivant (HMS § 33).',
+        'result.label': 'Votre délai de recours',
+        'result.label_full': 'Votre délai de recours ({days} jours, {law})',
+        'result.placeholder': 'Sélectionnez un type de décision et saisissez une date.',
+        'count.expired': 'Délai expiré depuis {n} jours',
+        'count.today': 'Le délai expire aujourd\'hui !',
+        'count.urgent': 'Il reste {n} jours !',
+        'count.warn': 'Il reste {n} jours',
+        'count.ok': 'Il reste {n} jours',
+        'sub.expired': 'Le délai a expiré le {date}. La décision est définitive. Le relevé de forclusion n\'est possible qu\'à titre exceptionnel — contactez un avocat de toute urgence.',
+        'sub.today': 'Vous avez jusqu\'à minuit. Contactez un avocat de toute urgence — le recours doit être déposé aujourd\'hui.',
+        'sub.urgent': 'Le délai approche rapidement. Contactez un avocat immédiatement — rédiger un recours prend du temps.',
+        'sub.warn': 'Vous avez encore du temps, mais ne tardez pas. Prévoyez au moins une semaine pour préparer le recours.',
+        'sub.ok': 'Vous avez largement le temps. Rassemblez les documents et consultez un avocat.',
+        'cons.future': '<strong>Que se passe-t-il si vous laissez expirer le délai ?</strong><br>Vous perdez le droit de contester la décision. Elle devient définitive.',
+        'cons.expired': '<strong>Et maintenant ?</strong><br>Déposez une requête en relevé de forclusion (TsMS § 67, HKMS § 71). Vous devez prouver un empêchement valable : maladie grave, défaillance postale, détention. La requête est à déposer dans les 14 jours suivant la fin de l\'empêchement.',
+        'cta.title': 'Le délai approche ? Advocat aide à rédiger le recours',
+        'cta.body': 'Un recours est un document juridique complexe — Advocat AI le rédige et le dépose à temps. En 17 langues.',
+        'cta.btn': 'Obtenir l\'aide Advocat →',
+        'disclaimer.label': 'Mention légale :',
+        'disclaimer.body': 'Ce calculateur donne un délai indicatif selon HMS § 33, HKMS § 46 et les lois sectorielles. Vérifiez toujours le délai exact dans le texte de la décision.',
+        'footer.copy': '2026 Advocat. Tous droits réservés.',
+        'footer.note': 'Cet outil est de nature informative générale et ne constitue pas un conseil juridique individuel.'
+      },
+      es: {
+        'meta.title': 'Calculadora de plazos de recurso — Estonia y Finlandia | Advocat',
+        'meta.description': 'Calculadora gratuita del plazo para recurrir una resolución. Comisión de Conflictos Laborales, tribunal administrativo, PPA, Migri.',
+        'nav.home': 'Inicio', 'nav.tools': 'Herramientas', 'nav.blog': 'Blog', 'nav.try': 'Prueba gratis',
+        'bc.tools': 'Herramientas', 'bc.here': 'Calculadora de plazos de recurso',
+        'hero.tag': 'Herramienta gratuita', 'hero.title': 'Calculadora de plazos de recurso',
+        'hero.subtitle': 'Calcula el plazo para recurrir desde la fecha de la resolución. Tiene en cuenta los fines de semana — si el plazo cae en sábado o domingo, se prorroga al siguiente día hábil.',
+        'form.decision_type': 'Tipo de resolución *',
+        'opt.tvk': 'Resolución de la Comisión de Conflictos Laborales → 30 días al tribunal',
+        'opt.halduskohus': 'Resolución del tribunal administrativo → 30 días al Tribunal Supremo',
+        'opt.ppa': 'Resolución PPA sobre permiso de residencia → 30 días al tribunal administrativo',
+        'opt.tax': 'Resolución de la Agencia Tributaria y Aduanera → 30 días al comité de revisión',
+        'opt.migri': 'Resolución Migri (Finlandia) → 30 días al tribunal administrativo',
+        'opt.eviction': 'Notificación de desahucio → 14 días',
+        'opt.kho': 'Admisión de recurso KHO (Finlandia) → 30 días',
+        'opt.custom': 'Otra resolución — fijar plazo manualmente',
+        'helper.tvk': 'La resolución de la Comisión de Conflictos Laborales se recurre ante el tribunal de comarca.',
+        'helper.halduskohus': 'Recurso de casación contra una resolución del tribunal administrativo ante el Tribunal Supremo.',
+        'helper.ppa': 'La resolución PPA sobre permiso de residencia se recurre ante el tribunal administrativo.',
+        'helper.tax': 'La resolución de la Agencia Tributaria se recurre mediante reclamación al comité de revisión MTA.',
+        'helper.migri': 'La resolución Migri (käännytys, oleskelulupa) se recurre ante el tribunal administrativo (HAO).',
+        'helper.eviction': 'La resolución extraordinaria de arrendamiento se recurre ante el tribunal.',
+        'helper.kho': 'Para recurrir una resolución de HAO se solicita admisión de recurso ante la KHO.',
+        'helper.custom': 'Plazo definido manualmente. Verifica el texto de la resolución.',
+        'form.custom_days': 'Número de días',
+        'form.decision_date': 'Fecha de la resolución (día de recepción) *',
+        'form.decision_date_helper': 'El plazo suele comenzar al siguiente día hábil (HMS § 33).',
+        'result.label': 'Tu plazo para recurrir',
+        'result.label_full': 'Tu plazo para recurrir ({days} días, {law})',
+        'result.placeholder': 'Selecciona un tipo de resolución e introduce una fecha.',
+        'count.expired': 'Plazo vencido hace {n} días',
+        'count.today': '¡El plazo vence hoy!',
+        'count.urgent': '¡Quedan {n} días!',
+        'count.warn': 'Quedan {n} días',
+        'count.ok': 'Quedan {n} días',
+        'sub.expired': 'El plazo expiró el {date}. La resolución es firme. La rehabilitación del plazo solo es posible excepcionalmente — contacta urgentemente con un abogado.',
+        'sub.today': 'Tienes hasta medianoche. Contacta urgentemente con un abogado — el recurso debe presentarse hoy.',
+        'sub.urgent': 'El plazo se acerca rápido. Contacta con un abogado de inmediato — redactar un recurso lleva tiempo.',
+        'sub.warn': 'Aún hay tiempo, pero no demores. Prevé al menos una semana para preparar el recurso.',
+        'sub.ok': 'Tienes tiempo de sobra. Reúne los documentos y consulta con un abogado.',
+        'cons.future': '<strong>¿Qué pasa si dejas vencer el plazo?</strong><br>Pierdes el derecho a recurrir la resolución, que adquiere firmeza.',
+        'cons.expired': '<strong>¿Y ahora?</strong><br>Presenta ante el tribunal una solicitud de rehabilitación del plazo (TsMS § 67, HKMS § 71). Debes acreditar un impedimento válido: enfermedad grave, fallo postal, detención. Plazo: 14 días desde que cesa el impedimento.',
+        'cta.title': '¿Plazo cercano? Advocat te ayuda a redactar el recurso',
+        'cta.body': 'Un recurso es un documento jurídico complejo — Advocat AI lo redacta y presenta a tiempo. En 17 idiomas.',
+        'cta.btn': 'Obtener ayuda de Advocat →',
+        'disclaimer.label': 'Aviso legal:',
+        'disclaimer.body': 'Esta calculadora ofrece un plazo orientativo según HMS § 33, HKMS § 46 y leyes sectoriales. Comprueba siempre el plazo exacto en el texto de la resolución.',
+        'footer.copy': '2026 Advocat. Todos los derechos reservados.',
+        'footer.note': 'Esta herramienta tiene carácter informativo general y no constituye asesoramiento jurídico individual.'
+      },
+      it: {
+        'meta.title': 'Calcolatore dei termini di ricorso — Estonia e Finlandia | Advocat',
+        'meta.description': 'Calcolatore gratuito del termine per impugnare una decisione. Commissione conflitti di lavoro, tribunale amministrativo, PPA, Migri.',
+        'nav.home': 'Home', 'nav.tools': 'Strumenti', 'nav.blog': 'Blog', 'nav.try': 'Prova gratis',
+        'bc.tools': 'Strumenti', 'bc.here': 'Calcolatore termini di ricorso',
+        'hero.tag': 'Strumento gratuito', 'hero.title': 'Calcolatore dei termini di ricorso',
+        'hero.subtitle': 'Calcola il termine per ricorrere dalla data della decisione. Considera i fine settimana — se la scadenza cade nel weekend, è prorogata al primo giorno feriale utile.',
+        'form.decision_type': 'Tipo di decisione *',
+        'opt.tvk': 'Decisione della Commissione conflitti di lavoro → 30 giorni al tribunale',
+        'opt.halduskohus': 'Decisione del tribunale amministrativo → 30 giorni alla Corte suprema',
+        'opt.ppa': 'Decisione PPA su permesso di soggiorno → 30 giorni al tribunale amministrativo',
+        'opt.tax': 'Decisione dell\'Agenzia delle Entrate e Dogane → 30 giorni alla commissione di revisione',
+        'opt.migri': 'Decisione Migri (Finlandia) → 30 giorni al tribunale amministrativo',
+        'opt.eviction': 'Avviso di sfratto → 14 giorni',
+        'opt.kho': 'Autorizzazione al ricorso KHO (Finlandia) → 30 giorni',
+        'opt.custom': 'Altra decisione — imposta il termine manualmente',
+        'helper.tvk': 'La decisione della Commissione conflitti di lavoro si impugna davanti al tribunale di contea.',
+        'helper.halduskohus': 'Ricorso per cassazione contro la decisione del tribunale amministrativo davanti alla Corte suprema.',
+        'helper.ppa': 'La decisione PPA sul permesso di soggiorno si impugna davanti al tribunale amministrativo.',
+        'helper.tax': 'La decisione dell\'Agenzia delle Entrate si impugna con reclamo alla commissione di revisione MTA.',
+        'helper.migri': 'La decisione Migri (käännytys, oleskelulupa) si impugna davanti al tribunale amministrativo (HAO).',
+        'helper.eviction': 'La risoluzione straordinaria della locazione si impugna davanti al tribunale.',
+        'helper.kho': 'Per impugnare una decisione HAO si presenta un\'istanza di autorizzazione al ricorso alla KHO.',
+        'helper.custom': 'Termine impostato manualmente. Verifica nel testo della decisione.',
+        'form.custom_days': 'Numero di giorni',
+        'form.decision_date': 'Data della decisione (giorno di ricezione) *',
+        'form.decision_date_helper': 'Il termine decorre di solito dal giorno feriale successivo (HMS § 33).',
+        'result.label': 'Il tuo termine di ricorso',
+        'result.label_full': 'Il tuo termine di ricorso ({days} giorni, {law})',
+        'result.placeholder': 'Seleziona un tipo di decisione e inserisci una data.',
+        'count.expired': 'Termine scaduto {n} giorni fa',
+        'count.today': 'Il termine scade oggi!',
+        'count.urgent': 'Restano {n} giorni!',
+        'count.warn': 'Restano {n} giorni',
+        'count.ok': 'Restano {n} giorni',
+        'sub.expired': 'Il termine è scaduto il {date}. La decisione è definitiva. La rimessione in termini è possibile solo in casi eccezionali — contatta subito un avvocato.',
+        'sub.today': 'Hai tempo fino a mezzanotte. Contatta subito un avvocato — il ricorso va depositato oggi.',
+        'sub.urgent': 'Il termine si avvicina rapidamente. Contatta subito un avvocato — redigere un ricorso richiede tempo.',
+        'sub.warn': 'Hai ancora tempo, ma non rinviare. Prevedi almeno una settimana per la preparazione.',
+        'sub.ok': 'Hai tempo a sufficienza. Raccogli i documenti e consulta un avvocato.',
+        'cons.future': '<strong>Cosa succede se lasci scadere il termine?</strong><br>Perdi il diritto di impugnare. La decisione diventa definitiva.',
+        'cons.expired': '<strong>E ora?</strong><br>Presenta al tribunale un\'istanza di rimessione in termini (TsMS § 67, HKMS § 71). Devi provare un impedimento legittimo: malattia grave, disservizio postale, detenzione. L\'istanza va presentata entro 14 giorni dalla cessazione dell\'impedimento.',
+        'cta.title': 'Termine vicino? Advocat ti aiuta a redigere il ricorso',
+        'cta.body': 'Un ricorso è un documento giuridico complesso — Advocat AI lo redige e deposita in tempo. In 17 lingue.',
+        'cta.btn': 'Ottieni assistenza Advocat →',
+        'disclaimer.label': 'Avviso legale:',
+        'disclaimer.body': 'Questo calcolatore fornisce un termine indicativo secondo HMS § 33, HKMS § 46 e leggi di settore. Verifica sempre il termine esatto nel testo della decisione.',
+        'footer.copy': '2026 Advocat. Tutti i diritti riservati.',
+        'footer.note': 'Questo strumento ha carattere informativo generale e non costituisce consulenza legale individuale.'
+      },
+      uk: {
+        'meta.title': 'Калькулятор строків оскарження — Естонія та Фінляндія | Advocat',
+        'meta.description': 'Безкоштовний калькулятор строку оскарження рішення. Комісія з трудових спорів, адміністративний суд, PPA, Migri.',
+        'nav.home': 'Головна', 'nav.tools': 'Інструменти', 'nav.blog': 'Блог', 'nav.try': 'Спробувати безкоштовно',
+        'bc.tools': 'Інструменти', 'bc.here': 'Калькулятор строків оскарження',
+        'hero.tag': 'Безкоштовний інструмент', 'hero.title': 'Калькулятор строків оскарження',
+        'hero.subtitle': 'Обчисліть строк оскарження від дати рішення. Враховує вихідні — якщо строк припадає на вихідний, він продовжується до наступного робочого дня.',
+        'form.decision_type': 'Тип рішення *',
+        'opt.tvk': 'Рішення Комісії з трудових спорів → 30 днів до суду',
+        'opt.halduskohus': 'Рішення адміністративного суду → 30 днів до Держ. суду',
+        'opt.ppa': 'Рішення PPA щодо посвідки → 30 днів до адмін. суду',
+        'opt.tax': 'Рішення Податково-митного департаменту → 30 днів до комісії з оскаржень',
+        'opt.migri': 'Рішення Migri (Фінляндія) → 30 днів до адмін. суду',
+        'opt.eviction': 'Повідомлення про виселення → 14 днів',
+        'opt.kho': 'Дозвіл KHO (Фінляндія) → 30 днів',
+        'opt.custom': 'Інше рішення — задати строк вручну',
+        'helper.tvk': 'Рішення Комісії з трудових спорів оскаржується в повітовому суді.',
+        'helper.halduskohus': 'Касаційне оскарження рішення адміністративного суду в Державному суді.',
+        'helper.ppa': 'Рішення PPA оскаржується в адміністративному суді.',
+        'helper.tax': 'Рішення Податково-митного департаменту оскаржується в комісію з оскаржень MTA.',
+        'helper.migri': 'Рішення Migri (käännytys, oleskelulupa) оскаржується в адміністративному суді (HAO).',
+        'helper.eviction': 'Надзвичайне розірвання оренди оскаржується в суді.',
+        'helper.kho': 'Для оскарження рішення HAO подається клопотання про дозвіл на оскарження до KHO.',
+        'helper.custom': 'Строк задано вручну. Перевірте текст рішення.',
+        'form.custom_days': 'Кількість днів',
+        'form.decision_date': 'Дата рішення (день отримання) *',
+        'form.decision_date_helper': 'Строк зазвичай починається з наступного робочого дня (HMS § 33).',
+        'result.label': 'Ваш строк оскарження',
+        'result.label_full': 'Ваш строк оскарження ({days} дн., {law})',
+        'result.placeholder': 'Виберіть тип рішення та введіть дату.',
+        'count.expired': 'Строк сплив {n} днів тому',
+        'count.today': 'Строк спливає сьогодні!',
+        'count.urgent': 'Залишилось {n} днів!',
+        'count.warn': 'Залишилось {n} днів',
+        'count.ok': 'Залишилось {n} днів',
+        'sub.expired': 'Строк сплив {date}. Рішення набрало законної сили. Поновлення строку можливе лише у виняткових випадках — терміново зверніться до адвоката.',
+        'sub.today': 'У вас є час до півночі. Терміново зверніться до адвоката — скарга має бути подана сьогодні.',
+        'sub.urgent': 'Строк швидко наближається. Терміново зверніться до адвоката — складання скарги потребує часу.',
+        'sub.warn': 'Час ще є, але не зволікайте. На підготовку скарги краще закласти щонайменше тиждень.',
+        'sub.ok': 'У вас достатньо часу. Зберіть документи і проконсультуйтеся з адвокатом.',
+        'cons.future': '<strong>Що буде, якщо пропустити строк?</strong><br>Ви втрачаєте право оскаржити рішення. Воно стає остаточним.',
+        'cons.expired': '<strong>Що тепер?</strong><br>Подайте до суду заяву про поновлення пропущеного строку (TsMS § 67, HKMS § 71). Потрібно довести поважну перешкоду: тяжка хвороба, збій пошти, затримання. Заява подається протягом 14 днів після припинення перешкоди.',
+        'cta.title': 'Строк наближається? Advocat допоможе скласти скаргу',
+        'cta.body': 'Заперечення чи скарга — складний юридичний документ — Advocat AI допоможе скласти і подати вчасно. 17 мовами.',
+        'cta.btn': 'Отримати допомогу Advocat →',
+        'disclaimer.label': 'Юридичне застереження:',
+        'disclaimer.body': 'Калькулятор дає орієнтовний строк за HMS § 33, HKMS § 46 та галузевими законами. У конкретній ситуації звіряйте точний строк із текстом рішення.',
+        'footer.copy': '2026 Advocat. Усі права захищені.',
+        'footer.note': 'Цей інструмент має загальний інформативний характер і не є індивідуальною юридичною консультацією.'
+      },
+      lv: {
+        'meta.title': 'Pārsūdzības termiņa kalkulators — Igaunija un Somija | Advocat',
+        'meta.description': 'Bezmaksas lēmuma pārsūdzības termiņa kalkulators. Darba strīdu komisija, administratīvā tiesa, PPA, Migri.',
+        'nav.home': 'Sākums', 'nav.tools': 'Rīki', 'nav.blog': 'Blogs', 'nav.try': 'Izmēģināt bez maksas',
+        'bc.tools': 'Rīki', 'bc.here': 'Pārsūdzības termiņa kalkulators',
+        'hero.tag': 'Bezmaksas rīks', 'hero.title': 'Pārsūdzības termiņa kalkulators',
+        'hero.subtitle': 'Aprēķini pārsūdzības termiņu no lēmuma datuma. Ņem vērā nedēļas nogales — ja termiņš krīt brīvdienā, tas pagarinās līdz nākamajai darba dienai.',
+        'form.decision_type': 'Lēmuma veids *',
+        'opt.tvk': 'Darba strīdu komisijas lēmums → 30 dienas uz tiesu',
+        'opt.halduskohus': 'Administratīvās tiesas lēmums → 30 dienas Augstākajā tiesā',
+        'opt.ppa': 'PPA uzturēšanās atļaujas lēmums → 30 dienas administratīvajā tiesā',
+        'opt.tax': 'Nodokļu un muitas pārvaldes lēmums → 30 dienas izskatīšanas komisijā',
+        'opt.migri': 'Migri (Somija) lēmums → 30 dienas administratīvajā tiesā',
+        'opt.eviction': 'Paziņojums par izlikšanu → 14 dienas',
+        'opt.kho': 'KHO atļauja pārsūdzēt (Somija) → 30 dienas',
+        'opt.custom': 'Cits lēmums — termiņš manuāli',
+        'helper.tvk': 'Darba strīdu komisijas lēmumu pārsūdz apriņķa tiesā.',
+        'helper.halduskohus': 'Administratīvās tiesas lēmuma kasācijas sūdzība Augstākajā tiesā.',
+        'helper.ppa': 'PPA uzturēšanās atļaujas lēmumu pārsūdz administratīvajā tiesā.',
+        'helper.tax': 'Nodokļu un muitas pārvaldes lēmumu pārsūdz MTA izskatīšanas komisijā.',
+        'helper.migri': 'Migri lēmumu (käännytys, oleskelulupa) pārsūdz administratīvajā tiesā (HAO).',
+        'helper.eviction': 'Īres līguma ārkārtas izbeigšanu pārsūdz tiesā.',
+        'helper.kho': 'Lai pārsūdzētu HAO lēmumu, iesniedz KHO pieteikumu par atļauju pārsūdzēt.',
+        'helper.custom': 'Manuāli iestatīts termiņš. Pārbaudi lēmuma tekstā.',
+        'form.custom_days': 'Dienu skaits',
+        'form.decision_date': 'Lēmuma datums (saņemšanas diena) *',
+        'form.decision_date_helper': 'Termiņš parasti sākas nākamajā darba dienā (HMS § 33).',
+        'result.label': 'Tavs pārsūdzības termiņš',
+        'result.label_full': 'Tavs pārsūdzības termiņš ({days} dienas, {law})',
+        'result.placeholder': 'Izvēlies lēmuma veidu un ievadi datumu.',
+        'count.expired': 'Termiņš beidzās pirms {n} dienām',
+        'count.today': 'Termiņš beidzas šodien!',
+        'count.urgent': 'Atlikušas {n} dienas!',
+        'count.warn': 'Atlikušas {n} dienas',
+        'count.ok': 'Atlikušas {n} dienas',
+        'sub.expired': 'Termiņš beidzās {date}. Lēmums stājies spēkā. Termiņa atjaunošana iespējama tikai izņēmuma gadījumos — steidzami sazinies ar advokātu.',
+        'sub.today': 'Laiks ir līdz pusnaktij. Steidzami sazinies ar advokātu — sūdzība jāiesniedz šodien.',
+        'sub.urgent': 'Termiņš strauji tuvojas. Nekavējoties sazinies ar advokātu — sūdzības sagatavošana prasa laiku.',
+        'sub.warn': 'Laiks vēl ir, bet nevilcinies. Sūdzības sagatavošanai labāk paredzēt vismaz nedēļu.',
+        'sub.ok': 'Tev ir pietiekami laika. Savāc dokumentus un konsultējies ar advokātu.',
+        'cons.future': '<strong>Kas notiek, ja nokavēsi termiņu?</strong><br>Tu zaudē tiesības pārsūdzēt lēmumu. Tas kļūst galīgs.',
+        'cons.expired': '<strong>Ko tagad?</strong><br>Iesniedz tiesā lūgumu atjaunot nokavēto termiņu (TsMS § 67, HKMS § 71). Jāpierāda attaisnojošs šķērslis: smaga slimība, pasta kļūme, apcietinājums. Lūgums jāiesniedz 14 dienu laikā pēc šķēršļa beigām.',
+        'cta.title': 'Termiņš tuvojas? Advocat palīdz sagatavot sūdzību',
+        'cta.body': 'Iebildums vai sūdzība ir sarežģīts juridisks dokuments — Advocat AI palīdzēs to sagatavot un savlaicīgi iesniegt. 17 valodās.',
+        'cta.btn': 'Saņem Advocat palīdzību →',
+        'disclaimer.label': 'Juridiska piezīme:',
+        'disclaimer.body': 'Kalkulators sniedz orientējošu termiņu pēc HMS § 33, HKMS § 46 un nozaru likumiem. Vienmēr pārbaudi precīzo termiņu lēmuma tekstā.',
+        'footer.copy': '2026 Advocat. Visas tiesības aizsargātas.',
+        'footer.note': 'Šis rīks ir vispārīga informatīva rakstura un nav individuāla juridiska konsultācija.'
+      },
+      lt: {
+        'meta.title': 'Apskundimo terminų skaičiuoklė — Estija ir Suomija | Advocat',
+        'meta.description': 'Nemokama sprendimo apskundimo termino skaičiuoklė. Darbo ginčų komisija, administracinis teismas, PPA, Migri.',
+        'nav.home': 'Pradžia', 'nav.tools': 'Įrankiai', 'nav.blog': 'Tinklaraštis', 'nav.try': 'Išbandyti nemokamai',
+        'bc.tools': 'Įrankiai', 'bc.here': 'Apskundimo terminų skaičiuoklė',
+        'hero.tag': 'Nemokamas įrankis', 'hero.title': 'Apskundimo terminų skaičiuoklė',
+        'hero.subtitle': 'Apskaičiuokite apskundimo terminą nuo sprendimo datos. Atsižvelgia į savaitgalius — jei terminas patenka į savaitgalį, jis prailginamas iki kitos darbo dienos.',
+        'form.decision_type': 'Sprendimo tipas *',
+        'opt.tvk': 'Darbo ginčų komisijos sprendimas → 30 d. į teismą',
+        'opt.halduskohus': 'Administracinio teismo sprendimas → 30 d. į Aukščiausiąjį teismą',
+        'opt.ppa': 'PPA sprendimas dėl leidimo gyventi → 30 d. į administracinį teismą',
+        'opt.tax': 'Mokesčių ir muitų administracijos sprendimas → 30 d. į apskundimo komisiją',
+        'opt.migri': 'Migri (Suomija) sprendimas → 30 d. į administracinį teismą',
+        'opt.eviction': 'Pranešimas apie iškeldinimą → 14 d.',
+        'opt.kho': 'KHO leidimas paduoti skundą (Suomija) → 30 d.',
+        'opt.custom': 'Kitas sprendimas — terminas rankiniu būdu',
+        'helper.tvk': 'Darbo ginčų komisijos sprendimas skundžiamas apygardos teisme.',
+        'helper.halduskohus': 'Administracinio teismo sprendimo kasacinis skundas Aukščiausiajam teismui.',
+        'helper.ppa': 'PPA sprendimas dėl leidimo gyventi skundžiamas administraciniam teismui.',
+        'helper.tax': 'Mokesčių ir muitų administracijos sprendimas skundžiamas MTA apskundimo komisijai.',
+        'helper.migri': 'Migri sprendimas (käännytys, oleskelulupa) skundžiamas administraciniam teismui (HAO).',
+        'helper.eviction': 'Nepaprasta nuomos nutraukimo sąlyga skundžiama teisme.',
+        'helper.kho': 'HAO sprendimas skundžiamas KHO pateikiant prašymą dėl leidimo paduoti skundą.',
+        'helper.custom': 'Rankiniu būdu nustatytas terminas. Patikrinkite sprendimo tekste.',
+        'form.custom_days': 'Dienų skaičius',
+        'form.decision_date': 'Sprendimo data (gavimo diena) *',
+        'form.decision_date_helper': 'Terminas paprastai prasideda kitą darbo dieną (HMS § 33).',
+        'result.label': 'Jūsų apskundimo terminas',
+        'result.label_full': 'Jūsų apskundimo terminas ({days} d., {law})',
+        'result.placeholder': 'Pasirinkite sprendimo tipą ir įveskite datą.',
+        'count.expired': 'Terminas baigėsi prieš {n} d.',
+        'count.today': 'Terminas baigiasi šiandien!',
+        'count.urgent': 'Liko {n} d.!',
+        'count.warn': 'Liko {n} d.',
+        'count.ok': 'Liko {n} d.',
+        'sub.expired': 'Terminas baigėsi {date}. Sprendimas įsiteisėjo. Termino atnaujinimas galimas tik išimtiniais atvejais — skubiai kreipkitės į advokatą.',
+        'sub.today': 'Laiko turite iki vidurnakčio. Skubiai kreipkitės į advokatą — skundą reikia paduoti šiandien.',
+        'sub.urgent': 'Terminas greitai artėja. Skubiai kreipkitės į advokatą — skundo parengimas užima laiko.',
+        'sub.warn': 'Laiko dar yra, bet neatidėliokite. Skundo parengimui planuokite bent savaitę.',
+        'sub.ok': 'Turite pakankamai laiko. Surinkite dokumentus ir pasitarkite su advokatu.',
+        'cons.future': '<strong>Kas, jei praleisite terminą?</strong><br>Prarasite teisę apskųsti sprendimą. Sprendimas tampa galutinis.',
+        'cons.expired': '<strong>Kas dabar?</strong><br>Pateikite teismui prašymą atnaujinti praleistą terminą (TsMS § 67, HKMS § 71). Turite įrodyti svarbią kliūtį: sunki liga, pašto trikdis, sulaikymas. Prašymas teikiamas per 14 d. nuo kliūties pabaigos.',
+        'cta.title': 'Terminas artėja? Advocat padės parengti skundą',
+        'cta.body': 'Skundas — sudėtingas teisinis dokumentas. Advocat AI padės parengti ir laiku pateikti. 17 kalbų.',
+        'cta.btn': 'Gauti Advocat pagalbą →',
+        'disclaimer.label': 'Teisinis pranešimas:',
+        'disclaimer.body': 'Skaičiuoklė pateikia orientacinį terminą pagal HMS § 33, HKMS § 46 ir sektorinius įstatymus. Konkrečioje situacijoje pasitikrinkite tikslų terminą sprendimo tekste.',
+        'footer.copy': '2026 Advocat. Visos teisės saugomos.',
+        'footer.note': 'Šis įrankis yra bendro informacinio pobūdžio ir nėra individuali teisinė konsultacija.'
+      },
+      pl: {
+        'meta.title': 'Kalkulator terminów odwołania — Estonia i Finlandia | Advocat',
+        'meta.description': 'Bezpłatny kalkulator terminu zaskarżenia decyzji. Komisja sporów pracy, sąd administracyjny, PPA, Migri.',
+        'nav.home': 'Strona główna', 'nav.tools': 'Narzędzia', 'nav.blog': 'Blog', 'nav.try': 'Wypróbuj za darmo',
+        'bc.tools': 'Narzędzia', 'bc.here': 'Kalkulator terminów odwołania',
+        'hero.tag': 'Narzędzie bezpłatne', 'hero.title': 'Kalkulator terminów odwołania',
+        'hero.subtitle': 'Oblicz termin odwołania od daty decyzji. Uwzględnia weekendy — jeśli termin przypada na sobotę lub niedzielę, przesuwa się na najbliższy dzień roboczy.',
+        'form.decision_type': 'Rodzaj decyzji *',
+        'opt.tvk': 'Decyzja Komisji sporów pracy → 30 dni do sądu',
+        'opt.halduskohus': 'Decyzja sądu administracyjnego → 30 dni do Sądu Najwyższego',
+        'opt.ppa': 'Decyzja PPA o zezwoleniu na pobyt → 30 dni do sądu administracyjnego',
+        'opt.tax': 'Decyzja Urzędu Skarbowo-Celnego → 30 dni do komisji odwoławczej',
+        'opt.migri': 'Decyzja Migri (Finlandia) → 30 dni do sądu administracyjnego',
+        'opt.eviction': 'Wypowiedzenie z eksmisją → 14 dni',
+        'opt.kho': 'Zgoda KHO na skargę (Finlandia) → 30 dni',
+        'opt.custom': 'Inna decyzja — ustaw termin ręcznie',
+        'helper.tvk': 'Decyzja Komisji sporów pracy jest zaskarżana do sądu powiatowego.',
+        'helper.halduskohus': 'Skarga kasacyjna od decyzji sądu administracyjnego do Sądu Najwyższego.',
+        'helper.ppa': 'Decyzja PPA o zezwoleniu na pobyt zaskarżana jest do sądu administracyjnego.',
+        'helper.tax': 'Decyzja Urzędu Skarbowo-Celnego zaskarżana jest do komisji odwoławczej MTA.',
+        'helper.migri': 'Decyzja Migri (käännytys, oleskelulupa) zaskarżana jest do sądu administracyjnego (HAO).',
+        'helper.eviction': 'Nadzwyczajne rozwiązanie najmu zaskarżane jest do sądu.',
+        'helper.kho': 'Aby zaskarżyć decyzję HAO, składa się wniosek o zgodę na skargę do KHO.',
+        'helper.custom': 'Termin ustawiony ręcznie. Sprawdź tekst decyzji.',
+        'form.custom_days': 'Liczba dni',
+        'form.decision_date': 'Data decyzji (dzień doręczenia) *',
+        'form.decision_date_helper': 'Termin biegnie zwykle od następnego dnia roboczego (HMS § 33).',
+        'result.label': 'Twój termin odwołania',
+        'result.label_full': 'Twój termin odwołania ({days} dni, {law})',
+        'result.placeholder': 'Wybierz rodzaj decyzji i wpisz datę.',
+        'count.expired': 'Termin upłynął {n} dni temu',
+        'count.today': 'Termin upływa dziś!',
+        'count.urgent': 'Pozostało {n} dni!',
+        'count.warn': 'Pozostało {n} dni',
+        'count.ok': 'Pozostało {n} dni',
+        'sub.expired': 'Termin upłynął {date}. Decyzja jest prawomocna. Przywrócenie terminu możliwe jest tylko wyjątkowo — pilnie skontaktuj się z prawnikiem.',
+        'sub.today': 'Masz czas do północy. Pilnie skontaktuj się z prawnikiem — odwołanie musi zostać złożone dziś.',
+        'sub.urgent': 'Termin szybko się zbliża. Niezwłocznie skontaktuj się z prawnikiem — przygotowanie odwołania wymaga czasu.',
+        'sub.warn': 'Czas jeszcze jest, ale nie zwlekaj. Zaplanuj co najmniej tydzień na przygotowanie odwołania.',
+        'sub.ok': 'Masz wystarczająco dużo czasu. Zbierz dokumenty i skonsultuj się z prawnikiem.',
+        'cons.future': '<strong>Co, jeśli przegapisz termin?</strong><br>Tracisz prawo do zaskarżenia decyzji. Staje się ona prawomocna.',
+        'cons.expired': '<strong>Co teraz?</strong><br>Złóż w sądzie wniosek o przywrócenie terminu (TsMS § 67, HKMS § 71). Musisz wykazać uzasadnioną przeszkodę: ciężka choroba, awaria poczty, zatrzymanie. Wniosek składasz w ciągu 14 dni od ustania przeszkody.',
+        'cta.title': 'Termin się zbliża? Advocat pomoże w odwołaniu',
+        'cta.body': 'Sprzeciw lub odwołanie to złożony dokument prawny — Advocat AI pomoże sporządzić i złożyć w terminie. W 17 językach.',
+        'cta.btn': 'Uzyskaj pomoc Advocat →',
+        'disclaimer.label': 'Informacja prawna:',
+        'disclaimer.body': 'Ten kalkulator podaje orientacyjny termin według HMS § 33, HKMS § 46 i ustaw sektorowych. Dokładny termin zawsze sprawdź w treści decyzji.',
+        'footer.copy': '2026 Advocat. Wszelkie prawa zastrzeżone.',
+        'footer.note': 'To narzędzie ma charakter ogólnoinformacyjny i nie stanowi indywidualnej porady prawnej.'
+      },
+      sv: {
+        'meta.title': 'Kalkylator för överklagandetider — Estland & Finland | Advocat',
+        'meta.description': 'Gratis kalkylator för tidsfristen att överklaga ett beslut. Arbetstvistnämnd, förvaltningsdomstol, PPA, Migri.',
+        'nav.home': 'Hem', 'nav.tools': 'Verktyg', 'nav.blog': 'Blogg', 'nav.try': 'Prova gratis',
+        'bc.tools': 'Verktyg', 'bc.here': 'Kalkylator för överklagandetider',
+        'hero.tag': 'Gratisverktyg', 'hero.title': 'Kalkylator för överklagandetider',
+        'hero.subtitle': 'Beräkna överklagandetiden från beslutsdatumet. Helger beaktas — om fristen infaller på en helg förlängs den till nästa vardag.',
+        'form.decision_type': 'Typ av beslut *',
+        'opt.tvk': 'Beslut från arbetstvistnämnden → 30 dagar till domstol',
+        'opt.halduskohus': 'Beslut från förvaltningsdomstol → 30 dagar till Högsta domstolen',
+        'opt.ppa': 'PPA-uppehållstillståndsbeslut → 30 dagar till förvaltningsdomstol',
+        'opt.tax': 'Beslut från Skatte- och tullverket → 30 dagar till omprövningsnämnd',
+        'opt.migri': 'Migri-beslut (Finland) → 30 dagar till förvaltningsdomstol',
+        'opt.eviction': 'Avhysningsmeddelande → 14 dagar',
+        'opt.kho': 'KHO:s prövningstillstånd (Finland) → 30 dagar',
+        'opt.custom': 'Annat beslut — sätt tidsfrist manuellt',
+        'helper.tvk': 'Beslut från arbetstvistnämnden överklagas till länsrätt/lokal domstol.',
+        'helper.halduskohus': 'Kassationsöverklagande av förvaltningsdomstolens beslut hos Högsta domstolen.',
+        'helper.ppa': 'PPA-beslut om uppehållstillstånd överklagas till förvaltningsdomstol.',
+        'helper.tax': 'Beslut från Skatte- och tullverket prövas av MTA:s omprövningsnämnd.',
+        'helper.migri': 'Migri-beslut (käännytys, oleskelulupa) överklagas till förvaltningsdomstol (HAO).',
+        'helper.eviction': 'Extraordinär hyresuppsägning överklagas till domstol.',
+        'helper.kho': 'För att överklaga ett HAO-beslut, lämna in en ansökan om prövningstillstånd till KHO.',
+        'helper.custom': 'Manuellt satt tidsfrist. Kontrollera i beslutet.',
+        'form.custom_days': 'Antal dagar',
+        'form.decision_date': 'Beslutsdatum (mottagningsdag) *',
+        'form.decision_date_helper': 'Tidsfristen börjar oftast nästa vardag (HMS § 33).',
+        'result.label': 'Din överklagandetid',
+        'result.label_full': 'Din överklagandetid ({days} dagar, {law})',
+        'result.placeholder': 'Välj beslutstyp och ange ett datum.',
+        'count.expired': 'Tidsfrist gick ut för {n} dagar sedan',
+        'count.today': 'Tidsfristen går ut idag!',
+        'count.urgent': '{n} dagar kvar!',
+        'count.warn': '{n} dagar kvar',
+        'count.ok': '{n} dagar kvar',
+        'sub.expired': 'Tidsfristen gick ut {date}. Beslutet är lagakraftvunnet. Återställning av tidsfrist är möjlig endast undantagsvis — kontakta omedelbart en advokat.',
+        'sub.today': 'Du har tid till midnatt. Kontakta omedelbart en advokat — överklagandet måste lämnas in idag.',
+        'sub.urgent': 'Tidsfristen närmar sig snabbt. Kontakta omedelbart en advokat — att utforma ett överklagande tar tid.',
+        'sub.warn': 'Du har fortfarande tid, men dröj inte. Räkna med minst en vecka för förberedelse.',
+        'sub.ok': 'Du har gott om tid. Samla underlagen och kontakta en advokat.',
+        'cons.future': '<strong>Vad händer om du missar tidsfristen?</strong><br>Du förlorar rätten att överklaga. Beslutet vinner laga kraft.',
+        'cons.expired': '<strong>Vad nu?</strong><br>Lämna in en begäran om återställning av tidsfrist till domstolen (TsMS § 67, HKMS § 71). Du måste visa giltigt hinder: allvarlig sjukdom, postavbrott, frihetsberövande. Begäran ska lämnas inom 14 dagar efter hindrets upphörande.',
+        'cta.title': 'Tidsfristen närmar sig? Advocat hjälper dig att utforma överklagandet',
+        'cta.body': 'Ett överklagande är ett komplext juridiskt dokument — Advocat AI hjälper dig att skriva och lämna in i tid. På 17 språk.',
+        'cta.btn': 'Få hjälp från Advocat →',
+        'disclaimer.label': 'Juridisk information:',
+        'disclaimer.body': 'Denna kalkylator ger en vägledande tidsfrist enligt HMS § 33, HKMS § 46 och sektorsspecifika lagar. Kontrollera alltid den exakta tidsfristen i beslutets text.',
+        'footer.copy': '2026 Advocat. Alla rättigheter förbehållna.',
+        'footer.note': 'Detta verktyg är allmänt informativt och utgör inte individuell juridisk rådgivning.'
+      },
+      ar: {
+        'meta.title': 'حاسبة مواعيد الطعن — إستونيا وفنلندا | Advocat',
+        'meta.description': 'حاسبة مجانية لمهلة الطعن على القرار. لجنة نزاعات العمل، المحكمة الإدارية، PPA، Migri.',
+        'nav.home': 'الرئيسية', 'nav.tools': 'الأدوات', 'nav.blog': 'المدونة', 'nav.try': 'جرّب مجانًا',
+        'bc.tools': 'الأدوات', 'bc.here': 'حاسبة مواعيد الطعن',
+        'hero.tag': 'أداة مجانية', 'hero.title': 'حاسبة مواعيد الطعن',
+        'hero.subtitle': 'احسب موعد الطعن من تاريخ القرار. تأخذ عطلات نهاية الأسبوع في الحسبان — إذا حلّ الموعد في عطلة، يمتد إلى أول يوم عمل.',
+        'form.decision_type': 'نوع القرار *',
+        'opt.tvk': 'قرار لجنة نزاعات العمل ← 30 يومًا إلى المحكمة',
+        'opt.halduskohus': 'قرار المحكمة الإدارية ← 30 يومًا إلى المحكمة العليا',
+        'opt.ppa': 'قرار PPA بشأن الإقامة ← 30 يومًا إلى المحكمة الإدارية',
+        'opt.tax': 'قرار هيئة الضرائب والجمارك ← 30 يومًا إلى لجنة المراجعة',
+        'opt.migri': 'قرار Migri (فنلندا) ← 30 يومًا إلى المحكمة الإدارية',
+        'opt.eviction': 'إشعار إخلاء ← 14 يومًا',
+        'opt.kho': 'إذن الطعن KHO (فنلندا) ← 30 يومًا',
+        'opt.custom': 'قرار آخر — حدّد الموعد يدويًا',
+        'helper.tvk': 'يُطعن في قرار لجنة نزاعات العمل أمام محكمة المقاطعة.',
+        'helper.halduskohus': 'طعن بالنقض على قرار المحكمة الإدارية أمام المحكمة العليا.',
+        'helper.ppa': 'يُطعن في قرار PPA الخاص بالإقامة أمام المحكمة الإدارية.',
+        'helper.tax': 'يُطعن في قرار هيئة الضرائب أمام لجنة المراجعة في MTA.',
+        'helper.migri': 'يُطعن في قرار Migri (käännytys, oleskelulupa) أمام المحكمة الإدارية (HAO).',
+        'helper.eviction': 'يُطعن في الإنهاء الاستثنائي لعقد الإيجار أمام المحكمة.',
+        'helper.kho': 'للطعن في قرار HAO، يُقدَّم طلب إذن بالطعن إلى KHO.',
+        'helper.custom': 'موعد محدد يدويًا. تحقق من نص القرار.',
+        'form.custom_days': 'عدد الأيام',
+        'form.decision_date': 'تاريخ القرار (يوم الاستلام) *',
+        'form.decision_date_helper': 'يبدأ سريان الموعد عادةً من يوم العمل التالي (HMS § 33).',
+        'result.label': 'موعد الطعن الخاص بك',
+        'result.label_full': 'موعد الطعن الخاص بك ({days} يومًا، {law})',
+        'result.placeholder': 'اختر نوع القرار وأدخل التاريخ.',
+        'count.expired': 'انقضى الموعد قبل {n} يومًا',
+        'count.today': 'ينتهي الموعد اليوم!',
+        'count.urgent': 'تبقى {n} أيام!',
+        'count.warn': 'تبقى {n} أيام',
+        'count.ok': 'تبقى {n} أيام',
+        'sub.expired': 'انتهى الموعد في {date}. القرار أصبح نهائيًا. لا يجوز إعادة الموعد إلا استثنائيًا — تواصل فورًا مع محامٍ.',
+        'sub.today': 'لديك الوقت حتى منتصف الليل. تواصل فورًا مع محامٍ — يجب تقديم الطعن اليوم.',
+        'sub.urgent': 'الموعد يقترب بسرعة. تواصل فورًا مع محامٍ — صياغة الطعن تستغرق وقتًا.',
+        'sub.warn': 'لا يزال لديك وقت، لكن لا تتأخر. خصّص أسبوعًا على الأقل للتحضير.',
+        'sub.ok': 'لديك وقت كافٍ. اجمع الوثائق واستشر محاميًا.',
+        'cons.future': '<strong>ماذا يحدث إذا فاتك الموعد؟</strong><br>تفقد حق الطعن في القرار. يصبح القرار نهائيًا.',
+        'cons.expired': '<strong>ماذا الآن؟</strong><br>قدّم للمحكمة طلب إعادة الموعد المنقضي (TsMS § 67, HKMS § 71). عليك إثبات عائق مشروع: مرض شديد، عطل بريدي، احتجاز. يُقدَّم الطلب خلال 14 يومًا من زوال العائق.',
+        'cta.title': 'الموعد يقترب؟ Advocat يساعدك في صياغة الطعن',
+        'cta.body': 'الاعتراض أو الطعن وثيقة قانونية معقدة — Advocat AI يساعدك في صياغته وتقديمه في الوقت المحدد. بـ17 لغة.',
+        'cta.btn': 'احصل على دعم Advocat ←',
+        'disclaimer.label': 'تنبيه قانوني:',
+        'disclaimer.body': 'تعطي هذه الحاسبة موعدًا توجيهيًا وفق HMS § 33 وHKMS § 46 والقوانين القطاعية. تحقق دائمًا من الموعد الدقيق في نص القرار.',
+        'footer.copy': '2026 Advocat. جميع الحقوق محفوظة.',
+        'footer.note': 'هذه الأداة ذات طابع معلوماتي عام ولا تشكّل استشارة قانونية فردية.'
+      },
+      fa: {
+        'meta.title': 'محاسبه‌گر مهلت اعتراض — استونی و فنلاند | Advocat',
+        'meta.description': 'محاسبه‌گر رایگان مهلت اعتراض به تصمیم. کمیسیون اختلافات کار، دادگاه اداری، PPA، Migri.',
+        'nav.home': 'صفحه اصلی', 'nav.tools': 'ابزارها', 'nav.blog': 'وبلاگ', 'nav.try': 'امتحان رایگان',
+        'bc.tools': 'ابزارها', 'bc.here': 'محاسبه‌گر مهلت اعتراض',
+        'hero.tag': 'ابزار رایگان', 'hero.title': 'محاسبه‌گر مهلت اعتراض',
+        'hero.subtitle': 'مهلت اعتراض را از تاریخ تصمیم محاسبه کنید. آخر هفته‌ها در نظر گرفته می‌شوند — اگر مهلت در آخر هفته باشد، تا اولین روز کاری بعد تمدید می‌شود.',
+        'form.decision_type': 'نوع تصمیم *',
+        'opt.tvk': 'تصمیم کمیسیون اختلافات کار ← ۳۰ روز به دادگاه',
+        'opt.halduskohus': 'تصمیم دادگاه اداری ← ۳۰ روز به دادگاه عالی',
+        'opt.ppa': 'تصمیم PPA درباره اقامت ← ۳۰ روز به دادگاه اداری',
+        'opt.tax': 'تصمیم اداره مالیات و گمرک ← ۳۰ روز به کمیسیون بازبینی',
+        'opt.migri': 'تصمیم Migri (فنلاند) ← ۳۰ روز به دادگاه اداری',
+        'opt.eviction': 'اخطار تخلیه ← ۱۴ روز',
+        'opt.kho': 'مجوز فرجام‌خواهی KHO (فنلاند) ← ۳۰ روز',
+        'opt.custom': 'تصمیم دیگر — تعیین دستی مهلت',
+        'helper.tvk': 'تصمیم کمیسیون اختلافات کار در دادگاه شهرستان اعتراض می‌شود.',
+        'helper.halduskohus': 'فرجام‌خواهی از تصمیم دادگاه اداری در دادگاه عالی.',
+        'helper.ppa': 'تصمیم PPA درباره اقامت در دادگاه اداری اعتراض می‌شود.',
+        'helper.tax': 'تصمیم اداره مالیات و گمرک به کمیسیون بازبینی MTA ارجاع می‌شود.',
+        'helper.migri': 'تصمیم Migri (käännytys, oleskelulupa) در دادگاه اداری (HAO) اعتراض می‌شود.',
+        'helper.eviction': 'فسخ استثنایی قرارداد اجاره در دادگاه اعتراض می‌شود.',
+        'helper.kho': 'برای اعتراض به تصمیم HAO، درخواست مجوز فرجام‌خواهی به KHO ارائه می‌شود.',
+        'helper.custom': 'مهلت دستی تنظیم شده. متن تصمیم را بررسی کنید.',
+        'form.custom_days': 'تعداد روزها',
+        'form.decision_date': 'تاریخ تصمیم (روز دریافت) *',
+        'form.decision_date_helper': 'مهلت معمولاً از روز کاری بعد آغاز می‌شود (HMS § 33).',
+        'result.label': 'مهلت اعتراض شما',
+        'result.label_full': 'مهلت اعتراض شما ({days} روز، {law})',
+        'result.placeholder': 'نوع تصمیم را انتخاب و تاریخ را وارد کنید.',
+        'count.expired': 'مهلت {n} روز پیش پایان یافت',
+        'count.today': 'مهلت امروز پایان می‌یابد!',
+        'count.urgent': '{n} روز باقی مانده!',
+        'count.warn': '{n} روز باقی مانده',
+        'count.ok': '{n} روز باقی مانده',
+        'sub.expired': 'مهلت در {date} پایان یافت. تصمیم قطعی شده است. اعاده مهلت فقط در موارد استثنایی ممکن است — فوراً با وکیل تماس بگیرید.',
+        'sub.today': 'تا نیمه‌شب فرصت دارید. فوراً با وکیل تماس بگیرید — اعتراض باید امروز ثبت شود.',
+        'sub.urgent': 'مهلت به‌سرعت نزدیک می‌شود. فوراً با وکیل تماس بگیرید — تنظیم اعتراض زمان می‌برد.',
+        'sub.warn': 'هنوز فرصت دارید، اما تعلل نکنید. حداقل یک هفته برای آماده‌سازی در نظر بگیرید.',
+        'sub.ok': 'وقت کافی دارید. مدارک را جمع‌آوری کنید و با وکیل مشورت کنید.',
+        'cons.future': '<strong>اگر مهلت بگذرد چه می‌شود؟</strong><br>حق اعتراض از بین می‌رود. تصمیم قطعی می‌شود.',
+        'cons.expired': '<strong>حالا چه باید کرد؟</strong><br>درخواست اعاده مهلت گذشته را به دادگاه ارائه دهید (TsMS § 67, HKMS § 71). باید مانع موجه را اثبات کنید: بیماری شدید، اختلال پست، بازداشت. درخواست ظرف ۱۴ روز پس از رفع مانع تسلیم شود.',
+        'cta.title': 'مهلت نزدیک است؟ Advocat در تنظیم اعتراض کمک می‌کند',
+        'cta.body': 'اعتراض سندی حقوقی پیچیده است — Advocat AI آن را تنظیم و به‌موقع ارائه می‌کند. به ۱۷ زبان.',
+        'cta.btn': 'دریافت کمک Advocat ←',
+        'disclaimer.label': 'یادداشت حقوقی:',
+        'disclaimer.body': 'این محاسبه‌گر مهلتی راهنما بر اساس HMS § 33، HKMS § 46 و قوانین تخصصی ارائه می‌دهد. مهلت دقیق را همیشه در متن تصمیم بررسی کنید.',
+        'footer.copy': '۲۰۲۶ Advocat. تمامی حقوق محفوظ است.',
+        'footer.note': 'این ابزار ماهیتی اطلاع‌رسانی عمومی دارد و مشاوره حقوقی فردی محسوب نمی‌شود.'
+      },
+      tr: {
+        'meta.title': 'İtiraz süresi hesaplayıcı — Estonya ve Finlandiya | Advocat',
+        'meta.description': 'Bir karara itiraz süresi için ücretsiz hesaplayıcı. İş Uyuşmazlıkları Kurulu, idare mahkemesi, PPA, Migri.',
+        'nav.home': 'Anasayfa', 'nav.tools': 'Araçlar', 'nav.blog': 'Blog', 'nav.try': 'Ücretsiz dene',
+        'bc.tools': 'Araçlar', 'bc.here': 'İtiraz süresi hesaplayıcı',
+        'hero.tag': 'Ücretsiz araç', 'hero.title': 'İtiraz süresi hesaplayıcı',
+        'hero.subtitle': 'İtiraz süresini kararın tarihine göre hesaplayın. Hafta sonları dikkate alınır — süre hafta sonuna denk gelirse bir sonraki iş gününe uzar.',
+        'form.decision_type': 'Karar türü *',
+        'opt.tvk': 'İş Uyuşmazlıkları Kurulu kararı → mahkemeye 30 gün',
+        'opt.halduskohus': 'İdare mahkemesi kararı → Yüksek Mahkemeye 30 gün',
+        'opt.ppa': 'PPA oturma izni kararı → idare mahkemesine 30 gün',
+        'opt.tax': 'Vergi ve Gümrük İdaresi kararı → itiraz kuruluna 30 gün',
+        'opt.migri': 'Migri (Finlandiya) kararı → idare mahkemesine 30 gün',
+        'opt.eviction': 'Tahliye bildirimi → 14 gün',
+        'opt.kho': 'KHO temyiz izni (Finlandiya) → 30 gün',
+        'opt.custom': 'Diğer karar — süreyi elle ayarla',
+        'helper.tvk': 'İş Uyuşmazlıkları Kurulu kararına ilçe mahkemesinde itiraz edilir.',
+        'helper.halduskohus': 'İdare mahkemesi kararına Yüksek Mahkemede temyiz başvurusu.',
+        'helper.ppa': 'PPA oturma izni kararı idare mahkemesinde itiraz konusu olur.',
+        'helper.tax': 'Vergi ve Gümrük İdaresi kararı MTA itiraz kuruluna sunulur.',
+        'helper.migri': 'Migri kararı (käännytys, oleskelulupa) idare mahkemesinde (HAO) itiraz edilir.',
+        'helper.eviction': 'Kira sözleşmesinin haklı nedenle feshine mahkemede itiraz edilir.',
+        'helper.kho': 'HAO kararına karşı KHO\'dan temyiz izni talep edilir.',
+        'helper.custom': 'Elle ayarlanmış süre. Karar metnini kontrol edin.',
+        'form.custom_days': 'Gün sayısı',
+        'form.decision_date': 'Karar tarihi (tebliğ günü) *',
+        'form.decision_date_helper': 'Süre genelde bir sonraki iş gününde başlar (HMS § 33).',
+        'result.label': 'İtiraz süreniz',
+        'result.label_full': 'İtiraz süreniz ({days} gün, {law})',
+        'result.placeholder': 'Karar türünü seçin ve tarih girin.',
+        'count.expired': 'Süre {n} gün önce doldu',
+        'count.today': 'Süre bugün doluyor!',
+        'count.urgent': '{n} gün kaldı!',
+        'count.warn': '{n} gün kaldı',
+        'count.ok': '{n} gün kaldı',
+        'sub.expired': 'Süre {date} tarihinde doldu. Karar kesinleşti. Sürenin iadesi yalnızca istisnai hallerde mümkündür — derhal bir avukatla iletişime geçin.',
+        'sub.today': 'Gece yarısına kadar vaktiniz var. Derhal bir avukatla iletişime geçin — itiraz bugün yapılmalıdır.',
+        'sub.urgent': 'Süre hızla yaklaşıyor. Hemen bir avukatla iletişime geçin — itiraz yazımı zaman alır.',
+        'sub.warn': 'Hâlâ vaktiniz var, ama oyalanmayın. Hazırlık için en az bir hafta ayırın.',
+        'sub.ok': 'Yeterince vaktiniz var. Belgeleri toplayın ve bir avukata danışın.',
+        'cons.future': '<strong>Süreyi kaçırırsanız ne olur?</strong><br>İtiraz hakkınızı kaybedersiniz. Karar kesinleşir.',
+        'cons.expired': '<strong>Şimdi ne yapmalı?</strong><br>Mahkemeden kaçırılan sürenin iadesini talep edin (TsMS § 67, HKMS § 71). Geçerli bir engel kanıtlamanız gerekir: ağır hastalık, posta aksaklığı, tutukluluk. Talep, engel kalktıktan sonraki 14 gün içinde sunulmalıdır.',
+        'cta.title': 'Süre mi yaklaşıyor? Advocat itiraz yazımına yardım eder',
+        'cta.body': 'İtiraz ya da temyiz karmaşık bir hukuki belgedir — Advocat AI hazırlar ve süresinde sunar. 17 dilde.',
+        'cta.btn': 'Advocat hukuki desteği al →',
+        'disclaimer.label': 'Yasal uyarı:',
+        'disclaimer.body': 'Bu hesaplayıcı HMS § 33, HKMS § 46 ve sektörel yasalara göre yön gösterici bir süre verir. Kesin süreyi her zaman kararın metninde teyit edin.',
+        'footer.copy': '2026 Advocat. Tüm hakları saklıdır.',
+        'footer.note': 'Bu araç genel bilgilendirme amaçlıdır ve kişisel hukuki danışmanlık niteliği taşımaz.'
+      },
+      ro: {
+        'meta.title': 'Calculator termene de contestare — Estonia și Finlanda | Advocat',
+        'meta.description': 'Calculator gratuit al termenului pentru contestarea unei decizii. Comisia de soluționare a litigiilor de muncă, instanța de contencios administrativ, PPA, Migri.',
+        'nav.home': 'Acasă', 'nav.tools': 'Instrumente', 'nav.blog': 'Blog', 'nav.try': 'Încearcă gratuit',
+        'bc.tools': 'Instrumente', 'bc.here': 'Calculator termene de contestare',
+        'hero.tag': 'Instrument gratuit', 'hero.title': 'Calculator termene de contestare',
+        'hero.subtitle': 'Calculează termenul de contestare de la data deciziei. Ia în considerare weekendurile — dacă termenul cade sâmbătă sau duminică, se prelungește până în următoarea zi lucrătoare.',
+        'form.decision_type': 'Tipul deciziei *',
+        'opt.tvk': 'Decizie a Comisiei pentru litigii de muncă → 30 de zile la instanță',
+        'opt.halduskohus': 'Decizia instanței de contencios → 30 de zile la Curtea Supremă',
+        'opt.ppa': 'Decizie PPA privind permisul de ședere → 30 de zile la instanța de contencios',
+        'opt.tax': 'Decizia Direcției Vamale și Fiscale → 30 de zile la comisia de revizuire',
+        'opt.migri': 'Decizie Migri (Finlanda) → 30 de zile la instanța de contencios',
+        'opt.eviction': 'Notificare de evacuare → 14 zile',
+        'opt.kho': 'Permisiune de recurs KHO (Finlanda) → 30 de zile',
+        'opt.custom': 'Altă decizie — setează termenul manual',
+        'helper.tvk': 'Decizia Comisiei pentru litigii de muncă se contestă la judecătoria de comitat.',
+        'helper.halduskohus': 'Recurs în casație împotriva deciziei instanței de contencios la Curtea Supremă.',
+        'helper.ppa': 'Decizia PPA privind permisul de ședere se contestă la instanța de contencios.',
+        'helper.tax': 'Decizia Direcției Fiscale se contestă la comisia de revizuire MTA.',
+        'helper.migri': 'Decizia Migri (käännytys, oleskelulupa) se contestă la instanța de contencios (HAO).',
+        'helper.eviction': 'Rezilierea extraordinară a locațiunii se contestă în instanță.',
+        'helper.kho': 'Pentru a contesta o decizie HAO, se depune o cerere de permisiune de recurs la KHO.',
+        'helper.custom': 'Termen setat manual. Verifică în textul deciziei.',
+        'form.custom_days': 'Numărul de zile',
+        'form.decision_date': 'Data deciziei (ziua primirii) *',
+        'form.decision_date_helper': 'Termenul curge de obicei din ziua lucrătoare următoare (HMS § 33).',
+        'result.label': 'Termenul tău de contestare',
+        'result.label_full': 'Termenul tău de contestare ({days} zile, {law})',
+        'result.placeholder': 'Selectează tipul deciziei și introdu o dată.',
+        'count.expired': 'Termen expirat de {n} zile',
+        'count.today': 'Termenul expiră azi!',
+        'count.urgent': 'Au mai rămas {n} zile!',
+        'count.warn': 'Au mai rămas {n} zile',
+        'count.ok': 'Au mai rămas {n} zile',
+        'sub.expired': 'Termenul a expirat la {date}. Decizia este definitivă. Repunerea în termen este posibilă doar excepțional — contactează urgent un avocat.',
+        'sub.today': 'Ai timp până la miezul nopții. Contactează urgent un avocat — contestația trebuie depusă azi.',
+        'sub.urgent': 'Termenul se apropie rapid. Contactează imediat un avocat — redactarea contestației durează.',
+        'sub.warn': 'Mai ai timp, dar nu amâna. Planifică cel puțin o săptămână pentru pregătire.',
+        'sub.ok': 'Ai suficient timp. Adună documentele și consultă un avocat.',
+        'cons.future': '<strong>Ce se întâmplă dacă scapi termenul?</strong><br>Pierzi dreptul de a contesta decizia. Aceasta devine definitivă.',
+        'cons.expired': '<strong>Ce e de făcut?</strong><br>Depune la instanță o cerere de repunere în termen (TsMS § 67, HKMS § 71). Trebuie să dovedești un impediment valid: boală gravă, defecțiune poștală, arest. Cererea se depune în termen de 14 zile de la încetarea impedimentului.',
+        'cta.title': 'Se apropie termenul? Advocat te ajută să redactezi contestația',
+        'cta.body': 'Contestația este un document juridic complex — Advocat AI o redactează și o depune la timp. În 17 limbi.',
+        'cta.btn': 'Obține asistență Advocat →',
+        'disclaimer.label': 'Notă juridică:',
+        'disclaimer.body': 'Acest calculator oferă un termen orientativ conform HMS § 33, HKMS § 46 și legilor sectoriale. Verifică întotdeauna termenul exact în textul deciziei.',
+        'footer.copy': '2026 Advocat. Toate drepturile rezervate.',
+        'footer.note': 'Acest instrument are caracter informativ general și nu reprezintă consultanță juridică individuală.'
+      }
+    };
+    </script>
+    <script>
+    (function() {
+        const I18N = window.__TOOL_I18N__;
+        const LANGS = [
+          { code: 'et', label: 'Eesti' }, { code: 'en', label: 'English' },
+          { code: 'ru', label: 'Русский' }, { code: 'fi', label: 'Suomi' },
+          { code: 'de', label: 'Deutsch' }, { code: 'fr', label: 'Français' },
+          { code: 'es', label: 'Español' }, { code: 'it', label: 'Italiano' },
+          { code: 'uk', label: 'Українська' }, { code: 'lv', label: 'Latviešu' },
+          { code: 'lt', label: 'Lietuvių' }, { code: 'pl', label: 'Polski' },
+          { code: 'sv', label: 'Svenska' }, { code: 'ar', label: 'العربية' },
+          { code: 'fa', label: 'فارسی' }, { code: 'tr', label: 'Türkçe' },
+          { code: 'ro', label: 'Română' }
+        ];
+        const RTL = { ar: true, fa: true };
+        let CUR_LANG = 'et';
+
+        function tr(key) {
+          const d = I18N[CUR_LANG] || I18N.et;
+          return d[key] !== undefined ? d[key] : (I18N.et[key] !== undefined ? I18N.et[key] : key);
+        }
+
+        function fillT(tpl, vars) {
+          return tpl.replace(/\{(\w+)\}/g, function(_, k){ return vars[k] !== undefined ? vars[k] : ''; });
+        }
+
+        function applyI18n() {
+          const dict = I18N[CUR_LANG] || I18N.et;
+          const fb = I18N.et;
+          document.querySelectorAll('[data-i18n]').forEach(function(el){
+            if (el.id === 'decisionHelper' || el.id === 'resultLabel' || el.id === 'resultSubtitle' || el.id === 'consequenceBox') return;
+            const k = el.getAttribute('data-i18n');
+            const val = (dict[k] !== undefined) ? dict[k] : (fb[k] !== undefined ? fb[k] : null);
+            if (val === null) return;
+            const a = el.getAttribute('data-i18n-attr');
+            if (a) el.setAttribute(a, val);
+            else el.textContent = val;
+          });
+          if (dict['meta.title']) document.title = dict['meta.title'];
+          document.getElementById('lang-current').textContent = CUR_LANG.toUpperCase();
+          document.querySelectorAll('#lang-menu button').forEach(function(b){
+            b.classList.toggle('active', b.dataset.lang === CUR_LANG);
+          });
+          calculate();
+        }
+
+        function setLang(code) {
+          if (!I18N[code]) code = 'et';
+          CUR_LANG = code;
+          document.documentElement.lang = code;
+          document.documentElement.dir = RTL[code] ? 'rtl' : 'ltr';
+          try { localStorage.setItem('advocat-tools-lang', code); } catch(e){}
+          applyI18n();
+        }
+
+        function detectInitialLang() {
+          try {
+            const params = new URLSearchParams(window.location.search);
+            const u = params.get('lang');
+            if (u && I18N[u]) return u;
+          } catch(e){}
+          try {
+            const saved = localStorage.getItem('advocat-tools-lang');
+            if (saved && I18N[saved]) return saved;
+          } catch(e){}
+          const nav = (navigator.language || '').toLowerCase().split('-')[0];
+          if (I18N[nav]) return nav;
+          return 'et';
+        }
+
+        function buildLangMenu(){
+          const menu = document.getElementById('lang-menu');
+          LANGS.forEach(function(l){
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.dataset.lang = l.code;
+            b.innerHTML = '<span>' + l.label + '</span><span class="lang-code">' + l.code.toUpperCase() + '</span>';
+            b.onclick = function(){ setLang(l.code); document.getElementById('lang-menu').classList.remove('open'); };
+            menu.appendChild(b);
+          });
+          const tog = document.getElementById('lang-toggle');
+          tog.addEventListener('click', function(e){
+            e.stopPropagation();
+            const m = document.getElementById('lang-menu');
+            m.classList.toggle('open');
+            tog.setAttribute('aria-expanded', m.classList.contains('open') ? 'true' : 'false');
+          });
+          document.addEventListener('click', function(){ document.getElementById('lang-menu').classList.remove('open'); });
+        }
+
+        // === Calculator logic ===
+        const DECISION_TYPES = {
+            tvk: { days: 30, law: 'ITVS § 27 lg 1' },
+            halduskohus: { days: 30, law: 'HKMS § 192' },
+            ppa: { days: 30, law: 'VMS § 295, HKMS § 46' },
+            tax: { days: 30, law: 'MKS § 137' },
+            migri: { days: 30, law: 'HOL § 7, UlkomaalaisL § 190' },
+            eviction: { days: 14, law: 'VÕS § 326' },
+            kho: { days: 30, law: 'HOL § 107' },
+            custom: { days: 30, law: '—' }
+        };
+
+        const decisionType = document.getElementById('decisionType');
+        const customDays = document.getElementById('customDays');
+        const customDaysGroup = document.getElementById('customDaysGroup');
+        const decisionDate = document.getElementById('decisionDate');
+        const decisionHelper = document.getElementById('decisionHelper');
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        decisionDate.value = today.toISOString().slice(0, 10);
+
+        function fmtDateLocalized(d) {
+            try {
+                const code = CUR_LANG === 'fa' ? 'fa-IR' : CUR_LANG;
+                return d.toLocaleDateString(code, { year: 'numeric', month: 'long', day: 'numeric' });
+            } catch(e) {
+                return d.toISOString().slice(0, 10);
+            }
+        }
+
+        function adjustForWeekend(date) {
+            const day = date.getDay();
+            if (day === 0) date.setDate(date.getDate() + 1);
+            else if (day === 6) date.setDate(date.getDate() + 2);
+            return date;
+        }
+
+        function calculate() {
+            const type = decisionType.value;
+            const info = DECISION_TYPES[type];
+            const days = type === 'custom' ? (parseInt(customDays.value, 10) || 30) : info.days;
+            const dateStr = decisionDate.value;
+            if (!dateStr) return;
+
+            const decision = new Date(dateStr + 'T00:00:00');
+            const deadline = new Date(decision);
+            deadline.setDate(deadline.getDate() + days);
+            adjustForWeekend(deadline);
+
+            const daysLeft = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+
+            document.getElementById('resultDeadline').textContent = fmtDateLocalized(deadline);
+
+            const card = document.getElementById('resultCard');
+            card.className = 'result-card';
+
+            let countdownText, subtitle, urgencyClass, consHtml;
+
+            if (daysLeft < 0) {
+                urgencyClass = 'expired';
+                countdownText = fillT(tr('count.expired'), { n: Math.abs(daysLeft) });
+                subtitle = fillT(tr('sub.expired'), { date: fmtDateLocalized(deadline) });
+                consHtml = tr('cons.expired');
+            } else if (daysLeft === 0) {
+                urgencyClass = 'red';
+                countdownText = tr('count.today');
+                subtitle = tr('sub.today');
+                consHtml = tr('cons.future');
+            } else if (daysLeft <= 7) {
+                urgencyClass = 'red';
+                countdownText = fillT(tr('count.urgent'), { n: daysLeft });
+                subtitle = tr('sub.urgent');
+                consHtml = tr('cons.future');
+            } else if (daysLeft <= 14) {
+                urgencyClass = 'yellow';
+                countdownText = fillT(tr('count.warn'), { n: daysLeft });
+                subtitle = tr('sub.warn');
+                consHtml = tr('cons.future');
+            } else {
+                urgencyClass = 'green';
+                countdownText = fillT(tr('count.ok'), { n: daysLeft });
+                subtitle = tr('sub.ok');
+                consHtml = tr('cons.future');
+            }
+
+            card.classList.add(urgencyClass);
+            document.getElementById('resultLabel').textContent = fillT(tr('result.label_full'), { days: days, law: info.law });
+            document.getElementById('resultCountdown').textContent = countdownText;
+            document.getElementById('resultSubtitle').textContent = subtitle;
+            document.getElementById('consequenceBox').innerHTML = consHtml;
+
+            decisionHelper.textContent = tr('helper.' + type);
+            customDaysGroup.style.display = type === 'custom' ? 'block' : 'none';
+        }
+
+        decisionType.addEventListener('change', calculate);
+        customDays.addEventListener('input', calculate);
+        decisionDate.addEventListener('input', calculate);
+
+        buildLangMenu();
+        setLang(detectInitialLang());
+    })();
+    </script>
+<!-- Conversion tracking: tool_used fires once on first meaningful interaction. -->
+<script>
+(function () {
+  var TOOL_SLUG = 'appeal_deadline_calculator';
+  if (window.__advocatToolTracked) return;
+  function fire(action) {
+    if (window.__advocatToolTracked) return;
+    if (!window.advocatTrack) return;
+    window.__advocatToolTracked = true;
+    window.advocatTrack('tool_used', { tool: TOOL_SLUG, action: action });
+  }
+  // Fire on print, copy, generate, calculate clicks — the real conversion
+  // moment. Falls back to any form submit if the page uses one.
+  document.addEventListener('click', function (ev) {
+    try {
+      var t = ev.target;
+      while (t && t !== document) {
+        if (t.id === 'printBtn' || t.id === 'copyBtn' || t.id === 'generateBtn' ||
+            t.id === 'downloadBtn' || t.id === 'calculateBtn') {
+          fire(t.id);
+          return;
+        }
+        t = t.parentNode;
+      }
+    } catch (e) {}
+  }, true);
+  document.addEventListener('submit', function () { fire('submit'); }, true);
+  // Also fire when the user finishes filling the calculator and a result
+  // appears (heuristic: any change to a #resultAmount node).
+  document.addEventListener('DOMContentLoaded', function () {
+    var result = document.getElementById('resultAmount') ||
+                 document.getElementById('result') ||
+                 document.getElementById('output');
+    if (!result || typeof MutationObserver === 'undefined') return;
+    var obs = new MutationObserver(function () { fire('result_shown'); });
+    obs.observe(result, { childList: true, characterData: true, subtree: true });
+  });
+})();
+</script>
+</body>
+</html>
