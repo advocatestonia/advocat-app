@@ -114,6 +114,9 @@
 <!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
      All vendor scripts are loaded conditionally inside _analytics.js
      after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Cookie consent (W2-13): per-jurisdiction granular banner. MUST load before
+     _utm_capture.js and _analytics.js so consent gates every pixel. -->
+<script src="/_cookie_consent.js" defer></script>
 <script src="/_utm_capture.js"></script>
 <script src="/_analytics.js" defer></script>
 </head>
@@ -188,7 +191,7 @@
         <li><strong>Kriminaalandmed</strong> (artikkel 10) — politsei süüdistused, kohtulahendid, karistusregistri andmed, kus te olete kahtlustatav, süüdistatav või kannatanu.</li>
         <li><strong>Biomeetrilised häälnäidised</strong> — Whisperi kõnetuvastuse audiosisend.</li>
     </ul>
-    <p><strong>Õiguslik alus:</strong> teie sõnaselge nõusolek (artikkel 9 lõige 2 punkt a), mille annate dokumendi üleslaadimisel. Nõusolekut saab igal ajal tagasi võtta — kuid see ei mõjuta enne tagasivõtmist toimunud töötlemise õiguspärasust. Kolmandate osapoolte (politseinikud, kohtunikud, vastaspool, tunnistajad) andmed pseudonümiseeritakse <code>PERSON_1</code>, <code>PERSON_2</code> jne enne LLM-ile saatmist (andmete minimeerimine).</p>
+    <p><strong>Õiguslik alus:</strong> teie sõnaselge nõusolek (artikkel 9 lõige 2 punkt a), mille annate dokumendi üleslaadimisel. Nõusolekut saab igal ajal tagasi võtta — kuid see ei mõjuta enne tagasivõtmist toimunud töötlemise õiguspärasust. Andmete minimeerimise meetmena eemaldatakse teie tekstist enne AI-mudelile saatmist automaatselt otsesed riiklikud ja finantsidentifikaatorid (Eesti isikukood, Soome henkilötunnus, IBAN-kontonumbrid). Kolmandate osapoolte nimed (politseinikud, kohtunikud, vastaspool, tunnistajad) võidakse mudelile edastada, kui see on vajalik teie soovitud ülesande täitmiseks — näiteks kirjavahetuse õigeks adresseerimiseks või osapoole nimetamiseks dokumendi mustandis — ning sellised edastused toimuvad punktis 8 kirjeldatud tüüptingimuste (SCC) alusel.</p>
 
     <h2>2b. Automaatne otsuste tegemine (GDPR artikkel 22)</h2>
     <div class="callout-warn">
@@ -271,7 +274,7 @@
 
     <h2>8. Rahvusvahelised andmeedastused</h2>
     <p>Mõned alamtöötlejad (Anthropic, OpenAI, Stripe, ElevenLabs, Brave, Resend, Replicate, GitHub, Google/Firebase) asuvad USA-s. Edastused toimuvad Euroopa Komisjoni kinnitatud <strong>standardsete lepingusätete (SCC, 2021/914/EÜ)</strong> alusel.</p>
-    <p><strong>Schrems-II täiendavad kaitsemeetmed</strong> (eelkõige Anthropicu puhul, kuhu liigub AI-vestluse sisu): krüpteerimine ülekandes (TLS 1.3), <em>no-train</em> klausel (teie andmeid ei kasutata mudelite treenimiseks), minimaalse konteksti põhimõte (kolmandate osapoolte PII pseudonümiseeritakse enne LLM-ile saatmist) ja USA valitsuse päringutele lepinguline vastuseis. Üksikasjalik ülekandemõju hinnang (TIA) on olemas DPO-l.</p>
+    <p><strong>Schrems-II täiendavad kaitsemeetmed</strong> (eelkõige Anthropicu puhul, kuhu liigub AI-vestluse sisu): krüpteerimine ülekandes (TLS 1.3), <em>no-train</em> klausel (teie andmeid ei kasutata mudelite treenimiseks), andmete minimeerimise samm, mis eemaldab enne mudelile saatmist otsesed riiklikud ja finantsidentifikaatorid (isikukood, henkilötunnus, IBAN), ja USA valitsuse päringutele lepinguline vastuseis. Ülekandemõju hinnangute (TIA) koostamine on käimas.</p>
 
     <h2>9. Turvalisus</h2>
     <ul>
@@ -338,7 +341,7 @@
         <li><strong>Criminal-record data</strong> (Art. 10) — police charges, court decisions, criminal-record entries where you are the suspect, defendant, or victim.</li>
         <li><strong>Biometric voice samples</strong> — raw audio submitted to Whisper STT.</li>
     </ul>
-    <p><strong>Lawful basis: your explicit consent (Art. 9(2)(a))</strong>, given when you upload such a document. You can withdraw consent at any time — withdrawal does not affect the lawfulness of processing performed before withdrawal. Third parties named in your documents (police officers, judges, opposing parties, witnesses) are pseudonymized as <code>PERSON_1</code>, <code>PERSON_2</code>, etc. before the data is sent to the LLM (data minimization).</p>
+    <p><strong>Lawful basis: your explicit consent (Art. 9(2)(a))</strong>, given when you upload such a document. You can withdraw consent at any time — withdrawal does not affect the lawfulness of processing performed before withdrawal. As a data-minimization measure, direct national and financial identifiers (Estonian isikukood, Finnish henkilötunnus, IBAN account numbers) are automatically stripped from your text before it is sent to the AI model. Names of third parties (police officers, judges, opposing parties, witnesses) may be transmitted to the model when they are necessary to perform the task you requested — for example to address correspondence correctly or to name a party in a draft document — and such transfers are governed by the Standard Contractual Clauses described in section 8.</p>
 
     <h2>2b. Automated decision-making (GDPR Art. 22)</h2>
     <div class="callout-warn">
@@ -421,7 +424,7 @@
 
     <h2>8. International data transfers</h2>
     <p>Some sub-processors (Anthropic, OpenAI, Stripe, ElevenLabs, Brave, Resend, Replicate, GitHub, Google/Firebase) are located in the USA. Transfers are carried out under <strong>European Commission Standard Contractual Clauses (SCC, 2021/914/EU)</strong>.</p>
-    <p><strong>Schrems-II supplementary measures</strong> (in particular for Anthropic, which receives AI-chat content): encryption in transit (TLS 1.3), <em>no-train</em> clause (your data is not used to train models), minimum-context principle (third-party PII is pseudonymized before being sent to the LLM), and contractual challenge of US government access requests. A detailed transfer impact assessment (TIA) is on file with the DPO.</p>
+    <p><strong>Schrems-II supplementary measures</strong> (in particular for Anthropic, which receives AI-chat content): encryption in transit (TLS 1.3), <em>no-train</em> clause (your data is not used to train models), a data-minimization step that strips direct national and financial identifiers (isikukood, henkilötunnus, IBAN) before text is sent to the model, and contractual challenge of US government access requests. Transfer impact assessments (TIAs) are in the process of being completed.</p>
 
     <h2>9. Security</h2>
     <ul>
@@ -488,7 +491,7 @@
         <li><strong>Данные о судимости</strong> (ст. 10) — обвинения полиции, судебные решения, записи в реестре наказаний, где вы выступаете подозреваемым, обвиняемым или потерпевшим.</li>
         <li><strong>Биометрические голосовые образцы</strong> — аудио, отправленное в Whisper STT.</li>
     </ul>
-    <p><strong>Правовое основание: ваше явное согласие (ст. 9(2)(а))</strong>, которое вы даёте при загрузке такого документа. Согласие можно отозвать в любой момент — отзыв не влияет на правомерность обработки до отзыва. Третьи лица, упомянутые в ваших документах (полицейские, судьи, противная сторона, свидетели), псевдонимизируются как <code>PERSON_1</code>, <code>PERSON_2</code> и т.д. перед отправкой данных в LLM (минимизация данных).</p>
+    <p><strong>Правовое основание: ваше явное согласие (ст. 9(2)(а))</strong>, которое вы даёте при загрузке такого документа. Согласие можно отозвать в любой момент — отзыв не влияет на правомерность обработки до отзыва. В рамках минимизации данных прямые национальные и финансовые идентификаторы (эстонский isikukood, финский henkilötunnus, номера счетов IBAN) автоматически удаляются из вашего текста перед отправкой в AI-модель. Имена третьих лиц (полицейские, судьи, противная сторона, свидетели) могут передаваться модели, когда это необходимо для выполнения запрошенной вами задачи — например, для правильной адресации переписки или указания стороны в проекте документа, — и такие передачи регулируются Стандартными договорными положениями (SCC), описанными в разделе 8.</p>
 
     <h2>2b. Автоматизированное принятие решений (GDPR ст. 22)</h2>
     <div class="callout-warn">
@@ -571,7 +574,7 @@
 
     <h2>8. Международная передача данных</h2>
     <p>Некоторые субобработчики (Anthropic, OpenAI, Stripe, ElevenLabs, Brave, Resend, Replicate, GitHub, Google/Firebase) находятся в США. Передачи осуществляются на основании <strong>стандартных договорных условий Европейской комиссии (SCC, 2021/914/ЕС)</strong>.</p>
-    <p><strong>Дополнительные меры по Schrems-II</strong> (особенно для Anthropic, куда поступает содержимое AI-чата): шифрование при передаче (TLS 1.3), оговорка <em>no-train</em> (ваши данные не используются для обучения моделей), принцип минимального контекста (PII третьих лиц псевдонимизируется до отправки в LLM), а также договорное противодействие запросам государственных органов США. Подробная оценка влияния передачи (TIA) хранится у DPO.</p>
+    <p><strong>Дополнительные меры по Schrems-II</strong> (особенно для Anthropic, куда поступает содержимое AI-чата): шифрование при передаче (TLS 1.3), оговорка <em>no-train</em> (ваши данные не используются для обучения моделей), этап минимизации данных, удаляющий прямые национальные и финансовые идентификаторы (isikukood, henkilötunnus, IBAN) перед отправкой текста в модель, а также договорное противодействие запросам государственных органов США. Оценки влияния передачи (TIA) находятся в процессе подготовки.</p>
 
     <h2>9. Безопасность</h2>
     <ul>

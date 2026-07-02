@@ -106,6 +106,9 @@
 <!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
      All vendor scripts are loaded conditionally inside _analytics.js
      after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Cookie consent (W2-13): per-jurisdiction granular banner. MUST load before
+     _utm_capture.js and _analytics.js so consent gates every pixel. -->
+<script src="/_cookie_consent.js" defer></script>
 <script src="/_utm_capture.js"></script>
 <script src="/_analytics.js" defer></script>
 </head>
@@ -170,7 +173,7 @@
     <h2>3. Tellimused ja hinnakujundus</h2>
     <h3>3.1. Tasemed</h3>
     <ul>
-        <li><strong>Free</strong> — 10 sõnumit kuus, tasuta.</li>
+        <li><strong>Free</strong> — 25 sõnumit kuus, tasuta.</li>
         <li><strong>Counsel (Pro)</strong> — €19,99 kuus või €159,99 aastas.</li>
         <li><strong>Representation (Premium)</strong> — €29,99 kuus või €249,99 aastas.</li>
     </ul>
@@ -182,7 +185,7 @@
     <p>Hinnamuudatustest teavitame teid e-posti teel <strong>vähemalt 30 päeva</strong> enne nende jõustumist. Kui te ei nõustu, võite tellimuse enne uue hinna jõustumist tühistada.</p>
 
     <h2>4. EL tarbija taganemisõigus (14 päeva)</h2>
-    <p>EL direktiivi 2011/83/EL alusel on tarbijal õigus 14 päeva jooksul lepingust ilma põhjuseta taganeda.</p>
+    <p>EL direktiivi 2011/83/EL alusel on tarbijal õigus 14 päeva jooksul lepingust ilma põhjuseta taganeda. Üksikasjad ja näidisvorm: <a href="/withdrawal-form.html">taganemisõigus ja taganemisvorm</a>.</p>
     <div class="callout-warn">
         <strong>Tähelepanu — taganemisõigusest loobumine:</strong> Vastavalt direktiivi artiklile 16(m) <strong>loobute taganemisõigusest selgelt</strong>, kui alustate AI-teenuse kasutamist kohe pärast tellimuse aktiveerimist (digitaalne sisu, mis tarnitakse mitteasjakohasel füüsilisel kandjal kasutaja eelneva sõnaselge nõusoleku alusel). Kui soovite säilitada 14-päevase taganemisõiguse, ärge alustage Teenuse kasutamist enne taganemisaja lõppu.
     </div>
@@ -216,7 +219,7 @@
     <p>Te võite oma konto kustutada igal ajal. Meil on õigus teie juurdepääs lõpetada oluliste rikkumiste korral, üldjuhul 7-päevase etteteatamisega.</p>
 
     <h2>10. Vaidluste lahendamine</h2>
-    <p>Käesolevatele tingimustele kohaldub <strong>Eesti õigus</strong>. Vaidlused lahendab <strong>Harju Maakohus</strong> Tallinnas, kui kohustuslikust tarbijakaitsest ei tulene teisiti. EL tarbijatel on õigus pöörduda EL veebipõhise vaidluste lahendamise platvormi poole: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>
+    <p>Käesolevatele tingimustele kohaldub <strong>Eesti õigus</strong>. Vaidlused lahendab <strong>Harju Maakohus</strong> Tallinnas, kui kohustuslikust tarbijakaitsest ei tulene teisiti. EL tarbijatel on õigus pöörduda EL veebipõhise vaidluste lahendamise platvormi poole: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>. Vt ka: <a href="/dispute-resolution.html">vaidluste lahendamise kord</a>.</p>
 
     <h2>11. Tingimuste muutmine</h2>
     <p>Olulistest muudatustest teavitame e-posti teel vähemalt <strong>30 päeva</strong> enne jõustumist. Teenuse jätkuv kasutamine pärast muudatuste jõustumist tähendab nendega nõustumist.</p>
@@ -265,7 +268,7 @@
     <h2>3. Subscriptions and pricing</h2>
     <h3>3.1. Tiers</h3>
     <ul>
-        <li><strong>Free</strong> — 7 messages per month, no charge.</li>
+        <li><strong>Free</strong> — 25 messages per month, no charge.</li>
         <li><strong>Counsel (Pro)</strong> — €19.99 / month or €159.99 / year.</li>
         <li><strong>Representation (Premium)</strong> — €29.99 / month or €249.99 / year.</li>
     </ul>
@@ -277,7 +280,7 @@
     <p>We will give you at least <strong>30 days' notice</strong> by email before any price change. If you don't agree, you can cancel before the new price takes effect.</p>
 
     <h2>4. EU consumer right of withdrawal (14 days)</h2>
-    <p>Under EU Directive 2011/83/EU, consumers have the right to withdraw from a distance contract within 14 days, without giving a reason.</p>
+    <p>Under EU Directive 2011/83/EU, consumers have the right to withdraw from a distance contract within 14 days, without giving a reason. Details and the model withdrawal form: <a href="/withdrawal-form.html">right of withdrawal &amp; withdrawal form</a>.</p>
     <div class="callout-warn">
         <strong>Notice — express waiver:</strong> Per Article 16(m) of the Directive, you <strong>expressly waive</strong> the right of withdrawal once you start using the AI service immediately upon subscription activation (digital content delivered with your prior express consent). If you wish to keep the 14-day withdrawal right, do not begin using the Service before the withdrawal period ends.
     </div>
@@ -311,7 +314,7 @@
     <p>You can delete your account at any time. We may terminate your access for material breach, where reasonable with at least 7 days' notice.</p>
 
     <h2>10. Disputes</h2>
-    <p>These Terms are governed by <strong>Estonian law</strong>. Disputes are resolved by the <strong>Harju County Court</strong> in Tallinn, subject to mandatory consumer protection rules in your country of residence. EU consumers can also use the EU online dispute-resolution platform: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>
+    <p>These Terms are governed by <strong>Estonian law</strong>. Disputes are resolved by the <strong>Harju County Court</strong> in Tallinn, subject to mandatory consumer protection rules in your country of residence. EU consumers can also use the EU online dispute-resolution platform: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>. See also our <a href="/dispute-resolution.html">dispute-resolution procedure</a>.</p>
 
     <h2>11. Changes to these Terms</h2>
     <p>We will notify you by email at least <strong>30 days</strong> before any material change. Continued use of the Service after the change takes effect means you accept the updated Terms.</p>
@@ -360,7 +363,7 @@
     <h2>3. Подписки и цены</h2>
     <h3>3.1. Тарифы</h3>
     <ul>
-        <li><strong>Free</strong> — 7 сообщений в месяц, бесплатно.</li>
+        <li><strong>Free</strong> — 25 сообщений в месяц, бесплатно.</li>
         <li><strong>Counsel (Pro)</strong> — €19,99 в месяц или €159,99 в год.</li>
         <li><strong>Representation (Premium)</strong> — €29,99 в месяц или €249,99 в год.</li>
     </ul>
@@ -372,7 +375,7 @@
     <p>Об изменении цены мы предупреждаем по e-mail не менее чем за <strong>30 дней</strong>. Если вы не согласны, вы можете отменить подписку до вступления нового тарифа в силу.</p>
 
     <h2>4. Право потребителя ЕС на отказ (14 дней)</h2>
-    <p>Согласно Директиве ЕС 2011/83/EU, потребитель имеет право в течение 14 дней без объяснения причин отказаться от договора.</p>
+    <p>Согласно Директиве ЕС 2011/83/EU, потребитель имеет право в течение 14 дней без объяснения причин отказаться от договора. Подробности и образец формы отказа: <a href="/withdrawal-form.html">право на отказ и форма отказа</a>.</p>
     <div class="callout-warn">
         <strong>Внимание — явный отказ от права:</strong> Согласно ст. 16(m) Директивы, вы <strong>явно отказываетесь</strong> от права на возврат, начиная пользоваться AI-сервисом сразу после активации подписки (цифровой контент, поставленный с вашего предварительного явного согласия). Если хотите сохранить 14-дневное право на отказ — не начинайте пользоваться Сервисом до окончания срока.
     </div>
@@ -406,7 +409,7 @@
     <p>Вы можете удалить аккаунт в любое время. Мы можем прекратить ваш доступ при существенном нарушении, по возможности с уведомлением за 7 дней.</p>
 
     <h2>10. Споры</h2>
-    <p>К настоящим Условиям применяется <strong>право Эстонии</strong>. Споры рассматривает <strong>Харьюский уездный суд</strong> в Таллинне, без ущерба для обязательных норм защиты прав потребителей в стране вашего проживания. Потребители ЕС также могут использовать платформу ЕС для онлайн-разрешения споров: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>
+    <p>К настоящим Условиям применяется <strong>право Эстонии</strong>. Споры рассматривает <strong>Харьюский уездный суд</strong> в Таллинне, без ущерба для обязательных норм защиты прав потребителей в стране вашего проживания. Потребители ЕС также могут использовать платформу ЕС для онлайн-разрешения споров: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>. См. также: <a href="/dispute-resolution.html">порядок разрешения споров</a>.</p>
 
     <h2>11. Изменение Условий</h2>
     <p>О существенных изменениях мы уведомляем по e-mail не менее чем за <strong>30 дней</strong>. Продолжение использования Сервиса после вступления изменений в силу означает согласие с обновлёнными Условиями.</p>
