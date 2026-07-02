@@ -276,8 +276,12 @@ run "flutter build web --release --dart-define-from-file=.env.prod ${SENTRY_DEFI
 
 [[ -f build/web/main.dart.js ]] || die "main.dart.js missing after build"
 MAIN_SIZE=$(wc -c < build/web/main.dart.js)
-[[ $MAIN_SIZE -ge 5000000 && $MAIN_SIZE -le 10500000 ]] \
-  || die "main.dart.js size ($MAIN_SIZE) outside 5-10.5 MB"
+# Upper bound raised 10.5M -> 12M on 2026-07-02: completing the 13-locale
+# translation pass (incl. multi-byte scripts ar/fa/uk/ru + full de/fr/pl/…)
+# legitimately grew the bundle from 9.74M to ~10.85M. 12M keeps headroom for a
+# couple more locales/features while still catching accidental asset bloat.
+[[ $MAIN_SIZE -ge 5000000 && $MAIN_SIZE -le 12000000 ]] \
+  || die "main.dart.js size ($MAIN_SIZE) outside 5-12 MB"
 ok "main.dart.js OK ($MAIN_SIZE bytes)"
 
 # ---------------------------------------------------------------------------
