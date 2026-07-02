@@ -15,19 +15,19 @@ class AppLocalizationsUk extends AppLocalizations {
   String get aboutSection => 'ПРО ДОДАТОК';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Вигляд';
 
   @override
-  String get appearanceSystem => 'System (auto)';
+  String get appearanceSystem => 'Системний (авто)';
 
   @override
-  String get appearanceLight => 'Light';
+  String get appearanceLight => 'Світлий';
 
   @override
-  String get appearanceDark => 'Dark';
+  String get appearanceDark => 'Темний';
 
   @override
-  String get appearanceDescription => 'Choose how Advocat looks';
+  String get appearanceDescription => 'Оберіть, як виглядатиме Advocat';
 
   @override
   String get accidents => 'Аварії';
@@ -1712,7 +1712,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
+      'Вітаю! Я Advocat — ваш ШІ-помічник з юридичних питань. Я надаю юридичну інформацію, а не юридичну консультацію. Чим можу допомогти?';
 
   @override
   String get copySummary => 'Копіювати зведення';
@@ -1769,20 +1769,20 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get aiDisclaimerCompact =>
-      'Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.';
+      'Advocat надає юридичну інформацію на основі ШІ, а не юридичну консультацію. Перед дією перевірте інформацію з ліцензованим юристом.';
 
   @override
-  String get aiDisclaimerFullTitle => 'Important: how Advocat works';
+  String get aiDisclaimerFullTitle => 'Важливо: як працює Advocat';
 
   @override
   String get aiDisclaimerFullBody =>
-      'Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.';
+      'Advocat — це інструмент на основі штучного інтелекту, який надає юридичну інформацію, а не юридичну консультацію. Відповідно до Закону ЄС про штучний інтелект (ст. 50) ми зобов\'язані чітко повідомити: ви спілкуєтеся зі ШІ, а не з юристом-людиною.\n\nAdvocat не є юридичною фірмою. Ми не є ліцензованими адвокатами відповідно до естонського Advokatuuriseadus чи фінського Asianajajalaki, і адвокатська таємниця не поширюється на ваше спілкування з цим інструментом. Перш ніж покладатися на будь-яку відповідь — щоб подати апеляцію, підписати договір чи діяти у зв\'язку з дедлайном — перевірте інформацію з ліцензованим юристом у вашій юрисдикції.';
 
   @override
-  String get aiDisclaimerExpand => 'Learn more';
+  String get aiDisclaimerExpand => 'Дізнатися більше';
 
   @override
-  String get aiDisclaimerDismiss => 'OK, I understand';
+  String get aiDisclaimerDismiss => 'Зрозуміло';
 
   @override
   String get dataPrivacyConsent => 'Згода на обробку даних';
@@ -1851,7 +1851,7 @@ class AppLocalizationsUk extends AppLocalizations {
       'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145';
 
   @override
-  String get legalEmail => 'Email: support@advocat.ee';
+  String get legalEmail => 'Електронна пошта: support@advocat.ee';
 
   @override
   String get legalRegistry =>
@@ -2188,67 +2188,67 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get inheritanceDesc =>
-      'Wills, estate, heirs\' rights, forced heirship, probate';
+      'Заповіти, спадщина, права спадкоємців, обов\'язкова частка, спадкове провадження';
 
   @override
   String get rightInheritanceForced =>
-      'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will';
+      'Обов\'язкові спадкоємці (діти, подружжя) мають право на обов\'язкову частку незалежно від заповіту';
 
   @override
   String get rightInheritanceWill =>
-      'You have the right to make a will disposing of your property — notarized wills have the strongest legal force';
+      'Ви маєте право скласти заповіт щодо розпорядження вашим майном — нотаріально посвідчені заповіти мають найбільшу юридичну силу';
 
   @override
   String get rightInheritanceRenounce =>
-      'You can renounce an inheritance within 3 months of learning about it';
+      'Ви можете відмовитися від спадщини протягом 3 місяців з моменту, коли дізналися про неї';
 
   @override
   String get rightInheritanceInfo =>
-      'You have the right to obtain information about the estate from banks and registries';
+      'Ви маєте право отримувати інформацію про спадкове майно від банків і реєстрів';
 
   @override
   String get rightInheritanceDispute =>
-      'You can challenge an unfair will in court within the statutory limitation period';
+      'Ви можете оскаржити несправедливий заповіт у суді протягом встановленого строку позовної давності';
 
   @override
   String get mustFileInheritance =>
-      'File for succession proceedings at a notary within a reasonable time';
+      'Подайте заяву про відкриття спадкового провадження нотаріусу протягом розумного строку';
 
   @override
   String get mustNotifyHeirs =>
-      'All known heirs must be notified of the succession proceedings';
+      'Усі відомі спадкоємці мають бути повідомлені про спадкове провадження';
 
   @override
   String get inheritanceActionGatherDocs =>
-      'Gather all documents: death certificate, will, property records, bank statements';
+      'Зберіть усі документи: свідоцтво про смерть, заповіт, документи на майно, банківські виписки';
 
   @override
   String get inheritanceActionContactNotary =>
-      'Contact a notary to open succession proceedings';
+      'Зверніться до нотаріуса для відкриття спадкового провадження';
 
   @override
   String get inheritanceActionCheckDebts =>
-      'Check whether the estate has debts before accepting inheritance';
+      'Перевірте, чи є у спадщини борги, перш ніж її приймати';
 
   @override
   String get inheritanceActionFileCourt =>
-      'If the will is disputed, file a claim in court';
+      'Якщо заповіт оскаржується, подайте позов до суду';
 
   @override
   String get inheritanceDeadlineRenounce =>
-      '3 months to renounce inheritance after learning of it';
+      '3 місяці на відмову від спадщини з моменту, коли про неї дізналися';
 
   @override
   String get inheritanceDeadlineDispute =>
-      'Statute of limitations for challenging a will: varies by grounds';
+      'Строк позовної давності для оскарження заповіту: залежить від підстав';
 
   @override
   String get inheritanceFactForced =>
-      'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will';
+      'В Естонії нащадки та подружжя мають право на обов\'язкову частку (1/2 законної частки), навіть якщо їх виключено із заповіту';
 
   @override
   String get inheritanceFactNotary =>
-      'All succession proceedings in Estonia must go through a notary — you cannot skip this step';
+      'Усі спадкові провадження в Естонії мають проходити через нотаріуса — цей етап неможливо пропустити';
 
   @override
   String get consumerProtection => 'Захист споживачів';
@@ -2345,17 +2345,18 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get selectCategoryDescription =>
-      'Select the category that best describes your situation.';
+      'Оберіть категорію, яка найкраще описує вашу ситуацію.';
 
   @override
   String get tellUsAboutCase => 'Розкажіть про вашу справу';
 
   @override
   String get aiHelpsUnderstand =>
-      'This information helps our AI understand your situation better.';
+      'Ця інформація допомагає нашому ШІ краще зрозуміти вашу ситуацію.';
 
   @override
-  String get caseTitleHint => 'e.g., Residence Permit Appeal 2026';
+  String get caseTitleHint =>
+      'напр., Оскарження відмови у виді на проживання, 2026';
 
   @override
   String get countryJurisdiction => 'Країна / Юрисдикція';
@@ -2364,31 +2365,31 @@ class AppLocalizationsUk extends AppLocalizations {
   String get selectCountryHint => 'Оберіть країну';
 
   @override
-  String get referenceNumberHint => 'e.g., UMA/12345/2026';
+  String get referenceNumberHint => 'напр., UMA/12345/2026';
 
   @override
-  String get descriptionOptional => 'Description (optional)';
+  String get descriptionOptional => 'Опис (необов\'язково)';
 
   @override
   String get descriptionHint =>
-      'Describe your situation briefly. What happened? What decision was made?';
+      'Коротко опишіть вашу ситуацію. Що сталося? Яке рішення було прийнято?';
 
   @override
   String get uploadFirstDocument => 'Завантажте перший документ';
 
   @override
   String get uploadDocumentDescription =>
-      'Upload the decision letter or any relevant document. You can skip this step and add documents later.';
+      'Завантажте лист-рішення або будь-який відповідний документ. Цей крок можна пропустити й додати документи пізніше.';
 
   @override
   String get tapToUploadFile => 'Натисніть щоб завантажити файл';
 
   @override
-  String get fileSizeLimit => 'PDF, JPG, PNG up to 25 MB';
+  String get fileSizeLimit => 'PDF, JPG, PNG до 25 МБ';
 
   @override
   String get addDocumentsLaterHint =>
-      'You can always add documents later from the case detail screen.';
+      'Ви завжди можете додати документи пізніше з екрана деталей справи.';
 
   @override
   String get callAI => 'Зателефонувати ШІ';
@@ -3214,13 +3215,13 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get deadlineRadarTitle => 'Upcoming deadlines';
+  String get deadlineRadarTitle => 'Найближчі дедлайни';
 
   @override
-  String get deadlineRadarEmpty => 'No upcoming deadlines';
+  String get deadlineRadarEmpty => 'Немає найближчих дедлайнів';
 
   @override
-  String get deadlineRadarViewAll => 'View all';
+  String get deadlineRadarViewAll => 'Переглянути всі';
 
   @override
   String deadlineCardDaysLeft(int count) {
@@ -3237,10 +3238,10 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardTomorrow => 'tomorrow';
+  String get deadlineCardTomorrow => 'завтра';
 
   @override
-  String get deadlineCardToday => 'today';
+  String get deadlineCardToday => 'сьогодні';
 
   @override
   String deadlineCardOverdue(int count) {
@@ -3256,200 +3257,202 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardMarkComplete => 'Mark complete';
+  String get deadlineCardMarkComplete => 'Позначити виконаним';
 
   @override
-  String get deadlineCardSnooze => 'Snooze';
+  String get deadlineCardSnooze => 'Відкласти';
 
   @override
-  String get deadlineCardSnooze3d => 'Snooze 3 days';
+  String get deadlineCardSnooze3d => 'Відкласти на 3 дні';
 
   @override
-  String get deadlineCardSnooze7d => 'Snooze 7 days';
+  String get deadlineCardSnooze7d => 'Відкласти на 7 днів';
 
   @override
-  String get deadlineCardSnoozeCustom => 'Pick a date';
+  String get deadlineCardSnoozeCustom => 'Обрати дату';
 
   @override
-  String get deadlineCardEdit => 'Edit';
+  String get deadlineCardEdit => 'Редагувати';
 
   @override
-  String get deadlineCardDelete => 'Archive';
+  String get deadlineCardDelete => 'Архівувати';
 
   @override
-  String get deadlineCardSourceLabelPdf => 'from PDF';
+  String get deadlineCardSourceLabelPdf => 'з PDF';
 
   @override
-  String get deadlineCardSourceLabelIntake => 'from intake';
+  String get deadlineCardSourceLabelIntake => 'з опитування';
 
   @override
-  String get deadlineCardSourceLabelManual => 'added manually';
+  String get deadlineCardSourceLabelManual => 'додано вручну';
 
   @override
-  String get deadlineCardSourceLabelEmail => 'from email';
+  String get deadlineCardSourceLabelEmail => 'з електронного листа';
 
   @override
-  String get deadlineCardSourceLabelHaikuExtract => 'AI-extracted';
+  String get deadlineCardSourceLabelHaikuExtract => 'визначено ШІ';
 
   @override
-  String get deadlineCardSourceLabelStatutoryTemplate => 'statute template';
+  String get deadlineCardSourceLabelStatutoryTemplate => 'шаблон закону';
 
   @override
   String deadlineBannerCritical(String title, String when) {
-    return 'Critical deadline $title $when';
+    return 'Критичний дедлайн $title $when';
   }
 
   @override
-  String get deadlineBannerDismiss => 'Dismiss';
+  String get deadlineBannerDismiss => 'Приховати';
 
   @override
-  String get deadlineBannerOpen => 'Open deadline';
+  String get deadlineBannerOpen => 'Відкрити дедлайн';
 
   @override
   String deadlineHolidayShifted(String original, String reason) {
-    return 'Shifted from $original due to $reason';
+    return 'Перенесено з $original через $reason';
   }
 
   @override
-  String get deadlinePermissionAskTitle => 'Enable deadline reminders?';
+  String get deadlinePermissionAskTitle =>
+      'Увімкнути нагадування про дедлайни?';
 
   @override
   String get deadlinePermissionAskBody =>
-      'We\'ll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.';
+      'Ми нагадаємо вам за 7, 3 і 1 день до кожного встановленого законом дедлайну, а також уранці того дня. Ніколи не використовується для реклами.';
 
   @override
-  String get deadlinePermissionAllow => 'Allow';
+  String get deadlinePermissionAllow => 'Дозволити';
 
   @override
-  String get deadlinePermissionLater => 'Later';
+  String get deadlinePermissionLater => 'Пізніше';
 
   @override
-  String get deadlineSettingsSection => 'Deadline reminders';
+  String get deadlineSettingsSection => 'Нагадування про дедлайни';
 
   @override
-  String get deadlineSettingsPushChannel => 'Push notifications';
+  String get deadlineSettingsPushChannel => 'Push-сповіщення';
 
   @override
-  String get deadlineSettingsEmailChannel => 'Email (critical only)';
+  String get deadlineSettingsEmailChannel => 'Електронна пошта (лише критичні)';
 
   @override
-  String get deadlineSettingsInAppChannel => 'In-app banners';
+  String get deadlineSettingsInAppChannel => 'Банери в застосунку';
 
   @override
   String get deadlineSettingsCriticalBypass =>
-      'Critical reminders bypass quiet hours';
+      'Критичні нагадування надходять навіть у тиху годину';
 
   @override
-  String get deadlineSettingsQuietHours => 'Quiet hours';
+  String get deadlineSettingsQuietHours => 'Тихі години';
 
   @override
   String deadlineSettingsQuietHoursBadge(String start, String end) {
-    return 'Quiet $start–$end';
+    return 'Тихо $start–$end';
   }
 
   @override
-  String get deadlineCaseScreenTitle => 'Case deadlines';
+  String get deadlineCaseScreenTitle => 'Дедлайни справи';
 
   @override
-  String get deadlineAddManualCta => 'Add deadline';
+  String get deadlineAddManualCta => 'Додати дедлайн';
 
   @override
-  String get deadlineFormTitle => 'Title';
+  String get deadlineFormTitle => 'Назва';
 
   @override
-  String get deadlineFormDescription => 'Description (optional)';
+  String get deadlineFormDescription => 'Опис (необов\'язково)';
 
   @override
-  String get deadlineFormStatuteTemplate => 'Statute template';
+  String get deadlineFormStatuteTemplate => 'Шаблон закону';
 
   @override
-  String get deadlineFormStatuteTemplateNone => 'None (manual)';
+  String get deadlineFormStatuteTemplateNone => 'Немає (вручну)';
 
   @override
-  String get deadlineFormDeadlineAt => 'Deadline date';
+  String get deadlineFormDeadlineAt => 'Дата дедлайну';
 
   @override
-  String get deadlineFormPriority => 'Priority';
+  String get deadlineFormPriority => 'Пріоритет';
 
   @override
-  String get deadlineFormSave => 'Save';
+  String get deadlineFormSave => 'Зберегти';
 
   @override
-  String get deadlineFormCancel => 'Cancel';
+  String get deadlineFormCancel => 'Скасувати';
 
   @override
-  String get deadlineCompletedNotePrompt => 'Add a note (optional)';
+  String get deadlineCompletedNotePrompt => 'Додати нотатку (необов\'язково)';
 
   @override
-  String get deadlineCompletedNoteSave => 'Save';
+  String get deadlineCompletedNoteSave => 'Зберегти';
 
   @override
-  String get inboxTitle => 'Inbox';
+  String get inboxTitle => 'Вхідні';
 
   @override
-  String get inboxEmptyTitle => 'Nothing pending';
+  String get inboxEmptyTitle => 'Немає незавершених';
 
   @override
   String get inboxEmptyBody =>
-      'New email threads will appear here as they get triaged.';
+      'Нові поштові гілки з\'являтимуться тут після сортування.';
 
   @override
-  String get inboxApproveSend => 'Approve & send';
+  String get inboxApproveSend => 'Схвалити й надіслати';
 
   @override
-  String get inboxEditDraft => 'Edit';
+  String get inboxEditDraft => 'Редагувати';
 
   @override
-  String get inboxSnooze => 'Snooze';
+  String get inboxSnooze => 'Відкласти';
 
   @override
-  String get inboxArchive => 'Archive';
+  String get inboxArchive => 'Архівувати';
 
   @override
-  String get inboxFilterAll => 'All';
+  String get inboxFilterAll => 'Усі';
 
   @override
-  String get inboxConfirmSendTitle => 'Send the prepared reply?';
+  String get inboxConfirmSendTitle => 'Надіслати підготовлену відповідь?';
 
   @override
   String get inboxConfirmSendBody =>
-      'Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.';
+      'Advocat надішле підготовлену ШІ відповідь через ваш підключений Gmail. На наступному екрані ви ще зможете переглянути текст.';
 
   @override
-  String get inboxSendButton => 'Send';
+  String get inboxSendButton => 'Надіслати';
 
   @override
-  String get inboxSentToast => 'Sent.';
+  String get inboxSentToast => 'Надіслано.';
 
   @override
-  String get inboxAlreadySentToast => 'Already sent.';
+  String get inboxAlreadySentToast => 'Уже надіслано.';
 
   @override
-  String get inboxSendErrorToast => 'Could not send the reply. Tap retry.';
+  String get inboxSendErrorToast =>
+      'Не вдалося надіслати відповідь. Натисніть, щоб повторити.';
 
   @override
-  String get inboxSnoozedToast => 'Snoozed for 24h.';
+  String get inboxSnoozedToast => 'Відкладено на 24 год.';
 
   @override
-  String get inboxArchivedToast => 'Archived.';
+  String get inboxArchivedToast => 'Заархівовано.';
 
   @override
-  String get inboxDraftLoadError => 'Could not load draft.';
+  String get inboxDraftLoadError => 'Не вдалося завантажити чернетку.';
 
   @override
-  String get inboxDeadlineToday => 'today';
+  String get inboxDeadlineToday => 'сьогодні';
 
   @override
-  String get inboxDeadlineTomorrow => 'tomorrow';
+  String get inboxDeadlineTomorrow => 'завтра';
 
   @override
   String inboxDeadlineInDays(int days) {
-    return 'in ${days}d';
+    return 'за $days дн.';
   }
 
   @override
   String inboxDeadlineOverdue(int days) {
-    return 'overdue ${days}d';
+    return 'прострочено на $days дн.';
   }
 
   @override
@@ -3561,28 +3564,30 @@ class AppLocalizationsUk extends AppLocalizations {
   String get inboxEditDiscard => 'Відхилити';
 
   @override
-  String get workspaceTabOverview => 'Overview';
+  String get workspaceTabOverview => 'Огляд';
 
   @override
-  String get workspaceTabChat => 'Chat';
+  String get workspaceTabChat => 'Чат';
 
   @override
-  String get workspaceTabDrafts => 'Drafts';
+  String get workspaceTabDrafts => 'Чернетки';
 
   @override
-  String get workspaceOverviewEmpty => 'Add documents to build a summary.';
+  String get workspaceOverviewEmpty =>
+      'Додайте документи, щоб сформувати огляд.';
 
   @override
-  String get workspaceTimelineEmpty => 'No events yet.';
+  String get workspaceTimelineEmpty => 'Подій ще немає.';
 
   @override
-  String get workspaceDocumentsEmpty => 'No documents. Upload from Scan.';
+  String get workspaceDocumentsEmpty =>
+      'Немає документів. Завантажте через сканування.';
 
   @override
-  String get workspaceDraftsEmpty => 'No drafts yet.';
+  String get workspaceDraftsEmpty => 'Чернеток ще немає.';
 
   @override
-  String get workspaceInboxEmpty => 'No related email.';
+  String get workspaceInboxEmpty => 'Немає пов\'язаних листів.';
 
   @override
   String get plannerSettingsTitle => 'Трипрохідне правове міркування';
@@ -3650,7 +3655,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get supportFaqTalkHuman => 'Поговорити з людиною';
 
   @override
-  String get supportContactEmail => 'Email';
+  String get supportContactEmail => 'Електронна пошта';
 
   @override
   String get supportContactTelegram => 'Telegram';
@@ -3665,7 +3670,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get supportWhatsapp => 'WhatsApp';
 
   @override
-  String get supportEmail => 'Email';
+  String get supportEmail => 'Електронна пошта';
 
   @override
   String get supportInApp => 'Напишіть нам тут';
@@ -4125,7 +4130,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get tooltipAttachDoc => 'Прикріпити документ';
 
   @override
-  String get aiTypingHint => 'AI…';
+  String get aiTypingHint => 'ШІ…';
 
   @override
   String get error404Title => 'Сторінку не знайдено';
@@ -4270,195 +4275,195 @@ class AppLocalizationsUk extends AppLocalizations {
   String get softCaseShellBannerCta => 'Перейменувати';
 
   @override
-  String get draftsTab => 'Drafts';
+  String get draftsTab => 'Чернетки';
 
   @override
-  String get draftingTitle => 'Drafting Studio';
+  String get draftingTitle => 'Студія створення документів';
 
   @override
-  String get draftingEmpty => 'Empty draft';
+  String get draftingEmpty => 'Порожня чернетка';
 
   @override
-  String get draftingPlaceholder => 'Start typing your draft…';
+  String get draftingPlaceholder => 'Почніть вводити текст чернетки…';
 
   @override
-  String get draftingDraftsList => 'My drafts';
+  String get draftingDraftsList => 'Мої чернетки';
 
   @override
-  String get draftingSave => 'Save';
+  String get draftingSave => 'Зберегти';
 
   @override
-  String get draftingSaved => 'Saved';
+  String get draftingSaved => 'Збережено';
 
   @override
-  String get draftingSavedJustNow => 'Saved just now';
+  String get draftingSavedJustNow => 'Щойно збережено';
 
   @override
-  String get draftingAiRevise => 'Revise with AI';
+  String get draftingAiRevise => 'Виправити за допомогою ШІ';
 
   @override
-  String get draftingExportPdf => 'Export PDF';
+  String get draftingExportPdf => 'Експортувати PDF';
 
   @override
-  String get draftingExportDocx => 'Export DOCX';
+  String get draftingExportDocx => 'Експортувати DOCX';
 
   @override
-  String get draftingExportMd => 'Export Markdown';
+  String get draftingExportMd => 'Експортувати Markdown';
 
   @override
-  String get draftingDeleteDraft => 'Delete draft';
+  String get draftingDeleteDraft => 'Видалити чернетку';
 
   @override
-  String get draftingConfirmDelete => 'Delete this draft?';
+  String get draftingConfirmDelete => 'Видалити цю чернетку?';
 
   @override
-  String get draftingConfirmDeleteMessage => 'This action cannot be undone.';
+  String get draftingConfirmDeleteMessage => 'Цю дію неможливо скасувати.';
 
   @override
-  String get draftingConfirm => 'Delete';
+  String get draftingConfirm => 'Видалити';
 
   @override
-  String get draftingCancel => 'Cancel';
+  String get draftingCancel => 'Скасувати';
 
   @override
   String draftingDraftReplyTo(String name) {
-    return 'Reply to $name';
+    return 'Відповідь до $name';
   }
 
   @override
-  String get draftingUntitled => 'Untitled';
+  String get draftingUntitled => 'Без назви';
 
   @override
-  String get draftingTitleHint => 'Title (optional)';
+  String get draftingTitleHint => 'Назва (необов\'язково)';
 
   @override
-  String get draftingAiReviseTitle => 'Revise with AI';
+  String get draftingAiReviseTitle => 'Виправити за допомогою ШІ';
 
   @override
-  String get draftingAiReviseSelectionLabel => 'Selected text:';
+  String get draftingAiReviseSelectionLabel => 'Обраний текст:';
 
   @override
-  String get draftingAiReviseInstructionLabel => 'Instruction (optional)';
+  String get draftingAiReviseInstructionLabel => 'Інструкція (необов\'язково)';
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'e.g. \"make it more formal\" or \"shorten\"';
+      'напр., «зробити офіційнішим» або «скоротити»';
 
   @override
-  String get draftingAiReviseRunButton => 'Generate revision';
+  String get draftingAiReviseRunButton => 'Створити виправлення';
 
   @override
-  String get draftingAiReviseSuggestionLabel => 'Suggested revision:';
+  String get draftingAiReviseSuggestionLabel => 'Запропоноване виправлення:';
 
   @override
-  String get draftingAiReviseChangesLabel => 'Changes:';
+  String get draftingAiReviseChangesLabel => 'Зміни:';
 
   @override
-  String get draftingAiReviseAccept => 'Accept';
+  String get draftingAiReviseAccept => 'Прийняти';
 
   @override
-  String get draftingAiReviseReject => 'Reject';
+  String get draftingAiReviseReject => 'Відхилити';
 
   @override
-  String get draftingFormatBold => 'Bold';
+  String get draftingFormatBold => 'Жирний';
 
   @override
-  String get draftingFormatItalic => 'Italic';
+  String get draftingFormatItalic => 'Курсив';
 
   @override
-  String get draftingFormatHeading => 'Heading';
+  String get draftingFormatHeading => 'Заголовок';
 
   @override
-  String get draftingFormatBullet => 'Bullet list';
+  String get draftingFormatBullet => 'Маркований список';
 
   @override
-  String get draftingFormatNumbered => 'Numbered list';
+  String get draftingFormatNumbered => 'Нумерований список';
 
   @override
-  String get draftingEmptyListMessage => 'You have no drafts yet.';
+  String get draftingEmptyListMessage => 'У вас ще немає чернеток.';
 
   @override
-  String get draftingEmptyListAction => 'New draft';
+  String get draftingEmptyListAction => 'Нова чернетка';
 
   @override
-  String get draftingExporting => 'Exporting…';
+  String get draftingExporting => 'Експортування…';
 
   @override
-  String get draftingExportFailed => 'Export failed';
+  String get draftingExportFailed => 'Не вдалося експортувати';
 
   @override
-  String get draftingSaveFailed => 'Save failed';
+  String get draftingSaveFailed => 'Не вдалося зберегти';
 
   @override
-  String get draftingNewDraft => 'New draft';
+  String get draftingNewDraft => 'Нова чернетка';
 
   @override
-  String get vaultNoteChip => 'Vault note';
+  String get vaultNoteChip => 'Нотатка у сховищі';
 
   @override
-  String get saveToVault => 'Save to Vault';
+  String get saveToVault => 'Зберегти у сховище';
 
   @override
-  String get savingToVault => 'Saving to Vault…';
+  String get savingToVault => 'Збереження у сховище…';
 
   @override
-  String get savedToVault => 'Saved to Vault';
+  String get savedToVault => 'Збережено у сховище';
 
   @override
-  String get vaultNoteTitlePrefix => 'Note: ';
+  String get vaultNoteTitlePrefix => 'Нотатка: ';
 
   @override
-  String get openInVault => 'Open in Vault';
+  String get openInVault => 'Відкрити у сховищі';
 
   @override
-  String get saveToVaultFailed => 'Save to Vault failed';
+  String get saveToVaultFailed => 'Не вдалося зберегти у сховище';
 
   @override
   String get pdfWorkerUnavailable =>
-      'PDF export is temporarily unavailable. Please try DOCX or Markdown.';
+      'Експорт у PDF тимчасово недоступний. Спробуйте DOCX або Markdown.';
 
   @override
-  String get draftingVersionHistory => 'Version history';
+  String get draftingVersionHistory => 'Історія версій';
 
   @override
-  String get emptyHomeTitle => 'Welcome to Advocat';
+  String get emptyHomeTitle => 'Ласкаво просимо до Advocat';
 
   @override
   String get emptyHomeBody =>
-      'Pick a starting point — we’ll handle the legal heavy lifting.';
+      'Оберіть відправну точку — юридичну частину ми візьмемо на себе.';
 
   @override
-  String get intentChip1 => 'Got a fine';
+  String get intentChip1 => 'Отримав штраф';
 
   @override
-  String get intentChip2 => 'Permit denied';
+  String get intentChip2 => 'Відмовили в дозволі';
 
   @override
-  String get intentChip3 => 'Contract problem';
+  String get intentChip3 => 'Проблема з договором';
 
   @override
-  String get emptyCasesTitle => 'No cases yet';
+  String get emptyCasesTitle => 'Справ ще немає';
 
   @override
-  String get emptyCasesCta => 'Start a case';
+  String get emptyCasesCta => 'Розпочати справу';
 
   @override
-  String get emptyDraftsTitle => 'No drafts yet';
+  String get emptyDraftsTitle => 'Чернеток ще немає';
 
   @override
-  String get emptyDraftsCta => 'Create draft';
+  String get emptyDraftsCta => 'Створити чернетку';
 
   @override
-  String get emptyChatTitle => 'Ask Advocat anything';
+  String get emptyChatTitle => 'Запитайте Advocat про будь-що';
 
   @override
-  String get chatExamplePrompt1 => 'Help me reply to a fine';
+  String get chatExamplePrompt1 => 'Допоможіть відповісти на штраф';
 
   @override
-  String get chatExamplePrompt2 => 'Review my rental contract';
+  String get chatExamplePrompt2 => 'Перевірте мій договір оренди';
 
   @override
-  String get chatExamplePrompt3 => 'What are my rights at work?';
+  String get chatExamplePrompt3 => 'Які мої права на роботі?';
 
   @override
   String get dangerZone => '[en] Danger zone';
@@ -4483,113 +4488,113 @@ class AppLocalizationsUk extends AppLocalizations {
   String get deletingAccount => '[en] Deleting account…';
 
   @override
-  String get contractReviewTitle => 'Contract Review';
+  String get contractReviewTitle => 'Перевірка договору';
 
   @override
-  String get contractReviewUploadCta => 'Upload contract';
+  String get contractReviewUploadCta => 'Завантажити договір';
 
   @override
   String get contractReviewQuotaRemaining =>
-      'Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.';
+      'Завантажте договір у форматі PDF, DOC, DOCX або TXT для ШІ-перевірки з виявленням ризиків і порадами щодо переговорів.';
 
   @override
-  String get contractReviewRedFlags => 'Red flags';
+  String get contractReviewRedFlags => 'Тривожні сигнали';
 
   @override
-  String get contractReviewReviewPoints => 'Review points';
+  String get contractReviewReviewPoints => 'Пункти для перевірки';
 
   @override
-  String get contractReviewNegotiationTips => 'Negotiation tips';
+  String get contractReviewNegotiationTips => 'Поради щодо переговорів';
 
   @override
-  String get contractReviewSaveToVault => 'Save to Vault';
+  String get contractReviewSaveToVault => 'Зберегти у сховище';
 
   @override
-  String get contractReviewContinueChat => 'Continue in chat';
+  String get contractReviewContinueChat => 'Продовжити в чаті';
 
   @override
-  String get referralInviteFriends => 'Invite Friends';
+  String get referralInviteFriends => 'Запросити друзів';
 
   @override
-  String get referralYourCode => 'Your code';
+  String get referralYourCode => 'Ваш код';
 
   @override
-  String get referralCopiedToast => 'Code copied to clipboard';
+  String get referralCopiedToast => 'Код скопійовано в буфер обміну';
 
   @override
   String get referralReward =>
-      'Get 1 month of Counsel free for every friend who subscribes.';
+      'Отримуйте 1 місяць тарифу Counsel безкоштовно за кожного друга, який оформить підписку.';
 
   @override
-  String get referralInvited => 'Friends invited';
+  String get referralInvited => 'Запрошено друзів';
 
   @override
-  String get referralRewardsEarned => 'Free months earned';
+  String get referralRewardsEarned => 'Отримано безкоштовних місяців';
 
   @override
-  String get deadlineUrgencyToday => 'Today & Overdue';
+  String get deadlineUrgencyToday => 'Сьогодні та прострочені';
 
   @override
-  String get deadlineUrgencyWeek => 'This week';
+  String get deadlineUrgencyWeek => 'На цьому тижні';
 
   @override
-  String get deadlineUrgencyMonth => 'This month';
+  String get deadlineUrgencyMonth => 'Цього місяця';
 
   @override
-  String get deadlineUrgencyLater => 'Later';
+  String get deadlineUrgencyLater => 'Пізніше';
 
   @override
-  String get deadlineAddManual => 'Add deadline';
+  String get deadlineAddManual => 'Додати дедлайн';
 
   @override
-  String get deadlineSnoozeBy => 'Snooze';
+  String get deadlineSnoozeBy => 'Відкласти';
 
   @override
-  String get deadlineSnooze1d => 'Snooze 1 day';
+  String get deadlineSnooze1d => 'Відкласти на 1 день';
 
   @override
-  String get deadlineSnooze3d => 'Snooze 3 days';
+  String get deadlineSnooze3d => 'Відкласти на 3 дні';
 
   @override
-  String get deadlineSnooze7d => 'Snooze 7 days';
+  String get deadlineSnooze7d => 'Відкласти на 7 днів';
 
   @override
-  String get deadlineDismiss => 'Dismiss';
+  String get deadlineDismiss => 'Приховати';
 
   @override
-  String get deadlineExportIcs => 'Add to calendar';
+  String get deadlineExportIcs => 'Додати до календаря';
 
   @override
-  String get deadlineSource => 'Source';
+  String get deadlineSource => 'Джерело';
 
   @override
   String get deadlineEmpty =>
-      'No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.';
+      'Дедлайнів ще немає. Дедлайни створюються автоматично з ваших листів і документів — або додайте вручну кнопкою «+».';
 
   @override
-  String get deadlineNewTitle => 'New deadline';
+  String get deadlineNewTitle => 'Новий дедлайн';
 
   @override
-  String get deadlineFieldTitle => 'Title';
+  String get deadlineFieldTitle => 'Назва';
 
   @override
-  String get deadlineFieldDueDate => 'Due date';
+  String get deadlineFieldDueDate => 'Дата виконання';
 
   @override
-  String get deadlineFieldNotes => 'Notes (optional)';
+  String get deadlineFieldNotes => 'Нотатки (необов\'язково)';
 
   @override
-  String get deadlineSaved => 'Deadline saved';
+  String get deadlineSaved => 'Дедлайн збережено';
 
   @override
-  String get deadlineSaveFailed => 'Could not save deadline';
+  String get deadlineSaveFailed => 'Не вдалося зберегти дедлайн';
 
   @override
-  String get deadlineUrgentBannerSingle => '1 deadline today or overdue';
+  String get deadlineUrgentBannerSingle => '1 дедлайн сьогодні або прострочено';
 
   @override
   String deadlineUrgentBannerMany(int count) {
-    return '$count deadlines today or overdue';
+    return '$count дедлайнів сьогодні або прострочено';
   }
 
   @override
@@ -4597,9 +4602,11 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days left',
-      one: '1 day left',
-      zero: 'today',
+      other: 'залишилося $count дня',
+      many: 'залишилося $count днів',
+      few: 'залишилося $count дні',
+      one: 'залишився $count день',
+      zero: 'сьогодні',
     );
     return '$_temp0';
   }
@@ -4609,8 +4616,10 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days overdue',
-      one: '1 day overdue',
+      other: 'прострочено на $count дня',
+      many: 'прострочено на $count днів',
+      few: 'прострочено на $count дні',
+      one: 'прострочено на $count день',
     );
     return '$_temp0';
   }
@@ -4633,11 +4642,11 @@ class AppLocalizationsUk extends AppLocalizations {
       'Активну підписку для відновлення не знайдено.';
 
   @override
-  String get deadlineEuRadarTitle => 'EU deadline radar (preview)';
+  String get deadlineEuRadarTitle => 'Радар дедлайнів ЄС (попередній перегляд)';
 
   @override
   String get deadlineEuRadarSubtitle =>
-      'Hypothetical EU procedural deadlines — mock data';
+      'Гіпотетичні процедурні дедлайни ЄС — тестові дані';
 
   @override
   String get changePassword => 'Змінити пароль';

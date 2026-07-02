@@ -15,19 +15,19 @@ class AppLocalizationsSv extends AppLocalizations {
   String get aboutSection => 'OM';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Utseende';
 
   @override
   String get appearanceSystem => 'System (auto)';
 
   @override
-  String get appearanceLight => 'Light';
+  String get appearanceLight => 'Ljust';
 
   @override
-  String get appearanceDark => 'Dark';
+  String get appearanceDark => 'Mörkt';
 
   @override
-  String get appearanceDescription => 'Choose how Advocat looks';
+  String get appearanceDescription => 'Välj hur Advocat ser ut';
 
   @override
   String get accidents => 'Olyckor';
@@ -67,7 +67,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get speakIntoMicHint =>
-      'Speak into the microphone. Make sure microphone access is enabled.';
+      'Tala in i mikrofonen. Se till att mikrofonåtkomst är aktiverad.';
 
   @override
   String get aiErrorRateLimit =>
@@ -79,7 +79,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String freeLimitReached(int count) {
-    return 'You have used all $count free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!';
+    return 'Du har använt alla $count kostnadsfria AI-meddelanden. Uppgradera till Legal Counsel för obegränsad AI-hjälp!';
   }
 
   @override
@@ -651,10 +651,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get rateUs => 'Betygsätt oss';
 
   @override
-  String get rateAppComingSoon => 'Coming to app stores soon!';
+  String get rateAppComingSoon => 'Kommer snart till appbutikerna!';
 
   @override
-  String get dataCopiedToClipboard => 'Data copied to clipboard';
+  String get dataCopiedToClipboard => 'Data kopierad till urklipp';
 
   @override
   String get readingDocument => 'Läser dokument';
@@ -1659,26 +1659,26 @@ class AppLocalizationsSv extends AppLocalizations {
   String get priorityProcessing => 'Prioriterad bearbetning';
 
   @override
-  String get fiveAiMessagesTotal => '5 AI messages (lifetime)';
+  String get fiveAiMessagesTotal => '5 AI-meddelanden (livstid)';
 
   @override
-  String get hundredAiMessagesDay => '100 AI messages/day';
+  String get hundredAiMessagesDay => '100 AI-meddelanden/dag';
 
   @override
-  String get unlimitedAiMessages => 'Unlimited AI messages';
+  String get unlimitedAiMessages => 'Obegränsade AI-meddelanden';
 
   @override
-  String get voiceInput => 'Voice input';
+  String get voiceInput => 'Röstinmatning';
 
   @override
-  String get strategyRecommendations => 'Strategy recommendations';
+  String get strategyRecommendations => 'Strategirekommendationer';
 
   @override
   String get foundingMemberNote =>
-      'Founding Member: 9.99€/mo for first 3 months';
+      'Grundande medlem: 9,99 €/mån de första 3 månaderna';
 
   @override
-  String get saveTwentyPercent => 'Save 20%';
+  String get saveTwentyPercent => 'Spara 20 %';
 
   @override
   String get forever => 'för alltid';
@@ -1793,56 +1793,56 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get gdprConsentAiProcessing =>
-      'I agree to the processing of my data for AI legal assistance (required)';
+      'Jag samtycker till behandling av mina uppgifter för juridisk AI-hjälp (krävs)';
 
   @override
   String get gdprConsentAnalytics =>
-      'I agree to analytics to improve the service (optional)';
+      'Jag samtycker till analys för att förbättra tjänsten (valfritt)';
 
   @override
   String get gdprArt9Intro =>
-      'This app processes special category personal data under GDPR Article 9, including:';
+      'Denna app behandlar särskilda kategorier av personuppgifter enligt GDPR artikel 9, inklusive:';
 
   @override
   String get gdprSpecialLegalCases =>
-      'Your legal case details and court documents';
+      'Dina juridiska ärendedetaljer och domstolshandlingar';
 
   @override
-  String get gdprSpecialNationality => 'Nationality and immigration status';
+  String get gdprSpecialNationality => 'Nationalitet och uppehållsstatus';
 
   @override
   String get gdprConsentLegalData =>
-      'I consent to the processing of my legal case data, nationality, and immigration status by AI (required)';
+      'Jag samtycker till att mina juridiska ärendeuppgifter, nationalitet och uppehållsstatus behandlas av AI (krävs)';
 
   @override
   String get gdprConsentVoice =>
-      'I consent to voice recording processing (optional)';
+      'Jag samtycker till behandling av röstinspelningar (valfritt)';
 
   @override
-  String get gdprViewPrivacyPolicy => 'View Privacy Policy';
+  String get gdprViewPrivacyPolicy => 'Visa integritetspolicy';
 
   @override
-  String get legalInformation => 'Legal Information';
+  String get legalInformation => 'Juridisk information';
 
   @override
   String get legalEntityName => 'Vorantis OÜ';
 
   @override
-  String get legalRegistryCode => 'Registry code: 17098992';
+  String get legalRegistryCode => 'Registreringskod: 17098992';
 
   @override
   String get legalAddress =>
       'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145';
 
   @override
-  String get legalEmail => 'Email: support@advocat.ee';
+  String get legalEmail => 'E-post: support@advocat.ee';
 
   @override
   String get legalRegistry =>
-      'Registered in Estonian Commercial Register (Äriregister)';
+      'Registrerad i det estniska handelsregistret (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer => 'AI-genererat • Inte juridisk rådgivning';
 
   @override
   String get decline => 'Avböj';
@@ -2075,311 +2075,311 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get domesticViolenceDesc =>
-      'Victim rights, emergency help, restraining orders';
+      'Brottsoffers rättigheter, akuthjälp, besöksförbud';
 
   @override
   String get rightCallEmergency =>
-      'You have the right to call 112 in any emergency — police, ambulance, fire';
+      'Du har rätt att ringa 112 i alla nödsituationer — polis, ambulans, brandkår';
 
   @override
   String get rightVictimProtection =>
-      'As a victim, you have the right to protection, support, and information about your case';
+      'Som brottsoffer har du rätt till skydd, stöd och information om ditt ärende';
 
   @override
   String get rightRestrainingOrder =>
-      'You can apply for a restraining order (lähestymiskielto) to keep the abuser away';
+      'Du kan ansöka om besöksförbud (lähestymiskielto) för att hålla förövaren borta';
 
   @override
   String get rightVictimInterpreter =>
-      'You have the right to an interpreter during all legal proceedings';
+      'Du har rätt till tolk under alla rättsliga förfaranden';
 
   @override
   String get rightMedicalHelp =>
-      'You have the right to immediate medical treatment and documentation of injuries';
+      'Du har rätt till omedelbar sjukvård och dokumentation av skador';
 
   @override
   String get rightShelter =>
-      'You have the right to emergency shelter — contact a shelter or social services';
+      'Du har rätt till akut skyddat boende — kontakta ett skyddat boende eller socialtjänsten';
 
   @override
   String get mustReportDanger =>
-      'If someone is in immediate danger, call 112 immediately';
+      'Om någon är i omedelbar fara, ring 112 omedelbart';
 
   @override
   String get mustDocumentInjuries =>
-      'Document all injuries — photos, medical records, written notes';
+      'Dokumentera alla skador — foton, journaler, skriftliga anteckningar';
 
   @override
   String get domesticActionCallEmergency =>
-      'Call 112 if you are in immediate danger';
+      'Ring 112 om du är i omedelbar fara';
 
   @override
   String get domesticActionGoToSafe =>
-      'Go to a safe place — shelter, friend, public place';
+      'Bege dig till en trygg plats — skyddat boende, vän, offentlig plats';
 
   @override
   String get domesticActionDocumentEverything =>
-      'Document injuries: take photos, get medical records';
+      'Dokumentera skador: ta foton, skaffa journalanteckningar';
 
   @override
   String get domesticActionFilePoliceReport =>
-      'File a police report — you can do this later too';
+      'Gör en polisanmälan — du kan göra detta senare också';
 
   @override
   String get domesticActionContactShelter =>
-      'Contact a shelter or crisis helpline';
+      'Kontakta ett skyddat boende eller en kristelefon';
 
   @override
   String get domesticActionApplyRestraining =>
-      'Apply for a restraining order through police or court';
+      'Ansök om besöksförbud via polisen eller domstolen';
 
   @override
   String get domesticFactRestrainingOrder =>
-      'In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.';
+      'I Finland kan ett besöksförbud (lähestymiskielto) utfärdas även utan ett brottmål. Det förbjuder personen att kontakta eller närma sig dig.';
 
   @override
   String get domesticFactVictimDirective =>
-      'Under EU Victims\' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.';
+      'Enligt EU:s brottsofferdirektiv 2012/29/EU har du rätt att bli behandlad med respekt, att få information på ett språk du förstår och att få tillgång till stödtjänster för brottsoffer — oavsett din uppehållsstatus.';
 
   @override
   String get domesticDeadlinePoliceReport =>
-      'File police report — no strict deadline, but sooner is better for evidence';
+      'Gör en polisanmälan — ingen strikt tidsfrist, men ju förr desto bättre för bevisningen';
 
   @override
   String get domesticDeadlineRestraining =>
-      'Restraining order — can be applied for at any time';
+      'Besöksförbud — kan ansökas om när som helst';
 
   @override
-  String get contactEmergency => 'Emergency Number';
+  String get contactEmergency => 'Nödnummer';
 
   @override
-  String get contactShelter => 'Turvakoti (Shelter) Helpline';
+  String get contactShelter => 'Turvakoti (skyddat boende) hjälplinje';
 
   @override
-  String get contactCrisisHelpline => 'Crisis Helpline (Kriisipuhelin)';
+  String get contactCrisisHelpline => 'Kristelefon (Kriisipuhelin)';
 
   @override
   String get contactNollaLinja =>
-      'Nollalinja — Violence Against Women Helpline';
+      'Nollalinja — hjälplinje mot våld mot kvinnor';
 
   @override
   String get inheritance => 'Arv';
 
   @override
   String get inheritanceDesc =>
-      'Wills, estate, heirs\' rights, forced heirship, probate';
+      'Testamenten, dödsbo, arvingars rättigheter, laglott, bouppteckning';
 
   @override
   String get rightInheritanceForced =>
-      'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will';
+      'Bröstarvingar (barn, make/maka) har rätt till laglott oavsett testamentet';
 
   @override
   String get rightInheritanceWill =>
-      'You have the right to make a will disposing of your property — notarized wills have the strongest legal force';
+      'Du har rätt att upprätta ett testamente för din egendom — bevittnade/notariserade testamenten har starkast rättsverkan';
 
   @override
   String get rightInheritanceRenounce =>
-      'You can renounce an inheritance within 3 months of learning about it';
+      'Du kan avstå från ett arv inom 3 månader efter att du fått kännedom om det';
 
   @override
   String get rightInheritanceInfo =>
-      'You have the right to obtain information about the estate from banks and registries';
+      'Du har rätt att få information om dödsboet från banker och register';
 
   @override
   String get rightInheritanceDispute =>
-      'You can challenge an unfair will in court within the statutory limitation period';
+      'Du kan bestrida ett orättvist testamente i domstol inom den lagstadgade preskriptionstiden';
 
   @override
   String get mustFileInheritance =>
-      'File for succession proceedings at a notary within a reasonable time';
+      'Ansök om bouppteckning hos en notarie inom skälig tid';
 
   @override
   String get mustNotifyHeirs =>
-      'All known heirs must be notified of the succession proceedings';
+      'Alla kända arvingar måste underrättas om bouppteckningen';
 
   @override
   String get inheritanceActionGatherDocs =>
-      'Gather all documents: death certificate, will, property records, bank statements';
+      'Samla alla dokument: dödsattest, testamente, fastighetshandlingar, kontoutdrag';
 
   @override
   String get inheritanceActionContactNotary =>
-      'Contact a notary to open succession proceedings';
+      'Kontakta en notarie för att inleda bouppteckningen';
 
   @override
   String get inheritanceActionCheckDebts =>
-      'Check whether the estate has debts before accepting inheritance';
+      'Kontrollera om dödsboet har skulder innan du accepterar arvet';
 
   @override
   String get inheritanceActionFileCourt =>
-      'If the will is disputed, file a claim in court';
+      'Om testamentet bestrids, väck talan i domstol';
 
   @override
   String get inheritanceDeadlineRenounce =>
-      '3 months to renounce inheritance after learning of it';
+      '3 månader för att avstå från arv efter att ha fått kännedom om det';
 
   @override
   String get inheritanceDeadlineDispute =>
-      'Statute of limitations for challenging a will: varies by grounds';
+      'Preskriptionstid för att bestrida ett testamente: varierar beroende på grund';
 
   @override
   String get inheritanceFactForced =>
-      'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will';
+      'I Estland har bröstarvingar och make/maka rätt till laglott (1/2 av den legala arvslotten) även om de utesluts från testamentet';
 
   @override
   String get inheritanceFactNotary =>
-      'All succession proceedings in Estonia must go through a notary — you cannot skip this step';
+      'Alla bouppteckningar i Estland måste gå via en notarie — detta steg kan inte hoppas över';
 
   @override
   String get consumerProtection => 'Konsumentskydd';
 
   @override
   String get consumerProtectionDesc =>
-      'Fraud, defective products, returns, deceptive sellers';
+      'Bedrägeri, defekta produkter, returer, vilseledande säljare';
 
   @override
   String get rightReturnOnline =>
-      'You have 14 days to cancel online purchases without reason (EU right of withdrawal)';
+      'Du har 14 dagar på dig att ångra ett onlineköp utan att ange skäl (EU:s ångerrätt)';
 
   @override
   String get rightDefectiveProduct =>
-      'If a product is defective, you have the right to repair, replacement, or refund';
+      'Om en produkt är defekt har du rätt till reparation, ersättning eller återbetalning';
 
   @override
   String get rightClearPricing =>
-      'Sellers must display clear prices including all fees — hidden costs are illegal';
+      'Säljare måste visa tydliga priser inklusive alla avgifter — dolda kostnader är olagliga';
 
   @override
   String get rightComplainBoard =>
-      'You can file a free complaint with the Consumer Disputes Board';
+      'Du kan lämna in ett kostnadsfritt klagomål till konsumenttvistenämnden';
 
   @override
   String get rightProtectionFraud =>
-      'You are protected against unfair commercial practices and fraud';
+      'Du är skyddad mot otillbörliga affärsmetoder och bedrägeri';
 
   @override
   String get mustKeepReceipts =>
-      'Keep all receipts, contracts, and communication with sellers';
+      'Spara alla kvitton, avtal och kommunikation med säljare';
 
   @override
   String get mustActTimely =>
-      'Report defects to the seller within a reasonable time after discovery';
+      'Reklamera fel till säljaren inom skälig tid efter upptäckt';
 
   @override
   String get consumerActionKeepEvidence =>
-      'Keep receipts, screenshots, emails, and all proof of purchase';
+      'Spara kvitton, skärmdumpar, e-post och alla köpbevis';
 
   @override
   String get consumerActionContactSeller =>
-      'Contact the seller first — explain the problem in writing';
+      'Kontakta säljaren först — förklara problemet skriftligt';
 
   @override
   String get consumerActionFileComplaint =>
-      'File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)';
+      'Lämna in ett klagomål till konsumenttvistenämnden (kuluttajariitalautakunta)';
 
   @override
   String get consumerActionContactAuthority =>
-      'Contact the Consumer Advisory Services for free help';
+      'Kontakta konsumentrådgivningen för kostnadsfri hjälp';
 
   @override
   String get consumerActionReportFraud =>
-      'Report fraud to the police and Consumer Ombudsman';
+      'Anmäl bedrägeri till polisen och konsumentombudsmannen';
 
   @override
   String get consumerFactWithdrawal =>
-      'Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.';
+      'Enligt EU:s konsumenträttighetsdirektiv 2011/83/EU har du 14 dagar på dig att frånträda ett köp på distans eller online — utan att ange skäl. Säljaren måste återbetala dig inom 14 dagar.';
 
   @override
   String get consumerFactWarranty =>
-      'In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.';
+      'I Finland ansvarar säljaren för produktfel under en skälig tid (ofta 2+ år). Detta gäller utöver eventuell tillverkargaranti.';
 
   @override
   String get consumerDeadlineWithdrawal =>
-      'Online purchase withdrawal — 14 days from delivery';
+      'Ångerrätt vid onlineköp — 14 dagar från leverans';
 
   @override
   String get consumerDeadlineDefect =>
-      'Report defect to seller — within 2 months of discovery (recommended)';
+      'Reklamera fel till säljaren — inom 2 månader från upptäckt (rekommenderas)';
 
   @override
-  String get contactConsumerAdvisory => 'Consumer Advisory Services';
+  String get contactConsumerAdvisory => 'Konsumentrådgivningen';
 
   @override
   String get contactConsumerOmbudsman =>
-      'Consumer Ombudsman (Kuluttaja-asiamies)';
+      'Konsumentombudsmannen (Kuluttaja-asiamies)';
 
   @override
-  String get contactConsumerDisputesBoardDirect => 'Consumer Disputes Board';
+  String get contactConsumerDisputesBoardDirect => 'Konsumenttvistenämnden';
 
   @override
-  String get caseTypeStepLabel => 'Case Type';
+  String get caseTypeStepLabel => 'Ärendetyp';
 
   @override
-  String get detailsStepLabel => 'Details';
+  String get detailsStepLabel => 'Detaljer';
 
   @override
-  String get documentsStepLabel => 'Documents';
+  String get documentsStepLabel => 'Dokument';
 
   @override
-  String get whatTypeOfCase => 'What type of case is this?';
+  String get whatTypeOfCase => 'Vilken typ av ärende gäller det?';
 
   @override
   String get selectCategoryDescription =>
-      'Select the category that best describes your situation.';
+      'Välj den kategori som bäst beskriver din situation.';
 
   @override
-  String get tellUsAboutCase => 'Tell us about your case';
+  String get tellUsAboutCase => 'Berätta om ditt ärende';
 
   @override
   String get aiHelpsUnderstand =>
-      'This information helps our AI understand your situation better.';
+      'Denna information hjälper vår AI att bättre förstå din situation.';
 
   @override
-  String get caseTitleHint => 'e.g., Residence Permit Appeal 2026';
+  String get caseTitleHint => 't.ex. Överklagande av uppehållstillstånd 2026';
 
   @override
-  String get countryJurisdiction => 'Country / Jurisdiction';
+  String get countryJurisdiction => 'Land / jurisdiktion';
 
   @override
-  String get selectCountryHint => 'Select a country';
+  String get selectCountryHint => 'Välj ett land';
 
   @override
-  String get referenceNumberHint => 'e.g., UMA/12345/2026';
+  String get referenceNumberHint => 't.ex. UMA/12345/2026';
 
   @override
-  String get descriptionOptional => 'Description (optional)';
+  String get descriptionOptional => 'Beskrivning (valfritt)';
 
   @override
   String get descriptionHint =>
-      'Describe your situation briefly. What happened? What decision was made?';
+      'Beskriv kort din situation. Vad hände? Vilket beslut fattades?';
 
   @override
-  String get uploadFirstDocument => 'Upload your first document';
+  String get uploadFirstDocument => 'Ladda upp ditt första dokument';
 
   @override
   String get uploadDocumentDescription =>
-      'Upload the decision letter or any relevant document. You can skip this step and add documents later.';
+      'Ladda upp beslutsbrevet eller ett annat relevant dokument. Du kan hoppa över detta steg och lägga till dokument senare.';
 
   @override
-  String get tapToUploadFile => 'Tap to upload a file';
+  String get tapToUploadFile => 'Tryck för att ladda upp en fil';
 
   @override
-  String get fileSizeLimit => 'PDF, JPG, PNG up to 25 MB';
+  String get fileSizeLimit => 'PDF, JPG, PNG upp till 25 MB';
 
   @override
   String get addDocumentsLaterHint =>
-      'You can always add documents later from the case detail screen.';
+      'Du kan alltid lägga till dokument senare från ärendets detaljvy.';
 
   @override
-  String get callAI => 'Call AI';
+  String get callAI => 'Ring AI';
 
   @override
   String get comingSoon => 'Kommer snart';
 
   @override
-  String get encrypted => 'Encrypted';
+  String get encrypted => 'Krypterat';
 
   @override
-  String get typing => 'Typing…';
+  String get typing => 'Skriver…';
 
   @override
   String get online => 'Online';
@@ -2389,22 +2389,22 @@ class AppLocalizationsSv extends AppLocalizations {
       'Jag analyserar situationen, granskar dokument, hittar fel och föreslår vad du bör göra.';
 
   @override
-  String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
+  String get tapMicrophoneToSpeak => 'Tryck på mikrofonen för att tala';
 
   @override
-  String get categoryEssential => 'Essential';
+  String get categoryEssential => 'Grundläggande';
 
   @override
-  String get categoryPolice => 'Police';
+  String get categoryPolice => 'Polis';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryWork => 'Arbete';
 
   @override
-  String get categoryHousing => 'Housing';
+  String get categoryHousing => 'Boende';
 
   @override
-  String get categoryConsumer => 'Consumer';
+  String get categoryConsumer => 'Konsument';
 
   @override
   String rightsInsideCount(int count) {
@@ -2419,29 +2419,29 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get freeAidThreshold => 'Free aid threshold';
+  String get freeAidThreshold => 'Gräns för kostnadsfri rättshjälp';
 
   @override
-  String get partialAidThreshold => 'Partial aid threshold';
+  String get partialAidThreshold => 'Gräns för delvis rättshjälp';
 
   @override
-  String get assetLimit => 'Asset limit';
+  String get assetLimit => 'Tillgångsgräns';
 
   @override
-  String get whereToApplyLabel => 'Where to apply';
+  String get whereToApplyLabel => 'Var du ska ansöka';
 
   @override
-  String get phoneLabel => 'Phone';
+  String get phoneLabel => 'Telefon';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Webbplats';
 
   @override
-  String get disclaimerCollapsed => 'AI guidance only';
+  String get disclaimerCollapsed => 'Endast AI-vägledning';
 
   @override
   String get disclaimerExpanded =>
-      'AI assistant — not legal advice. Always verify with a qualified lawyer.';
+      'AI-assistent — inte juridisk rådgivning. Kontrollera alltid med en behörig jurist.';
 
   @override
   String get chatDisclaimerBanner =>
@@ -2462,160 +2462,159 @@ class AppLocalizationsSv extends AppLocalizations {
   String get chatDisclaimerGotIt => 'Uppfattat';
 
   @override
-  String get categoryChildren => 'Children';
+  String get categoryChildren => 'Barn';
 
   @override
-  String get categoryDigital => 'Digital';
+  String get categoryDigital => 'Digitalt';
 
   @override
-  String get childrenRights => 'Children\'s Rights & Alimony';
+  String get childrenRights => 'Barns rättigheter och underhåll';
 
   @override
   String get childrenRightsDesc =>
-      'Child support, alimony, protection, state guarantees';
+      'Underhållsbidrag, skydd, statliga garantier';
 
   @override
-  String get cyberbullying => 'Cyberbullying & Online Harassment';
+  String get cyberbullying => 'Nätmobbning och nättrakasserier';
 
   @override
-  String get cyberbullyingDesc =>
-      'Threats, privacy violations, defamation online';
+  String get cyberbullyingDesc => 'Hot, integritetskränkningar, förtal online';
 
   @override
   String get rightChildSupport =>
-      'Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)';
+      'Båda föräldrarna är juridiskt skyldiga att försörja sitt barn ekonomiskt (Perekonnaseadus § 100–102)';
 
   @override
   String get rightMinimumAlimony =>
-      'Minimum child support in Estonia: base amount (€295.86) + 3% of previous year\'s average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee';
+      'Minsta underhållsbidrag i Estland: grundbelopp (295,86 €) + 3 % av föregående års genomsnittliga bruttolön (PKS § 101). Från 01.04.2026 — 318,62 €/månad per barn. Uppdateras årligen den 1 april. Kalkylator: alimendid.ee';
 
   @override
   String get rightCourtAlimony =>
-      'You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400';
+      'Du kan ansöka om underhållsbidrag via distriktsdomstolen (maakohus) — ingen jurist krävs för anspråk upp till 6 400 €';
 
   @override
   String get rightBailiffEnforcement =>
-      'If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment';
+      'Om föräldern vägrar betala kan en kronofogde (kohtutäitur) verkställa domstolsbeslutet, inklusive löneutmätning';
 
   @override
   String get rightStateAlimonyGuarantee =>
-      'If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child';
+      'Om föräldern inte betalar tillhandahåller staten elatisabi (underhållsstöd) via Sotsiaalkindlustusamet — upp till 100 €/månad per barn';
 
   @override
   String get rightChildEducation =>
-      'Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)';
+      'Varje barn har rätt till utbildning, hälsovård och skydd mot övergrepp (Lastekaitseseadus § 4–5)';
 
   @override
   String get rightChildContact =>
-      'A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)';
+      'Ett barn har rätt att upprätthålla kontakt med båda föräldrarna om inte domstolen beslutar annat (PKS § 143)';
 
   @override
   String get mustFileCourtClaim =>
-      'To receive alimony, you must file a claim at court or agree on the amount in writing';
+      'För att få underhållsbidrag måste du väcka talan i domstol eller komma överens om beloppet skriftligt';
 
   @override
   String get mustNotifyAddressChange =>
-      'Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi';
+      'Meddela Sotsiaalkindlustusamet om adressändringar om du får elatisabi';
 
   @override
   String get childrenActionGatherDocs =>
-      'Gather child\'s birth certificate, your ID, and proof of expenses';
+      'Samla barnets födelseattest, din legitimation och kvitton på utgifter';
 
   @override
   String get childrenActionFileCourtClaim =>
-      'File an alimony claim at the county court (maakohus) — can be done online via e-toimik';
+      'Väck talan om underhållsbidrag vid distriktsdomstolen (maakohus) — kan göras online via e-toimik';
 
   @override
   String get childrenActionApplyElatisabi =>
-      'Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won\'t pay';
+      'Ansök om statligt underhållsstöd (elatisabi) hos Sotsiaalkindlustusamet om föräldern inte betalar';
 
   @override
   String get childrenActionContactBailiff =>
-      'Contact a bailiff (kohtutäitur) to enforce the court order';
+      'Kontakta en kronofogde (kohtutäitur) för att verkställa domstolsbeslutet';
 
   @override
   String get childrenActionCallLasteabi =>
-      'Call Lasteabi 116 111 for children\'s helpline — free, 24/7';
+      'Ring Lasteabi 116 111, barnens hjälplinje — kostnadsfritt, dygnet runt';
 
   @override
   String get childrenDeadlineElatisabi =>
-      'Apply for elatisabi — after court order, no strict deadline but process takes time';
+      'Ansök om elatisabi — efter domstolsbeslutet, ingen strikt tidsfrist men processen tar tid';
 
   @override
   String get childrenDeadlineCourt =>
-      'Alimony can be claimed retroactively for up to 1 year before court filing';
+      'Underhållsbidrag kan krävas retroaktivt upp till 1 år före domstolsansökan';
 
   @override
   String get childrenFactMinimum =>
-      'From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year\'s average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee';
+      'Från 01.04.2026 är minsta underhållsbidrag 318,62 €/månad per barn. Formel: grundbelopp (295,86 €) + 3 % av föregående års genomsnittliga bruttolön. Uppdateras årligen den 1 april. En förälder kan inte komma överens om att betala mindre. Kalkylator: alimendid.ee';
 
   @override
   String get childrenFactElatisabi =>
-      'Estonia\'s state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent.';
+      'Estlands statliga underhållsstöd (elatisabi) infördes 2017 för att skydda barn när en förälder vägrar betala. Staten betalar ut och driver sedan in beloppet från den skyldiga föräldern.';
 
   @override
   String get rightReportCybercrime =>
-      'You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)';
+      'Du har rätt att anmäla hot, trakasserier och identitetsstöld online till polisen (Karistusseadustik § 120, § 157¹)';
 
   @override
   String get rightContentRemoval =>
-      'You can request removal of defamatory or private content from platforms and demand takedown under GDPR';
+      'Du kan begära att förtalande eller privat innehåll tas bort från plattformar och kräva borttagning enligt GDPR';
 
   @override
   String get rightMoralDamageCompensation =>
-      'You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)';
+      'Du kan kräva ersättning för ideell skada orsakad av nätmobbning (Võlaõigusseadus § 1043–1055)';
 
   @override
   String get rightPrivacyProtection =>
-      'Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)';
+      'Ditt privatliv är skyddat — obehörig delning av dina foton, meddelanden eller personuppgifter är olagligt (KarS § 157)';
 
   @override
   String get rightDataProtection =>
-      'Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon';
+      'Anmäl dataskyddsöverträdelser (obehörig användning av dina uppgifter) till Andmekaitse Inspektsioon';
 
   @override
   String get rightDefamationAction =>
-      'Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)';
+      'Förtal (laimamine) är ett civilrättsligt brott — du kan stämma för skadestånd och kräva ett offentligt dementi (KarS § 247 (upphävd), VÕS § 1047)';
 
   @override
   String get mustCollectEvidence =>
-      'Collect and preserve all evidence — screenshots, links, dates, and witness information';
+      'Samla in och bevara all bevisning — skärmdumpar, länkar, datum och vittnesuppgifter';
 
   @override
   String get mustNotRetaliate =>
-      'Do not retaliate or engage in counter-harassment — it may weaken your case';
+      'Hämnas inte och ägna dig inte åt mottrakasserier — det kan försvaga ditt ärende';
 
   @override
   String get cyberActionScreenshots =>
-      'Take screenshots of all harassment — save URLs, dates, usernames, and content';
+      'Ta skärmdumpar av alla trakasserier — spara webbadresser, datum, användarnamn och innehåll';
 
   @override
   String get cyberActionReportPolice =>
-      'File a police report at the nearest station or online at politsei.ee';
+      'Gör en polisanmälan på närmaste station eller online på politsei.ee';
 
   @override
   String get cyberActionReportPlatform =>
-      'Report the content to the social media platform for removal';
+      'Anmäl innehållet till plattformen för borttagning';
 
   @override
   String get cyberActionContactDPA =>
-      'Contact Andmekaitse Inspektsioon if your personal data was misused';
+      'Kontakta Andmekaitse Inspektsioon om dina personuppgifter har missbrukats';
 
   @override
   String get cyberActionConsultLawyer =>
-      'Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi';
+      'Rådfråga en jurist om civilrättsligt skadestånd — kostnadsfri rättshjälp finns via Riigi Õigusabi';
 
   @override
   String get cyberDeadlineCriminal =>
-      'Criminal complaint — no strict deadline, but report promptly for best results';
+      'Brottsanmälan — ingen strikt tidsfrist, men anmäl snabbt för bästa resultat';
 
   @override
   String get cyberDeadlineCivil =>
-      'Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)';
+      'Civilrättsligt skadeståndsanspråk — upp till 3 år från det att du fick kännedom om kränkningen (TsÜS § 150)';
 
   @override
   String get cyberFactPrivacy =>
-      'In Estonia, unauthorized sharing of someone\'s intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).';
+      'I Estland kan obehörig delning av någons intima bilder leda till upp till 3 års fängelse enligt Karistusseadustik § 157¹ (kränkning av privatlivet).';
 
   @override
   String get cyberFactGDPR =>
@@ -3181,13 +3180,13 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get deadlineRadarTitle => 'Upcoming deadlines';
+  String get deadlineRadarTitle => 'Kommande tidsfrister';
 
   @override
-  String get deadlineRadarEmpty => 'No upcoming deadlines';
+  String get deadlineRadarEmpty => 'Inga kommande tidsfrister';
 
   @override
-  String get deadlineRadarViewAll => 'View all';
+  String get deadlineRadarViewAll => 'Visa alla';
 
   @override
   String deadlineCardDaysLeft(int count) {
@@ -3202,10 +3201,10 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardTomorrow => 'tomorrow';
+  String get deadlineCardTomorrow => 'imorgon';
 
   @override
-  String get deadlineCardToday => 'today';
+  String get deadlineCardToday => 'idag';
 
   @override
   String deadlineCardOverdue(int count) {
@@ -3219,200 +3218,203 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardMarkComplete => 'Mark complete';
+  String get deadlineCardMarkComplete => 'Markera som klar';
 
   @override
-  String get deadlineCardSnooze => 'Snooze';
+  String get deadlineCardSnooze => 'Skjut upp';
 
   @override
-  String get deadlineCardSnooze3d => 'Snooze 3 days';
+  String get deadlineCardSnooze3d => 'Skjut upp 3 dagar';
 
   @override
-  String get deadlineCardSnooze7d => 'Snooze 7 days';
+  String get deadlineCardSnooze7d => 'Skjut upp 7 dagar';
 
   @override
-  String get deadlineCardSnoozeCustom => 'Pick a date';
+  String get deadlineCardSnoozeCustom => 'Välj ett datum';
 
   @override
-  String get deadlineCardEdit => 'Edit';
+  String get deadlineCardEdit => 'Redigera';
 
   @override
-  String get deadlineCardDelete => 'Archive';
+  String get deadlineCardDelete => 'Arkivera';
 
   @override
-  String get deadlineCardSourceLabelPdf => 'from PDF';
+  String get deadlineCardSourceLabelPdf => 'från PDF';
 
   @override
-  String get deadlineCardSourceLabelIntake => 'from intake';
+  String get deadlineCardSourceLabelIntake => 'från registrering';
 
   @override
-  String get deadlineCardSourceLabelManual => 'added manually';
+  String get deadlineCardSourceLabelManual => 'tillagd manuellt';
 
   @override
-  String get deadlineCardSourceLabelEmail => 'from email';
+  String get deadlineCardSourceLabelEmail => 'från e-post';
 
   @override
-  String get deadlineCardSourceLabelHaikuExtract => 'AI-extracted';
+  String get deadlineCardSourceLabelHaikuExtract => 'AI-extraherad';
 
   @override
-  String get deadlineCardSourceLabelStatutoryTemplate => 'statute template';
+  String get deadlineCardSourceLabelStatutoryTemplate => 'lagmall';
 
   @override
   String deadlineBannerCritical(String title, String when) {
-    return 'Critical deadline $title $when';
+    return 'Kritisk tidsfrist $title $when';
   }
 
   @override
-  String get deadlineBannerDismiss => 'Dismiss';
+  String get deadlineBannerDismiss => 'Avfärda';
 
   @override
-  String get deadlineBannerOpen => 'Open deadline';
+  String get deadlineBannerOpen => 'Öppna tidsfrist';
 
   @override
   String deadlineHolidayShifted(String original, String reason) {
-    return 'Shifted from $original due to $reason';
+    return 'Flyttad från $original på grund av $reason';
   }
 
   @override
-  String get deadlinePermissionAskTitle => 'Enable deadline reminders?';
+  String get deadlinePermissionAskTitle =>
+      'Aktivera påminnelser om tidsfrister?';
 
   @override
   String get deadlinePermissionAskBody =>
-      'We\'ll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.';
+      'Vi påminner dig 7, 3 och 1 dag före varje lagstadgad tidsfrist, samt på morgonen samma dag. Används aldrig för marknadsföring.';
 
   @override
-  String get deadlinePermissionAllow => 'Allow';
+  String get deadlinePermissionAllow => 'Tillåt';
 
   @override
-  String get deadlinePermissionLater => 'Later';
+  String get deadlinePermissionLater => 'Senare';
 
   @override
-  String get deadlineSettingsSection => 'Deadline reminders';
+  String get deadlineSettingsSection => 'Påminnelser om tidsfrister';
 
   @override
-  String get deadlineSettingsPushChannel => 'Push notifications';
+  String get deadlineSettingsPushChannel => 'Push-notiser';
 
   @override
-  String get deadlineSettingsEmailChannel => 'Email (critical only)';
+  String get deadlineSettingsEmailChannel => 'E-post (endast kritiska)';
 
   @override
-  String get deadlineSettingsInAppChannel => 'In-app banners';
+  String get deadlineSettingsInAppChannel => 'Banderoller i appen';
 
   @override
   String get deadlineSettingsCriticalBypass =>
-      'Critical reminders bypass quiet hours';
+      'Kritiska påminnelser kringgår tystnadstimmar';
 
   @override
-  String get deadlineSettingsQuietHours => 'Quiet hours';
+  String get deadlineSettingsQuietHours => 'Tystnadstimmar';
 
   @override
   String deadlineSettingsQuietHoursBadge(String start, String end) {
-    return 'Quiet $start–$end';
+    return 'Tyst $start–$end';
   }
 
   @override
-  String get deadlineCaseScreenTitle => 'Case deadlines';
+  String get deadlineCaseScreenTitle => 'Ärendets tidsfrister';
 
   @override
-  String get deadlineAddManualCta => 'Add deadline';
+  String get deadlineAddManualCta => 'Lägg till tidsfrist';
 
   @override
-  String get deadlineFormTitle => 'Title';
+  String get deadlineFormTitle => 'Titel';
 
   @override
-  String get deadlineFormDescription => 'Description (optional)';
+  String get deadlineFormDescription => 'Beskrivning (valfritt)';
 
   @override
-  String get deadlineFormStatuteTemplate => 'Statute template';
+  String get deadlineFormStatuteTemplate => 'Lagmall';
 
   @override
-  String get deadlineFormStatuteTemplateNone => 'None (manual)';
+  String get deadlineFormStatuteTemplateNone => 'Ingen (manuell)';
 
   @override
-  String get deadlineFormDeadlineAt => 'Deadline date';
+  String get deadlineFormDeadlineAt => 'Tidsfristens datum';
 
   @override
-  String get deadlineFormPriority => 'Priority';
+  String get deadlineFormPriority => 'Prioritet';
 
   @override
-  String get deadlineFormSave => 'Save';
+  String get deadlineFormSave => 'Spara';
 
   @override
-  String get deadlineFormCancel => 'Cancel';
+  String get deadlineFormCancel => 'Avbryt';
 
   @override
-  String get deadlineCompletedNotePrompt => 'Add a note (optional)';
+  String get deadlineCompletedNotePrompt =>
+      'Lägg till en anteckning (valfritt)';
 
   @override
-  String get deadlineCompletedNoteSave => 'Save';
+  String get deadlineCompletedNoteSave => 'Spara';
 
   @override
-  String get inboxTitle => 'Inbox';
+  String get inboxTitle => 'Inkorg';
 
   @override
-  String get inboxEmptyTitle => 'Nothing pending';
+  String get inboxEmptyTitle => 'Inget väntar';
 
   @override
   String get inboxEmptyBody =>
-      'New email threads will appear here as they get triaged.';
+      'Nya e-posttrådar visas här allt eftersom de sorteras.';
 
   @override
-  String get inboxApproveSend => 'Approve & send';
+  String get inboxApproveSend => 'Godkänn och skicka';
 
   @override
-  String get inboxEditDraft => 'Edit';
+  String get inboxEditDraft => 'Redigera';
 
   @override
-  String get inboxSnooze => 'Snooze';
+  String get inboxSnooze => 'Skjut upp';
 
   @override
-  String get inboxArchive => 'Archive';
+  String get inboxArchive => 'Arkivera';
 
   @override
-  String get inboxFilterAll => 'All';
+  String get inboxFilterAll => 'Alla';
 
   @override
-  String get inboxConfirmSendTitle => 'Send the prepared reply?';
+  String get inboxConfirmSendTitle => 'Skicka det förberedda svaret?';
 
   @override
   String get inboxConfirmSendBody =>
-      'Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.';
+      'Advocat skickar det AI-förberedda svaret via din anslutna Gmail. Du kan fortfarande granska innehållet på nästa skärm.';
 
   @override
-  String get inboxSendButton => 'Send';
+  String get inboxSendButton => 'Skicka';
 
   @override
-  String get inboxSentToast => 'Sent.';
+  String get inboxSentToast => 'Skickat.';
 
   @override
-  String get inboxAlreadySentToast => 'Already sent.';
+  String get inboxAlreadySentToast => 'Redan skickat.';
 
   @override
-  String get inboxSendErrorToast => 'Could not send the reply. Tap retry.';
+  String get inboxSendErrorToast =>
+      'Kunde inte skicka svaret. Tryck för att försöka igen.';
 
   @override
-  String get inboxSnoozedToast => 'Snoozed for 24h.';
+  String get inboxSnoozedToast => 'Uppskjutet i 24 timmar.';
 
   @override
-  String get inboxArchivedToast => 'Archived.';
+  String get inboxArchivedToast => 'Arkiverat.';
 
   @override
-  String get inboxDraftLoadError => 'Could not load draft.';
+  String get inboxDraftLoadError => 'Kunde inte läsa in utkastet.';
 
   @override
-  String get inboxDeadlineToday => 'today';
+  String get inboxDeadlineToday => 'idag';
 
   @override
-  String get inboxDeadlineTomorrow => 'tomorrow';
+  String get inboxDeadlineTomorrow => 'imorgon';
 
   @override
   String inboxDeadlineInDays(int days) {
-    return 'in ${days}d';
+    return 'om $days dagar';
   }
 
   @override
   String inboxDeadlineOverdue(int days) {
-    return 'overdue ${days}d';
+    return '$days dagar försenad';
   }
 
   @override
@@ -3524,28 +3526,29 @@ class AppLocalizationsSv extends AppLocalizations {
   String get inboxEditDiscard => 'Kassera';
 
   @override
-  String get workspaceTabOverview => 'Overview';
+  String get workspaceTabOverview => 'Översikt';
 
   @override
-  String get workspaceTabChat => 'Chat';
+  String get workspaceTabChat => 'Chatt';
 
   @override
-  String get workspaceTabDrafts => 'Drafts';
+  String get workspaceTabDrafts => 'Utkast';
 
   @override
-  String get workspaceOverviewEmpty => 'Add documents to build a summary.';
+  String get workspaceOverviewEmpty =>
+      'Lägg till dokument för att bygga en sammanfattning.';
 
   @override
-  String get workspaceTimelineEmpty => 'No events yet.';
+  String get workspaceTimelineEmpty => 'Inga händelser än.';
 
   @override
-  String get workspaceDocumentsEmpty => 'No documents. Upload from Scan.';
+  String get workspaceDocumentsEmpty => 'Inga dokument. Ladda upp via Skanna.';
 
   @override
-  String get workspaceDraftsEmpty => 'No drafts yet.';
+  String get workspaceDraftsEmpty => 'Inga utkast än.';
 
   @override
-  String get workspaceInboxEmpty => 'No related email.';
+  String get workspaceInboxEmpty => 'Ingen relaterad e-post.';
 
   @override
   String get plannerSettingsTitle => 'Juridiskt resonemang i tre steg';
@@ -4213,186 +4216,186 @@ class AppLocalizationsSv extends AppLocalizations {
   String get softCaseShellBannerCta => 'Byt namn';
 
   @override
-  String get draftsTab => 'Drafts';
+  String get draftsTab => 'Utkast';
 
   @override
-  String get draftingTitle => 'Drafting Studio';
+  String get draftingTitle => 'Skrivstudio';
 
   @override
-  String get draftingEmpty => 'Empty draft';
+  String get draftingEmpty => 'Tomt utkast';
 
   @override
-  String get draftingPlaceholder => 'Start typing your draft…';
+  String get draftingPlaceholder => 'Börja skriva ditt utkast…';
 
   @override
-  String get draftingDraftsList => 'My drafts';
+  String get draftingDraftsList => 'Mina utkast';
 
   @override
-  String get draftingSave => 'Save';
+  String get draftingSave => 'Spara';
 
   @override
-  String get draftingSaved => 'Saved';
+  String get draftingSaved => 'Sparat';
 
   @override
-  String get draftingSavedJustNow => 'Saved just now';
+  String get draftingSavedJustNow => 'Sparat nyss';
 
   @override
-  String get draftingAiRevise => 'Revise with AI';
+  String get draftingAiRevise => 'Bearbeta med AI';
 
   @override
-  String get draftingExportPdf => 'Export PDF';
+  String get draftingExportPdf => 'Exportera PDF';
 
   @override
-  String get draftingExportDocx => 'Export DOCX';
+  String get draftingExportDocx => 'Exportera DOCX';
 
   @override
-  String get draftingExportMd => 'Export Markdown';
+  String get draftingExportMd => 'Exportera Markdown';
 
   @override
-  String get draftingDeleteDraft => 'Delete draft';
+  String get draftingDeleteDraft => 'Ta bort utkast';
 
   @override
-  String get draftingConfirmDelete => 'Delete this draft?';
+  String get draftingConfirmDelete => 'Ta bort detta utkast?';
 
   @override
-  String get draftingConfirmDeleteMessage => 'This action cannot be undone.';
+  String get draftingConfirmDeleteMessage => 'Denna åtgärd kan inte ångras.';
 
   @override
-  String get draftingConfirm => 'Delete';
+  String get draftingConfirm => 'Ta bort';
 
   @override
-  String get draftingCancel => 'Cancel';
+  String get draftingCancel => 'Avbryt';
 
   @override
   String draftingDraftReplyTo(String name) {
-    return 'Reply to $name';
+    return 'Svara till $name';
   }
 
   @override
-  String get draftingUntitled => 'Untitled';
+  String get draftingUntitled => 'Namnlös';
 
   @override
-  String get draftingTitleHint => 'Title (optional)';
+  String get draftingTitleHint => 'Titel (valfritt)';
 
   @override
-  String get draftingAiReviseTitle => 'Revise with AI';
+  String get draftingAiReviseTitle => 'Bearbeta med AI';
 
   @override
-  String get draftingAiReviseSelectionLabel => 'Selected text:';
+  String get draftingAiReviseSelectionLabel => 'Markerad text:';
 
   @override
-  String get draftingAiReviseInstructionLabel => 'Instruction (optional)';
+  String get draftingAiReviseInstructionLabel => 'Instruktion (valfritt)';
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'e.g. \"make it more formal\" or \"shorten\"';
+      't.ex. \"gör den mer formell\" eller \"korta ner\"';
 
   @override
-  String get draftingAiReviseRunButton => 'Generate revision';
+  String get draftingAiReviseRunButton => 'Generera bearbetning';
 
   @override
-  String get draftingAiReviseSuggestionLabel => 'Suggested revision:';
+  String get draftingAiReviseSuggestionLabel => 'Föreslagen bearbetning:';
 
   @override
-  String get draftingAiReviseChangesLabel => 'Changes:';
+  String get draftingAiReviseChangesLabel => 'Ändringar:';
 
   @override
-  String get draftingAiReviseAccept => 'Accept';
+  String get draftingAiReviseAccept => 'Acceptera';
 
   @override
-  String get draftingAiReviseReject => 'Reject';
+  String get draftingAiReviseReject => 'Avvisa';
 
   @override
-  String get draftingFormatBold => 'Bold';
+  String get draftingFormatBold => 'Fet';
 
   @override
-  String get draftingFormatItalic => 'Italic';
+  String get draftingFormatItalic => 'Kursiv';
 
   @override
-  String get draftingFormatHeading => 'Heading';
+  String get draftingFormatHeading => 'Rubrik';
 
   @override
-  String get draftingFormatBullet => 'Bullet list';
+  String get draftingFormatBullet => 'Punktlista';
 
   @override
-  String get draftingFormatNumbered => 'Numbered list';
+  String get draftingFormatNumbered => 'Numrerad lista';
 
   @override
-  String get draftingEmptyListMessage => 'You have no drafts yet.';
+  String get draftingEmptyListMessage => 'Du har inga utkast än.';
 
   @override
-  String get draftingEmptyListAction => 'New draft';
+  String get draftingEmptyListAction => 'Nytt utkast';
 
   @override
-  String get draftingExporting => 'Exporting…';
+  String get draftingExporting => 'Exporterar…';
 
   @override
-  String get draftingExportFailed => 'Export failed';
+  String get draftingExportFailed => 'Export misslyckades';
 
   @override
-  String get draftingSaveFailed => 'Save failed';
+  String get draftingSaveFailed => 'Det gick inte att spara';
 
   @override
-  String get draftingNewDraft => 'New draft';
+  String get draftingNewDraft => 'Nytt utkast';
 
   @override
-  String get vaultNoteChip => 'Vault note';
+  String get vaultNoteChip => 'Anteckning i valvet';
 
   @override
-  String get saveToVault => 'Save to Vault';
+  String get saveToVault => 'Spara i valvet';
 
   @override
-  String get savingToVault => 'Saving to Vault…';
+  String get savingToVault => 'Sparar i valvet…';
 
   @override
-  String get savedToVault => 'Saved to Vault';
+  String get savedToVault => 'Sparat i valvet';
 
   @override
-  String get vaultNoteTitlePrefix => 'Note: ';
+  String get vaultNoteTitlePrefix => 'Anteckning: ';
 
   @override
-  String get openInVault => 'Open in Vault';
+  String get openInVault => 'Öppna i valvet';
 
   @override
-  String get saveToVaultFailed => 'Save to Vault failed';
+  String get saveToVaultFailed => 'Det gick inte att spara i valvet';
 
   @override
   String get pdfWorkerUnavailable =>
-      'PDF export is temporarily unavailable. Please try DOCX or Markdown.';
+      'PDF-export är tillfälligt otillgänglig. Prova DOCX eller Markdown istället.';
 
   @override
-  String get draftingVersionHistory => 'Version history';
+  String get draftingVersionHistory => 'Versionshistorik';
 
   @override
-  String get emptyHomeTitle => 'Welcome to Advocat';
+  String get emptyHomeTitle => 'Välkommen till Advocat';
 
   @override
   String get emptyHomeBody =>
-      'Pick a starting point — we’ll handle the legal heavy lifting.';
+      'Välj en utgångspunkt — vi sköter den juridiska tungrodda delen.';
 
   @override
-  String get intentChip1 => 'Got a fine';
+  String get intentChip1 => 'Fick böter';
 
   @override
-  String get intentChip2 => 'Permit denied';
+  String get intentChip2 => 'Ansökan avslagen';
 
   @override
-  String get intentChip3 => 'Contract problem';
+  String get intentChip3 => 'Avtalsproblem';
 
   @override
-  String get emptyCasesTitle => 'No cases yet';
+  String get emptyCasesTitle => 'Inga ärenden än';
 
   @override
-  String get emptyCasesCta => 'Start a case';
+  String get emptyCasesCta => 'Starta ett ärende';
 
   @override
-  String get emptyDraftsTitle => 'No drafts yet';
+  String get emptyDraftsTitle => 'Inga utkast än';
 
   @override
-  String get emptyDraftsCta => 'Create draft';
+  String get emptyDraftsCta => 'Skapa utkast';
 
   @override
-  String get emptyChatTitle => 'Ask Advocat anything';
+  String get emptyChatTitle => 'Fråga Advocat vad som helst';
 
   @override
   String get chatExamplePrompt1 => 'Hjälp mig svara på böter';
@@ -4451,88 +4454,88 @@ class AppLocalizationsSv extends AppLocalizations {
   String get contractReviewContinueChat => 'Fortsätt i chatten';
 
   @override
-  String get referralInviteFriends => 'Invite Friends';
+  String get referralInviteFriends => 'Bjud in vänner';
 
   @override
-  String get referralYourCode => 'Your code';
+  String get referralYourCode => 'Din kod';
 
   @override
-  String get referralCopiedToast => 'Code copied to clipboard';
+  String get referralCopiedToast => 'Koden kopierad till urklipp';
 
   @override
   String get referralReward =>
-      'Get 1 month of Counsel free for every friend who subscribes.';
+      'Få 1 månad av Counsel gratis för varje vän som prenumererar.';
 
   @override
-  String get referralInvited => 'Friends invited';
+  String get referralInvited => 'Inbjudna vänner';
 
   @override
-  String get referralRewardsEarned => 'Free months earned';
+  String get referralRewardsEarned => 'Intjänade gratismånader';
 
   @override
-  String get deadlineUrgencyToday => 'Today & Overdue';
+  String get deadlineUrgencyToday => 'Idag och försenade';
 
   @override
-  String get deadlineUrgencyWeek => 'This week';
+  String get deadlineUrgencyWeek => 'Denna vecka';
 
   @override
-  String get deadlineUrgencyMonth => 'This month';
+  String get deadlineUrgencyMonth => 'Denna månad';
 
   @override
-  String get deadlineUrgencyLater => 'Later';
+  String get deadlineUrgencyLater => 'Senare';
 
   @override
-  String get deadlineAddManual => 'Add deadline';
+  String get deadlineAddManual => 'Lägg till tidsfrist';
 
   @override
-  String get deadlineSnoozeBy => 'Snooze';
+  String get deadlineSnoozeBy => 'Skjut upp';
 
   @override
-  String get deadlineSnooze1d => 'Snooze 1 day';
+  String get deadlineSnooze1d => 'Skjut upp 1 dag';
 
   @override
-  String get deadlineSnooze3d => 'Snooze 3 days';
+  String get deadlineSnooze3d => 'Skjut upp 3 dagar';
 
   @override
-  String get deadlineSnooze7d => 'Snooze 7 days';
+  String get deadlineSnooze7d => 'Skjut upp 7 dagar';
 
   @override
-  String get deadlineDismiss => 'Dismiss';
+  String get deadlineDismiss => 'Avfärda';
 
   @override
-  String get deadlineExportIcs => 'Add to calendar';
+  String get deadlineExportIcs => 'Lägg till i kalender';
 
   @override
-  String get deadlineSource => 'Source';
+  String get deadlineSource => 'Källa';
 
   @override
   String get deadlineEmpty =>
-      'No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.';
+      'Inga tidsfrister än. Tidsfrister skapas automatiskt från dina e-postmeddelanden och dokument — eller lägg till en manuellt med +-knappen.';
 
   @override
-  String get deadlineNewTitle => 'New deadline';
+  String get deadlineNewTitle => 'Ny tidsfrist';
 
   @override
-  String get deadlineFieldTitle => 'Title';
+  String get deadlineFieldTitle => 'Titel';
 
   @override
-  String get deadlineFieldDueDate => 'Due date';
+  String get deadlineFieldDueDate => 'Förfallodatum';
 
   @override
-  String get deadlineFieldNotes => 'Notes (optional)';
+  String get deadlineFieldNotes => 'Anteckningar (valfritt)';
 
   @override
-  String get deadlineSaved => 'Deadline saved';
+  String get deadlineSaved => 'Tidsfrist sparad';
 
   @override
-  String get deadlineSaveFailed => 'Could not save deadline';
+  String get deadlineSaveFailed => 'Det gick inte att spara tidsfristen';
 
   @override
-  String get deadlineUrgentBannerSingle => '1 deadline today or overdue';
+  String get deadlineUrgentBannerSingle => '1 tidsfrist idag eller försenad';
 
   @override
   String deadlineUrgentBannerMany(int count) {
-    return '$count deadlines today or overdue';
+    return '$count tidsfrister idag eller försenade';
   }
 
   @override
@@ -4540,9 +4543,9 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days left',
-      one: '1 day left',
-      zero: 'today',
+      other: '$count dagar kvar',
+      one: '1 dag kvar',
+      zero: 'idag',
     );
     return '$_temp0';
   }
@@ -4552,8 +4555,8 @@ class AppLocalizationsSv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days overdue',
-      one: '1 day overdue',
+      other: '$count dagar försenad',
+      one: '1 dag försenad',
     );
     return '$_temp0';
   }
@@ -4575,11 +4578,11 @@ class AppLocalizationsSv extends AppLocalizations {
   String get iapRestoreNoActive => 'Inget aktivt abonnemang att återställa.';
 
   @override
-  String get deadlineEuRadarTitle => 'EU deadline radar (preview)';
+  String get deadlineEuRadarTitle => 'EU:s tidsfristradar (förhandsvisning)';
 
   @override
   String get deadlineEuRadarSubtitle =>
-      'Hypothetical EU procedural deadlines — mock data';
+      'Hypotetiska EU-processuella tidsfrister — testdata';
 
   @override
   String get changePassword => 'Byt lösenord';

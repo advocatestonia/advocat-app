@@ -453,22 +453,61 @@ class SupabaseService {
     if (caseId != null && _isRealUuid(caseId)) {
       query = query.eq('case_id', caseId);
     }
-    final response = await query.order('due_date', ascending: true);
+    // `deadline_date` is the NOT NULL date column the reminder cron reads;
+    // `due_date` is a nullable convenience column and sorts nulls unpredictably.
+    final response = await query.order('deadline_date', ascending: true);
     return (response as List).map((e) => Deadline.fromJson(e)).toList();
+  }
+
+  /// Reconcile a caller-supplied deadline map with the actual `deadlines`
+  /// table schema. Historically callers (the Deadlines screen and the agent
+  /// `create_deadline` tool) passed `due_date` + `reminder_days_before`, but
+  /// the table's required column is `deadline_date` (NOT NULL) and the reminder
+  /// column is `reminder_days`. Sending the old names made EVERY insert throw
+  /// (NOT NULL violation on `deadline_date` / unknown column
+  /// `reminder_days_before`), so user- and agent-created deadlines were never
+  /// saved and no reminder ever fired. Normalise here so both paths work and
+  /// land in the row the reminder cron actually watches.
+  static const _deadlineColumns = <String>{
+    'id', 'user_id', 'case_id', 'title', 'description', 'deadline_date',
+    'due_date', 'reminder_days', 'is_completed', 'priority', 'metadata',
+    'org_id', 'created_at', 'updated_at',
+  };
+
+  Map<String, dynamic> _normalizeDeadlineColumns(Map<String, dynamic> data) {
+    final out = Map<String, dynamic>.from(data);
+    if (out.containsKey('due_date') && out['deadline_date'] == null) {
+      out['deadline_date'] = out['due_date'];
+    }
+    if (out.containsKey('reminder_days_before')) {
+      out['reminder_days'] ??= out.remove('reminder_days_before');
+    }
+    // The table tracks completion as bool `is_completed`; the model/UI use a
+    // richer `status` enum ('completed'/'cancelled'/'upcoming'). Map it so
+    // mark-complete / cancel / reopen actually persist — the column `status`
+    // does not exist on `deadlines`, so an un-mapped update was a silent no-op.
+    if (out.containsKey('status')) {
+      final s = out.remove('status');
+      out['is_completed'] = (s == 'completed' || s == 'cancelled');
+    }
+    out.removeWhere((k, v) => !_deadlineColumns.contains(k));
+    return out;
   }
 
   Future<void> createDeadline(Map<String, dynamic> deadlineData) async {
     if (isDemo) return;
     final uid = _client.auth.currentUser?.id;
-    deadlineData['user_id'] = uid;
-    await _client.from('deadlines').insert(deadlineData);
+    final row = _normalizeDeadlineColumns(deadlineData);
+    row['user_id'] = uid;
+    await _client.from('deadlines').insert(row);
   }
 
   Future<void> updateDeadline(
       String id, Map<String, dynamic> updates) async {
     if (isDemo) return;
-    updates['updated_at'] = DateTime.now().toIso8601String();
-    await _client.from('deadlines').update(updates).eq('id', id);
+    final row = _normalizeDeadlineColumns(updates);
+    row['updated_at'] = DateTime.now().toIso8601String();
+    await _client.from('deadlines').update(row).eq('id', id);
   }
 
   // ── Agent intentions (long-horizon follow-up promises) ──────────────────

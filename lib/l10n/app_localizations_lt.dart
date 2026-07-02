@@ -15,19 +15,19 @@ class AppLocalizationsLt extends AppLocalizations {
   String get aboutSection => 'APIE';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Išvaizda';
 
   @override
-  String get appearanceSystem => 'System (auto)';
+  String get appearanceSystem => 'Sistemos (auto)';
 
   @override
-  String get appearanceLight => 'Light';
+  String get appearanceLight => 'Šviesus';
 
   @override
-  String get appearanceDark => 'Dark';
+  String get appearanceDark => 'Tamsus';
 
   @override
-  String get appearanceDescription => 'Choose how Advocat looks';
+  String get appearanceDescription => 'Pasirinkite, kaip atrodo „Advocat“';
 
   @override
   String get accidents => 'Avarijos';
@@ -67,7 +67,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get speakIntoMicHint =>
-      'Speak into the microphone. Make sure microphone access is enabled.';
+      'Kalbėkite į mikrofoną. Įsitikinkite, kad įjungta prieiga prie mikrofono.';
 
   @override
   String get aiErrorRateLimit =>
@@ -79,7 +79,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String freeLimitReached(int count) {
-    return 'You have used all $count free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!';
+    return 'Jūs išnaudojote visus $count nemokamus DI pranešimus. Atnaujinkite iki „Legal Counsel“ plano ir gaukite neribotą DI pagalbą!';
   }
 
   @override
@@ -656,10 +656,10 @@ class AppLocalizationsLt extends AppLocalizations {
   String get rateUs => 'Įvertinkite mus';
 
   @override
-  String get rateAppComingSoon => 'Coming to app stores soon!';
+  String get rateAppComingSoon => 'Netrukus programų parduotuvėse!';
 
   @override
-  String get dataCopiedToClipboard => 'Data copied to clipboard';
+  String get dataCopiedToClipboard => 'Duomenys nukopijuoti į iškarpinę';
 
   @override
   String get readingDocument => 'Skaitomas dokumentas…';
@@ -1685,26 +1685,26 @@ class AppLocalizationsLt extends AppLocalizations {
   String get priorityProcessing => 'Prioritetinis apdorojimas';
 
   @override
-  String get fiveAiMessagesTotal => '5 AI messages (lifetime)';
+  String get fiveAiMessagesTotal => '5 DI pranešimai (visam laikui)';
 
   @override
-  String get hundredAiMessagesDay => '100 AI messages/day';
+  String get hundredAiMessagesDay => '100 DI pranešimų per dieną';
 
   @override
-  String get unlimitedAiMessages => 'Unlimited AI messages';
+  String get unlimitedAiMessages => 'Neriboti DI pranešimai';
 
   @override
-  String get voiceInput => 'Voice input';
+  String get voiceInput => 'Balso įvestis';
 
   @override
-  String get strategyRecommendations => 'Strategy recommendations';
+  String get strategyRecommendations => 'Strategijos rekomendacijos';
 
   @override
   String get foundingMemberNote =>
-      'Founding Member: 9.99€/mo for first 3 months';
+      'Steigėjo narystė: 9,99 €/mėn. pirmuosius 3 mėnesius';
 
   @override
-  String get saveTwentyPercent => 'Save 20%';
+  String get saveTwentyPercent => 'Sutaupykite 20 %';
 
   @override
   String get forever => 'amžinai';
@@ -1820,56 +1820,56 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get gdprConsentAiProcessing =>
-      'I agree to the processing of my data for AI legal assistance (required)';
+      'Sutinku, kad mano duomenys būtų tvarkomi DI teisinei pagalbai teikti (privaloma)';
 
   @override
   String get gdprConsentAnalytics =>
-      'I agree to analytics to improve the service (optional)';
+      'Sutinku su analitika, siekiant tobulinti paslaugą (neprivaloma)';
 
   @override
   String get gdprArt9Intro =>
-      'This app processes special category personal data under GDPR Article 9, including:';
+      'Ši programa tvarko specialių kategorijų asmens duomenis pagal BDAR 9 straipsnį, įskaitant:';
 
   @override
   String get gdprSpecialLegalCases =>
-      'Your legal case details and court documents';
+      'Jūsų teisinės bylos duomenis ir teismo dokumentus';
 
   @override
-  String get gdprSpecialNationality => 'Nationality and immigration status';
+  String get gdprSpecialNationality => 'Pilietybę ir imigracijos statusą';
 
   @override
   String get gdprConsentLegalData =>
-      'I consent to the processing of my legal case data, nationality, and immigration status by AI (required)';
+      'Sutinku, kad DI tvarkytų mano teisinės bylos duomenis, pilietybę ir imigracijos statusą (privaloma)';
 
   @override
   String get gdprConsentVoice =>
-      'I consent to voice recording processing (optional)';
+      'Sutinku, kad būtų tvarkomas balso įrašas (neprivaloma)';
 
   @override
-  String get gdprViewPrivacyPolicy => 'View Privacy Policy';
+  String get gdprViewPrivacyPolicy => 'Peržiūrėti privatumo politiką';
 
   @override
-  String get legalInformation => 'Legal Information';
+  String get legalInformation => 'Teisinė informacija';
 
   @override
   String get legalEntityName => 'Vorantis OÜ';
 
   @override
-  String get legalRegistryCode => 'Registry code: 17098992';
+  String get legalRegistryCode => 'Registro kodas: 17098992';
 
   @override
   String get legalAddress =>
-      'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145';
+      'Harju maakond, Talinas, Kesklinna miesto dalis, Tornimäe tn 5, 10145';
 
   @override
-  String get legalEmail => 'Email: support@advocat.ee';
+  String get legalEmail => 'El. paštas: support@advocat.ee';
 
   @override
   String get legalRegistry =>
-      'Registered in Estonian Commercial Register (Äriregister)';
+      'Registruota Estijos komercinio registro (Äriregister) sąraše';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer => 'Sukurta DI • Ne teisinė konsultacija';
 
   @override
   String get decline => 'Atmesti';
@@ -2108,336 +2108,336 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get domesticViolenceDesc =>
-      'Victim rights, emergency help, restraining orders';
+      'Aukos teisės, skubi pagalba, apsauginiai orderiai';
 
   @override
   String get rightCallEmergency =>
-      'You have the right to call 112 in any emergency — police, ambulance, fire';
+      'Bet kokiu skubiu atveju turite teisę skambinti 112 — policijai, greitajai pagalbai, gaisrinei';
 
   @override
   String get rightVictimProtection =>
-      'As a victim, you have the right to protection, support, and information about your case';
+      'Kaip auka, turite teisę į apsaugą, paramą ir informaciją apie savo bylą';
 
   @override
   String get rightRestrainingOrder =>
-      'You can apply for a restraining order (lähestymiskielto) to keep the abuser away';
+      'Galite kreiptis dėl apsauginio orderio (lähestymiskielto), kad skriaudėjas laikytųsi atokiau';
 
   @override
   String get rightVictimInterpreter =>
-      'You have the right to an interpreter during all legal proceedings';
+      'Turite teisę į vertėją visuose teisiniuose procesuose';
 
   @override
   String get rightMedicalHelp =>
-      'You have the right to immediate medical treatment and documentation of injuries';
+      'Turite teisę į skubią medicininę pagalbą ir sužalojimų fiksavimą dokumentais';
 
   @override
   String get rightShelter =>
-      'You have the right to emergency shelter — contact a shelter or social services';
+      'Turite teisę į skubią prieglaudą — kreipkitės į prieglaudą ar socialines tarnybas';
 
   @override
   String get mustReportDanger =>
-      'If someone is in immediate danger, call 112 immediately';
+      'Jei kas nors yra tiesioginiame pavojuje, nedelsdami skambinkite 112';
 
   @override
   String get mustDocumentInjuries =>
-      'Document all injuries — photos, medical records, written notes';
+      'Fiksuokite visus sužalojimus — nuotraukos, medicininiai įrašai, rašytinės pastabos';
 
   @override
   String get domesticActionCallEmergency =>
-      'Call 112 if you are in immediate danger';
+      'Skambinkite 112, jei esate tiesioginiame pavojuje';
 
   @override
   String get domesticActionGoToSafe =>
-      'Go to a safe place — shelter, friend, public place';
+      'Vykite į saugią vietą — prieglaudą, pas draugą, viešą vietą';
 
   @override
   String get domesticActionDocumentEverything =>
-      'Document injuries: take photos, get medical records';
+      'Fiksuokite sužalojimus: darykite nuotraukas, gaukite medicininius įrašus';
 
   @override
   String get domesticActionFilePoliceReport =>
-      'File a police report — you can do this later too';
+      'Pateikite pranešimą policijai — tai galite padaryti ir vėliau';
 
   @override
   String get domesticActionContactShelter =>
-      'Contact a shelter or crisis helpline';
+      'Kreipkitės į prieglaudą ar krizių pagalbos liniją';
 
   @override
   String get domesticActionApplyRestraining =>
-      'Apply for a restraining order through police or court';
+      'Kreipkitės dėl apsauginio orderio per policiją arba teismą';
 
   @override
   String get domesticFactRestrainingOrder =>
-      'In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.';
+      'Suomijoje apsauginis orderis (lähestymiskielto) gali būti išduotas net ir be baudžiamosios bylos. Jis draudžia asmeniui su jumis susisiekti ar prie jūsų artintis.';
 
   @override
   String get domesticFactVictimDirective =>
-      'Under EU Victims\' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.';
+      'Pagal ES Nukentėjusiųjų direktyvą 2012/29/ES turite teisę į pagarbų elgesį, informaciją jums suprantama kalba ir prieigą prie aukų paramos paslaugų — nepriklausomai nuo jūsų gyvenamosios padėties statuso.';
 
   @override
   String get domesticDeadlinePoliceReport =>
-      'File police report — no strict deadline, but sooner is better for evidence';
+      'Pranešimo policijai pateikimas — griežto termino nėra, tačiau geriau anksčiau, kad išsaugotumėte įrodymus';
 
   @override
   String get domesticDeadlineRestraining =>
-      'Restraining order — can be applied for at any time';
+      'Apsauginio orderio prašymą galima pateikti bet kuriuo metu';
 
   @override
-  String get contactEmergency => 'Emergency Number';
+  String get contactEmergency => 'Skubios pagalbos numeris';
 
   @override
-  String get contactShelter => 'Turvakoti (Shelter) Helpline';
+  String get contactShelter => 'Turvakoti (prieglaudos) pagalbos linija';
 
   @override
-  String get contactCrisisHelpline => 'Crisis Helpline (Kriisipuhelin)';
+  String get contactCrisisHelpline => 'Krizių pagalbos linija (Kriisipuhelin)';
 
   @override
   String get contactNollaLinja =>
-      'Nollalinja — Violence Against Women Helpline';
+      'Nollalinja — pagalbos linija smurto prieš moteris aukoms';
 
   @override
   String get inheritance => 'Paveldėjimas';
 
   @override
   String get inheritanceDesc =>
-      'Wills, estate, heirs\' rights, forced heirship, probate';
+      'Testamentai, palikimas, įpėdinių teisės, privalomoji dalis, palikimo priėmimas';
 
   @override
   String get rightInheritanceForced =>
-      'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will';
+      'Privalomieji įpėdiniai (vaikai, sutuoktinis) turi teisę į privalomąją dalį nepriklausomai nuo testamento';
 
   @override
   String get rightInheritanceWill =>
-      'You have the right to make a will disposing of your property — notarized wills have the strongest legal force';
+      'Jūs turite teisę sudaryti testamentą dėl savo turto — notaro patvirtinti testamentai turi didžiausią teisinę galią';
 
   @override
   String get rightInheritanceRenounce =>
-      'You can renounce an inheritance within 3 months of learning about it';
+      'Palikimo galite atsisakyti per 3 mėnesius nuo sužinojimo apie jį';
 
   @override
   String get rightInheritanceInfo =>
-      'You have the right to obtain information about the estate from banks and registries';
+      'Turite teisę gauti informaciją apie palikimą iš bankų ir registrų';
 
   @override
   String get rightInheritanceDispute =>
-      'You can challenge an unfair will in court within the statutory limitation period';
+      'Nesąžiningą testamentą galite ginčyti teisme per įstatyme nustatytą ieškinio senaties terminą';
 
   @override
   String get mustFileInheritance =>
-      'File for succession proceedings at a notary within a reasonable time';
+      'Kreipkitės dėl palikimo priėmimo pas notarą per protingą terminą';
 
   @override
   String get mustNotifyHeirs =>
-      'All known heirs must be notified of the succession proceedings';
+      'Visi žinomi įpėdiniai turi būti informuoti apie palikimo priėmimo procedūrą';
 
   @override
   String get inheritanceActionGatherDocs =>
-      'Gather all documents: death certificate, will, property records, bank statements';
+      'Surinkite visus dokumentus: mirties liudijimą, testamentą, nuosavybės dokumentus, banko išrašus';
 
   @override
   String get inheritanceActionContactNotary =>
-      'Contact a notary to open succession proceedings';
+      'Kreipkitės į notarą dėl palikimo priėmimo bylos pradėjimo';
 
   @override
   String get inheritanceActionCheckDebts =>
-      'Check whether the estate has debts before accepting inheritance';
+      'Prieš priimdami palikimą patikrinkite, ar palikimo masėje nėra skolų';
 
   @override
   String get inheritanceActionFileCourt =>
-      'If the will is disputed, file a claim in court';
+      'Jei testamentas ginčijamas, pateikite ieškinį teismui';
 
   @override
   String get inheritanceDeadlineRenounce =>
-      '3 months to renounce inheritance after learning of it';
+      '3 mėnesiai palikimo atsisakymui nuo sužinojimo apie jį';
 
   @override
   String get inheritanceDeadlineDispute =>
-      'Statute of limitations for challenging a will: varies by grounds';
+      'Testamento ginčijimo senaties terminas: priklauso nuo pagrindo';
 
   @override
   String get inheritanceFactForced =>
-      'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will';
+      'Estijoje palikuonys ir sutuoktinis turi teisę į privalomąją dalį (1/2 įstatyminės dalies), net jei testamente jie neįtraukti';
 
   @override
   String get inheritanceFactNotary =>
-      'All succession proceedings in Estonia must go through a notary — you cannot skip this step';
+      'Visos palikimo priėmimo procedūros Estijoje turi vykti per notarą — šio žingsnio praleisti negalima';
 
   @override
   String get consumerProtection => 'Vartotojų apsauga';
 
   @override
   String get consumerProtectionDesc =>
-      'Fraud, defective products, returns, deceptive sellers';
+      'Sukčiavimas, netinkami gaminiai, grąžinimai, apgaulingi pardavėjai';
 
   @override
   String get rightReturnOnline =>
-      'You have 14 days to cancel online purchases without reason (EU right of withdrawal)';
+      'Turite 14 dienų atsisakyti internetu atlikto pirkinio be priežasties (ES atsisakymo teisė)';
 
   @override
   String get rightDefectiveProduct =>
-      'If a product is defective, you have the right to repair, replacement, or refund';
+      'Jei gaminys turi trūkumų, turite teisę į remontą, keitimą ar pinigų grąžinimą';
 
   @override
   String get rightClearPricing =>
-      'Sellers must display clear prices including all fees — hidden costs are illegal';
+      'Pardavėjai privalo nurodyti aiškias kainas su visais mokesčiais — paslėptos išlaidos yra neteisėtos';
 
   @override
   String get rightComplainBoard =>
-      'You can file a free complaint with the Consumer Disputes Board';
+      'Galite pateikti nemokamą skundą Vartojimo ginčų komisijai';
 
   @override
   String get rightProtectionFraud =>
-      'You are protected against unfair commercial practices and fraud';
+      'Jūs esate apsaugoti nuo nesąžiningos komercinės veiklos ir sukčiavimo';
 
   @override
   String get mustKeepReceipts =>
-      'Keep all receipts, contracts, and communication with sellers';
+      'Saugokite visus kvitus, sutartis ir susirašinėjimą su pardavėjais';
 
   @override
   String get mustActTimely =>
-      'Report defects to the seller within a reasonable time after discovery';
+      'Apie trūkumus pardavėjui praneškite per protingą terminą nuo jų pastebėjimo';
 
   @override
   String get consumerActionKeepEvidence =>
-      'Keep receipts, screenshots, emails, and all proof of purchase';
+      'Saugokite kvitus, ekrano nuotraukas, el. laiškus ir visus pirkimo įrodymus';
 
   @override
   String get consumerActionContactSeller =>
-      'Contact the seller first — explain the problem in writing';
+      'Pirmiausia kreipkitės į pardavėją — raštu paaiškinkite problemą';
 
   @override
   String get consumerActionFileComplaint =>
-      'File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)';
+      'Pateikite skundą Vartojimo ginčų komisijai (kuluttajariitalautakunta)';
 
   @override
   String get consumerActionContactAuthority =>
-      'Contact the Consumer Advisory Services for free help';
+      'Kreipkitės į Vartotojų konsultavimo tarnybą dėl nemokamos pagalbos';
 
   @override
   String get consumerActionReportFraud =>
-      'Report fraud to the police and Consumer Ombudsman';
+      'Praneškite apie sukčiavimą policijai ir vartotojų teisių gynėjui';
 
   @override
   String get consumerFactWithdrawal =>
-      'Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.';
+      'Pagal ES Vartotojų teisių direktyvą 2011/83/ES turite 14 dienų atsisakyti bet kurio internetu ar nuotoliniu būdu atlikto pirkimo — be jokių klausimų. Pardavėjas privalo grąžinti pinigus per 14 dienų.';
 
   @override
   String get consumerFactWarranty =>
-      'In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.';
+      'Suomijoje pardavėjas atsako už gaminio trūkumus protingą laikotarpį (dažnai 2+ metus). Tai nepriklauso nuo gamintojo garantijos.';
 
   @override
   String get consumerDeadlineWithdrawal =>
-      'Online purchase withdrawal — 14 days from delivery';
+      'Internetinio pirkimo atsisakymas — 14 dienų nuo pristatymo';
 
   @override
   String get consumerDeadlineDefect =>
-      'Report defect to seller — within 2 months of discovery (recommended)';
+      'Trūkumo pranešimas pardavėjui — per 2 mėnesius nuo pastebėjimo (rekomenduojama)';
 
   @override
-  String get contactConsumerAdvisory => 'Consumer Advisory Services';
+  String get contactConsumerAdvisory => 'Vartotojų konsultavimo tarnyba';
 
   @override
   String get contactConsumerOmbudsman =>
-      'Consumer Ombudsman (Kuluttaja-asiamies)';
+      'Vartotojų teisių gynėjas (Kuluttaja-asiamies)';
 
   @override
-  String get contactConsumerDisputesBoardDirect => 'Consumer Disputes Board';
+  String get contactConsumerDisputesBoardDirect => 'Vartojimo ginčų komisija';
 
   @override
-  String get caseTypeStepLabel => 'Case Type';
+  String get caseTypeStepLabel => 'Bylos tipas';
 
   @override
-  String get detailsStepLabel => 'Details';
+  String get detailsStepLabel => 'Duomenys';
 
   @override
-  String get documentsStepLabel => 'Documents';
+  String get documentsStepLabel => 'Dokumentai';
 
   @override
-  String get whatTypeOfCase => 'What type of case is this?';
+  String get whatTypeOfCase => 'Kokio tipo ši byla?';
 
   @override
   String get selectCategoryDescription =>
-      'Select the category that best describes your situation.';
+      'Pasirinkite kategoriją, kuri geriausiai atitinka jūsų situaciją.';
 
   @override
-  String get tellUsAboutCase => 'Tell us about your case';
+  String get tellUsAboutCase => 'Papasakokite apie savo bylą';
 
   @override
   String get aiHelpsUnderstand =>
-      'This information helps our AI understand your situation better.';
+      'Ši informacija padeda mūsų DI geriau suprasti jūsų situaciją.';
 
   @override
-  String get caseTitleHint => 'e.g., Residence Permit Appeal 2026';
+  String get caseTitleHint => 'pvz., leidimo gyventi apskundimas 2026';
 
   @override
-  String get countryJurisdiction => 'Country / Jurisdiction';
+  String get countryJurisdiction => 'Šalis / jurisdikcija';
 
   @override
-  String get selectCountryHint => 'Select a country';
+  String get selectCountryHint => 'Pasirinkite šalį';
 
   @override
-  String get referenceNumberHint => 'e.g., UMA/12345/2026';
+  String get referenceNumberHint => 'pvz., UMA/12345/2026';
 
   @override
-  String get descriptionOptional => 'Description (optional)';
+  String get descriptionOptional => 'Aprašymas (neprivaloma)';
 
   @override
   String get descriptionHint =>
-      'Describe your situation briefly. What happened? What decision was made?';
+      'Trumpai apibūdinkite savo situaciją. Kas atsitiko? Koks sprendimas buvo priimtas?';
 
   @override
-  String get uploadFirstDocument => 'Upload your first document';
+  String get uploadFirstDocument => 'Įkelkite pirmąjį dokumentą';
 
   @override
   String get uploadDocumentDescription =>
-      'Upload the decision letter or any relevant document. You can skip this step and add documents later.';
+      'Įkelkite sprendimo raštą ar bet kurį susijusį dokumentą. Šį žingsnį galite praleisti ir pridėti dokumentus vėliau.';
 
   @override
-  String get tapToUploadFile => 'Tap to upload a file';
+  String get tapToUploadFile => 'Palieskite, kad įkeltumėte failą';
 
   @override
-  String get fileSizeLimit => 'PDF, JPG, PNG up to 25 MB';
+  String get fileSizeLimit => 'PDF, JPG, PNG iki 25 MB';
 
   @override
   String get addDocumentsLaterHint =>
-      'You can always add documents later from the case detail screen.';
+      'Dokumentus visada galite pridėti vėliau bylos kortelės ekrane.';
 
   @override
-  String get callAI => 'Call AI';
+  String get callAI => 'Skambinti DI';
 
   @override
   String get comingSoon => 'Netrukus';
 
   @override
-  String get encrypted => 'Encrypted';
+  String get encrypted => 'Šifruota';
 
   @override
-  String get typing => 'Typing…';
+  String get typing => 'Rašo…';
 
   @override
-  String get online => 'Online';
+  String get online => 'Prisijungęs';
 
   @override
   String get chatWelcomeSubtitle =>
       'Išanalizuosiu situaciją, patikrinsiu dokumentus, rasiu klaidas ir pasiūlysiu, ką daryti.';
 
   @override
-  String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
+  String get tapMicrophoneToSpeak => 'Palieskite mikrofoną, kad kalbėtumėte';
 
   @override
-  String get categoryEssential => 'Essential';
+  String get categoryEssential => 'Svarbiausia';
 
   @override
-  String get categoryPolice => 'Police';
+  String get categoryPolice => 'Policija';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryWork => 'Darbas';
 
   @override
-  String get categoryHousing => 'Housing';
+  String get categoryHousing => 'Būstas';
 
   @override
-  String get categoryConsumer => 'Consumer';
+  String get categoryConsumer => 'Vartotojas';
 
   @override
   String rightsInsideCount(int count) {
@@ -2454,29 +2454,29 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get freeAidThreshold => 'Free aid threshold';
+  String get freeAidThreshold => 'Nemokamos pagalbos riba';
 
   @override
-  String get partialAidThreshold => 'Partial aid threshold';
+  String get partialAidThreshold => 'Dalinės pagalbos riba';
 
   @override
-  String get assetLimit => 'Asset limit';
+  String get assetLimit => 'Turto riba';
 
   @override
-  String get whereToApplyLabel => 'Where to apply';
+  String get whereToApplyLabel => 'Kur kreiptis';
 
   @override
-  String get phoneLabel => 'Phone';
+  String get phoneLabel => 'Telefonas';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Svetainė';
 
   @override
-  String get disclaimerCollapsed => 'AI guidance only';
+  String get disclaimerCollapsed => 'Tik DI rekomendacijos';
 
   @override
   String get disclaimerExpanded =>
-      'AI assistant — not legal advice. Always verify with a qualified lawyer.';
+      'DI asistentas — ne teisinė konsultacija. Visada pasitikrinkite pas kvalifikuotą teisininką.';
 
   @override
   String get chatDisclaimerBanner =>
@@ -2498,160 +2498,160 @@ class AppLocalizationsLt extends AppLocalizations {
   String get chatDisclaimerGotIt => 'Supratau';
 
   @override
-  String get categoryChildren => 'Children';
+  String get categoryChildren => 'Vaikai';
 
   @override
-  String get categoryDigital => 'Digital';
+  String get categoryDigital => 'Skaitmeninė';
 
   @override
-  String get childrenRights => 'Children\'s Rights & Alimony';
+  String get childrenRights => 'Vaikų teisės ir alimentai';
 
   @override
   String get childrenRightsDesc =>
-      'Child support, alimony, protection, state guarantees';
+      'Vaikų išlaikymas, alimentai, apsauga, valstybės garantijos';
 
   @override
-  String get cyberbullying => 'Cyberbullying & Online Harassment';
+  String get cyberbullying => 'Patyčios ir priekabiavimas internete';
 
   @override
   String get cyberbullyingDesc =>
-      'Threats, privacy violations, defamation online';
+      'Grasinimai, privatumo pažeidimai, šmeižtas internete';
 
   @override
   String get rightChildSupport =>
-      'Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)';
+      'Abu tėvai teisiškai privalo finansiškai išlaikyti savo vaiką (Perekonnaseadus § 100–102)';
 
   @override
   String get rightMinimumAlimony =>
-      'Minimum child support in Estonia: base amount (€295.86) + 3% of previous year\'s average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee';
+      'Minimalus vaiko išlaikymas Estijoje: bazinė suma (295,86 €) + 3 % praėjusių metų vidutinio bruto darbo užmokesčio (PKS § 101). Nuo 2026-04-01 — 318,62 €/mėn. vienam vaikui. Atnaujinama kasmet balandžio 1 d. Skaičiuoklė: alimendid.ee';
 
   @override
   String get rightCourtAlimony =>
-      'You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400';
+      'Dėl alimentų galite kreiptis į apygardos teismą (maakohus) — reikalavimams iki 6400 € advokatas nebūtinas';
 
   @override
   String get rightBailiffEnforcement =>
-      'If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment';
+      'Jei tėvas atsisako mokėti, antstolis (kohtutäitur) gali priverstinai vykdyti teismo sprendimą, įskaitant išskaitas iš darbo užmokesčio';
 
   @override
   String get rightStateAlimonyGuarantee =>
-      'If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child';
+      'Jei tėvas nemoka, valstybė per Sotsiaalkindlustusamet skiria elatisabi (išlaikymo pašalpą) — iki 100 €/mėn. vienam vaikui';
 
   @override
   String get rightChildEducation =>
-      'Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)';
+      'Kiekvienas vaikas turi teisę į švietimą, sveikatos priežiūrą ir apsaugą nuo smurto (Lastekaitseseadus § 4–5)';
 
   @override
   String get rightChildContact =>
-      'A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)';
+      'Vaikas turi teisę palaikyti ryšį su abiem tėvais, nebent teismas nusprendžia kitaip (PKS § 143)';
 
   @override
   String get mustFileCourtClaim =>
-      'To receive alimony, you must file a claim at court or agree on the amount in writing';
+      'Norėdami gauti alimentus, turite pateikti ieškinį teismui arba raštu susitarti dėl sumos';
 
   @override
   String get mustNotifyAddressChange =>
-      'Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi';
+      'Praneškite Sotsiaalkindlustusamet apie adreso pasikeitimą, jei gaunate elatisabi';
 
   @override
   String get childrenActionGatherDocs =>
-      'Gather child\'s birth certificate, your ID, and proof of expenses';
+      'Surinkite vaiko gimimo liudijimą, savo asmens dokumentą ir išlaidų įrodymus';
 
   @override
   String get childrenActionFileCourtClaim =>
-      'File an alimony claim at the county court (maakohus) — can be done online via e-toimik';
+      'Pateikite ieškinį dėl alimentų apygardos teismui (maakohus) — tai galima padaryti internetu per e-toimik';
 
   @override
   String get childrenActionApplyElatisabi =>
-      'Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won\'t pay';
+      'Jei tėvas nemoka, kreipkitės dėl valstybės išlaikymo garantijos (elatisabi) į Sotsiaalkindlustusamet';
 
   @override
   String get childrenActionContactBailiff =>
-      'Contact a bailiff (kohtutäitur) to enforce the court order';
+      'Kreipkitės į antstolį (kohtutäitur), kad priverstinai įvykdytų teismo sprendimą';
 
   @override
   String get childrenActionCallLasteabi =>
-      'Call Lasteabi 116 111 for children\'s helpline — free, 24/7';
+      'Skambinkite Lasteabi 116 111 — vaikų pagalbos linija, nemokama, visą parą';
 
   @override
   String get childrenDeadlineElatisabi =>
-      'Apply for elatisabi — after court order, no strict deadline but process takes time';
+      'Elatisabi prašymas — po teismo sprendimo, griežto termino nėra, bet procesas užtrunka';
 
   @override
   String get childrenDeadlineCourt =>
-      'Alimony can be claimed retroactively for up to 1 year before court filing';
+      'Alimentų galima reikalauti atgaline data iki 1 metų iki ieškinio pateikimo teismui';
 
   @override
   String get childrenFactMinimum =>
-      'From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year\'s average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee';
+      'Nuo 2026-04-01 minimalus vaiko išlaikymas yra 318,62 €/mėn. vienam vaikui. Formulė: bazinė suma (295,86 €) + 3 % praėjusių metų vidutinio bruto darbo užmokesčio. Atnaujinama kasmet balandžio 1 d. Tėvas negali sutikti mokėti mažiau. Skaičiuoklė: alimendid.ee';
 
   @override
   String get childrenFactElatisabi =>
-      'Estonia\'s state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent.';
+      'Estijos valstybės išlaikymo garantija (elatisabi) buvo įvesta 2017 m., siekiant apsaugoti vaikus, kai tėvas atsisako mokėti. Valstybė moka, o vėliau susigrąžina sumą iš skolininko.';
 
   @override
   String get rightReportCybercrime =>
-      'You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)';
+      'Turite teisę pranešti policijai apie grasinimus internete, priekabiavimą ir tapatybės vagystę (Karistusseadustik § 120, § 157¹)';
 
   @override
   String get rightContentRemoval =>
-      'You can request removal of defamatory or private content from platforms and demand takedown under GDPR';
+      'Galite reikalauti pašalinti šmeižikišką ar privatų turinį iš platformų ir reikalauti pašalinimo pagal BDAR';
 
   @override
   String get rightMoralDamageCompensation =>
-      'You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)';
+      'Galite reikalauti kompensacijos už neturtinę žalą, padarytą patyčiomis internete (Võlaõigusseadus § 1043–1055)';
 
   @override
   String get rightPrivacyProtection =>
-      'Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)';
+      'Jūsų privatus gyvenimas yra saugomas — jūsų nuotraukų, pranešimų ar asmens duomenų neteisėtas platinimas yra draudžiamas (KarS § 157)';
 
   @override
   String get rightDataProtection =>
-      'Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon';
+      'Praneškite apie duomenų apsaugos pažeidimus (neteisėtas jūsų duomenų naudojimą) Andmekaitse Inspektsioon';
 
   @override
   String get rightDefamationAction =>
-      'Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)';
+      'Šmeižtas (laimamine) yra civilinis pažeidimas — galite pareikšti ieškinį dėl žalos atlyginimo ir reikalauti viešo atsiėmimo (KarS § 247 (panaikinta), VÕS § 1047)';
 
   @override
   String get mustCollectEvidence =>
-      'Collect and preserve all evidence — screenshots, links, dates, and witness information';
+      'Rinkite ir saugokite visus įrodymus — ekrano nuotraukas, nuorodas, datas ir liudytojų informaciją';
 
   @override
   String get mustNotRetaliate =>
-      'Do not retaliate or engage in counter-harassment — it may weaken your case';
+      'Nesikeršykite ir nesileiskite į atsakomąjį priekabiavimą — tai gali susilpninti jūsų bylą';
 
   @override
   String get cyberActionScreenshots =>
-      'Take screenshots of all harassment — save URLs, dates, usernames, and content';
+      'Fiksuokite visas patyčias ekrano nuotraukomis — išsaugokite nuorodas, datas, vartotojų vardus ir turinį';
 
   @override
   String get cyberActionReportPolice =>
-      'File a police report at the nearest station or online at politsei.ee';
+      'Pateikite pranešimą policijai artimiausiame skyriuje arba internetu politsei.ee';
 
   @override
   String get cyberActionReportPlatform =>
-      'Report the content to the social media platform for removal';
+      'Praneškite apie turinį socialinio tinklo platformai dėl pašalinimo';
 
   @override
   String get cyberActionContactDPA =>
-      'Contact Andmekaitse Inspektsioon if your personal data was misused';
+      'Jei jūsų asmens duomenys buvo netinkamai naudojami, kreipkitės į Andmekaitse Inspektsioon';
 
   @override
   String get cyberActionConsultLawyer =>
-      'Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi';
+      'Pasitarkite su teisininku dėl civilinės žalos atlyginimo — nemokama teisinė pagalba prieinama per Riigi Õigusabi';
 
   @override
   String get cyberDeadlineCriminal =>
-      'Criminal complaint — no strict deadline, but report promptly for best results';
+      'Baudžiamasis skundas — griežto termino nėra, tačiau geriausia pranešti nedelsiant';
 
   @override
   String get cyberDeadlineCivil =>
-      'Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)';
+      'Civilinis ieškinys dėl žalos atlyginimo — iki 3 metų nuo pažeidimo sužinojimo (TsÜS § 150)';
 
   @override
   String get cyberFactPrivacy =>
-      'In Estonia, unauthorized sharing of someone\'s intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).';
+      'Estijoje neteisėtas kieno nors intymių nuotraukų platinimas gali užtraukti iki 3 metų laisvės atėmimo bausmę pagal Karistusseadustik § 157¹ (privatumo pažeidimas).';
 
   @override
   String get cyberFactGDPR =>
@@ -3229,13 +3229,13 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get deadlineRadarTitle => 'Upcoming deadlines';
+  String get deadlineRadarTitle => 'Artėjantys terminai';
 
   @override
-  String get deadlineRadarEmpty => 'No upcoming deadlines';
+  String get deadlineRadarEmpty => 'Artėjančių terminų nėra';
 
   @override
-  String get deadlineRadarViewAll => 'View all';
+  String get deadlineRadarViewAll => 'Peržiūrėti visus';
 
   @override
   String deadlineCardDaysLeft(int count) {
@@ -3252,10 +3252,10 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardTomorrow => 'tomorrow';
+  String get deadlineCardTomorrow => 'rytoj';
 
   @override
-  String get deadlineCardToday => 'today';
+  String get deadlineCardToday => 'šiandien';
 
   @override
   String deadlineCardOverdue(int count) {
@@ -3271,200 +3271,202 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardMarkComplete => 'Mark complete';
+  String get deadlineCardMarkComplete => 'Pažymėti kaip atlikta';
 
   @override
-  String get deadlineCardSnooze => 'Snooze';
+  String get deadlineCardSnooze => 'Atidėti';
 
   @override
-  String get deadlineCardSnooze3d => 'Snooze 3 days';
+  String get deadlineCardSnooze3d => 'Atidėti 3 dienoms';
 
   @override
-  String get deadlineCardSnooze7d => 'Snooze 7 days';
+  String get deadlineCardSnooze7d => 'Atidėti 7 dienoms';
 
   @override
-  String get deadlineCardSnoozeCustom => 'Pick a date';
+  String get deadlineCardSnoozeCustom => 'Pasirinkti datą';
 
   @override
-  String get deadlineCardEdit => 'Edit';
+  String get deadlineCardEdit => 'Redaguoti';
 
   @override
-  String get deadlineCardDelete => 'Archive';
+  String get deadlineCardDelete => 'Archyvuoti';
 
   @override
-  String get deadlineCardSourceLabelPdf => 'from PDF';
+  String get deadlineCardSourceLabelPdf => 'iš PDF';
 
   @override
-  String get deadlineCardSourceLabelIntake => 'from intake';
+  String get deadlineCardSourceLabelIntake => 'iš anketos';
 
   @override
-  String get deadlineCardSourceLabelManual => 'added manually';
+  String get deadlineCardSourceLabelManual => 'pridėta rankiniu būdu';
 
   @override
-  String get deadlineCardSourceLabelEmail => 'from email';
+  String get deadlineCardSourceLabelEmail => 'iš el. laiško';
 
   @override
-  String get deadlineCardSourceLabelHaikuExtract => 'AI-extracted';
+  String get deadlineCardSourceLabelHaikuExtract => 'gauta iš DI';
 
   @override
-  String get deadlineCardSourceLabelStatutoryTemplate => 'statute template';
+  String get deadlineCardSourceLabelStatutoryTemplate => 'įstatymo šablonas';
 
   @override
   String deadlineBannerCritical(String title, String when) {
-    return 'Critical deadline $title $when';
+    return 'Svarbus terminas $title $when';
   }
 
   @override
-  String get deadlineBannerDismiss => 'Dismiss';
+  String get deadlineBannerDismiss => 'Atmesti';
 
   @override
-  String get deadlineBannerOpen => 'Open deadline';
+  String get deadlineBannerOpen => 'Atidaryti terminą';
 
   @override
   String deadlineHolidayShifted(String original, String reason) {
-    return 'Shifted from $original due to $reason';
+    return 'Perkelta nuo $original dėl $reason';
   }
 
   @override
-  String get deadlinePermissionAskTitle => 'Enable deadline reminders?';
+  String get deadlinePermissionAskTitle => 'Įjungti priminimus apie terminus?';
 
   @override
   String get deadlinePermissionAskBody =>
-      'We\'ll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.';
+      'Priminsime jums likus 7, 3 ir 1 dienai iki kiekvieno įstatyminio termino, taip pat jo dieną ryte. Niekada nenaudojama rinkodarai.';
 
   @override
-  String get deadlinePermissionAllow => 'Allow';
+  String get deadlinePermissionAllow => 'Leisti';
 
   @override
-  String get deadlinePermissionLater => 'Later';
+  String get deadlinePermissionLater => 'Vėliau';
 
   @override
-  String get deadlineSettingsSection => 'Deadline reminders';
+  String get deadlineSettingsSection => 'Priminimai apie terminus';
 
   @override
-  String get deadlineSettingsPushChannel => 'Push notifications';
+  String get deadlineSettingsPushChannel => 'Push pranešimai';
 
   @override
-  String get deadlineSettingsEmailChannel => 'Email (critical only)';
+  String get deadlineSettingsEmailChannel => 'El. paštas (tik svarbiausi)';
 
   @override
-  String get deadlineSettingsInAppChannel => 'In-app banners';
+  String get deadlineSettingsInAppChannel =>
+      'Programos viduje rodomi pranešimai';
 
   @override
   String get deadlineSettingsCriticalBypass =>
-      'Critical reminders bypass quiet hours';
+      'Svarbūs priminimai apeina tylos valandas';
 
   @override
-  String get deadlineSettingsQuietHours => 'Quiet hours';
+  String get deadlineSettingsQuietHours => 'Tylos valandos';
 
   @override
   String deadlineSettingsQuietHoursBadge(String start, String end) {
-    return 'Quiet $start–$end';
+    return 'Tyla $start–$end';
   }
 
   @override
-  String get deadlineCaseScreenTitle => 'Case deadlines';
+  String get deadlineCaseScreenTitle => 'Bylos terminai';
 
   @override
-  String get deadlineAddManualCta => 'Add deadline';
+  String get deadlineAddManualCta => 'Pridėti terminą';
 
   @override
-  String get deadlineFormTitle => 'Title';
+  String get deadlineFormTitle => 'Pavadinimas';
 
   @override
-  String get deadlineFormDescription => 'Description (optional)';
+  String get deadlineFormDescription => 'Aprašymas (neprivaloma)';
 
   @override
-  String get deadlineFormStatuteTemplate => 'Statute template';
+  String get deadlineFormStatuteTemplate => 'Įstatymo šablonas';
 
   @override
-  String get deadlineFormStatuteTemplateNone => 'None (manual)';
+  String get deadlineFormStatuteTemplateNone => 'Nėra (rankiniu būdu)';
 
   @override
-  String get deadlineFormDeadlineAt => 'Deadline date';
+  String get deadlineFormDeadlineAt => 'Termino data';
 
   @override
-  String get deadlineFormPriority => 'Priority';
+  String get deadlineFormPriority => 'Prioritetas';
 
   @override
-  String get deadlineFormSave => 'Save';
+  String get deadlineFormSave => 'Išsaugoti';
 
   @override
-  String get deadlineFormCancel => 'Cancel';
+  String get deadlineFormCancel => 'Atšaukti';
 
   @override
-  String get deadlineCompletedNotePrompt => 'Add a note (optional)';
+  String get deadlineCompletedNotePrompt => 'Pridėti pastabą (neprivaloma)';
 
   @override
-  String get deadlineCompletedNoteSave => 'Save';
+  String get deadlineCompletedNoteSave => 'Išsaugoti';
 
   @override
-  String get inboxTitle => 'Inbox';
+  String get inboxTitle => 'Gautieji';
 
   @override
-  String get inboxEmptyTitle => 'Nothing pending';
+  String get inboxEmptyTitle => 'Nieko laukiančio';
 
   @override
   String get inboxEmptyBody =>
-      'New email threads will appear here as they get triaged.';
+      'Nauji el. laiškų siūlai bus rodomi čia, kai tik bus suklasifikuoti.';
 
   @override
-  String get inboxApproveSend => 'Approve & send';
+  String get inboxApproveSend => 'Patvirtinti ir siųsti';
 
   @override
-  String get inboxEditDraft => 'Edit';
+  String get inboxEditDraft => 'Redaguoti';
 
   @override
-  String get inboxSnooze => 'Snooze';
+  String get inboxSnooze => 'Atidėti';
 
   @override
-  String get inboxArchive => 'Archive';
+  String get inboxArchive => 'Archyvuoti';
 
   @override
-  String get inboxFilterAll => 'All';
+  String get inboxFilterAll => 'Visi';
 
   @override
-  String get inboxConfirmSendTitle => 'Send the prepared reply?';
+  String get inboxConfirmSendTitle => 'Siųsti paruoštą atsakymą?';
 
   @override
   String get inboxConfirmSendBody =>
-      'Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.';
+      '„Advocat“ išsiųs DI paruoštą atsakymą per jūsų prijungtą „Gmail“. Turinį vis tiek galėsite peržiūrėti kitame ekrane.';
 
   @override
-  String get inboxSendButton => 'Send';
+  String get inboxSendButton => 'Siųsti';
 
   @override
-  String get inboxSentToast => 'Sent.';
+  String get inboxSentToast => 'Išsiųsta.';
 
   @override
-  String get inboxAlreadySentToast => 'Already sent.';
+  String get inboxAlreadySentToast => 'Jau išsiųsta.';
 
   @override
-  String get inboxSendErrorToast => 'Could not send the reply. Tap retry.';
+  String get inboxSendErrorToast =>
+      'Nepavyko išsiųsti atsakymo. Palieskite, kad bandytumėte dar kartą.';
 
   @override
-  String get inboxSnoozedToast => 'Snoozed for 24h.';
+  String get inboxSnoozedToast => 'Atidėta 24 val.';
 
   @override
-  String get inboxArchivedToast => 'Archived.';
+  String get inboxArchivedToast => 'Archyvuota.';
 
   @override
-  String get inboxDraftLoadError => 'Could not load draft.';
+  String get inboxDraftLoadError => 'Nepavyko įkelti juodraščio.';
 
   @override
-  String get inboxDeadlineToday => 'today';
+  String get inboxDeadlineToday => 'šiandien';
 
   @override
-  String get inboxDeadlineTomorrow => 'tomorrow';
+  String get inboxDeadlineTomorrow => 'rytoj';
 
   @override
   String inboxDeadlineInDays(int days) {
-    return 'in ${days}d';
+    return 'po $days d.';
   }
 
   @override
   String inboxDeadlineOverdue(int days) {
-    return 'overdue ${days}d';
+    return 'vėluoja $days d.';
   }
 
   @override
@@ -3576,28 +3578,30 @@ class AppLocalizationsLt extends AppLocalizations {
   String get inboxEditDiscard => 'Atmesti';
 
   @override
-  String get workspaceTabOverview => 'Overview';
+  String get workspaceTabOverview => 'Apžvalga';
 
   @override
-  String get workspaceTabChat => 'Chat';
+  String get workspaceTabChat => 'Pokalbis';
 
   @override
-  String get workspaceTabDrafts => 'Drafts';
+  String get workspaceTabDrafts => 'Juodraščiai';
 
   @override
-  String get workspaceOverviewEmpty => 'Add documents to build a summary.';
+  String get workspaceOverviewEmpty =>
+      'Pridėkite dokumentus, kad būtų sukurta santrauka.';
 
   @override
-  String get workspaceTimelineEmpty => 'No events yet.';
+  String get workspaceTimelineEmpty => 'Įvykių dar nėra.';
 
   @override
-  String get workspaceDocumentsEmpty => 'No documents. Upload from Scan.';
+  String get workspaceDocumentsEmpty =>
+      'Dokumentų nėra. Įkelkite per „Skenuoti“.';
 
   @override
-  String get workspaceDraftsEmpty => 'No drafts yet.';
+  String get workspaceDraftsEmpty => 'Juodraščių dar nėra.';
 
   @override
-  String get workspaceInboxEmpty => 'No related email.';
+  String get workspaceInboxEmpty => 'Susijusių el. laiškų nėra.';
 
   @override
   String get plannerSettingsTitle => 'Trijų etapų teisinis samprotavimas';
@@ -4287,186 +4291,186 @@ class AppLocalizationsLt extends AppLocalizations {
   String get softCaseShellBannerCta => 'Pervadinti';
 
   @override
-  String get draftsTab => 'Drafts';
+  String get draftsTab => 'Juodraščiai';
 
   @override
-  String get draftingTitle => 'Drafting Studio';
+  String get draftingTitle => 'Juodraščių studija';
 
   @override
-  String get draftingEmpty => 'Empty draft';
+  String get draftingEmpty => 'Tuščias juodraštis';
 
   @override
-  String get draftingPlaceholder => 'Start typing your draft…';
+  String get draftingPlaceholder => 'Pradėkite rašyti savo juodraštį…';
 
   @override
-  String get draftingDraftsList => 'My drafts';
+  String get draftingDraftsList => 'Mano juodraščiai';
 
   @override
-  String get draftingSave => 'Save';
+  String get draftingSave => 'Išsaugoti';
 
   @override
-  String get draftingSaved => 'Saved';
+  String get draftingSaved => 'Išsaugota';
 
   @override
-  String get draftingSavedJustNow => 'Saved just now';
+  String get draftingSavedJustNow => 'Ką tik išsaugota';
 
   @override
-  String get draftingAiRevise => 'Revise with AI';
+  String get draftingAiRevise => 'Taisyti su DI';
 
   @override
-  String get draftingExportPdf => 'Export PDF';
+  String get draftingExportPdf => 'Eksportuoti PDF';
 
   @override
-  String get draftingExportDocx => 'Export DOCX';
+  String get draftingExportDocx => 'Eksportuoti DOCX';
 
   @override
-  String get draftingExportMd => 'Export Markdown';
+  String get draftingExportMd => 'Eksportuoti Markdown';
 
   @override
-  String get draftingDeleteDraft => 'Delete draft';
+  String get draftingDeleteDraft => 'Ištrinti juodraštį';
 
   @override
-  String get draftingConfirmDelete => 'Delete this draft?';
+  String get draftingConfirmDelete => 'Ištrinti šį juodraštį?';
 
   @override
-  String get draftingConfirmDeleteMessage => 'This action cannot be undone.';
+  String get draftingConfirmDeleteMessage => 'Šio veiksmo anuliuoti negalima.';
 
   @override
-  String get draftingConfirm => 'Delete';
+  String get draftingConfirm => 'Ištrinti';
 
   @override
-  String get draftingCancel => 'Cancel';
+  String get draftingCancel => 'Atšaukti';
 
   @override
   String draftingDraftReplyTo(String name) {
-    return 'Reply to $name';
+    return 'Atsakyti $name';
   }
 
   @override
-  String get draftingUntitled => 'Untitled';
+  String get draftingUntitled => 'Be pavadinimo';
 
   @override
-  String get draftingTitleHint => 'Title (optional)';
+  String get draftingTitleHint => 'Pavadinimas (neprivaloma)';
 
   @override
-  String get draftingAiReviseTitle => 'Revise with AI';
+  String get draftingAiReviseTitle => 'Taisyti su DI';
 
   @override
-  String get draftingAiReviseSelectionLabel => 'Selected text:';
+  String get draftingAiReviseSelectionLabel => 'Pažymėtas tekstas:';
 
   @override
-  String get draftingAiReviseInstructionLabel => 'Instruction (optional)';
+  String get draftingAiReviseInstructionLabel => 'Nurodymas (neprivaloma)';
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'e.g. \"make it more formal\" or \"shorten\"';
+      'pvz., „padaryti oficialiau“ arba „sutrumpinti“';
 
   @override
-  String get draftingAiReviseRunButton => 'Generate revision';
+  String get draftingAiReviseRunButton => 'Generuoti pataisymą';
 
   @override
-  String get draftingAiReviseSuggestionLabel => 'Suggested revision:';
+  String get draftingAiReviseSuggestionLabel => 'Siūlomas pataisymas:';
 
   @override
-  String get draftingAiReviseChangesLabel => 'Changes:';
+  String get draftingAiReviseChangesLabel => 'Pakeitimai:';
 
   @override
-  String get draftingAiReviseAccept => 'Accept';
+  String get draftingAiReviseAccept => 'Priimti';
 
   @override
-  String get draftingAiReviseReject => 'Reject';
+  String get draftingAiReviseReject => 'Atmesti';
 
   @override
-  String get draftingFormatBold => 'Bold';
+  String get draftingFormatBold => 'Paryškintas';
 
   @override
-  String get draftingFormatItalic => 'Italic';
+  String get draftingFormatItalic => 'Kursyvas';
 
   @override
-  String get draftingFormatHeading => 'Heading';
+  String get draftingFormatHeading => 'Antraštė';
 
   @override
-  String get draftingFormatBullet => 'Bullet list';
+  String get draftingFormatBullet => 'Sąrašas su ženkleliais';
 
   @override
-  String get draftingFormatNumbered => 'Numbered list';
+  String get draftingFormatNumbered => 'Numeruotas sąrašas';
 
   @override
-  String get draftingEmptyListMessage => 'You have no drafts yet.';
+  String get draftingEmptyListMessage => 'Juodraščių dar neturite.';
 
   @override
-  String get draftingEmptyListAction => 'New draft';
+  String get draftingEmptyListAction => 'Naujas juodraštis';
 
   @override
-  String get draftingExporting => 'Exporting…';
+  String get draftingExporting => 'Eksportuojama…';
 
   @override
-  String get draftingExportFailed => 'Export failed';
+  String get draftingExportFailed => 'Eksportuoti nepavyko';
 
   @override
-  String get draftingSaveFailed => 'Save failed';
+  String get draftingSaveFailed => 'Išsaugoti nepavyko';
 
   @override
-  String get draftingNewDraft => 'New draft';
+  String get draftingNewDraft => 'Naujas juodraštis';
 
   @override
-  String get vaultNoteChip => 'Vault note';
+  String get vaultNoteChip => 'Saugyklos užrašas';
 
   @override
-  String get saveToVault => 'Save to Vault';
+  String get saveToVault => 'Išsaugoti į saugyklą';
 
   @override
-  String get savingToVault => 'Saving to Vault…';
+  String get savingToVault => 'Saugoma į saugyklą…';
 
   @override
-  String get savedToVault => 'Saved to Vault';
+  String get savedToVault => 'Išsaugota į saugyklą';
 
   @override
-  String get vaultNoteTitlePrefix => 'Note: ';
+  String get vaultNoteTitlePrefix => 'Užrašas: ';
 
   @override
-  String get openInVault => 'Open in Vault';
+  String get openInVault => 'Atidaryti saugykloje';
 
   @override
-  String get saveToVaultFailed => 'Save to Vault failed';
+  String get saveToVaultFailed => 'Nepavyko išsaugoti į saugyklą';
 
   @override
   String get pdfWorkerUnavailable =>
-      'PDF export is temporarily unavailable. Please try DOCX or Markdown.';
+      'PDF eksportas laikinai nepasiekiamas. Bandykite DOCX arba Markdown.';
 
   @override
-  String get draftingVersionHistory => 'Version history';
+  String get draftingVersionHistory => 'Versijų istorija';
 
   @override
-  String get emptyHomeTitle => 'Welcome to Advocat';
+  String get emptyHomeTitle => 'Sveiki atvykę į „Advocat“';
 
   @override
   String get emptyHomeBody =>
-      'Pick a starting point — we’ll handle the legal heavy lifting.';
+      'Pasirinkite pradžios tašką — mes pasirūpinsime teisiniu darbu.';
 
   @override
-  String get intentChip1 => 'Got a fine';
+  String get intentChip1 => 'Gavau baudą';
 
   @override
-  String get intentChip2 => 'Permit denied';
+  String get intentChip2 => 'Leidimas atmestas';
 
   @override
-  String get intentChip3 => 'Contract problem';
+  String get intentChip3 => 'Sutarties problema';
 
   @override
-  String get emptyCasesTitle => 'No cases yet';
+  String get emptyCasesTitle => 'Bylų dar nėra';
 
   @override
-  String get emptyCasesCta => 'Start a case';
+  String get emptyCasesCta => 'Pradėti bylą';
 
   @override
-  String get emptyDraftsTitle => 'No drafts yet';
+  String get emptyDraftsTitle => 'Juodraščių dar nėra';
 
   @override
-  String get emptyDraftsCta => 'Create draft';
+  String get emptyDraftsCta => 'Sukurti juodraštį';
 
   @override
-  String get emptyChatTitle => 'Ask Advocat anything';
+  String get emptyChatTitle => 'Klauskite „Advocat“ bet ko';
 
   @override
   String get chatExamplePrompt1 => 'Padėk atsakyti į baudą';
@@ -4525,88 +4529,89 @@ class AppLocalizationsLt extends AppLocalizations {
   String get contractReviewContinueChat => 'Tęsti pokalbyje';
 
   @override
-  String get referralInviteFriends => 'Invite Friends';
+  String get referralInviteFriends => 'Pakviesti draugus';
 
   @override
-  String get referralYourCode => 'Your code';
+  String get referralYourCode => 'Jūsų kodas';
 
   @override
-  String get referralCopiedToast => 'Code copied to clipboard';
+  String get referralCopiedToast => 'Kodas nukopijuotas į iškarpinę';
 
   @override
   String get referralReward =>
-      'Get 1 month of Counsel free for every friend who subscribes.';
+      'Gaukite 1 mėnesį „Counsel“ plano nemokamai už kiekvieną draugą, kuris užsiprenumeruoja.';
 
   @override
-  String get referralInvited => 'Friends invited';
+  String get referralInvited => 'Pakviesti draugai';
 
   @override
-  String get referralRewardsEarned => 'Free months earned';
+  String get referralRewardsEarned => 'Uždirbti nemokami mėnesiai';
 
   @override
-  String get deadlineUrgencyToday => 'Today & Overdue';
+  String get deadlineUrgencyToday => 'Šiandien ir vėluojantys';
 
   @override
-  String get deadlineUrgencyWeek => 'This week';
+  String get deadlineUrgencyWeek => 'Šią savaitę';
 
   @override
-  String get deadlineUrgencyMonth => 'This month';
+  String get deadlineUrgencyMonth => 'Šį mėnesį';
 
   @override
-  String get deadlineUrgencyLater => 'Later';
+  String get deadlineUrgencyLater => 'Vėliau';
 
   @override
-  String get deadlineAddManual => 'Add deadline';
+  String get deadlineAddManual => 'Pridėti terminą';
 
   @override
-  String get deadlineSnoozeBy => 'Snooze';
+  String get deadlineSnoozeBy => 'Atidėti';
 
   @override
-  String get deadlineSnooze1d => 'Snooze 1 day';
+  String get deadlineSnooze1d => 'Atidėti 1 dienai';
 
   @override
-  String get deadlineSnooze3d => 'Snooze 3 days';
+  String get deadlineSnooze3d => 'Atidėti 3 dienoms';
 
   @override
-  String get deadlineSnooze7d => 'Snooze 7 days';
+  String get deadlineSnooze7d => 'Atidėti 7 dienoms';
 
   @override
-  String get deadlineDismiss => 'Dismiss';
+  String get deadlineDismiss => 'Atmesti';
 
   @override
-  String get deadlineExportIcs => 'Add to calendar';
+  String get deadlineExportIcs => 'Pridėti į kalendorių';
 
   @override
-  String get deadlineSource => 'Source';
+  String get deadlineSource => 'Šaltinis';
 
   @override
   String get deadlineEmpty =>
-      'No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.';
+      'Terminų dar nėra. Terminai automatiškai sukuriami iš jūsų el. laiškų ir dokumentų — arba pridėkite juos rankiniu būdu mygtuku „+“.';
 
   @override
-  String get deadlineNewTitle => 'New deadline';
+  String get deadlineNewTitle => 'Naujas terminas';
 
   @override
-  String get deadlineFieldTitle => 'Title';
+  String get deadlineFieldTitle => 'Pavadinimas';
 
   @override
-  String get deadlineFieldDueDate => 'Due date';
+  String get deadlineFieldDueDate => 'Termino data';
 
   @override
-  String get deadlineFieldNotes => 'Notes (optional)';
+  String get deadlineFieldNotes => 'Pastabos (neprivaloma)';
 
   @override
-  String get deadlineSaved => 'Deadline saved';
+  String get deadlineSaved => 'Terminas išsaugotas';
 
   @override
-  String get deadlineSaveFailed => 'Could not save deadline';
+  String get deadlineSaveFailed => 'Nepavyko išsaugoti termino';
 
   @override
-  String get deadlineUrgentBannerSingle => '1 deadline today or overdue';
+  String get deadlineUrgentBannerSingle =>
+      '1 terminas šiandien arba vėluojantis';
 
   @override
   String deadlineUrgentBannerMany(int count) {
-    return '$count deadlines today or overdue';
+    return '$count terminai(-ų) šiandien arba vėluojantys';
   }
 
   @override
@@ -4614,9 +4619,9 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days left',
-      one: '1 day left',
-      zero: 'today',
+      other: 'liko $count dienų',
+      one: 'liko 1 diena',
+      zero: 'šiandien',
     );
     return '$_temp0';
   }
@@ -4626,8 +4631,8 @@ class AppLocalizationsLt extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days overdue',
-      one: '1 day overdue',
+      other: 'vėluoja $count dienų',
+      one: 'vėluoja 1 dieną',
     );
     return '$_temp0';
   }
@@ -4649,11 +4654,11 @@ class AppLocalizationsLt extends AppLocalizations {
   String get iapRestoreNoActive => 'Atkurtinos aktyvios prenumeratos nerasta.';
 
   @override
-  String get deadlineEuRadarTitle => 'EU deadline radar (preview)';
+  String get deadlineEuRadarTitle => 'ES terminų radaras (peržiūra)';
 
   @override
   String get deadlineEuRadarSubtitle =>
-      'Hypothetical EU procedural deadlines — mock data';
+      'Hipotetiniai ES procedūriniai terminai — bandomieji duomenys';
 
   @override
   String get changePassword => 'Keisti slaptažodį';

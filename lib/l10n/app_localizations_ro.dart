@@ -15,25 +15,25 @@ class AppLocalizationsRo extends AppLocalizations {
   String get aboutSection => 'DESPRE';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Aspect';
 
   @override
-  String get appearanceSystem => 'System (auto)';
+  String get appearanceSystem => 'Sistem (automat)';
 
   @override
-  String get appearanceLight => 'Light';
+  String get appearanceLight => 'Deschis';
 
   @override
-  String get appearanceDark => 'Dark';
+  String get appearanceDark => 'Închis';
 
   @override
-  String get appearanceDescription => 'Choose how Advocat looks';
+  String get appearanceDescription => 'Alegeți cum arată Advocat';
 
   @override
   String get accidents => 'Accidente';
 
   @override
-  String get active => 'Active';
+  String get active => 'Activ';
 
   @override
   String get activeCases => 'Cazuri active';
@@ -321,7 +321,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get editProfile => 'Editați profilul';
 
   @override
-  String get email => 'Email';
+  String get email => 'E-mail';
 
   @override
   String get emailConnected => 'Email conectat';
@@ -1707,7 +1707,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
+      'Bună! Sunt Advocat — asistentul dumneavoastră juridic bazat pe AI. Ofer informații juridice, nu consultanță juridică. Cu ce întrebare juridică vă pot ajuta?';
 
   @override
   String get copySummary => 'Copiază rezumatul';
@@ -1764,20 +1764,20 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get aiDisclaimerCompact =>
-      'Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.';
+      'Advocat oferă informații juridice generate de AI, nu consultanță juridică. Verificați cu un avocat licențiat înainte de a acționa.';
 
   @override
-  String get aiDisclaimerFullTitle => 'Important: how Advocat works';
+  String get aiDisclaimerFullTitle => 'Important: cum funcționează Advocat';
 
   @override
   String get aiDisclaimerFullBody =>
-      'Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.';
+      'Advocat este un instrument bazat pe inteligență artificială care oferă informații juridice, nu consultanță juridică. Conform Regulamentului UE privind IA (art. 50), trebuie să vă informăm clar: interacționați cu o inteligență artificială, nu cu un avocat uman.\n\nAdvocat nu este o casă de avocatură. Nu suntem avocați licențiați conform Legii estoniene privind avocatura (Advokatuuriseadus) sau Legii finlandeze privind avocatura (Asianajajalaki), iar secretul profesional avocat-client nu se aplică conversațiilor dumneavoastră cu acest instrument. Înainte de a vă baza pe orice răspuns — pentru a depune o contestație, a semna un contract sau a acționa în privința unui termen — verificați cu un avocat licențiat din jurisdicția dumneavoastră.';
 
   @override
-  String get aiDisclaimerExpand => 'Learn more';
+  String get aiDisclaimerExpand => 'Aflați mai multe';
 
   @override
-  String get aiDisclaimerDismiss => 'OK, I understand';
+  String get aiDisclaimerDismiss => 'Am înțeles';
 
   @override
   String get dataPrivacyConsent => 'Consimțământ confidențialitate date';
@@ -1854,7 +1854,8 @@ class AppLocalizationsRo extends AppLocalizations {
       'Înregistrată în Registrul Comercial Eston (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer =>
+      'Generat de AI • Nu constituie consultanță juridică';
 
   @override
   String get decline => 'Refuză';
@@ -2188,67 +2189,67 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get inheritanceDesc =>
-      'Wills, estate, heirs\' rights, forced heirship, probate';
+      'Testamente, moștenire, drepturile moștenitorilor, rezerva succesorală, procedura succesorală';
 
   @override
   String get rightInheritanceForced =>
-      'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will';
+      'Moștenitorii rezervatari (copii, soț/soție) au dreptul la o cotă rezervată indiferent de conținutul testamentului';
 
   @override
   String get rightInheritanceWill =>
-      'You have the right to make a will disposing of your property — notarized wills have the strongest legal force';
+      'Aveți dreptul de a întocmi un testament pentru a dispune de bunurile dumneavoastră — testamentele autentificate notarial au cea mai mare forță juridică';
 
   @override
   String get rightInheritanceRenounce =>
-      'You can renounce an inheritance within 3 months of learning about it';
+      'Puteți renunța la moștenire în termen de 3 luni de la aflarea existenței acesteia';
 
   @override
   String get rightInheritanceInfo =>
-      'You have the right to obtain information about the estate from banks and registries';
+      'Aveți dreptul de a obține informații despre patrimoniul succesoral de la bănci și registre';
 
   @override
   String get rightInheritanceDispute =>
-      'You can challenge an unfair will in court within the statutory limitation period';
+      'Puteți contesta un testament nedrept în instanță, în termenul legal de prescripție';
 
   @override
   String get mustFileInheritance =>
-      'File for succession proceedings at a notary within a reasonable time';
+      'Depuneți cererea pentru procedura succesorală la un notar într-un termen rezonabil';
 
   @override
   String get mustNotifyHeirs =>
-      'All known heirs must be notified of the succession proceedings';
+      'Toți moștenitorii cunoscuți trebuie notificați cu privire la procedura succesorală';
 
   @override
   String get inheritanceActionGatherDocs =>
-      'Gather all documents: death certificate, will, property records, bank statements';
+      'Adunați toate documentele: certificatul de deces, testamentul, actele de proprietate, extrasele bancare';
 
   @override
   String get inheritanceActionContactNotary =>
-      'Contact a notary to open succession proceedings';
+      'Contactați un notar pentru a deschide procedura succesorală';
 
   @override
   String get inheritanceActionCheckDebts =>
-      'Check whether the estate has debts before accepting inheritance';
+      'Verificați dacă succesiunea are datorii înainte de a accepta moștenirea';
 
   @override
   String get inheritanceActionFileCourt =>
-      'If the will is disputed, file a claim in court';
+      'Dacă testamentul este contestat, depuneți o acțiune în instanță';
 
   @override
   String get inheritanceDeadlineRenounce =>
-      '3 months to renounce inheritance after learning of it';
+      '3 luni pentru a renunța la moștenire de la data aflării existenței acesteia';
 
   @override
   String get inheritanceDeadlineDispute =>
-      'Statute of limitations for challenging a will: varies by grounds';
+      'Termenul de prescripție pentru contestarea unui testament: variază în funcție de temei';
 
   @override
   String get inheritanceFactForced =>
-      'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will';
+      'În Estonia, descendenții și soțul/soția au dreptul la o cotă rezervată (1/2 din cota legală), chiar dacă sunt excluși din testament';
 
   @override
   String get inheritanceFactNotary =>
-      'All succession proceedings in Estonia must go through a notary — you cannot skip this step';
+      'Toate procedurile succesorale în Estonia trebuie să treacă printr-un notar — acest pas nu poate fi omis';
 
   @override
   String get consumerProtection => 'Protecția consumatorilor';
@@ -2334,100 +2335,100 @@ class AppLocalizationsRo extends AppLocalizations {
       'Comisia pentru litigiile consumatorilor';
 
   @override
-  String get caseTypeStepLabel => 'Case Type';
+  String get caseTypeStepLabel => 'Tipul cazului';
 
   @override
-  String get detailsStepLabel => 'Details';
+  String get detailsStepLabel => 'Detalii';
 
   @override
-  String get documentsStepLabel => 'Documents';
+  String get documentsStepLabel => 'Documente';
 
   @override
-  String get whatTypeOfCase => 'What type of case is this?';
+  String get whatTypeOfCase => 'Ce tip de caz este acesta?';
 
   @override
   String get selectCategoryDescription =>
-      'Select the category that best describes your situation.';
+      'Selectați categoria care descrie cel mai bine situația dumneavoastră.';
 
   @override
-  String get tellUsAboutCase => 'Tell us about your case';
+  String get tellUsAboutCase => 'Spuneți-ne despre cazul dumneavoastră';
 
   @override
   String get aiHelpsUnderstand =>
-      'This information helps our AI understand your situation better.';
+      'Aceste informații ajută AI-ul nostru să înțeleagă mai bine situația dumneavoastră.';
 
   @override
-  String get caseTitleHint => 'e.g., Residence Permit Appeal 2026';
+  String get caseTitleHint => 'de ex., Contestație permis de ședere 2026';
 
   @override
-  String get countryJurisdiction => 'Country / Jurisdiction';
+  String get countryJurisdiction => 'Țară / Jurisdicție';
 
   @override
-  String get selectCountryHint => 'Select a country';
+  String get selectCountryHint => 'Selectați o țară';
 
   @override
-  String get referenceNumberHint => 'e.g., UMA/12345/2026';
+  String get referenceNumberHint => 'de ex., UMA/12345/2026';
 
   @override
-  String get descriptionOptional => 'Description (optional)';
+  String get descriptionOptional => 'Descriere (opțional)';
 
   @override
   String get descriptionHint =>
-      'Describe your situation briefly. What happened? What decision was made?';
+      'Descrieți pe scurt situația dumneavoastră. Ce s-a întâmplat? Ce decizie a fost luată?';
 
   @override
-  String get uploadFirstDocument => 'Upload your first document';
+  String get uploadFirstDocument => 'Încărcați primul document';
 
   @override
   String get uploadDocumentDescription =>
-      'Upload the decision letter or any relevant document. You can skip this step and add documents later.';
+      'Încărcați scrisoarea de decizie sau orice document relevant. Puteți sări peste acest pas și adăuga documente mai târziu.';
 
   @override
-  String get tapToUploadFile => 'Tap to upload a file';
+  String get tapToUploadFile => 'Atingeți pentru a încărca un fișier';
 
   @override
-  String get fileSizeLimit => 'PDF, JPG, PNG up to 25 MB';
+  String get fileSizeLimit => 'PDF, JPG, PNG până la 25 MB';
 
   @override
   String get addDocumentsLaterHint =>
-      'You can always add documents later from the case detail screen.';
+      'Puteți adăuga oricând documente mai târziu din ecranul de detalii al cazului.';
 
   @override
-  String get callAI => 'Call AI';
+  String get callAI => 'Apelați AI';
 
   @override
   String get comingSoon => 'În curând';
 
   @override
-  String get encrypted => 'Encrypted';
+  String get encrypted => 'Criptat';
 
   @override
-  String get typing => 'Typing…';
+  String get typing => 'Scrie…';
 
   @override
   String get online => 'Online';
 
   @override
   String get chatWelcomeSubtitle =>
-      'I will analyze the situation, check documents, find errors, and suggest what to do.';
+      'Voi analiza situația, voi verifica documentele, voi identifica erorile și voi sugera ce trebuie făcut.';
 
   @override
-  String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
+  String get tapMicrophoneToSpeak => 'Atingeți microfonul pentru a vorbi';
 
   @override
-  String get categoryEssential => 'Essential';
+  String get categoryEssential => 'Esențial';
 
   @override
-  String get categoryPolice => 'Police';
+  String get categoryPolice => 'Poliție';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryWork => 'Muncă';
 
   @override
-  String get categoryHousing => 'Housing';
+  String get categoryHousing => 'Locuință';
 
   @override
-  String get categoryConsumer => 'Consumer';
+  String get categoryConsumer => 'Consumator';
 
   @override
   String rightsInsideCount(int count) {
@@ -2442,33 +2443,33 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get freeAidThreshold => 'Free aid threshold';
+  String get freeAidThreshold => 'Prag pentru asistență gratuită';
 
   @override
-  String get partialAidThreshold => 'Partial aid threshold';
+  String get partialAidThreshold => 'Prag pentru asistență parțială';
 
   @override
-  String get assetLimit => 'Asset limit';
+  String get assetLimit => 'Limita de active';
 
   @override
-  String get whereToApplyLabel => 'Where to apply';
+  String get whereToApplyLabel => 'Unde se depune cererea';
 
   @override
-  String get phoneLabel => 'Phone';
+  String get phoneLabel => 'Telefon';
 
   @override
   String get websiteLabel => 'Website';
 
   @override
-  String get disclaimerCollapsed => 'AI guidance only';
+  String get disclaimerCollapsed => 'Doar îndrumare AI';
 
   @override
   String get disclaimerExpanded =>
-      'AI assistant — not legal advice. Always verify with a qualified lawyer.';
+      'Asistent AI — nu constituie consultanță juridică. Verificați întotdeauna cu un avocat calificat.';
 
   @override
   String get chatDisclaimerBanner =>
-      'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.';
+      'Asistentul AI oferă informații juridice, nu consultanță juridică. Consultați întotdeauna un avocat calificat.';
 
   @override
   String get chatDisclaimerSubtitle =>
@@ -3212,13 +3213,13 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get deadlineRadarTitle => 'Upcoming deadlines';
+  String get deadlineRadarTitle => 'Termene viitoare';
 
   @override
-  String get deadlineRadarEmpty => 'No upcoming deadlines';
+  String get deadlineRadarEmpty => 'Niciun termen viitor';
 
   @override
-  String get deadlineRadarViewAll => 'View all';
+  String get deadlineRadarViewAll => 'Vezi toate';
 
   @override
   String deadlineCardDaysLeft(int count) {
@@ -3233,10 +3234,10 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardTomorrow => 'tomorrow';
+  String get deadlineCardTomorrow => 'mâine';
 
   @override
-  String get deadlineCardToday => 'today';
+  String get deadlineCardToday => 'astăzi';
 
   @override
   String deadlineCardOverdue(int count) {
@@ -3250,200 +3251,201 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardMarkComplete => 'Mark complete';
+  String get deadlineCardMarkComplete => 'Marchează ca finalizat';
 
   @override
-  String get deadlineCardSnooze => 'Snooze';
+  String get deadlineCardSnooze => 'Amână';
 
   @override
-  String get deadlineCardSnooze3d => 'Snooze 3 days';
+  String get deadlineCardSnooze3d => 'Amână 3 zile';
 
   @override
-  String get deadlineCardSnooze7d => 'Snooze 7 days';
+  String get deadlineCardSnooze7d => 'Amână 7 zile';
 
   @override
-  String get deadlineCardSnoozeCustom => 'Pick a date';
+  String get deadlineCardSnoozeCustom => 'Alege o dată';
 
   @override
-  String get deadlineCardEdit => 'Edit';
+  String get deadlineCardEdit => 'Editează';
 
   @override
-  String get deadlineCardDelete => 'Archive';
+  String get deadlineCardDelete => 'Arhivează';
 
   @override
-  String get deadlineCardSourceLabelPdf => 'from PDF';
+  String get deadlineCardSourceLabelPdf => 'din PDF';
 
   @override
-  String get deadlineCardSourceLabelIntake => 'from intake';
+  String get deadlineCardSourceLabelIntake => 'din formularul de admitere';
 
   @override
-  String get deadlineCardSourceLabelManual => 'added manually';
+  String get deadlineCardSourceLabelManual => 'adăugat manual';
 
   @override
-  String get deadlineCardSourceLabelEmail => 'from email';
+  String get deadlineCardSourceLabelEmail => 'din e-mail';
 
   @override
-  String get deadlineCardSourceLabelHaikuExtract => 'AI-extracted';
+  String get deadlineCardSourceLabelHaikuExtract => 'extras de AI';
 
   @override
-  String get deadlineCardSourceLabelStatutoryTemplate => 'statute template';
+  String get deadlineCardSourceLabelStatutoryTemplate => 'șablon legal';
 
   @override
   String deadlineBannerCritical(String title, String when) {
-    return 'Critical deadline $title $when';
+    return 'Termen critic $title $when';
   }
 
   @override
-  String get deadlineBannerDismiss => 'Dismiss';
+  String get deadlineBannerDismiss => 'Închide';
 
   @override
-  String get deadlineBannerOpen => 'Open deadline';
+  String get deadlineBannerOpen => 'Deschide termenul';
 
   @override
   String deadlineHolidayShifted(String original, String reason) {
-    return 'Shifted from $original due to $reason';
+    return 'Amânat de la $original din cauza $reason';
   }
 
   @override
-  String get deadlinePermissionAskTitle => 'Enable deadline reminders?';
+  String get deadlinePermissionAskTitle => 'Activați remindere pentru termene?';
 
   @override
   String get deadlinePermissionAskBody =>
-      'We\'ll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.';
+      'Vă vom notifica cu 7, 3 și 1 zi înainte de fiecare termen legal, plus în dimineața respectivă. Nu este folosit niciodată pentru marketing.';
 
   @override
-  String get deadlinePermissionAllow => 'Allow';
+  String get deadlinePermissionAllow => 'Permite';
 
   @override
-  String get deadlinePermissionLater => 'Later';
+  String get deadlinePermissionLater => 'Mai târziu';
 
   @override
-  String get deadlineSettingsSection => 'Deadline reminders';
+  String get deadlineSettingsSection => 'Remindere pentru termene';
 
   @override
-  String get deadlineSettingsPushChannel => 'Push notifications';
+  String get deadlineSettingsPushChannel => 'Notificări push';
 
   @override
-  String get deadlineSettingsEmailChannel => 'Email (critical only)';
+  String get deadlineSettingsEmailChannel => 'E-mail (doar critic)';
 
   @override
-  String get deadlineSettingsInAppChannel => 'In-app banners';
+  String get deadlineSettingsInAppChannel => 'Bannere în aplicație';
 
   @override
   String get deadlineSettingsCriticalBypass =>
-      'Critical reminders bypass quiet hours';
+      'Reminderele critice ignoră orele de liniște';
 
   @override
-  String get deadlineSettingsQuietHours => 'Quiet hours';
+  String get deadlineSettingsQuietHours => 'Ore de liniște';
 
   @override
   String deadlineSettingsQuietHoursBadge(String start, String end) {
-    return 'Quiet $start–$end';
+    return 'Liniște $start–$end';
   }
 
   @override
-  String get deadlineCaseScreenTitle => 'Case deadlines';
+  String get deadlineCaseScreenTitle => 'Termene ale cazului';
 
   @override
-  String get deadlineAddManualCta => 'Add deadline';
+  String get deadlineAddManualCta => 'Adaugă termen';
 
   @override
-  String get deadlineFormTitle => 'Title';
+  String get deadlineFormTitle => 'Titlu';
 
   @override
-  String get deadlineFormDescription => 'Description (optional)';
+  String get deadlineFormDescription => 'Descriere (opțional)';
 
   @override
-  String get deadlineFormStatuteTemplate => 'Statute template';
+  String get deadlineFormStatuteTemplate => 'Șablon legal';
 
   @override
-  String get deadlineFormStatuteTemplateNone => 'None (manual)';
+  String get deadlineFormStatuteTemplateNone => 'Niciunul (manual)';
 
   @override
-  String get deadlineFormDeadlineAt => 'Deadline date';
+  String get deadlineFormDeadlineAt => 'Data termenului';
 
   @override
-  String get deadlineFormPriority => 'Priority';
+  String get deadlineFormPriority => 'Prioritate';
 
   @override
-  String get deadlineFormSave => 'Save';
+  String get deadlineFormSave => 'Salvează';
 
   @override
-  String get deadlineFormCancel => 'Cancel';
+  String get deadlineFormCancel => 'Anulează';
 
   @override
-  String get deadlineCompletedNotePrompt => 'Add a note (optional)';
+  String get deadlineCompletedNotePrompt => 'Adăugați o notă (opțional)';
 
   @override
-  String get deadlineCompletedNoteSave => 'Save';
+  String get deadlineCompletedNoteSave => 'Salvează';
 
   @override
   String get inboxTitle => 'Inbox';
 
   @override
-  String get inboxEmptyTitle => 'Nothing pending';
+  String get inboxEmptyTitle => 'Nimic în așteptare';
 
   @override
   String get inboxEmptyBody =>
-      'New email threads will appear here as they get triaged.';
+      'Firele de e-mail noi vor apărea aici pe măsură ce sunt triate.';
 
   @override
-  String get inboxApproveSend => 'Approve & send';
+  String get inboxApproveSend => 'Aprobă și trimite';
 
   @override
-  String get inboxEditDraft => 'Edit';
+  String get inboxEditDraft => 'Editează';
 
   @override
-  String get inboxSnooze => 'Snooze';
+  String get inboxSnooze => 'Amână';
 
   @override
-  String get inboxArchive => 'Archive';
+  String get inboxArchive => 'Arhivează';
 
   @override
-  String get inboxFilterAll => 'All';
+  String get inboxFilterAll => 'Toate';
 
   @override
-  String get inboxConfirmSendTitle => 'Send the prepared reply?';
+  String get inboxConfirmSendTitle => 'Trimiteți răspunsul pregătit?';
 
   @override
   String get inboxConfirmSendBody =>
-      'Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.';
+      'Advocat va trimite răspunsul pregătit de AI prin contul dumneavoastră Gmail conectat. Puteți revizui conținutul în ecranul următor.';
 
   @override
-  String get inboxSendButton => 'Send';
+  String get inboxSendButton => 'Trimite';
 
   @override
-  String get inboxSentToast => 'Sent.';
+  String get inboxSentToast => 'Trimis.';
 
   @override
-  String get inboxAlreadySentToast => 'Already sent.';
+  String get inboxAlreadySentToast => 'Deja trimis.';
 
   @override
-  String get inboxSendErrorToast => 'Could not send the reply. Tap retry.';
+  String get inboxSendErrorToast =>
+      'Răspunsul nu a putut fi trimis. Atingeți pentru a reîncerca.';
 
   @override
-  String get inboxSnoozedToast => 'Snoozed for 24h.';
+  String get inboxSnoozedToast => 'Amânat cu 24h.';
 
   @override
-  String get inboxArchivedToast => 'Archived.';
+  String get inboxArchivedToast => 'Arhivat.';
 
   @override
-  String get inboxDraftLoadError => 'Could not load draft.';
+  String get inboxDraftLoadError => 'Ciorna nu a putut fi încărcată.';
 
   @override
-  String get inboxDeadlineToday => 'today';
+  String get inboxDeadlineToday => 'astăzi';
 
   @override
-  String get inboxDeadlineTomorrow => 'tomorrow';
+  String get inboxDeadlineTomorrow => 'mâine';
 
   @override
   String inboxDeadlineInDays(int days) {
-    return 'in ${days}d';
+    return 'în ${days}z';
   }
 
   @override
   String inboxDeadlineOverdue(int days) {
-    return 'overdue ${days}d';
+    return 'întârziat ${days}z';
   }
 
   @override
@@ -3493,7 +3495,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String parallelActionsCitationCount(int count) {
-    return '$count cit';
+    return '$count citări';
   }
 
   @override
@@ -3555,28 +3557,30 @@ class AppLocalizationsRo extends AppLocalizations {
   String get inboxEditDiscard => 'Renunță';
 
   @override
-  String get workspaceTabOverview => 'Overview';
+  String get workspaceTabOverview => 'Prezentare generală';
 
   @override
   String get workspaceTabChat => 'Chat';
 
   @override
-  String get workspaceTabDrafts => 'Drafts';
+  String get workspaceTabDrafts => 'Ciorne';
 
   @override
-  String get workspaceOverviewEmpty => 'Add documents to build a summary.';
+  String get workspaceOverviewEmpty =>
+      'Adăugați documente pentru a genera un rezumat.';
 
   @override
-  String get workspaceTimelineEmpty => 'No events yet.';
+  String get workspaceTimelineEmpty => 'Niciun eveniment încă.';
 
   @override
-  String get workspaceDocumentsEmpty => 'No documents. Upload from Scan.';
+  String get workspaceDocumentsEmpty =>
+      'Niciun document. Încărcați din Scanare.';
 
   @override
-  String get workspaceDraftsEmpty => 'No drafts yet.';
+  String get workspaceDraftsEmpty => 'Nicio ciornă încă.';
 
   @override
-  String get workspaceInboxEmpty => 'No related email.';
+  String get workspaceInboxEmpty => 'Niciun e-mail asociat.';
 
   @override
   String get plannerSettingsTitle => 'Raționament juridic în trei etape';
@@ -4254,195 +4258,197 @@ class AppLocalizationsRo extends AppLocalizations {
   String get softCaseShellBannerCta => 'Redenumește';
 
   @override
-  String get draftsTab => 'Drafts';
+  String get draftsTab => 'Ciorne';
 
   @override
-  String get draftingTitle => 'Drafting Studio';
+  String get draftingTitle => 'Studio de redactare';
 
   @override
-  String get draftingEmpty => 'Empty draft';
+  String get draftingEmpty => 'Ciornă goală';
 
   @override
-  String get draftingPlaceholder => 'Start typing your draft…';
+  String get draftingPlaceholder => 'Începeți să scrieți ciorna…';
 
   @override
-  String get draftingDraftsList => 'My drafts';
+  String get draftingDraftsList => 'Ciornele mele';
 
   @override
-  String get draftingSave => 'Save';
+  String get draftingSave => 'Salvează';
 
   @override
-  String get draftingSaved => 'Saved';
+  String get draftingSaved => 'Salvat';
 
   @override
-  String get draftingSavedJustNow => 'Saved just now';
+  String get draftingSavedJustNow => 'Salvat acum câteva clipe';
 
   @override
-  String get draftingAiRevise => 'Revise with AI';
+  String get draftingAiRevise => 'Revizuiește cu AI';
 
   @override
-  String get draftingExportPdf => 'Export PDF';
+  String get draftingExportPdf => 'Exportă PDF';
 
   @override
-  String get draftingExportDocx => 'Export DOCX';
+  String get draftingExportDocx => 'Exportă DOCX';
 
   @override
-  String get draftingExportMd => 'Export Markdown';
+  String get draftingExportMd => 'Exportă Markdown';
 
   @override
-  String get draftingDeleteDraft => 'Delete draft';
+  String get draftingDeleteDraft => 'Șterge ciorna';
 
   @override
-  String get draftingConfirmDelete => 'Delete this draft?';
+  String get draftingConfirmDelete => 'Ștergeți această ciornă?';
 
   @override
-  String get draftingConfirmDeleteMessage => 'This action cannot be undone.';
+  String get draftingConfirmDeleteMessage =>
+      'Această acțiune nu poate fi anulată.';
 
   @override
-  String get draftingConfirm => 'Delete';
+  String get draftingConfirm => 'Șterge';
 
   @override
-  String get draftingCancel => 'Cancel';
+  String get draftingCancel => 'Anulează';
 
   @override
   String draftingDraftReplyTo(String name) {
-    return 'Reply to $name';
+    return 'Răspunde către $name';
   }
 
   @override
-  String get draftingUntitled => 'Untitled';
+  String get draftingUntitled => 'Fără titlu';
 
   @override
-  String get draftingTitleHint => 'Title (optional)';
+  String get draftingTitleHint => 'Titlu (opțional)';
 
   @override
-  String get draftingAiReviseTitle => 'Revise with AI';
+  String get draftingAiReviseTitle => 'Revizuiește cu AI';
 
   @override
-  String get draftingAiReviseSelectionLabel => 'Selected text:';
+  String get draftingAiReviseSelectionLabel => 'Text selectat:';
 
   @override
-  String get draftingAiReviseInstructionLabel => 'Instruction (optional)';
+  String get draftingAiReviseInstructionLabel => 'Instrucțiune (opțional)';
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'e.g. \"make it more formal\" or \"shorten\"';
+      'de ex. „faceți-l mai formal” sau „scurtați”';
 
   @override
-  String get draftingAiReviseRunButton => 'Generate revision';
+  String get draftingAiReviseRunButton => 'Generează revizuire';
 
   @override
-  String get draftingAiReviseSuggestionLabel => 'Suggested revision:';
+  String get draftingAiReviseSuggestionLabel => 'Revizuire sugerată:';
 
   @override
-  String get draftingAiReviseChangesLabel => 'Changes:';
+  String get draftingAiReviseChangesLabel => 'Modificări:';
 
   @override
-  String get draftingAiReviseAccept => 'Accept';
+  String get draftingAiReviseAccept => 'Acceptă';
 
   @override
-  String get draftingAiReviseReject => 'Reject';
+  String get draftingAiReviseReject => 'Respinge';
 
   @override
-  String get draftingFormatBold => 'Bold';
+  String get draftingFormatBold => 'Aldin';
 
   @override
-  String get draftingFormatItalic => 'Italic';
+  String get draftingFormatItalic => 'Cursiv';
 
   @override
-  String get draftingFormatHeading => 'Heading';
+  String get draftingFormatHeading => 'Titlu de secțiune';
 
   @override
-  String get draftingFormatBullet => 'Bullet list';
+  String get draftingFormatBullet => 'Listă cu marcatori';
 
   @override
-  String get draftingFormatNumbered => 'Numbered list';
+  String get draftingFormatNumbered => 'Listă numerotată';
 
   @override
-  String get draftingEmptyListMessage => 'You have no drafts yet.';
+  String get draftingEmptyListMessage => 'Nu aveți încă nicio ciornă.';
 
   @override
-  String get draftingEmptyListAction => 'New draft';
+  String get draftingEmptyListAction => 'Ciornă nouă';
 
   @override
-  String get draftingExporting => 'Exporting…';
+  String get draftingExporting => 'Se exportă…';
 
   @override
-  String get draftingExportFailed => 'Export failed';
+  String get draftingExportFailed => 'Exportul a eșuat';
 
   @override
-  String get draftingSaveFailed => 'Save failed';
+  String get draftingSaveFailed => 'Salvarea a eșuat';
 
   @override
-  String get draftingNewDraft => 'New draft';
+  String get draftingNewDraft => 'Ciornă nouă';
 
   @override
-  String get vaultNoteChip => 'Vault note';
+  String get vaultNoteChip => 'Notă în Vault';
 
   @override
-  String get saveToVault => 'Save to Vault';
+  String get saveToVault => 'Salvează în Vault';
 
   @override
-  String get savingToVault => 'Saving to Vault…';
+  String get savingToVault => 'Se salvează în Vault…';
 
   @override
-  String get savedToVault => 'Saved to Vault';
+  String get savedToVault => 'Salvat în Vault';
 
   @override
-  String get vaultNoteTitlePrefix => 'Note: ';
+  String get vaultNoteTitlePrefix => 'Notă: ';
 
   @override
-  String get openInVault => 'Open in Vault';
+  String get openInVault => 'Deschide în Vault';
 
   @override
-  String get saveToVaultFailed => 'Save to Vault failed';
+  String get saveToVaultFailed => 'Salvarea în Vault a eșuat';
 
   @override
   String get pdfWorkerUnavailable =>
-      'PDF export is temporarily unavailable. Please try DOCX or Markdown.';
+      'Exportul PDF este temporar indisponibil. Încercați DOCX sau Markdown.';
 
   @override
-  String get draftingVersionHistory => 'Version history';
+  String get draftingVersionHistory => 'Istoric versiuni';
 
   @override
-  String get emptyHomeTitle => 'Welcome to Advocat';
+  String get emptyHomeTitle => 'Bun venit la Advocat';
 
   @override
   String get emptyHomeBody =>
-      'Pick a starting point — we’ll handle the legal heavy lifting.';
+      'Alegeți un punct de plecare — noi ne ocupăm de partea juridică complicată.';
 
   @override
-  String get intentChip1 => 'Got a fine';
+  String get intentChip1 => 'Am primit o amendă';
 
   @override
-  String get intentChip2 => 'Permit denied';
+  String get intentChip2 => 'Permis refuzat';
 
   @override
-  String get intentChip3 => 'Contract problem';
+  String get intentChip3 => 'Problemă contractuală';
 
   @override
-  String get emptyCasesTitle => 'No cases yet';
+  String get emptyCasesTitle => 'Niciun caz încă';
 
   @override
-  String get emptyCasesCta => 'Start a case';
+  String get emptyCasesCta => 'Începeți un caz';
 
   @override
-  String get emptyDraftsTitle => 'No drafts yet';
+  String get emptyDraftsTitle => 'Nicio ciornă încă';
 
   @override
-  String get emptyDraftsCta => 'Create draft';
+  String get emptyDraftsCta => 'Creează ciornă';
 
   @override
-  String get emptyChatTitle => 'Ask Advocat anything';
+  String get emptyChatTitle => 'Întrebați orice pe Advocat';
 
   @override
-  String get chatExamplePrompt1 => 'Help me reply to a fine';
+  String get chatExamplePrompt1 => 'Ajutați-mă să răspund la o amendă';
 
   @override
-  String get chatExamplePrompt2 => 'Review my rental contract';
+  String get chatExamplePrompt2 => 'Revizuiți contractul meu de închiriere';
 
   @override
-  String get chatExamplePrompt3 => 'What are my rights at work?';
+  String get chatExamplePrompt3 =>
+      'Care sunt drepturile mele la locul de muncă?';
 
   @override
   String get dangerZone => '[en] Danger zone';
@@ -4467,113 +4473,113 @@ class AppLocalizationsRo extends AppLocalizations {
   String get deletingAccount => '[en] Deleting account…';
 
   @override
-  String get contractReviewTitle => 'Contract Review';
+  String get contractReviewTitle => 'Revizuire contract';
 
   @override
-  String get contractReviewUploadCta => 'Upload contract';
+  String get contractReviewUploadCta => 'Încărcați contractul';
 
   @override
   String get contractReviewQuotaRemaining =>
-      'Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.';
+      'Încărcați un contract PDF, DOC, DOCX sau TXT pentru o revizuire AI cu semnale de alarmă și sfaturi de negociere.';
 
   @override
-  String get contractReviewRedFlags => 'Red flags';
+  String get contractReviewRedFlags => 'Semnale de alarmă';
 
   @override
-  String get contractReviewReviewPoints => 'Review points';
+  String get contractReviewReviewPoints => 'Puncte de revizuit';
 
   @override
-  String get contractReviewNegotiationTips => 'Negotiation tips';
+  String get contractReviewNegotiationTips => 'Sfaturi de negociere';
 
   @override
-  String get contractReviewSaveToVault => 'Save to Vault';
+  String get contractReviewSaveToVault => 'Salvează în Vault';
 
   @override
-  String get contractReviewContinueChat => 'Continue in chat';
+  String get contractReviewContinueChat => 'Continuă în chat';
 
   @override
-  String get referralInviteFriends => 'Invite Friends';
+  String get referralInviteFriends => 'Invitați prieteni';
 
   @override
-  String get referralYourCode => 'Your code';
+  String get referralYourCode => 'Codul dumneavoastră';
 
   @override
-  String get referralCopiedToast => 'Code copied to clipboard';
+  String get referralCopiedToast => 'Cod copiat în clipboard';
 
   @override
   String get referralReward =>
-      'Get 1 month of Counsel free for every friend who subscribes.';
+      'Primiți 1 lună de Counsel gratuit pentru fiecare prieten care se abonează.';
 
   @override
-  String get referralInvited => 'Friends invited';
+  String get referralInvited => 'Prieteni invitați';
 
   @override
-  String get referralRewardsEarned => 'Free months earned';
+  String get referralRewardsEarned => 'Luni gratuite câștigate';
 
   @override
-  String get deadlineUrgencyToday => 'Today & Overdue';
+  String get deadlineUrgencyToday => 'Astăzi și restante';
 
   @override
-  String get deadlineUrgencyWeek => 'This week';
+  String get deadlineUrgencyWeek => 'Săptămâna aceasta';
 
   @override
-  String get deadlineUrgencyMonth => 'This month';
+  String get deadlineUrgencyMonth => 'Luna aceasta';
 
   @override
-  String get deadlineUrgencyLater => 'Later';
+  String get deadlineUrgencyLater => 'Mai târziu';
 
   @override
-  String get deadlineAddManual => 'Add deadline';
+  String get deadlineAddManual => 'Adaugă termen';
 
   @override
-  String get deadlineSnoozeBy => 'Snooze';
+  String get deadlineSnoozeBy => 'Amână';
 
   @override
-  String get deadlineSnooze1d => 'Snooze 1 day';
+  String get deadlineSnooze1d => 'Amână 1 zi';
 
   @override
-  String get deadlineSnooze3d => 'Snooze 3 days';
+  String get deadlineSnooze3d => 'Amână 3 zile';
 
   @override
-  String get deadlineSnooze7d => 'Snooze 7 days';
+  String get deadlineSnooze7d => 'Amână 7 zile';
 
   @override
-  String get deadlineDismiss => 'Dismiss';
+  String get deadlineDismiss => 'Închide';
 
   @override
-  String get deadlineExportIcs => 'Add to calendar';
+  String get deadlineExportIcs => 'Adaugă în calendar';
 
   @override
-  String get deadlineSource => 'Source';
+  String get deadlineSource => 'Sursă';
 
   @override
   String get deadlineEmpty =>
-      'No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.';
+      'Niciun termen încă. Termenele sunt create automat din e-mailurile și documentele dumneavoastră — sau adăugați unul manual cu butonul +.';
 
   @override
-  String get deadlineNewTitle => 'New deadline';
+  String get deadlineNewTitle => 'Termen nou';
 
   @override
-  String get deadlineFieldTitle => 'Title';
+  String get deadlineFieldTitle => 'Titlu';
 
   @override
-  String get deadlineFieldDueDate => 'Due date';
+  String get deadlineFieldDueDate => 'Data scadentă';
 
   @override
-  String get deadlineFieldNotes => 'Notes (optional)';
+  String get deadlineFieldNotes => 'Note (opțional)';
 
   @override
-  String get deadlineSaved => 'Deadline saved';
+  String get deadlineSaved => 'Termen salvat';
 
   @override
-  String get deadlineSaveFailed => 'Could not save deadline';
+  String get deadlineSaveFailed => 'Termenul nu a putut fi salvat';
 
   @override
-  String get deadlineUrgentBannerSingle => '1 deadline today or overdue';
+  String get deadlineUrgentBannerSingle => '1 termen astăzi sau restant';
 
   @override
   String deadlineUrgentBannerMany(int count) {
-    return '$count deadlines today or overdue';
+    return '$count termene astăzi sau restante';
   }
 
   @override
@@ -4581,9 +4587,9 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days left',
-      one: '1 day left',
-      zero: 'today',
+      other: 'mai rămân $count zile',
+      one: 'mai rămâne 1 zi',
+      zero: 'astăzi',
     );
     return '$_temp0';
   }
@@ -4593,8 +4599,8 @@ class AppLocalizationsRo extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days overdue',
-      one: '1 day overdue',
+      other: 'restant de $count zile',
+      one: 'restant de 1 zi',
     );
     return '$_temp0';
   }
@@ -4616,11 +4622,11 @@ class AppLocalizationsRo extends AppLocalizations {
   String get iapRestoreNoActive => 'Nu există abonament activ de restaurat.';
 
   @override
-  String get deadlineEuRadarTitle => 'EU deadline radar (preview)';
+  String get deadlineEuRadarTitle => 'Radar termene UE (previzualizare)';
 
   @override
   String get deadlineEuRadarSubtitle =>
-      'Hypothetical EU procedural deadlines — mock data';
+      'Termene procedurale UE ipotetice — date simulate';
 
   @override
   String get changePassword => 'Schimbă parola';

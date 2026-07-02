@@ -15,19 +15,19 @@ class AppLocalizationsTr extends AppLocalizations {
   String get aboutSection => 'HAKKINDA';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Görünüm';
 
   @override
-  String get appearanceSystem => 'System (auto)';
+  String get appearanceSystem => 'Sistem (otomatik)';
 
   @override
-  String get appearanceLight => 'Light';
+  String get appearanceLight => 'Açık';
 
   @override
-  String get appearanceDark => 'Dark';
+  String get appearanceDark => 'Koyu';
 
   @override
-  String get appearanceDescription => 'Choose how Advocat looks';
+  String get appearanceDescription => 'Advocat\'ın görünümünü seçin';
 
   @override
   String get accidents => 'Kazalar';
@@ -1685,7 +1685,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
+      'Merhaba! Ben Advocat — yapay zeka destekli hukuk asistanınızım. Hukuki bilgi sunarım, hukuki tavsiye vermem. Hangi hukuki konuda yardımcı olabilirim?';
 
   @override
   String get copySummary => 'Özeti kopyala';
@@ -1742,20 +1742,20 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get aiDisclaimerCompact =>
-      'Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.';
+      'Advocat yapay zeka destekli hukuki bilgi sunar, hukuki tavsiye değildir. Harekete geçmeden önce ruhsatlı bir avukata danışın.';
 
   @override
-  String get aiDisclaimerFullTitle => 'Important: how Advocat works';
+  String get aiDisclaimerFullTitle => 'Önemli: Advocat nasıl çalışır';
 
   @override
   String get aiDisclaimerFullBody =>
-      'Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.';
+      'Advocat, hukuki bilgi sunan bir yapay zeka aracıdır; hukuki tavsiye vermez. AB Yapay Zeka Yasası (Madde 50) uyarınca size açıkça bildirmemiz gerekir: bir insan avukatla değil, yapay zeka ile etkileşimdesiniz.\n\nAdvocat bir hukuk bürosu değildir. Estonya Advokatuuriseadus veya Fin Asianajajalaki kapsamında ruhsatlı avukatlar değiliz ve bu araçla yaptığınız görüşmeler avukat-müvekkil gizliliği kapsamında değildir. Herhangi bir çıktıya güvenmeden önce — itiraz dosyalamak, sözleşme imzalamak veya bir süreyle ilgili işlem yapmak için — kendi yargı bölgenizdeki ruhsatlı bir avukata danışın.';
 
   @override
-  String get aiDisclaimerExpand => 'Learn more';
+  String get aiDisclaimerExpand => 'Daha fazla bilgi';
 
   @override
-  String get aiDisclaimerDismiss => 'OK, I understand';
+  String get aiDisclaimerDismiss => 'Tamam, anladım';
 
   @override
   String get dataPrivacyConsent => 'Veri Gizliliği Onayı';
@@ -1831,7 +1831,8 @@ class AppLocalizationsTr extends AppLocalizations {
       'Estonya Ticaret Siciline (Äriregister) kayıtlıdır';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer =>
+      'Yapay zeka tarafından oluşturuldu • Hukuki tavsiye değildir';
 
   @override
   String get decline => 'Reddet';
@@ -2159,67 +2160,67 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get inheritanceDesc =>
-      'Wills, estate, heirs\' rights, forced heirship, probate';
+      'Vasiyetnameler, miras, mirasçı hakları, saklı pay, terekenin tasfiyesi';
 
   @override
   String get rightInheritanceForced =>
-      'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will';
+      'Saklı paylı mirasçılar (çocuklar, eş) vasiyetten bağımsız olarak zorunlu bir paya hak kazanır';
 
   @override
   String get rightInheritanceWill =>
-      'You have the right to make a will disposing of your property — notarized wills have the strongest legal force';
+      'Mal varlığınızı düzenleyen bir vasiyetname yapma hakkınız vardır — noter onaylı vasiyetnameler en güçlü hukuki geçerliliğe sahiptir';
 
   @override
   String get rightInheritanceRenounce =>
-      'You can renounce an inheritance within 3 months of learning about it';
+      'Öğrendiğiniz tarihten itibaren 3 ay içinde mirası reddedebilirsiniz';
 
   @override
   String get rightInheritanceInfo =>
-      'You have the right to obtain information about the estate from banks and registries';
+      'Bankalardan ve sicillerden tereke hakkında bilgi alma hakkınız vardır';
 
   @override
   String get rightInheritanceDispute =>
-      'You can challenge an unfair will in court within the statutory limitation period';
+      'Haksız bir vasiyetnameye yasal zamanaşımı süresi içinde mahkemede itiraz edebilirsiniz';
 
   @override
   String get mustFileInheritance =>
-      'File for succession proceedings at a notary within a reasonable time';
+      'Makul bir süre içinde bir noterde miras işlemleri başlatılmalıdır';
 
   @override
   String get mustNotifyHeirs =>
-      'All known heirs must be notified of the succession proceedings';
+      'Bilinen tüm mirasçılara miras işlemleri hakkında bildirim yapılmalıdır';
 
   @override
   String get inheritanceActionGatherDocs =>
-      'Gather all documents: death certificate, will, property records, bank statements';
+      'Tüm belgeleri toplayın: ölüm belgesi, vasiyetname, mülkiyet kayıtları, banka ekstreleri';
 
   @override
   String get inheritanceActionContactNotary =>
-      'Contact a notary to open succession proceedings';
+      'Miras işlemlerini başlatmak için bir noterle iletişime geçin';
 
   @override
   String get inheritanceActionCheckDebts =>
-      'Check whether the estate has debts before accepting inheritance';
+      'Mirası kabul etmeden önce terekede borç olup olmadığını kontrol edin';
 
   @override
   String get inheritanceActionFileCourt =>
-      'If the will is disputed, file a claim in court';
+      'Vasiyetname tartışmalıysa mahkemeye dava açın';
 
   @override
   String get inheritanceDeadlineRenounce =>
-      '3 months to renounce inheritance after learning of it';
+      'Öğrenildikten sonra mirası reddetmek için 3 ay';
 
   @override
   String get inheritanceDeadlineDispute =>
-      'Statute of limitations for challenging a will: varies by grounds';
+      'Vasiyetnameye itiraz için zamanaşımı süresi: gerekçeye göre değişir';
 
   @override
   String get inheritanceFactForced =>
-      'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will';
+      'Estonya\'da altsoy ve eş, vasiyetnameden hariç tutulsa bile yasal payın yarısı oranında saklı bir paya sahiptir';
 
   @override
   String get inheritanceFactNotary =>
-      'All succession proceedings in Estonia must go through a notary — you cannot skip this step';
+      'Estonya\'da tüm miras işlemleri bir noter aracılığıyla yürütülmelidir — bu adım atlanamaz';
 
   @override
   String get consumerProtection => 'Tüketici koruması';
@@ -2304,100 +2305,100 @@ class AppLocalizationsTr extends AppLocalizations {
       'Tüketici Uyuşmazlıkları Kurulu';
 
   @override
-  String get caseTypeStepLabel => 'Case Type';
+  String get caseTypeStepLabel => 'Dava Türü';
 
   @override
-  String get detailsStepLabel => 'Details';
+  String get detailsStepLabel => 'Detaylar';
 
   @override
-  String get documentsStepLabel => 'Documents';
+  String get documentsStepLabel => 'Belgeler';
 
   @override
-  String get whatTypeOfCase => 'What type of case is this?';
+  String get whatTypeOfCase => 'Bu ne tür bir dava?';
 
   @override
   String get selectCategoryDescription =>
-      'Select the category that best describes your situation.';
+      'Durumunuzu en iyi tanımlayan kategoriyi seçin.';
 
   @override
-  String get tellUsAboutCase => 'Tell us about your case';
+  String get tellUsAboutCase => 'Davanız hakkında bize bilgi verin';
 
   @override
   String get aiHelpsUnderstand =>
-      'This information helps our AI understand your situation better.';
+      'Bu bilgiler yapay zekamızın durumunuzu daha iyi anlamasına yardımcı olur.';
 
   @override
-  String get caseTitleHint => 'e.g., Residence Permit Appeal 2026';
+  String get caseTitleHint => 'örn. İkamet İzni İtirazı 2026';
 
   @override
-  String get countryJurisdiction => 'Country / Jurisdiction';
+  String get countryJurisdiction => 'Ülke / Yargı Bölgesi';
 
   @override
-  String get selectCountryHint => 'Select a country';
+  String get selectCountryHint => 'Bir ülke seçin';
 
   @override
-  String get referenceNumberHint => 'e.g., UMA/12345/2026';
+  String get referenceNumberHint => 'örn. UMA/12345/2026';
 
   @override
-  String get descriptionOptional => 'Description (optional)';
+  String get descriptionOptional => 'Açıklama (isteğe bağlı)';
 
   @override
   String get descriptionHint =>
-      'Describe your situation briefly. What happened? What decision was made?';
+      'Durumunuzu kısaca açıklayın. Ne oldu? Hangi karar verildi?';
 
   @override
-  String get uploadFirstDocument => 'Upload your first document';
+  String get uploadFirstDocument => 'İlk belgenizi yükleyin';
 
   @override
   String get uploadDocumentDescription =>
-      'Upload the decision letter or any relevant document. You can skip this step and add documents later.';
+      'Karar yazısını veya ilgili bir belgeyi yükleyin. Bu adımı atlayıp belgeleri daha sonra da ekleyebilirsiniz.';
 
   @override
-  String get tapToUploadFile => 'Tap to upload a file';
+  String get tapToUploadFile => 'Bir dosya yüklemek için dokunun';
 
   @override
-  String get fileSizeLimit => 'PDF, JPG, PNG up to 25 MB';
+  String get fileSizeLimit => 'PDF, JPG, PNG — 25 MB\'a kadar';
 
   @override
   String get addDocumentsLaterHint =>
-      'You can always add documents later from the case detail screen.';
+      'Belgeleri her zaman dava detay ekranından daha sonra ekleyebilirsiniz.';
 
   @override
-  String get callAI => 'Call AI';
+  String get callAI => 'Yapay Zekayı Ara';
 
   @override
   String get comingSoon => 'Yakında';
 
   @override
-  String get encrypted => 'Encrypted';
+  String get encrypted => 'Şifrelenmiş';
 
   @override
-  String get typing => 'Typing…';
+  String get typing => 'Yazıyor…';
 
   @override
-  String get online => 'Online';
+  String get online => 'Çevrimiçi';
 
   @override
   String get chatWelcomeSubtitle =>
-      'I will analyze the situation, check documents, find errors, and suggest what to do.';
+      'Durumu analiz edeceğim, belgeleri kontrol edeceğim, hataları bulacağım ve ne yapmanız gerektiğini öneceğim.';
 
   @override
-  String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
+  String get tapMicrophoneToSpeak => 'Konuşmak için mikrofona dokunun';
 
   @override
-  String get categoryEssential => 'Essential';
+  String get categoryEssential => 'Temel';
 
   @override
-  String get categoryPolice => 'Police';
+  String get categoryPolice => 'Polis';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryWork => 'İş';
 
   @override
-  String get categoryHousing => 'Housing';
+  String get categoryHousing => 'Konut';
 
   @override
-  String get categoryConsumer => 'Consumer';
+  String get categoryConsumer => 'Tüketici';
 
   @override
   String rightsInsideCount(int count) {
@@ -2411,33 +2412,33 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get freeAidThreshold => 'Free aid threshold';
+  String get freeAidThreshold => 'Ücretsiz yardım eşiği';
 
   @override
-  String get partialAidThreshold => 'Partial aid threshold';
+  String get partialAidThreshold => 'Kısmi yardım eşiği';
 
   @override
-  String get assetLimit => 'Asset limit';
+  String get assetLimit => 'Varlık sınırı';
 
   @override
-  String get whereToApplyLabel => 'Where to apply';
+  String get whereToApplyLabel => 'Nereye başvurulur';
 
   @override
-  String get phoneLabel => 'Phone';
+  String get phoneLabel => 'Telefon';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Web sitesi';
 
   @override
-  String get disclaimerCollapsed => 'AI guidance only';
+  String get disclaimerCollapsed => 'Yalnızca yapay zeka rehberliği';
 
   @override
   String get disclaimerExpanded =>
-      'AI assistant — not legal advice. Always verify with a qualified lawyer.';
+      'Yapay zeka asistanı — hukuki tavsiye değildir. Her zaman yetkin bir avukata danışın.';
 
   @override
   String get chatDisclaimerBanner =>
-      'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.';
+      'Yapay zeka asistanı hukuki bilgi sunar, hukuki tavsiye değildir. Her zaman yetkin bir avukata danışın.';
 
   @override
   String get chatDisclaimerSubtitle =>
@@ -3169,13 +3170,13 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get deadlineRadarTitle => 'Upcoming deadlines';
+  String get deadlineRadarTitle => 'Yaklaşan süreler';
 
   @override
-  String get deadlineRadarEmpty => 'No upcoming deadlines';
+  String get deadlineRadarEmpty => 'Yaklaşan süre yok';
 
   @override
-  String get deadlineRadarViewAll => 'View all';
+  String get deadlineRadarViewAll => 'Tümünü görüntüle';
 
   @override
   String deadlineCardDaysLeft(int count) {
@@ -3189,10 +3190,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardTomorrow => 'tomorrow';
+  String get deadlineCardTomorrow => 'yarın';
 
   @override
-  String get deadlineCardToday => 'today';
+  String get deadlineCardToday => 'bugün';
 
   @override
   String deadlineCardOverdue(int count) {
@@ -3205,200 +3206,202 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardMarkComplete => 'Mark complete';
+  String get deadlineCardMarkComplete => 'Tamamlandı olarak işaretle';
 
   @override
-  String get deadlineCardSnooze => 'Snooze';
+  String get deadlineCardSnooze => 'Ertele';
 
   @override
-  String get deadlineCardSnooze3d => 'Snooze 3 days';
+  String get deadlineCardSnooze3d => '3 gün ertele';
 
   @override
-  String get deadlineCardSnooze7d => 'Snooze 7 days';
+  String get deadlineCardSnooze7d => '7 gün ertele';
 
   @override
-  String get deadlineCardSnoozeCustom => 'Pick a date';
+  String get deadlineCardSnoozeCustom => 'Tarih seç';
 
   @override
-  String get deadlineCardEdit => 'Edit';
+  String get deadlineCardEdit => 'Düzenle';
 
   @override
-  String get deadlineCardDelete => 'Archive';
+  String get deadlineCardDelete => 'Arşivle';
 
   @override
-  String get deadlineCardSourceLabelPdf => 'from PDF';
+  String get deadlineCardSourceLabelPdf => 'PDF\'den';
 
   @override
-  String get deadlineCardSourceLabelIntake => 'from intake';
+  String get deadlineCardSourceLabelIntake => 'kayıttan';
 
   @override
-  String get deadlineCardSourceLabelManual => 'added manually';
+  String get deadlineCardSourceLabelManual => 'manuel olarak eklendi';
 
   @override
-  String get deadlineCardSourceLabelEmail => 'from email';
+  String get deadlineCardSourceLabelEmail => 'e-postadan';
 
   @override
-  String get deadlineCardSourceLabelHaikuExtract => 'AI-extracted';
+  String get deadlineCardSourceLabelHaikuExtract => 'Yapay zeka ile çıkarıldı';
 
   @override
-  String get deadlineCardSourceLabelStatutoryTemplate => 'statute template';
+  String get deadlineCardSourceLabelStatutoryTemplate => 'kanuni şablon';
 
   @override
   String deadlineBannerCritical(String title, String when) {
-    return 'Critical deadline $title $when';
+    return 'Kritik süre $title $when';
   }
 
   @override
-  String get deadlineBannerDismiss => 'Dismiss';
+  String get deadlineBannerDismiss => 'Kapat';
 
   @override
-  String get deadlineBannerOpen => 'Open deadline';
+  String get deadlineBannerOpen => 'Süreyi aç';
 
   @override
   String deadlineHolidayShifted(String original, String reason) {
-    return 'Shifted from $original due to $reason';
+    return '$reason nedeniyle $original tarihinden ertelendi';
   }
 
   @override
-  String get deadlinePermissionAskTitle => 'Enable deadline reminders?';
+  String get deadlinePermissionAskTitle =>
+      'Süre hatırlatıcıları etkinleştirilsin mi?';
 
   @override
   String get deadlinePermissionAskBody =>
-      'We\'ll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.';
+      'Her yasal süreden 7, 3 ve 1 gün önce, ayrıca o günün sabahı size bildirim göndereceğiz. Asla pazarlama amaçlı kullanılmaz.';
 
   @override
-  String get deadlinePermissionAllow => 'Allow';
+  String get deadlinePermissionAllow => 'İzin ver';
 
   @override
-  String get deadlinePermissionLater => 'Later';
+  String get deadlinePermissionLater => 'Daha sonra';
 
   @override
-  String get deadlineSettingsSection => 'Deadline reminders';
+  String get deadlineSettingsSection => 'Süre hatırlatıcıları';
 
   @override
-  String get deadlineSettingsPushChannel => 'Push notifications';
+  String get deadlineSettingsPushChannel => 'Anlık bildirimler';
 
   @override
-  String get deadlineSettingsEmailChannel => 'Email (critical only)';
+  String get deadlineSettingsEmailChannel => 'E-posta (yalnızca kritik)';
 
   @override
-  String get deadlineSettingsInAppChannel => 'In-app banners';
+  String get deadlineSettingsInAppChannel => 'Uygulama içi bildirimler';
 
   @override
   String get deadlineSettingsCriticalBypass =>
-      'Critical reminders bypass quiet hours';
+      'Kritik hatırlatıcılar sessiz saatleri atlar';
 
   @override
-  String get deadlineSettingsQuietHours => 'Quiet hours';
+  String get deadlineSettingsQuietHours => 'Sessiz saatler';
 
   @override
   String deadlineSettingsQuietHoursBadge(String start, String end) {
-    return 'Quiet $start–$end';
+    return 'Sessiz $start–$end';
   }
 
   @override
-  String get deadlineCaseScreenTitle => 'Case deadlines';
+  String get deadlineCaseScreenTitle => 'Dava süreleri';
 
   @override
-  String get deadlineAddManualCta => 'Add deadline';
+  String get deadlineAddManualCta => 'Süre ekle';
 
   @override
-  String get deadlineFormTitle => 'Title';
+  String get deadlineFormTitle => 'Başlık';
 
   @override
-  String get deadlineFormDescription => 'Description (optional)';
+  String get deadlineFormDescription => 'Açıklama (isteğe bağlı)';
 
   @override
-  String get deadlineFormStatuteTemplate => 'Statute template';
+  String get deadlineFormStatuteTemplate => 'Kanuni şablon';
 
   @override
-  String get deadlineFormStatuteTemplateNone => 'None (manual)';
+  String get deadlineFormStatuteTemplateNone => 'Yok (manuel)';
 
   @override
-  String get deadlineFormDeadlineAt => 'Deadline date';
+  String get deadlineFormDeadlineAt => 'Son tarih';
 
   @override
-  String get deadlineFormPriority => 'Priority';
+  String get deadlineFormPriority => 'Öncelik';
 
   @override
-  String get deadlineFormSave => 'Save';
+  String get deadlineFormSave => 'Kaydet';
 
   @override
-  String get deadlineFormCancel => 'Cancel';
+  String get deadlineFormCancel => 'İptal';
 
   @override
-  String get deadlineCompletedNotePrompt => 'Add a note (optional)';
+  String get deadlineCompletedNotePrompt => 'Bir not ekleyin (isteğe bağlı)';
 
   @override
-  String get deadlineCompletedNoteSave => 'Save';
+  String get deadlineCompletedNoteSave => 'Kaydet';
 
   @override
-  String get inboxTitle => 'Inbox';
+  String get inboxTitle => 'Gelen Kutusu';
 
   @override
-  String get inboxEmptyTitle => 'Nothing pending';
+  String get inboxEmptyTitle => 'Bekleyen bir şey yok';
 
   @override
   String get inboxEmptyBody =>
-      'New email threads will appear here as they get triaged.';
+      'Yeni e-posta konuları işleme alındıkça burada görünecek.';
 
   @override
-  String get inboxApproveSend => 'Approve & send';
+  String get inboxApproveSend => 'Onayla ve gönder';
 
   @override
-  String get inboxEditDraft => 'Edit';
+  String get inboxEditDraft => 'Düzenle';
 
   @override
-  String get inboxSnooze => 'Snooze';
+  String get inboxSnooze => 'Ertele';
 
   @override
-  String get inboxArchive => 'Archive';
+  String get inboxArchive => 'Arşivle';
 
   @override
-  String get inboxFilterAll => 'All';
+  String get inboxFilterAll => 'Tümü';
 
   @override
-  String get inboxConfirmSendTitle => 'Send the prepared reply?';
+  String get inboxConfirmSendTitle => 'Hazırlanan yanıt gönderilsin mi?';
 
   @override
   String get inboxConfirmSendBody =>
-      'Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.';
+      'Advocat, yapay zeka tarafından hazırlanan yanıtı bağlı Gmail hesabınız üzerinden gönderecek. İçeriği bir sonraki ekranda inceleyebilirsiniz.';
 
   @override
-  String get inboxSendButton => 'Send';
+  String get inboxSendButton => 'Gönder';
 
   @override
-  String get inboxSentToast => 'Sent.';
+  String get inboxSentToast => 'Gönderildi.';
 
   @override
-  String get inboxAlreadySentToast => 'Already sent.';
+  String get inboxAlreadySentToast => 'Zaten gönderildi.';
 
   @override
-  String get inboxSendErrorToast => 'Could not send the reply. Tap retry.';
+  String get inboxSendErrorToast =>
+      'Yanıt gönderilemedi. Tekrar denemek için dokunun.';
 
   @override
-  String get inboxSnoozedToast => 'Snoozed for 24h.';
+  String get inboxSnoozedToast => '24 saat ertelendi.';
 
   @override
-  String get inboxArchivedToast => 'Archived.';
+  String get inboxArchivedToast => 'Arşivlendi.';
 
   @override
-  String get inboxDraftLoadError => 'Could not load draft.';
+  String get inboxDraftLoadError => 'Taslak yüklenemedi.';
 
   @override
-  String get inboxDeadlineToday => 'today';
+  String get inboxDeadlineToday => 'bugün';
 
   @override
-  String get inboxDeadlineTomorrow => 'tomorrow';
+  String get inboxDeadlineTomorrow => 'yarın';
 
   @override
   String inboxDeadlineInDays(int days) {
-    return 'in ${days}d';
+    return '$days gün içinde';
   }
 
   @override
   String inboxDeadlineOverdue(int days) {
-    return 'overdue ${days}d';
+    return '$days gün gecikti';
   }
 
   @override
@@ -3511,28 +3514,29 @@ class AppLocalizationsTr extends AppLocalizations {
   String get inboxEditDiscard => 'At';
 
   @override
-  String get workspaceTabOverview => 'Overview';
+  String get workspaceTabOverview => 'Genel Bakış';
 
   @override
-  String get workspaceTabChat => 'Chat';
+  String get workspaceTabChat => 'Sohbet';
 
   @override
-  String get workspaceTabDrafts => 'Drafts';
+  String get workspaceTabDrafts => 'Taslaklar';
 
   @override
-  String get workspaceOverviewEmpty => 'Add documents to build a summary.';
+  String get workspaceOverviewEmpty =>
+      'Bir özet oluşturmak için belge ekleyin.';
 
   @override
-  String get workspaceTimelineEmpty => 'No events yet.';
+  String get workspaceTimelineEmpty => 'Henüz olay yok.';
 
   @override
-  String get workspaceDocumentsEmpty => 'No documents. Upload from Scan.';
+  String get workspaceDocumentsEmpty => 'Belge yok. Tara bölümünden yükleyin.';
 
   @override
-  String get workspaceDraftsEmpty => 'No drafts yet.';
+  String get workspaceDraftsEmpty => 'Henüz taslak yok.';
 
   @override
-  String get workspaceInboxEmpty => 'No related email.';
+  String get workspaceInboxEmpty => 'İlgili e-posta yok.';
 
   @override
   String get plannerSettingsTitle => 'Üç aşamalı hukuki akıl yürütme';
@@ -4202,195 +4206,195 @@ class AppLocalizationsTr extends AppLocalizations {
   String get softCaseShellBannerCta => 'Yeniden adlandır';
 
   @override
-  String get draftsTab => 'Drafts';
+  String get draftsTab => 'Taslaklar';
 
   @override
-  String get draftingTitle => 'Drafting Studio';
+  String get draftingTitle => 'Taslak Stüdyosu';
 
   @override
-  String get draftingEmpty => 'Empty draft';
+  String get draftingEmpty => 'Boş taslak';
 
   @override
-  String get draftingPlaceholder => 'Start typing your draft…';
+  String get draftingPlaceholder => 'Taslağınızı yazmaya başlayın…';
 
   @override
-  String get draftingDraftsList => 'My drafts';
+  String get draftingDraftsList => 'Taslaklarım';
 
   @override
-  String get draftingSave => 'Save';
+  String get draftingSave => 'Kaydet';
 
   @override
-  String get draftingSaved => 'Saved';
+  String get draftingSaved => 'Kaydedildi';
 
   @override
-  String get draftingSavedJustNow => 'Saved just now';
+  String get draftingSavedJustNow => 'Az önce kaydedildi';
 
   @override
-  String get draftingAiRevise => 'Revise with AI';
+  String get draftingAiRevise => 'Yapay zeka ile düzenle';
 
   @override
-  String get draftingExportPdf => 'Export PDF';
+  String get draftingExportPdf => 'PDF olarak dışa aktar';
 
   @override
-  String get draftingExportDocx => 'Export DOCX';
+  String get draftingExportDocx => 'DOCX olarak dışa aktar';
 
   @override
-  String get draftingExportMd => 'Export Markdown';
+  String get draftingExportMd => 'Markdown olarak dışa aktar';
 
   @override
-  String get draftingDeleteDraft => 'Delete draft';
+  String get draftingDeleteDraft => 'Taslağı sil';
 
   @override
-  String get draftingConfirmDelete => 'Delete this draft?';
+  String get draftingConfirmDelete => 'Bu taslak silinsin mi?';
 
   @override
-  String get draftingConfirmDeleteMessage => 'This action cannot be undone.';
+  String get draftingConfirmDeleteMessage => 'Bu işlem geri alınamaz.';
 
   @override
-  String get draftingConfirm => 'Delete';
+  String get draftingConfirm => 'Sil';
 
   @override
-  String get draftingCancel => 'Cancel';
+  String get draftingCancel => 'İptal';
 
   @override
   String draftingDraftReplyTo(String name) {
-    return 'Reply to $name';
+    return '$name adlı kişiye yanıt';
   }
 
   @override
-  String get draftingUntitled => 'Untitled';
+  String get draftingUntitled => 'Başlıksız';
 
   @override
-  String get draftingTitleHint => 'Title (optional)';
+  String get draftingTitleHint => 'Başlık (isteğe bağlı)';
 
   @override
-  String get draftingAiReviseTitle => 'Revise with AI';
+  String get draftingAiReviseTitle => 'Yapay zeka ile düzenle';
 
   @override
-  String get draftingAiReviseSelectionLabel => 'Selected text:';
+  String get draftingAiReviseSelectionLabel => 'Seçili metin:';
 
   @override
-  String get draftingAiReviseInstructionLabel => 'Instruction (optional)';
+  String get draftingAiReviseInstructionLabel => 'Talimat (isteğe bağlı)';
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'e.g. \"make it more formal\" or \"shorten\"';
+      'örn. \"daha resmi yap\" veya \"kısalt\"';
 
   @override
-  String get draftingAiReviseRunButton => 'Generate revision';
+  String get draftingAiReviseRunButton => 'Düzeltme oluştur';
 
   @override
-  String get draftingAiReviseSuggestionLabel => 'Suggested revision:';
+  String get draftingAiReviseSuggestionLabel => 'Önerilen düzeltme:';
 
   @override
-  String get draftingAiReviseChangesLabel => 'Changes:';
+  String get draftingAiReviseChangesLabel => 'Değişiklikler:';
 
   @override
-  String get draftingAiReviseAccept => 'Accept';
+  String get draftingAiReviseAccept => 'Kabul et';
 
   @override
-  String get draftingAiReviseReject => 'Reject';
+  String get draftingAiReviseReject => 'Reddet';
 
   @override
-  String get draftingFormatBold => 'Bold';
+  String get draftingFormatBold => 'Kalın';
 
   @override
-  String get draftingFormatItalic => 'Italic';
+  String get draftingFormatItalic => 'İtalik';
 
   @override
-  String get draftingFormatHeading => 'Heading';
+  String get draftingFormatHeading => 'Başlık';
 
   @override
-  String get draftingFormatBullet => 'Bullet list';
+  String get draftingFormatBullet => 'Madde işaretli liste';
 
   @override
-  String get draftingFormatNumbered => 'Numbered list';
+  String get draftingFormatNumbered => 'Numaralı liste';
 
   @override
-  String get draftingEmptyListMessage => 'You have no drafts yet.';
+  String get draftingEmptyListMessage => 'Henüz taslağınız yok.';
 
   @override
-  String get draftingEmptyListAction => 'New draft';
+  String get draftingEmptyListAction => 'Yeni taslak';
 
   @override
-  String get draftingExporting => 'Exporting…';
+  String get draftingExporting => 'Dışa aktarılıyor…';
 
   @override
-  String get draftingExportFailed => 'Export failed';
+  String get draftingExportFailed => 'Dışa aktarma başarısız oldu';
 
   @override
-  String get draftingSaveFailed => 'Save failed';
+  String get draftingSaveFailed => 'Kaydetme başarısız oldu';
 
   @override
-  String get draftingNewDraft => 'New draft';
+  String get draftingNewDraft => 'Yeni taslak';
 
   @override
-  String get vaultNoteChip => 'Vault note';
+  String get vaultNoteChip => 'Kasa notu';
 
   @override
-  String get saveToVault => 'Save to Vault';
+  String get saveToVault => 'Kasaya kaydet';
 
   @override
-  String get savingToVault => 'Saving to Vault…';
+  String get savingToVault => 'Kasaya kaydediliyor…';
 
   @override
-  String get savedToVault => 'Saved to Vault';
+  String get savedToVault => 'Kasaya kaydedildi';
 
   @override
-  String get vaultNoteTitlePrefix => 'Note: ';
+  String get vaultNoteTitlePrefix => 'Not: ';
 
   @override
-  String get openInVault => 'Open in Vault';
+  String get openInVault => 'Kasada aç';
 
   @override
-  String get saveToVaultFailed => 'Save to Vault failed';
+  String get saveToVaultFailed => 'Kasaya kaydetme başarısız oldu';
 
   @override
   String get pdfWorkerUnavailable =>
-      'PDF export is temporarily unavailable. Please try DOCX or Markdown.';
+      'PDF dışa aktarma şu anda kullanılamıyor. Lütfen DOCX veya Markdown deneyin.';
 
   @override
-  String get draftingVersionHistory => 'Version history';
+  String get draftingVersionHistory => 'Sürüm geçmişi';
 
   @override
-  String get emptyHomeTitle => 'Welcome to Advocat';
+  String get emptyHomeTitle => 'Advocat\'a hoş geldiniz';
 
   @override
   String get emptyHomeBody =>
-      'Pick a starting point — we’ll handle the legal heavy lifting.';
+      'Bir başlangıç noktası seçin — hukuki ağır işi biz halledelim.';
 
   @override
-  String get intentChip1 => 'Got a fine';
+  String get intentChip1 => 'Ceza aldım';
 
   @override
-  String get intentChip2 => 'Permit denied';
+  String get intentChip2 => 'İzin reddedildi';
 
   @override
-  String get intentChip3 => 'Contract problem';
+  String get intentChip3 => 'Sözleşme sorunu';
 
   @override
-  String get emptyCasesTitle => 'No cases yet';
+  String get emptyCasesTitle => 'Henüz dava yok';
 
   @override
-  String get emptyCasesCta => 'Start a case';
+  String get emptyCasesCta => 'Dava başlat';
 
   @override
-  String get emptyDraftsTitle => 'No drafts yet';
+  String get emptyDraftsTitle => 'Henüz taslak yok';
 
   @override
-  String get emptyDraftsCta => 'Create draft';
+  String get emptyDraftsCta => 'Taslak oluştur';
 
   @override
-  String get emptyChatTitle => 'Ask Advocat anything';
+  String get emptyChatTitle => 'Advocat\'a her şeyi sorun';
 
   @override
-  String get chatExamplePrompt1 => 'Help me reply to a fine';
+  String get chatExamplePrompt1 => 'Bir cezaya yanıt vermeme yardım et';
 
   @override
-  String get chatExamplePrompt2 => 'Review my rental contract';
+  String get chatExamplePrompt2 => 'Kira sözleşmemi incele';
 
   @override
-  String get chatExamplePrompt3 => 'What are my rights at work?';
+  String get chatExamplePrompt3 => 'İşyerindeki haklarım nelerdir?';
 
   @override
   String get dangerZone => '[en] Danger zone';
@@ -4415,113 +4419,113 @@ class AppLocalizationsTr extends AppLocalizations {
   String get deletingAccount => '[en] Deleting account…';
 
   @override
-  String get contractReviewTitle => 'Contract Review';
+  String get contractReviewTitle => 'Sözleşme İncelemesi';
 
   @override
-  String get contractReviewUploadCta => 'Upload contract';
+  String get contractReviewUploadCta => 'Sözleşme yükle';
 
   @override
   String get contractReviewQuotaRemaining =>
-      'Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.';
+      'Kırmızı bayraklar ve müzakere ipuçları içeren yapay zeka incelemesi için bir PDF, DOC, DOCX veya TXT sözleşmesi yükleyin.';
 
   @override
-  String get contractReviewRedFlags => 'Red flags';
+  String get contractReviewRedFlags => 'Kırmızı bayraklar';
 
   @override
-  String get contractReviewReviewPoints => 'Review points';
+  String get contractReviewReviewPoints => 'İnceleme noktaları';
 
   @override
-  String get contractReviewNegotiationTips => 'Negotiation tips';
+  String get contractReviewNegotiationTips => 'Müzakere ipuçları';
 
   @override
-  String get contractReviewSaveToVault => 'Save to Vault';
+  String get contractReviewSaveToVault => 'Kasaya kaydet';
 
   @override
-  String get contractReviewContinueChat => 'Continue in chat';
+  String get contractReviewContinueChat => 'Sohbette devam et';
 
   @override
-  String get referralInviteFriends => 'Invite Friends';
+  String get referralInviteFriends => 'Arkadaşları Davet Et';
 
   @override
-  String get referralYourCode => 'Your code';
+  String get referralYourCode => 'Kodunuz';
 
   @override
-  String get referralCopiedToast => 'Code copied to clipboard';
+  String get referralCopiedToast => 'Kod panoya kopyalandı';
 
   @override
   String get referralReward =>
-      'Get 1 month of Counsel free for every friend who subscribes.';
+      'Abone olan her arkadaşınız için 1 ay ücretsiz Counsel kazanın.';
 
   @override
-  String get referralInvited => 'Friends invited';
+  String get referralInvited => 'Davet edilen arkadaşlar';
 
   @override
-  String get referralRewardsEarned => 'Free months earned';
+  String get referralRewardsEarned => 'Kazanılan ücretsiz aylar';
 
   @override
-  String get deadlineUrgencyToday => 'Today & Overdue';
+  String get deadlineUrgencyToday => 'Bugün ve Gecikmiş';
 
   @override
-  String get deadlineUrgencyWeek => 'This week';
+  String get deadlineUrgencyWeek => 'Bu hafta';
 
   @override
-  String get deadlineUrgencyMonth => 'This month';
+  String get deadlineUrgencyMonth => 'Bu ay';
 
   @override
-  String get deadlineUrgencyLater => 'Later';
+  String get deadlineUrgencyLater => 'Daha sonra';
 
   @override
-  String get deadlineAddManual => 'Add deadline';
+  String get deadlineAddManual => 'Süre ekle';
 
   @override
-  String get deadlineSnoozeBy => 'Snooze';
+  String get deadlineSnoozeBy => 'Ertele';
 
   @override
-  String get deadlineSnooze1d => 'Snooze 1 day';
+  String get deadlineSnooze1d => '1 gün ertele';
 
   @override
-  String get deadlineSnooze3d => 'Snooze 3 days';
+  String get deadlineSnooze3d => '3 gün ertele';
 
   @override
-  String get deadlineSnooze7d => 'Snooze 7 days';
+  String get deadlineSnooze7d => '7 gün ertele';
 
   @override
-  String get deadlineDismiss => 'Dismiss';
+  String get deadlineDismiss => 'Kapat';
 
   @override
-  String get deadlineExportIcs => 'Add to calendar';
+  String get deadlineExportIcs => 'Takvime ekle';
 
   @override
-  String get deadlineSource => 'Source';
+  String get deadlineSource => 'Kaynak';
 
   @override
   String get deadlineEmpty =>
-      'No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.';
+      'Henüz süre yok. Süreler e-postalarınızdan ve belgelerinizden otomatik olarak oluşturulur — ya da + düğmesiyle manuel olarak ekleyin.';
 
   @override
-  String get deadlineNewTitle => 'New deadline';
+  String get deadlineNewTitle => 'Yeni süre';
 
   @override
-  String get deadlineFieldTitle => 'Title';
+  String get deadlineFieldTitle => 'Başlık';
 
   @override
-  String get deadlineFieldDueDate => 'Due date';
+  String get deadlineFieldDueDate => 'Son tarih';
 
   @override
-  String get deadlineFieldNotes => 'Notes (optional)';
+  String get deadlineFieldNotes => 'Notlar (isteğe bağlı)';
 
   @override
-  String get deadlineSaved => 'Deadline saved';
+  String get deadlineSaved => 'Süre kaydedildi';
 
   @override
-  String get deadlineSaveFailed => 'Could not save deadline';
+  String get deadlineSaveFailed => 'Süre kaydedilemedi';
 
   @override
-  String get deadlineUrgentBannerSingle => '1 deadline today or overdue';
+  String get deadlineUrgentBannerSingle => 'Bugün veya gecikmiş 1 süre';
 
   @override
   String deadlineUrgentBannerMany(int count) {
-    return '$count deadlines today or overdue';
+    return 'Bugün veya gecikmiş $count süre';
   }
 
   @override
@@ -4529,9 +4533,9 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days left',
-      one: '1 day left',
-      zero: 'today',
+      other: '$count gün kaldı',
+      one: '1 gün kaldı',
+      zero: 'bugün',
     );
     return '$_temp0';
   }
@@ -4541,8 +4545,8 @@ class AppLocalizationsTr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days overdue',
-      one: '1 day overdue',
+      other: '$count gün gecikti',
+      one: '1 gün gecikti',
     );
     return '$_temp0';
   }
@@ -4564,11 +4568,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get iapRestoreNoActive => 'Geri yüklenecek aktif abonelik bulunamadı.';
 
   @override
-  String get deadlineEuRadarTitle => 'EU deadline radar (preview)';
+  String get deadlineEuRadarTitle => 'AB süre radarı (önizleme)';
 
   @override
   String get deadlineEuRadarSubtitle =>
-      'Hypothetical EU procedural deadlines — mock data';
+      'Varsayımsal AB usul süreleri — örnek veri';
 
   @override
   String get changePassword => 'Şifreyi değiştir';

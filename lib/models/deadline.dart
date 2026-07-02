@@ -72,16 +72,26 @@ class Deadline {
   factory Deadline.fromJson(Map<String, dynamic> json) {
     return Deadline(
       id: json['id'] as String,
-      caseId: json['case_id'] as String,
+      // `deadlines.case_id` is nullable (user-level deadlines have no case);
+      // never hard-cast or listing throws on manual/agent-created rows.
+      caseId: (json['case_id'] as String?) ?? '',
       userId: json['user_id'] as String,
       title: json['title'] as String,
       description: json['description'] as String?,
-      dueDate: DateTime.parse(json['due_date'] as String),
+      // The NOT NULL column is `deadline_date`; `due_date` is a legacy nullable
+      // alias. Prefer deadline_date, fall back to due_date for any old row.
+      dueDate: DateTime.parse(
+          (json['deadline_date'] ?? json['due_date']) as String),
       type: _typeFromJson(json['type'] as String?),
       priority: _priorityFromJson(json['priority'] as String?),
-      status: _statusFromJson(json['status'] as String?),
+      // `deadlines` stores completion as bool `is_completed`, not a `status`
+      // column — derive completed status from it so the UI reflects reality.
+      status: (json['is_completed'] as bool? ?? false)
+          ? DeadlineStatus.completed
+          : _statusFromJson(json['status'] as String?),
       notificationScheduled: json['notification_scheduled'] as bool? ?? false,
-      reminderDaysBefore: json['reminder_days_before'] as int? ?? 7,
+      reminderDaysBefore:
+          (json['reminder_days'] ?? json['reminder_days_before']) as int? ?? 7,
       source: _sourceFromJson(json['source'] as String?),
       sourceDocumentId: json['source_document_id'] as String?,
       createdAt: DateTime.parse(json['created_at'] as String),

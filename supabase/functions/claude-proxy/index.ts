@@ -3127,8 +3127,15 @@ async function runCreditExhaustedFallback(
   // Build ChainParams from the request body. Defaults are defensive so the
   // chain never trips on a malformed body — worst case it falls all the way
   // through to rag_only with the text we just computed above.
+  //
+  // GDPR / Data Fortress: the provider chain can walk to OpenAI (US). Scrub
+  // direct identifiers (isikukood/HETU/IBAN) from system+messages BEFORE they
+  // reach any US provider, exactly like the primary Anthropic path does at its
+  // fetch sites (JSON.stringify(stripIdentifiersFromBody(...))). Without this,
+  // the credit-exhausted fallback leaked raw identifiers to api.openai.com,
+  // contradicting the privacy policy for that very failover.
   // deno-lint-ignore no-explicit-any
-  const b = (body as any) ?? {};
+  const b = (stripIdentifiersFromBody(body) as any) ?? {};
   const chainParams = {
     systemPrompt: typeof b.system === "string" ? b.system : "",
     messages: Array.isArray(b.messages)

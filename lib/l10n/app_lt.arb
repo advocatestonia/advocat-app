@@ -2,11 +2,11 @@
   "@@locale": "lt",
   "about": "Apie",
   "aboutSection": "APIE",
-  "appearance": "Appearance",
-  "appearanceSystem": "System (auto)",
-  "appearanceLight": "Light",
-  "appearanceDark": "Dark",
-  "appearanceDescription": "Choose how Advocat looks",
+  "appearance": "Išvaizda",
+  "appearanceSystem": "Sistemos (auto)",
+  "appearanceLight": "Šviesus",
+  "appearanceDark": "Tamsus",
+  "appearanceDescription": "Pasirinkite, kaip atrodo „Advocat“",
   "accidents": "Avarijos",
   "active": "Aktyvios",
   "activeCases": "Aktyvios bylos",
@@ -750,54 +750,54 @@
   "contactVictimSupportRIKU": "Aukų parama Suomija (RIKU)",
   "domesticViolence": "Smurtas šeimoje",
   "inheritance": "Paveldėjimas",
-  "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
-  "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
-  "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
-  "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
-  "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
-  "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
-  "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
-  "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
-  "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
-  "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
-  "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
-  "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
-  "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
-  "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
-  "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
-  "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
+  "inheritanceDesc": "Testamentai, palikimas, įpėdinių teisės, privalomoji dalis, palikimo priėmimas",
+  "rightInheritanceForced": "Privalomieji įpėdiniai (vaikai, sutuoktinis) turi teisę į privalomąją dalį nepriklausomai nuo testamento",
+  "rightInheritanceWill": "Jūs turite teisę sudaryti testamentą dėl savo turto — notaro patvirtinti testamentai turi didžiausią teisinę galią",
+  "rightInheritanceRenounce": "Palikimo galite atsisakyti per 3 mėnesius nuo sužinojimo apie jį",
+  "rightInheritanceInfo": "Turite teisę gauti informaciją apie palikimą iš bankų ir registrų",
+  "rightInheritanceDispute": "Nesąžiningą testamentą galite ginčyti teisme per įstatyme nustatytą ieškinio senaties terminą",
+  "mustFileInheritance": "Kreipkitės dėl palikimo priėmimo pas notarą per protingą terminą",
+  "mustNotifyHeirs": "Visi žinomi įpėdiniai turi būti informuoti apie palikimo priėmimo procedūrą",
+  "inheritanceActionGatherDocs": "Surinkite visus dokumentus: mirties liudijimą, testamentą, nuosavybės dokumentus, banko išrašus",
+  "inheritanceActionContactNotary": "Kreipkitės į notarą dėl palikimo priėmimo bylos pradėjimo",
+  "inheritanceActionCheckDebts": "Prieš priimdami palikimą patikrinkite, ar palikimo masėje nėra skolų",
+  "inheritanceActionFileCourt": "Jei testamentas ginčijamas, pateikite ieškinį teismui",
+  "inheritanceDeadlineRenounce": "3 mėnesiai palikimo atsisakymui nuo sužinojimo apie jį",
+  "inheritanceDeadlineDispute": "Testamento ginčijimo senaties terminas: priklauso nuo pagrindo",
+  "inheritanceFactForced": "Estijoje palikuonys ir sutuoktinis turi teisę į privalomąją dalį (1/2 įstatyminės dalies), net jei testamente jie neįtraukti",
+  "inheritanceFactNotary": "Visos palikimo priėmimo procedūros Estijoje turi vykti per notarą — šio žingsnio praleisti negalima",
   "consumerProtection": "Vartotojų apsauga",
-  "caseTypeStepLabel": "Case Type",
-  "detailsStepLabel": "Details",
-  "documentsStepLabel": "Documents",
-  "whatTypeOfCase": "What type of case is this?",
-  "selectCategoryDescription": "Select the category that best describes your situation.",
-  "tellUsAboutCase": "Tell us about your case",
-  "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
-  "caseTitleHint": "e.g., Residence Permit Appeal 2026",
-  "countryJurisdiction": "Country / Jurisdiction",
-  "selectCountryHint": "Select a country",
-  "referenceNumberHint": "e.g., UMA/12345/2026",
-  "descriptionOptional": "Description (optional)",
-  "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
-  "uploadFirstDocument": "Upload your first document",
-  "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
-  "tapToUploadFile": "Tap to upload a file",
-  "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
-  "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
-  "aiGeneratedDisclaimer": "AI-generated • Not legal advice",
-  "callAI": "Call AI",
+  "caseTypeStepLabel": "Bylos tipas",
+  "detailsStepLabel": "Duomenys",
+  "documentsStepLabel": "Dokumentai",
+  "whatTypeOfCase": "Kokio tipo ši byla?",
+  "selectCategoryDescription": "Pasirinkite kategoriją, kuri geriausiai atitinka jūsų situaciją.",
+  "tellUsAboutCase": "Papasakokite apie savo bylą",
+  "aiHelpsUnderstand": "Ši informacija padeda mūsų DI geriau suprasti jūsų situaciją.",
+  "caseTitleHint": "pvz., leidimo gyventi apskundimas 2026",
+  "countryJurisdiction": "Šalis / jurisdikcija",
+  "selectCountryHint": "Pasirinkite šalį",
+  "referenceNumberHint": "pvz., UMA/12345/2026",
+  "descriptionOptional": "Aprašymas (neprivaloma)",
+  "descriptionHint": "Trumpai apibūdinkite savo situaciją. Kas atsitiko? Koks sprendimas buvo priimtas?",
+  "uploadFirstDocument": "Įkelkite pirmąjį dokumentą",
+  "uploadDocumentDescription": "Įkelkite sprendimo raštą ar bet kurį susijusį dokumentą. Šį žingsnį galite praleisti ir pridėti dokumentus vėliau.",
+  "tapToUploadFile": "Palieskite, kad įkeltumėte failą",
+  "fileSizeLimit": "PDF, JPG, PNG iki 25 MB",
+  "addDocumentsLaterHint": "Dokumentus visada galite pridėti vėliau bylos kortelės ekrane.",
+  "aiGeneratedDisclaimer": "Sukurta DI • Ne teisinė konsultacija",
+  "callAI": "Skambinti DI",
   "comingSoon": "Netrukus",
-  "encrypted": "Encrypted",
-  "typing": "Typing…",
-  "online": "Online",
+  "encrypted": "Šifruota",
+  "typing": "Rašo…",
+  "online": "Prisijungęs",
   "chatWelcomeSubtitle": "Išanalizuosiu situaciją, patikrinsiu dokumentus, rasiu klaidas ir pasiūlysiu, ką daryti.",
-  "tapMicrophoneToSpeak": "Tap the microphone to speak",
-  "categoryEssential": "Essential",
-  "categoryPolice": "Police",
-  "categoryWork": "Work",
-  "categoryHousing": "Housing",
-  "categoryConsumer": "Consumer",
+  "tapMicrophoneToSpeak": "Palieskite mikrofoną, kad kalbėtumėte",
+  "categoryEssential": "Svarbiausia",
+  "categoryPolice": "Policija",
+  "categoryWork": "Darbas",
+  "categoryHousing": "Būstas",
+  "categoryConsumer": "Vartotojas",
   "rightsInsideCount": "{count, plural, =0{teisių nėra} one{{count} teisė viduje} few{{count} teisės viduje} many{{count} teisės viduje} other{{count} teisių viduje}}",
   "@rightsInsideCount": {
     "placeholders": {
@@ -806,14 +806,14 @@
       }
     }
   },
-  "freeAidThreshold": "Free aid threshold",
-  "partialAidThreshold": "Partial aid threshold",
-  "assetLimit": "Asset limit",
-  "whereToApplyLabel": "Where to apply",
-  "phoneLabel": "Phone",
-  "websiteLabel": "Website",
-  "disclaimerCollapsed": "AI guidance only",
-  "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
+  "freeAidThreshold": "Nemokamos pagalbos riba",
+  "partialAidThreshold": "Dalinės pagalbos riba",
+  "assetLimit": "Turto riba",
+  "whereToApplyLabel": "Kur kreiptis",
+  "phoneLabel": "Telefonas",
+  "websiteLabel": "Svetainė",
+  "disclaimerCollapsed": "Tik DI rekomendacijos",
+  "disclaimerExpanded": "DI asistentas — ne teisinė konsultacija. Visada pasitikrinkite pas kvalifikuotą teisininką.",
   "chatDisclaimerBanner": "AI padėjėjas teikia teisinę informaciją, o ne teisines konsultacijas. Visada pasitarkite su kvalifikuotu teisininku.",
   "chatDisclaimerSubtitle": "DI asistentas · ne teisinė konsultacija",
   "chatDisclaimerBannerFull": "Advocat – tai DI teisinės informacijos asistentas, o ne advokatas. Čia pateikta informacija nesukuria advokato ir kliento santykių, nėra teisinė konsultacija ir gali būti netiksli. Dėl privalomos teisinės konsultacijos kreipkitės į licencijuotą advokatą savo jurisdikcijoje. Mes jums neatstovaujame.",
@@ -846,22 +846,22 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "AI is analyzing"
   },
-  "speakIntoMicHint": "Speak into the microphone. Make sure microphone access is enabled.",
+  "speakIntoMicHint": "Kalbėkite į mikrofoną. Įsitikinkite, kad įjungta prieiga prie mikrofono.",
   "@speakIntoMicHint": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Speak into the microphone. Make sure microphone access is enabled."
   },
-  "freeLimitReached": "You have used all {count} free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!",
+  "freeLimitReached": "Jūs išnaudojote visus {count} nemokamus DI pranešimus. Atnaujinkite iki „Legal Counsel“ plano ir gaukite neribotą DI pagalbą!",
   "@freeLimitReached": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You have used all {count} free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!"
   },
-  "rateAppComingSoon": "Coming to app stores soon!",
+  "rateAppComingSoon": "Netrukus programų parduotuvėse!",
   "@rateAppComingSoon": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Coming to app stores soon!"
   },
-  "dataCopiedToClipboard": "Data copied to clipboard",
+  "dataCopiedToClipboard": "Duomenys nukopijuoti į iškarpinę",
   "@dataCopiedToClipboard": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Data copied to clipboard"
@@ -883,82 +883,82 @@
       }
     }
   },
-  "fiveAiMessagesTotal": "5 AI messages (lifetime)",
+  "fiveAiMessagesTotal": "5 DI pranešimai (visam laikui)",
   "@fiveAiMessagesTotal": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "5 AI messages (lifetime)"
   },
-  "hundredAiMessagesDay": "100 AI messages/day",
+  "hundredAiMessagesDay": "100 DI pranešimų per dieną",
   "@hundredAiMessagesDay": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "100 AI messages/day"
   },
-  "unlimitedAiMessages": "Unlimited AI messages",
+  "unlimitedAiMessages": "Neriboti DI pranešimai",
   "@unlimitedAiMessages": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Unlimited AI messages"
   },
-  "voiceInput": "Voice input",
+  "voiceInput": "Balso įvestis",
   "@voiceInput": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Voice input"
   },
-  "strategyRecommendations": "Strategy recommendations",
+  "strategyRecommendations": "Strategijos rekomendacijos",
   "@strategyRecommendations": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Strategy recommendations"
   },
-  "foundingMemberNote": "Founding Member: 9.99€/mo for first 3 months",
+  "foundingMemberNote": "Steigėjo narystė: 9,99 €/mėn. pirmuosius 3 mėnesius",
   "@foundingMemberNote": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Founding Member: 9.99€/mo for first 3 months"
   },
-  "saveTwentyPercent": "Save 20%",
+  "saveTwentyPercent": "Sutaupykite 20 %",
   "@saveTwentyPercent": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Save 20%"
   },
-  "gdprConsentAiProcessing": "I agree to the processing of my data for AI legal assistance (required)",
+  "gdprConsentAiProcessing": "Sutinku, kad mano duomenys būtų tvarkomi DI teisinei pagalbai teikti (privaloma)",
   "@gdprConsentAiProcessing": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "I agree to the processing of my data for AI legal assistance (required)"
   },
-  "gdprConsentAnalytics": "I agree to analytics to improve the service (optional)",
+  "gdprConsentAnalytics": "Sutinku su analitika, siekiant tobulinti paslaugą (neprivaloma)",
   "@gdprConsentAnalytics": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "I agree to analytics to improve the service (optional)"
   },
-  "gdprArt9Intro": "This app processes special category personal data under GDPR Article 9, including:",
+  "gdprArt9Intro": "Ši programa tvarko specialių kategorijų asmens duomenis pagal BDAR 9 straipsnį, įskaitant:",
   "@gdprArt9Intro": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "This app processes special category personal data under GDPR Article 9, including:"
   },
-  "gdprSpecialLegalCases": "Your legal case details and court documents",
+  "gdprSpecialLegalCases": "Jūsų teisinės bylos duomenis ir teismo dokumentus",
   "@gdprSpecialLegalCases": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Your legal case details and court documents"
   },
-  "gdprSpecialNationality": "Nationality and immigration status",
+  "gdprSpecialNationality": "Pilietybę ir imigracijos statusą",
   "@gdprSpecialNationality": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Nationality and immigration status"
   },
-  "gdprConsentLegalData": "I consent to the processing of my legal case data, nationality, and immigration status by AI (required)",
+  "gdprConsentLegalData": "Sutinku, kad DI tvarkytų mano teisinės bylos duomenis, pilietybę ir imigracijos statusą (privaloma)",
   "@gdprConsentLegalData": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "I consent to the processing of my legal case data, nationality, and immigration status by AI (required)"
   },
-  "gdprConsentVoice": "I consent to voice recording processing (optional)",
+  "gdprConsentVoice": "Sutinku, kad būtų tvarkomas balso įrašas (neprivaloma)",
   "@gdprConsentVoice": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "I consent to voice recording processing (optional)"
   },
-  "gdprViewPrivacyPolicy": "View Privacy Policy",
+  "gdprViewPrivacyPolicy": "Peržiūrėti privatumo politiką",
   "@gdprViewPrivacyPolicy": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "View Privacy Policy"
   },
-  "legalInformation": "Legal Information",
+  "legalInformation": "Teisinė informacija",
   "@legalInformation": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Legal Information"
@@ -968,437 +968,437 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Vorantis OÜ"
   },
-  "legalRegistryCode": "Registry code: 17098992",
+  "legalRegistryCode": "Registro kodas: 17098992",
   "@legalRegistryCode": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Registry code: 17098992"
   },
-  "legalAddress": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145",
+  "legalAddress": "Harju maakond, Talinas, Kesklinna miesto dalis, Tornimäe tn 5, 10145",
   "@legalAddress": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145"
   },
-  "legalEmail": "Email: support@advocat.ee",
+  "legalEmail": "El. paštas: support@advocat.ee",
   "@legalEmail": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Email: support@advocat.ee"
   },
-  "legalRegistry": "Registered in Estonian Commercial Register (Äriregister)",
+  "legalRegistry": "Registruota Estijos komercinio registro (Äriregister) sąraše",
   "@legalRegistry": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Registered in Estonian Commercial Register (Äriregister)"
   },
-  "domesticViolenceDesc": "Victim rights, emergency help, restraining orders",
+  "domesticViolenceDesc": "Aukos teisės, skubi pagalba, apsauginiai orderiai",
   "@domesticViolenceDesc": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Victim rights, emergency help, restraining orders"
   },
-  "rightCallEmergency": "You have the right to call 112 in any emergency — police, ambulance, fire",
+  "rightCallEmergency": "Bet kokiu skubiu atveju turite teisę skambinti 112 — policijai, greitajai pagalbai, gaisrinei",
   "@rightCallEmergency": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You have the right to call 112 in any emergency — police, ambulance, fire"
   },
-  "rightVictimProtection": "As a victim, you have the right to protection, support, and information about your case",
+  "rightVictimProtection": "Kaip auka, turite teisę į apsaugą, paramą ir informaciją apie savo bylą",
   "@rightVictimProtection": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "As a victim, you have the right to protection, support, and information about your case"
   },
-  "rightRestrainingOrder": "You can apply for a restraining order (lähestymiskielto) to keep the abuser away",
+  "rightRestrainingOrder": "Galite kreiptis dėl apsauginio orderio (lähestymiskielto), kad skriaudėjas laikytųsi atokiau",
   "@rightRestrainingOrder": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You can apply for a restraining order (lähestymiskielto) to keep the abuser away"
   },
-  "rightVictimInterpreter": "You have the right to an interpreter during all legal proceedings",
+  "rightVictimInterpreter": "Turite teisę į vertėją visuose teisiniuose procesuose",
   "@rightVictimInterpreter": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You have the right to an interpreter during all legal proceedings"
   },
-  "rightMedicalHelp": "You have the right to immediate medical treatment and documentation of injuries",
+  "rightMedicalHelp": "Turite teisę į skubią medicininę pagalbą ir sužalojimų fiksavimą dokumentais",
   "@rightMedicalHelp": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You have the right to immediate medical treatment and documentation of injuries"
   },
-  "rightShelter": "You have the right to emergency shelter — contact a shelter or social services",
+  "rightShelter": "Turite teisę į skubią prieglaudą — kreipkitės į prieglaudą ar socialines tarnybas",
   "@rightShelter": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You have the right to emergency shelter — contact a shelter or social services"
   },
-  "mustReportDanger": "If someone is in immediate danger, call 112 immediately",
+  "mustReportDanger": "Jei kas nors yra tiesioginiame pavojuje, nedelsdami skambinkite 112",
   "@mustReportDanger": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "If someone is in immediate danger, call 112 immediately"
   },
-  "mustDocumentInjuries": "Document all injuries — photos, medical records, written notes",
+  "mustDocumentInjuries": "Fiksuokite visus sužalojimus — nuotraukos, medicininiai įrašai, rašytinės pastabos",
   "@mustDocumentInjuries": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Document all injuries — photos, medical records, written notes"
   },
-  "domesticActionCallEmergency": "Call 112 if you are in immediate danger",
+  "domesticActionCallEmergency": "Skambinkite 112, jei esate tiesioginiame pavojuje",
   "@domesticActionCallEmergency": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Call 112 if you are in immediate danger"
   },
-  "domesticActionGoToSafe": "Go to a safe place — shelter, friend, public place",
+  "domesticActionGoToSafe": "Vykite į saugią vietą — prieglaudą, pas draugą, viešą vietą",
   "@domesticActionGoToSafe": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Go to a safe place — shelter, friend, public place"
   },
-  "domesticActionDocumentEverything": "Document injuries: take photos, get medical records",
+  "domesticActionDocumentEverything": "Fiksuokite sužalojimus: darykite nuotraukas, gaukite medicininius įrašus",
   "@domesticActionDocumentEverything": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Document injuries: take photos, get medical records"
   },
-  "domesticActionFilePoliceReport": "File a police report — you can do this later too",
+  "domesticActionFilePoliceReport": "Pateikite pranešimą policijai — tai galite padaryti ir vėliau",
   "@domesticActionFilePoliceReport": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "File a police report — you can do this later too"
   },
-  "domesticActionContactShelter": "Contact a shelter or crisis helpline",
+  "domesticActionContactShelter": "Kreipkitės į prieglaudą ar krizių pagalbos liniją",
   "@domesticActionContactShelter": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Contact a shelter or crisis helpline"
   },
-  "domesticActionApplyRestraining": "Apply for a restraining order through police or court",
+  "domesticActionApplyRestraining": "Kreipkitės dėl apsauginio orderio per policiją arba teismą",
   "@domesticActionApplyRestraining": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Apply for a restraining order through police or court"
   },
-  "domesticFactRestrainingOrder": "In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.",
+  "domesticFactRestrainingOrder": "Suomijoje apsauginis orderis (lähestymiskielto) gali būti išduotas net ir be baudžiamosios bylos. Jis draudžia asmeniui su jumis susisiekti ar prie jūsų artintis.",
   "@domesticFactRestrainingOrder": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you."
   },
-  "domesticFactVictimDirective": "Under EU Victims' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.",
+  "domesticFactVictimDirective": "Pagal ES Nukentėjusiųjų direktyvą 2012/29/ES turite teisę į pagarbų elgesį, informaciją jums suprantama kalba ir prieigą prie aukų paramos paslaugų — nepriklausomai nuo jūsų gyvenamosios padėties statuso.",
   "@domesticFactVictimDirective": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Under EU Victims' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status."
   },
-  "domesticDeadlinePoliceReport": "File police report — no strict deadline, but sooner is better for evidence",
+  "domesticDeadlinePoliceReport": "Pranešimo policijai pateikimas — griežto termino nėra, tačiau geriau anksčiau, kad išsaugotumėte įrodymus",
   "@domesticDeadlinePoliceReport": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "File police report — no strict deadline, but sooner is better for evidence"
   },
-  "domesticDeadlineRestraining": "Restraining order — can be applied for at any time",
+  "domesticDeadlineRestraining": "Apsauginio orderio prašymą galima pateikti bet kuriuo metu",
   "@domesticDeadlineRestraining": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Restraining order — can be applied for at any time"
   },
-  "contactEmergency": "Emergency Number",
+  "contactEmergency": "Skubios pagalbos numeris",
   "@contactEmergency": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Emergency Number"
   },
-  "contactShelter": "Turvakoti (Shelter) Helpline",
+  "contactShelter": "Turvakoti (prieglaudos) pagalbos linija",
   "@contactShelter": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Turvakoti (Shelter) Helpline"
   },
-  "contactCrisisHelpline": "Crisis Helpline (Kriisipuhelin)",
+  "contactCrisisHelpline": "Krizių pagalbos linija (Kriisipuhelin)",
   "@contactCrisisHelpline": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Crisis Helpline (Kriisipuhelin)"
   },
-  "contactNollaLinja": "Nollalinja — Violence Against Women Helpline",
+  "contactNollaLinja": "Nollalinja — pagalbos linija smurto prieš moteris aukoms",
   "@contactNollaLinja": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Nollalinja — Violence Against Women Helpline"
   },
-  "consumerProtectionDesc": "Fraud, defective products, returns, deceptive sellers",
+  "consumerProtectionDesc": "Sukčiavimas, netinkami gaminiai, grąžinimai, apgaulingi pardavėjai",
   "@consumerProtectionDesc": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Fraud, defective products, returns, deceptive sellers"
   },
-  "rightReturnOnline": "You have 14 days to cancel online purchases without reason (EU right of withdrawal)",
+  "rightReturnOnline": "Turite 14 dienų atsisakyti internetu atlikto pirkinio be priežasties (ES atsisakymo teisė)",
   "@rightReturnOnline": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You have 14 days to cancel online purchases without reason (EU right of withdrawal)"
   },
-  "rightDefectiveProduct": "If a product is defective, you have the right to repair, replacement, or refund",
+  "rightDefectiveProduct": "Jei gaminys turi trūkumų, turite teisę į remontą, keitimą ar pinigų grąžinimą",
   "@rightDefectiveProduct": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "If a product is defective, you have the right to repair, replacement, or refund"
   },
-  "rightClearPricing": "Sellers must display clear prices including all fees — hidden costs are illegal",
+  "rightClearPricing": "Pardavėjai privalo nurodyti aiškias kainas su visais mokesčiais — paslėptos išlaidos yra neteisėtos",
   "@rightClearPricing": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Sellers must display clear prices including all fees — hidden costs are illegal"
   },
-  "rightComplainBoard": "You can file a free complaint with the Consumer Disputes Board",
+  "rightComplainBoard": "Galite pateikti nemokamą skundą Vartojimo ginčų komisijai",
   "@rightComplainBoard": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You can file a free complaint with the Consumer Disputes Board"
   },
-  "rightProtectionFraud": "You are protected against unfair commercial practices and fraud",
+  "rightProtectionFraud": "Jūs esate apsaugoti nuo nesąžiningos komercinės veiklos ir sukčiavimo",
   "@rightProtectionFraud": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You are protected against unfair commercial practices and fraud"
   },
-  "mustKeepReceipts": "Keep all receipts, contracts, and communication with sellers",
+  "mustKeepReceipts": "Saugokite visus kvitus, sutartis ir susirašinėjimą su pardavėjais",
   "@mustKeepReceipts": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Keep all receipts, contracts, and communication with sellers"
   },
-  "mustActTimely": "Report defects to the seller within a reasonable time after discovery",
+  "mustActTimely": "Apie trūkumus pardavėjui praneškite per protingą terminą nuo jų pastebėjimo",
   "@mustActTimely": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Report defects to the seller within a reasonable time after discovery"
   },
-  "consumerActionKeepEvidence": "Keep receipts, screenshots, emails, and all proof of purchase",
+  "consumerActionKeepEvidence": "Saugokite kvitus, ekrano nuotraukas, el. laiškus ir visus pirkimo įrodymus",
   "@consumerActionKeepEvidence": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Keep receipts, screenshots, emails, and all proof of purchase"
   },
-  "consumerActionContactSeller": "Contact the seller first — explain the problem in writing",
+  "consumerActionContactSeller": "Pirmiausia kreipkitės į pardavėją — raštu paaiškinkite problemą",
   "@consumerActionContactSeller": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Contact the seller first — explain the problem in writing"
   },
-  "consumerActionFileComplaint": "File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)",
+  "consumerActionFileComplaint": "Pateikite skundą Vartojimo ginčų komisijai (kuluttajariitalautakunta)",
   "@consumerActionFileComplaint": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)"
   },
-  "consumerActionContactAuthority": "Contact the Consumer Advisory Services for free help",
+  "consumerActionContactAuthority": "Kreipkitės į Vartotojų konsultavimo tarnybą dėl nemokamos pagalbos",
   "@consumerActionContactAuthority": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Contact the Consumer Advisory Services for free help"
   },
-  "consumerActionReportFraud": "Report fraud to the police and Consumer Ombudsman",
+  "consumerActionReportFraud": "Praneškite apie sukčiavimą policijai ir vartotojų teisių gynėjui",
   "@consumerActionReportFraud": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Report fraud to the police and Consumer Ombudsman"
   },
-  "consumerFactWithdrawal": "Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.",
+  "consumerFactWithdrawal": "Pagal ES Vartotojų teisių direktyvą 2011/83/ES turite 14 dienų atsisakyti bet kurio internetu ar nuotoliniu būdu atlikto pirkimo — be jokių klausimų. Pardavėjas privalo grąžinti pinigus per 14 dienų.",
   "@consumerFactWithdrawal": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days."
   },
-  "consumerFactWarranty": "In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.",
+  "consumerFactWarranty": "Suomijoje pardavėjas atsako už gaminio trūkumus protingą laikotarpį (dažnai 2+ metus). Tai nepriklauso nuo gamintojo garantijos.",
   "@consumerFactWarranty": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty."
   },
-  "consumerDeadlineWithdrawal": "Online purchase withdrawal — 14 days from delivery",
+  "consumerDeadlineWithdrawal": "Internetinio pirkimo atsisakymas — 14 dienų nuo pristatymo",
   "@consumerDeadlineWithdrawal": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Online purchase withdrawal — 14 days from delivery"
   },
-  "consumerDeadlineDefect": "Report defect to seller — within 2 months of discovery (recommended)",
+  "consumerDeadlineDefect": "Trūkumo pranešimas pardavėjui — per 2 mėnesius nuo pastebėjimo (rekomenduojama)",
   "@consumerDeadlineDefect": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Report defect to seller — within 2 months of discovery (recommended)"
   },
-  "contactConsumerAdvisory": "Consumer Advisory Services",
+  "contactConsumerAdvisory": "Vartotojų konsultavimo tarnyba",
   "@contactConsumerAdvisory": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Consumer Advisory Services"
   },
-  "contactConsumerOmbudsman": "Consumer Ombudsman (Kuluttaja-asiamies)",
+  "contactConsumerOmbudsman": "Vartotojų teisių gynėjas (Kuluttaja-asiamies)",
   "@contactConsumerOmbudsman": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Consumer Ombudsman (Kuluttaja-asiamies)"
   },
-  "contactConsumerDisputesBoardDirect": "Consumer Disputes Board",
+  "contactConsumerDisputesBoardDirect": "Vartojimo ginčų komisija",
   "@contactConsumerDisputesBoardDirect": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Consumer Disputes Board"
   },
-  "categoryChildren": "Children",
+  "categoryChildren": "Vaikai",
   "@categoryChildren": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Children"
   },
-  "categoryDigital": "Digital",
+  "categoryDigital": "Skaitmeninė",
   "@categoryDigital": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Digital"
   },
-  "childrenRights": "Children's Rights & Alimony",
+  "childrenRights": "Vaikų teisės ir alimentai",
   "@childrenRights": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Children's Rights & Alimony"
   },
-  "childrenRightsDesc": "Child support, alimony, protection, state guarantees",
+  "childrenRightsDesc": "Vaikų išlaikymas, alimentai, apsauga, valstybės garantijos",
   "@childrenRightsDesc": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Child support, alimony, protection, state guarantees"
   },
-  "cyberbullying": "Cyberbullying & Online Harassment",
+  "cyberbullying": "Patyčios ir priekabiavimas internete",
   "@cyberbullying": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Cyberbullying & Online Harassment"
   },
-  "cyberbullyingDesc": "Threats, privacy violations, defamation online",
+  "cyberbullyingDesc": "Grasinimai, privatumo pažeidimai, šmeižtas internete",
   "@cyberbullyingDesc": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Threats, privacy violations, defamation online"
   },
-  "rightChildSupport": "Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)",
+  "rightChildSupport": "Abu tėvai teisiškai privalo finansiškai išlaikyti savo vaiką (Perekonnaseadus § 100–102)",
   "@rightChildSupport": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)"
   },
-  "rightMinimumAlimony": "Minimum child support in Estonia: base amount (€295.86) + 3% of previous year's average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee",
+  "rightMinimumAlimony": "Minimalus vaiko išlaikymas Estijoje: bazinė suma (295,86 €) + 3 % praėjusių metų vidutinio bruto darbo užmokesčio (PKS § 101). Nuo 2026-04-01 — 318,62 €/mėn. vienam vaikui. Atnaujinama kasmet balandžio 1 d. Skaičiuoklė: alimendid.ee",
   "@rightMinimumAlimony": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Minimum child support in Estonia: base amount (€295.86) + 3% of previous year's average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee"
   },
-  "rightCourtAlimony": "You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400",
+  "rightCourtAlimony": "Dėl alimentų galite kreiptis į apygardos teismą (maakohus) — reikalavimams iki 6400 € advokatas nebūtinas",
   "@rightCourtAlimony": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400"
   },
-  "rightBailiffEnforcement": "If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment",
+  "rightBailiffEnforcement": "Jei tėvas atsisako mokėti, antstolis (kohtutäitur) gali priverstinai vykdyti teismo sprendimą, įskaitant išskaitas iš darbo užmokesčio",
   "@rightBailiffEnforcement": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment"
   },
-  "rightStateAlimonyGuarantee": "If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child",
+  "rightStateAlimonyGuarantee": "Jei tėvas nemoka, valstybė per Sotsiaalkindlustusamet skiria elatisabi (išlaikymo pašalpą) — iki 100 €/mėn. vienam vaikui",
   "@rightStateAlimonyGuarantee": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child"
   },
-  "rightChildEducation": "Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)",
+  "rightChildEducation": "Kiekvienas vaikas turi teisę į švietimą, sveikatos priežiūrą ir apsaugą nuo smurto (Lastekaitseseadus § 4–5)",
   "@rightChildEducation": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)"
   },
-  "rightChildContact": "A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)",
+  "rightChildContact": "Vaikas turi teisę palaikyti ryšį su abiem tėvais, nebent teismas nusprendžia kitaip (PKS § 143)",
   "@rightChildContact": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)"
   },
-  "mustFileCourtClaim": "To receive alimony, you must file a claim at court or agree on the amount in writing",
+  "mustFileCourtClaim": "Norėdami gauti alimentus, turite pateikti ieškinį teismui arba raštu susitarti dėl sumos",
   "@mustFileCourtClaim": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "To receive alimony, you must file a claim at court or agree on the amount in writing"
   },
-  "mustNotifyAddressChange": "Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi",
+  "mustNotifyAddressChange": "Praneškite Sotsiaalkindlustusamet apie adreso pasikeitimą, jei gaunate elatisabi",
   "@mustNotifyAddressChange": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi"
   },
-  "childrenActionGatherDocs": "Gather child's birth certificate, your ID, and proof of expenses",
+  "childrenActionGatherDocs": "Surinkite vaiko gimimo liudijimą, savo asmens dokumentą ir išlaidų įrodymus",
   "@childrenActionGatherDocs": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Gather child's birth certificate, your ID, and proof of expenses"
   },
-  "childrenActionFileCourtClaim": "File an alimony claim at the county court (maakohus) — can be done online via e-toimik",
+  "childrenActionFileCourtClaim": "Pateikite ieškinį dėl alimentų apygardos teismui (maakohus) — tai galima padaryti internetu per e-toimik",
   "@childrenActionFileCourtClaim": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "File an alimony claim at the county court (maakohus) — can be done online via e-toimik"
   },
-  "childrenActionApplyElatisabi": "Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won't pay",
+  "childrenActionApplyElatisabi": "Jei tėvas nemoka, kreipkitės dėl valstybės išlaikymo garantijos (elatisabi) į Sotsiaalkindlustusamet",
   "@childrenActionApplyElatisabi": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won't pay"
   },
-  "childrenActionContactBailiff": "Contact a bailiff (kohtutäitur) to enforce the court order",
+  "childrenActionContactBailiff": "Kreipkitės į antstolį (kohtutäitur), kad priverstinai įvykdytų teismo sprendimą",
   "@childrenActionContactBailiff": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Contact a bailiff (kohtutäitur) to enforce the court order"
   },
-  "childrenActionCallLasteabi": "Call Lasteabi 116 111 for children's helpline — free, 24/7",
+  "childrenActionCallLasteabi": "Skambinkite Lasteabi 116 111 — vaikų pagalbos linija, nemokama, visą parą",
   "@childrenActionCallLasteabi": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Call Lasteabi 116 111 for children's helpline — free, 24/7"
   },
-  "childrenDeadlineElatisabi": "Apply for elatisabi — after court order, no strict deadline but process takes time",
+  "childrenDeadlineElatisabi": "Elatisabi prašymas — po teismo sprendimo, griežto termino nėra, bet procesas užtrunka",
   "@childrenDeadlineElatisabi": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Apply for elatisabi — after court order, no strict deadline but process takes time"
   },
-  "childrenDeadlineCourt": "Alimony can be claimed retroactively for up to 1 year before court filing",
+  "childrenDeadlineCourt": "Alimentų galima reikalauti atgaline data iki 1 metų iki ieškinio pateikimo teismui",
   "@childrenDeadlineCourt": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Alimony can be claimed retroactively for up to 1 year before court filing"
   },
-  "childrenFactMinimum": "From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year's average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee",
+  "childrenFactMinimum": "Nuo 2026-04-01 minimalus vaiko išlaikymas yra 318,62 €/mėn. vienam vaikui. Formulė: bazinė suma (295,86 €) + 3 % praėjusių metų vidutinio bruto darbo užmokesčio. Atnaujinama kasmet balandžio 1 d. Tėvas negali sutikti mokėti mažiau. Skaičiuoklė: alimendid.ee",
   "@childrenFactMinimum": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year's average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee"
   },
-  "childrenFactElatisabi": "Estonia's state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent.",
+  "childrenFactElatisabi": "Estijos valstybės išlaikymo garantija (elatisabi) buvo įvesta 2017 m., siekiant apsaugoti vaikus, kai tėvas atsisako mokėti. Valstybė moka, o vėliau susigrąžina sumą iš skolininko.",
   "@childrenFactElatisabi": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Estonia's state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent."
   },
-  "rightReportCybercrime": "You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)",
+  "rightReportCybercrime": "Turite teisę pranešti policijai apie grasinimus internete, priekabiavimą ir tapatybės vagystę (Karistusseadustik § 120, § 157¹)",
   "@rightReportCybercrime": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)"
   },
-  "rightContentRemoval": "You can request removal of defamatory or private content from platforms and demand takedown under GDPR",
+  "rightContentRemoval": "Galite reikalauti pašalinti šmeižikišką ar privatų turinį iš platformų ir reikalauti pašalinimo pagal BDAR",
   "@rightContentRemoval": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You can request removal of defamatory or private content from platforms and demand takedown under GDPR"
   },
-  "rightMoralDamageCompensation": "You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)",
+  "rightMoralDamageCompensation": "Galite reikalauti kompensacijos už neturtinę žalą, padarytą patyčiomis internete (Võlaõigusseadus § 1043–1055)",
   "@rightMoralDamageCompensation": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)"
   },
-  "rightPrivacyProtection": "Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)",
+  "rightPrivacyProtection": "Jūsų privatus gyvenimas yra saugomas — jūsų nuotraukų, pranešimų ar asmens duomenų neteisėtas platinimas yra draudžiamas (KarS § 157)",
   "@rightPrivacyProtection": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)"
   },
-  "rightDataProtection": "Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon",
+  "rightDataProtection": "Praneškite apie duomenų apsaugos pažeidimus (neteisėtas jūsų duomenų naudojimą) Andmekaitse Inspektsioon",
   "@rightDataProtection": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon"
   },
-  "rightDefamationAction": "Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)",
+  "rightDefamationAction": "Šmeižtas (laimamine) yra civilinis pažeidimas — galite pareikšti ieškinį dėl žalos atlyginimo ir reikalauti viešo atsiėmimo (KarS § 247 (panaikinta), VÕS § 1047)",
   "@rightDefamationAction": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)"
   },
-  "mustCollectEvidence": "Collect and preserve all evidence — screenshots, links, dates, and witness information",
+  "mustCollectEvidence": "Rinkite ir saugokite visus įrodymus — ekrano nuotraukas, nuorodas, datas ir liudytojų informaciją",
   "@mustCollectEvidence": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Collect and preserve all evidence — screenshots, links, dates, and witness information"
   },
-  "mustNotRetaliate": "Do not retaliate or engage in counter-harassment — it may weaken your case",
+  "mustNotRetaliate": "Nesikeršykite ir nesileiskite į atsakomąjį priekabiavimą — tai gali susilpninti jūsų bylą",
   "@mustNotRetaliate": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Do not retaliate or engage in counter-harassment — it may weaken your case"
   },
-  "cyberActionScreenshots": "Take screenshots of all harassment — save URLs, dates, usernames, and content",
+  "cyberActionScreenshots": "Fiksuokite visas patyčias ekrano nuotraukomis — išsaugokite nuorodas, datas, vartotojų vardus ir turinį",
   "@cyberActionScreenshots": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Take screenshots of all harassment — save URLs, dates, usernames, and content"
   },
-  "cyberActionReportPolice": "File a police report at the nearest station or online at politsei.ee",
+  "cyberActionReportPolice": "Pateikite pranešimą policijai artimiausiame skyriuje arba internetu politsei.ee",
   "@cyberActionReportPolice": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "File a police report at the nearest station or online at politsei.ee"
   },
-  "cyberActionReportPlatform": "Report the content to the social media platform for removal",
+  "cyberActionReportPlatform": "Praneškite apie turinį socialinio tinklo platformai dėl pašalinimo",
   "@cyberActionReportPlatform": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Report the content to the social media platform for removal"
   },
-  "cyberActionContactDPA": "Contact Andmekaitse Inspektsioon if your personal data was misused",
+  "cyberActionContactDPA": "Jei jūsų asmens duomenys buvo netinkamai naudojami, kreipkitės į Andmekaitse Inspektsioon",
   "@cyberActionContactDPA": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Contact Andmekaitse Inspektsioon if your personal data was misused"
   },
-  "cyberActionConsultLawyer": "Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi",
+  "cyberActionConsultLawyer": "Pasitarkite su teisininku dėl civilinės žalos atlyginimo — nemokama teisinė pagalba prieinama per Riigi Õigusabi",
   "@cyberActionConsultLawyer": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi"
   },
-  "cyberDeadlineCriminal": "Criminal complaint — no strict deadline, but report promptly for best results",
+  "cyberDeadlineCriminal": "Baudžiamasis skundas — griežto termino nėra, tačiau geriausia pranešti nedelsiant",
   "@cyberDeadlineCriminal": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Criminal complaint — no strict deadline, but report promptly for best results"
   },
-  "cyberDeadlineCivil": "Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)",
+  "cyberDeadlineCivil": "Civilinis ieškinys dėl žalos atlyginimo — iki 3 metų nuo pažeidimo sužinojimo (TsÜS § 150)",
   "@cyberDeadlineCivil": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)"
   },
-  "cyberFactPrivacy": "In Estonia, unauthorized sharing of someone's intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).",
+  "cyberFactPrivacy": "Estijoje neteisėtas kieno nors intymių nuotraukų platinimas gali užtraukti iki 3 metų laisvės atėmimo bausmę pagal Karistusseadustik § 157¹ (privatumo pažeidimas).",
   "@cyberFactPrivacy": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "In Estonia, unauthorized sharing of someone's intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy)."
@@ -1485,9 +1485,9 @@
       }
     }
   },
-  "deadlineRadarTitle": "Upcoming deadlines",
-  "deadlineRadarEmpty": "No upcoming deadlines",
-  "deadlineRadarViewAll": "View all",
+  "deadlineRadarTitle": "Artėjantys terminai",
+  "deadlineRadarEmpty": "Artėjančių terminų nėra",
+  "deadlineRadarViewAll": "Peržiūrėti visus",
   "deadlineCardDaysLeft": "{count, plural, =0{šiandien} one{po {count} dienos} few{po {count} dienų} many{po {count} dienos} other{po {count} dienų}}",
   "@deadlineCardDaysLeft": {
     "placeholders": {
@@ -1496,8 +1496,8 @@
       }
     }
   },
-  "deadlineCardTomorrow": "tomorrow",
-  "deadlineCardToday": "today",
+  "deadlineCardTomorrow": "rytoj",
+  "deadlineCardToday": "šiandien",
   "deadlineCardOverdue": "{count, plural, one{vėluoja {count} dieną} few{vėluoja {count} dienas} many{vėluoja {count} dienos} other{vėluoja {count} dienų}}",
   "@deadlineCardOverdue": {
     "placeholders": {
@@ -1506,20 +1506,20 @@
       }
     }
   },
-  "deadlineCardMarkComplete": "Mark complete",
-  "deadlineCardSnooze": "Snooze",
-  "deadlineCardSnooze3d": "Snooze 3 days",
-  "deadlineCardSnooze7d": "Snooze 7 days",
-  "deadlineCardSnoozeCustom": "Pick a date",
-  "deadlineCardEdit": "Edit",
-  "deadlineCardDelete": "Archive",
-  "deadlineCardSourceLabelPdf": "from PDF",
-  "deadlineCardSourceLabelIntake": "from intake",
-  "deadlineCardSourceLabelManual": "added manually",
-  "deadlineCardSourceLabelEmail": "from email",
-  "deadlineCardSourceLabelHaikuExtract": "AI-extracted",
-  "deadlineCardSourceLabelStatutoryTemplate": "statute template",
-  "deadlineBannerCritical": "Critical deadline {title} {when}",
+  "deadlineCardMarkComplete": "Pažymėti kaip atlikta",
+  "deadlineCardSnooze": "Atidėti",
+  "deadlineCardSnooze3d": "Atidėti 3 dienoms",
+  "deadlineCardSnooze7d": "Atidėti 7 dienoms",
+  "deadlineCardSnoozeCustom": "Pasirinkti datą",
+  "deadlineCardEdit": "Redaguoti",
+  "deadlineCardDelete": "Archyvuoti",
+  "deadlineCardSourceLabelPdf": "iš PDF",
+  "deadlineCardSourceLabelIntake": "iš anketos",
+  "deadlineCardSourceLabelManual": "pridėta rankiniu būdu",
+  "deadlineCardSourceLabelEmail": "iš el. laiško",
+  "deadlineCardSourceLabelHaikuExtract": "gauta iš DI",
+  "deadlineCardSourceLabelStatutoryTemplate": "įstatymo šablonas",
+  "deadlineBannerCritical": "Svarbus terminas {title} {when}",
   "@deadlineBannerCritical": {
     "placeholders": {
       "title": {
@@ -1530,9 +1530,9 @@
       }
     }
   },
-  "deadlineBannerDismiss": "Dismiss",
-  "deadlineBannerOpen": "Open deadline",
-  "deadlineHolidayShifted": "Shifted from {original} due to {reason}",
+  "deadlineBannerDismiss": "Atmesti",
+  "deadlineBannerOpen": "Atidaryti terminą",
+  "deadlineHolidayShifted": "Perkelta nuo {original} dėl {reason}",
   "@deadlineHolidayShifted": {
     "placeholders": {
       "original": {
@@ -1543,17 +1543,17 @@
       }
     }
   },
-  "deadlinePermissionAskTitle": "Enable deadline reminders?",
-  "deadlinePermissionAskBody": "We'll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.",
-  "deadlinePermissionAllow": "Allow",
-  "deadlinePermissionLater": "Later",
-  "deadlineSettingsSection": "Deadline reminders",
-  "deadlineSettingsPushChannel": "Push notifications",
-  "deadlineSettingsEmailChannel": "Email (critical only)",
-  "deadlineSettingsInAppChannel": "In-app banners",
-  "deadlineSettingsCriticalBypass": "Critical reminders bypass quiet hours",
-  "deadlineSettingsQuietHours": "Quiet hours",
-  "deadlineSettingsQuietHoursBadge": "Quiet {start}–{end}",
+  "deadlinePermissionAskTitle": "Įjungti priminimus apie terminus?",
+  "deadlinePermissionAskBody": "Priminsime jums likus 7, 3 ir 1 dienai iki kiekvieno įstatyminio termino, taip pat jo dieną ryte. Niekada nenaudojama rinkodarai.",
+  "deadlinePermissionAllow": "Leisti",
+  "deadlinePermissionLater": "Vėliau",
+  "deadlineSettingsSection": "Priminimai apie terminus",
+  "deadlineSettingsPushChannel": "Push pranešimai",
+  "deadlineSettingsEmailChannel": "El. paštas (tik svarbiausi)",
+  "deadlineSettingsInAppChannel": "Programos viduje rodomi pranešimai",
+  "deadlineSettingsCriticalBypass": "Svarbūs priminimai apeina tylos valandas",
+  "deadlineSettingsQuietHours": "Tylos valandos",
+  "deadlineSettingsQuietHoursBadge": "Tyla {start}–{end}",
   "@deadlineSettingsQuietHoursBadge": {
     "placeholders": {
       "start": {
@@ -1564,38 +1564,38 @@
       }
     }
   },
-  "deadlineCaseScreenTitle": "Case deadlines",
-  "deadlineAddManualCta": "Add deadline",
-  "deadlineFormTitle": "Title",
-  "deadlineFormDescription": "Description (optional)",
-  "deadlineFormStatuteTemplate": "Statute template",
-  "deadlineFormStatuteTemplateNone": "None (manual)",
-  "deadlineFormDeadlineAt": "Deadline date",
-  "deadlineFormPriority": "Priority",
-  "deadlineFormSave": "Save",
-  "deadlineFormCancel": "Cancel",
-  "deadlineCompletedNotePrompt": "Add a note (optional)",
-  "deadlineCompletedNoteSave": "Save",
-  "inboxTitle": "Inbox",
-  "inboxEmptyTitle": "Nothing pending",
-  "inboxEmptyBody": "New email threads will appear here as they get triaged.",
-  "inboxApproveSend": "Approve & send",
-  "inboxEditDraft": "Edit",
-  "inboxSnooze": "Snooze",
-  "inboxArchive": "Archive",
-  "inboxFilterAll": "All",
-  "inboxConfirmSendTitle": "Send the prepared reply?",
-  "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
-  "inboxSendButton": "Send",
-  "inboxSentToast": "Sent.",
-  "inboxAlreadySentToast": "Already sent.",
-  "inboxSendErrorToast": "Could not send the reply. Tap retry.",
-  "inboxSnoozedToast": "Snoozed for 24h.",
-  "inboxArchivedToast": "Archived.",
-  "inboxDraftLoadError": "Could not load draft.",
-  "inboxDeadlineToday": "today",
-  "inboxDeadlineTomorrow": "tomorrow",
-  "inboxDeadlineInDays": "in {days}d",
+  "deadlineCaseScreenTitle": "Bylos terminai",
+  "deadlineAddManualCta": "Pridėti terminą",
+  "deadlineFormTitle": "Pavadinimas",
+  "deadlineFormDescription": "Aprašymas (neprivaloma)",
+  "deadlineFormStatuteTemplate": "Įstatymo šablonas",
+  "deadlineFormStatuteTemplateNone": "Nėra (rankiniu būdu)",
+  "deadlineFormDeadlineAt": "Termino data",
+  "deadlineFormPriority": "Prioritetas",
+  "deadlineFormSave": "Išsaugoti",
+  "deadlineFormCancel": "Atšaukti",
+  "deadlineCompletedNotePrompt": "Pridėti pastabą (neprivaloma)",
+  "deadlineCompletedNoteSave": "Išsaugoti",
+  "inboxTitle": "Gautieji",
+  "inboxEmptyTitle": "Nieko laukiančio",
+  "inboxEmptyBody": "Nauji el. laiškų siūlai bus rodomi čia, kai tik bus suklasifikuoti.",
+  "inboxApproveSend": "Patvirtinti ir siųsti",
+  "inboxEditDraft": "Redaguoti",
+  "inboxSnooze": "Atidėti",
+  "inboxArchive": "Archyvuoti",
+  "inboxFilterAll": "Visi",
+  "inboxConfirmSendTitle": "Siųsti paruoštą atsakymą?",
+  "inboxConfirmSendBody": "„Advocat“ išsiųs DI paruoštą atsakymą per jūsų prijungtą „Gmail“. Turinį vis tiek galėsite peržiūrėti kitame ekrane.",
+  "inboxSendButton": "Siųsti",
+  "inboxSentToast": "Išsiųsta.",
+  "inboxAlreadySentToast": "Jau išsiųsta.",
+  "inboxSendErrorToast": "Nepavyko išsiųsti atsakymo. Palieskite, kad bandytumėte dar kartą.",
+  "inboxSnoozedToast": "Atidėta 24 val.",
+  "inboxArchivedToast": "Archyvuota.",
+  "inboxDraftLoadError": "Nepavyko įkelti juodraščio.",
+  "inboxDeadlineToday": "šiandien",
+  "inboxDeadlineTomorrow": "rytoj",
+  "inboxDeadlineInDays": "po {days} d.",
   "@inboxDeadlineInDays": {
     "placeholders": {
       "days": {
@@ -1603,7 +1603,7 @@
       }
     }
   },
-  "inboxDeadlineOverdue": "overdue {days}d",
+  "inboxDeadlineOverdue": "vėluoja {days} d.",
   "@inboxDeadlineOverdue": {
     "placeholders": {
       "days": {
@@ -1611,14 +1611,14 @@
       }
     }
   },
-  "workspaceTabOverview": "Overview",
-  "workspaceTabChat": "Chat",
-  "workspaceTabDrafts": "Drafts",
-  "workspaceOverviewEmpty": "Add documents to build a summary.",
-  "workspaceTimelineEmpty": "No events yet.",
-  "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
-  "workspaceDraftsEmpty": "No drafts yet.",
-  "workspaceInboxEmpty": "No related email.",
+  "workspaceTabOverview": "Apžvalga",
+  "workspaceTabChat": "Pokalbis",
+  "workspaceTabDrafts": "Juodraščiai",
+  "workspaceOverviewEmpty": "Pridėkite dokumentus, kad būtų sukurta santrauka.",
+  "workspaceTimelineEmpty": "Įvykių dar nėra.",
+  "workspaceDocumentsEmpty": "Dokumentų nėra. Įkelkite per „Skenuoti“.",
+  "workspaceDraftsEmpty": "Juodraščių dar nėra.",
+  "workspaceInboxEmpty": "Susijusių el. laiškų nėra.",
   "reviewThisContract": "Peržiūrėti sutartį",
   "contractReviews": "Sutarčių peržiūros",
   "@contractReviews": {},
@@ -1795,68 +1795,68 @@
   "@consiliumDisclaimer": {
     "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
   },
-  "draftsTab": "Drafts",
-  "draftingTitle": "Drafting Studio",
-  "draftingEmpty": "Empty draft",
-  "draftingPlaceholder": "Start typing your draft…",
-  "draftingDraftsList": "My drafts",
-  "draftingSave": "Save",
-  "draftingSaved": "Saved",
-  "draftingSavedJustNow": "Saved just now",
-  "draftingAiRevise": "Revise with AI",
-  "draftingExportPdf": "Export PDF",
-  "draftingExportDocx": "Export DOCX",
-  "draftingExportMd": "Export Markdown",
-  "draftingDeleteDraft": "Delete draft",
-  "draftingConfirmDelete": "Delete this draft?",
-  "draftingConfirmDeleteMessage": "This action cannot be undone.",
-  "draftingConfirm": "Delete",
-  "draftingCancel": "Cancel",
-  "draftingDraftReplyTo": "Reply to {name}",
-  "draftingUntitled": "Untitled",
-  "draftingTitleHint": "Title (optional)",
-  "draftingAiReviseTitle": "Revise with AI",
-  "draftingAiReviseSelectionLabel": "Selected text:",
-  "draftingAiReviseInstructionLabel": "Instruction (optional)",
-  "draftingAiReviseInstructionHint": "e.g. \"make it more formal\" or \"shorten\"",
-  "draftingAiReviseRunButton": "Generate revision",
-  "draftingAiReviseSuggestionLabel": "Suggested revision:",
-  "draftingAiReviseChangesLabel": "Changes:",
-  "draftingAiReviseAccept": "Accept",
-  "draftingAiReviseReject": "Reject",
-  "draftingFormatBold": "Bold",
-  "draftingFormatItalic": "Italic",
-  "draftingFormatHeading": "Heading",
-  "draftingFormatBullet": "Bullet list",
-  "draftingFormatNumbered": "Numbered list",
-  "draftingEmptyListMessage": "You have no drafts yet.",
-  "draftingEmptyListAction": "New draft",
-  "draftingExporting": "Exporting…",
-  "draftingExportFailed": "Export failed",
-  "draftingSaveFailed": "Save failed",
-  "draftingNewDraft": "New draft",
-  "vaultNoteChip": "Vault note",
-  "saveToVault": "Save to Vault",
-  "savingToVault": "Saving to Vault…",
-  "savedToVault": "Saved to Vault",
-  "vaultNoteTitlePrefix": "Note: ",
-  "openInVault": "Open in Vault",
-  "saveToVaultFailed": "Save to Vault failed",
-  "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-  "draftingVersionHistory": "Version history",
+  "draftsTab": "Juodraščiai",
+  "draftingTitle": "Juodraščių studija",
+  "draftingEmpty": "Tuščias juodraštis",
+  "draftingPlaceholder": "Pradėkite rašyti savo juodraštį…",
+  "draftingDraftsList": "Mano juodraščiai",
+  "draftingSave": "Išsaugoti",
+  "draftingSaved": "Išsaugota",
+  "draftingSavedJustNow": "Ką tik išsaugota",
+  "draftingAiRevise": "Taisyti su DI",
+  "draftingExportPdf": "Eksportuoti PDF",
+  "draftingExportDocx": "Eksportuoti DOCX",
+  "draftingExportMd": "Eksportuoti Markdown",
+  "draftingDeleteDraft": "Ištrinti juodraštį",
+  "draftingConfirmDelete": "Ištrinti šį juodraštį?",
+  "draftingConfirmDeleteMessage": "Šio veiksmo anuliuoti negalima.",
+  "draftingConfirm": "Ištrinti",
+  "draftingCancel": "Atšaukti",
+  "draftingDraftReplyTo": "Atsakyti {name}",
+  "draftingUntitled": "Be pavadinimo",
+  "draftingTitleHint": "Pavadinimas (neprivaloma)",
+  "draftingAiReviseTitle": "Taisyti su DI",
+  "draftingAiReviseSelectionLabel": "Pažymėtas tekstas:",
+  "draftingAiReviseInstructionLabel": "Nurodymas (neprivaloma)",
+  "draftingAiReviseInstructionHint": "pvz., „padaryti oficialiau“ arba „sutrumpinti“",
+  "draftingAiReviseRunButton": "Generuoti pataisymą",
+  "draftingAiReviseSuggestionLabel": "Siūlomas pataisymas:",
+  "draftingAiReviseChangesLabel": "Pakeitimai:",
+  "draftingAiReviseAccept": "Priimti",
+  "draftingAiReviseReject": "Atmesti",
+  "draftingFormatBold": "Paryškintas",
+  "draftingFormatItalic": "Kursyvas",
+  "draftingFormatHeading": "Antraštė",
+  "draftingFormatBullet": "Sąrašas su ženkleliais",
+  "draftingFormatNumbered": "Numeruotas sąrašas",
+  "draftingEmptyListMessage": "Juodraščių dar neturite.",
+  "draftingEmptyListAction": "Naujas juodraštis",
+  "draftingExporting": "Eksportuojama…",
+  "draftingExportFailed": "Eksportuoti nepavyko",
+  "draftingSaveFailed": "Išsaugoti nepavyko",
+  "draftingNewDraft": "Naujas juodraštis",
+  "vaultNoteChip": "Saugyklos užrašas",
+  "saveToVault": "Išsaugoti į saugyklą",
+  "savingToVault": "Saugoma į saugyklą…",
+  "savedToVault": "Išsaugota į saugyklą",
+  "vaultNoteTitlePrefix": "Užrašas: ",
+  "openInVault": "Atidaryti saugykloje",
+  "saveToVaultFailed": "Nepavyko išsaugoti į saugyklą",
+  "pdfWorkerUnavailable": "PDF eksportas laikinai nepasiekiamas. Bandykite DOCX arba Markdown.",
+  "draftingVersionHistory": "Versijų istorija",
   "dangerZone": "[en] Danger zone",
   "deleteAccountConfirmButton": "[en] Delete forever",
   "deleteAccountConfirmHint": "[en] Type {email} to confirm",
-  "emptyHomeTitle": "Welcome to Advocat",
-  "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
-  "intentChip1": "Got a fine",
-  "intentChip2": "Permit denied",
-  "intentChip3": "Contract problem",
-  "emptyCasesTitle": "No cases yet",
-  "emptyCasesCta": "Start a case",
-  "emptyDraftsTitle": "No drafts yet",
-  "emptyDraftsCta": "Create draft",
-  "emptyChatTitle": "Ask Advocat anything",
+  "emptyHomeTitle": "Sveiki atvykę į „Advocat“",
+  "emptyHomeBody": "Pasirinkite pradžios tašką — mes pasirūpinsime teisiniu darbu.",
+  "intentChip1": "Gavau baudą",
+  "intentChip2": "Leidimas atmestas",
+  "intentChip3": "Sutarties problema",
+  "emptyCasesTitle": "Bylų dar nėra",
+  "emptyCasesCta": "Pradėti bylą",
+  "emptyDraftsTitle": "Juodraščių dar nėra",
+  "emptyDraftsCta": "Sukurti juodraštį",
+  "emptyChatTitle": "Klauskite „Advocat“ bet ko",
   "chatExamplePrompt1": "Padėk atsakyti į baudą",
   "chatExamplePrompt2": "Peržiūrėk mano nuomos sutartį",
   "chatExamplePrompt3": "Kokios mano teisės darbe?",
@@ -1895,35 +1895,35 @@
   "@contractReviewContinueChat": {
     "description": "TODO native translation for locale=lt; currently English fallback — copy lives in contract_review_screen.dart."
   },
-  "referralInviteFriends": "Invite Friends",
-  "referralYourCode": "Your code",
-  "referralCopiedToast": "Code copied to clipboard",
-  "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
-  "referralInvited": "Friends invited",
-  "referralRewardsEarned": "Free months earned",
-  "deadlineUrgencyToday": "Today & Overdue",
-  "deadlineUrgencyWeek": "This week",
-  "deadlineUrgencyMonth": "This month",
-  "deadlineUrgencyLater": "Later",
-  "deadlineAddManual": "Add deadline",
-  "deadlineSnoozeBy": "Snooze",
-  "deadlineSnooze1d": "Snooze 1 day",
-  "deadlineSnooze3d": "Snooze 3 days",
-  "deadlineSnooze7d": "Snooze 7 days",
-  "deadlineDismiss": "Dismiss",
-  "deadlineExportIcs": "Add to calendar",
-  "deadlineSource": "Source",
-  "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
-  "deadlineNewTitle": "New deadline",
-  "deadlineFieldTitle": "Title",
-  "deadlineFieldDueDate": "Due date",
-  "deadlineFieldNotes": "Notes (optional)",
-  "deadlineSaved": "Deadline saved",
-  "deadlineSaveFailed": "Could not save deadline",
-  "deadlineUrgentBannerSingle": "1 deadline today or overdue",
-  "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
-  "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
-  "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
+  "referralInviteFriends": "Pakviesti draugus",
+  "referralYourCode": "Jūsų kodas",
+  "referralCopiedToast": "Kodas nukopijuotas į iškarpinę",
+  "referralReward": "Gaukite 1 mėnesį „Counsel“ plano nemokamai už kiekvieną draugą, kuris užsiprenumeruoja.",
+  "referralInvited": "Pakviesti draugai",
+  "referralRewardsEarned": "Uždirbti nemokami mėnesiai",
+  "deadlineUrgencyToday": "Šiandien ir vėluojantys",
+  "deadlineUrgencyWeek": "Šią savaitę",
+  "deadlineUrgencyMonth": "Šį mėnesį",
+  "deadlineUrgencyLater": "Vėliau",
+  "deadlineAddManual": "Pridėti terminą",
+  "deadlineSnoozeBy": "Atidėti",
+  "deadlineSnooze1d": "Atidėti 1 dienai",
+  "deadlineSnooze3d": "Atidėti 3 dienoms",
+  "deadlineSnooze7d": "Atidėti 7 dienoms",
+  "deadlineDismiss": "Atmesti",
+  "deadlineExportIcs": "Pridėti į kalendorių",
+  "deadlineSource": "Šaltinis",
+  "deadlineEmpty": "Terminų dar nėra. Terminai automatiškai sukuriami iš jūsų el. laiškų ir dokumentų — arba pridėkite juos rankiniu būdu mygtuku „+“.",
+  "deadlineNewTitle": "Naujas terminas",
+  "deadlineFieldTitle": "Pavadinimas",
+  "deadlineFieldDueDate": "Termino data",
+  "deadlineFieldNotes": "Pastabos (neprivaloma)",
+  "deadlineSaved": "Terminas išsaugotas",
+  "deadlineSaveFailed": "Nepavyko išsaugoti termino",
+  "deadlineUrgentBannerSingle": "1 terminas šiandien arba vėluojantis",
+  "deadlineUrgentBannerMany": "{count} terminai(-ų) šiandien arba vėluojantys",
+  "deadlineDaysLeft": "{count, plural, =0{šiandien} =1{liko 1 diena} other{liko {count} dienų}}",
+  "deadlineDaysOverdue": "{count, plural, =1{vėluoja 1 dieną} other{vėluoja {count} dienų}}",
   "@deadlineUrgentBannerMany": {
     "placeholders": {
       "count": {
@@ -1950,11 +1950,11 @@
   "iapPurchaseFailed": "Pirkimas nepavyko. Bandykite dar kartą arba susisiekite su pagalba.",
   "iapRestoreSuccess": "Jūsų prenumerata atkurta.",
   "iapRestoreNoActive": "Atkurtinos aktyvios prenumeratos nerasta.",
-  "deadlineEuRadarTitle": "EU deadline radar (preview)",
+  "deadlineEuRadarTitle": "ES terminų radaras (peržiūra)",
   "@deadlineEuRadarTitle": {
     "x-todo": "translate to lt"
   },
-  "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+  "deadlineEuRadarSubtitle": "Hipotetiniai ES procedūriniai terminai — bandomieji duomenys",
   "@deadlineEuRadarSubtitle": {
     "x-todo": "translate to lt"
   },

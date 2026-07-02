@@ -190,6 +190,42 @@ void main() {
       expect(events.single, const ConsiliumSynthesisStart());
     });
 
+    // Flagship UX fix (2026-07-02): consilium.ts / consilium_v3.ts stream
+    // synthesis text as bare `{type: "delta", text: "..."}` frames — NOT
+    // the Anthropic-native `content_block_delta`/`text_delta` shape. Before
+    // this fix, `delta` fell into the parser's `default` branch (no
+    // `citations` key present) and was silently dropped, so the consilium's
+    // final synthesised answer never rendered even though every metadata
+    // event (start/opinions/rounds/done) worked.
+    test('delta maps to TextDelta (consilium synthesis wire shape)', () {
+      final state = SseStreamState();
+
+      final events = parseSseEvent({
+        'type': 'delta',
+        'text': 'Основной путь: KHO valituslupa.',
+      }, state: state);
+
+      expect(events, hasLength(1));
+      final ev = events.single as TextDelta;
+      expect(ev.text, 'Основной путь: KHO valituslupa.');
+    });
+
+    test('delta with empty text emits no event', () {
+      final state = SseStreamState();
+
+      final events = parseSseEvent({'type': 'delta', 'text': ''}, state: state);
+
+      expect(events, isEmpty);
+    });
+
+    test('delta with missing text does not crash and emits no event', () {
+      final state = SseStreamState();
+
+      final events = parseSseEvent({'type': 'delta'}, state: state);
+
+      expect(events, isEmpty);
+    });
+
     test('synthesis_done with full payload maps to ConsiliumDone', () {
       final state = SseStreamState();
 

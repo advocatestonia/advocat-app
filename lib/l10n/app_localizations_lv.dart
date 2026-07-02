@@ -15,19 +15,19 @@ class AppLocalizationsLv extends AppLocalizations {
   String get aboutSection => 'PAR';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Izskats';
 
   @override
-  String get appearanceSystem => 'System (auto)';
+  String get appearanceSystem => 'Sistemas (automatiski)';
 
   @override
-  String get appearanceLight => 'Light';
+  String get appearanceLight => 'Gaiss';
 
   @override
-  String get appearanceDark => 'Dark';
+  String get appearanceDark => 'Tumss';
 
   @override
-  String get appearanceDescription => 'Choose how Advocat looks';
+  String get appearanceDescription => 'Izvelieties, ka izskatas Advocat';
 
   @override
   String get accidents => 'Negadījumi';
@@ -67,7 +67,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get speakIntoMicHint =>
-      'Speak into the microphone. Make sure microphone access is enabled.';
+      'Runajiet mikrofona. Parliecinieties, ka mikrofona pieklušana ir iespējota.';
 
   @override
   String get aiErrorRateLimit =>
@@ -79,7 +79,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String freeLimitReached(int count) {
-    return 'You have used all $count free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!';
+    return 'Jūs esat izmantojis visus $count bezmaksas AI ziņojumus. Jauniniet uz Legal Counsel neierobežotai AI palīdzībai!';
   }
 
   @override
@@ -650,10 +650,10 @@ class AppLocalizationsLv extends AppLocalizations {
   String get rateUs => 'Novērtējiet mūs';
 
   @override
-  String get rateAppComingSoon => 'Coming to app stores soon!';
+  String get rateAppComingSoon => 'Drīzumā lietotņu veikalos!';
 
   @override
-  String get dataCopiedToClipboard => 'Data copied to clipboard';
+  String get dataCopiedToClipboard => 'Dati nokopēti starpliktuvē';
 
   @override
   String get readingDocument => 'Lasa dokumentu…';
@@ -1668,26 +1668,26 @@ class AppLocalizationsLv extends AppLocalizations {
   String get priorityProcessing => 'Prioritāra apstrāde';
 
   @override
-  String get fiveAiMessagesTotal => '5 AI messages (lifetime)';
+  String get fiveAiMessagesTotal => '5 AI ziņojumi (uz visiem laikiem)';
 
   @override
-  String get hundredAiMessagesDay => '100 AI messages/day';
+  String get hundredAiMessagesDay => '100 AI ziņojumi dienā';
 
   @override
-  String get unlimitedAiMessages => 'Unlimited AI messages';
+  String get unlimitedAiMessages => 'Neierobežoti AI ziņojumi';
 
   @override
-  String get voiceInput => 'Voice input';
+  String get voiceInput => 'Balss ievade';
 
   @override
-  String get strategyRecommendations => 'Strategy recommendations';
+  String get strategyRecommendations => 'Stratēģijas ieteikumi';
 
   @override
   String get foundingMemberNote =>
-      'Founding Member: 9.99€/mo for first 3 months';
+      'Dibinātājbiedrs: 9.99€/mēn. pirmos 3 mēnešus';
 
   @override
-  String get saveTwentyPercent => 'Save 20%';
+  String get saveTwentyPercent => 'Ietaupiet 20%';
 
   @override
   String get forever => 'mūžīgi';
@@ -1803,56 +1803,56 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get gdprConsentAiProcessing =>
-      'I agree to the processing of my data for AI legal assistance (required)';
+      'Es piekrītu manu datu apstrādei AI juridiskās palīdzības nodrošināšanai (obligati)';
 
   @override
   String get gdprConsentAnalytics =>
-      'I agree to analytics to improve the service (optional)';
+      'Es piekrītu analītikas izmantošanai pakalpojuma uzlabošanai (neobligati)';
 
   @override
   String get gdprArt9Intro =>
-      'This app processes special category personal data under GDPR Article 9, including:';
+      'Šī lietotne apstrādā īpašu kategoriju personas datus saskaņā ar VDAR 9. pantu, tostarp:';
 
   @override
   String get gdprSpecialLegalCases =>
-      'Your legal case details and court documents';
+      'Jūsu lietas informāciju un tiesas dokumentus';
 
   @override
-  String get gdprSpecialNationality => 'Nationality and immigration status';
+  String get gdprSpecialNationality => 'Pilsonību un imigrācijas statusu';
 
   @override
   String get gdprConsentLegalData =>
-      'I consent to the processing of my legal case data, nationality, and immigration status by AI (required)';
+      'Es piekrītu savu lietas datu, pilsonības un imigrācijas statusa apstrādei ar AI (obligati)';
 
   @override
   String get gdprConsentVoice =>
-      'I consent to voice recording processing (optional)';
+      'Es piekrītu balss ierakstu apstrādei (neobligati)';
 
   @override
-  String get gdprViewPrivacyPolicy => 'View Privacy Policy';
+  String get gdprViewPrivacyPolicy => 'Skatīt privātuma politiku';
 
   @override
-  String get legalInformation => 'Legal Information';
+  String get legalInformation => 'Juridiskā informācija';
 
   @override
   String get legalEntityName => 'Vorantis OÜ';
 
   @override
-  String get legalRegistryCode => 'Registry code: 17098992';
+  String get legalRegistryCode => 'Reģistrācijas kods: 17098992';
 
   @override
   String get legalAddress =>
       'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145';
 
   @override
-  String get legalEmail => 'Email: support@advocat.ee';
+  String get legalEmail => 'E-pasts: support@advocat.ee';
 
   @override
   String get legalRegistry =>
-      'Registered in Estonian Commercial Register (Äriregister)';
+      'Reģistrēts Igaunijas Komercreģistrā (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer => 'Ģenerēts ar AI • Nav juridisks padoms';
 
   @override
   String get decline => 'Noraidīt';
@@ -2089,336 +2089,336 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get domesticViolenceDesc =>
-      'Victim rights, emergency help, restraining orders';
+      'Cietušo tiesības, ārkārtas palīdzība, ierobežojošie rīkojumi';
 
   @override
   String get rightCallEmergency =>
-      'You have the right to call 112 in any emergency — police, ambulance, fire';
+      'Jums ir tiesības jebkurā ārkārtas situācijā zvanīt 112 — policijai, ātrajai palīdzībai, ugunsdzēsējiem';
 
   @override
   String get rightVictimProtection =>
-      'As a victim, you have the right to protection, support, and information about your case';
+      'Kā cietušajam jums ir tiesības uz aizsardzību, atbalstu un informāciju par savu lietu';
 
   @override
   String get rightRestrainingOrder =>
-      'You can apply for a restraining order (lähestymiskielto) to keep the abuser away';
+      'Jūs varat pieteikties ierobežojošam rīkojumam (lähestymiskielto), lai turētu varmāku tālāk';
 
   @override
   String get rightVictimInterpreter =>
-      'You have the right to an interpreter during all legal proceedings';
+      'Jums ir tiesības uz tulku visā tiesvedības procesā';
 
   @override
   String get rightMedicalHelp =>
-      'You have the right to immediate medical treatment and documentation of injuries';
+      'Jums ir tiesības uz tūlītu medicīnisko palīdzību un traumu dokumentēšanu';
 
   @override
   String get rightShelter =>
-      'You have the right to emergency shelter — contact a shelter or social services';
+      'Jums ir tiesības uz ārkārtas patvērumu — sazinieties ar patvērumu vai sociālo dienestu';
 
   @override
   String get mustReportDanger =>
-      'If someone is in immediate danger, call 112 immediately';
+      'Ja kāds ir tiešās briesmās, nekavējoties zvaniet 112';
 
   @override
   String get mustDocumentInjuries =>
-      'Document all injuries — photos, medical records, written notes';
+      'Dokumentējiet visas traumas — fotogrāfijas, medicīniskos ierakstus, rakstiskas piezīmes';
 
   @override
   String get domesticActionCallEmergency =>
-      'Call 112 if you are in immediate danger';
+      'Zvaniet 112, ja esat tiešās briesmās';
 
   @override
   String get domesticActionGoToSafe =>
-      'Go to a safe place — shelter, friend, public place';
+      'Dodieties uz drošu vietu — patvērumu, pie drauga, sabiedriskā vietā';
 
   @override
   String get domesticActionDocumentEverything =>
-      'Document injuries: take photos, get medical records';
+      'Dokumentējiet traumas: uzņemiet fotogrāfijas, saņemiet medicīniskos ierakstus';
 
   @override
   String get domesticActionFilePoliceReport =>
-      'File a police report — you can do this later too';
+      'Iesniedziet policijas ziņojumu — to var izdarīt arī vēlāk';
 
   @override
   String get domesticActionContactShelter =>
-      'Contact a shelter or crisis helpline';
+      'Sazinieties ar patvērumu vai krīzes tālruni';
 
   @override
   String get domesticActionApplyRestraining =>
-      'Apply for a restraining order through police or court';
+      'Pieteikties ierobežojošam rīkojumam ar policijas vai tiesas starpniecību';
 
   @override
   String get domesticFactRestrainingOrder =>
-      'In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.';
+      'Somijā ierobežojošu rīkojumu (lähestymiskielto) var izdot pat bez krimināllietas. Tas aizliedz šai personai ar jūms sazināties vai jums tuvoties.';
 
   @override
   String get domesticFactVictimDirective =>
-      'Under EU Victims\' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.';
+      'Saskaņā ar ES Cietušo direktīvu 2012/29/ES jums ir tiesības tikt izturam ar cieņu, saņemt informāciju jums saprotamā valodā un pieklūt cietušo atbalsta pakalpojumiem — neatkarīgi no jūsu uzturēšanās statusa.';
 
   @override
   String get domesticDeadlinePoliceReport =>
-      'File police report — no strict deadline, but sooner is better for evidence';
+      'Policijas ziņojuma iesniegšana — stingra termiņa nav, taču ātrāk ir labāk pierādījumiem';
 
   @override
   String get domesticDeadlineRestraining =>
-      'Restraining order — can be applied for at any time';
+      'Ierobežojošu rīkojumu var pieprastīt jebkurā laikā';
 
   @override
-  String get contactEmergency => 'Emergency Number';
+  String get contactEmergency => 'Ārkārtas numurs';
 
   @override
-  String get contactShelter => 'Turvakoti (Shelter) Helpline';
+  String get contactShelter => 'Turvakoti (patvērums) uzticibas tālrunis';
 
   @override
-  String get contactCrisisHelpline => 'Crisis Helpline (Kriisipuhelin)';
+  String get contactCrisisHelpline => 'Krīzes tālrunis (Kriisipuhelin)';
 
   @override
   String get contactNollaLinja =>
-      'Nollalinja — Violence Against Women Helpline';
+      'Nollalinja — vardarbības pret sievietēm uzticibas tālrunis';
 
   @override
   String get inheritance => 'Mantojums';
 
   @override
   String get inheritanceDesc =>
-      'Wills, estate, heirs\' rights, forced heirship, probate';
+      'Testamenti, mantojums, mantinieku tiesības, obligatā mantojuma daļa, mantoanas process';
 
   @override
   String get rightInheritanceForced =>
-      'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will';
+      'Obligatie mantinieki (bērni, laulātais) ir tiesiģi saņemt obligato mantojuma daļu neatkarīgi no testamenta';
 
   @override
   String get rightInheritanceWill =>
-      'You have the right to make a will disposing of your property — notarized wills have the strongest legal force';
+      'Jums ir tiesības sastādīt testamentu par sava īpašuma sadali — notariāli apliecinātiem testamentiem ir vislielakais juridiskais spēks';
 
   @override
   String get rightInheritanceRenounce =>
-      'You can renounce an inheritance within 3 months of learning about it';
+      'Jūs varat atteikties no mantojuma 3 mēnešu laikā pēc uzzināšanas par to';
 
   @override
   String get rightInheritanceInfo =>
-      'You have the right to obtain information about the estate from banks and registries';
+      'Jums ir tiesības saņemt informāciju par mantojuma masu no bankām un reģistriem';
 
   @override
   String get rightInheritanceDispute =>
-      'You can challenge an unfair will in court within the statutory limitation period';
+      'Jūs varat apstrīdēt netaisnīgu testamentu tiesa likumā noteiktā noilguma termiņā';
 
   @override
   String get mustFileInheritance =>
-      'File for succession proceedings at a notary within a reasonable time';
+      'Iesniedziet mantoanas lietu pie notāra saprātīgā termiņā';
 
   @override
   String get mustNotifyHeirs =>
-      'All known heirs must be notified of the succession proceedings';
+      'Visi zināmie mantinieki jāinformē par mantoanas procesu';
 
   @override
   String get inheritanceActionGatherDocs =>
-      'Gather all documents: death certificate, will, property records, bank statements';
+      'Savāciet visus dokumentus: miršanas apliecību, testamentu, īpašuma dokumentus, bankas izrakstus';
 
   @override
   String get inheritanceActionContactNotary =>
-      'Contact a notary to open succession proceedings';
+      'Sazinieties ar notāru, lai atvērtu mantoanas lietu';
 
   @override
   String get inheritanceActionCheckDebts =>
-      'Check whether the estate has debts before accepting inheritance';
+      'Pirms mantojuma pieņemšanas pārbaudiet, vai mantojuma masā nav parādu';
 
   @override
   String get inheritanceActionFileCourt =>
-      'If the will is disputed, file a claim in court';
+      'Ja testaments tiek apstrīdēts, iesniedziet prasību tiesā';
 
   @override
   String get inheritanceDeadlineRenounce =>
-      '3 months to renounce inheritance after learning of it';
+      '3 mēneši, lai atteiktos no mantojuma pēc uzzināšanas par to';
 
   @override
   String get inheritanceDeadlineDispute =>
-      'Statute of limitations for challenging a will: varies by grounds';
+      'Testamenta apstrīdēšanas noilgums: atkarīgs no pamatojuma';
 
   @override
   String get inheritanceFactForced =>
-      'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will';
+      'Igaunijā pēcnācējiem un laulātajam ir tiesības uz obligato mantojuma daļu (1/2 no likumīgās daļas) pat tad, ja viņi izslēgti no testamenta';
 
   @override
   String get inheritanceFactNotary =>
-      'All succession proceedings in Estonia must go through a notary — you cannot skip this step';
+      'Visiem mantoanas procesiem Igaunijā jānotiek caur notāru — šo soli nevar izlaist';
 
   @override
   String get consumerProtection => 'Patērētāju aizsardzība';
 
   @override
   String get consumerProtectionDesc =>
-      'Fraud, defective products, returns, deceptive sellers';
+      'Krāpšana, defektīvas preces, atgriešana, negodīgi pārdevēji';
 
   @override
   String get rightReturnOnline =>
-      'You have 14 days to cancel online purchases without reason (EU right of withdrawal)';
+      'Jums ir 14 dienas, lai atceltu tiešsaistes pirkumu bez iemesla norādīšanas (ES atteikuma tiesības)';
 
   @override
   String get rightDefectiveProduct =>
-      'If a product is defective, you have the right to repair, replacement, or refund';
+      'Ja prece ir defektīva, jums ir tiesības uz remontu, aizstāšanu vai naudas atmaksu';
 
   @override
   String get rightClearPricing =>
-      'Sellers must display clear prices including all fees — hidden costs are illegal';
+      'Pārdevējiem jāuzrāda skaidra cena, ieklaujot visas maksas — slēptas izmaksas ir nelikumīgas';
 
   @override
   String get rightComplainBoard =>
-      'You can file a free complaint with the Consumer Disputes Board';
+      'Jūs varat iesniegt bezmaksas sūdzību Patēretāju strīdu komitejai';
 
   @override
   String get rightProtectionFraud =>
-      'You are protected against unfair commercial practices and fraud';
+      'Jūs esat aizsargāts pret negodīgu komercpraksi un krāpšanu';
 
   @override
   String get mustKeepReceipts =>
-      'Keep all receipts, contracts, and communication with sellers';
+      'Saglabājiet visus čekus, līgumus un sarakstes ar pārdevējiem';
 
   @override
   String get mustActTimely =>
-      'Report defects to the seller within a reasonable time after discovery';
+      'Ziņojiet pārdevējam par defektiem saprātīgā termiņā pēc to atklāšanas';
 
   @override
   String get consumerActionKeepEvidence =>
-      'Keep receipts, screenshots, emails, and all proof of purchase';
+      'Saglabājiet čekus, ekrānuzņēmumus, e-pastus un visus pirkuma apliecinājumus';
 
   @override
   String get consumerActionContactSeller =>
-      'Contact the seller first — explain the problem in writing';
+      'Vispirms sazinieties ar pārdevēju — rakstiski izskaidrojiet problēmu';
 
   @override
   String get consumerActionFileComplaint =>
-      'File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)';
+      'Iesniedziet sūdzību Patēretāju strīdu komitejai (kuluttajariitalautakunta)';
 
   @override
   String get consumerActionContactAuthority =>
-      'Contact the Consumer Advisory Services for free help';
+      'Sazinieties ar Patēretāju konsultāciju dienestu bezmaksas palīdzībai';
 
   @override
   String get consumerActionReportFraud =>
-      'Report fraud to the police and Consumer Ombudsman';
+      'Ziņojiet par krāpšanu policijai un Patēretāju tiesību aizsardzības ombudam';
 
   @override
   String get consumerFactWithdrawal =>
-      'Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.';
+      'Saskaņā ar ES Patēretāju tiesību direktīvu 2011/83/ES jums ir 14 dienas, lai atteiktos no jebkura tiešsaistes vai distances pirkuma — bez jautājumiem. Pārdevējam nauda jāatmaksā 14 dienu laikā.';
 
   @override
   String get consumerFactWarranty =>
-      'In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.';
+      'Somijā pārdevējs ir atbildīgs par preces defektiem saprātīgu laika periodā (bieži 2+ gadi). Tas ir atsevišķi no jebkuras ražotāja garantijas.';
 
   @override
   String get consumerDeadlineWithdrawal =>
-      'Online purchase withdrawal — 14 days from delivery';
+      'Tiešsaistes pirkuma atteikums — 14 dienas no piegades';
 
   @override
   String get consumerDeadlineDefect =>
-      'Report defect to seller — within 2 months of discovery (recommended)';
+      'Ziņot pārdevējam par defektu — 2 mēnešu laikā pēc atklāšanas (ieteicams)';
 
   @override
-  String get contactConsumerAdvisory => 'Consumer Advisory Services';
+  String get contactConsumerAdvisory => 'Patēretāju konsultāciju dienests';
 
   @override
   String get contactConsumerOmbudsman =>
-      'Consumer Ombudsman (Kuluttaja-asiamies)';
+      'Patēretāju tiesību aizsardzības ombuds (Kuluttaja-asiamies)';
 
   @override
-  String get contactConsumerDisputesBoardDirect => 'Consumer Disputes Board';
+  String get contactConsumerDisputesBoardDirect => 'Patēretāju strīdu komiteja';
 
   @override
-  String get caseTypeStepLabel => 'Case Type';
+  String get caseTypeStepLabel => 'Lietas veids';
 
   @override
-  String get detailsStepLabel => 'Details';
+  String get detailsStepLabel => 'Dati';
 
   @override
-  String get documentsStepLabel => 'Documents';
+  String get documentsStepLabel => 'Dokumenti';
 
   @override
-  String get whatTypeOfCase => 'What type of case is this?';
+  String get whatTypeOfCase => 'Kāda veida lieta tā ir?';
 
   @override
   String get selectCategoryDescription =>
-      'Select the category that best describes your situation.';
+      'Izvēlieties kategoriju, kas vislābāk apraksta jūsu situāciju.';
 
   @override
-  String get tellUsAboutCase => 'Tell us about your case';
+  String get tellUsAboutCase => 'Pastāstiet mums par savu lietu';
 
   @override
   String get aiHelpsUnderstand =>
-      'This information helps our AI understand your situation better.';
+      'Šī informācija palīdz mūsu AI labāk izprast jūsu situāciju.';
 
   @override
-  String get caseTitleHint => 'e.g., Residence Permit Appeal 2026';
+  String get caseTitleHint => 'piem., Uzturēšanās atļaujas pārsūdzība 2026';
 
   @override
-  String get countryJurisdiction => 'Country / Jurisdiction';
+  String get countryJurisdiction => 'Valsts / jurisdikcija';
 
   @override
-  String get selectCountryHint => 'Select a country';
+  String get selectCountryHint => 'Izvēlieties valsti';
 
   @override
-  String get referenceNumberHint => 'e.g., UMA/12345/2026';
+  String get referenceNumberHint => 'piem., UMA/12345/2026';
 
   @override
-  String get descriptionOptional => 'Description (optional)';
+  String get descriptionOptional => 'Apraksts (neobligats)';
 
   @override
   String get descriptionHint =>
-      'Describe your situation briefly. What happened? What decision was made?';
+      'Īsi aprakstiet savu situāciju. Kas notika? Kāds lēmums tika pieņemts?';
 
   @override
-  String get uploadFirstDocument => 'Upload your first document';
+  String get uploadFirstDocument => 'Augupēieladējiet savu pirmo dokumentu';
 
   @override
   String get uploadDocumentDescription =>
-      'Upload the decision letter or any relevant document. You can skip this step and add documents later.';
+      'Augupēieladējiet lēmuma vēstuli vai citu attiecīgu dokumentu. Šo soli var izlaist un dokumentus pievienot vēlāk.';
 
   @override
-  String get tapToUploadFile => 'Tap to upload a file';
+  String get tapToUploadFile => 'Pieskarieties, lai augupēieladētu failu';
 
   @override
-  String get fileSizeLimit => 'PDF, JPG, PNG up to 25 MB';
+  String get fileSizeLimit => 'PDF, JPG, PNG līdz 25 MB';
 
   @override
   String get addDocumentsLaterHint =>
-      'You can always add documents later from the case detail screen.';
+      'Dokumentus vienmēr varat pievienot vēlāk lietas detāļu ekrānā.';
 
   @override
-  String get callAI => 'Call AI';
+  String get callAI => 'Zvanīt AI';
 
   @override
   String get comingSoon => 'Drīzumā';
 
   @override
-  String get encrypted => 'Encrypted';
+  String get encrypted => 'Šifrēts';
 
   @override
-  String get typing => 'Typing…';
+  String get typing => 'Raksta…';
 
   @override
-  String get online => 'Online';
+  String get online => 'Tiešsaistē';
 
   @override
   String get chatWelcomeSubtitle =>
       'Es izanalizēšu situāciju, pārbaudīšu dokumentus, atradīšu kļūdas un ieteikšu, ko darīt.';
 
   @override
-  String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
+  String get tapMicrophoneToSpeak => 'Pieskarieties mikrofonam, lai runātu';
 
   @override
-  String get categoryEssential => 'Essential';
+  String get categoryEssential => 'Būtiskākais';
 
   @override
-  String get categoryPolice => 'Police';
+  String get categoryPolice => 'Policija';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryWork => 'Darbs';
 
   @override
-  String get categoryHousing => 'Housing';
+  String get categoryHousing => 'Mājoklis';
 
   @override
-  String get categoryConsumer => 'Consumer';
+  String get categoryConsumer => 'Patēretājs';
 
   @override
   String rightsInsideCount(int count) {
@@ -2433,29 +2433,29 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get freeAidThreshold => 'Free aid threshold';
+  String get freeAidThreshold => 'Bezmaksas palīdzības slieksnis';
 
   @override
-  String get partialAidThreshold => 'Partial aid threshold';
+  String get partialAidThreshold => 'Daļējas palīdzības slieksnis';
 
   @override
-  String get assetLimit => 'Asset limit';
+  String get assetLimit => 'Aktivu limits';
 
   @override
-  String get whereToApplyLabel => 'Where to apply';
+  String get whereToApplyLabel => 'Kur pieteikties';
 
   @override
-  String get phoneLabel => 'Phone';
+  String get phoneLabel => 'Tālrunis';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Tīmekļa vietne';
 
   @override
-  String get disclaimerCollapsed => 'AI guidance only';
+  String get disclaimerCollapsed => 'Tikai AI norādes';
 
   @override
   String get disclaimerExpanded =>
-      'AI assistant — not legal advice. Always verify with a qualified lawyer.';
+      'AI asistents — nav juridisks padoms. Vienmēr pārbaudiet pie kvalificēta jurista.';
 
   @override
   String get chatDisclaimerBanner =>
@@ -2477,160 +2477,160 @@ class AppLocalizationsLv extends AppLocalizations {
   String get chatDisclaimerGotIt => 'Saprotu';
 
   @override
-  String get categoryChildren => 'Children';
+  String get categoryChildren => 'Bērni';
 
   @override
-  String get categoryDigital => 'Digital';
+  String get categoryDigital => 'Digitāls';
 
   @override
-  String get childrenRights => 'Children\'s Rights & Alimony';
+  String get childrenRights => 'Bērnu tiesības un uzturlīdzekļi';
 
   @override
   String get childrenRightsDesc =>
-      'Child support, alimony, protection, state guarantees';
+      'Uzturlīdzekļi, alimenti, aizsardzība, valsts garantijas';
 
   @override
-  String get cyberbullying => 'Cyberbullying & Online Harassment';
+  String get cyberbullying => 'Kiberterorizeašana un tiešsaistes uzmākšanās';
 
   @override
   String get cyberbullyingDesc =>
-      'Threats, privacy violations, defamation online';
+      'Draudi, privātuma pārkāpumi, apmelošana tiešsaistē';
 
   @override
   String get rightChildSupport =>
-      'Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)';
+      'Abiem vecākiem ir juridisks pienākums finansiāli uzturēt savu bērnu (Perekonnaseadus § 100–102)';
 
   @override
   String get rightMinimumAlimony =>
-      'Minimum child support in Estonia: base amount (€295.86) + 3% of previous year\'s average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee';
+      'Minimālais uzturlīdzeklis Igaunijā: bāzes summa (295,86 €) + 3% no iepriešējā gada vidējās bruto algas (PKS § 101). No 01.04.2026 — 318,62 €/mēnesī par bērnu. Tiek atjaunināts katru gadu 1. aprīlī. Kalkulators: alimendid.ee';
 
   @override
   String get rightCourtAlimony =>
-      'You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400';
+      'Uzturlīdzekļus var pieprastīt caur apriņķa tiesu (maakohus) — prasībām līdz 6400 € jurists nav nepieciešams';
 
   @override
   String get rightBailiffEnforcement =>
-      'If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment';
+      'Ja vecāks atsakās maksāt, tiesu izpildītājs (kohtutäitur) var izpildīt tiesas lēmumu, tostarp veikt algas ieturejumu';
 
   @override
   String get rightStateAlimonyGuarantee =>
-      'If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child';
+      'Ja vecāks nemaksā, valsts caur Sotsiaalkindlustusamet nodrošina elatisabi (uzturēšanas pabalstu) — līdz 100 €/mēnesī par bērnu';
 
   @override
   String get rightChildEducation =>
-      'Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)';
+      'Katram bērnam ir tiesības uz izglītību, veselibas aprūpi un aizsardzību pret vardarbību (Lastekaitseseadus § 4–5)';
 
   @override
   String get rightChildContact =>
-      'A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)';
+      'Bērnam ir tiesības uzturēt kontaktu ar abiem vecākiem, ja vien tiesa nelemj citādi (PKS § 143)';
 
   @override
   String get mustFileCourtClaim =>
-      'To receive alimony, you must file a claim at court or agree on the amount in writing';
+      'Lai saņemtu uzturlīdzekļus, jāiesniedz prasība tiesā vai rakstiski jāvienojas par summu';
 
   @override
   String get mustNotifyAddressChange =>
-      'Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi';
+      'Ja saņemat elatisabi, informējiet Sotsiaalkindlustusamet par adreses maiņu';
 
   @override
   String get childrenActionGatherDocs =>
-      'Gather child\'s birth certificate, your ID, and proof of expenses';
+      'Savāciet bērna dzimšanas apliecību, savu ID un izdevumu apliecinājumus';
 
   @override
   String get childrenActionFileCourtClaim =>
-      'File an alimony claim at the county court (maakohus) — can be done online via e-toimik';
+      'Iesniedziet uzturlīdzekļu prasību apriņķa tiesā (maakohus) — to var izdarīt tiešsaistē caur e-toimik';
 
   @override
   String get childrenActionApplyElatisabi =>
-      'Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won\'t pay';
+      'Ja vecāks nemaksā, pieteikties valsts uzturlīdzekļu garantijai (elatisabi) Sotsiaalkindlustusamet';
 
   @override
   String get childrenActionContactBailiff =>
-      'Contact a bailiff (kohtutäitur) to enforce the court order';
+      'Sazinieties ar tiesu izpildītāju (kohtutäitur), lai izpildītu tiesas lēmumu';
 
   @override
   String get childrenActionCallLasteabi =>
-      'Call Lasteabi 116 111 for children\'s helpline — free, 24/7';
+      'Zvaniet Lasteabi 116 111 — bērnu palīdzības tālrunis, bezmaksas, visu diennakti';
 
   @override
   String get childrenDeadlineElatisabi =>
-      'Apply for elatisabi — after court order, no strict deadline but process takes time';
+      'Pieteikšanās elatisabi — pēc tiesas lēmuma, stingra termiņa nav, taču process aizņem laiku';
 
   @override
   String get childrenDeadlineCourt =>
-      'Alimony can be claimed retroactively for up to 1 year before court filing';
+      'Uzturlīdzekļus var pieprastīt retroaktivi līdz 1 gadam pirms prasības iesniegšanas tiesā';
 
   @override
   String get childrenFactMinimum =>
-      'From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year\'s average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee';
+      'No 01.04.2026 minimālais uzturlīdzeklis ir 318,62 €/mēnesī par bērnu. Formula: bāzes summa (295,86 €) + 3% no iepriešējā gada vidējās bruto algas. Tiek atjaunināts katru gadu 1. aprīlī. Vecāks nedrīkst vienoties par mazaku summu. Kalkulators: alimendid.ee';
 
   @override
   String get childrenFactElatisabi =>
-      'Estonia\'s state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent.';
+      'Igaunijas valsts uzturlīdzekļu garantija (elatisabi) tika ieviesta 2017. gadā, lai aizsargātu bērnus, kad vecāks atsakās maksāt. Valsts maksā un pēc tam piedzen summu no parādnieka vecāka.';
 
   @override
   String get rightReportCybercrime =>
-      'You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)';
+      'Jums ir tiesības ziņot policijai par draudiem, uzmākšanos un identitātes zādzību tiešsaistē (Karistusseadustik § 120, § 157¹)';
 
   @override
   String get rightContentRemoval =>
-      'You can request removal of defamatory or private content from platforms and demand takedown under GDPR';
+      'Jūs varat pieprastīt apmelojoša vai privāta satura noņemšanu no platformām un pieprastīt izņemšanu saskaņā ar VDAR';
 
   @override
   String get rightMoralDamageCompensation =>
-      'You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)';
+      'Jūs varat pieprastīt kompensāciju par morālo kaitējumu, ko izraisījusi kiberterorizeašana (Võlaõigusseadus § 1043–1055)';
 
   @override
   String get rightPrivacyProtection =>
-      'Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)';
+      'Jūsu privātā dzīve ir aizsargāta — jūsu fotogrāfiju, ziņu vai personas datu neatļauta izplatīšana ir nelikumīga (KarS § 157)';
 
   @override
   String get rightDataProtection =>
-      'Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon';
+      'Ziņojiet par datu aizsardzības pārkāpumiem (jūsu datu neatļauta izmantošana) Andmekaitse Inspektsioon';
 
   @override
   String get rightDefamationAction =>
-      'Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)';
+      'Apmelošana (laimamine) ir civiltiesisks pārkāpums — jūs varat iesudzēt tiesā par zaudējumiem un pieprastīt publisku atsaukumu (KarS § 247 (atcelts), VÕS § 1047)';
 
   @override
   String get mustCollectEvidence =>
-      'Collect and preserve all evidence — screenshots, links, dates, and witness information';
+      'Savāciet un saglabājiet visus pierādījumus — ekrānuzņēmumus, saites, datumus un liecinieku informāciju';
 
   @override
   String get mustNotRetaliate =>
-      'Do not retaliate or engage in counter-harassment — it may weaken your case';
+      'Neatriebieties un neiesaistieties pretuzbrukumos — tas var vājināt jūsu lietu';
 
   @override
   String get cyberActionScreenshots =>
-      'Take screenshots of all harassment — save URLs, dates, usernames, and content';
+      'Uzņemiet ekrānuzņēmumus no visas uzmākšanās — saglabājiet saites, datumus, lietotājvārdus un saturu';
 
   @override
   String get cyberActionReportPolice =>
-      'File a police report at the nearest station or online at politsei.ee';
+      'Iesniedziet policijas ziņojumu tuvākajā iecirknī vai tiešsaistē politsei.ee';
 
   @override
   String get cyberActionReportPlatform =>
-      'Report the content to the social media platform for removal';
+      'Ziņojiet par saturu sociālo mediju platformai tā noņemšanai';
 
   @override
   String get cyberActionContactDPA =>
-      'Contact Andmekaitse Inspektsioon if your personal data was misused';
+      'Sazinieties ar Andmekaitse Inspektsioon, ja jūsu personas dati tika laūnprātīgi izmantoti';
 
   @override
   String get cyberActionConsultLawyer =>
-      'Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi';
+      'Konsultējieties ar juristu par civiltiesiskiem zaudējumiem — bezmaksas juridiskā palīdzība pieejama caur Riigi Õigusabi';
 
   @override
   String get cyberDeadlineCriminal =>
-      'Criminal complaint — no strict deadline, but report promptly for best results';
+      'Kriminālsūdzība — stingra termiņa nav, taču ziņojiet nekavējoties labākam rezultātam';
 
   @override
   String get cyberDeadlineCivil =>
-      'Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)';
+      'Civilprasība par zaudējumiem — līdz 3 gadiem no pārkāpuma uzzināšanas brīdža (TsÜS § 150)';
 
   @override
   String get cyberFactPrivacy =>
-      'In Estonia, unauthorized sharing of someone\'s intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).';
+      'Igaunijā par kāda intīmo attēlu neatļautu izplatīšanu var piespriest līdz 3 gadiem cietumā saskaņā ar Karistusseadustik § 157¹ (privātuma pārkāpums).';
 
   @override
   String get cyberFactGDPR =>
@@ -3203,13 +3203,13 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get deadlineRadarTitle => 'Upcoming deadlines';
+  String get deadlineRadarTitle => 'Gaidāmie termiņi';
 
   @override
-  String get deadlineRadarEmpty => 'No upcoming deadlines';
+  String get deadlineRadarEmpty => 'Nav gaidāmu termiņu';
 
   @override
-  String get deadlineRadarViewAll => 'View all';
+  String get deadlineRadarViewAll => 'Skatīt visus';
 
   @override
   String deadlineCardDaysLeft(int count) {
@@ -3224,10 +3224,10 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardTomorrow => 'tomorrow';
+  String get deadlineCardTomorrow => 'rīt';
 
   @override
-  String get deadlineCardToday => 'today';
+  String get deadlineCardToday => 'šodien';
 
   @override
   String deadlineCardOverdue(int count) {
@@ -3242,200 +3242,201 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardMarkComplete => 'Mark complete';
+  String get deadlineCardMarkComplete => 'Atzīmēt kā pabeigtu';
 
   @override
-  String get deadlineCardSnooze => 'Snooze';
+  String get deadlineCardSnooze => 'Atlikt';
 
   @override
-  String get deadlineCardSnooze3d => 'Snooze 3 days';
+  String get deadlineCardSnooze3d => 'Atlikt uz 3 dienām';
 
   @override
-  String get deadlineCardSnooze7d => 'Snooze 7 days';
+  String get deadlineCardSnooze7d => 'Atlikt uz 7 dienām';
 
   @override
-  String get deadlineCardSnoozeCustom => 'Pick a date';
+  String get deadlineCardSnoozeCustom => 'Izvēlēties datumu';
 
   @override
-  String get deadlineCardEdit => 'Edit';
+  String get deadlineCardEdit => 'Rediģēt';
 
   @override
-  String get deadlineCardDelete => 'Archive';
+  String get deadlineCardDelete => 'Arhivēt';
 
   @override
-  String get deadlineCardSourceLabelPdf => 'from PDF';
+  String get deadlineCardSourceLabelPdf => 'no PDF';
 
   @override
-  String get deadlineCardSourceLabelIntake => 'from intake';
+  String get deadlineCardSourceLabelIntake => 'no anketas';
 
   @override
-  String get deadlineCardSourceLabelManual => 'added manually';
+  String get deadlineCardSourceLabelManual => 'pievienots manuāli';
 
   @override
-  String get deadlineCardSourceLabelEmail => 'from email';
+  String get deadlineCardSourceLabelEmail => 'no e-pasta';
 
   @override
-  String get deadlineCardSourceLabelHaikuExtract => 'AI-extracted';
+  String get deadlineCardSourceLabelHaikuExtract => 'AI izgūts';
 
   @override
-  String get deadlineCardSourceLabelStatutoryTemplate => 'statute template';
+  String get deadlineCardSourceLabelStatutoryTemplate => 'likuma veidne';
 
   @override
   String deadlineBannerCritical(String title, String when) {
-    return 'Critical deadline $title $when';
+    return 'Kritisks termiņš $title $when';
   }
 
   @override
-  String get deadlineBannerDismiss => 'Dismiss';
+  String get deadlineBannerDismiss => 'Aizvērt';
 
   @override
-  String get deadlineBannerOpen => 'Open deadline';
+  String get deadlineBannerOpen => 'Atvērt termiņu';
 
   @override
   String deadlineHolidayShifted(String original, String reason) {
-    return 'Shifted from $original due to $reason';
+    return 'Pārcelts no $original sakarā ar $reason';
   }
 
   @override
-  String get deadlinePermissionAskTitle => 'Enable deadline reminders?';
+  String get deadlinePermissionAskTitle => 'Iespējot termiņu atgādinājumus?';
 
   @override
   String get deadlinePermissionAskBody =>
-      'We\'ll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.';
+      'Mēs jums atgādināsim 7, 3 un 1 dienu pirms katra likumā noteiktā termiņa, kā arī tajā rītā. Netiek izmantots mārketingam.';
 
   @override
-  String get deadlinePermissionAllow => 'Allow';
+  String get deadlinePermissionAllow => 'Atļaut';
 
   @override
-  String get deadlinePermissionLater => 'Later';
+  String get deadlinePermissionLater => 'Vēlāk';
 
   @override
-  String get deadlineSettingsSection => 'Deadline reminders';
+  String get deadlineSettingsSection => 'Termiņu atgādinājumi';
 
   @override
-  String get deadlineSettingsPushChannel => 'Push notifications';
+  String get deadlineSettingsPushChannel => 'Push paziņojumi';
 
   @override
-  String get deadlineSettingsEmailChannel => 'Email (critical only)';
+  String get deadlineSettingsEmailChannel => 'E-pasts (tikai kritiski)';
 
   @override
-  String get deadlineSettingsInAppChannel => 'In-app banners';
+  String get deadlineSettingsInAppChannel => 'Paziņojumi lietotnē';
 
   @override
   String get deadlineSettingsCriticalBypass =>
-      'Critical reminders bypass quiet hours';
+      'Kritiskie atgādinājumi apiet klusuma stundas';
 
   @override
-  String get deadlineSettingsQuietHours => 'Quiet hours';
+  String get deadlineSettingsQuietHours => 'Klusuma stundas';
 
   @override
   String deadlineSettingsQuietHoursBadge(String start, String end) {
-    return 'Quiet $start–$end';
+    return 'Klusums $start–$end';
   }
 
   @override
-  String get deadlineCaseScreenTitle => 'Case deadlines';
+  String get deadlineCaseScreenTitle => 'Lietas termiņi';
 
   @override
-  String get deadlineAddManualCta => 'Add deadline';
+  String get deadlineAddManualCta => 'Pievienot termiņu';
 
   @override
-  String get deadlineFormTitle => 'Title';
+  String get deadlineFormTitle => 'Nosaukums';
 
   @override
-  String get deadlineFormDescription => 'Description (optional)';
+  String get deadlineFormDescription => 'Apraksts (neobligats)';
 
   @override
-  String get deadlineFormStatuteTemplate => 'Statute template';
+  String get deadlineFormStatuteTemplate => 'Likuma veidne';
 
   @override
-  String get deadlineFormStatuteTemplateNone => 'None (manual)';
+  String get deadlineFormStatuteTemplateNone => 'Nav (manuāli)';
 
   @override
-  String get deadlineFormDeadlineAt => 'Deadline date';
+  String get deadlineFormDeadlineAt => 'Termiņa datums';
 
   @override
-  String get deadlineFormPriority => 'Priority';
+  String get deadlineFormPriority => 'Prioritāte';
 
   @override
-  String get deadlineFormSave => 'Save';
+  String get deadlineFormSave => 'Saglabāt';
 
   @override
-  String get deadlineFormCancel => 'Cancel';
+  String get deadlineFormCancel => 'Atcelt';
 
   @override
-  String get deadlineCompletedNotePrompt => 'Add a note (optional)';
+  String get deadlineCompletedNotePrompt => 'Pievienot piezīmi (neobligati)';
 
   @override
-  String get deadlineCompletedNoteSave => 'Save';
+  String get deadlineCompletedNoteSave => 'Saglabāt';
 
   @override
-  String get inboxTitle => 'Inbox';
+  String get inboxTitle => 'Iesutne';
 
   @override
-  String get inboxEmptyTitle => 'Nothing pending';
+  String get inboxEmptyTitle => 'Nekas nav gaidīšanā';
 
   @override
   String get inboxEmptyBody =>
-      'New email threads will appear here as they get triaged.';
+      'Jaunas e-pasta sarakstes parādīsies šeit pēc to izskatīšanas.';
 
   @override
-  String get inboxApproveSend => 'Approve & send';
+  String get inboxApproveSend => 'Apstiprināt un nosūtīt';
 
   @override
-  String get inboxEditDraft => 'Edit';
+  String get inboxEditDraft => 'Rediģēt';
 
   @override
-  String get inboxSnooze => 'Snooze';
+  String get inboxSnooze => 'Atlikt';
 
   @override
-  String get inboxArchive => 'Archive';
+  String get inboxArchive => 'Arhivēt';
 
   @override
-  String get inboxFilterAll => 'All';
+  String get inboxFilterAll => 'Visi';
 
   @override
-  String get inboxConfirmSendTitle => 'Send the prepared reply?';
+  String get inboxConfirmSendTitle => 'Nosūtīt sagatavoto atbildi?';
 
   @override
   String get inboxConfirmSendBody =>
-      'Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.';
+      'Advocat nosūtīs AI sagatavoto atbildi, izmantojot jūsu pievienoto Gmail. Nākamajā ekrānā vēl varēsiet pārskatīt tekstu.';
 
   @override
-  String get inboxSendButton => 'Send';
+  String get inboxSendButton => 'Sūtīt';
 
   @override
-  String get inboxSentToast => 'Sent.';
+  String get inboxSentToast => 'Nosūtīts.';
 
   @override
-  String get inboxAlreadySentToast => 'Already sent.';
+  String get inboxAlreadySentToast => 'Jau nosūtīts.';
 
   @override
-  String get inboxSendErrorToast => 'Could not send the reply. Tap retry.';
+  String get inboxSendErrorToast =>
+      'Neizdevās nosūtīt atbildi. Pieskarieties, lai mēģinātu vēlreiz.';
 
   @override
-  String get inboxSnoozedToast => 'Snoozed for 24h.';
+  String get inboxSnoozedToast => 'Atlikts uz 24 h.';
 
   @override
-  String get inboxArchivedToast => 'Archived.';
+  String get inboxArchivedToast => 'Arhivēts.';
 
   @override
-  String get inboxDraftLoadError => 'Could not load draft.';
+  String get inboxDraftLoadError => 'Neizdevās ielādēt melnrakstu.';
 
   @override
-  String get inboxDeadlineToday => 'today';
+  String get inboxDeadlineToday => 'šodien';
 
   @override
-  String get inboxDeadlineTomorrow => 'tomorrow';
+  String get inboxDeadlineTomorrow => 'rīt';
 
   @override
   String inboxDeadlineInDays(int days) {
-    return 'in ${days}d';
+    return 'pēc ${days}d';
   }
 
   @override
   String inboxDeadlineOverdue(int days) {
-    return 'overdue ${days}d';
+    return 'nokavēts ${days}d';
   }
 
   @override
@@ -3548,28 +3549,30 @@ class AppLocalizationsLv extends AppLocalizations {
   String get inboxEditDiscard => 'Atmest';
 
   @override
-  String get workspaceTabOverview => 'Overview';
+  String get workspaceTabOverview => 'Pārskats';
 
   @override
-  String get workspaceTabChat => 'Chat';
+  String get workspaceTabChat => 'Tērzēšana';
 
   @override
-  String get workspaceTabDrafts => 'Drafts';
+  String get workspaceTabDrafts => 'Melnraksti';
 
   @override
-  String get workspaceOverviewEmpty => 'Add documents to build a summary.';
+  String get workspaceOverviewEmpty =>
+      'Pievienojiet dokumentus, lai izveidotu kopsavilkumu.';
 
   @override
-  String get workspaceTimelineEmpty => 'No events yet.';
+  String get workspaceTimelineEmpty => 'Vēl nav notikumu.';
 
   @override
-  String get workspaceDocumentsEmpty => 'No documents. Upload from Scan.';
+  String get workspaceDocumentsEmpty =>
+      'Nav dokumentu. Augupēieladējiet, izmantojot skenēšanu.';
 
   @override
-  String get workspaceDraftsEmpty => 'No drafts yet.';
+  String get workspaceDraftsEmpty => 'Vēl nav melnrakstu.';
 
   @override
-  String get workspaceInboxEmpty => 'No related email.';
+  String get workspaceInboxEmpty => 'Nav saistītu e-pastu.';
 
   @override
   String get plannerSettingsTitle => 'Trīspakāpju juridiskā argumentācija';
@@ -4245,186 +4248,186 @@ class AppLocalizationsLv extends AppLocalizations {
   String get softCaseShellBannerCta => 'Pārdēvēt';
 
   @override
-  String get draftsTab => 'Drafts';
+  String get draftsTab => 'Melnraksti';
 
   @override
-  String get draftingTitle => 'Drafting Studio';
+  String get draftingTitle => 'Rakstīšanas studija';
 
   @override
-  String get draftingEmpty => 'Empty draft';
+  String get draftingEmpty => 'Tukšs melnraksts';
 
   @override
-  String get draftingPlaceholder => 'Start typing your draft…';
+  String get draftingPlaceholder => 'Sāciet rakstīt savu melnrakstu…';
 
   @override
-  String get draftingDraftsList => 'My drafts';
+  String get draftingDraftsList => 'Mani melnraksti';
 
   @override
-  String get draftingSave => 'Save';
+  String get draftingSave => 'Saglabāt';
 
   @override
-  String get draftingSaved => 'Saved';
+  String get draftingSaved => 'Saglabāts';
 
   @override
-  String get draftingSavedJustNow => 'Saved just now';
+  String get draftingSavedJustNow => 'Tikko saglabāts';
 
   @override
-  String get draftingAiRevise => 'Revise with AI';
+  String get draftingAiRevise => 'Rediģēt ar AI';
 
   @override
-  String get draftingExportPdf => 'Export PDF';
+  String get draftingExportPdf => 'Eksportēt PDF';
 
   @override
-  String get draftingExportDocx => 'Export DOCX';
+  String get draftingExportDocx => 'Eksportēt DOCX';
 
   @override
-  String get draftingExportMd => 'Export Markdown';
+  String get draftingExportMd => 'Eksportēt Markdown';
 
   @override
-  String get draftingDeleteDraft => 'Delete draft';
+  String get draftingDeleteDraft => 'Dzēst melnrakstu';
 
   @override
-  String get draftingConfirmDelete => 'Delete this draft?';
+  String get draftingConfirmDelete => 'Dzēst šo melnrakstu?';
 
   @override
-  String get draftingConfirmDeleteMessage => 'This action cannot be undone.';
+  String get draftingConfirmDeleteMessage => 'Šo darbību nevar atsaukt.';
 
   @override
-  String get draftingConfirm => 'Delete';
+  String get draftingConfirm => 'Dzēst';
 
   @override
-  String get draftingCancel => 'Cancel';
+  String get draftingCancel => 'Atcelt';
 
   @override
   String draftingDraftReplyTo(String name) {
-    return 'Reply to $name';
+    return 'Atbildēt $name';
   }
 
   @override
-  String get draftingUntitled => 'Untitled';
+  String get draftingUntitled => 'Bez nosaukuma';
 
   @override
-  String get draftingTitleHint => 'Title (optional)';
+  String get draftingTitleHint => 'Nosaukums (neobligats)';
 
   @override
-  String get draftingAiReviseTitle => 'Revise with AI';
+  String get draftingAiReviseTitle => 'Rediģēt ar AI';
 
   @override
-  String get draftingAiReviseSelectionLabel => 'Selected text:';
+  String get draftingAiReviseSelectionLabel => 'Iezimētais teksts:';
 
   @override
-  String get draftingAiReviseInstructionLabel => 'Instruction (optional)';
+  String get draftingAiReviseInstructionLabel => 'Instrukcija (neobligata)';
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'e.g. \"make it more formal\" or \"shorten\"';
+      'piem., \"padarīt formālāku\" vai \"saīsināt\"';
 
   @override
-  String get draftingAiReviseRunButton => 'Generate revision';
+  String get draftingAiReviseRunButton => 'Ģenerēt labojumu';
 
   @override
-  String get draftingAiReviseSuggestionLabel => 'Suggested revision:';
+  String get draftingAiReviseSuggestionLabel => 'Ieteiktais labojums:';
 
   @override
-  String get draftingAiReviseChangesLabel => 'Changes:';
+  String get draftingAiReviseChangesLabel => 'Izmaiņas:';
 
   @override
-  String get draftingAiReviseAccept => 'Accept';
+  String get draftingAiReviseAccept => 'Pieņemt';
 
   @override
-  String get draftingAiReviseReject => 'Reject';
+  String get draftingAiReviseReject => 'Noraidīt';
 
   @override
-  String get draftingFormatBold => 'Bold';
+  String get draftingFormatBold => 'Treknraksts';
 
   @override
-  String get draftingFormatItalic => 'Italic';
+  String get draftingFormatItalic => 'Slīpraksts';
 
   @override
-  String get draftingFormatHeading => 'Heading';
+  String get draftingFormatHeading => 'Virsraksts';
 
   @override
-  String get draftingFormatBullet => 'Bullet list';
+  String get draftingFormatBullet => 'Aizzimēju saraksts';
 
   @override
-  String get draftingFormatNumbered => 'Numbered list';
+  String get draftingFormatNumbered => 'Numurēts saraksts';
 
   @override
-  String get draftingEmptyListMessage => 'You have no drafts yet.';
+  String get draftingEmptyListMessage => 'Jums vēl nav melnrakstu.';
 
   @override
-  String get draftingEmptyListAction => 'New draft';
+  String get draftingEmptyListAction => 'Jauns melnraksts';
 
   @override
-  String get draftingExporting => 'Exporting…';
+  String get draftingExporting => 'Eksportē…';
 
   @override
-  String get draftingExportFailed => 'Export failed';
+  String get draftingExportFailed => 'Eksportēšana neizdevās';
 
   @override
-  String get draftingSaveFailed => 'Save failed';
+  String get draftingSaveFailed => 'Saglabāšana neizdevās';
 
   @override
-  String get draftingNewDraft => 'New draft';
+  String get draftingNewDraft => 'Jauns melnraksts';
 
   @override
-  String get vaultNoteChip => 'Vault note';
+  String get vaultNoteChip => 'Glabātuves piezīme';
 
   @override
-  String get saveToVault => 'Save to Vault';
+  String get saveToVault => 'Saglabāt Glabātuvē';
 
   @override
-  String get savingToVault => 'Saving to Vault…';
+  String get savingToVault => 'Saglabā Glabātuvē…';
 
   @override
-  String get savedToVault => 'Saved to Vault';
+  String get savedToVault => 'Saglabāts Glabātuvē';
 
   @override
-  String get vaultNoteTitlePrefix => 'Note: ';
+  String get vaultNoteTitlePrefix => 'Piezīme: ';
 
   @override
-  String get openInVault => 'Open in Vault';
+  String get openInVault => 'Atvērt Glabātuvē';
 
   @override
-  String get saveToVaultFailed => 'Save to Vault failed';
+  String get saveToVaultFailed => 'Saglabāšana Glabātuvē neizdevās';
 
   @override
   String get pdfWorkerUnavailable =>
-      'PDF export is temporarily unavailable. Please try DOCX or Markdown.';
+      'PDF eksports īslaicīgi nav pieejams. Lūdzu, izmēģiniet DOCX vai Markdown.';
 
   @override
-  String get draftingVersionHistory => 'Version history';
+  String get draftingVersionHistory => 'Versiju vēsture';
 
   @override
-  String get emptyHomeTitle => 'Welcome to Advocat';
+  String get emptyHomeTitle => 'Laipni lūdzam Advocat';
 
   @override
   String get emptyHomeBody =>
-      'Pick a starting point — we’ll handle the legal heavy lifting.';
+      'Izvēlieties sākumpunktu — mēs uzņemsimies juridisko darbu.';
 
   @override
-  String get intentChip1 => 'Got a fine';
+  String get intentChip1 => 'Saņēmu sodu';
 
   @override
-  String get intentChip2 => 'Permit denied';
+  String get intentChip2 => 'Atļauja atteikta';
 
   @override
-  String get intentChip3 => 'Contract problem';
+  String get intentChip3 => 'Problēma ar līgumu';
 
   @override
-  String get emptyCasesTitle => 'No cases yet';
+  String get emptyCasesTitle => 'Vēl nav lietu';
 
   @override
-  String get emptyCasesCta => 'Start a case';
+  String get emptyCasesCta => 'Sākt lietu';
 
   @override
-  String get emptyDraftsTitle => 'No drafts yet';
+  String get emptyDraftsTitle => 'Vēl nav melnrakstu';
 
   @override
-  String get emptyDraftsCta => 'Create draft';
+  String get emptyDraftsCta => 'Izveidot melnrakstu';
 
   @override
-  String get emptyChatTitle => 'Ask Advocat anything';
+  String get emptyChatTitle => 'Vaicājiet Advocat jebko';
 
   @override
   String get chatExamplePrompt1 => 'Palīdzi atbildēt uz sodu';
@@ -4483,88 +4486,88 @@ class AppLocalizationsLv extends AppLocalizations {
   String get contractReviewContinueChat => 'Turpināt tērzēšanā';
 
   @override
-  String get referralInviteFriends => 'Invite Friends';
+  String get referralInviteFriends => 'Uzaiciniet draugus';
 
   @override
-  String get referralYourCode => 'Your code';
+  String get referralYourCode => 'Jūsu kods';
 
   @override
-  String get referralCopiedToast => 'Code copied to clipboard';
+  String get referralCopiedToast => 'Kods nokopēts starpliktuvē';
 
   @override
   String get referralReward =>
-      'Get 1 month of Counsel free for every friend who subscribes.';
+      'Saņemiet 1 mēnesi Counsel bez maksas par katru draugu, kas nofromē abonementu.';
 
   @override
-  String get referralInvited => 'Friends invited';
+  String get referralInvited => 'Uzaicināti draugi';
 
   @override
-  String get referralRewardsEarned => 'Free months earned';
+  String get referralRewardsEarned => 'Nopelnītie bezmaksas mēneši';
 
   @override
-  String get deadlineUrgencyToday => 'Today & Overdue';
+  String get deadlineUrgencyToday => 'Šodien un nokavēts';
 
   @override
-  String get deadlineUrgencyWeek => 'This week';
+  String get deadlineUrgencyWeek => 'Šonedēļ';
 
   @override
-  String get deadlineUrgencyMonth => 'This month';
+  String get deadlineUrgencyMonth => 'Šomēnes';
 
   @override
-  String get deadlineUrgencyLater => 'Later';
+  String get deadlineUrgencyLater => 'Vēlāk';
 
   @override
-  String get deadlineAddManual => 'Add deadline';
+  String get deadlineAddManual => 'Pievienot termiņu';
 
   @override
-  String get deadlineSnoozeBy => 'Snooze';
+  String get deadlineSnoozeBy => 'Atlikt';
 
   @override
-  String get deadlineSnooze1d => 'Snooze 1 day';
+  String get deadlineSnooze1d => 'Atlikt uz 1 dienu';
 
   @override
-  String get deadlineSnooze3d => 'Snooze 3 days';
+  String get deadlineSnooze3d => 'Atlikt uz 3 dienām';
 
   @override
-  String get deadlineSnooze7d => 'Snooze 7 days';
+  String get deadlineSnooze7d => 'Atlikt uz 7 dienām';
 
   @override
-  String get deadlineDismiss => 'Dismiss';
+  String get deadlineDismiss => 'Aizvērt';
 
   @override
-  String get deadlineExportIcs => 'Add to calendar';
+  String get deadlineExportIcs => 'Pievienot kalendāram';
 
   @override
-  String get deadlineSource => 'Source';
+  String get deadlineSource => 'Avots';
 
   @override
   String get deadlineEmpty =>
-      'No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.';
+      'Vēl nav termiņu. Termiņi tiek veidoti automatiski no jūsu e-pastiem un dokumentiem — vai pievienojiet vienu manuāli ar + pogu.';
 
   @override
-  String get deadlineNewTitle => 'New deadline';
+  String get deadlineNewTitle => 'Jauns termiņš';
 
   @override
-  String get deadlineFieldTitle => 'Title';
+  String get deadlineFieldTitle => 'Nosaukums';
 
   @override
-  String get deadlineFieldDueDate => 'Due date';
+  String get deadlineFieldDueDate => 'Izpildes datums';
 
   @override
-  String get deadlineFieldNotes => 'Notes (optional)';
+  String get deadlineFieldNotes => 'Piezīmes (neobligatas)';
 
   @override
-  String get deadlineSaved => 'Deadline saved';
+  String get deadlineSaved => 'Termiņš saglabāts';
 
   @override
-  String get deadlineSaveFailed => 'Could not save deadline';
+  String get deadlineSaveFailed => 'Neizdevās saglabāt termiņu';
 
   @override
-  String get deadlineUrgentBannerSingle => '1 deadline today or overdue';
+  String get deadlineUrgentBannerSingle => '1 termiņš šodien vai nokavēts';
 
   @override
   String deadlineUrgentBannerMany(int count) {
-    return '$count deadlines today or overdue';
+    return '$count termiņi šodien vai nokavēti';
   }
 
   @override
@@ -4572,9 +4575,9 @@ class AppLocalizationsLv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days left',
-      one: '1 day left',
-      zero: 'today',
+      other: 'atlikušas $count dienas',
+      one: 'atlikusi 1 diena',
+      zero: 'šodien',
     );
     return '$_temp0';
   }
@@ -4584,8 +4587,8 @@ class AppLocalizationsLv extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days overdue',
-      one: '1 day overdue',
+      other: 'nokavētas $count dienas',
+      one: 'nokavēta 1 diena',
     );
     return '$_temp0';
   }
@@ -4608,11 +4611,11 @@ class AppLocalizationsLv extends AppLocalizations {
       'Nav atrasts aktīvs abonements atjaunošanai.';
 
   @override
-  String get deadlineEuRadarTitle => 'EU deadline radar (preview)';
+  String get deadlineEuRadarTitle => 'ES termiņu radars (priekšskatījums)';
 
   @override
   String get deadlineEuRadarSubtitle =>
-      'Hypothetical EU procedural deadlines — mock data';
+      'Hipotētiski ES procesuālie termiņi — testa dati';
 
   @override
   String get changePassword => 'Mainīt paroli';

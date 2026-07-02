@@ -15,19 +15,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aboutSection => 'حول';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'المظهر';
 
   @override
-  String get appearanceSystem => 'System (auto)';
+  String get appearanceSystem => 'النظام (تلقائي)';
 
   @override
-  String get appearanceLight => 'Light';
+  String get appearanceLight => 'فاتح';
 
   @override
-  String get appearanceDark => 'Dark';
+  String get appearanceDark => 'داكن';
 
   @override
-  String get appearanceDescription => 'Choose how Advocat looks';
+  String get appearanceDescription => 'اختر طريقة عرض تطبيق Advocat';
 
   @override
   String get accidents => 'حوادث';
@@ -1685,7 +1685,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
+      'مرحبًا! أنا Advocat — مساعدك القانوني بالذكاء الاصطناعي. أقدّم معلومات قانونية، وليست استشارة قانونية. بأي سؤال قانوني يمكنني مساعدتك؟';
 
   @override
   String get copySummary => 'نسخ الملخص';
@@ -1741,20 +1741,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aiDisclaimerCompact =>
-      'Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.';
+      'يقدّم Advocat معلومات قانونية بالذكاء الاصطناعي، وليست استشارة قانونية. تحقّق من محامٍ مرخّص قبل اتخاذ أي إجراء.';
 
   @override
-  String get aiDisclaimerFullTitle => 'Important: how Advocat works';
+  String get aiDisclaimerFullTitle => 'مهم: كيف يعمل Advocat';
 
   @override
   String get aiDisclaimerFullBody =>
-      'Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.';
+      'Advocat أداة ذكاء اصطناعي تقدّم معلومات قانونية، وليست استشارة قانونية. بموجب قانون الاتحاد الأوروبي للذكاء الاصطناعي (المادة 50)، يجب أن نُعلمك بوضوح: أنت تتفاعل مع ذكاء اصطناعي، وليس محاميًا بشريًا.\n\nAdvocat ليس مكتب محاماة. نحن لسنا محامين مرخّصين بموجب قانون المحاماة الإستوني (Advokatuuriseadus) أو القانون الفنلندي (Asianajajalaki)، ولا يسري امتياز السرية بين المحامي والموكل على محادثاتك مع هذه الأداة. قبل الاعتماد على أي مُخرج — لتقديم استئناف، أو توقيع عقد، أو التصرف بناءً على موعد نهائي — تحقّق من محامٍ مرخّص في ولايتك القضائية.';
 
   @override
-  String get aiDisclaimerExpand => 'Learn more';
+  String get aiDisclaimerExpand => 'معرفة المزيد';
 
   @override
-  String get aiDisclaimerDismiss => 'OK, I understand';
+  String get aiDisclaimerDismiss => 'حسنًا، فهمت';
 
   @override
   String get dataPrivacyConsent => 'موافقة خصوصية البيانات';
@@ -1827,7 +1827,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get legalRegistry => 'مسجّلة في السجل التجاري الإستوني (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer =>
+      'تم إنشاؤه بالذكاء الاصطناعي • ليس استشارة قانونية';
 
   @override
   String get decline => 'رفض';
@@ -2147,67 +2148,67 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get inheritanceDesc =>
-      'Wills, estate, heirs\' rights, forced heirship, probate';
+      'الوصايا، التركات، حقوق الورثة، الميراث الإجباري، إجراءات التركة';
 
   @override
   String get rightInheritanceForced =>
-      'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will';
+      'يحقّ للورثة الإجباريين (الأبناء، الزوج/الزوجة) الحصول على نصيب إلزامي بغضّ النظر عن الوصية';
 
   @override
   String get rightInheritanceWill =>
-      'You have the right to make a will disposing of your property — notarized wills have the strongest legal force';
+      'يحقّ لك كتابة وصية تتصرّف بموجبها في ممتلكاتك — الوصايا الموثّقة لها أقوى قوة قانونية';
 
   @override
   String get rightInheritanceRenounce =>
-      'You can renounce an inheritance within 3 months of learning about it';
+      'يمكنك التنازل عن الميراث خلال 3 أشهر من علمك به';
 
   @override
   String get rightInheritanceInfo =>
-      'You have the right to obtain information about the estate from banks and registries';
+      'يحقّ لك الحصول على معلومات عن التركة من البنوك والسجلات';
 
   @override
   String get rightInheritanceDispute =>
-      'You can challenge an unfair will in court within the statutory limitation period';
+      'يمكنك الطعن في وصية غير عادلة أمام المحكمة خلال المدة القانونية للتقادم';
 
   @override
   String get mustFileInheritance =>
-      'File for succession proceedings at a notary within a reasonable time';
+      'يجب فتح إجراءات التركة لدى كاتب عدل خلال مدة معقولة';
 
   @override
   String get mustNotifyHeirs =>
-      'All known heirs must be notified of the succession proceedings';
+      'يجب إخطار جميع الورثة المعروفين بإجراءات التركة';
 
   @override
   String get inheritanceActionGatherDocs =>
-      'Gather all documents: death certificate, will, property records, bank statements';
+      'اجمع جميع المستندات: شهادة الوفاة، الوصية، سجلات الملكية، كشوف الحسابات المصرفية';
 
   @override
   String get inheritanceActionContactNotary =>
-      'Contact a notary to open succession proceedings';
+      'تواصل مع كاتب عدل لفتح إجراءات التركة';
 
   @override
   String get inheritanceActionCheckDebts =>
-      'Check whether the estate has debts before accepting inheritance';
+      'تحقّق مما إذا كانت على التركة ديون قبل قبول الميراث';
 
   @override
   String get inheritanceActionFileCourt =>
-      'If the will is disputed, file a claim in court';
+      'في حال الطعن في الوصية، ارفع دعوى أمام المحكمة';
 
   @override
   String get inheritanceDeadlineRenounce =>
-      '3 months to renounce inheritance after learning of it';
+      '3 أشهر للتنازل عن الميراث بعد العلم به';
 
   @override
   String get inheritanceDeadlineDispute =>
-      'Statute of limitations for challenging a will: varies by grounds';
+      'مدة التقادم للطعن في الوصية: تختلف حسب الأسباب';
 
   @override
   String get inheritanceFactForced =>
-      'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will';
+      'في إستونيا، يحقّ للأبناء والزوج/الزوجة الحصول على نصيب إلزامي (نصف النصيب القانوني) حتى لو تم استبعادهم من الوصية';
 
   @override
   String get inheritanceFactNotary =>
-      'All succession proceedings in Estonia must go through a notary — you cannot skip this step';
+      'يجب أن تتم جميع إجراءات التركة في إستونيا عبر كاتب عدل — لا يمكن تخطي هذه الخطوة';
 
   @override
   String get consumerProtection => 'حماية المستهلك';
@@ -2291,100 +2292,99 @@ class AppLocalizationsAr extends AppLocalizations {
   String get contactConsumerDisputesBoardDirect => 'مجلس نزاعات المستهلكين';
 
   @override
-  String get caseTypeStepLabel => 'Case Type';
+  String get caseTypeStepLabel => 'نوع القضية';
 
   @override
-  String get detailsStepLabel => 'Details';
+  String get detailsStepLabel => 'التفاصيل';
 
   @override
-  String get documentsStepLabel => 'Documents';
+  String get documentsStepLabel => 'المستندات';
 
   @override
-  String get whatTypeOfCase => 'What type of case is this?';
+  String get whatTypeOfCase => 'ما نوع هذه القضية؟';
 
   @override
-  String get selectCategoryDescription =>
-      'Select the category that best describes your situation.';
+  String get selectCategoryDescription => 'اختر الفئة التي تصف وضعك بأفضل شكل.';
 
   @override
-  String get tellUsAboutCase => 'Tell us about your case';
+  String get tellUsAboutCase => 'أخبرنا عن قضيتك';
 
   @override
   String get aiHelpsUnderstand =>
-      'This information helps our AI understand your situation better.';
+      'تساعد هذه المعلومات ذكاءنا الاصطناعي على فهم وضعك بشكل أفضل.';
 
   @override
-  String get caseTitleHint => 'e.g., Residence Permit Appeal 2026';
+  String get caseTitleHint => 'مثال: استئناف تصريح الإقامة 2026';
 
   @override
-  String get countryJurisdiction => 'Country / Jurisdiction';
+  String get countryJurisdiction => 'الدولة / الولاية القضائية';
 
   @override
-  String get selectCountryHint => 'Select a country';
+  String get selectCountryHint => 'اختر دولة';
 
   @override
-  String get referenceNumberHint => 'e.g., UMA/12345/2026';
+  String get referenceNumberHint => 'مثال: UMA/12345/2026';
 
   @override
-  String get descriptionOptional => 'Description (optional)';
+  String get descriptionOptional => 'الوصف (اختياري)';
 
   @override
   String get descriptionHint =>
-      'Describe your situation briefly. What happened? What decision was made?';
+      'صف وضعك باختصار. ماذا حدث؟ وما القرار الذي صدر؟';
 
   @override
-  String get uploadFirstDocument => 'Upload your first document';
+  String get uploadFirstDocument => 'ارفع مستندك الأول';
 
   @override
   String get uploadDocumentDescription =>
-      'Upload the decision letter or any relevant document. You can skip this step and add documents later.';
+      'ارفع خطاب القرار أو أي مستند ذي صلة. يمكنك تخطي هذه الخطوة وإضافة المستندات لاحقًا.';
 
   @override
-  String get tapToUploadFile => 'Tap to upload a file';
+  String get tapToUploadFile => 'اضغط لرفع ملف';
 
   @override
-  String get fileSizeLimit => 'PDF, JPG, PNG up to 25 MB';
+  String get fileSizeLimit => 'PDF أو JPG أو PNG حتى 25 ميجابايت';
 
   @override
   String get addDocumentsLaterHint =>
-      'You can always add documents later from the case detail screen.';
+      'يمكنك دائمًا إضافة المستندات لاحقًا من شاشة تفاصيل القضية.';
 
   @override
-  String get callAI => 'Call AI';
+  String get callAI => 'اتصل بالذكاء الاصطناعي';
 
   @override
   String get comingSoon => 'قريبًا';
 
   @override
-  String get encrypted => 'Encrypted';
+  String get encrypted => 'مشفّر';
 
   @override
-  String get typing => 'Typing…';
+  String get typing => 'يكتب…';
 
   @override
-  String get online => 'Online';
+  String get online => 'متصل';
 
   @override
   String get chatWelcomeSubtitle =>
-      'I will analyze the situation, check documents, find errors, and suggest what to do.';
+      'سأحلّل الوضع، وأفحص المستندات، وأكتشف الأخطاء، وأقترح ما يجب فعله.';
 
   @override
-  String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
+  String get tapMicrophoneToSpeak => 'اضغط على الميكروفون للتحدث';
 
   @override
-  String get categoryEssential => 'Essential';
+  String get categoryEssential => 'أساسي';
 
   @override
-  String get categoryPolice => 'Police';
+  String get categoryPolice => 'الشرطة';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryWork => 'العمل';
 
   @override
-  String get categoryHousing => 'Housing';
+  String get categoryHousing => 'السكن';
 
   @override
-  String get categoryConsumer => 'Consumer';
+  String get categoryConsumer => 'المستهلك';
 
   @override
   String rightsInsideCount(int count) {
@@ -2399,47 +2399,48 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get freeAidThreshold => 'Free aid threshold';
+  String get freeAidThreshold => 'حد المساعدة المجانية';
 
   @override
-  String get partialAidThreshold => 'Partial aid threshold';
+  String get partialAidThreshold => 'حد المساعدة الجزئية';
 
   @override
-  String get assetLimit => 'Asset limit';
+  String get assetLimit => 'حد الأصول';
 
   @override
-  String get whereToApplyLabel => 'Where to apply';
+  String get whereToApplyLabel => 'أين تقدّم الطلب';
 
   @override
-  String get phoneLabel => 'Phone';
+  String get phoneLabel => 'الهاتف';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'الموقع الإلكتروني';
 
   @override
-  String get disclaimerCollapsed => 'AI guidance only';
+  String get disclaimerCollapsed => 'إرشاد بالذكاء الاصطناعي فقط';
 
   @override
   String get disclaimerExpanded =>
-      'AI assistant — not legal advice. Always verify with a qualified lawyer.';
+      'مساعد ذكاء اصطناعي — ليس استشارة قانونية. تحقّق دائمًا من محامٍ مؤهّل.';
 
   @override
   String get chatDisclaimerBanner =>
-      'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.';
+      'يقدّم مساعد الذكاء الاصطناعي معلومات قانونية، وليست استشارة قانونية. استشر دائمًا محاميًا مؤهّلًا.';
 
   @override
-  String get chatDisclaimerSubtitle => 'AI assistant · not legal advice';
+  String get chatDisclaimerSubtitle =>
+      'مساعد ذكاء اصطناعي · ليس استشارة قانونية';
 
   @override
   String get chatDisclaimerBannerFull =>
-      'Advocat is an AI legal-information assistant, not a lawyer. Information here does not establish an attorney-client relationship, is not legal advice, and may be incorrect. For binding legal advice, consult a licensed attorney in your jurisdiction. We do not represent you.';
+      'Advocat مساعد معلومات قانونية بالذكاء الاصطناعي، وليس محاميًا. لا تُنشئ المعلومات هنا علاقة محامٍ وموكّل، وليست استشارة قانونية، وقد تكون غير دقيقة. للحصول على استشارة قانونية ملزمة، استشر محاميًا مرخّصًا في ولايتك القضائية. نحن لا نمثّلك.';
 
   @override
   String get chatDisclaimerFooter =>
-      'AI-generated. Verify with a licensed lawyer.';
+      'تم إنشاؤه بالذكاء الاصطناعي. تحقّق من محامٍ مرخّص.';
 
   @override
-  String get chatDisclaimerGotIt => 'Got it';
+  String get chatDisclaimerGotIt => 'فهمت';
 
   @override
   String get categoryChildren => 'الأطفال';
@@ -3159,13 +3160,13 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get deadlineRadarTitle => 'Upcoming deadlines';
+  String get deadlineRadarTitle => 'المواعيد النهائية القادمة';
 
   @override
-  String get deadlineRadarEmpty => 'No upcoming deadlines';
+  String get deadlineRadarEmpty => 'لا توجد مواعيد نهائية قادمة';
 
   @override
-  String get deadlineRadarViewAll => 'View all';
+  String get deadlineRadarViewAll => 'عرض الكل';
 
   @override
   String deadlineCardDaysLeft(int count) {
@@ -3180,10 +3181,10 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardTomorrow => 'tomorrow';
+  String get deadlineCardTomorrow => 'غدًا';
 
   @override
-  String get deadlineCardToday => 'today';
+  String get deadlineCardToday => 'اليوم';
 
   @override
   String deadlineCardOverdue(int count) {
@@ -3197,200 +3198,200 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardMarkComplete => 'Mark complete';
+  String get deadlineCardMarkComplete => 'وضع علامة مكتمل';
 
   @override
-  String get deadlineCardSnooze => 'Snooze';
+  String get deadlineCardSnooze => 'تأجيل';
 
   @override
-  String get deadlineCardSnooze3d => 'Snooze 3 days';
+  String get deadlineCardSnooze3d => 'تأجيل 3 أيام';
 
   @override
-  String get deadlineCardSnooze7d => 'Snooze 7 days';
+  String get deadlineCardSnooze7d => 'تأجيل 7 أيام';
 
   @override
-  String get deadlineCardSnoozeCustom => 'Pick a date';
+  String get deadlineCardSnoozeCustom => 'اختر تاريخًا';
 
   @override
-  String get deadlineCardEdit => 'Edit';
+  String get deadlineCardEdit => 'تعديل';
 
   @override
-  String get deadlineCardDelete => 'Archive';
+  String get deadlineCardDelete => 'أرشفة';
 
   @override
-  String get deadlineCardSourceLabelPdf => 'from PDF';
+  String get deadlineCardSourceLabelPdf => 'من PDF';
 
   @override
-  String get deadlineCardSourceLabelIntake => 'from intake';
+  String get deadlineCardSourceLabelIntake => 'من الاستمارة الأولية';
 
   @override
-  String get deadlineCardSourceLabelManual => 'added manually';
+  String get deadlineCardSourceLabelManual => 'أُضيف يدويًا';
 
   @override
-  String get deadlineCardSourceLabelEmail => 'from email';
+  String get deadlineCardSourceLabelEmail => 'من البريد الإلكتروني';
 
   @override
-  String get deadlineCardSourceLabelHaikuExtract => 'AI-extracted';
+  String get deadlineCardSourceLabelHaikuExtract => 'مستخرَج بالذكاء الاصطناعي';
 
   @override
-  String get deadlineCardSourceLabelStatutoryTemplate => 'statute template';
+  String get deadlineCardSourceLabelStatutoryTemplate => 'نموذج قانوني';
 
   @override
   String deadlineBannerCritical(String title, String when) {
-    return 'Critical deadline $title $when';
+    return 'موعد نهائي حرج $title $when';
   }
 
   @override
-  String get deadlineBannerDismiss => 'Dismiss';
+  String get deadlineBannerDismiss => 'إغلاق';
 
   @override
-  String get deadlineBannerOpen => 'Open deadline';
+  String get deadlineBannerOpen => 'فتح الموعد النهائي';
 
   @override
   String deadlineHolidayShifted(String original, String reason) {
-    return 'Shifted from $original due to $reason';
+    return 'تم النقل من $original بسبب $reason';
   }
 
   @override
-  String get deadlinePermissionAskTitle => 'Enable deadline reminders?';
+  String get deadlinePermissionAskTitle => 'تفعيل تذكيرات المواعيد النهائية؟';
 
   @override
   String get deadlinePermissionAskBody =>
-      'We\'ll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.';
+      'سنُذكّرك قبل كل موعد نهائي قانوني بـ 7 و3 و1 يوم، بالإضافة إلى صباح اليوم نفسه. لن يُستخدم هذا أبدًا للتسويق.';
 
   @override
-  String get deadlinePermissionAllow => 'Allow';
+  String get deadlinePermissionAllow => 'السماح';
 
   @override
-  String get deadlinePermissionLater => 'Later';
+  String get deadlinePermissionLater => 'لاحقًا';
 
   @override
-  String get deadlineSettingsSection => 'Deadline reminders';
+  String get deadlineSettingsSection => 'تذكيرات المواعيد النهائية';
 
   @override
-  String get deadlineSettingsPushChannel => 'Push notifications';
+  String get deadlineSettingsPushChannel => 'الإشعارات الفورية';
 
   @override
-  String get deadlineSettingsEmailChannel => 'Email (critical only)';
+  String get deadlineSettingsEmailChannel => 'البريد الإلكتروني (الحرجة فقط)';
 
   @override
-  String get deadlineSettingsInAppChannel => 'In-app banners';
+  String get deadlineSettingsInAppChannel => 'لافتات داخل التطبيق';
 
   @override
   String get deadlineSettingsCriticalBypass =>
-      'Critical reminders bypass quiet hours';
+      'تتجاوز التذكيرات الحرجة ساعات الهدوء';
 
   @override
-  String get deadlineSettingsQuietHours => 'Quiet hours';
+  String get deadlineSettingsQuietHours => 'ساعات الهدوء';
 
   @override
   String deadlineSettingsQuietHoursBadge(String start, String end) {
-    return 'Quiet $start–$end';
+    return 'هدوء $start–$end';
   }
 
   @override
-  String get deadlineCaseScreenTitle => 'Case deadlines';
+  String get deadlineCaseScreenTitle => 'المواعيد النهائية للقضية';
 
   @override
-  String get deadlineAddManualCta => 'Add deadline';
+  String get deadlineAddManualCta => 'إضافة موعد نهائي';
 
   @override
-  String get deadlineFormTitle => 'Title';
+  String get deadlineFormTitle => 'العنوان';
 
   @override
-  String get deadlineFormDescription => 'Description (optional)';
+  String get deadlineFormDescription => 'الوصف (اختياري)';
 
   @override
-  String get deadlineFormStatuteTemplate => 'Statute template';
+  String get deadlineFormStatuteTemplate => 'نموذج قانوني';
 
   @override
-  String get deadlineFormStatuteTemplateNone => 'None (manual)';
+  String get deadlineFormStatuteTemplateNone => 'بلا (يدوي)';
 
   @override
-  String get deadlineFormDeadlineAt => 'Deadline date';
+  String get deadlineFormDeadlineAt => 'تاريخ الموعد النهائي';
 
   @override
-  String get deadlineFormPriority => 'Priority';
+  String get deadlineFormPriority => 'الأولوية';
 
   @override
-  String get deadlineFormSave => 'Save';
+  String get deadlineFormSave => 'حفظ';
 
   @override
-  String get deadlineFormCancel => 'Cancel';
+  String get deadlineFormCancel => 'إلغاء';
 
   @override
-  String get deadlineCompletedNotePrompt => 'Add a note (optional)';
+  String get deadlineCompletedNotePrompt => 'أضف ملاحظة (اختياري)';
 
   @override
-  String get deadlineCompletedNoteSave => 'Save';
+  String get deadlineCompletedNoteSave => 'حفظ';
 
   @override
-  String get inboxTitle => 'Inbox';
+  String get inboxTitle => 'صندوق الوارد';
 
   @override
-  String get inboxEmptyTitle => 'Nothing pending';
+  String get inboxEmptyTitle => 'لا يوجد شيء معلّق';
 
   @override
   String get inboxEmptyBody =>
-      'New email threads will appear here as they get triaged.';
+      'ستظهر هنا سلاسل البريد الإلكتروني الجديدة عند فرزها.';
 
   @override
-  String get inboxApproveSend => 'Approve & send';
+  String get inboxApproveSend => 'الموافقة والإرسال';
 
   @override
-  String get inboxEditDraft => 'Edit';
+  String get inboxEditDraft => 'تعديل';
 
   @override
-  String get inboxSnooze => 'Snooze';
+  String get inboxSnooze => 'تأجيل';
 
   @override
-  String get inboxArchive => 'Archive';
+  String get inboxArchive => 'أرشفة';
 
   @override
-  String get inboxFilterAll => 'All';
+  String get inboxFilterAll => 'الكل';
 
   @override
-  String get inboxConfirmSendTitle => 'Send the prepared reply?';
+  String get inboxConfirmSendTitle => 'إرسال الرد المُعَدّ؟';
 
   @override
   String get inboxConfirmSendBody =>
-      'Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.';
+      'سيقوم Advocat بإرسال الرد المُعَدّ بالذكاء الاصطناعي عبر Gmail المتصل بحسابك. يمكنك مراجعة النص في الشاشة التالية.';
 
   @override
-  String get inboxSendButton => 'Send';
+  String get inboxSendButton => 'إرسال';
 
   @override
-  String get inboxSentToast => 'Sent.';
+  String get inboxSentToast => 'تم الإرسال.';
 
   @override
-  String get inboxAlreadySentToast => 'Already sent.';
+  String get inboxAlreadySentToast => 'تم الإرسال مسبقًا.';
 
   @override
-  String get inboxSendErrorToast => 'Could not send the reply. Tap retry.';
+  String get inboxSendErrorToast => 'تعذّر إرسال الرد. اضغط لإعادة المحاولة.';
 
   @override
-  String get inboxSnoozedToast => 'Snoozed for 24h.';
+  String get inboxSnoozedToast => 'تم التأجيل لمدة 24 ساعة.';
 
   @override
-  String get inboxArchivedToast => 'Archived.';
+  String get inboxArchivedToast => 'تمت الأرشفة.';
 
   @override
-  String get inboxDraftLoadError => 'Could not load draft.';
+  String get inboxDraftLoadError => 'تعذّر تحميل المسودة.';
 
   @override
-  String get inboxDeadlineToday => 'today';
+  String get inboxDeadlineToday => 'اليوم';
 
   @override
-  String get inboxDeadlineTomorrow => 'tomorrow';
+  String get inboxDeadlineTomorrow => 'غدًا';
 
   @override
   String inboxDeadlineInDays(int days) {
-    return 'in ${days}d';
+    return 'خلال $days يوم';
   }
 
   @override
   String inboxDeadlineOverdue(int days) {
-    return 'overdue ${days}d';
+    return 'متأخر $days يوم';
   }
 
   @override
@@ -3501,28 +3502,29 @@ class AppLocalizationsAr extends AppLocalizations {
   String get inboxEditDiscard => 'تجاهل';
 
   @override
-  String get workspaceTabOverview => 'Overview';
+  String get workspaceTabOverview => 'نظرة عامة';
 
   @override
-  String get workspaceTabChat => 'Chat';
+  String get workspaceTabChat => 'المحادثة';
 
   @override
-  String get workspaceTabDrafts => 'Drafts';
+  String get workspaceTabDrafts => 'المسودات';
 
   @override
-  String get workspaceOverviewEmpty => 'Add documents to build a summary.';
+  String get workspaceOverviewEmpty => 'أضف مستندات لإنشاء ملخّص.';
 
   @override
-  String get workspaceTimelineEmpty => 'No events yet.';
+  String get workspaceTimelineEmpty => 'لا توجد أحداث بعد.';
 
   @override
-  String get workspaceDocumentsEmpty => 'No documents. Upload from Scan.';
+  String get workspaceDocumentsEmpty =>
+      'لا توجد مستندات. ارفعها من المسح الضوئي.';
 
   @override
-  String get workspaceDraftsEmpty => 'No drafts yet.';
+  String get workspaceDraftsEmpty => 'لا توجد مسودات بعد.';
 
   @override
-  String get workspaceInboxEmpty => 'No related email.';
+  String get workspaceInboxEmpty => 'لا يوجد بريد إلكتروني ذو صلة.';
 
   @override
   String get plannerSettingsTitle => 'التفكير القانوني بثلاث مراحل';
@@ -3655,16 +3657,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reviewThisContract => 'راجع هذا العقد';
 
   @override
-  String get contractReviews => 'Contract Reviews';
+  String get contractReviews => 'مراجعات العقود';
 
   @override
-  String get contractReviewsFreeFeature => '1 contract review (lifetime trial)';
+  String get contractReviewsFreeFeature =>
+      'مراجعة عقد واحدة (تجربة مدى الحياة)';
 
   @override
-  String get contractReviewsCounselFeature => '5 contract reviews per month';
+  String get contractReviewsCounselFeature => '5 مراجعات عقود شهريًا';
 
   @override
-  String get contractReviewsProFeature => '20 contract reviews per month';
+  String get contractReviewsProFeature => '20 مراجعة عقد شهريًا';
 
   @override
   String contractReviewsLeft(int count) {
@@ -3679,40 +3682,42 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get contractReviewsExhausted => 'No contract reviews left this month';
+  String get contractReviewsExhausted =>
+      'لم تعد لديك مراجعات عقود متبقية هذا الشهر';
 
   @override
-  String get contractReviewsFreeTrialLeft => 'Free trial: 1 contract review';
+  String get contractReviewsFreeTrialLeft =>
+      'التجربة المجانية: مراجعة عقد واحدة';
 
   @override
   String get contractReviewsFreeTrialUsed =>
-      'Free trial used — upgrade for more';
+      'تم استخدام التجربة المجانية — قم بالترقية للمزيد';
 
   @override
-  String get contractReviewsUpgradeTitle => 'Contract reviews used up';
+  String get contractReviewsUpgradeTitle => 'تم استنفاد مراجعات العقود';
 
   @override
   String get contractReviewsUpgradeBodyFree =>
-      'You used your free contract review. Upgrade for monthly contract reviews.';
+      'لقد استخدمت مراجعة عقدك المجانية. قم بالترقية للحصول على مراجعات شهرية.';
 
   @override
   String contractReviewsUpgradeBodyPaid(int used, int cap) {
-    return 'You used $used of $cap reviews this month. Upgrade for a higher monthly cap.';
+    return 'لقد استخدمت $used من $cap مراجعة هذا الشهر. قم بالترقية للحصول على حد شهري أعلى.';
   }
 
   @override
   String get contractReviewsUpgradeCounselCta =>
-      'Upgrade to Counsel (€19.99/mo) — 5 reviews';
+      'الترقية إلى Counsel (19.99 يورو/شهر) — 5 مراجعات';
 
   @override
   String get contractReviewsUpgradeProCta =>
-      'Upgrade to Pro (€29.99/mo) — 20 reviews';
+      'الترقية إلى Pro (29.99 يورو/شهر) — 20 مراجعة';
 
   @override
-  String get contractReviewsUpgradeToProShort => 'Upgrade to Pro — 20/mo';
+  String get contractReviewsUpgradeToProShort => 'الترقية إلى Pro — 20/شهر';
 
   @override
-  String get notNow => 'Not now';
+  String get notNow => 'ليس الآن';
 
   @override
   String get referralTitle => 'ادعُ الأصدقاء';
@@ -3859,96 +3864,95 @@ class AppLocalizationsAr extends AppLocalizations {
       '17 لغة • قانون إستوني وفنلندي وأوروبي حقيقي • على مدار الساعة — دون انتظار';
 
   @override
-  String get checkerProTagline => 'Professional verification tools';
+  String get checkerProTagline => 'أدوات تحقّق احترافية';
 
   @override
-  String get checkerDataSource => 'Data from official registries';
+  String get checkerDataSource => 'بيانات من السجلات الرسمية';
 
   @override
-  String get companyCheckerHint => 'Company name or reg. number';
+  String get companyCheckerHint => 'اسم الشركة أو رقم التسجيل';
 
   @override
-  String get companyCheckerPriceChip => '€2.99 per check  •  Included in Pro';
+  String get companyCheckerPriceChip => '2.99 يورو لكل فحص  •  مشمول في Pro';
 
   @override
   String get companyCheckerEmptyState =>
-      'Enter a company name or registration\nnumber to get a full report';
+      'أدخل اسم شركة أو رقم تسجيل\nللحصول على تقرير كامل';
 
   @override
-  String get aiMemoryTitle => 'AI memory';
+  String get aiMemoryTitle => 'ذاكرة الذكاء الاصطناعي';
 
   @override
-  String get aiMemorySubtitle =>
-      'Review and forget what the AI remembers about you';
+  String get aiMemorySubtitle => 'راجع وانسَ ما يتذكّره الذكاء الاصطناعي عنك';
 
   @override
-  String get bookLawyerCallTitle => 'Book a lawyer call';
+  String get bookLawyerCallTitle => 'حجز مكالمة مع محامٍ';
 
   @override
   String get bookLawyerCallComingSoonTitle =>
-      'Human lawyer calls — opening soon';
+      'مكالمات المحامين البشريين — تفتح قريبًا';
 
   @override
   String get bookLawyerCallComingSoonBody =>
-      'Pro and Premium include 15-minute calls with a partner lawyer (1/quarter on Pro, 2/quarter on Premium). We are finalising the EE solo-practitioner pool and will email you the moment booking opens.';
+      'تشمل باقتا Pro وPremium مكالمات مدتها 15 دقيقة مع محامٍ شريك (مرة كل ربع سنة في Pro، ومرتان في Premium). نعمل حاليًا على استكمال مجموعة المحامين المستقلين في إستونيا وسنراسلك بالبريد الإلكتروني فور فتح باب الحجز.';
 
   @override
   String bookLawyerCallQuotaAvailable(int remaining, int total) {
-    return 'You have $remaining of $total call(s) left this quarter.';
+    return 'لديك $remaining من أصل $total مكالمة متبقية هذا الربع.';
   }
 
   @override
-  String get bookLawyerCallQuotaExhausted => 'Quarterly quota used.';
+  String get bookLawyerCallQuotaExhausted => 'تم استخدام الحصة الربع سنوية.';
 
   @override
   String get bookLawyerCallQuotaBodyAvailable =>
-      'Pro tier includes 1 call/quarter, Premium 2. Calls last 15 minutes, by Google Meet.';
+      'تشمل باقة Pro مكالمة واحدة كل ربع سنة، وPremium مكالمتين. تستغرق المكالمات 15 دقيقة عبر Google Meet.';
 
   @override
   String get bookLawyerCallQuotaBodyExhausted =>
-      'Your quota resets on the first day of next quarter. Need to talk sooner? Upgrade to Premium for an extra call.';
+      'تُجدَّد حصتك في اليوم الأول من الربع القادم. تحتاج للتحدث في وقت أقرب؟ قم بالترقية إلى Premium للحصول على مكالمة إضافية.';
 
   @override
-  String get severityCritical => 'CRITICAL';
+  String get severityCritical => 'حرج';
 
   @override
-  String get severityHigh => 'HIGH';
+  String get severityHigh => 'مرتفع';
 
   @override
-  String get severityMedium => 'MEDIUM';
+  String get severityMedium => 'متوسط';
 
   @override
-  String get severityLow => 'LOW';
+  String get severityLow => 'منخفض';
 
   @override
-  String get deadlineRequiredFields => 'Title and deadline date are required';
+  String get deadlineRequiredFields => 'العنوان وتاريخ الموعد النهائي مطلوبان';
 
   @override
-  String get acceptTermsRequired => 'Please agree to the Terms of Service';
+  String get acceptTermsRequired => 'يرجى الموافقة على شروط الخدمة';
 
   @override
-  String get chatLegalCouncilTooltip => 'Legal council (4 experts)';
+  String get chatLegalCouncilTooltip => 'مجلس قانوني (4 خبراء)';
 
   @override
-  String get attachFileTooltip => 'Attach file';
+  String get attachFileTooltip => 'إرفاق ملف';
 
   @override
-  String get sendMessage => 'Send message';
+  String get sendMessage => 'إرسال الرسالة';
 
   @override
-  String get stopGenerating => 'Stop generating';
+  String get stopGenerating => 'إيقاف التوليد';
 
   @override
-  String get showPassword => 'Show password';
+  String get showPassword => 'إظهار كلمة المرور';
 
   @override
-  String get hidePassword => 'Hide password';
+  String get hidePassword => 'إخفاء كلمة المرور';
 
   @override
-  String get decreaseDependents => 'Decrease';
+  String get decreaseDependents => 'إنقاص';
 
   @override
-  String get increaseDependents => 'Increase';
+  String get increaseDependents => 'زيادة';
 
   @override
   String get sensitiveConsentTitle => 'موافقة على البيانات الحساسة';
@@ -4187,195 +4191,195 @@ class AppLocalizationsAr extends AppLocalizations {
   String get softCaseShellBannerCta => 'إعادة التسمية';
 
   @override
-  String get draftsTab => 'Drafts';
+  String get draftsTab => 'المسودات';
 
   @override
-  String get draftingTitle => 'Drafting Studio';
+  String get draftingTitle => 'استوديو الصياغة';
 
   @override
-  String get draftingEmpty => 'Empty draft';
+  String get draftingEmpty => 'مسودة فارغة';
 
   @override
-  String get draftingPlaceholder => 'Start typing your draft…';
+  String get draftingPlaceholder => 'ابدأ بكتابة مسودتك…';
 
   @override
-  String get draftingDraftsList => 'My drafts';
+  String get draftingDraftsList => 'مسوداتي';
 
   @override
-  String get draftingSave => 'Save';
+  String get draftingSave => 'حفظ';
 
   @override
-  String get draftingSaved => 'Saved';
+  String get draftingSaved => 'تم الحفظ';
 
   @override
-  String get draftingSavedJustNow => 'Saved just now';
+  String get draftingSavedJustNow => 'تم الحفظ للتو';
 
   @override
-  String get draftingAiRevise => 'Revise with AI';
+  String get draftingAiRevise => 'مراجعة بالذكاء الاصطناعي';
 
   @override
-  String get draftingExportPdf => 'Export PDF';
+  String get draftingExportPdf => 'تصدير PDF';
 
   @override
-  String get draftingExportDocx => 'Export DOCX';
+  String get draftingExportDocx => 'تصدير DOCX';
 
   @override
-  String get draftingExportMd => 'Export Markdown';
+  String get draftingExportMd => 'تصدير Markdown';
 
   @override
-  String get draftingDeleteDraft => 'Delete draft';
+  String get draftingDeleteDraft => 'حذف المسودة';
 
   @override
-  String get draftingConfirmDelete => 'Delete this draft?';
+  String get draftingConfirmDelete => 'حذف هذه المسودة؟';
 
   @override
-  String get draftingConfirmDeleteMessage => 'This action cannot be undone.';
+  String get draftingConfirmDeleteMessage => 'لا يمكن التراجع عن هذا الإجراء.';
 
   @override
-  String get draftingConfirm => 'Delete';
+  String get draftingConfirm => 'حذف';
 
   @override
-  String get draftingCancel => 'Cancel';
+  String get draftingCancel => 'إلغاء';
 
   @override
   String draftingDraftReplyTo(String name) {
-    return 'Reply to $name';
+    return 'الرد على $name';
   }
 
   @override
-  String get draftingUntitled => 'Untitled';
+  String get draftingUntitled => 'بلا عنوان';
 
   @override
-  String get draftingTitleHint => 'Title (optional)';
+  String get draftingTitleHint => 'العنوان (اختياري)';
 
   @override
-  String get draftingAiReviseTitle => 'Revise with AI';
+  String get draftingAiReviseTitle => 'مراجعة بالذكاء الاصطناعي';
 
   @override
-  String get draftingAiReviseSelectionLabel => 'Selected text:';
+  String get draftingAiReviseSelectionLabel => 'النص المحدد:';
 
   @override
-  String get draftingAiReviseInstructionLabel => 'Instruction (optional)';
+  String get draftingAiReviseInstructionLabel => 'التعليمات (اختياري)';
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'e.g. \"make it more formal\" or \"shorten\"';
+      'مثال: \"اجعله أكثر رسمية\" أو \"اختصره\"';
 
   @override
-  String get draftingAiReviseRunButton => 'Generate revision';
+  String get draftingAiReviseRunButton => 'إنشاء مراجعة';
 
   @override
-  String get draftingAiReviseSuggestionLabel => 'Suggested revision:';
+  String get draftingAiReviseSuggestionLabel => 'المراجعة المقترحة:';
 
   @override
-  String get draftingAiReviseChangesLabel => 'Changes:';
+  String get draftingAiReviseChangesLabel => 'التغييرات:';
 
   @override
-  String get draftingAiReviseAccept => 'Accept';
+  String get draftingAiReviseAccept => 'قبول';
 
   @override
-  String get draftingAiReviseReject => 'Reject';
+  String get draftingAiReviseReject => 'رفض';
 
   @override
-  String get draftingFormatBold => 'Bold';
+  String get draftingFormatBold => 'عريض';
 
   @override
-  String get draftingFormatItalic => 'Italic';
+  String get draftingFormatItalic => 'مائل';
 
   @override
-  String get draftingFormatHeading => 'Heading';
+  String get draftingFormatHeading => 'عنوان';
 
   @override
-  String get draftingFormatBullet => 'Bullet list';
+  String get draftingFormatBullet => 'قائمة نقطية';
 
   @override
-  String get draftingFormatNumbered => 'Numbered list';
+  String get draftingFormatNumbered => 'قائمة مرقّمة';
 
   @override
-  String get draftingEmptyListMessage => 'You have no drafts yet.';
+  String get draftingEmptyListMessage => 'ليس لديك مسودات بعد.';
 
   @override
-  String get draftingEmptyListAction => 'New draft';
+  String get draftingEmptyListAction => 'مسودة جديدة';
 
   @override
-  String get draftingExporting => 'Exporting…';
+  String get draftingExporting => 'جارٍ التصدير…';
 
   @override
-  String get draftingExportFailed => 'Export failed';
+  String get draftingExportFailed => 'فشل التصدير';
 
   @override
-  String get draftingSaveFailed => 'Save failed';
+  String get draftingSaveFailed => 'فشل الحفظ';
 
   @override
-  String get draftingNewDraft => 'New draft';
+  String get draftingNewDraft => 'مسودة جديدة';
 
   @override
-  String get vaultNoteChip => 'Vault note';
+  String get vaultNoteChip => 'ملاحظة الخزنة';
 
   @override
-  String get saveToVault => 'Save to Vault';
+  String get saveToVault => 'الحفظ في الخزنة';
 
   @override
-  String get savingToVault => 'Saving to Vault…';
+  String get savingToVault => 'جارٍ الحفظ في الخزنة…';
 
   @override
-  String get savedToVault => 'Saved to Vault';
+  String get savedToVault => 'تم الحفظ في الخزنة';
 
   @override
-  String get vaultNoteTitlePrefix => 'Note: ';
+  String get vaultNoteTitlePrefix => 'ملاحظة: ';
 
   @override
-  String get openInVault => 'Open in Vault';
+  String get openInVault => 'فتح في الخزنة';
 
   @override
-  String get saveToVaultFailed => 'Save to Vault failed';
+  String get saveToVaultFailed => 'فشل الحفظ في الخزنة';
 
   @override
   String get pdfWorkerUnavailable =>
-      'PDF export is temporarily unavailable. Please try DOCX or Markdown.';
+      'تصدير PDF غير متاح مؤقتًا. يرجى تجربة DOCX أو Markdown.';
 
   @override
-  String get draftingVersionHistory => 'Version history';
+  String get draftingVersionHistory => 'سجل الإصدارات';
 
   @override
-  String get emptyHomeTitle => 'Welcome to Advocat';
+  String get emptyHomeTitle => 'مرحبًا بك في Advocat';
 
   @override
   String get emptyHomeBody =>
-      'Pick a starting point — we’ll handle the legal heavy lifting.';
+      'اختر نقطة بداية — وسنتولّى الجانب القانوني الشاق.';
 
   @override
-  String get intentChip1 => 'Got a fine';
+  String get intentChip1 => 'حصلت على غرامة';
 
   @override
-  String get intentChip2 => 'Permit denied';
+  String get intentChip2 => 'رُفض التصريح';
 
   @override
-  String get intentChip3 => 'Contract problem';
+  String get intentChip3 => 'مشكلة في عقد';
 
   @override
-  String get emptyCasesTitle => 'No cases yet';
+  String get emptyCasesTitle => 'لا توجد قضايا بعد';
 
   @override
-  String get emptyCasesCta => 'Start a case';
+  String get emptyCasesCta => 'ابدأ قضية';
 
   @override
-  String get emptyDraftsTitle => 'No drafts yet';
+  String get emptyDraftsTitle => 'لا توجد مسودات بعد';
 
   @override
-  String get emptyDraftsCta => 'Create draft';
+  String get emptyDraftsCta => 'إنشاء مسودة';
 
   @override
-  String get emptyChatTitle => 'Ask Advocat anything';
+  String get emptyChatTitle => 'اسأل Advocat أي شيء';
 
   @override
-  String get chatExamplePrompt1 => 'Help me reply to a fine';
+  String get chatExamplePrompt1 => 'ساعدني في الرد على غرامة';
 
   @override
-  String get chatExamplePrompt2 => 'Review my rental contract';
+  String get chatExamplePrompt2 => 'راجع عقد إيجاري';
 
   @override
-  String get chatExamplePrompt3 => 'What are my rights at work?';
+  String get chatExamplePrompt3 => 'ما هي حقوقي في العمل؟';
 
   @override
   String get dangerZone => '[en] Danger zone';
@@ -4400,113 +4404,113 @@ class AppLocalizationsAr extends AppLocalizations {
   String get deletingAccount => '[en] Deleting account…';
 
   @override
-  String get contractReviewTitle => 'Contract Review';
+  String get contractReviewTitle => 'مراجعة العقد';
 
   @override
-  String get contractReviewUploadCta => 'Upload contract';
+  String get contractReviewUploadCta => 'رفع العقد';
 
   @override
   String get contractReviewQuotaRemaining =>
-      'Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.';
+      'ارفع عقدًا بصيغة PDF أو DOC أو DOCX أو TXT للحصول على مراجعة بالذكاء الاصطناعي تتضمن نقاط الخطر ونصائح التفاوض.';
 
   @override
-  String get contractReviewRedFlags => 'Red flags';
+  String get contractReviewRedFlags => 'نقاط الخطر';
 
   @override
-  String get contractReviewReviewPoints => 'Review points';
+  String get contractReviewReviewPoints => 'نقاط المراجعة';
 
   @override
-  String get contractReviewNegotiationTips => 'Negotiation tips';
+  String get contractReviewNegotiationTips => 'نصائح التفاوض';
 
   @override
-  String get contractReviewSaveToVault => 'Save to Vault';
+  String get contractReviewSaveToVault => 'الحفظ في الخزنة';
 
   @override
-  String get contractReviewContinueChat => 'Continue in chat';
+  String get contractReviewContinueChat => 'المتابعة في المحادثة';
 
   @override
-  String get referralInviteFriends => 'Invite Friends';
+  String get referralInviteFriends => 'دعوة الأصدقاء';
 
   @override
-  String get referralYourCode => 'Your code';
+  String get referralYourCode => 'رمزك';
 
   @override
-  String get referralCopiedToast => 'Code copied to clipboard';
+  String get referralCopiedToast => 'تم نسخ الرمز إلى الحافظة';
 
   @override
   String get referralReward =>
-      'Get 1 month of Counsel free for every friend who subscribes.';
+      'احصل على شهر مجاني من باقة Counsel مقابل كل صديق يشترك.';
 
   @override
-  String get referralInvited => 'Friends invited';
+  String get referralInvited => 'الأصدقاء المدعوّون';
 
   @override
-  String get referralRewardsEarned => 'Free months earned';
+  String get referralRewardsEarned => 'الأشهر المجانية المكتسبة';
 
   @override
-  String get deadlineUrgencyToday => 'Today & Overdue';
+  String get deadlineUrgencyToday => 'اليوم والمتأخرة';
 
   @override
-  String get deadlineUrgencyWeek => 'This week';
+  String get deadlineUrgencyWeek => 'هذا الأسبوع';
 
   @override
-  String get deadlineUrgencyMonth => 'This month';
+  String get deadlineUrgencyMonth => 'هذا الشهر';
 
   @override
-  String get deadlineUrgencyLater => 'Later';
+  String get deadlineUrgencyLater => 'لاحقًا';
 
   @override
-  String get deadlineAddManual => 'Add deadline';
+  String get deadlineAddManual => 'إضافة موعد نهائي';
 
   @override
-  String get deadlineSnoozeBy => 'Snooze';
+  String get deadlineSnoozeBy => 'تأجيل';
 
   @override
-  String get deadlineSnooze1d => 'Snooze 1 day';
+  String get deadlineSnooze1d => 'تأجيل يوم واحد';
 
   @override
-  String get deadlineSnooze3d => 'Snooze 3 days';
+  String get deadlineSnooze3d => 'تأجيل 3 أيام';
 
   @override
-  String get deadlineSnooze7d => 'Snooze 7 days';
+  String get deadlineSnooze7d => 'تأجيل 7 أيام';
 
   @override
-  String get deadlineDismiss => 'Dismiss';
+  String get deadlineDismiss => 'إغلاق';
 
   @override
-  String get deadlineExportIcs => 'Add to calendar';
+  String get deadlineExportIcs => 'إضافة إلى التقويم';
 
   @override
-  String get deadlineSource => 'Source';
+  String get deadlineSource => 'المصدر';
 
   @override
   String get deadlineEmpty =>
-      'No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.';
+      'لا توجد مواعيد نهائية بعد. تُنشأ المواعيد النهائية تلقائيًا من رسائلك ومستنداتك — أو أضف واحدًا يدويًا بزر +.';
 
   @override
-  String get deadlineNewTitle => 'New deadline';
+  String get deadlineNewTitle => 'موعد نهائي جديد';
 
   @override
-  String get deadlineFieldTitle => 'Title';
+  String get deadlineFieldTitle => 'العنوان';
 
   @override
-  String get deadlineFieldDueDate => 'Due date';
+  String get deadlineFieldDueDate => 'تاريخ الاستحقاق';
 
   @override
-  String get deadlineFieldNotes => 'Notes (optional)';
+  String get deadlineFieldNotes => 'ملاحظات (اختياري)';
 
   @override
-  String get deadlineSaved => 'Deadline saved';
+  String get deadlineSaved => 'تم حفظ الموعد النهائي';
 
   @override
-  String get deadlineSaveFailed => 'Could not save deadline';
+  String get deadlineSaveFailed => 'تعذّر حفظ الموعد النهائي';
 
   @override
-  String get deadlineUrgentBannerSingle => '1 deadline today or overdue';
+  String get deadlineUrgentBannerSingle => 'موعد نهائي واحد اليوم أو متأخر';
 
   @override
   String deadlineUrgentBannerMany(int count) {
-    return '$count deadlines today or overdue';
+    return '$count مواعيد نهائية اليوم أو متأخرة';
   }
 
   @override
@@ -4514,9 +4518,9 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days left',
-      one: '1 day left',
-      zero: 'today',
+      other: '$count يوم متبقٍ',
+      one: 'يوم واحد متبقٍ',
+      zero: 'اليوم',
     );
     return '$_temp0';
   }
@@ -4526,8 +4530,8 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days overdue',
-      one: '1 day overdue',
+      other: '$count يوم متأخر',
+      one: 'يوم واحد متأخر',
     );
     return '$_temp0';
   }
@@ -4549,11 +4553,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get iapRestoreNoActive => 'لم يتم العثور على اشتراك نشط للاستعادة.';
 
   @override
-  String get deadlineEuRadarTitle => 'EU deadline radar (preview)';
+  String get deadlineEuRadarTitle =>
+      'رادار المواعيد النهائية للاتحاد الأوروبي (معاينة)';
 
   @override
   String get deadlineEuRadarSubtitle =>
-      'Hypothetical EU procedural deadlines — mock data';
+      'مواعيد نهائية إجرائية افتراضية للاتحاد الأوروبي — بيانات تجريبية';
 
   @override
   String get changePassword => 'تغيير كلمة المرور';

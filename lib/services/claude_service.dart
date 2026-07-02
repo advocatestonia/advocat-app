@@ -843,6 +843,188 @@ class ClaudeService {
     return data;
   }
 
+  /// Flagship UX fix (2026-07-02) — streaming counterpart to
+  /// [sendLegalPlannerMessage] for the explicit "consilium of lawyers"
+  /// button.
+  ///
+  /// Root cause this fixes: `claude-proxy` already runs a live multi-role
+  /// consilium and streams it as SSE (`consilium_start` → per-role
+  /// `role_opinion` → adversarial rounds → `synthesis_start` → synthesis
+  /// `delta`s → `consilium_done`) whenever a request carries
+  /// `mode: "legal_planner"`, has NO `stream` field, and comes from an
+  /// authenticated (non-anon) caller — see claude-proxy/index.ts around
+  /// `plannerMode && !body.stream && !isAnon`. The only prior client caller
+  /// of that mode ([sendLegalPlannerMessage]) does a buffered
+  /// `_dio.post(...).data as Map` read, which throws (and is swallowed) the
+  /// instant the server switches Content-Type to `text/event-stream` — so
+  /// the consilium panel never lit up.
+  ///
+  /// This method opens the SAME request as a stream and feeds every line
+  /// through the existing [parseSseEvent] parser (the identical function
+  /// [sendMessageStreamingEvents] uses) so callers get the same typed
+  /// [ChatStreamEvent] sequence — `ConsiliumStart` / `RoleOpinion` /
+  /// `AdversarialAttack` / `RoundDone` / `ConsiliumSynthesisStart` /
+  /// `TextDelta` / `ConsiliumDone` / `MessageDone`.
+  ///
+  /// Two response shapes are possible on the wire and both are handled:
+  ///   1. `Content-Type: text/event-stream` — the consilium ran. Parsed
+  ///      line-by-line exactly like [sendMessageStreamingEvents].
+  ///   2. Any other content type (typically `application/json`) — the
+  ///      server's Haiku classifier ([shouldRunConsilium] server-side)
+  ///      decided this turn did not warrant a consilium and fell through to
+  ///      the plain 3-pass planner, which returns a single buffered
+  ///      Anthropic-shaped JSON body (`content[0].text`). That text is
+  ///      surfaced as one `TextDelta` followed by `MessageDone` so callers
+  ///      never have to special-case "no consilium fired" — they just see a
+  ///      normal (if short) event stream with no consilium frames.
+  ///
+  /// Auth: mirrors [sendMessageStreamingEvents] — sends the signed-in
+  /// user's JWT (server requires a non-anon caller for this mode; anon
+  /// falls back to the anon key and the server will simply skip the
+  /// consilium/planner branch and fall through to the standard path).
+  Stream<ChatStreamEvent> sendConsiliumMessageStreamingEvents({
+    required List<Map<String, String>> messages,
+    required String systemPrompt,
+    String? caseId,
+    String? messageId,
+  }) async* {
+    if (!isAvailable) {
+      throw const ClaudeServiceException(
+        'Claude API is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY.',
+      );
+    }
+
+    // Same JWT-freshness guard as sendMessageStreamingEvents — a consilium
+    // turn can run 30-90s server-side; we refuse to start it on a token
+    // that's about to expire mid-stream.
+    try {
+      await JwtRefreshPolicy.ensureFreshSession(
+        auth: SupabaseAuthShim(),
+      );
+    } on JwtRefreshException catch (e) {
+      throw ClaudeServiceException(
+        'Session expired and refresh failed — please log in again',
+        e,
+      );
+    } catch (_) {
+      // Supabase not initialized / shim construction fail — proceed with
+      // whatever token is available; the proxy handles the anon fallback.
+    }
+
+    final body = <String, dynamic>{
+      // Server runs its own model selection inside the planner/consilium
+      // loop; this field is unused there but kept for proxy guard parity
+      // with sendLegalPlannerMessage.
+      'model': modelSonnet,
+      'max_tokens': 4096,
+      'temperature': 0.2,
+      'system': systemPrompt,
+      'messages': messages,
+      'mode': 'legal_planner',
+      if (caseId != null && caseId.isNotEmpty) 'case_id': caseId,
+      if (messageId != null && messageId.isNotEmpty) 'message_id': messageId,
+    };
+
+    final String proxyAuthToken =
+        Supabase.instance.client.auth.currentSession?.accessToken ??
+            AppConfig.supabaseAnonKey;
+
+    final response = await _dio.post<ResponseBody>(
+      '/claude-proxy',
+      data: body,
+      options: Options(
+        responseType: ResponseType.stream,
+        // Consilium turns run a multi-role Sonnet pipeline server-side and
+        // can legitimately take 30-90s before the first byte / between
+        // chunks — well above the shared client's 30s default.
+        receiveTimeout: const Duration(seconds: 120),
+        sendTimeout: const Duration(seconds: 30),
+        headers: {
+          'Authorization': 'Bearer $proxyAuthToken',
+        },
+      ),
+    );
+
+    // 'content-type' spelled as a literal rather than via dio's
+    // Headers.contentTypeHeader constant — that class name collides with
+    // postgrest's Headers (both are exported transitively via
+    // supabase_flutter.dart), which flutter analyze flags as an ambiguous
+    // import if referenced here.
+    final contentType = response.headers.value('content-type') ?? '';
+    final byteStream = response.data!.stream;
+
+    if (!contentType.contains('text/event-stream')) {
+      // Server chose the non-consilium planner fallback: one buffered JSON
+      // body shaped like an Anthropic response. Drain the stream, decode
+      // once, and surface it as a single TextDelta so the caller's event
+      // handling stays uniform regardless of which server branch fired.
+      final bytes = <int>[];
+      await for (final chunk in byteStream) {
+        bytes.addAll(chunk);
+      }
+      if (bytes.isNotEmpty) {
+        try {
+          final decoded =
+              jsonDecode(utf8.decode(bytes)) as Map<String, dynamic>;
+          final text = _extractText(decoded);
+          if (text.isNotEmpty) yield TextDelta(text);
+        } catch (e) {
+          throw ClaudeServiceException(
+            'Failed to parse consilium fallback response',
+            e is Exception ? e : Exception(e.toString()),
+          );
+        }
+      }
+      yield const MessageDone();
+      return;
+    }
+
+    // SSE path — identical line-parsing loop to sendMessageStreamingEvents,
+    // reusing the same parseSseEvent()/SseStreamState so consilium frames
+    // and any interleaved Anthropic-shaped frames (synthesis text arrives
+    // as `type: "delta"`, handled alongside the native
+    // `content_block_delta` shape) map to the same typed events.
+    String buffer = '';
+    const utf8Decoder = Utf8Decoder(allowMalformed: false);
+    final rawBytes = <int>[];
+    final sseState = SseStreamState();
+    await for (final chunk in byteStream) {
+      rawBytes.addAll(chunk);
+      String textChunk;
+      try {
+        textChunk = utf8Decoder.convert(rawBytes);
+        rawBytes.clear();
+      } catch (_) {
+        continue; // Incomplete multibyte sequence — wait for more bytes.
+      }
+      buffer += textChunk;
+
+      while (buffer.contains('\n')) {
+        final lineEnd = buffer.indexOf('\n');
+        final line = buffer.substring(0, lineEnd).trim();
+        buffer = buffer.substring(lineEnd + 1);
+
+        if (line.isEmpty || line.startsWith('event:')) continue;
+        if (!line.startsWith('data: ')) continue;
+        final data = line.substring(6);
+
+        Map<String, dynamic>? parsed;
+        try {
+          parsed = jsonDecode(data) as Map<String, dynamic>;
+        } catch (_) {
+          continue;
+        }
+
+        _absorbUsage(parsed);
+
+        final events = parseSseEvent(parsed, state: sseState);
+        for (final ev in events) {
+          yield ev;
+        }
+      }
+    }
+  }
+
   /// Send a chat message with tool definitions included.
   ///
   /// Returns the raw Claude API response so the caller can inspect
@@ -1440,6 +1622,20 @@ List<ChatStreamEvent> parseSseEvent(
 
     case 'synthesis_start':
       out.add(const ConsiliumSynthesisStart());
+      break;
+
+    // consilium.ts / consilium_v3.ts stream the synthesis text as bare
+    // `{type: "delta", text: "..."}` frames — NOT the Anthropic-native
+    // `content_block_delta` / `text_delta` shape handled above. Without
+    // this branch every synthesis chunk silently fell into the `default`
+    // no-op below (it carries no `citations` key either), so the final
+    // answer text never rendered even though every consilium metadata
+    // event (start/opinions/rounds/done) worked correctly.
+    case 'delta':
+      final text = parsed['text'];
+      if (text is String && text.isNotEmpty) {
+        out.add(TextDelta(text));
+      }
       break;
 
     case 'synthesis_done':

@@ -22,7 +22,7 @@ import '../../../services/ai_service.dart';
 import '../../../services/assistant_tools.dart';
 import '../../../services/chat_stream_event.dart';
 import '../../../services/claude_service.dart'
-    show ClaudeService, ClaudeServiceException;
+    show ClaudeService, ClaudeServiceException, claudeServiceProvider;
 import '../../../services/legal_planner.dart';
 import '../widgets/consilium_indicator.dart';
 import '../widgets/consilium_panel.dart';
@@ -440,6 +440,26 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         return 'Vom Benutzer gestoppt';
       default:
         return 'Stopped by user';
+    }
+  }
+
+  /// Inline locale switch for the consilium sign-in-required snackbar.
+  /// Self-contained for the same reason as [_stoppedByUserLabelForLocale] —
+  /// avoids an ARB regen across 17 locales for one short guard message.
+  String _signInRequiredLabelForLocale() {
+    final code = Localizations.maybeLocaleOf(context)?.languageCode ?? 'en';
+    switch (code) {
+      case 'et':
+        return 'Õiguskonsiiliumi kasutamiseks logi sisse.';
+      case 'ru':
+      case 'uk':
+        return 'Войдите в аккаунт, чтобы вызвать консилиум юристов.';
+      case 'fi':
+        return 'Kirjaudu sisään käyttääksesi lakineuvostoa.';
+      case 'de':
+        return 'Melden Sie sich an, um den Rechtsrat zu nutzen.';
+      default:
+        return 'Sign in to use the legal council.';
     }
   }
 
@@ -1072,27 +1092,243 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   // -- Consilium --
 
-  /// Trigger a multi-expert consilium analysis of the current case.
+  /// Trigger a live multi-role legal consilium for the current case.
   ///
-  /// v1 implementation: reuses the full streaming infrastructure by sending
-  /// a structured consilium prompt as a regular user message. The proxy will
-  /// eventually consume `mode: "consilium"` natively; until then this
-  /// synthetic message produces a substantively equivalent multi-perspective
-  /// analysis from the AI.
+  /// Flagship UX fix (2026-07-02): previously this sent a synthetic
+  /// `[CONSILIUM]` text prompt through the ordinary single-model chat
+  /// stream, which produced plain prose from one model impersonating four
+  /// experts — never the real server-side multi-role deliberation, and
+  /// [ChatMessage.consiliumEvents] was never populated so [ConsiliumPanel]
+  /// never rendered.
   ///
-  /// Gated on Pro status — the button is hidden for free users so no
-  /// quota guard is needed here beyond the standard _sendMessage gate.
+  /// Now this calls [ClaudeService.sendConsiliumMessageStreamingEvents],
+  /// which opens the `mode: "legal_planner"` request as a stream (the
+  /// server upgrades that mode to a live SSE consilium — see
+  /// claude-proxy/index.ts `plannerMode && !body.stream && !isAnon`) and
+  /// forwards every typed [ChatStreamEvent] to:
+  ///   1. `_trailController` — same broadcaster the Reasoning Trail already
+  ///      listens on, so tool/thinking-style captions still work.
+  ///   2. A per-turn `consiliumEvents` buffer that is written onto the
+  ///      streaming [ChatMessage] on every UI tick, so [ConsiliumPanel]
+  ///      (which renders from `message.consiliumEvents`) lights up LIVE
+  ///      during streaming — the same list is still attached to the final
+  ///      message afterwards, so the panel also persists after the turn
+  ///      completes and the screen is reopened.
+  ///
+  /// Requires an authenticated session — the server treats any caller
+  /// without one as anonymous and never runs the planner/consilium branch,
+  /// so we refuse client-side with a friendly prompt instead of burning a
+  /// round-trip on a turn that can never produce a consilium.
   Future<void> _triggerConsilium() async {
     if (_isSending) return;
-    const consiliumPrompt =
-        '[CONSILIUM] Проведи юридический совет по моему делу от имени четырёх '
-        'независимых экспертов: (1) специалист по процессуальному праву, '
-        '(2) специалист по материальному праву, '
-        '(3) специалист по правам человека и ЕКПЧ, '
-        '(4) стратег-адвокат. '
-        'Каждый эксперт даёт свою оценку ситуации и рекомендации. '
-        'В конце — краткий синтез: согласованная позиция и приоритетные шаги.';
-    await _sendMessage(consiliumPrompt);
+    if (Supabase.instance.client.auth.currentSession == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_signInRequiredLabelForLocale())),
+        );
+      }
+      return;
+    }
+
+    const consiliumUserMessage =
+        'Проведи юридический совет по моему делу от имени независимых '
+        'экспертов: процессуальное право, материальное право, права '
+        'человека и ЕКПЧ, стратегия защиты. Каждый эксперт даёт свою '
+        'оценку и рекомендации, включая аргументы за и против. В конце — '
+        'краткий синтез: согласованная позиция и приоритетные шаги.';
+
+    final userMessage = ChatMessage(
+      id: 'local_${DateTime.now().millisecondsSinceEpoch}',
+      role: MessageRole.user,
+      content: consiliumUserMessage,
+      timestamp: DateTime.now(),
+    );
+
+    setState(() {
+      _messages.add(userMessage);
+      _isSending = true;
+      _isTyping = false;
+      _showWelcomeChips = false;
+    });
+    _scrollToBottom(force: true);
+
+    final supabase = ref.read(supabaseServiceProvider);
+    unawaited(supabase.saveChatMessage(
+      caseId: widget.caseId,
+      role: 'user',
+      content: consiliumUserMessage,
+    ));
+
+    String ctx;
+    if (_knowledgeService.getCachedContext() != null) {
+      ctx = _knowledgeService.getCachedContext()!;
+      unawaited(_knowledgeService.buildClientContext(caseId: widget.caseId));
+    } else {
+      ctx = await _knowledgeService.buildClientContext(caseId: widget.caseId);
+    }
+
+    final streamingMessageId =
+        'ai_consilium_${DateTime.now().millisecondsSinceEpoch}';
+    var streamingMessage = ChatMessage(
+      id: streamingMessageId,
+      role: MessageRole.assistant,
+      content: '',
+      timestamp: DateTime.now(),
+    );
+
+    unawaited(_trailController?.close());
+    _trailController = StreamController<ChatStreamEvent>.broadcast();
+
+    setState(() {
+      _messages.add(streamingMessage);
+    });
+    _scrollToBottom(force: true);
+
+    final fullText = StringBuffer();
+    final consiliumEvents = <ChatStreamEvent>[];
+    Timer? uiTimer;
+    bool uiDirty = false;
+
+    _stoppedByUser = false;
+    _currentStreamFullText = fullText;
+    _currentStreamMessageId = streamingMessageId;
+    final streamDone = Completer<void>();
+    _streamDoneCompleter = streamDone;
+    unawaited(_aiSub?.cancel() ?? Future<void>.value());
+
+    final claude = ref.read(claudeServiceProvider);
+    final history = _messages
+        .where((m) =>
+            m.id != streamingMessageId &&
+            (m.role == MessageRole.user || m.role == MessageRole.assistant))
+        .map((m) => {
+              'role': m.role == MessageRole.user ? 'user' : 'assistant',
+              'content': m.content,
+            })
+        .toList();
+
+    void flushUi() {
+      if (!mounted) return;
+      setState(() {
+        streamingMessage = ChatMessage(
+          id: streamingMessageId,
+          role: MessageRole.assistant,
+          content: fullText.toString(),
+          timestamp: streamingMessage.timestamp,
+          consiliumEvents: List<ChatStreamEvent>.unmodifiable(consiliumEvents),
+        );
+        final idx = _messages.indexWhere((m) => m.id == streamingMessageId);
+        if (idx >= 0) {
+          _messages[idx] = streamingMessage;
+        }
+      });
+      _scrollToBottom();
+    }
+
+    _aiSub = claude
+        .sendConsiliumMessageStreamingEvents(
+      messages: history,
+      systemPrompt: ctx,
+      caseId: widget.caseId,
+    )
+        .listen(
+      (event) {
+        _trailController?.add(event);
+
+        // Consilium metadata events (ConsiliumStart / RoleOpinion /
+        // AdversarialAttack / RoundDone / ConsiliumSynthesisStart /
+        // ConsiliumDone) are buffered so ConsiliumPanel can render them —
+        // both live (via flushUi below) and persisted on the final message.
+        if (event is ConsiliumStart ||
+            event is RoleOpinion ||
+            event is AdversarialAttack ||
+            event is RoundDone ||
+            event is ConsiliumSynthesisStart ||
+            event is ConsiliumDone) {
+          consiliumEvents.add(event);
+          uiDirty = true;
+        }
+
+        if (event is TextDelta) {
+          fullText.write(event.text);
+          uiDirty = true;
+        }
+
+        uiTimer ??= Timer.periodic(const Duration(milliseconds: 50), (_) {
+          if (uiDirty) {
+            uiDirty = false;
+            flushUi();
+          }
+        });
+      },
+      onError: (Object e, StackTrace st) {
+        if (!streamDone.isCompleted) streamDone.completeError(e, st);
+      },
+      onDone: () {
+        if (!streamDone.isCompleted) streamDone.complete();
+      },
+      cancelOnError: true,
+    );
+
+    try {
+      await streamDone.future;
+    } catch (e) {
+      debugPrint('Consilium streaming failed: $e');
+      if (mounted) {
+        setState(() {
+          _messages.removeWhere((m) => m.id == streamingMessageId);
+          _messages.add(ChatMessage(
+            id: 'ai_consilium_err_${DateTime.now().millisecondsSinceEpoch}',
+            role: MessageRole.assistant,
+            content: AppLocalizations.of(context)?.aiErrorGeneric ??
+                'Temporary AI error. Please try again in a minute. If it persists, contact support.',
+            timestamp: DateTime.now(),
+          ));
+        });
+      }
+    } finally {
+      uiTimer?.cancel();
+      await _aiSub?.cancel();
+      _aiSub = null;
+      _streamDoneCompleter = null;
+      _currentStreamFullText = null;
+      _currentStreamMessageId = null;
+
+      _trailController?.add(const MessageDone());
+      await _trailController?.close();
+      if (mounted) {
+        setState(() => _trailController = null);
+      } else {
+        _trailController = null;
+      }
+    }
+
+    // Final flush — guarantees the persisted message carries the complete
+    // text AND the full consiliumEvents buffer, regardless of the 50ms
+    // throttle's last tick.
+    flushUi();
+
+    final responseText = fullText.toString();
+    if (responseText.trim().isNotEmpty) {
+      await supabase.saveChatMessage(
+        caseId: widget.caseId,
+        role: 'assistant',
+        content: responseText,
+      );
+      _knowledgeService.notifyMessageSent();
+    }
+
+    if (mounted) {
+      setState(() {
+        _isSending = false;
+        _isTyping = false;
+      });
+      _updateChatPhase();
+      _scrollToBottom();
+      if (_ttsEnabled && !_stoppedByUser && responseText.trim().isNotEmpty) {
+        unawaited(_speakResponse(responseText));
+      }
+    }
   }
 
   // -- Sending --
@@ -4788,8 +5024,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Consilium button — Pro-only, 44x44, circular
-            if (ref.read(aiServiceProvider).isProUser)
+            // Consilium button — 44x44, circular. Flagship UX fix
+            // (2026-07-02): previously hidden behind isProUser, but the
+            // server-side consilium (mode: "legal_planner" streamed as SSE)
+            // only requires an authenticated (non-anon) caller — see
+            // claude-proxy/index.ts `plannerMode && !body.stream && !isAnon`.
+            // Gating on Pro here hid the flagship "panel of lawyers" feature
+            // from every free signed-in user for no server-side reason.
+            // Anon users are still excluded — _triggerConsilium itself also
+            // guards on an active session, this just avoids showing a
+            // control anon users would tap and immediately bounce off.
+            if (Supabase.instance.client.auth.currentSession != null)
               Tooltip(
                 message: AppLocalizations.of(context)?.chatLegalCouncilTooltip ?? 'Legal council (4 experts)',
                 child: Container(
@@ -4832,7 +5077,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ),
               ),
 
-            if (ref.read(aiServiceProvider).isProUser) const SizedBox(width: 4),
+            if (Supabase.instance.client.auth.currentSession != null)
+              const SizedBox(width: 4),
 
             // Mic button — 44x44, circular with shadow
             if (_voiceInitialized)

@@ -15,19 +15,19 @@ class AppLocalizationsPl extends AppLocalizations {
   String get aboutSection => 'O APLIKACJI';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Wygląd';
 
   @override
-  String get appearanceSystem => 'System (auto)';
+  String get appearanceSystem => 'System (automatycznie)';
 
   @override
-  String get appearanceLight => 'Light';
+  String get appearanceLight => 'Jasny';
 
   @override
-  String get appearanceDark => 'Dark';
+  String get appearanceDark => 'Ciemny';
 
   @override
-  String get appearanceDescription => 'Choose how Advocat looks';
+  String get appearanceDescription => 'Wybierz wygląd aplikacji Advocat';
 
   @override
   String get accidents => 'Wypadki';
@@ -67,7 +67,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get speakIntoMicHint =>
-      'Speak into the microphone. Make sure microphone access is enabled.';
+      'Mów do mikrofonu. Upewnij się, że dostęp do mikrofonu jest włączony.';
 
   @override
   String get aiErrorRateLimit =>
@@ -79,7 +79,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String freeLimitReached(int count) {
-    return 'You have used all $count free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!';
+    return 'Wykorzystałeś wszystkie $count bezpłatnych wiadomości AI. Przejdź na plan Counsel, aby korzystać z nielimitowanej pomocy AI!';
   }
 
   @override
@@ -655,10 +655,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get rateUs => 'Oceń nas';
 
   @override
-  String get rateAppComingSoon => 'Coming to app stores soon!';
+  String get rateAppComingSoon => 'Wkrótce w sklepach z aplikacjami!';
 
   @override
-  String get dataCopiedToClipboard => 'Data copied to clipboard';
+  String get dataCopiedToClipboard => 'Dane skopiowane do schowka';
 
   @override
   String get readingDocument => 'Odczytywanie dokumentu…';
@@ -1688,26 +1688,26 @@ class AppLocalizationsPl extends AppLocalizations {
   String get priorityProcessing => 'Przetwarzanie priorytetowe';
 
   @override
-  String get fiveAiMessagesTotal => '5 AI messages (lifetime)';
+  String get fiveAiMessagesTotal => '5 wiadomości AI (łącznie)';
 
   @override
-  String get hundredAiMessagesDay => '100 AI messages/day';
+  String get hundredAiMessagesDay => '100 wiadomości AI/dzień';
 
   @override
-  String get unlimitedAiMessages => 'Unlimited AI messages';
+  String get unlimitedAiMessages => 'Nielimitowane wiadomości AI';
 
   @override
-  String get voiceInput => 'Voice input';
+  String get voiceInput => 'Wprowadzanie głosowe';
 
   @override
-  String get strategyRecommendations => 'Strategy recommendations';
+  String get strategyRecommendations => 'Rekomendacje strategiczne';
 
   @override
   String get foundingMemberNote =>
-      'Founding Member: 9.99€/mo for first 3 months';
+      'Członek założyciel: 9,99 €/mies. przez pierwsze 3 miesiące';
 
   @override
-  String get saveTwentyPercent => 'Save 20%';
+  String get saveTwentyPercent => 'Oszczędź 20%';
 
   @override
   String get forever => 'na zawsze';
@@ -1823,56 +1823,57 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get gdprConsentAiProcessing =>
-      'I agree to the processing of my data for AI legal assistance (required)';
+      'Wyrażam zgodę na przetwarzanie moich danych w celu świadczenia pomocy prawnej AI (wymagane)';
 
   @override
   String get gdprConsentAnalytics =>
-      'I agree to analytics to improve the service (optional)';
+      'Wyrażam zgodę na analitykę w celu ulepszenia usługi (opcjonalnie)';
 
   @override
   String get gdprArt9Intro =>
-      'This app processes special category personal data under GDPR Article 9, including:';
+      'Ta aplikacja przetwarza szczególne kategorie danych osobowych na podstawie art. 9 RODO, w tym:';
 
   @override
   String get gdprSpecialLegalCases =>
-      'Your legal case details and court documents';
+      'Szczegóły Twojej sprawy prawnej i dokumenty sądowe';
 
   @override
-  String get gdprSpecialNationality => 'Nationality and immigration status';
+  String get gdprSpecialNationality => 'Narodowość i status imigracyjny';
 
   @override
   String get gdprConsentLegalData =>
-      'I consent to the processing of my legal case data, nationality, and immigration status by AI (required)';
+      'Wyrażam zgodę na przetwarzanie danych mojej sprawy prawnej, narodowości i statusu imigracyjnego przez AI (wymagane)';
 
   @override
   String get gdprConsentVoice =>
-      'I consent to voice recording processing (optional)';
+      'Wyrażam zgodę na przetwarzanie nagrań głosowych (opcjonalnie)';
 
   @override
-  String get gdprViewPrivacyPolicy => 'View Privacy Policy';
+  String get gdprViewPrivacyPolicy => 'Zobacz Politykę prywatności';
 
   @override
-  String get legalInformation => 'Legal Information';
+  String get legalInformation => 'Informacje prawne';
 
   @override
   String get legalEntityName => 'Vorantis OÜ';
 
   @override
-  String get legalRegistryCode => 'Registry code: 17098992';
+  String get legalRegistryCode => 'Numer rejestrowy: 17098992';
 
   @override
   String get legalAddress =>
       'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145';
 
   @override
-  String get legalEmail => 'Email: support@advocat.ee';
+  String get legalEmail => 'E-mail: support@advocat.ee';
 
   @override
   String get legalRegistry =>
-      'Registered in Estonian Commercial Register (Äriregister)';
+      'Zarejestrowana w estońskim Rejestrze Handlowym (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer =>
+      'Wygenerowane przez AI • To nie jest porada prawna';
 
   @override
   String get decline => 'Odrzuć';
@@ -2108,311 +2109,313 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get domesticViolenceDesc =>
-      'Victim rights, emergency help, restraining orders';
+      'Prawa ofiar, pomoc doraźna, zakazy zbliżania się';
 
   @override
   String get rightCallEmergency =>
-      'You have the right to call 112 in any emergency — police, ambulance, fire';
+      'Masz prawo zadzwonić pod numer 112 w każdej sytuacji zagrożenia — policja, pogotowie, straż pożarna';
 
   @override
   String get rightVictimProtection =>
-      'As a victim, you have the right to protection, support, and information about your case';
+      'Jako ofiara masz prawo do ochrony, wsparcia i informacji o swojej sprawie';
 
   @override
   String get rightRestrainingOrder =>
-      'You can apply for a restraining order (lähestymiskielto) to keep the abuser away';
+      'Możesz wystąpić o zakaz zbliżania się (lähestymiskielto), aby trzymać sprawcę z dala';
 
   @override
   String get rightVictimInterpreter =>
-      'You have the right to an interpreter during all legal proceedings';
+      'Masz prawo do tłumacza we wszystkich postępowaniach prawnych';
 
   @override
   String get rightMedicalHelp =>
-      'You have the right to immediate medical treatment and documentation of injuries';
+      'Masz prawo do natychmiastowej pomocy medycznej i udokumentowania obrażeń';
 
   @override
   String get rightShelter =>
-      'You have the right to emergency shelter — contact a shelter or social services';
+      'Masz prawo do schronienia awaryjnego — skontaktuj się ze schroniskiem lub pomocą społeczną';
 
   @override
   String get mustReportDanger =>
-      'If someone is in immediate danger, call 112 immediately';
+      'Jeśli ktoś jest w bezpośrednim niebezpieczeństwie, natychmiast zadzwoń pod numer 112';
 
   @override
   String get mustDocumentInjuries =>
-      'Document all injuries — photos, medical records, written notes';
+      'Udokumentuj wszystkie obrażenia — zdjęcia, dokumentacja medyczna, pisemne notatki';
 
   @override
   String get domesticActionCallEmergency =>
-      'Call 112 if you are in immediate danger';
+      'Zadzwoń pod numer 112, jeśli jesteś w bezpośrednim niebezpieczeństwie';
 
   @override
   String get domesticActionGoToSafe =>
-      'Go to a safe place — shelter, friend, public place';
+      'Udaj się w bezpieczne miejsce — schronisko, do znajomych, w miejsce publiczne';
 
   @override
   String get domesticActionDocumentEverything =>
-      'Document injuries: take photos, get medical records';
+      'Udokumentuj obrażenia: zrób zdjęcia, uzyskaj dokumentację medyczną';
 
   @override
   String get domesticActionFilePoliceReport =>
-      'File a police report — you can do this later too';
+      'Złóż zawiadomienie na policji — możesz to zrobić też później';
 
   @override
   String get domesticActionContactShelter =>
-      'Contact a shelter or crisis helpline';
+      'Skontaktuj się ze schroniskiem lub telefonem zaufania';
 
   @override
   String get domesticActionApplyRestraining =>
-      'Apply for a restraining order through police or court';
+      'Wystąp o zakaz zbliżania się przez policję lub sąd';
 
   @override
   String get domesticFactRestrainingOrder =>
-      'In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.';
+      'W Finlandii zakaz zbliżania się (lähestymiskielto) może zostać wydany nawet bez sprawy karnej. Zakazuje on danej osobie kontaktowania się z Tobą lub zbliżania się do Ciebie.';
 
   @override
   String get domesticFactVictimDirective =>
-      'Under EU Victims\' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.';
+      'Na mocy unijnej Dyrektywy o prawach ofiar 2012/29/UE masz prawo do traktowania z szacunkiem, otrzymywania informacji w zrozumiałym dla Ciebie języku oraz dostępu do usług wsparcia dla ofiar — niezależnie od Twojego statusu pobytowego.';
 
   @override
   String get domesticDeadlinePoliceReport =>
-      'File police report — no strict deadline, but sooner is better for evidence';
+      'Zgłoszenie na policję — brak ścisłego terminu, ale im szybciej, tym lepiej dla dowodów';
 
   @override
   String get domesticDeadlineRestraining =>
-      'Restraining order — can be applied for at any time';
+      'Zakaz zbliżania się — można wystąpić w dowolnym momencie';
 
   @override
-  String get contactEmergency => 'Emergency Number';
+  String get contactEmergency => 'Numer alarmowy';
 
   @override
-  String get contactShelter => 'Turvakoti (Shelter) Helpline';
+  String get contactShelter => 'Turvakoti (schronisko) — infolinia';
 
   @override
-  String get contactCrisisHelpline => 'Crisis Helpline (Kriisipuhelin)';
+  String get contactCrisisHelpline => 'Telefon zaufania (Kriisipuhelin)';
 
   @override
   String get contactNollaLinja =>
-      'Nollalinja — Violence Against Women Helpline';
+      'Nollalinja — infolinia ds. przemocy wobec kobiet';
 
   @override
   String get inheritance => 'Spadek';
 
   @override
   String get inheritanceDesc =>
-      'Wills, estate, heirs\' rights, forced heirship, probate';
+      'Testamenty, spadek, prawa spadkobierców, zachowek, postępowanie spadkowe';
 
   @override
   String get rightInheritanceForced =>
-      'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will';
+      'Spadkobiercy ustawowi (dzieci, małżonek) mają prawo do zachowku niezależnie od treści testamentu';
 
   @override
   String get rightInheritanceWill =>
-      'You have the right to make a will disposing of your property — notarized wills have the strongest legal force';
+      'Masz prawo sporządzić testament rozporządzający Twoim majątkiem — testamenty notarialne mają najsilniejszą moc prawną';
 
   @override
   String get rightInheritanceRenounce =>
-      'You can renounce an inheritance within 3 months of learning about it';
+      'Możesz odrzucić spadek w ciągu 3 miesięcy od dnia, w którym dowiedziałeś się o nim';
 
   @override
   String get rightInheritanceInfo =>
-      'You have the right to obtain information about the estate from banks and registries';
+      'Masz prawo uzyskać informacje o masie spadkowej z banków i rejestrów';
 
   @override
   String get rightInheritanceDispute =>
-      'You can challenge an unfair will in court within the statutory limitation period';
+      'Możesz zakwestionować niesprawiedliwy testament w sądzie w ustawowym terminie przedawnienia';
 
   @override
   String get mustFileInheritance =>
-      'File for succession proceedings at a notary within a reasonable time';
+      'Złóż wniosek o postępowanie spadkowe u notariusza w rozsądnym terminie';
 
   @override
   String get mustNotifyHeirs =>
-      'All known heirs must be notified of the succession proceedings';
+      'Wszyscy znani spadkobiercy muszą zostać powiadomieni o postępowaniu spadkowym';
 
   @override
   String get inheritanceActionGatherDocs =>
-      'Gather all documents: death certificate, will, property records, bank statements';
+      'Zbierz wszystkie dokumenty: akt zgonu, testament, dokumenty własności, wyciągi bankowe';
 
   @override
   String get inheritanceActionContactNotary =>
-      'Contact a notary to open succession proceedings';
+      'Skontaktuj się z notariuszem, aby otworzyć postępowanie spadkowe';
 
   @override
   String get inheritanceActionCheckDebts =>
-      'Check whether the estate has debts before accepting inheritance';
+      'Przed przyjęciem spadku sprawdź, czy masa spadkowa ma długi';
 
   @override
   String get inheritanceActionFileCourt =>
-      'If the will is disputed, file a claim in court';
+      'Jeśli testament jest kwestionowany, złóż pozew do sądu';
 
   @override
   String get inheritanceDeadlineRenounce =>
-      '3 months to renounce inheritance after learning of it';
+      '3 miesiące na odrzucenie spadku od dowiedzenia się o nim';
 
   @override
   String get inheritanceDeadlineDispute =>
-      'Statute of limitations for challenging a will: varies by grounds';
+      'Termin przedawnienia zaskarżenia testamentu: zależy od podstawy prawnej';
 
   @override
   String get inheritanceFactForced =>
-      'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will';
+      'W Estonii zstępni i małżonek mają prawo do zachowku (1/2 udziału ustawowego), nawet jeśli zostali pominięci w testamencie';
 
   @override
   String get inheritanceFactNotary =>
-      'All succession proceedings in Estonia must go through a notary — you cannot skip this step';
+      'Każde postępowanie spadkowe w Estonii musi przebiegać przez notariusza — tego kroku nie można pominąć';
 
   @override
   String get consumerProtection => 'Ochrona konsumentów';
 
   @override
   String get consumerProtectionDesc =>
-      'Fraud, defective products, returns, deceptive sellers';
+      'Oszustwa, wadliwe produkty, zwroty, nieuczciwi sprzedawcy';
 
   @override
   String get rightReturnOnline =>
-      'You have 14 days to cancel online purchases without reason (EU right of withdrawal)';
+      'Masz 14 dni na odstąpienie od zakupów online bez podania przyczyny (unijne prawo odstąpienia)';
 
   @override
   String get rightDefectiveProduct =>
-      'If a product is defective, you have the right to repair, replacement, or refund';
+      'Jeśli produkt jest wadliwy, masz prawo do naprawy, wymiany lub zwrotu pieniędzy';
 
   @override
   String get rightClearPricing =>
-      'Sellers must display clear prices including all fees — hidden costs are illegal';
+      'Sprzedawcy muszą podawać jasne ceny wraz ze wszystkimi opłatami — ukryte koszty są nielegalne';
 
   @override
   String get rightComplainBoard =>
-      'You can file a free complaint with the Consumer Disputes Board';
+      'Możesz złożyć bezpłatną skargę do Komisji ds. Sporów Konsumenckich';
 
   @override
   String get rightProtectionFraud =>
-      'You are protected against unfair commercial practices and fraud';
+      'Jesteś chroniony przed nieuczciwymi praktykami handlowymi i oszustwami';
 
   @override
   String get mustKeepReceipts =>
-      'Keep all receipts, contracts, and communication with sellers';
+      'Zachowuj wszystkie paragony, umowy i korespondencję ze sprzedawcami';
 
   @override
   String get mustActTimely =>
-      'Report defects to the seller within a reasonable time after discovery';
+      'Zgłoś wady sprzedawcy w rozsądnym terminie po ich wykryciu';
 
   @override
   String get consumerActionKeepEvidence =>
-      'Keep receipts, screenshots, emails, and all proof of purchase';
+      'Zachowaj paragony, zrzuty ekranu, e-maile i wszystkie dowody zakupu';
 
   @override
   String get consumerActionContactSeller =>
-      'Contact the seller first — explain the problem in writing';
+      'Najpierw skontaktuj się ze sprzedawcą — opisz problem na piśmie';
 
   @override
   String get consumerActionFileComplaint =>
-      'File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)';
+      'Złóż skargę do Komisji ds. Sporów Konsumenckich (kuluttajariitalautakunta)';
 
   @override
   String get consumerActionContactAuthority =>
-      'Contact the Consumer Advisory Services for free help';
+      'Skontaktuj się z Doradztwem Konsumenckim po bezpłatną pomoc';
 
   @override
   String get consumerActionReportFraud =>
-      'Report fraud to the police and Consumer Ombudsman';
+      'Zgłoś oszustwo na policję i do Rzecznika Konsumentów';
 
   @override
   String get consumerFactWithdrawal =>
-      'Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.';
+      'Na mocy unijnej Dyrektywy o prawach konsumentów 2011/83/UE masz 14 dni na odstąpienie od każdego zakupu online lub na odległość — bez podania przyczyny. Sprzedawca musi zwrócić pieniądze w ciągu 14 dni.';
 
   @override
   String get consumerFactWarranty =>
-      'In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.';
+      'W Finlandii sprzedawca odpowiada za wady produktu przez rozsądny okres (często 2 lata i dłużej). Jest to niezależne od gwarancji producenta.';
 
   @override
   String get consumerDeadlineWithdrawal =>
-      'Online purchase withdrawal — 14 days from delivery';
+      'Odstąpienie od zakupu online — 14 dni od dostawy';
 
   @override
   String get consumerDeadlineDefect =>
-      'Report defect to seller — within 2 months of discovery (recommended)';
+      'Zgłoszenie wady sprzedawcy — w ciągu 2 miesięcy od wykrycia (zalecane)';
 
   @override
-  String get contactConsumerAdvisory => 'Consumer Advisory Services';
+  String get contactConsumerAdvisory => 'Doradztwo Konsumenckie';
 
   @override
   String get contactConsumerOmbudsman =>
-      'Consumer Ombudsman (Kuluttaja-asiamies)';
+      'Rzecznik Konsumentów (Kuluttaja-asiamies)';
 
   @override
-  String get contactConsumerDisputesBoardDirect => 'Consumer Disputes Board';
+  String get contactConsumerDisputesBoardDirect =>
+      'Komisja ds. Sporów Konsumenckich';
 
   @override
-  String get caseTypeStepLabel => 'Case Type';
+  String get caseTypeStepLabel => 'Rodzaj sprawy';
 
   @override
-  String get detailsStepLabel => 'Details';
+  String get detailsStepLabel => 'Szczegóły';
 
   @override
-  String get documentsStepLabel => 'Documents';
+  String get documentsStepLabel => 'Dokumenty';
 
   @override
-  String get whatTypeOfCase => 'What type of case is this?';
+  String get whatTypeOfCase => 'Jakiego rodzaju jest ta sprawa?';
 
   @override
   String get selectCategoryDescription =>
-      'Select the category that best describes your situation.';
+      'Wybierz kategorię, która najlepiej opisuje Twoją sytuację.';
 
   @override
-  String get tellUsAboutCase => 'Tell us about your case';
+  String get tellUsAboutCase => 'Opowiedz nam o swojej sprawie';
 
   @override
   String get aiHelpsUnderstand =>
-      'This information helps our AI understand your situation better.';
+      'Ta informacja pomaga naszej AI lepiej zrozumieć Twoją sytuację.';
 
   @override
-  String get caseTitleHint => 'e.g., Residence Permit Appeal 2026';
+  String get caseTitleHint =>
+      'np. Odwołanie od decyzji o zezwoleniu na pobyt 2026';
 
   @override
-  String get countryJurisdiction => 'Country / Jurisdiction';
+  String get countryJurisdiction => 'Kraj / jurysdykcja';
 
   @override
-  String get selectCountryHint => 'Select a country';
+  String get selectCountryHint => 'Wybierz kraj';
 
   @override
-  String get referenceNumberHint => 'e.g., UMA/12345/2026';
+  String get referenceNumberHint => 'np. UMA/12345/2026';
 
   @override
-  String get descriptionOptional => 'Description (optional)';
+  String get descriptionOptional => 'Opis (opcjonalnie)';
 
   @override
   String get descriptionHint =>
-      'Describe your situation briefly. What happened? What decision was made?';
+      'Krótko opisz swoją sytuację. Co się wydarzyło? Jaka decyzja zapadła?';
 
   @override
-  String get uploadFirstDocument => 'Upload your first document';
+  String get uploadFirstDocument => 'Prześlij swój pierwszy dokument';
 
   @override
   String get uploadDocumentDescription =>
-      'Upload the decision letter or any relevant document. You can skip this step and add documents later.';
+      'Prześlij pismo z decyzją lub inny istotny dokument. Możesz pominąć ten krok i dodać dokumenty później.';
 
   @override
-  String get tapToUploadFile => 'Tap to upload a file';
+  String get tapToUploadFile => 'Dotknij, aby przesłać plik';
 
   @override
-  String get fileSizeLimit => 'PDF, JPG, PNG up to 25 MB';
+  String get fileSizeLimit => 'PDF, JPG, PNG do 25 MB';
 
   @override
   String get addDocumentsLaterHint =>
-      'You can always add documents later from the case detail screen.';
+      'Dokumenty możesz zawsze dodać później z ekranu szczegółów sprawy.';
 
   @override
-  String get callAI => 'Call AI';
+  String get callAI => 'Zadzwoń do AI';
 
   @override
   String get comingSoon => 'Wkrótce';
 
   @override
-  String get encrypted => 'Encrypted';
+  String get encrypted => 'Zaszyfrowane';
 
   @override
-  String get typing => 'Typing…';
+  String get typing => 'Pisze…';
 
   @override
   String get online => 'Online';
@@ -2422,22 +2425,22 @@ class AppLocalizationsPl extends AppLocalizations {
       'Przeanalizuję sytuację, sprawdzę dokumenty, znajdę błędy i podpowiem, co robić.';
 
   @override
-  String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
+  String get tapMicrophoneToSpeak => 'Dotknij mikrofonu, aby mówić';
 
   @override
-  String get categoryEssential => 'Essential';
+  String get categoryEssential => 'Najważniejsze';
 
   @override
-  String get categoryPolice => 'Police';
+  String get categoryPolice => 'Policja';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryWork => 'Praca';
 
   @override
-  String get categoryHousing => 'Housing';
+  String get categoryHousing => 'Mieszkanie';
 
   @override
-  String get categoryConsumer => 'Consumer';
+  String get categoryConsumer => 'Konsument';
 
   @override
   String rightsInsideCount(int count) {
@@ -2454,29 +2457,29 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get freeAidThreshold => 'Free aid threshold';
+  String get freeAidThreshold => 'Próg bezpłatnej pomocy';
 
   @override
-  String get partialAidThreshold => 'Partial aid threshold';
+  String get partialAidThreshold => 'Próg częściowej pomocy';
 
   @override
-  String get assetLimit => 'Asset limit';
+  String get assetLimit => 'Limit majątku';
 
   @override
-  String get whereToApplyLabel => 'Where to apply';
+  String get whereToApplyLabel => 'Gdzie złożyć wniosek';
 
   @override
-  String get phoneLabel => 'Phone';
+  String get phoneLabel => 'Telefon';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Strona internetowa';
 
   @override
-  String get disclaimerCollapsed => 'AI guidance only';
+  String get disclaimerCollapsed => 'Tylko wskazówki AI';
 
   @override
   String get disclaimerExpanded =>
-      'AI assistant — not legal advice. Always verify with a qualified lawyer.';
+      'Asystent AI — to nie jest porada prawna. Zawsze skonsultuj się z wykwalifikowanym prawnikiem.';
 
   @override
   String get chatDisclaimerBanner =>
@@ -2497,160 +2500,160 @@ class AppLocalizationsPl extends AppLocalizations {
   String get chatDisclaimerGotIt => 'Rozumiem';
 
   @override
-  String get categoryChildren => 'Children';
+  String get categoryChildren => 'Dzieci';
 
   @override
-  String get categoryDigital => 'Digital';
+  String get categoryDigital => 'Cyfrowe';
 
   @override
-  String get childrenRights => 'Children\'s Rights & Alimony';
+  String get childrenRights => 'Prawa dziecka i alimenty';
 
   @override
   String get childrenRightsDesc =>
-      'Child support, alimony, protection, state guarantees';
+      'Alimenty na dziecko, ochrona, gwarancje państwowe';
 
   @override
-  String get cyberbullying => 'Cyberbullying & Online Harassment';
+  String get cyberbullying => 'Cyberprzemoc i nękanie w internecie';
 
   @override
   String get cyberbullyingDesc =>
-      'Threats, privacy violations, defamation online';
+      'Groźby, naruszenia prywatności, zniesławienie online';
 
   @override
   String get rightChildSupport =>
-      'Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)';
+      'Oboje rodzice są prawnie zobowiązani do finansowego utrzymania dziecka (Perekonnaseadus § 100–102)';
 
   @override
   String get rightMinimumAlimony =>
-      'Minimum child support in Estonia: base amount (€295.86) + 3% of previous year\'s average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee';
+      'Minimalne alimenty w Estonii: kwota bazowa (295,86 €) + 3% średniego wynagrodzenia brutto z poprzedniego roku (PKS § 101). Od 01.04.2026 — 318,62 €/mies. na dziecko. Aktualizowane corocznie 1 kwietnia. Kalkulator: alimendid.ee';
 
   @override
   String get rightCourtAlimony =>
-      'You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400';
+      'Możesz wystąpić o alimenty w sądzie okręgowym (maakohus) — bez wymogu adwokata przy roszczeniach do 6400 €';
 
   @override
   String get rightBailiffEnforcement =>
-      'If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment';
+      'Jeśli rodzic odmawia płacenia, komornik (kohtutäitur) może wyegzekwować orzeczenie sądu, w tym zajęcie wynagrodzenia';
 
   @override
   String get rightStateAlimonyGuarantee =>
-      'If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child';
+      'Jeśli rodzic nie płaci, państwo zapewnia elatisabi (zasiłek alimentacyjny) za pośrednictwem Sotsiaalkindlustusamet — do 100 €/mies. na dziecko';
 
   @override
   String get rightChildEducation =>
-      'Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)';
+      'Każde dziecko ma prawo do edukacji, opieki zdrowotnej i ochrony przed przemocą (Lastekaitseseadus § 4–5)';
 
   @override
   String get rightChildContact =>
-      'A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)';
+      'Dziecko ma prawo do utrzymywania kontaktu z oboma rodzicami, chyba że sąd zdecyduje inaczej (PKS § 143)';
 
   @override
   String get mustFileCourtClaim =>
-      'To receive alimony, you must file a claim at court or agree on the amount in writing';
+      'Aby otrzymywać alimenty, musisz złożyć pozew w sądzie lub ustalić kwotę pisemnie';
 
   @override
   String get mustNotifyAddressChange =>
-      'Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi';
+      'Powiadom Sotsiaalkindlustusamet o zmianie adresu, jeśli otrzymujesz elatisabi';
 
   @override
   String get childrenActionGatherDocs =>
-      'Gather child\'s birth certificate, your ID, and proof of expenses';
+      'Zbierz akt urodzenia dziecka, swój dowód tożsamości i dowody wydatków';
 
   @override
   String get childrenActionFileCourtClaim =>
-      'File an alimony claim at the county court (maakohus) — can be done online via e-toimik';
+      'Złóż pozew alimentacyjny w sądzie okręgowym (maakohus) — można to zrobić online przez e-toimik';
 
   @override
   String get childrenActionApplyElatisabi =>
-      'Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won\'t pay';
+      'Wystąp o państwową gwarancję alimentacyjną (elatisabi) w Sotsiaalkindlustusamet, jeśli rodzic nie płaci';
 
   @override
   String get childrenActionContactBailiff =>
-      'Contact a bailiff (kohtutäitur) to enforce the court order';
+      'Skontaktuj się z komornikiem (kohtutäitur), aby wyegzekwować orzeczenie sądu';
 
   @override
   String get childrenActionCallLasteabi =>
-      'Call Lasteabi 116 111 for children\'s helpline — free, 24/7';
+      'Zadzwoń pod Lasteabi 116 111 — bezpłatna infolinia dla dzieci, 24/7';
 
   @override
   String get childrenDeadlineElatisabi =>
-      'Apply for elatisabi — after court order, no strict deadline but process takes time';
+      'Wniosek o elatisabi — po orzeczeniu sądu, brak ścisłego terminu, ale proces trwa';
 
   @override
   String get childrenDeadlineCourt =>
-      'Alimony can be claimed retroactively for up to 1 year before court filing';
+      'Alimenty można dochodzić wstecz do 1 roku przed złożeniem pozwu';
 
   @override
   String get childrenFactMinimum =>
-      'From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year\'s average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee';
+      'Od 01.04.2026 minimalne alimenty na dziecko wynoszą 318,62 €/mies. Wzór: kwota bazowa (295,86 €) + 3% średniego wynagrodzenia brutto z poprzedniego roku. Aktualizowane corocznie 1 kwietnia. Rodzic nie może umówić się na niższą kwotę. Kalkulator: alimendid.ee';
 
   @override
   String get childrenFactElatisabi =>
-      'Estonia\'s state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent.';
+      'Państwowa gwarancja alimentacyjna w Estonii (elatisabi) została wprowadzona w 2017 r., aby chronić dzieci, gdy rodzic odmawia płacenia. Państwo płaci, a następnie odzyskuje kwotę od rodzica-dłużnika.';
 
   @override
   String get rightReportCybercrime =>
-      'You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)';
+      'Masz prawo zgłosić groźby online, nękanie i kradzież tożsamości na policję (Karistusseadustik § 120, § 157¹)';
 
   @override
   String get rightContentRemoval =>
-      'You can request removal of defamatory or private content from platforms and demand takedown under GDPR';
+      'Możesz zażądać usunięcia zniesławiających lub prywatnych treści z platform i domagać się ich usunięcia na podstawie RODO';
 
   @override
   String get rightMoralDamageCompensation =>
-      'You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)';
+      'Możesz dochodzić odszkodowania za krzywdę moralną spowodowaną cyberprzemocą (Võlaõigusseadus § 1043–1055)';
 
   @override
   String get rightPrivacyProtection =>
-      'Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)';
+      'Twoje życie prywatne jest chronione — nieuprawnione udostępnianie Twoich zdjęć, wiadomości lub danych osobowych jest nielegalne (KarS § 157)';
 
   @override
   String get rightDataProtection =>
-      'Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon';
+      'Zgłoś naruszenia ochrony danych (nieuprawnione wykorzystanie Twoich danych) do Andmekaitse Inspektsioon';
 
   @override
   String get rightDefamationAction =>
-      'Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)';
+      'Zniesławienie (laimamine) jest wykroczeniem cywilnym — możesz pozwać o odszkodowanie i zażądać publicznego sprostowania (KarS § 247 (uchylony), VÕS § 1047)';
 
   @override
   String get mustCollectEvidence =>
-      'Collect and preserve all evidence — screenshots, links, dates, and witness information';
+      'Zbieraj i zachowuj wszystkie dowody — zrzuty ekranu, linki, daty i dane świadków';
 
   @override
   String get mustNotRetaliate =>
-      'Do not retaliate or engage in counter-harassment — it may weaken your case';
+      'Nie odwzajemniaj się i nie angażuj się w kontrnękanie — może to osłabić Twoją sprawę';
 
   @override
   String get cyberActionScreenshots =>
-      'Take screenshots of all harassment — save URLs, dates, usernames, and content';
+      'Rób zrzuty ekranu wszystkich przypadków nękania — zapisuj adresy URL, daty, nazwy użytkowników i treści';
 
   @override
   String get cyberActionReportPolice =>
-      'File a police report at the nearest station or online at politsei.ee';
+      'Złóż zawiadomienie na najbliższym posterunku policji lub online na politsei.ee';
 
   @override
   String get cyberActionReportPlatform =>
-      'Report the content to the social media platform for removal';
+      'Zgłoś treść platformie mediów społecznościowych w celu usunięcia';
 
   @override
   String get cyberActionContactDPA =>
-      'Contact Andmekaitse Inspektsioon if your personal data was misused';
+      'Skontaktuj się z Andmekaitse Inspektsioon, jeśli Twoje dane osobowe zostały wykorzystane niezgodnie z prawem';
 
   @override
   String get cyberActionConsultLawyer =>
-      'Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi';
+      'Skonsultuj się z prawnikiem w sprawie odszkodowania cywilnego — bezpłatna pomoc prawna jest dostępna przez Riigi Õigusabi';
 
   @override
   String get cyberDeadlineCriminal =>
-      'Criminal complaint — no strict deadline, but report promptly for best results';
+      'Zawiadomienie karne — brak ścisłego terminu, ale zgłoś jak najszybciej dla najlepszych rezultatów';
 
   @override
   String get cyberDeadlineCivil =>
-      'Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)';
+      'Roszczenie cywilne o odszkodowanie — do 3 lat od dnia, w którym dowiedziałeś się o naruszeniu (TsÜS § 150)';
 
   @override
   String get cyberFactPrivacy =>
-      'In Estonia, unauthorized sharing of someone\'s intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).';
+      'W Estonii nieuprawnione udostępnianie czyichś intymnych zdjęć może skutkować karą do 3 lat więzienia na podstawie Karistusseadustik § 157¹ (naruszenie prywatności).';
 
   @override
   String get cyberFactGDPR =>
@@ -3229,13 +3232,13 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get deadlineRadarTitle => 'Upcoming deadlines';
+  String get deadlineRadarTitle => 'Nadchodzące terminy';
 
   @override
-  String get deadlineRadarEmpty => 'No upcoming deadlines';
+  String get deadlineRadarEmpty => 'Brak nadchodzących terminów';
 
   @override
-  String get deadlineRadarViewAll => 'View all';
+  String get deadlineRadarViewAll => 'Zobacz wszystkie';
 
   @override
   String deadlineCardDaysLeft(int count) {
@@ -3252,10 +3255,10 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardTomorrow => 'tomorrow';
+  String get deadlineCardTomorrow => 'jutro';
 
   @override
-  String get deadlineCardToday => 'today';
+  String get deadlineCardToday => 'dzisiaj';
 
   @override
   String deadlineCardOverdue(int count) {
@@ -3271,200 +3274,201 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get deadlineCardMarkComplete => 'Mark complete';
+  String get deadlineCardMarkComplete => 'Oznacz jako zakończone';
 
   @override
-  String get deadlineCardSnooze => 'Snooze';
+  String get deadlineCardSnooze => 'Odłóż';
 
   @override
-  String get deadlineCardSnooze3d => 'Snooze 3 days';
+  String get deadlineCardSnooze3d => 'Odłóż o 3 dni';
 
   @override
-  String get deadlineCardSnooze7d => 'Snooze 7 days';
+  String get deadlineCardSnooze7d => 'Odłóż o 7 dni';
 
   @override
-  String get deadlineCardSnoozeCustom => 'Pick a date';
+  String get deadlineCardSnoozeCustom => 'Wybierz datę';
 
   @override
-  String get deadlineCardEdit => 'Edit';
+  String get deadlineCardEdit => 'Edytuj';
 
   @override
-  String get deadlineCardDelete => 'Archive';
+  String get deadlineCardDelete => 'Archiwizuj';
 
   @override
-  String get deadlineCardSourceLabelPdf => 'from PDF';
+  String get deadlineCardSourceLabelPdf => 'z PDF';
 
   @override
-  String get deadlineCardSourceLabelIntake => 'from intake';
+  String get deadlineCardSourceLabelIntake => 'z formularza zgłoszeniowego';
 
   @override
-  String get deadlineCardSourceLabelManual => 'added manually';
+  String get deadlineCardSourceLabelManual => 'dodane ręcznie';
 
   @override
-  String get deadlineCardSourceLabelEmail => 'from email';
+  String get deadlineCardSourceLabelEmail => 'z e-maila';
 
   @override
-  String get deadlineCardSourceLabelHaikuExtract => 'AI-extracted';
+  String get deadlineCardSourceLabelHaikuExtract => 'wyodrębnione przez AI';
 
   @override
-  String get deadlineCardSourceLabelStatutoryTemplate => 'statute template';
+  String get deadlineCardSourceLabelStatutoryTemplate => 'szablon ustawowy';
 
   @override
   String deadlineBannerCritical(String title, String when) {
-    return 'Critical deadline $title $when';
+    return 'Krytyczny termin $title $when';
   }
 
   @override
-  String get deadlineBannerDismiss => 'Dismiss';
+  String get deadlineBannerDismiss => 'Odrzuć';
 
   @override
-  String get deadlineBannerOpen => 'Open deadline';
+  String get deadlineBannerOpen => 'Otwórz termin';
 
   @override
   String deadlineHolidayShifted(String original, String reason) {
-    return 'Shifted from $original due to $reason';
+    return 'Przesunięto z $original z powodu $reason';
   }
 
   @override
-  String get deadlinePermissionAskTitle => 'Enable deadline reminders?';
+  String get deadlinePermissionAskTitle => 'Włączyć przypomnienia o terminach?';
 
   @override
   String get deadlinePermissionAskBody =>
-      'We\'ll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.';
+      'Powiadomimy Cię 7, 3 i 1 dzień przed każdym ustawowym terminem, a także rano w dniu terminu. Nigdy nie wykorzystujemy tego do celów marketingowych.';
 
   @override
-  String get deadlinePermissionAllow => 'Allow';
+  String get deadlinePermissionAllow => 'Zezwól';
 
   @override
-  String get deadlinePermissionLater => 'Later';
+  String get deadlinePermissionLater => 'Później';
 
   @override
-  String get deadlineSettingsSection => 'Deadline reminders';
+  String get deadlineSettingsSection => 'Przypomnienia o terminach';
 
   @override
-  String get deadlineSettingsPushChannel => 'Push notifications';
+  String get deadlineSettingsPushChannel => 'Powiadomienia push';
 
   @override
-  String get deadlineSettingsEmailChannel => 'Email (critical only)';
+  String get deadlineSettingsEmailChannel => 'E-mail (tylko krytyczne)';
 
   @override
-  String get deadlineSettingsInAppChannel => 'In-app banners';
+  String get deadlineSettingsInAppChannel => 'Banery w aplikacji';
 
   @override
   String get deadlineSettingsCriticalBypass =>
-      'Critical reminders bypass quiet hours';
+      'Krytyczne przypomnienia pomijają godziny ciszy';
 
   @override
-  String get deadlineSettingsQuietHours => 'Quiet hours';
+  String get deadlineSettingsQuietHours => 'Godziny ciszy';
 
   @override
   String deadlineSettingsQuietHoursBadge(String start, String end) {
-    return 'Quiet $start–$end';
+    return 'Cisza $start–$end';
   }
 
   @override
-  String get deadlineCaseScreenTitle => 'Case deadlines';
+  String get deadlineCaseScreenTitle => 'Terminy sprawy';
 
   @override
-  String get deadlineAddManualCta => 'Add deadline';
+  String get deadlineAddManualCta => 'Dodaj termin';
 
   @override
-  String get deadlineFormTitle => 'Title';
+  String get deadlineFormTitle => 'Tytuł';
 
   @override
-  String get deadlineFormDescription => 'Description (optional)';
+  String get deadlineFormDescription => 'Opis (opcjonalnie)';
 
   @override
-  String get deadlineFormStatuteTemplate => 'Statute template';
+  String get deadlineFormStatuteTemplate => 'Szablon ustawowy';
 
   @override
-  String get deadlineFormStatuteTemplateNone => 'None (manual)';
+  String get deadlineFormStatuteTemplateNone => 'Brak (ręcznie)';
 
   @override
-  String get deadlineFormDeadlineAt => 'Deadline date';
+  String get deadlineFormDeadlineAt => 'Data terminu';
 
   @override
-  String get deadlineFormPriority => 'Priority';
+  String get deadlineFormPriority => 'Priorytet';
 
   @override
-  String get deadlineFormSave => 'Save';
+  String get deadlineFormSave => 'Zapisz';
 
   @override
-  String get deadlineFormCancel => 'Cancel';
+  String get deadlineFormCancel => 'Anuluj';
 
   @override
-  String get deadlineCompletedNotePrompt => 'Add a note (optional)';
+  String get deadlineCompletedNotePrompt => 'Dodaj notatkę (opcjonalnie)';
 
   @override
-  String get deadlineCompletedNoteSave => 'Save';
+  String get deadlineCompletedNoteSave => 'Zapisz';
 
   @override
-  String get inboxTitle => 'Inbox';
+  String get inboxTitle => 'Skrzynka odbiorcza';
 
   @override
-  String get inboxEmptyTitle => 'Nothing pending';
+  String get inboxEmptyTitle => 'Brak oczekujących';
 
   @override
   String get inboxEmptyBody =>
-      'New email threads will appear here as they get triaged.';
+      'Nowe wątki e-mail pojawią się tutaj po ich posortowaniu.';
 
   @override
-  String get inboxApproveSend => 'Approve & send';
+  String get inboxApproveSend => 'Zatwierdź i wyślij';
 
   @override
-  String get inboxEditDraft => 'Edit';
+  String get inboxEditDraft => 'Edytuj';
 
   @override
-  String get inboxSnooze => 'Snooze';
+  String get inboxSnooze => 'Odłóż';
 
   @override
-  String get inboxArchive => 'Archive';
+  String get inboxArchive => 'Archiwizuj';
 
   @override
-  String get inboxFilterAll => 'All';
+  String get inboxFilterAll => 'Wszystkie';
 
   @override
-  String get inboxConfirmSendTitle => 'Send the prepared reply?';
+  String get inboxConfirmSendTitle => 'Wysłać przygotowaną odpowiedź?';
 
   @override
   String get inboxConfirmSendBody =>
-      'Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.';
+      'Advocat wyśle odpowiedź przygotowaną przez AI za pośrednictwem połączonego konta Gmail. Możesz jeszcze przejrzeć treść na następnym ekranie.';
 
   @override
-  String get inboxSendButton => 'Send';
+  String get inboxSendButton => 'Wyślij';
 
   @override
-  String get inboxSentToast => 'Sent.';
+  String get inboxSentToast => 'Wysłano.';
 
   @override
-  String get inboxAlreadySentToast => 'Already sent.';
+  String get inboxAlreadySentToast => 'Już wysłano.';
 
   @override
-  String get inboxSendErrorToast => 'Could not send the reply. Tap retry.';
+  String get inboxSendErrorToast =>
+      'Nie udało się wysłać odpowiedzi. Dotknij, aby spróbować ponownie.';
 
   @override
-  String get inboxSnoozedToast => 'Snoozed for 24h.';
+  String get inboxSnoozedToast => 'Odłożono na 24 godz.';
 
   @override
-  String get inboxArchivedToast => 'Archived.';
+  String get inboxArchivedToast => 'Zarchiwizowano.';
 
   @override
-  String get inboxDraftLoadError => 'Could not load draft.';
+  String get inboxDraftLoadError => 'Nie udało się wczytać wersji roboczej.';
 
   @override
-  String get inboxDeadlineToday => 'today';
+  String get inboxDeadlineToday => 'dzisiaj';
 
   @override
-  String get inboxDeadlineTomorrow => 'tomorrow';
+  String get inboxDeadlineTomorrow => 'jutro';
 
   @override
   String inboxDeadlineInDays(int days) {
-    return 'in ${days}d';
+    return 'za ${days}d';
   }
 
   @override
   String inboxDeadlineOverdue(int days) {
-    return 'overdue ${days}d';
+    return 'opóźnienie ${days}d';
   }
 
   @override
@@ -3600,28 +3604,29 @@ class AppLocalizationsPl extends AppLocalizations {
   String get inboxEditDiscard => 'Odrzuć';
 
   @override
-  String get workspaceTabOverview => 'Overview';
+  String get workspaceTabOverview => 'Przegląd';
 
   @override
-  String get workspaceTabChat => 'Chat';
+  String get workspaceTabChat => 'Czat';
 
   @override
-  String get workspaceTabDrafts => 'Drafts';
+  String get workspaceTabDrafts => 'Wersje robocze';
 
   @override
-  String get workspaceOverviewEmpty => 'Add documents to build a summary.';
+  String get workspaceOverviewEmpty =>
+      'Dodaj dokumenty, aby utworzyć podsumowanie.';
 
   @override
-  String get workspaceTimelineEmpty => 'No events yet.';
+  String get workspaceTimelineEmpty => 'Brak wydarzeń.';
 
   @override
-  String get workspaceDocumentsEmpty => 'No documents. Upload from Scan.';
+  String get workspaceDocumentsEmpty => 'Brak dokumentów. Prześlij ze skanera.';
 
   @override
-  String get workspaceDraftsEmpty => 'No drafts yet.';
+  String get workspaceDraftsEmpty => 'Brak wersji roboczych.';
 
   @override
-  String get workspaceInboxEmpty => 'No related email.';
+  String get workspaceInboxEmpty => 'Brak powiązanych e-maili.';
 
   @override
   String get plannerSettingsTitle => 'Trzyetapowe rozumowanie prawne';
@@ -4309,186 +4314,187 @@ class AppLocalizationsPl extends AppLocalizations {
   String get softCaseShellBannerCta => 'Zmień nazwę';
 
   @override
-  String get draftsTab => 'Drafts';
+  String get draftsTab => 'Wersje robocze';
 
   @override
-  String get draftingTitle => 'Drafting Studio';
+  String get draftingTitle => 'Studio redagowania';
 
   @override
-  String get draftingEmpty => 'Empty draft';
+  String get draftingEmpty => 'Pusta wersja robocza';
 
   @override
-  String get draftingPlaceholder => 'Start typing your draft…';
+  String get draftingPlaceholder => 'Zacznij pisać swoją wersję roboczą…';
 
   @override
-  String get draftingDraftsList => 'My drafts';
+  String get draftingDraftsList => 'Moje wersje robocze';
 
   @override
-  String get draftingSave => 'Save';
+  String get draftingSave => 'Zapisz';
 
   @override
-  String get draftingSaved => 'Saved';
+  String get draftingSaved => 'Zapisano';
 
   @override
-  String get draftingSavedJustNow => 'Saved just now';
+  String get draftingSavedJustNow => 'Zapisano przed chwilą';
 
   @override
-  String get draftingAiRevise => 'Revise with AI';
+  String get draftingAiRevise => 'Popraw z pomocą AI';
 
   @override
-  String get draftingExportPdf => 'Export PDF';
+  String get draftingExportPdf => 'Eksportuj PDF';
 
   @override
-  String get draftingExportDocx => 'Export DOCX';
+  String get draftingExportDocx => 'Eksportuj DOCX';
 
   @override
-  String get draftingExportMd => 'Export Markdown';
+  String get draftingExportMd => 'Eksportuj Markdown';
 
   @override
-  String get draftingDeleteDraft => 'Delete draft';
+  String get draftingDeleteDraft => 'Usuń wersję roboczą';
 
   @override
-  String get draftingConfirmDelete => 'Delete this draft?';
+  String get draftingConfirmDelete => 'Usunąć tę wersję roboczą?';
 
   @override
-  String get draftingConfirmDeleteMessage => 'This action cannot be undone.';
+  String get draftingConfirmDeleteMessage => 'Tej czynności nie można cofnąć.';
 
   @override
-  String get draftingConfirm => 'Delete';
+  String get draftingConfirm => 'Usuń';
 
   @override
-  String get draftingCancel => 'Cancel';
+  String get draftingCancel => 'Anuluj';
 
   @override
   String draftingDraftReplyTo(String name) {
-    return 'Reply to $name';
+    return 'Odpowiedź do $name';
   }
 
   @override
-  String get draftingUntitled => 'Untitled';
+  String get draftingUntitled => 'Bez tytułu';
 
   @override
-  String get draftingTitleHint => 'Title (optional)';
+  String get draftingTitleHint => 'Tytuł (opcjonalnie)';
 
   @override
-  String get draftingAiReviseTitle => 'Revise with AI';
+  String get draftingAiReviseTitle => 'Popraw z pomocą AI';
 
   @override
-  String get draftingAiReviseSelectionLabel => 'Selected text:';
+  String get draftingAiReviseSelectionLabel => 'Zaznaczony tekst:';
 
   @override
-  String get draftingAiReviseInstructionLabel => 'Instruction (optional)';
+  String get draftingAiReviseInstructionLabel => 'Instrukcja (opcjonalnie)';
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'e.g. \"make it more formal\" or \"shorten\"';
+      'np. „uczyń bardziej formalnym” lub „skróć”';
 
   @override
-  String get draftingAiReviseRunButton => 'Generate revision';
+  String get draftingAiReviseRunButton => 'Generuj poprawkę';
 
   @override
-  String get draftingAiReviseSuggestionLabel => 'Suggested revision:';
+  String get draftingAiReviseSuggestionLabel => 'Sugerowana poprawka:';
 
   @override
-  String get draftingAiReviseChangesLabel => 'Changes:';
+  String get draftingAiReviseChangesLabel => 'Zmiany:';
 
   @override
-  String get draftingAiReviseAccept => 'Accept';
+  String get draftingAiReviseAccept => 'Zaakceptuj';
 
   @override
-  String get draftingAiReviseReject => 'Reject';
+  String get draftingAiReviseReject => 'Odrzuć';
 
   @override
-  String get draftingFormatBold => 'Bold';
+  String get draftingFormatBold => 'Pogrubienie';
 
   @override
-  String get draftingFormatItalic => 'Italic';
+  String get draftingFormatItalic => 'Kursywa';
 
   @override
-  String get draftingFormatHeading => 'Heading';
+  String get draftingFormatHeading => 'Nagłówek';
 
   @override
-  String get draftingFormatBullet => 'Bullet list';
+  String get draftingFormatBullet => 'Lista punktowana';
 
   @override
-  String get draftingFormatNumbered => 'Numbered list';
+  String get draftingFormatNumbered => 'Lista numerowana';
 
   @override
-  String get draftingEmptyListMessage => 'You have no drafts yet.';
+  String get draftingEmptyListMessage =>
+      'Nie masz jeszcze żadnych wersji roboczych.';
 
   @override
-  String get draftingEmptyListAction => 'New draft';
+  String get draftingEmptyListAction => 'Nowa wersja robocza';
 
   @override
-  String get draftingExporting => 'Exporting…';
+  String get draftingExporting => 'Eksportowanie…';
 
   @override
-  String get draftingExportFailed => 'Export failed';
+  String get draftingExportFailed => 'Eksport nie powiódł się';
 
   @override
-  String get draftingSaveFailed => 'Save failed';
+  String get draftingSaveFailed => 'Zapis nie powiódł się';
 
   @override
-  String get draftingNewDraft => 'New draft';
+  String get draftingNewDraft => 'Nowa wersja robocza';
 
   @override
-  String get vaultNoteChip => 'Vault note';
+  String get vaultNoteChip => 'Notatka w skarbcu';
 
   @override
-  String get saveToVault => 'Save to Vault';
+  String get saveToVault => 'Zapisz w Skarbcu';
 
   @override
-  String get savingToVault => 'Saving to Vault…';
+  String get savingToVault => 'Zapisywanie w Skarbcu…';
 
   @override
-  String get savedToVault => 'Saved to Vault';
+  String get savedToVault => 'Zapisano w Skarbcu';
 
   @override
-  String get vaultNoteTitlePrefix => 'Note: ';
+  String get vaultNoteTitlePrefix => 'Notatka: ';
 
   @override
-  String get openInVault => 'Open in Vault';
+  String get openInVault => 'Otwórz w Skarbcu';
 
   @override
-  String get saveToVaultFailed => 'Save to Vault failed';
+  String get saveToVaultFailed => 'Zapis w Skarbcu nie powiódł się';
 
   @override
   String get pdfWorkerUnavailable =>
-      'PDF export is temporarily unavailable. Please try DOCX or Markdown.';
+      'Eksport do PDF jest tymczasowo niedostępny. Spróbuj DOCX lub Markdown.';
 
   @override
-  String get draftingVersionHistory => 'Version history';
+  String get draftingVersionHistory => 'Historia wersji';
 
   @override
-  String get emptyHomeTitle => 'Welcome to Advocat';
+  String get emptyHomeTitle => 'Witaj w Advocat';
 
   @override
   String get emptyHomeBody =>
-      'Pick a starting point — we’ll handle the legal heavy lifting.';
+      'Wybierz punkt wyjścia — my zajmiemy się prawnym ciężarem.';
 
   @override
-  String get intentChip1 => 'Got a fine';
+  String get intentChip1 => 'Dostałem mandat';
 
   @override
-  String get intentChip2 => 'Permit denied';
+  String get intentChip2 => 'Odmówiono zezwolenia';
 
   @override
-  String get intentChip3 => 'Contract problem';
+  String get intentChip3 => 'Problem z umową';
 
   @override
-  String get emptyCasesTitle => 'No cases yet';
+  String get emptyCasesTitle => 'Brak spraw';
 
   @override
-  String get emptyCasesCta => 'Start a case';
+  String get emptyCasesCta => 'Rozpocznij sprawę';
 
   @override
-  String get emptyDraftsTitle => 'No drafts yet';
+  String get emptyDraftsTitle => 'Brak wersji roboczych';
 
   @override
-  String get emptyDraftsCta => 'Create draft';
+  String get emptyDraftsCta => 'Utwórz wersję roboczą';
 
   @override
-  String get emptyChatTitle => 'Ask Advocat anything';
+  String get emptyChatTitle => 'Zapytaj Advocat o cokolwiek';
 
   @override
   String get chatExamplePrompt1 => 'Pomóż mi odpowiedzieć na mandat';
@@ -4547,88 +4553,88 @@ class AppLocalizationsPl extends AppLocalizations {
   String get contractReviewContinueChat => 'Kontynuuj na czacie';
 
   @override
-  String get referralInviteFriends => 'Invite Friends';
+  String get referralInviteFriends => 'Zaproś znajomych';
 
   @override
-  String get referralYourCode => 'Your code';
+  String get referralYourCode => 'Twój kod';
 
   @override
-  String get referralCopiedToast => 'Code copied to clipboard';
+  String get referralCopiedToast => 'Kod skopiowany do schowka';
 
   @override
   String get referralReward =>
-      'Get 1 month of Counsel free for every friend who subscribes.';
+      'Otrzymaj 1 miesiąc planu Counsel gratis za każdego znajomego, który się zasubskrybuje.';
 
   @override
-  String get referralInvited => 'Friends invited';
+  String get referralInvited => 'Zaproszeni znajomi';
 
   @override
-  String get referralRewardsEarned => 'Free months earned';
+  String get referralRewardsEarned => 'Zdobyte darmowe miesiące';
 
   @override
-  String get deadlineUrgencyToday => 'Today & Overdue';
+  String get deadlineUrgencyToday => 'Dziś i zaległe';
 
   @override
-  String get deadlineUrgencyWeek => 'This week';
+  String get deadlineUrgencyWeek => 'W tym tygodniu';
 
   @override
-  String get deadlineUrgencyMonth => 'This month';
+  String get deadlineUrgencyMonth => 'W tym miesiącu';
 
   @override
-  String get deadlineUrgencyLater => 'Later';
+  String get deadlineUrgencyLater => 'Później';
 
   @override
-  String get deadlineAddManual => 'Add deadline';
+  String get deadlineAddManual => 'Dodaj termin';
 
   @override
-  String get deadlineSnoozeBy => 'Snooze';
+  String get deadlineSnoozeBy => 'Odłóż';
 
   @override
-  String get deadlineSnooze1d => 'Snooze 1 day';
+  String get deadlineSnooze1d => 'Odłóż o 1 dzień';
 
   @override
-  String get deadlineSnooze3d => 'Snooze 3 days';
+  String get deadlineSnooze3d => 'Odłóż o 3 dni';
 
   @override
-  String get deadlineSnooze7d => 'Snooze 7 days';
+  String get deadlineSnooze7d => 'Odłóż o 7 dni';
 
   @override
-  String get deadlineDismiss => 'Dismiss';
+  String get deadlineDismiss => 'Odrzuć';
 
   @override
-  String get deadlineExportIcs => 'Add to calendar';
+  String get deadlineExportIcs => 'Dodaj do kalendarza';
 
   @override
-  String get deadlineSource => 'Source';
+  String get deadlineSource => 'Źródło';
 
   @override
   String get deadlineEmpty =>
-      'No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.';
+      'Brak terminów. Terminy są tworzone automatycznie z Twoich e-maili i dokumentów — lub dodaj je ręcznie przyciskiem +.';
 
   @override
-  String get deadlineNewTitle => 'New deadline';
+  String get deadlineNewTitle => 'Nowy termin';
 
   @override
-  String get deadlineFieldTitle => 'Title';
+  String get deadlineFieldTitle => 'Tytuł';
 
   @override
-  String get deadlineFieldDueDate => 'Due date';
+  String get deadlineFieldDueDate => 'Termin realizacji';
 
   @override
-  String get deadlineFieldNotes => 'Notes (optional)';
+  String get deadlineFieldNotes => 'Notatki (opcjonalnie)';
 
   @override
-  String get deadlineSaved => 'Deadline saved';
+  String get deadlineSaved => 'Termin zapisany';
 
   @override
-  String get deadlineSaveFailed => 'Could not save deadline';
+  String get deadlineSaveFailed => 'Nie udało się zapisać terminu';
 
   @override
-  String get deadlineUrgentBannerSingle => '1 deadline today or overdue';
+  String get deadlineUrgentBannerSingle => '1 termin dzisiaj lub zaległy';
 
   @override
   String deadlineUrgentBannerMany(int count) {
-    return '$count deadlines today or overdue';
+    return '$count terminów dzisiaj lub zaległych';
   }
 
   @override
@@ -4636,9 +4642,10 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days left',
-      one: '1 day left',
-      zero: 'today',
+      other: 'pozostało $count dni',
+      few: 'pozostały $count dni',
+      one: 'pozostał 1 dzień',
+      zero: 'dzisiaj',
     );
     return '$_temp0';
   }
@@ -4648,8 +4655,9 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count days overdue',
-      one: '1 day overdue',
+      other: '$count dni opóźnienia',
+      few: '$count dni opóźnienia',
+      one: '1 dzień opóźnienia',
     );
     return '$_temp0';
   }
@@ -4672,11 +4680,11 @@ class AppLocalizationsPl extends AppLocalizations {
       'Nie znaleziono aktywnej subskrypcji do przywrócenia.';
 
   @override
-  String get deadlineEuRadarTitle => 'EU deadline radar (preview)';
+  String get deadlineEuRadarTitle => 'Radar terminów UE (podgląd)';
 
   @override
   String get deadlineEuRadarSubtitle =>
-      'Hypothetical EU procedural deadlines — mock data';
+      'Hipotetyczne unijne terminy proceduralne — dane przykładowe';
 
   @override
   String get changePassword => 'Zmień hasło';

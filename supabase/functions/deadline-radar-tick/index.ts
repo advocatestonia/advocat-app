@@ -526,11 +526,19 @@ async function dispatchEmail(
   // Resolve the recipient address at send time (never persisted/logged).
   let toEmail: string | null = null;
   try {
-    const { data: u } = await supabase
-      .from("users")
+    const { data: u, error: uErr } = await supabase
+      .from("profiles")
       .select("email")
       .eq("id", row.user_id)
       .maybeSingle();
+    if (uErr) {
+      // A genuine DB error is transient — a future tick can retry. Do NOT let
+      // it masquerade as `no_email_on_file` (which is stamped permanent).
+      return {
+        outcome: "transient",
+        error: `email_lookup_failed:${String(uErr.message).slice(0, 60)}`,
+      };
+    }
     toEmail = (u?.email as string | null) ?? null;
   } catch (e) {
     // Treat a DB blip on the lookup as transient — a future tick can retry.
