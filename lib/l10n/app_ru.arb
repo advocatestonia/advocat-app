@@ -656,7 +656,7 @@
   "basicAiAnalysis": "Базовый анализ ИИ",
   "caseCreationComingSoon": "Создание дела с предзаполнением — скоро",
   "caseSummaryCopied": "Сводка дела скопирована",
-  "chatWelcomeMessage": "Привет! Я Advocat — твой AI-юридический ассистент. Я предоставляю правовую информацию, а не юридический совет. С чем я могу помочь?",
+  "chatWelcomeMessage": "Здравствуйте! Я Advocat — Ваш AI-юридический ассистент. Я предоставляю правовую информацию, а не юридический совет. С чем я могу помочь?",
   "checkingPurchases": "Проверка предыдущих покупок…",
   "connectYourEmail": "Подключите почту",
   "connectYourEmailDesc": "Подключите email для автоматического обнаружения и организации юридической переписки по вашим делам.",
@@ -1554,7 +1554,7 @@
   "@supportPrivacyNotice": {},
   "referralTitle": "Пригласить друзей",
   "@referralTitle": {},
-  "referralSubtitle": "Получи месяц бесплатно. Подари месяц бесплатно.",
+  "referralSubtitle": "Получите месяц бесплатно. Подарите месяц бесплатно.",
   "@referralSubtitle": {},
   "referralYourLink": "ВАША ССЫЛКА",
   "@referralYourLink": {},
@@ -1576,7 +1576,7 @@
   "@referralShareTelegram": {},
   "referralShareEmail": "Отправить по email",
   "@referralShareEmail": {},
-  "referralEmailSubject": "Попробуй Advocat — твой ИИ-юрист",
+  "referralEmailSubject": "Попробуйте Advocat — Вашего ИИ-юриста",
   "@referralEmailSubject": {},
   "referralLoadError": "Не удалось загрузить данные. Потяните вниз.",
   "@referralLoadError": {},
@@ -1584,11 +1584,11 @@
   "@referralRetry": {},
   "referralSettingsTile": "Пригласить друзей",
   "@referralSettingsTile": {},
-  "referralAfterReviewCta": "Понравилось? Пригласи друга — оба получите месяц бесплатно.",
+  "referralAfterReviewCta": "Понравилось? Пригласите друга — оба получите месяц бесплатно.",
   "@referralAfterReviewCta": {},
   "referralAntiFraud": "До 12 успешных приглашений в год.",
   "@referralAntiFraud": {},
-  "referralEmpty": "Приглашений пока нет. Отправь ссылку, чтобы начать.",
+  "referralEmpty": "Приглашений пока нет. Отправьте ссылку, чтобы начать.",
   "@referralEmpty": {},
   "referralRecentActivity": "Недавняя активность",
   "@referralRecentActivity": {},
@@ -1610,7 +1610,7 @@
   },
   "referralActivityPending": "ещё не активировал",
   "@referralActivityPending": {},
-  "referralStatsInvitedCount": "{count, plural, =0{Ты пока никого не пригласил.} =1{Ты пригласил 1 друга.} few{Ты пригласил {count} друзей.} many{Ты пригласил {count} друзей.} other{Ты пригласил {count} друзей.}}",
+  "referralStatsInvitedCount": "{count, plural, =0{Вы пока никого не пригласили.} one{Вы пригласили {count} друга.} few{Вы пригласили {count} друзей.} many{Вы пригласили {count} друзей.} other{Вы пригласили {count} друзей.}}",
   "@referralStatsInvitedCount": {
     "placeholders": {
       "count": {
@@ -1618,7 +1618,7 @@
       }
     }
   },
-  "referralStatsConvertedCount": "{count, plural, =0{Никто пока не активировал.} =1{1 человек активировал.} few{{count} человека активировали.} many{{count} человек активировали.} other{{count} человек активировали.}}",
+  "referralStatsConvertedCount": "{count, plural, =0{Никто пока не активировал.} one{{count} человек активировал.} few{{count} человека активировали.} many{{count} человек активировали.} other{{count} человека активировали.}}",
   "@referralStatsConvertedCount": {
     "placeholders": {
       "count": {
@@ -1626,7 +1626,7 @@
       }
     }
   },
-  "referralStatsEarnedCount": "{months, plural, =0{Бонусы: пока ничего.} =1{Твой бонус: 1 бесплатный месяц.} few{Твой бонус: {months} бесплатных месяца.} many{Твой бонус: {months} бесплатных месяцев.} other{Твой бонус: {months} бесплатных месяцев.}}",
+  "referralStatsEarnedCount": "{months, plural, =0{Бонусы: пока ничего.} one{Ваш бонус: {months} бесплатный месяц.} few{Ваш бонус: {months} бесплатных месяца.} many{Ваш бонус: {months} бесплатных месяцев.} other{Ваш бонус: {months} бесплатных месяца.}}",
   "@referralStatsEarnedCount": {
     "placeholders": {
       "months": {
@@ -1634,13 +1634,13 @@
       }
     }
   },
-  "referralNudgeMessage": "Нравится Advocat? Пригласи друга — оба получите месяц бесплатно.",
+  "referralNudgeMessage": "Нравится Advocat? Пригласите друга — оба получите месяц бесплатно.",
   "@referralNudgeMessage": {},
   "referralNudgeAction": "Пригласить",
   "@referralNudgeAction": {},
-  "referralLandingTitle": "Тебя пригласили в Advocat",
+  "referralLandingTitle": "Вас пригласили в Advocat",
   "@referralLandingTitle": {},
-  "referralLandingSubtitle": "{inviterName} пригласил тебя — получи первый месяц бесплатно.",
+  "referralLandingSubtitle": "{inviterName} пригласил(а) Вас — получите первый месяц бесплатно.",
   "@referralLandingSubtitle": {
     "placeholders": {
       "inviterName": {
@@ -1648,13 +1648,13 @@
       }
     }
   },
-  "referralLandingSubtitleGeneric": "Получи первый месяц Advocat Pro бесплатно.",
+  "referralLandingSubtitleGeneric": "Получите первый месяц Advocat Pro бесплатно.",
   "@referralLandingSubtitleGeneric": {},
   "referralLandingCta": "Активировать месяц и зарегистрироваться",
   "@referralLandingCta": {},
   "referralLandingCtaSecondary": "Или узнать больше об Advocat",
   "@referralLandingCtaSecondary": {},
-  "referralLandingFallback": "Эта ссылка истекла — но ты всё равно можешь попробовать Advocat бесплатно.",
+  "referralLandingFallback": "Эта ссылка истекла — но Вы всё равно можете попробовать Advocat бесплатно.",
   "@referralLandingFallback": {},
   "referralLandingBenefits": "17 языков • Реальное право Эстонии, Финляндии и ЕС • 24/7 — без ожидания",
   "@referralLandingBenefits": {},
@@ -1752,9 +1752,9 @@
   "actionSignIn": "Войти",
   "actionUndo": "Отменить",
   "intakeUrgentOpened": "Чат открыт — черновик сохранён.",
-  "panicCoachmark": "Зажми, если сейчас нужна срочная помощь.",
-  "panicTitle": "Что тебе сейчас нужно?",
-  "panicCardReadAloud": "Зачитай это полицейскому",
+  "panicCoachmark": "Зажмите, если сейчас нужна срочная помощь.",
+  "panicTitle": "Что Вам сейчас нужно?",
+  "panicCardReadAloud": "Зачитайте это полицейскому",
   "panicCardRecord": "Записать разговор",
   "panicCardCall": "Позвонить адвокату",
   "panicCardAi": "Поговорить с Адвокатом сейчас",
@@ -1849,7 +1849,7 @@
   "draftingAiReviseTitle": "Переработать с ИИ",
   "draftingAiReviseSelectionLabel": "Выделенный текст:",
   "draftingAiReviseInstructionLabel": "Инструкция (необязательно)",
-  "draftingAiReviseInstructionHint": "например \"сделать более формальным\" или \"сократить\"",
+  "draftingAiReviseInstructionHint": "например «сделать более формальным» или «сократить»",
   "draftingAiReviseRunButton": "Создать переработку",
   "draftingAiReviseSuggestionLabel": "Предлагаемая переработка:",
   "draftingAiReviseChangesLabel": "Изменения:",
@@ -1951,7 +1951,7 @@
       }
     }
   },
-  "deadlineDaysLeft": "{count, plural, =0{сегодня} =1{остался 1 день} few{осталось {count} дня} many{осталось {count} дней} other{осталось {count} дней}}",
+  "deadlineDaysLeft": "{count, plural, =0{сегодня} one{остался {count} день} few{осталось {count} дня} many{осталось {count} дней} other{осталось {count} дней}}",
   "@deadlineDaysLeft": {
     "placeholders": {
       "count": {

@@ -18,16 +18,16 @@ class AppLocalizationsLv extends AppLocalizations {
   String get appearance => 'Izskats';
 
   @override
-  String get appearanceSystem => 'Sistemas (automatiski)';
+  String get appearanceSystem => 'Sistēmas (automātiski)';
 
   @override
-  String get appearanceLight => 'Gaiss';
+  String get appearanceLight => 'Gaišs';
 
   @override
-  String get appearanceDark => 'Tumss';
+  String get appearanceDark => 'Tumšs';
 
   @override
-  String get appearanceDescription => 'Izvelieties, ka izskatas Advocat';
+  String get appearanceDescription => 'Izvēlieties, kā izskatās Advocat';
 
   @override
   String get accidents => 'Negadījumi';
@@ -67,7 +67,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get speakIntoMicHint =>
-      'Runajiet mikrofona. Parliecinieties, ka mikrofona pieklušana ir iespējota.';
+      'Runājiet mikrofonā. Pārliecinieties, ka piekļuve mikrofonam ir iespējota.';
 
   @override
   String get aiErrorRateLimit =>
@@ -362,7 +362,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get exportPdf => 'Eksportēt PDF';
 
   @override
-  String get familyReunification => 'Gimeņu atkalapvienošanās';
+  String get familyReunification => 'Ģimeņu atkalapvienošanās';
 
   @override
   String get forgotPassword => 'Aizmirsāt paroli?';
@@ -412,7 +412,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get important => 'Svarīgs';
 
   @override
-  String get inProgress => 'Processā';
+  String get inProgress => 'Procesā';
 
   @override
   String get informational => 'Informatīvs';
@@ -523,7 +523,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get onboardingDesc3 =>
-      'Mūsu AI rīki pārbauda vairāk nekā 40 procesuālo prasību veidus. AI analīze var atklat problēmas, kurām nepieciešama uzmanība — piemēram, apkalpošanas valoda, procesuālie soļi un juridiskie termiņi. Vienmēr pārbaudiet ar kvalificētu advokātu.';
+      'Mūsu AI rīki pārbauda vairāk nekā 40 procesuālo prasību veidus. AI analīze var atklāt problēmas, kurām nepieciešama uzmanība — piemēram, apkalpošanas valoda, procesuālie soļi un juridiskie termiņi. Vienmēr pārbaudiet ar kvalificētu advokātu.';
 
   @override
   String get onboardingDesc4 =>
@@ -638,7 +638,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get dpaOpenHint =>
-      'Atveriet DAL vismaz vienu reizi, lai aktivizētu pogu “Piekrist”.';
+      'Atveriet DAL vismaz vienu reizi, lai aktivizētu pogu „Piekrist“.';
 
   @override
   String get pro => 'Pro';
@@ -901,7 +901,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get knowYourRights => 'Zini savas tiesības';
 
   @override
-  String get stoppedByPolice => 'Apturēts policija';
+  String get stoppedByPolice => 'Policijas apturēts';
 
   @override
   String get stoppedByPoliceDesc => 'Jūsu tiesības policijas kontroles laikā';
@@ -1803,7 +1803,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get gdprConsentAiProcessing =>
-      'Es piekrītu manu datu apstrādei AI juridiskās palīdzības nodrošināšanai (obligati)';
+      'Es piekrītu manu datu apstrādei AI juridiskās palīdzības nodrošināšanai (obligāti)';
 
   @override
   String get gdprConsentAnalytics =>
@@ -1822,7 +1822,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get gdprConsentLegalData =>
-      'Es piekrītu savu lietas datu, pilsonības un imigrācijas statusa apstrādei ar AI (obligati)';
+      'Es piekrītu savu lietas datu, pilsonības un imigrācijas statusa apstrādei ar AI (obligāti)';
 
   @override
   String get gdprConsentVoice =>
@@ -2153,7 +2153,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get domesticFactVictimDirective =>
-      'Saskaņā ar ES Cietušo direktīvu 2012/29/ES jums ir tiesības tikt izturam ar cieņu, saņemt informāciju jums saprotamā valodā un pieklūt cietušo atbalsta pakalpojumiem — neatkarīgi no jūsu uzturēšanās statusa.';
+      'Saskaņā ar ES Cietušo direktīvu 2012/29/ES jums ir tiesības tikt izturētam ar cieņu, saņemt informāciju jums saprotamā valodā un piekļūt cietušo atbalsta pakalpojumiem — neatkarīgi no jūsu uzturēšanās statusa.';
 
   @override
   String get domesticDeadlinePoliceReport =>
@@ -2161,35 +2161,35 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get domesticDeadlineRestraining =>
-      'Ierobežojošu rīkojumu var pieprastīt jebkurā laikā';
+      'Ierobežojošu rīkojumu var pieprasīt jebkurā laikā';
 
   @override
   String get contactEmergency => 'Ārkārtas numurs';
 
   @override
-  String get contactShelter => 'Turvakoti (patvērums) uzticibas tālrunis';
+  String get contactShelter => 'Turvakoti (patvērums) uzticības tālrunis';
 
   @override
   String get contactCrisisHelpline => 'Krīzes tālrunis (Kriisipuhelin)';
 
   @override
   String get contactNollaLinja =>
-      'Nollalinja — vardarbības pret sievietēm uzticibas tālrunis';
+      'Nollalinja — vardarbības pret sievietēm uzticības tālrunis';
 
   @override
   String get inheritance => 'Mantojums';
 
   @override
   String get inheritanceDesc =>
-      'Testamenti, mantojums, mantinieku tiesības, obligatā mantojuma daļa, mantoanas process';
+      'Testamenti, mantojums, mantinieku tiesības, obligātā mantojuma daļa, mantošanas process';
 
   @override
   String get rightInheritanceForced =>
-      'Obligatie mantinieki (bērni, laulātais) ir tiesiģi saņemt obligato mantojuma daļu neatkarīgi no testamenta';
+      'Obligātajiem mantiniekiem (bērniem, laulātajam) ir tiesības saņemt obligāto mantojuma daļu neatkarīgi no testamenta';
 
   @override
   String get rightInheritanceWill =>
-      'Jums ir tiesības sastādīt testamentu par sava īpašuma sadali — notariāli apliecinātiem testamentiem ir vislielakais juridiskais spēks';
+      'Jums ir tiesības sastādīt testamentu par sava īpašuma sadali — notariāli apliecinātiem testamentiem ir vislielākais juridiskais spēks';
 
   @override
   String get rightInheritanceRenounce =>
@@ -2201,15 +2201,15 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get rightInheritanceDispute =>
-      'Jūs varat apstrīdēt netaisnīgu testamentu tiesa likumā noteiktā noilguma termiņā';
+      'Jūs varat apstrīdēt netaisnīgu testamentu likumā noteiktā noilguma termiņā';
 
   @override
   String get mustFileInheritance =>
-      'Iesniedziet mantoanas lietu pie notāra saprātīgā termiņā';
+      'Iesniedziet mantošanas lietu pie notāra saprātīgā termiņā';
 
   @override
   String get mustNotifyHeirs =>
-      'Visi zināmie mantinieki jāinformē par mantoanas procesu';
+      'Visi zināmie mantinieki jāinformē par mantošanas procesu';
 
   @override
   String get inheritanceActionGatherDocs =>
@@ -2217,7 +2217,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get inheritanceActionContactNotary =>
-      'Sazinieties ar notāru, lai atvērtu mantoanas lietu';
+      'Sazinieties ar notāru, lai atvērtu mantošanas lietu';
 
   @override
   String get inheritanceActionCheckDebts =>
@@ -2237,11 +2237,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get inheritanceFactForced =>
-      'Igaunijā pēcnācējiem un laulātajam ir tiesības uz obligato mantojuma daļu (1/2 no likumīgās daļas) pat tad, ja viņi izslēgti no testamenta';
+      'Igaunijā pēcnācējiem un laulātajam ir tiesības uz obligāto mantojuma daļu (1/2 no likumīgās daļas) pat tad, ja viņi izslēgti no testamenta';
 
   @override
   String get inheritanceFactNotary =>
-      'Visiem mantoanas procesiem Igaunijā jānotiek caur notāru — šo soli nevar izlaist';
+      'Visiem mantošanas procesiem Igaunijā jānotiek caur notāru — šo soli nevar izlaist';
 
   @override
   String get consumerProtection => 'Patērētāju aizsardzība';
@@ -2338,7 +2338,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get selectCategoryDescription =>
-      'Izvēlieties kategoriju, kas vislābāk apraksta jūsu situāciju.';
+      'Izvēlieties kategoriju, kas vislabāk apraksta jūsu situāciju.';
 
   @override
   String get tellUsAboutCase => 'Pastāstiet mums par savu lietu';
@@ -2360,21 +2360,21 @@ class AppLocalizationsLv extends AppLocalizations {
   String get referenceNumberHint => 'piem., UMA/12345/2026';
 
   @override
-  String get descriptionOptional => 'Apraksts (neobligats)';
+  String get descriptionOptional => 'Apraksts (neobligāti)';
 
   @override
   String get descriptionHint =>
       'Īsi aprakstiet savu situāciju. Kas notika? Kāds lēmums tika pieņemts?';
 
   @override
-  String get uploadFirstDocument => 'Augupēieladējiet savu pirmo dokumentu';
+  String get uploadFirstDocument => 'Augšupielādējiet savu pirmo dokumentu';
 
   @override
   String get uploadDocumentDescription =>
-      'Augupēieladējiet lēmuma vēstuli vai citu attiecīgu dokumentu. Šo soli var izlaist un dokumentus pievienot vēlāk.';
+      'Augšupielādējiet lēmuma vēstuli vai citu attiecīgu dokumentu. Šo soli var izlaist un dokumentus pievienot vēlāk.';
 
   @override
-  String get tapToUploadFile => 'Pieskarieties, lai augupēieladētu failu';
+  String get tapToUploadFile => 'Pieskarieties, lai augšupielādētu failu';
 
   @override
   String get fileSizeLimit => 'PDF, JPG, PNG līdz 25 MB';
@@ -2439,7 +2439,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get partialAidThreshold => 'Daļējas palīdzības slieksnis';
 
   @override
-  String get assetLimit => 'Aktivu limits';
+  String get assetLimit => 'Aktīvu limits';
 
   @override
   String get whereToApplyLabel => 'Kur pieteikties';
@@ -2490,7 +2490,7 @@ class AppLocalizationsLv extends AppLocalizations {
       'Uzturlīdzekļi, alimenti, aizsardzība, valsts garantijas';
 
   @override
-  String get cyberbullying => 'Kiberterorizeašana un tiešsaistes uzmākšanās';
+  String get cyberbullying => 'Kibervajāšana un tiešsaistes uzmākšanās';
 
   @override
   String get cyberbullyingDesc =>
@@ -2506,11 +2506,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get rightCourtAlimony =>
-      'Uzturlīdzekļus var pieprastīt caur apriņķa tiesu (maakohus) — prasībām līdz 6400 € jurists nav nepieciešams';
+      'Uzturlīdzekļus var pieprasīt caur apriņķa tiesu (maakohus) — prasībām līdz 6400 € jurists nav nepieciešams';
 
   @override
   String get rightBailiffEnforcement =>
-      'Ja vecāks atsakās maksāt, tiesu izpildītājs (kohtutäitur) var izpildīt tiesas lēmumu, tostarp veikt algas ieturejumu';
+      'Ja vecāks atsakās maksāt, tiesu izpildītājs (kohtutäitur) var izpildīt tiesas lēmumu, tostarp veikt algas ieturējumu';
 
   @override
   String get rightStateAlimonyGuarantee =>
@@ -2518,7 +2518,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get rightChildEducation =>
-      'Katram bērnam ir tiesības uz izglītību, veselibas aprūpi un aizsardzību pret vardarbību (Lastekaitseseadus § 4–5)';
+      'Katram bērnam ir tiesības uz izglītību, veselības aprūpi un aizsardzību pret vardarbību (Lastekaitseseadus § 4–5)';
 
   @override
   String get rightChildContact =>
@@ -2558,11 +2558,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get childrenDeadlineCourt =>
-      'Uzturlīdzekļus var pieprastīt retroaktivi līdz 1 gadam pirms prasības iesniegšanas tiesā';
+      'Uzturlīdzekļus var pieprasīt retroaktīvi līdz 1 gadam pirms prasības iesniegšanas tiesā';
 
   @override
   String get childrenFactMinimum =>
-      'No 01.04.2026 minimālais uzturlīdzeklis ir 318,62 €/mēnesī par bērnu. Formula: bāzes summa (295,86 €) + 3% no iepriešējā gada vidējās bruto algas. Tiek atjaunināts katru gadu 1. aprīlī. Vecāks nedrīkst vienoties par mazaku summu. Kalkulators: alimendid.ee';
+      'No 01.04.2026 minimālais uzturlīdzeklis ir 318,62 €/mēnesī par bērnu. Formula: bāzes summa (295,86 €) + 3% no iepriešējā gada vidējās bruto algas. Tiek atjaunināts katru gadu 1. aprīlī. Vecāks nedrīkst vienoties par mazāku summu. Kalkulators: alimendid.ee';
 
   @override
   String get childrenFactElatisabi =>
@@ -2574,11 +2574,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get rightContentRemoval =>
-      'Jūs varat pieprastīt apmelojoša vai privāta satura noņemšanu no platformām un pieprastīt izņemšanu saskaņā ar VDAR';
+      'Jūs varat pieprasīt apmelojoša vai privāta satura noņemšanu no platformām un pieprasīt izņemšanu saskaņā ar VDAR';
 
   @override
   String get rightMoralDamageCompensation =>
-      'Jūs varat pieprastīt kompensāciju par morālo kaitējumu, ko izraisījusi kiberterorizeašana (Võlaõigusseadus § 1043–1055)';
+      'Jūs varat pieprasīt kompensāciju par morālo kaitējumu, ko izraisījusi kibervajāšana (Võlaõigusseadus § 1043–1055)';
 
   @override
   String get rightPrivacyProtection =>
@@ -2590,7 +2590,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get rightDefamationAction =>
-      'Apmelošana (laimamine) ir civiltiesisks pārkāpums — jūs varat iesudzēt tiesā par zaudējumiem un pieprastīt publisku atsaukumu (KarS § 247 (atcelts), VÕS § 1047)';
+      'Apmelošana (laimamine) ir civiltiesisks pārkāpums — jūs varat iesūdzēt tiesā par zaudējumiem un pieprasīt publisku atsaukumu (KarS § 247 (atcelts), VÕS § 1047)';
 
   @override
   String get mustCollectEvidence =>
@@ -2614,7 +2614,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get cyberActionContactDPA =>
-      'Sazinieties ar Andmekaitse Inspektsioon, ja jūsu personas dati tika laūnprātīgi izmantoti';
+      'Sazinieties ar Andmekaitse Inspektsioon, ja jūsu personas dati tika ļaunprātīgi izmantoti';
 
   @override
   String get cyberActionConsultLawyer =>
@@ -2634,41 +2634,41 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'Saskaņā ar VDAR jums ir „tiesības tikt aizmirstam“ — platformām jāizdzēš jūsu personas dati pēc jūsu pieprasījuma, ja to glabāšanai nav tiesiska pamata.';
 
   @override
   String get guestUser => 'Viesis';
 
   @override
-  String get howToUse => 'Ka lietot?';
+  String get howToUse => 'Kā lietot?';
 
   @override
-  String get tutorialStep1Title => 'MI juridiskais paligs';
+  String get tutorialStep1Title => 'MI juridiskais palīgs';
 
   @override
   String get tutorialStep1Desc =>
-      'Uzdodiet jebkuru juridisku jautajumu un sanemiet tulejas atbildes, pamatojoties uz Igaunijas likumiem.';
+      'Uzdodiet jebkuru juridisku jautājumu un saņemiet tūlītējas atbildes, pamatojoties uz Igaunijas likumiem.';
 
   @override
-  String get tutorialStep2Title => 'Ziniet savas tiesibas';
+  String get tutorialStep2Title => 'Ziniet savas tiesības';
 
   @override
   String get tutorialStep2Desc =>
-      'Parlukojiet juridisko informaciju pa temam — darbs, majoklis, pateretaju tiesibas un citas.';
+      'Pārlūkojiet juridisko informāciju pa tēmām — darbs, mājoklis, patērētāju tiesības un citas.';
 
   @override
-  String get tutorialStep3Title => 'Skenet dokumentus';
+  String get tutorialStep3Title => 'Skenējiet dokumentus';
 
   @override
   String get tutorialStep3Desc =>
-      'Fotografejiet juridiskos dokumentus MI analizei un drosai glabasanai.';
+      'Fotografējiet juridiskos dokumentus MI analīzei un drošai glabāšanai.';
 
   @override
-  String get tutorialStep4Title => 'Sakas!';
+  String get tutorialStep4Title => 'Sākam!';
 
   @override
   String get tutorialStep4Desc =>
-      'Izpetiet lietotni un aizsargajiet savas tiesibas. Visi dati paliek privati jusu ierice.';
+      'Izpētiet lietotni un aizsargājiet savas tiesības. Visi dati paliek privāti jūsu ierīcē.';
 
   @override
   String get advocatProTitle => 'Advocat Pro';
@@ -3343,7 +3343,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get deadlineFormTitle => 'Nosaukums';
 
   @override
-  String get deadlineFormDescription => 'Apraksts (neobligats)';
+  String get deadlineFormDescription => 'Apraksts (neobligāti)';
 
   @override
   String get deadlineFormStatuteTemplate => 'Likuma veidne';
@@ -3566,7 +3566,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get workspaceDocumentsEmpty =>
-      'Nav dokumentu. Augupēieladējiet, izmantojot skenēšanu.';
+      'Nav dokumentu. Augšupielādējiet, izmantojot skenēšanu.';
 
   @override
   String get workspaceDraftsEmpty => 'Vēl nav melnrakstu.';
@@ -4010,7 +4010,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get sensitiveConsentBody =>
-      'Dokumenti, kurus gatavojaties augšupielādēt, var saturēt īpašu kategoriju personas datus saskaņā ar VDAR 9. pantu — piemēram, veselības ierakstus, sodāmības reģistra datus, biometriskos datus vai informāciju par jūsu rases izcelsmi, reliģiju vai seksuālo orientāciju.\n\nMēs apstrādājam šos datus tikai, lai sniegtu jums MI juridisko palīdzību, glabājam tos šifrētus jūsu privātajā kontā un nekad neizmantojam tos modeļu apmācībai. Piekrišanu varat atsaukt un datus dzēst jebkurā laikā sadaļā “Iestatījumi”.\n\nPiekrītot, jūs sniedzat skaidri paustu piekrišanu saskaņā ar VDAR 9. panta 2. punkta a) apakšpunktu apstrādāt īpašu kategoriju datus šim mērķim.';
+      'Dokumenti, kurus gatavojaties augšupielādēt, var saturēt īpašu kategoriju personas datus saskaņā ar VDAR 9. pantu — piemēram, veselības ierakstus, sodāmības reģistra datus, biometriskos datus vai informāciju par jūsu rases izcelsmi, reliģiju vai seksuālo orientāciju.\n\nMēs apstrādājam šos datus tikai, lai sniegtu jums MI juridisko palīdzību, glabājam tos šifrētus jūsu privātajā kontā un nekad neizmantojam tos modeļu apmācībai. Piekrišanu varat atsaukt un datus dzēst jebkurā laikā sadaļā „Iestatījumi“.\n\nPiekrītot, jūs sniedzat skaidri paustu piekrišanu saskaņā ar VDAR 9. panta 2. punkta a) apakšpunktu apstrādāt īpašu kategoriju datus šim mērķim.';
 
   @override
   String get sensitiveConsentExplicitCheckbox =>
@@ -4242,7 +4242,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get softCaseShellBanner =>
-      'Mēs izveidojām “Lietu bez nosaukuma”, lai to izsekotu. Pieskarieties, lai pārdēvētu.';
+      'Mēs izveidojām „Lietu bez nosaukuma“, lai to izsekotu. Pieskarieties, lai pārdēvētu.';
 
   @override
   String get softCaseShellBannerCta => 'Pārdēvēt';
@@ -4307,7 +4307,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get draftingUntitled => 'Bez nosaukuma';
 
   @override
-  String get draftingTitleHint => 'Nosaukums (neobligats)';
+  String get draftingTitleHint => 'Nosaukums (neobligāti)';
 
   @override
   String get draftingAiReviseTitle => 'Rediģēt ar AI';
@@ -4316,7 +4316,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get draftingAiReviseSelectionLabel => 'Iezimētais teksts:';
 
   @override
-  String get draftingAiReviseInstructionLabel => 'Instrukcija (neobligata)';
+  String get draftingAiReviseInstructionLabel => 'Instrukcija (neobligāta)';
 
   @override
   String get draftingAiReviseInstructionHint =>
@@ -4439,26 +4439,25 @@ class AppLocalizationsLv extends AppLocalizations {
   String get chatExamplePrompt3 => 'Kādas ir manas tiesības darbā?';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'Bīstamā zona';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'Dzēst neatgriezeniski';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'Ierakstiet $email, lai apstiprinātu';
   }
 
   @override
-  String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+  String get deleteAccountSuccess => 'Konts dzēsts. Mums žēl, ka aizejat.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'Šī darbība neatgriezeniski dzēsīs jūsu kontu, visas lietas, melnrakstus, glabātuves dokumentus un tērzēšanas vēsturi. To nevar atsaukt.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'Dzēš kontu…';
 
   @override
   String get contractReviewTitle => 'Līguma pārbaude';
@@ -4496,7 +4495,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get referralReward =>
-      'Saņemiet 1 mēnesi Counsel bez maksas par katru draugu, kas nofromē abonementu.';
+      'Saņemiet 1 mēnesi Counsel bez maksas par katru draugu, kas noformē abonementu.';
 
   @override
   String get referralInvited => 'Uzaicināti draugi';
@@ -4542,7 +4541,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get deadlineEmpty =>
-      'Vēl nav termiņu. Termiņi tiek veidoti automatiski no jūsu e-pastiem un dokumentiem — vai pievienojiet vienu manuāli ar + pogu.';
+      'Vēl nav termiņu. Termiņi tiek veidoti automātiski no jūsu e-pastiem un dokumentiem — vai pievienojiet vienu manuāli ar + pogu.';
 
   @override
   String get deadlineNewTitle => 'Jauns termiņš';
@@ -4554,7 +4553,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get deadlineFieldDueDate => 'Izpildes datums';
 
   @override
-  String get deadlineFieldNotes => 'Piezīmes (neobligatas)';
+  String get deadlineFieldNotes => 'Piezīmes (neobligātas)';
 
   @override
   String get deadlineSaved => 'Termiņš saglabāts';
@@ -4628,7 +4627,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get newPasswordHint =>
-      'Ievadiet un apstipriniet sava konta jauno paroli.';
+      'Ievadiet un apstipriniet jauno paroli savam kontam.';
 
   @override
   String get newPasswordSave => 'Saglabāt jauno paroli';

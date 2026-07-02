@@ -18,7 +18,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get appearance => 'Utseende';
 
   @override
-  String get appearanceSystem => 'System (auto)';
+  String get appearanceSystem => 'System (automatiskt)';
 
   @override
   String get appearanceLight => 'Ljust';
@@ -458,7 +458,7 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get legalFighter => 'Juridisk Kämpe';
+  String get legalFighter => 'Legal Counsel';
 
   @override
   String get legalSection => 'JURIDISKT';
@@ -698,7 +698,8 @@ class AppLocalizationsSv extends AppLocalizations {
   String get retry => 'Försök igen';
 
   @override
-  String get reviewWarning => 'Granska varning';
+  String get reviewWarning =>
+      'Granska noggrant innan du skickar. Du ansvarar för innehållet.';
 
   @override
   String get riskHigh => 'Hög risk — undvik';
@@ -1113,7 +1114,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get mayNotQualifyDesc =>
-      'Baserat på uppskattningen kanske du inte kvalificerar för statlig rättshjälp.';
+      'Baserat på uppskattningen kanske du inte kvalificerar för statlig rättshjälp. Överväg att rådfråga en privat jurist eller juridisk rådgivningsbyrå.';
 
   @override
   String get couldNotLoadDeadlines => 'Kunde inte ladda tidsfrister';
@@ -1492,7 +1493,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get copiedToClipboard => 'Kopierat till urklipp';
 
   @override
-  String get emailComingSoon => 'E-postutskick kommer snart';
+  String get emailComingSoon => 'Skicka e-post via ditt anslutna Gmail-konto';
 
   @override
   String get reviewBeforeSending =>
@@ -1719,7 +1720,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get reportMileageFraudDesc =>
-      'En bedrägerirapport skapas baserat på fordonskontrolldata.';
+      'En bedrägerirapport skapas baserat på fordonskontrolldata. Du kan även öppna ett juridiskt ärende för vidare åtgärder.';
 
   @override
   String get reportAndOpenCase => 'Rapportera och öppna ärende';
@@ -1789,7 +1790,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get gdprFooter =>
-      'Dina data är krypterade och delas aldrig med tredje part. Du kan återkalla samtycke och radera all data i Inställningar.';
+      'Dina data krypteras och behandlas säkert. Vi använder betrodda tjänsteleverantörer (AI-bearbetning, molndatabas) för att tillhandahålla tjänsten. Se vår integritetspolicy för mer information. Du kan återkalla samtycke och radera all data i Inställningar.';
 
   @override
   String get gdprConsentAiProcessing =>
@@ -2071,7 +2072,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get contactVictimSupportRIKU => 'Brottsofferjouren Finland (RIKU)';
 
   @override
-  String get domesticViolence => 'Våld i hemmet';
+  String get domesticViolence => 'Våld i hemmet och misshandel';
 
   @override
   String get domesticViolenceDesc =>
@@ -2618,7 +2619,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'Enligt GDPR har du ”rätten att bli glömd” — plattformar måste radera dina personuppgifter på begäran om det inte finns någon rättslig grund att behålla dem.';
 
   @override
   String get guestUser => 'Gäst';
@@ -4210,7 +4211,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get softCaseShellBanner =>
-      'Vi skapade \"Namnlöst ärende\" för att spåra detta. Tryck för att byta namn.';
+      'Vi skapade ”Namnlöst ärende” för att spåra detta. Tryck för att byta namn.';
 
   @override
   String get softCaseShellBannerCta => 'Byt namn';
@@ -4288,7 +4289,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get draftingAiReviseInstructionHint =>
-      't.ex. \"gör den mer formell\" eller \"korta ner\"';
+      't.ex. ”gör den mer formell” eller ”korta ner”';
 
   @override
   String get draftingAiReviseRunButton => 'Generera bearbetning';
@@ -4407,26 +4408,26 @@ class AppLocalizationsSv extends AppLocalizations {
   String get chatExamplePrompt3 => 'Vilka rättigheter har jag på jobbet?';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'Riskzon';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'Radera permanent';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'Skriv $email för att bekräfta';
   }
 
   @override
   String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+      'Kontot har raderats. Vi är ledsna att se dig gå.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'Detta raderar permanent ditt konto, alla ärenden, utkast, valvdokument och chatthistorik. Åtgärden kan inte ångras.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'Raderar konto…';
 
   @override
   String get contractReviewTitle => 'Avtalsgranskning';

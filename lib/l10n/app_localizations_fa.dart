@@ -105,7 +105,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get asylum => 'پناهندگی';
 
   @override
-  String get back => 'قبلی';
+  String get back => 'بازگشت';
 
   @override
   String get basic => 'پایه';
@@ -4406,26 +4406,26 @@ class AppLocalizationsFa extends AppLocalizations {
   String get chatExamplePrompt3 => 'حقوق من در محل کار چیست؟';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'منطقه خطر';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'حذف برای همیشه';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'برای تأیید، $email را تایپ کنید';
   }
 
   @override
   String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+      'حساب شما حذف شد. از دیدنتان خوشحال بودیم.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'این کار حساب شما، تمام پرونده‌ها، پیش‌نویس‌ها، اسناد خزانه و تاریخچه گفتگو را برای همیشه حذف می‌کند. این عمل قابل بازگشت نیست.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'در حال حذف حساب…';
 
   @override
   String get contractReviewTitle => 'بررسی قرارداد';

@@ -188,14 +188,14 @@ class AppLocalizationsEt extends AppLocalizations {
   String get contactSupport => 'Võtke ühendust kasutajatoega';
 
   @override
-  String get continueWithGoogle => 'Jätka Google\'iga';
+  String get continueWithGoogle => 'Jätka Google’iga';
 
   @override
   String get appleComingSoon => 'Tulemas';
 
   @override
   String get appleComingSoonMessage =>
-      'Apple sisselogimine peagi saadaval. Kasuta Google\'i või e-posti.';
+      'Apple sisselogimine peagi saadaval. Kasuta Google’i või e-posti.';
 
   @override
   String get copyText => 'Kopeeri tekst';
@@ -636,7 +636,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get dpaOpenHint =>
-      'Avage andmetöötlusleping vähemalt korra, et nupp \'Nõustun\' aktiveeruks.';
+      'Avage andmetöötlusleping vähemalt korra, et nupp „Nõustun“ aktiveeruks.';
 
   @override
   String get pro => 'Pro';
@@ -695,7 +695,8 @@ class AppLocalizationsEt extends AppLocalizations {
   String get retry => 'Proovi uuesti';
 
   @override
-  String get reviewWarning => 'Vaadake enne saatmist üle';
+  String get reviewWarning =>
+      'Vaadake enne saatmist hoolikalt üle. Sisu eest vastutate teie ise.';
 
   @override
   String get riskHigh => 'Kõrge risk — väldi';
@@ -716,7 +717,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get saveDraft => 'Salvesta mustand';
 
   @override
-  String get saveWithAnnual => 'Säästa aastatellimusega';
+  String get saveWithAnnual => 'Säästa 25% aastatellimusega';
 
   @override
   String get scan => 'Skaneeri';
@@ -1791,7 +1792,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get gdprFooter =>
-      'Teie andmed on krüpteeritud ega jagata kunagi kolmandatele osapooltele. Saate nõusoleku tagasi võtta ja kõik andmed kustutada Seadetest.';
+      'Teie andmed on krüpteeritud ja töödeldakse turvaliselt. Teenuse osutamiseks kasutame usaldusväärseid teenusepakkujaid (AI-töötlus, pilvandmebaas). Täpsemat teavet leiate meie privaatsuspoliitikast. Saate nõusoleku tagasi võtta ja kõik andmed kustutada Seadetest.';
 
   @override
   String get gdprConsentAiProcessing =>
@@ -1807,14 +1808,14 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get gdprSpecialLegalCases =>
-      'Teie kohtuasja üksikasjad ja kohtudokumendid';
+      'Teie juhtumi üksikasjad ja kohtudokumendid';
 
   @override
   String get gdprSpecialNationality => 'Kodakondsus ja immigratsiooniseisund';
 
   @override
   String get gdprConsentLegalData =>
-      'Nõustun oma kohtuasja andmete, kodakondsuse ja immigratsiooniseisundi töötlemisega AI poolt (kohustuslik)';
+      'Nõustun oma juhtumi andmete, kodakondsuse ja immigratsiooniseisundi töötlemisega AI poolt (kohustuslik)';
 
   @override
   String get gdprConsentVoice =>
@@ -2487,7 +2488,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'Minimaalne elatis Eestis arvutatakse valemiga: baassumma (295,86 €) + 3% eelmise aasta keskmisest brutopalgast (PKS § 101). Alates 01.04.2026 — 318,62 €/kuus lapse kohta. Kohus võib seda suurendada vanema sissetuleku alusel. Kalkulaator: alimendid.ee';
+      'Minimaalne elatis Eestis: baassumma (295,86 €) + 3% eelmise aasta keskmisest brutopalgast (PKS § 101). Alates 01.04.2026 — 318,62 €/kuus lapse kohta. Summa muutub igal aastal 1. aprillil. Kalkulaator: alimendid.ee';
 
   @override
   String get rightCourtAlimony =>
@@ -2663,7 +2664,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get voiceDisclaimer =>
-      'Häälassistent töötab praegu ainult lauaarvutis (Chrome\'i brauseris). Mobiilirakenduses tuleb tugi peagi.';
+      'Häälassistent töötab praegu ainult lauaarvutis (Chrome’i brauseris). Mobiilirakenduses tuleb tugi peagi.';
 
   @override
   String get recommended => 'Soovitatud';
@@ -3860,7 +3861,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get referralNudgeAction => 'Kutsu';
 
   @override
-  String get referralLandingTitle => 'Sind kutsuti Advocat\'isse';
+  String get referralLandingTitle => 'Sind kutsuti Advocat’isse';
 
   @override
   String referralLandingSubtitle(String inviterName) {
@@ -4214,7 +4215,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get softCaseShellBanner =>
-      'Lõime „Nimetu toimik\" selle jälgimiseks. Vajuta ümbernimetamiseks.';
+      'Lõime „Nimetu toimik“ selle jälgimiseks. Vajuta ümbernimetamiseks.';
 
   @override
   String get softCaseShellBannerCta => 'Nimeta ümber';
@@ -4293,7 +4294,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'nt „sõnasta ametlikumalt\" või „tee lühemaks\"';
+      'nt „sõnasta ametlikumalt“ või „tee lühemaks“';
 
   @override
   String get draftingAiReviseRunButton => 'Genereeri ümbersõnastus';
@@ -4427,7 +4428,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get deleteAccountWarning =>
-      'See kustutab jäädavalt teie konto, kõik kohtuasjad, mustandid, hoidla dokumendid ja vestlusajaloo. Seda toimingut ei saa tagasi võtta.';
+      'See kustutab jäädavalt teie konto, kõik juhtumid, mustandid, hoidla dokumendid ja vestlusajaloo. Seda toimingut ei saa tagasi võtta.';
 
   @override
   String get deletingAccount => 'Konto kustutamine…';

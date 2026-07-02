@@ -993,7 +993,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get doNotIgnoreNotice =>
-      'NIE ignoruj zawiadomienia - terminy są ścisłe';
+      'NIE ignoruj zawiadomienia — terminy są ścisłe';
 
   @override
   String get noteAppealDeadline => 'Zanotuj termin odwołania (zwykle 30 dni)';
@@ -1339,7 +1339,7 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count dnia temu',
+      other: '$count dni temu',
       many: '$count dni temu',
       few: '$count dni temu',
       one: '1 dzień temu',
@@ -2663,21 +2663,21 @@ class AppLocalizationsPl extends AppLocalizations {
   String get guestUser => 'Gość';
 
   @override
-  String get howToUse => 'Jak korzystac?';
+  String get howToUse => 'Jak korzystać?';
 
   @override
   String get tutorialStep1Title => 'Asystent prawny AI';
 
   @override
   String get tutorialStep1Desc =>
-      'Zadaj dowolne pytanie prawne i uzyskaj natychmiastowe odpowiedzi na podstawie prawa estonskiego.';
+      'Zadaj dowolne pytanie prawne i uzyskaj natychmiastowe odpowiedzi na podstawie prawa estońskiego.';
 
   @override
   String get tutorialStep2Title => 'Poznaj swoje prawa';
 
   @override
   String get tutorialStep2Desc =>
-      'Przegladaj informacje prawne wedlug tematow — praca, mieszkanie, prawa konsumenta i wiecej.';
+      'Przeglądaj informacje prawne według tematów — praca, mieszkanie, prawa konsumenta i więcej.';
 
   @override
   String get tutorialStep3Title => 'Skanuj dokumenty';
@@ -2691,7 +2691,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get tutorialStep4Desc =>
-      'Odkryj aplikacje i chron swoje prawa. Wszystkie dane pozostaja prywatne na Twoim urzadzeniu.';
+      'Odkryj aplikację i chroń swoje prawa. Wszystkie dane pozostają prywatne na Twoim urządzeniu.';
 
   @override
   String get advocatProTitle => 'Advocat Pro';
@@ -3476,7 +3476,7 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count działania równoległe',
+      other: '$count działań równoległych',
       many: '$count działań równoległych',
       few: '$count działania równoległe',
       one: '1 działanie równoległe',
@@ -3497,7 +3497,7 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count e-maila',
+      other: '$count e-maili',
       many: '$count e-maili',
       few: '$count e-maile',
       one: '1 e-mail',
@@ -3510,7 +3510,7 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count przygotowane odpowiedzi',
+      other: '$count przygotowanych odpowiedzi',
       many: '$count przygotowanych odpowiedzi',
       few: '$count przygotowane odpowiedzi',
       one: '1 przygotowaną odpowiedź',
@@ -3935,7 +3935,7 @@ class AppLocalizationsPl extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       months,
       locale: localeName,
-      other: '$months darmowego miesiąca',
+      other: '$months darmowych miesięcy',
       many: '$months darmowych miesięcy',
       few: '$months darmowe miesiące',
       one: '1 darmowy miesiąc',
@@ -4643,6 +4643,7 @@ class AppLocalizationsPl extends AppLocalizations {
       count,
       locale: localeName,
       other: 'pozostało $count dni',
+      many: 'pozostało $count dni',
       few: 'pozostały $count dni',
       one: 'pozostał 1 dzień',
       zero: 'dzisiaj',
@@ -4656,6 +4657,7 @@ class AppLocalizationsPl extends AppLocalizations {
       count,
       locale: localeName,
       other: '$count dni opóźnienia',
+      many: '$count dni opóźnienia',
       few: '$count dni opóźnienia',
       one: '1 dzień opóźnienia',
     );

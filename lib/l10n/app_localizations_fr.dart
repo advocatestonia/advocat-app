@@ -344,7 +344,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get emailRequired => 'L’e-mail est obligatoire';
 
   @override
-  String get emergencyShield => 'Bouclier d’urgence';
+  String get emergencyShield => 'Protection de base';
 
   @override
   String get error => 'Erreur';
@@ -1096,7 +1096,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String checkEligibility(String country) {
-    return 'Vérifiez votre éligibilité à l\'aide juridictionnelle: $country';
+    return 'Vérifiez votre éligibilité à l\'aide juridictionnelle en $country';
   }
 
   @override
@@ -1251,7 +1251,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Le dossier \"$title\" a été créé.';
+    return 'Le dossier « $title » a été créé.';
   }
 
   @override
@@ -1515,7 +1515,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get copiedToClipboard => 'Copié dans le presse-papiers';
 
   @override
-  String get emailComingSoon => 'Envoi d\'email bientôt disponible';
+  String get emailComingSoon =>
+      'Envoyer un e-mail via votre compte Gmail connecté';
 
   @override
   String get reviewBeforeSending =>
@@ -1764,7 +1765,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'Êtes-vous sûr de vouloir supprimer \"$title\" ? Cette action est irréversible.';
+    return 'Êtes-vous sûr de vouloir supprimer « $title » ? Cette action est irréversible.';
   }
 
   @override
@@ -1815,7 +1816,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gdprFooter =>
-      'Vos données sont chiffrées et ne sont jamais partagées avec des tiers. Vous pouvez retirer votre consentement et supprimer toutes les données dans les Paramètres.';
+      'Vos données sont chiffrées et traitées en toute sécurité. Nous faisons appel à des prestataires de services de confiance (traitement par IA, base de données cloud) pour fournir le service. Consultez notre politique de confidentialité pour plus de détails. Vous pouvez retirer votre consentement et supprimer toutes les données depuis les Paramètres.';
 
   @override
   String get gdprConsentAiProcessing =>
@@ -1936,7 +1937,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'Déclarez clairement : \"Je souhaite un avocat avant toute question\"';
+      'Déclarez clairement : « Je veux un avocat avant toute question »';
 
   @override
   String get policeActionAskInterpreter =>
@@ -4464,26 +4465,26 @@ class AppLocalizationsFr extends AppLocalizations {
   String get chatExamplePrompt3 => 'Quels sont mes droits au travail ?';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'Zone sensible';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'Supprimer définitivement';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'Saisissez $email pour confirmer';
   }
 
   @override
   String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+      'Compte supprimé. Nous sommes désolés de vous voir partir.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'Cette action supprime définitivement votre compte, tous vos dossiers, brouillons, documents du coffre-fort et l\'historique des conversations. Elle est irréversible.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'Suppression du compte…';
 
   @override
   String get contractReviewTitle => 'Analyse de contrat';

@@ -638,7 +638,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get dpaOpenHint =>
-      'Avaa DPA vähintään kerran, jotta \'Hyväksy\'-painike aktivoituu.';
+      'Avaa DPA vähintään kerran, jotta ”Hyväksy”-painike aktivoituu.';
 
   @override
   String get pro => 'Pro';
@@ -718,7 +718,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get saveDraft => 'Tallenna luonnos';
 
   @override
-  String get saveWithAnnual => 'Säästä vuositilauksella';
+  String get saveWithAnnual => 'Säästä 25 % vuositilauksella';
 
   @override
   String get scan => 'Skannaa';
@@ -1699,7 +1699,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
+      'Hei! Olen Advocat — tekoälypohjainen oikeudellinen avustajasi. Annan oikeudellista tietoa, en oikeudellista neuvontaa. Millä oikeudellisella kysymyksellä voin auttaa?';
 
   @override
   String get copySummary => 'Kopioi yhteenveto';
@@ -1804,7 +1804,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get gdprArt9Intro =>
-      'Tämä sovellus käsittelee erityisiä henkilötietoja GDPR:n artiklan 9 mukaisesti, mukaan lukien:';
+      'Tämä sovellus käsittelee GDPR:n 9 artiklan mukaisiin erityisiin henkilötietoryhmiin kuuluvia tietoja, muun muassa:';
 
   @override
   String get gdprSpecialLegalCases =>
@@ -2170,67 +2170,67 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get inheritanceDesc =>
-      'Wills, estate, heirs\' rights, forced heirship, probate';
+      'Testamentit, jäämistö, perillisten oikeudet, lakiosa, perintömenettely';
 
   @override
   String get rightInheritanceForced =>
-      'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will';
+      'Lakiosaperillisillä (lapset, puoliso) on oikeus lakiosaan testamentista riippumatta';
 
   @override
   String get rightInheritanceWill =>
-      'You have the right to make a will disposing of your property — notarized wills have the strongest legal force';
+      'Sinulla on oikeus laatia testamentti omaisuutesi jakamisesta — notaarin vahvistamalla testamentilla on vahvin oikeudellinen sitovuus';
 
   @override
   String get rightInheritanceRenounce =>
-      'You can renounce an inheritance within 3 months of learning about it';
+      'Voit luopua perinnöstä kolmen kuukauden kuluessa siitä, kun sait tiedon perinnöstä';
 
   @override
   String get rightInheritanceInfo =>
-      'You have the right to obtain information about the estate from banks and registries';
+      'Sinulla on oikeus saada tietoa jäämistöstä pankeilta ja rekistereiltä';
 
   @override
   String get rightInheritanceDispute =>
-      'You can challenge an unfair will in court within the statutory limitation period';
+      'Voit riitauttaa epäoikeudenmukaisen testamentin tuomioistuimessa lakisääteisen vanhentumisajan kuluessa';
 
   @override
   String get mustFileInheritance =>
-      'File for succession proceedings at a notary within a reasonable time';
+      'Perintömenettely on pantava vireille notaarilla kohtuullisessa ajassa';
 
   @override
   String get mustNotifyHeirs =>
-      'All known heirs must be notified of the succession proceedings';
+      'Kaikille tiedossa oleville perillisille on ilmoitettava perintömenettelystä';
 
   @override
   String get inheritanceActionGatherDocs =>
-      'Gather all documents: death certificate, will, property records, bank statements';
+      'Kokoa kaikki asiakirjat: kuolintodistus, testamentti, omaisuusasiakirjat, tiliotteet';
 
   @override
   String get inheritanceActionContactNotary =>
-      'Contact a notary to open succession proceedings';
+      'Ota yhteyttä notaariin perintömenettelyn aloittamiseksi';
 
   @override
   String get inheritanceActionCheckDebts =>
-      'Check whether the estate has debts before accepting inheritance';
+      'Tarkista, onko jäämistössä velkoja ennen perinnön vastaanottamista';
 
   @override
   String get inheritanceActionFileCourt =>
-      'If the will is disputed, file a claim in court';
+      'Jos testamentti riitautetaan, nosta kanne tuomioistuimessa';
 
   @override
   String get inheritanceDeadlineRenounce =>
-      '3 months to renounce inheritance after learning of it';
+      '3 kuukautta perinnöstä luopumiseen siitä, kun sait tiedon perinnöstä';
 
   @override
   String get inheritanceDeadlineDispute =>
-      'Statute of limitations for challenging a will: varies by grounds';
+      'Testamentin riitauttamisen vanhentumisaika: vaihtelee riitautusperusteen mukaan';
 
   @override
   String get inheritanceFactForced =>
-      'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will';
+      'Virossa jälkeläisillä ja puolisolla on oikeus lakiosaan (1/2 lakimääräisestä osuudesta), vaikka heidät olisi jätetty testamentin ulkopuolelle';
 
   @override
   String get inheritanceFactNotary =>
-      'All succession proceedings in Estonia must go through a notary — you cannot skip this step';
+      'Kaikki perintömenettelyt Virossa on hoidettava notaarin kautta — tätä vaihetta ei voi ohittaa';
 
   @override
   String get consumerProtection => 'Kuluttajansuoja';
@@ -2489,7 +2489,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'Vuodesta 2022 vähimmäiselatusapu Virossa on 200 €/kk lasta kohden (hallituksen asettama perussumma). Tuomioistuin voi korottaa vanhemman tulojen perusteella (PKS § 101)';
+      'Vähimmäiselatusapu Virossa: perussumma (295,86 €) + 3 % edellisen vuoden keskimääräisestä bruttopalkasta (PKS § 101). 1.4.2026 alkaen — 318,62 €/kk lasta kohden. Päivitetään vuosittain 1. huhtikuuta. Laskuri: alimendid.ee';
 
   @override
   String get rightCourtAlimony =>
@@ -2549,7 +2549,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get childrenFactMinimum =>
-      'Virossa vähimmäiselatusapu on puolet vähimmäispalkasta lasta kohden. Vanhempi ei voi sopia pienemmästä summasta — edes yhteisellä sopimuksella.';
+      '1.4.2026 alkaen vähimmäiselatusapu on 318,62 €/kk lasta kohden. Kaava: perussumma (295,86 €) + 3 % edellisen vuoden keskimääräisestä bruttopalkasta. Päivitetään vuosittain 1. huhtikuuta. Vanhempi ei voi sopia pienemmästä summasta. Laskuri: alimendid.ee';
 
   @override
   String get childrenFactElatisabi =>
@@ -2577,7 +2577,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get rightDefamationAction =>
-      'Kunnianloukkaus on siviilioikeudellinen rikkomus — voit vaatia vahingonkorvausta ja oikaisua (VÕS § 1047)';
+      'Kunnianloukkaus (laimamine) on siviilioikeudellinen rikkomus — voit vaatia vahingonkorvausta ja julkista oikaisua (KarS § 247 (kumottu), VÕS § 1047)';
 
   @override
   String get mustCollectEvidence =>
@@ -2621,7 +2621,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'GDPR:n mukaan sinulla on \'oikeus tulla unohdetuksi\' — alustojen on poistettava henkilötietosi pyynnöstä, jos niiden säilyttämiselle ei ole laillista perustetta.';
+      'GDPR:n mukaan sinulla on ”oikeus tulla unohdetuksi” — alustojen on poistettava henkilötietosi pyynnöstä, jos niiden säilyttämiselle ei ole laillista perustetta.';
 
   @override
   String get guestUser => 'Vieras';
@@ -3593,7 +3593,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get supportTitle => 'Tuki';
 
   @override
-  String get supportSubtitle => 'Miten voimme auttaa?';
+  String get supportSubtitle => 'Vastaamme yleensä 1–2 tunnin kuluessa.';
 
   @override
   String get supportSearchPlaceholder => 'Hae ohjeista…';
@@ -4046,22 +4046,22 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String quotaExhaustedBody(int count) {
-    return 'Olet käyttänyt kaikki $count ilmaista viestiä. Tilaa Advocat Pro hintaan 19,99 €/kk ja saat rajattoman pääsyn tekoälyn oikeusneuvontaan.';
+    return 'Olet käyttänyt kaikki $count ilmaista viestiä. Tilaa Advocat Counsel hintaan 19,99 €/kk ja saat rajattoman pääsyn tekoälyn oikeusneuvontaan.';
   }
 
   @override
   String get quotaExhaustedLater => 'Myöhemmin';
 
   @override
-  String get quotaExhaustedUpgrade => 'Advocat Pro — 19,99 €/kk';
+  String get quotaExhaustedUpgrade => 'Advocat Counsel — 19,99 €/kk';
 
   @override
   String quotaCtaMessage(int count) {
-    return 'Olet käyttänyt kaikki $count ilmaista viestiä. Tilaa Advocat Pro hintaan 19,99 €/kk.';
+    return 'Olet käyttänyt kaikki $count ilmaista viestiä. Tilaa Advocat Counsel hintaan 19,99 €/kk.';
   }
 
   @override
-  String get quotaCtaButton => 'Tilaa Advocat Pro — 19,99 €/kk';
+  String get quotaCtaButton => 'Tilaa Advocat Counsel — 19,99 €/kk';
 
   @override
   String get aiErrorQuota =>
@@ -4223,7 +4223,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get softCaseShellBanner =>
-      'Loimme \"Nimetön asia\" -kohteen tämän seuraamiseksi. Napauta nimetäksesi uudelleen.';
+      'Loimme ”Nimetön asia” -kohteen tämän seuraamiseksi. Napauta nimetäksesi uudelleen.';
 
   @override
   String get softCaseShellBannerCta => 'Nimeä uudelleen';
@@ -4301,7 +4301,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'esim. \"muotoile virallisemmaksi\" tai \"lyhennä\"';
+      'esim. ”muotoile virallisemmaksi” tai ”lyhennä”';
 
   @override
   String get draftingAiReviseRunButton => 'Tuota uudelleenmuotoilu';

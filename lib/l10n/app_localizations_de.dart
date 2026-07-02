@@ -508,7 +508,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get noCasesYet => 'Noch keine Verfahren';
 
   @override
-  String get noDeadlines => 'Keine Fristen';
+  String get noDeadlines => 'Keine Fristen — Sie sind auf dem aktuellen Stand.';
 
   @override
   String get noRecentActivity => 'Keine kürzliche Aktivität';
@@ -603,7 +603,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get policeMisconduct => 'Polizeiverhalten';
 
   @override
-  String get popular => 'Beliebt';
+  String get popular => 'BELIEBT';
 
   @override
   String get preferences => 'EINSTELLUNGEN';
@@ -2652,7 +2652,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'Nach der DSGVO haben Sie ein „Recht auf Vergessenwerden“ — Plattformen müssen Ihre personenbezogenen Daten auf Antrag löschen, wenn keine Rechtsgrundlage für deren weitere Speicherung besteht.';
 
   @override
   String get guestUser => 'Gast';
@@ -2853,7 +2853,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get quickProfilePrompt =>
-      'Damit ich genauer helfen kann: Bist du estnischer Staatsbürger, EU-Bürger aus einem anderen Land, oder hast du einen Aufenthaltstitel?';
+      'Damit ich genauer helfen kann: Sind Sie estnischer Staatsbürger, EU-Bürger aus einem anderen Land, oder haben Sie einen Aufenthaltstitel?';
 
   @override
   String get quickProfileChipEstonianCitizen => 'Estnischer Staatsbürger';
@@ -3787,10 +3787,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get referralSubtitle =>
-      'Erhalte einen Gratismonat. Schenke einen Gratismonat.';
+      'Erhalten Sie einen Gratismonat. Schenken Sie einen Gratismonat.';
 
   @override
-  String get referralYourLink => 'DEIN LINK';
+  String get referralYourLink => 'IHR LINK';
 
   @override
   String get referralCopyLink => 'Link kopieren';
@@ -3821,7 +3821,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get referralEmailSubject =>
-      'Probiere Advocat — deinen KI-Rechtsassistenten';
+      'Probieren Sie Advocat — Ihren KI-Rechtsassistenten';
 
   @override
   String get referralLoadError =>
@@ -4149,7 +4149,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get intakeUrgentOpened =>
-      'Chat geöffnet — dein Entwurf ist gespeichert.';
+      'Chat geöffnet — Ihr Entwurf ist gespeichert.';
 
   @override
   String get panicCoachmark => 'Für Soforthilfe gedrückt halten.';
@@ -4461,26 +4461,26 @@ class AppLocalizationsDe extends AppLocalizations {
   String get chatExamplePrompt3 => 'Welche Rechte habe ich am Arbeitsplatz?';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'Gefahrenzone';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'Endgültig löschen';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'Geben Sie $email ein, um zu bestätigen';
   }
 
   @override
   String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+      'Konto gelöscht. Es tut uns leid, Sie gehen zu sehen.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'Dadurch werden Ihr Konto, alle Fälle, Entwürfe, Tresordokumente und der Chatverlauf endgültig gelöscht. Dies kann nicht rückgängig gemacht werden.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'Konto wird gelöscht…';
 
   @override
   String get contractReviewTitle => 'Vertragsprüfung';
@@ -4626,7 +4626,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Kauf fehlgeschlagen. Bitte erneut versuchen oder Support kontaktieren.';
 
   @override
-  String get iapRestoreSuccess => 'Dein Abonnement wurde wiederhergestellt.';
+  String get iapRestoreSuccess => 'Ihr Abonnement wurde wiederhergestellt.';
 
   @override
   String get iapRestoreNoActive =>

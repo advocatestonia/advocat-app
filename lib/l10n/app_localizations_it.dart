@@ -986,7 +986,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get doNotIgnoreNotice =>
-      'NON ignorare l\'avviso - le scadenze sono rigorose';
+      'NON ignorare l\'avviso — le scadenze sono rigorose';
 
   @override
   String get noteAppealDeadline =>
@@ -1502,7 +1502,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get copiedToClipboard => 'Copiato negli appunti';
 
   @override
-  String get emailComingSoon => 'Invio email in arrivo';
+  String get emailComingSoon =>
+      'Invia l\'email tramite il tuo account Gmail collegato';
 
   @override
   String get reviewBeforeSending =>
@@ -1800,7 +1801,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get gdprFooter =>
-      'I tuoi dati sono crittografati e non vengono mai condivisi con terzi. Puoi revocare il consenso e cancellare tutti i dati dalle Impostazioni.';
+      'I tuoi dati sono crittografati e trattati in modo sicuro. Ci avvaliamo di fornitori di servizi affidabili (elaborazione IA, database cloud) per erogare il servizio. Per maggiori dettagli, consulta la nostra Informativa sulla privacy. Puoi revocare il consenso e cancellare tutti i dati dalle Impostazioni.';
 
   @override
   String get gdprConsentAiProcessing =>
@@ -2648,7 +2649,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Ai sensi del GDPR, ha il “diritto all\'oblio” — le piattaforme devono cancellare i suoi dati personali su richiesta se non vi è alcuna base giuridica per conservarli.';
+      'Ai sensi del GDPR, ha il «diritto all\'oblio» — le piattaforme devono cancellare i suoi dati personali su richiesta se non vi è alcuna base giuridica per conservarli.';
 
   @override
   String get guestUser => 'Ospite';
@@ -4254,7 +4255,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get softCaseShellBanner =>
-      'Abbiamo creato \"Caso senza titolo\" per tenerne traccia. Tocchi per rinominarlo.';
+      'Abbiamo creato «Caso senza titolo» per tenerne traccia. Tocchi per rinominarlo.';
 
   @override
   String get softCaseShellBannerCta => 'Rinomina';
@@ -4333,7 +4334,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'es. \"rendilo più formale\" o \"accorcialo\"';
+      'es. «rendilo più formale» o «accorcialo»';
 
   @override
   String get draftingAiReviseRunButton => 'Genera revisione';
@@ -4452,26 +4453,26 @@ class AppLocalizationsIt extends AppLocalizations {
   String get chatExamplePrompt3 => 'Quali sono i miei diritti sul lavoro?';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'Zona pericolosa';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'Elimina definitivamente';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'Digiti $email per confermare';
   }
 
   @override
   String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+      'Account eliminato. Ci dispiace vederla andare via.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'Questa operazione elimina permanentemente il suo account, tutti i casi, le bozze, i documenti della cassaforte e la cronologia chat. Non può essere annullata.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'Eliminazione dell\'account in corso…';
 
   @override
   String get contractReviewTitle => 'Revisione contratto';

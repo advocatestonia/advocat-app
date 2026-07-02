@@ -3,10 +3,10 @@
   "about": "Par",
   "aboutSection": "PAR",
   "appearance": "Izskats",
-  "appearanceSystem": "Sistemas (automatiski)",
-  "appearanceLight": "Gaiss",
-  "appearanceDark": "Tumss",
-  "appearanceDescription": "Izvelieties, ka izskatas Advocat",
+  "appearanceSystem": "Sistēmas (automātiski)",
+  "appearanceLight": "Gaišs",
+  "appearanceDark": "Tumšs",
+  "appearanceDescription": "Izvēlieties, kā izskatās Advocat",
   "accidents": "Negadījumi",
   "active": "Aktīvas",
   "activeCases": "Aktīvās lietas",
@@ -114,7 +114,7 @@
   "exportDataDialogContent": "Mēs sagatavosim visu jūsu datu lejupielādi, ieskaitot lietas, dokumentus un saraksti. Jūs saņemsiet e-pastu, kad tas būs gatavs.",
   "exportMyData": "Eksportēt manus datus",
   "exportPdf": "Eksportēt PDF",
-  "familyReunification": "Gimeņu atkalapvienošanās",
+  "familyReunification": "Ģimeņu atkalapvienošanās",
   "forgotPassword": "Aizmirsāt paroli?",
   "free": "Bezmaksas",
   "fullDefense": "Advocat Pro",
@@ -156,7 +156,7 @@
   },
   "home": "Sākums",
   "important": "Svarīgs",
-  "inProgress": "Processā",
+  "inProgress": "Procesā",
   "informational": "Informatīvs",
   "inspection": "Tehniskā apskate",
   "insurance": "Apdrošināšana",
@@ -202,7 +202,7 @@
   "notifications": "PAZIŅOJUMI",
   "onboardingDesc1": "Advocat palīdz jums izprast savu juridisko situāciju. AI rīki analizē dokumentus, identificē iespējamās problēmas un sagatavo dokumentu projektus jūsu pārskatīšanai. Tā nav advokātu biroja — tas ir tehnoloģiju rīks jūsu lietas atbalstam.",
   "onboardingDesc2": "Nofotografējiet jebkuru juridisku dokumentu. AI to nolasa vairākās valodās, izvelk galvenos datus un pārbauda atbilstību ES direktīvām un nacionālajiem likumiem.",
-  "onboardingDesc3": "Mūsu AI rīki pārbauda vairāk nekā 40 procesuālo prasību veidus. AI analīze var atklat problēmas, kurām nepieciešama uzmanība — piemēram, apkalpošanas valoda, procesuālie soļi un juridiskie termiņi. Vienmēr pārbaudiet ar kvalificētu advokātu.",
+  "onboardingDesc3": "Mūsu AI rīki pārbauda vairāk nekā 40 procesuālo prasību veidus. AI analīze var atklāt problēmas, kurām nepieciešama uzmanība — piemēram, apkalpošanas valoda, procesuālie soļi un juridiskie termiņi. Vienmēr pārbaudiet ar kvalificētu advokātu.",
   "onboardingDesc4": "AI sagatavo apelāciju, sūdzību un vēstuļu projektus ar juridiskām atsaucēm jūsu pārskatīšanai. Jūs izlemjat, ko iesniegt. Katrs dokuments jāpārskata kvalificētam juridiskajam speciālistam pirms iesniegšanas.",
   "onboardingNext": "Tālāk",
   "onboardingSkip": "Izlaist",
@@ -330,7 +330,7 @@
   "createNote": "Izveidot piezīmi",
   "createNoteDesc": "Uzrakstiet piezīmi vai pierakstiet svarīgas detaļas",
   "knowYourRights": "Zini savas tiesības",
-  "stoppedByPolice": "Apturēts policija",
+  "stoppedByPolice": "Policijas apturēts",
   "stoppedByPoliceDesc": "Jūsu tiesības policijas kontroles laikā",
   "deportationNotice": "Deportācijas paziņojums",
   "deportationNoticeDesc": "Soļi, lai apstrīdētu izraidīšanas rīkojumu",
@@ -750,39 +750,39 @@
   "contactVictimSupportRIKU": "Cietušo atbalsts Somija (RIKU)",
   "domesticViolence": "Vardarbība ģimenē",
   "inheritance": "Mantojums",
-  "inheritanceDesc": "Testamenti, mantojums, mantinieku tiesības, obligatā mantojuma daļa, mantoanas process",
-  "rightInheritanceForced": "Obligatie mantinieki (bērni, laulātais) ir tiesiģi saņemt obligato mantojuma daļu neatkarīgi no testamenta",
-  "rightInheritanceWill": "Jums ir tiesības sastādīt testamentu par sava īpašuma sadali — notariāli apliecinātiem testamentiem ir vislielakais juridiskais spēks",
+  "inheritanceDesc": "Testamenti, mantojums, mantinieku tiesības, obligātā mantojuma daļa, mantošanas process",
+  "rightInheritanceForced": "Obligātajiem mantiniekiem (bērniem, laulātajam) ir tiesības saņemt obligāto mantojuma daļu neatkarīgi no testamenta",
+  "rightInheritanceWill": "Jums ir tiesības sastādīt testamentu par sava īpašuma sadali — notariāli apliecinātiem testamentiem ir vislielākais juridiskais spēks",
   "rightInheritanceRenounce": "Jūs varat atteikties no mantojuma 3 mēnešu laikā pēc uzzināšanas par to",
   "rightInheritanceInfo": "Jums ir tiesības saņemt informāciju par mantojuma masu no bankām un reģistriem",
-  "rightInheritanceDispute": "Jūs varat apstrīdēt netaisnīgu testamentu tiesa likumā noteiktā noilguma termiņā",
-  "mustFileInheritance": "Iesniedziet mantoanas lietu pie notāra saprātīgā termiņā",
-  "mustNotifyHeirs": "Visi zināmie mantinieki jāinformē par mantoanas procesu",
+  "rightInheritanceDispute": "Jūs varat apstrīdēt netaisnīgu testamentu likumā noteiktā noilguma termiņā",
+  "mustFileInheritance": "Iesniedziet mantošanas lietu pie notāra saprātīgā termiņā",
+  "mustNotifyHeirs": "Visi zināmie mantinieki jāinformē par mantošanas procesu",
   "inheritanceActionGatherDocs": "Savāciet visus dokumentus: miršanas apliecību, testamentu, īpašuma dokumentus, bankas izrakstus",
-  "inheritanceActionContactNotary": "Sazinieties ar notāru, lai atvērtu mantoanas lietu",
+  "inheritanceActionContactNotary": "Sazinieties ar notāru, lai atvērtu mantošanas lietu",
   "inheritanceActionCheckDebts": "Pirms mantojuma pieņemšanas pārbaudiet, vai mantojuma masā nav parādu",
   "inheritanceActionFileCourt": "Ja testaments tiek apstrīdēts, iesniedziet prasību tiesā",
   "inheritanceDeadlineRenounce": "3 mēneši, lai atteiktos no mantojuma pēc uzzināšanas par to",
   "inheritanceDeadlineDispute": "Testamenta apstrīdēšanas noilgums: atkarīgs no pamatojuma",
-  "inheritanceFactForced": "Igaunijā pēcnācējiem un laulātajam ir tiesības uz obligato mantojuma daļu (1/2 no likumīgās daļas) pat tad, ja viņi izslēgti no testamenta",
-  "inheritanceFactNotary": "Visiem mantoanas procesiem Igaunijā jānotiek caur notāru — šo soli nevar izlaist",
+  "inheritanceFactForced": "Igaunijā pēcnācējiem un laulātajam ir tiesības uz obligāto mantojuma daļu (1/2 no likumīgās daļas) pat tad, ja viņi izslēgti no testamenta",
+  "inheritanceFactNotary": "Visiem mantošanas procesiem Igaunijā jānotiek caur notāru — šo soli nevar izlaist",
   "consumerProtection": "Patērētāju aizsardzība",
   "caseTypeStepLabel": "Lietas veids",
   "detailsStepLabel": "Dati",
   "documentsStepLabel": "Dokumenti",
   "whatTypeOfCase": "Kāda veida lieta tā ir?",
-  "selectCategoryDescription": "Izvēlieties kategoriju, kas vislābāk apraksta jūsu situāciju.",
+  "selectCategoryDescription": "Izvēlieties kategoriju, kas vislabāk apraksta jūsu situāciju.",
   "tellUsAboutCase": "Pastāstiet mums par savu lietu",
   "aiHelpsUnderstand": "Šī informācija palīdz mūsu AI labāk izprast jūsu situāciju.",
   "caseTitleHint": "piem., Uzturēšanās atļaujas pārsūdzība 2026",
   "countryJurisdiction": "Valsts / jurisdikcija",
   "selectCountryHint": "Izvēlieties valsti",
   "referenceNumberHint": "piem., UMA/12345/2026",
-  "descriptionOptional": "Apraksts (neobligats)",
+  "descriptionOptional": "Apraksts (neobligāti)",
   "descriptionHint": "Īsi aprakstiet savu situāciju. Kas notika? Kāds lēmums tika pieņemts?",
-  "uploadFirstDocument": "Augupēieladējiet savu pirmo dokumentu",
-  "uploadDocumentDescription": "Augupēieladējiet lēmuma vēstuli vai citu attiecīgu dokumentu. Šo soli var izlaist un dokumentus pievienot vēlāk.",
-  "tapToUploadFile": "Pieskarieties, lai augupēieladētu failu",
+  "uploadFirstDocument": "Augšupielādējiet savu pirmo dokumentu",
+  "uploadDocumentDescription": "Augšupielādējiet lēmuma vēstuli vai citu attiecīgu dokumentu. Šo soli var izlaist un dokumentus pievienot vēlāk.",
+  "tapToUploadFile": "Pieskarieties, lai augšupielādētu failu",
   "fileSizeLimit": "PDF, JPG, PNG līdz 25 MB",
   "addDocumentsLaterHint": "Dokumentus vienmēr varat pievienot vēlāk lietas detāļu ekrānā.",
   "aiGeneratedDisclaimer": "Ģenerēts ar AI • Nav juridisks padoms",
@@ -808,7 +808,7 @@
   },
   "freeAidThreshold": "Bezmaksas palīdzības slieksnis",
   "partialAidThreshold": "Daļējas palīdzības slieksnis",
-  "assetLimit": "Aktivu limits",
+  "assetLimit": "Aktīvu limits",
   "whereToApplyLabel": "Kur pieteikties",
   "phoneLabel": "Tālrunis",
   "websiteLabel": "Tīmekļa vietne",
@@ -820,15 +820,15 @@
   "chatDisclaimerFooter": "Radīts ar MI. Pārbaudiet pie licencēta advokāta.",
   "chatDisclaimerGotIt": "Saprotu",
   "guestUser": "Viesis",
-  "howToUse": "Ka lietot?",
-  "tutorialStep1Title": "MI juridiskais paligs",
-  "tutorialStep1Desc": "Uzdodiet jebkuru juridisku jautajumu un sanemiet tulejas atbildes, pamatojoties uz Igaunijas likumiem.",
-  "tutorialStep2Title": "Ziniet savas tiesibas",
-  "tutorialStep2Desc": "Parlukojiet juridisko informaciju pa temam — darbs, majoklis, pateretaju tiesibas un citas.",
-  "tutorialStep3Title": "Skenet dokumentus",
-  "tutorialStep3Desc": "Fotografejiet juridiskos dokumentus MI analizei un drosai glabasanai.",
-  "tutorialStep4Title": "Sakas!",
-  "tutorialStep4Desc": "Izpetiet lietotni un aizsargajiet savas tiesibas. Visi dati paliek privati jusu ierice.",
+  "howToUse": "Kā lietot?",
+  "tutorialStep1Title": "MI juridiskais palīgs",
+  "tutorialStep1Desc": "Uzdodiet jebkuru juridisku jautājumu un saņemiet tūlītējas atbildes, pamatojoties uz Igaunijas likumiem.",
+  "tutorialStep2Title": "Ziniet savas tiesības",
+  "tutorialStep2Desc": "Pārlūkojiet juridisko informāciju pa tēmām — darbs, mājoklis, patērētāju tiesības un citas.",
+  "tutorialStep3Title": "Skenējiet dokumentus",
+  "tutorialStep3Desc": "Fotografējiet juridiskos dokumentus MI analīzei un drošai glabāšanai.",
+  "tutorialStep4Title": "Sākam!",
+  "tutorialStep4Desc": "Izpētiet lietotni un aizsargājiet savas tiesības. Visi dati paliek privāti jūsu ierīcē.",
   "advocatProTitle": "Advocat Pro",
   "advocatProSubtitle": "Atbloķējiet premium funkcijas",
   "voiceDisclaimer": "Balss asistents pašlaik darbojas tikai datorā (Chrome pārlūkprogramma). Mobilais atbalsts drīzumā.",
@@ -846,7 +846,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "AI is analyzing"
   },
-  "speakIntoMicHint": "Runajiet mikrofona. Parliecinieties, ka mikrofona pieklušana ir iespējota.",
+  "speakIntoMicHint": "Runājiet mikrofonā. Pārliecinieties, ka piekļuve mikrofonam ir iespējota.",
   "@speakIntoMicHint": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Speak into the microphone. Make sure microphone access is enabled."
@@ -918,7 +918,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Save 20%"
   },
-  "gdprConsentAiProcessing": "Es piekrītu manu datu apstrādei AI juridiskās palīdzības nodrošināšanai (obligati)",
+  "gdprConsentAiProcessing": "Es piekrītu manu datu apstrādei AI juridiskās palīdzības nodrošināšanai (obligāti)",
   "@gdprConsentAiProcessing": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "I agree to the processing of my data for AI legal assistance (required)"
@@ -943,7 +943,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Nationality and immigration status"
   },
-  "gdprConsentLegalData": "Es piekrītu savu lietas datu, pilsonības un imigrācijas statusa apstrādei ar AI (obligati)",
+  "gdprConsentLegalData": "Es piekrītu savu lietas datu, pilsonības un imigrācijas statusa apstrādei ar AI (obligāti)",
   "@gdprConsentLegalData": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "I consent to the processing of my legal case data, nationality, and immigration status by AI (required)"
@@ -1068,7 +1068,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you."
   },
-  "domesticFactVictimDirective": "Saskaņā ar ES Cietušo direktīvu 2012/29/ES jums ir tiesības tikt izturam ar cieņu, saņemt informāciju jums saprotamā valodā un pieklūt cietušo atbalsta pakalpojumiem — neatkarīgi no jūsu uzturēšanās statusa.",
+  "domesticFactVictimDirective": "Saskaņā ar ES Cietušo direktīvu 2012/29/ES jums ir tiesības tikt izturētam ar cieņu, saņemt informāciju jums saprotamā valodā un piekļūt cietušo atbalsta pakalpojumiem — neatkarīgi no jūsu uzturēšanās statusa.",
   "@domesticFactVictimDirective": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Under EU Victims' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status."
@@ -1078,7 +1078,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "File police report — no strict deadline, but sooner is better for evidence"
   },
-  "domesticDeadlineRestraining": "Ierobežojošu rīkojumu var pieprastīt jebkurā laikā",
+  "domesticDeadlineRestraining": "Ierobežojošu rīkojumu var pieprasīt jebkurā laikā",
   "@domesticDeadlineRestraining": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Restraining order — can be applied for at any time"
@@ -1088,7 +1088,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Emergency Number"
   },
-  "contactShelter": "Turvakoti (patvērums) uzticibas tālrunis",
+  "contactShelter": "Turvakoti (patvērums) uzticības tālrunis",
   "@contactShelter": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Turvakoti (Shelter) Helpline"
@@ -1098,7 +1098,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Crisis Helpline (Kriisipuhelin)"
   },
-  "contactNollaLinja": "Nollalinja — vardarbības pret sievietēm uzticibas tālrunis",
+  "contactNollaLinja": "Nollalinja — vardarbības pret sievietēm uzticības tālrunis",
   "@contactNollaLinja": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Nollalinja — Violence Against Women Helpline"
@@ -1223,7 +1223,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Child support, alimony, protection, state guarantees"
   },
-  "cyberbullying": "Kiberterorizeašana un tiešsaistes uzmākšanās",
+  "cyberbullying": "Kibervajāšana un tiešsaistes uzmākšanās",
   "@cyberbullying": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Cyberbullying & Online Harassment"
@@ -1243,12 +1243,12 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Minimum child support in Estonia: base amount (€295.86) + 3% of previous year's average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee"
   },
-  "rightCourtAlimony": "Uzturlīdzekļus var pieprastīt caur apriņķa tiesu (maakohus) — prasībām līdz 6400 € jurists nav nepieciešams",
+  "rightCourtAlimony": "Uzturlīdzekļus var pieprasīt caur apriņķa tiesu (maakohus) — prasībām līdz 6400 € jurists nav nepieciešams",
   "@rightCourtAlimony": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400"
   },
-  "rightBailiffEnforcement": "Ja vecāks atsakās maksāt, tiesu izpildītājs (kohtutäitur) var izpildīt tiesas lēmumu, tostarp veikt algas ieturejumu",
+  "rightBailiffEnforcement": "Ja vecāks atsakās maksāt, tiesu izpildītājs (kohtutäitur) var izpildīt tiesas lēmumu, tostarp veikt algas ieturējumu",
   "@rightBailiffEnforcement": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment"
@@ -1258,7 +1258,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child"
   },
-  "rightChildEducation": "Katram bērnam ir tiesības uz izglītību, veselibas aprūpi un aizsardzību pret vardarbību (Lastekaitseseadus § 4–5)",
+  "rightChildEducation": "Katram bērnam ir tiesības uz izglītību, veselības aprūpi un aizsardzību pret vardarbību (Lastekaitseseadus § 4–5)",
   "@rightChildEducation": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)"
@@ -1308,12 +1308,12 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Apply for elatisabi — after court order, no strict deadline but process takes time"
   },
-  "childrenDeadlineCourt": "Uzturlīdzekļus var pieprastīt retroaktivi līdz 1 gadam pirms prasības iesniegšanas tiesā",
+  "childrenDeadlineCourt": "Uzturlīdzekļus var pieprasīt retroaktīvi līdz 1 gadam pirms prasības iesniegšanas tiesā",
   "@childrenDeadlineCourt": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Alimony can be claimed retroactively for up to 1 year before court filing"
   },
-  "childrenFactMinimum": "No 01.04.2026 minimālais uzturlīdzeklis ir 318,62 €/mēnesī par bērnu. Formula: bāzes summa (295,86 €) + 3% no iepriešējā gada vidējās bruto algas. Tiek atjaunināts katru gadu 1. aprīlī. Vecāks nedrīkst vienoties par mazaku summu. Kalkulators: alimendid.ee",
+  "childrenFactMinimum": "No 01.04.2026 minimālais uzturlīdzeklis ir 318,62 €/mēnesī par bērnu. Formula: bāzes summa (295,86 €) + 3% no iepriešējā gada vidējās bruto algas. Tiek atjaunināts katru gadu 1. aprīlī. Vecāks nedrīkst vienoties par mazāku summu. Kalkulators: alimendid.ee",
   "@childrenFactMinimum": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year's average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee"
@@ -1328,12 +1328,12 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)"
   },
-  "rightContentRemoval": "Jūs varat pieprastīt apmelojoša vai privāta satura noņemšanu no platformām un pieprastīt izņemšanu saskaņā ar VDAR",
+  "rightContentRemoval": "Jūs varat pieprasīt apmelojoša vai privāta satura noņemšanu no platformām un pieprasīt izņemšanu saskaņā ar VDAR",
   "@rightContentRemoval": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You can request removal of defamatory or private content from platforms and demand takedown under GDPR"
   },
-  "rightMoralDamageCompensation": "Jūs varat pieprastīt kompensāciju par morālo kaitējumu, ko izraisījusi kiberterorizeašana (Võlaõigusseadus § 1043–1055)",
+  "rightMoralDamageCompensation": "Jūs varat pieprasīt kompensāciju par morālo kaitējumu, ko izraisījusi kibervajāšana (Võlaõigusseadus § 1043–1055)",
   "@rightMoralDamageCompensation": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)"
@@ -1348,7 +1348,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon"
   },
-  "rightDefamationAction": "Apmelošana (laimamine) ir civiltiesisks pārkāpums — jūs varat iesudzēt tiesā par zaudējumiem un pieprastīt publisku atsaukumu (KarS § 247 (atcelts), VÕS § 1047)",
+  "rightDefamationAction": "Apmelošana (laimamine) ir civiltiesisks pārkāpums — jūs varat iesūdzēt tiesā par zaudējumiem un pieprasīt publisku atsaukumu (KarS § 247 (atcelts), VÕS § 1047)",
   "@rightDefamationAction": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)"
@@ -1378,7 +1378,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Report the content to the social media platform for removal"
   },
-  "cyberActionContactDPA": "Sazinieties ar Andmekaitse Inspektsioon, ja jūsu personas dati tika laūnprātīgi izmantoti",
+  "cyberActionContactDPA": "Sazinieties ar Andmekaitse Inspektsioon, ja jūsu personas dati tika ļaunprātīgi izmantoti",
   "@cyberActionContactDPA": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Contact Andmekaitse Inspektsioon if your personal data was misused"
@@ -1403,7 +1403,7 @@
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "In Estonia, unauthorized sharing of someone's intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy)."
   },
-  "cyberFactGDPR": "Under GDPR, you have the 'right to be forgotten' — platforms must delete your personal data upon request if there is no legal basis to keep it.",
+  "cyberFactGDPR": "Saskaņā ar VDAR jums ir „tiesības tikt aizmirstam“ — platformām jāizdzēš jūsu personas dati pēc jūsu pieprasījuma, ja to glabāšanai nav tiesiska pamata.",
   "@cyberFactGDPR": {
     "x-needs-review": "OMEGA-5 v24.2 — English stub",
     "x-source-value": "Under GDPR, you have the 'right to be forgotten' — platforms must delete your personal data upon request if there is no legal basis to keep it."
@@ -1567,7 +1567,7 @@
   "deadlineCaseScreenTitle": "Lietas termiņi",
   "deadlineAddManualCta": "Pievienot termiņu",
   "deadlineFormTitle": "Nosaukums",
-  "deadlineFormDescription": "Apraksts (neobligats)",
+  "deadlineFormDescription": "Apraksts (neobligāti)",
   "deadlineFormStatuteTemplate": "Likuma veidne",
   "deadlineFormStatuteTemplateNone": "Nav (manuāli)",
   "deadlineFormDeadlineAt": "Termiņa datums",
@@ -1616,7 +1616,7 @@
   "workspaceTabDrafts": "Melnraksti",
   "workspaceOverviewEmpty": "Pievienojiet dokumentus, lai izveidotu kopsavilkumu.",
   "workspaceTimelineEmpty": "Vēl nav notikumu.",
-  "workspaceDocumentsEmpty": "Nav dokumentu. Augupēieladējiet, izmantojot skenēšanu.",
+  "workspaceDocumentsEmpty": "Nav dokumentu. Augšupielādējiet, izmantojot skenēšanu.",
   "workspaceDraftsEmpty": "Vēl nav melnrakstu.",
   "workspaceInboxEmpty": "Nav saistītu e-pastu.",
   "reviewThisContract": "Pārskatīt līgumu",
@@ -1814,10 +1814,10 @@
   "draftingCancel": "Atcelt",
   "draftingDraftReplyTo": "Atbildēt {name}",
   "draftingUntitled": "Bez nosaukuma",
-  "draftingTitleHint": "Nosaukums (neobligats)",
+  "draftingTitleHint": "Nosaukums (neobligāti)",
   "draftingAiReviseTitle": "Rediģēt ar AI",
   "draftingAiReviseSelectionLabel": "Iezimētais teksts:",
-  "draftingAiReviseInstructionLabel": "Instrukcija (neobligata)",
+  "draftingAiReviseInstructionLabel": "Instrukcija (neobligāta)",
   "draftingAiReviseInstructionHint": "piem., \"padarīt formālāku\" vai \"saīsināt\"",
   "draftingAiReviseRunButton": "Ģenerēt labojumu",
   "draftingAiReviseSuggestionLabel": "Ieteiktais labojums:",
@@ -1844,9 +1844,9 @@
   "saveToVaultFailed": "Saglabāšana Glabātuvē neizdevās",
   "pdfWorkerUnavailable": "PDF eksports īslaicīgi nav pieejams. Lūdzu, izmēģiniet DOCX vai Markdown.",
   "draftingVersionHistory": "Versiju vēsture",
-  "dangerZone": "[en] Danger zone",
-  "deleteAccountConfirmButton": "[en] Delete forever",
-  "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+  "dangerZone": "Bīstamā zona",
+  "deleteAccountConfirmButton": "Dzēst neatgriezeniski",
+  "deleteAccountConfirmHint": "Ierakstiet {email}, lai apstiprinātu",
   "emptyHomeTitle": "Laipni lūdzam Advocat",
   "emptyHomeBody": "Izvēlieties sākumpunktu — mēs uzņemsimies juridisko darbu.",
   "intentChip1": "Saņēmu sodu",
@@ -1860,9 +1860,9 @@
   "chatExamplePrompt1": "Palīdzi atbildēt uz sodu",
   "chatExamplePrompt2": "Pārbaudi manu īres līgumu",
   "chatExamplePrompt3": "Kādas ir manas tiesības darbā?",
-  "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
-  "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
-  "deletingAccount": "[en] Deleting account…",
+  "deleteAccountSuccess": "Konts dzēsts. Mums žēl, ka aizejat.",
+  "deleteAccountWarning": "Šī darbība neatgriezeniski dzēsīs jūsu kontu, visas lietas, melnrakstus, glabātuves dokumentus un tērzēšanas vēsturi. To nevar atsaukt.",
+  "deletingAccount": "Dzēš kontu…",
   "contractReviewTitle": "Līguma pārbaude",
   "@contractReviewTitle": {
     "description": "TODO native translation for locale=lv; currently English fallback — copy lives in contract_review_screen.dart."
@@ -1898,7 +1898,7 @@
   "referralInviteFriends": "Uzaiciniet draugus",
   "referralYourCode": "Jūsu kods",
   "referralCopiedToast": "Kods nokopēts starpliktuvē",
-  "referralReward": "Saņemiet 1 mēnesi Counsel bez maksas par katru draugu, kas nofromē abonementu.",
+  "referralReward": "Saņemiet 1 mēnesi Counsel bez maksas par katru draugu, kas noformē abonementu.",
   "referralInvited": "Uzaicināti draugi",
   "referralRewardsEarned": "Nopelnītie bezmaksas mēneši",
   "deadlineUrgencyToday": "Šodien un nokavēts",
@@ -1913,11 +1913,11 @@
   "deadlineDismiss": "Aizvērt",
   "deadlineExportIcs": "Pievienot kalendāram",
   "deadlineSource": "Avots",
-  "deadlineEmpty": "Vēl nav termiņu. Termiņi tiek veidoti automatiski no jūsu e-pastiem un dokumentiem — vai pievienojiet vienu manuāli ar + pogu.",
+  "deadlineEmpty": "Vēl nav termiņu. Termiņi tiek veidoti automātiski no jūsu e-pastiem un dokumentiem — vai pievienojiet vienu manuāli ar + pogu.",
   "deadlineNewTitle": "Jauns termiņš",
   "deadlineFieldTitle": "Nosaukums",
   "deadlineFieldDueDate": "Izpildes datums",
-  "deadlineFieldNotes": "Piezīmes (neobligatas)",
+  "deadlineFieldNotes": "Piezīmes (neobligātas)",
   "deadlineSaved": "Termiņš saglabāts",
   "deadlineSaveFailed": "Neizdevās saglabāt termiņu",
   "deadlineUrgentBannerSingle": "1 termiņš šodien vai nokavēts",
@@ -1969,7 +1969,7 @@
   "dpaCheckboxLabel": "Esmu izlasījis un piekrītu datu apstrādes līgumam (v1.0).",
   "dpaCancel": "Atcelt",
   "dpaAcceptAndContinue": "Piekrist un turpināt",
-  "dpaOpenHint": "Atveriet DAL vismaz vienu reizi, lai aktivizētu pogu “Piekrist”.",
+  "dpaOpenHint": "Atveriet DAL vismaz vienu reizi, lai aktivizētu pogu „Piekrist“.",
   "noEventsForFilter": "Šim filtram neatbilst neviens notikums",
   "timelineFilterAll": "Visi",
   "timelineFilterEmails": "E-pasti",
@@ -2363,7 +2363,7 @@
   "referralLandingFallback": "Šīs saites derīguma termiņš ir beidzies — bet jūs joprojām varat izmēģināt Advocat bez maksas.",
   "referralLandingBenefits": "17 valodas • Reāli Igaunijas, Somijas un ES tiesību akti • 24/7 — bez gaidīšanas",
   "sensitiveConsentTitle": "Piekrišana sensitīvu datu apstrādei",
-  "sensitiveConsentBody": "Dokumenti, kurus gatavojaties augšupielādēt, var saturēt īpašu kategoriju personas datus saskaņā ar VDAR 9. pantu — piemēram, veselības ierakstus, sodāmības reģistra datus, biometriskos datus vai informāciju par jūsu rases izcelsmi, reliģiju vai seksuālo orientāciju.\n\nMēs apstrādājam šos datus tikai, lai sniegtu jums MI juridisko palīdzību, glabājam tos šifrētus jūsu privātajā kontā un nekad neizmantojam tos modeļu apmācībai. Piekrišanu varat atsaukt un datus dzēst jebkurā laikā sadaļā “Iestatījumi”.\n\nPiekrītot, jūs sniedzat skaidri paustu piekrišanu saskaņā ar VDAR 9. panta 2. punkta a) apakšpunktu apstrādāt īpašu kategoriju datus šim mērķim.",
+  "sensitiveConsentBody": "Dokumenti, kurus gatavojaties augšupielādēt, var saturēt īpašu kategoriju personas datus saskaņā ar VDAR 9. pantu — piemēram, veselības ierakstus, sodāmības reģistra datus, biometriskos datus vai informāciju par jūsu rases izcelsmi, reliģiju vai seksuālo orientāciju.\n\nMēs apstrādājam šos datus tikai, lai sniegtu jums MI juridisko palīdzību, glabājam tos šifrētus jūsu privātajā kontā un nekad neizmantojam tos modeļu apmācībai. Piekrišanu varat atsaukt un datus dzēst jebkurā laikā sadaļā „Iestatījumi“.\n\nPiekrītot, jūs sniedzat skaidri paustu piekrišanu saskaņā ar VDAR 9. panta 2. punkta a) apakšpunktu apstrādāt īpašu kategoriju datus šim mērķim.",
   "sensitiveConsentExplicitCheckbox": "Es sniedzu skaidri paustu piekrišanu apstrādāt īpašu kategoriju datus (VDAR 9. panta 2. punkta a) apakšpunkts).",
   "sensitiveConsentRightToShareCheckbox": "Apliecinu, ka man ir tiesības koplietot šos datus (dati ir mani vai man ir informēts/likumīgs pamats koplietot trešo personu datus).",
   "sensitiveConsentViewCategories": "Skatīt, kas tiek uzskatīts par sensitīvu →",
@@ -2429,12 +2429,12 @@
   "panicRecordV1Title": "Drīzumā V2 versijā",
   "panicRecordV1Body": "Ierakstīšanas funkcija tiek juridiski validēta Igaunijai un būs pieejama V2 versijā. Pagaidām izmantojiet tālruņa iebūvēto balss ierakstītāju.",
   "panicCallFallbackBody": "Rakstiet uz kiire@advocat.ee ar īsu aprakstu, un mēs jums atzvanīsim.",
-  "softCaseShellBanner": "Mēs izveidojām “Lietu bez nosaukuma”, lai to izsekotu. Pieskarieties, lai pārdēvētu.",
+  "softCaseShellBanner": "Mēs izveidojām „Lietu bez nosaukuma“, lai to izsekotu. Pieskarieties, lai pārdēvētu.",
   "softCaseShellBannerCta": "Pārdēvēt",
   "changePassword": "Mainīt paroli",
   "changePasswordSubtitle": "Atjauniniet sava konta paroli",
   "newPasswordTitle": "Iestatiet jaunu paroli",
-  "newPasswordHint": "Ievadiet un apstipriniet sava konta jauno paroli.",
+  "newPasswordHint": "Ievadiet un apstipriniet jauno paroli savam kontam.",
   "newPasswordSave": "Saglabāt jauno paroli",
   "newPasswordSuccess": "Parole ir atjaunināta. Tagad varat to izmantot, lai pieteiktos.",
   "newPasswordError": "Neizdevās atjaunināt paroli. Lūdzu, mēģiniet vēlreiz.",

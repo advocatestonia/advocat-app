@@ -158,7 +158,7 @@
   },
   "home": "Головна",
   "important": "Важливе",
-  "inProgress": "В процесі",
+  "inProgress": "У процесі",
   "informational": "Інформаційне",
   "inspection": "Технічний огляд",
   "insurance": "Страхування",
@@ -1292,9 +1292,9 @@
   "saveToVaultFailed": "Не вдалося зберегти у сховище",
   "pdfWorkerUnavailable": "Експорт у PDF тимчасово недоступний. Спробуйте DOCX або Markdown.",
   "draftingVersionHistory": "Історія версій",
-  "dangerZone": "[en] Danger zone",
-  "deleteAccountConfirmButton": "[en] Delete forever",
-  "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+  "dangerZone": "Небезпечна зона",
+  "deleteAccountConfirmButton": "Видалити назавжди",
+  "deleteAccountConfirmHint": "Введіть {email} для підтвердження",
   "emptyHomeTitle": "Ласкаво просимо до Advocat",
   "emptyHomeBody": "Оберіть відправну точку — юридичну частину ми візьмемо на себе.",
   "intentChip1": "Отримав штраф",
@@ -1308,9 +1308,9 @@
   "chatExamplePrompt1": "Допоможіть відповісти на штраф",
   "chatExamplePrompt2": "Перевірте мій договір оренди",
   "chatExamplePrompt3": "Які мої права на роботі?",
-  "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
-  "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
-  "deletingAccount": "[en] Deleting account…",
+  "deleteAccountSuccess": "Обліковий запис видалено. Нам шкода, що ви йдете.",
+  "deleteAccountWarning": "Це назавжди видалить ваш обліковий запис, усі справи, чернетки, документи у сховищі та історію чату. Цю дію не можна скасувати.",
+  "deletingAccount": "Видалення облікового запису…",
   "contractReviewTitle": "Перевірка договору",
   "@contractReviewTitle": {
     "description": "TODO native translation for locale=uk; currently English fallback — copy lives in contract_review_screen.dart."
@@ -1370,8 +1370,8 @@
   "deadlineSaveFailed": "Не вдалося зберегти дедлайн",
   "deadlineUrgentBannerSingle": "1 дедлайн сьогодні або прострочено",
   "deadlineUrgentBannerMany": "{count} дедлайнів сьогодні або прострочено",
-  "deadlineDaysLeft": "{count, plural, =0{сьогодні} one{залишився {count} день} few{залишилося {count} дні} many{залишилося {count} днів} other{залишилося {count} дня}}",
-  "deadlineDaysOverdue": "{count, plural, one{прострочено на {count} день} few{прострочено на {count} дні} many{прострочено на {count} днів} other{прострочено на {count} дня}}",
+  "deadlineDaysLeft": "{count, plural, =0{сьогодні} one{залишився {count} день} few{залишилося {count} дні} many{залишилося {count} днів} other{залишилося {count} днів}}",
+  "deadlineDaysOverdue": "{count, plural, one{прострочено на {count} день} few{прострочено на {count} дні} many{прострочено на {count} днів} other{прострочено на {count} днів}}",
   "@deadlineUrgentBannerMany": {
     "placeholders": {
       "count": {
@@ -1442,7 +1442,7 @@
   "timelineEventPhaseChange": "Зміна етапу",
   "timelineEventManualNote": "Нотатка",
   "timelineJustNow": "Щойно",
-  "timelineMinutesAgo": "{count, plural, one{{count} хвилину тому} few{{count} хвилини тому} many{{count} хвилин тому} other{{count} хвилини тому}}",
+  "timelineMinutesAgo": "{count, plural, one{{count} хвилину тому} few{{count} хвилини тому} many{{count} хвилин тому} other{{count} хвилин тому}}",
   "@timelineMinutesAgo": {
     "placeholders": {
       "count": {
@@ -1450,7 +1450,7 @@
       }
     }
   },
-  "timelineHoursAgo": "{count, plural, one{{count} годину тому} few{{count} години тому} many{{count} годин тому} other{{count} години тому}}",
+  "timelineHoursAgo": "{count, plural, one{{count} годину тому} few{{count} години тому} many{{count} годин тому} other{{count} годин тому}}",
   "@timelineHoursAgo": {
     "placeholders": {
       "count": {
@@ -1458,7 +1458,7 @@
       }
     }
   },
-  "timelineDaysAgo": "{count, plural, one{{count} день тому} few{{count} дні тому} many{{count} днів тому} other{{count} дня тому}}",
+  "timelineDaysAgo": "{count, plural, one{{count} день тому} few{{count} дні тому} many{{count} днів тому} other{{count} днів тому}}",
   "@timelineDaysAgo": {
     "placeholders": {
       "count": {
@@ -1986,7 +1986,7 @@
     }
   },
   "referralActivityPending": "ще не активовано",
-  "referralStatsInvitedCount": "Ви запросили {count, plural, =0{поки що жодного друга} one{{count} друга} few{{count} друзів} many{{count} друзів} other{{count} друга}}",
+  "referralStatsInvitedCount": "Ви запросили {count, plural, =0{поки що жодного друга} one{{count} друга} few{{count} друзів} many{{count} друзів} other{{count} друзів}}",
   "@referralStatsInvitedCount": {
     "placeholders": {
       "count": {

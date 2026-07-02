@@ -416,7 +416,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get important => 'Важливе';
 
   @override
-  String get inProgress => 'В процесі';
+  String get inProgress => 'У процесі';
 
   @override
   String get informational => 'Інформаційне';
@@ -1304,7 +1304,7 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count хвилини тому',
+      other: '$count хвилин тому',
       many: '$count хвилин тому',
       few: '$count хвилини тому',
       one: '$count хвилину тому',
@@ -1317,7 +1317,7 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count години тому',
+      other: '$count годин тому',
       many: '$count годин тому',
       few: '$count години тому',
       one: '$count годину тому',
@@ -1330,7 +1330,7 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count дня тому',
+      other: '$count днів тому',
       many: '$count днів тому',
       few: '$count дні тому',
       one: '$count день тому',
@@ -3869,7 +3869,7 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count друга',
+      other: '$count друзів',
       many: '$count друзів',
       few: '$count друзів',
       one: '$count друга',
@@ -4466,26 +4466,26 @@ class AppLocalizationsUk extends AppLocalizations {
   String get chatExamplePrompt3 => 'Які мої права на роботі?';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'Небезпечна зона';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'Видалити назавжди';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'Введіть $email для підтвердження';
   }
 
   @override
   String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+      'Обліковий запис видалено. Нам шкода, що ви йдете.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'Це назавжди видалить ваш обліковий запис, усі справи, чернетки, документи у сховищі та історію чату. Цю дію не можна скасувати.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'Видалення облікового запису…';
 
   @override
   String get contractReviewTitle => 'Перевірка договору';
@@ -4602,7 +4602,7 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'залишилося $count дня',
+      other: 'залишилося $count днів',
       many: 'залишилося $count днів',
       few: 'залишилося $count дні',
       one: 'залишився $count день',
@@ -4616,7 +4616,7 @@ class AppLocalizationsUk extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'прострочено на $count дня',
+      other: 'прострочено на $count днів',
       many: 'прострочено на $count днів',
       few: 'прострочено на $count дні',
       one: 'прострочено на $count день',

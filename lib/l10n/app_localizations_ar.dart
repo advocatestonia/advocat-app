@@ -285,7 +285,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get disclaimerFull =>
-      'هذا المستند أُنشئ بمساعدة الذكاء الاصطناعي للإرشاد فقط، ولا يُعدّ استشارة قانونية. يرجى مراجعة محامٍ مختص قبل تقديم أي طعن أو استئناف.';
+      'هذا مساعد بالذكاء الاصطناعي، وليس محاميًا. قد يحتوي تحليل الذكاء الاصطناعي على أخطاء. يُرجى دائمًا التحقّق من محامٍ مختص.';
 
   @override
   String get disconnect => 'إلغاء الربط';
@@ -337,7 +337,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get emailPrivacyNote =>
-      'نقرأ فقط الرسائل المتعلقة بقضيتك القانونية. بياناتك محمية ومشفرة.';
+      'نقرأ فقط الرسائل المتعلقة بالشؤون القانونية. رسائلك الشخصية تبقى خاصة.';
 
   @override
   String get emailRequired => 'البريد الإلكتروني مطلوب';
@@ -581,7 +581,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordStrengthWeak => 'ضعيفة';
 
   @override
-  String get passwordTooShort => 'يجب أن تكون كلمة المرور ٨ أحرف على الأقل';
+  String get passwordTooShort => 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
 
   @override
   String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
@@ -608,7 +608,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get preferredLanguage => 'اللغة المفضلة';
 
   @override
-  String get pricePerCheck => '٤٫٩٩€ لكل فحص';
+  String get pricePerCheck => '4.99€ لكل فحص';
 
   @override
   String get privacyPolicy => 'سياسة الخصوصية';
@@ -697,7 +697,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get retry => 'إعادة المحاولة';
 
   @override
-  String get reviewWarning => 'تحذير: راجع المسودة بعناية قبل التقديم';
+  String get reviewWarning =>
+      'راجع المحتوى بعناية قبل الإرسال. أنت المسؤول عن هذا المحتوى.';
 
   @override
   String get riskHigh => 'خطر عالي — تجنب';
@@ -870,7 +871,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get secureDocumentStorageDesc =>
-      'قم بتخزين مستنداتك القانونية المهمة بأمان. جميع الملفات مشفرة من طرف إلى طرف.';
+      'خزّن مستنداتك القانونية المهمة في مكان واحد لسهولة الوصول إليها.';
 
   @override
   String get addDocument => 'إضافة مستند';
@@ -981,7 +982,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get doNotIgnoreNotice => 'لا تتجاهل الإشعار - المواعيد النهائية صارمة';
 
   @override
-  String get noteAppealDeadline => 'لاحظ موعد الاستئناف (عادة ٣٠ يوماً)';
+  String get noteAppealDeadline => 'لاحظ موعد الاستئناف (عادة 30 يوماً)';
 
   @override
   String get contactLawyerImmediately => 'اتصل بمحامٍ فوراً';
@@ -1007,7 +1008,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get workingTimeLimits =>
-      'حدود ساعات العمل (بحد أقصى ٨ ساعات/يوم، ٤٠ ساعة/أسبوع)';
+      'حدود ساعات العمل (بحد أقصى 8 ساعات/يوم، 40 ساعة/أسبوع)';
 
   @override
   String get annualLeave => 'إجازة سنوية (بحد أدنى يومان عن كل شهر عمل)';
@@ -1022,10 +1023,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get writtenRentalAgreement => 'يجب أن يكون عقد الإيجار مكتوباً';
 
   @override
-  String get securityDeposit => 'مبلغ التأمين بحد أقصى ٣ أشهر إيجار';
+  String get securityDeposit => 'مبلغ التأمين بحد أقصى 3 أشهر إيجار';
 
   @override
-  String get landlordNotice => 'يجب على المالك إعطاء إشعار (٣-٦ أشهر)';
+  String get landlordNotice => 'يجب على المالك إعطاء إشعار (3-6 أشهر)';
 
   @override
   String get rightHabitableDwelling => 'الحق في مسكن صالح للسكن';
@@ -1777,7 +1778,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get gdprFooter =>
-      'بياناتك مشفرة ولا تُشارك مع أطراف ثالثة. يمكنك سحب الموافقة وحذف جميع البيانات من الإعدادات.';
+      'تُشفَّر بياناتك وتُعالَج بشكل آمن. نستخدم مزوّدي خدمات موثوقين (معالجة الذكاء الاصطناعي، قاعدة البيانات السحابية) لتقديم الخدمة. راجع سياسة الخصوصية للاطلاع على التفاصيل. يمكنك سحب الموافقة وحذف جميع بياناتك من الإعدادات.';
 
   @override
   String get gdprConsentAiProcessing =>
@@ -4382,26 +4383,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chatExamplePrompt3 => 'ما هي حقوقي في العمل؟';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'منطقة الخطر';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'حذف نهائيًا';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'اكتب $email للتأكيد';
   }
 
   @override
-  String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+  String get deleteAccountSuccess => 'تم حذف الحساب. يؤسفنا رحيلك.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'سيؤدي هذا إلى حذف حسابك نهائيًا، بما في ذلك جميع القضايا والمسودات ومستندات الخزنة وسجل المحادثات. لا يمكن التراجع عن هذا الإجراء.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'جارٍ حذف الحساب…';
 
   @override
   String get contractReviewTitle => 'مراجعة العقد';

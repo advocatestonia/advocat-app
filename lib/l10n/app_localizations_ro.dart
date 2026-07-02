@@ -71,7 +71,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get aiErrorRateLimit =>
-      'Serviciul este temporar supraîncărcat. Vă rugăm să încercați din nou peste 1-2 minute.';
+      'Serviciul este temporar supraîncărcat. Vă rugăm să încercați din nou peste 1–2 minute.';
 
   @override
   String get aiErrorOverload =>
@@ -526,7 +526,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get onboardingDesc4 =>
-      'IA pregătește proiecte de apeluri, plangeri și scrisori cu referințe legale pentru revizuirea dvs. Dvs. decideți ce să depuneți. Fiecare document trebuie revizuit de un profesionist juridic calificat înainte de depunere.';
+      'IA pregătește proiecte de apeluri, plângeri și scrisori cu referințe legale pentru revizuirea dvs. Dvs. decideți ce să depuneți. Fiecare document trebuie revizuit de un profesionist juridic calificat înainte de depunere.';
 
   @override
   String get onboardingNext => 'Următor';
@@ -987,7 +987,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get doNotIgnoreNotice =>
-      'NU ignorați notificarea - termenele sunt stricte';
+      'NU ignorați notificarea — termenele sunt stricte';
 
   @override
   String get noteAppealDeadline =>
@@ -1707,7 +1707,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Bună! Sunt Advocat — asistentul dumneavoastră juridic bazat pe AI. Ofer informații juridice, nu consultanță juridică. Cu ce întrebare juridică vă pot ajuta?';
+      'Bună! Sunt Advocat — asistentul dumneavoastră juridic bazat pe IA. Ofer informații juridice, nu consultanță juridică. Cu ce întrebare juridică vă pot ajuta?';
 
   @override
   String get copySummary => 'Copiază rezumatul';
@@ -1764,7 +1764,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get aiDisclaimerCompact =>
-      'Advocat oferă informații juridice generate de AI, nu consultanță juridică. Verificați cu un avocat licențiat înainte de a acționa.';
+      'Advocat oferă informații juridice generate de IA, nu consultanță juridică. Verificați cu un avocat licențiat înainte de a acționa.';
 
   @override
   String get aiDisclaimerFullTitle => 'Important: cum funcționează Advocat';
@@ -1855,7 +1855,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get aiGeneratedDisclaimer =>
-      'Generat de AI • Nu constituie consultanță juridică';
+      'Generat de IA • Nu constituie consultanță juridică';
 
   @override
   String get decline => 'Refuză';
@@ -2355,7 +2355,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get aiHelpsUnderstand =>
-      'Aceste informații ajută AI-ul nostru să înțeleagă mai bine situația dumneavoastră.';
+      'Aceste informații ajută IA noastră să înțeleagă mai bine situația dumneavoastră.';
 
   @override
   String get caseTitleHint => 'de ex., Contestație permis de ședere 2026';
@@ -2394,7 +2394,7 @@ class AppLocalizationsRo extends AppLocalizations {
       'Puteți adăuga oricând documente mai târziu din ecranul de detalii al cazului.';
 
   @override
-  String get callAI => 'Apelați AI';
+  String get callAI => 'Apelați IA';
 
   @override
   String get comingSoon => 'În curând';
@@ -2458,18 +2458,18 @@ class AppLocalizationsRo extends AppLocalizations {
   String get phoneLabel => 'Telefon';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Site web';
 
   @override
-  String get disclaimerCollapsed => 'Doar îndrumare AI';
+  String get disclaimerCollapsed => 'Doar îndrumare IA';
 
   @override
   String get disclaimerExpanded =>
-      'Asistent AI — nu constituie consultanță juridică. Verificați întotdeauna cu un avocat calificat.';
+      'Asistent IA — nu constituie consultanță juridică. Verificați întotdeauna cu un avocat calificat.';
 
   @override
   String get chatDisclaimerBanner =>
-      'Asistentul AI oferă informații juridice, nu consultanță juridică. Consultați întotdeauna un avocat calificat.';
+      'Asistentul IA oferă informații juridice, nu consultanță juridică. Consultați întotdeauna un avocat calificat.';
 
   @override
   String get chatDisclaimerSubtitle =>
@@ -2650,35 +2650,35 @@ class AppLocalizationsRo extends AppLocalizations {
   String get guestUser => 'Oaspete';
 
   @override
-  String get howToUse => 'Cum se utilizeaza?';
+  String get howToUse => 'Cum se utilizează?';
 
   @override
   String get tutorialStep1Title => 'Asistent juridic IA';
 
   @override
   String get tutorialStep1Desc =>
-      'Puneti orice intrebare juridica si primiti raspunsuri instantanee bazate pe legislatia estoniana.';
+      'Puneți orice întrebare juridică și primiți răspunsuri instantanee bazate pe legislația estoniană.';
 
   @override
-  String get tutorialStep2Title => 'Cunoaste-ti drepturile';
+  String get tutorialStep2Title => 'Cunoaște-ți drepturile';
 
   @override
   String get tutorialStep2Desc =>
-      'Navigati prin informatii juridice pe teme — munca, locuinta, drepturile consumatorului si altele.';
+      'Navigați prin informații juridice pe teme — muncă, locuință, drepturile consumatorului și altele.';
 
   @override
-  String get tutorialStep3Title => 'Scaneaza documente';
+  String get tutorialStep3Title => 'Scanează documente';
 
   @override
   String get tutorialStep3Desc =>
-      'Fotografiati documente juridice pentru analiza IA si stocare sigura.';
+      'Fotografiați documente juridice pentru analiza IA și stocare sigură.';
 
   @override
-  String get tutorialStep4Title => 'Sa incepem!';
+  String get tutorialStep4Title => 'Să începem!';
 
   @override
   String get tutorialStep4Desc =>
-      'Explorati aplicatia si protejati-va drepturile. Toate datele raman private pe dispozitivul dvs.';
+      'Explorați aplicația și protejați-vă drepturile. Toate datele rămân private pe dispozitivul dvs.';
 
   @override
   String get advocatProTitle => 'Advocat Pro';
@@ -2726,7 +2726,7 @@ class AppLocalizationsRo extends AppLocalizations {
       'Faceți upgrade pentru consultații nelimitate';
 
   @override
-  String get upgradeBannerCta => 'Upgrade';
+  String get upgradeBannerCta => 'Treceți la Pro';
 
   @override
   String get paymentSuccessTitle => 'Plată reușită';
@@ -2841,7 +2841,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get upgradeForUnlimited => 'Treceți la Pro pentru acces nelimitat';
 
   @override
-  String get upgradeCta => 'Upgrade';
+  String get upgradeCta => 'Treceți la Pro';
 
   @override
   String get rateLimitTryAgain =>
@@ -3284,7 +3284,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get deadlineCardSourceLabelEmail => 'din e-mail';
 
   @override
-  String get deadlineCardSourceLabelHaikuExtract => 'extras de AI';
+  String get deadlineCardSourceLabelHaikuExtract => 'extras de IA';
 
   @override
   String get deadlineCardSourceLabelStatutoryTemplate => 'șablon legal';
@@ -3379,7 +3379,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get deadlineCompletedNoteSave => 'Salvează';
 
   @override
-  String get inboxTitle => 'Inbox';
+  String get inboxTitle => 'Mesaje primite';
 
   @override
   String get inboxEmptyTitle => 'Nimic în așteptare';
@@ -3408,7 +3408,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get inboxConfirmSendBody =>
-      'Advocat va trimite răspunsul pregătit de AI prin contul dumneavoastră Gmail conectat. Puteți revizui conținutul în ecranul următor.';
+      'Advocat va trimite răspunsul pregătit de IA prin contul dumneavoastră Gmail conectat. Puteți revizui conținutul în ecranul următor.';
 
   @override
   String get inboxSendButton => 'Trimite';
@@ -3623,7 +3623,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get supportTitle => 'Ajutor';
 
   @override
-  String get supportSubtitle => 'De obicei răspundem în 1-2 ore.';
+  String get supportSubtitle => 'De obicei răspundem în 1–2 ore.';
 
   @override
   String get supportSearchPlaceholder => 'Caută în ajutor…';
@@ -3781,7 +3781,8 @@ class AppLocalizationsRo extends AppLocalizations {
   String get referralTitle => 'Invită prieteni';
 
   @override
-  String get referralSubtitle => 'Primește o lună gratis. Oferă o lună gratis.';
+  String get referralSubtitle =>
+      'Primiți o lună gratuită. Oferiți o lună gratuită.';
 
   @override
   String get referralYourLink => 'LINKUL TĂU';
@@ -3815,7 +3816,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get referralEmailSubject =>
-      'Încearcă Advocat — asistentul tău juridic AI';
+      'Încercați Advocat — asistentul dumneavoastră juridic IA';
 
   @override
   String get referralLoadError =>
@@ -3829,7 +3830,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get referralAfterReviewCta =>
-      'Ți-a plăcut? Invită un prieten — amândoi primiți o lună gratis.';
+      'V-a plăcut? Invitați un prieten — amândoi primiți o lună gratuită.';
 
   @override
   String get referralAntiFraud => 'Maximum 12 recomandări reușite pe an.';
@@ -3942,11 +3943,11 @@ class AppLocalizationsRo extends AppLocalizations {
       'Introduceți numele companiei sau numărul\nde înregistrare pentru a obține un raport complet';
 
   @override
-  String get aiMemoryTitle => 'Memoria AI';
+  String get aiMemoryTitle => 'Memoria IA';
 
   @override
   String get aiMemorySubtitle =>
-      'Verificați și ștergeți ceea ce AI își amintește despre dvs.';
+      'Verificați și ștergeți ceea ce IA își amintește despre dvs.';
 
   @override
   String get bookLawyerCallTitle => 'Rezervați un apel cu un avocat';
@@ -4282,7 +4283,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get draftingSavedJustNow => 'Salvat acum câteva clipe';
 
   @override
-  String get draftingAiRevise => 'Revizuiește cu AI';
+  String get draftingAiRevise => 'Revizuiește cu IA';
 
   @override
   String get draftingExportPdf => 'Exportă PDF';
@@ -4321,7 +4322,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get draftingTitleHint => 'Titlu (opțional)';
 
   @override
-  String get draftingAiReviseTitle => 'Revizuiește cu AI';
+  String get draftingAiReviseTitle => 'Revizuiește cu IA';
 
   @override
   String get draftingAiReviseSelectionLabel => 'Text selectat:';
@@ -4451,26 +4452,26 @@ class AppLocalizationsRo extends AppLocalizations {
       'Care sunt drepturile mele la locul de muncă?';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'Zonă cu risc';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'Ștergeți definitiv';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'Introduceți $email pentru a confirma';
   }
 
   @override
   String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+      'Cont șters. Ne pare rău să vă vedem plecând.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'Această acțiune vă șterge definitiv contul, toate cazurile, ciornele, documentele din Vault și istoricul conversațiilor. Nu poate fi anulată.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'Se șterge contul…';
 
   @override
   String get contractReviewTitle => 'Revizuire contract';
@@ -4480,7 +4481,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get contractReviewQuotaRemaining =>
-      'Încărcați un contract PDF, DOC, DOCX sau TXT pentru o revizuire AI cu semnale de alarmă și sfaturi de negociere.';
+      'Încărcați un contract PDF, DOC, DOCX sau TXT pentru o revizuire IA cu semnale de alarmă și sfaturi de negociere.';
 
   @override
   String get contractReviewRedFlags => 'Semnale de alarmă';
@@ -4606,17 +4607,17 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get iapPayWithApple => 'Plătește cu Apple';
+  String get iapPayWithApple => 'Plătiți cu Apple';
 
   @override
-  String get iapRestorePurchases => 'Restaurează achizițiile';
+  String get iapRestorePurchases => 'Restaurați achizițiile';
 
   @override
   String get iapPurchaseFailed =>
-      'Achiziția a eșuat. Încearcă din nou sau contactează asistența.';
+      'Achiziția a eșuat. Încercați din nou sau contactați asistența.';
 
   @override
-  String get iapRestoreSuccess => 'Abonamentul tău a fost restaurat.';
+  String get iapRestoreSuccess => 'Abonamentul dumneavoastră a fost restaurat.';
 
   @override
   String get iapRestoreNoActive => 'Nu există abonament activ de restaurat.';
@@ -4629,28 +4630,29 @@ class AppLocalizationsRo extends AppLocalizations {
       'Termene procedurale UE ipotetice — date simulate';
 
   @override
-  String get changePassword => 'Schimbă parola';
+  String get changePassword => 'Schimbați parola';
 
   @override
-  String get changePasswordSubtitle => 'Actualizează parola contului tău';
+  String get changePasswordSubtitle =>
+      'Actualizați parola contului dumneavoastră';
 
   @override
-  String get newPasswordTitle => 'Setează o parolă nouă';
+  String get newPasswordTitle => 'Setați o parolă nouă';
 
   @override
   String get newPasswordHint =>
-      'Introdu și confirmă o parolă nouă pentru contul tău.';
+      'Introduceți și confirmați o parolă nouă pentru contul dumneavoastră.';
 
   @override
-  String get newPasswordSave => 'Salvează parola nouă';
+  String get newPasswordSave => 'Salvați parola nouă';
 
   @override
   String get newPasswordSuccess =>
-      'Parola a fost actualizată. O poți folosi acum pentru autentificare.';
+      'Parola a fost actualizată. O puteți folosi acum pentru autentificare.';
 
   @override
   String get newPasswordError =>
-      'Actualizarea parolei a eșuat. Te rugăm să încerci din nou.';
+      'Actualizarea parolei a eșuat. Vă rugăm să încercați din nou.';
 
   @override
   String get accessLogTile => 'Jurnal de acces';
@@ -5472,7 +5474,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get renewalEmptyBody =>
-      'Adăugați permisul de ședere, pașaportul, asigurarea sau permisul, iar noi vom urmări datele de expirare pentru dumneavoastră.';
+      'Adăugați permisul de ședere, pașaportul, asigurarea sau permisul de conducere, iar noi vom urmări datele de expirare pentru dumneavoastră.';
 
   @override
   String get renewalGuideHint => 'Cum se reînnoiește →';

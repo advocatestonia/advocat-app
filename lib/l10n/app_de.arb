@@ -197,7 +197,7 @@
     "noAccount": "Noch kein Konto? ",
     "noCases": "Noch keine Verfahren",
     "noCasesYet": "Noch keine Verfahren",
-    "noDeadlines": "Keine Fristen",
+    "noDeadlines": "Keine Fristen — Sie sind auf dem aktuellen Stand.",
     "noRecentActivity": "Keine kürzliche Aktivität",
     "notifications": "BENACHRICHTIGUNGEN",
     "onboardingDesc1": "Advocat hilft Ihnen, Ihre rechtliche Situation zu verstehen. KI-Werkzeuge analysieren Dokumente, identifizieren mögliche Probleme und erstellen Dokumententwürfe zu Ihrer Überprüfung. Keine Anwaltskanzlei — ein Technologiewerkzeug zur Unterstützung Ihres Falls.",
@@ -227,7 +227,7 @@
     "perCheck": "pro Prüfung",
     "permanentlyDelete": "Dauerhaft löschen",
     "policeMisconduct": "Polizeiverhalten",
-    "popular": "Beliebt",
+    "popular": "BELIEBT",
     "preferences": "EINSTELLUNGEN",
     "preferredLanguage": "Bevorzugte Sprache",
     "pricePerCheck": "4,99 € pro Prüfung",
@@ -1403,7 +1403,7 @@
         "x-needs-review": "OMEGA-5 v24.2 — English stub",
         "x-source-value": "In Estonia, unauthorized sharing of someone's intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy)."
     },
-    "cyberFactGDPR": "Under GDPR, you have the 'right to be forgotten' — platforms must delete your personal data upon request if there is no legal basis to keep it.",
+    "cyberFactGDPR": "Nach der DSGVO haben Sie ein „Recht auf Vergessenwerden“ — Plattformen müssen Ihre personenbezogenen Daten auf Antrag löschen, wenn keine Rechtsgrundlage für deren weitere Speicherung besteht.",
     "@cyberFactGDPR": {
         "x-needs-review": "OMEGA-5 v24.2 — English stub",
         "x-source-value": "Under GDPR, you have the 'right to be forgotten' — platforms must delete your personal data upon request if there is no legal basis to keep it."
@@ -1442,7 +1442,7 @@
             }
         }
     },
-    "quickProfilePrompt": "Damit ich genauer helfen kann: Bist du estnischer Staatsbürger, EU-Bürger aus einem anderen Land, oder hast du einen Aufenthaltstitel?",
+    "quickProfilePrompt": "Damit ich genauer helfen kann: Sind Sie estnischer Staatsbürger, EU-Bürger aus einem anderen Land, oder haben Sie einen Aufenthaltstitel?",
     "quickProfileChipEstonianCitizen": "Estnischer Staatsbürger",
     "quickProfileChipEuCitizen": "EU-Bürger (anderes Land)",
     "quickProfileChipResidencePermit": "Aufenthaltstitel",
@@ -1673,9 +1673,9 @@
     "@notNow": {},
     "referralTitle": "Freunde einladen",
     "@referralTitle": {},
-    "referralSubtitle": "Erhalte einen Gratismonat. Schenke einen Gratismonat.",
+    "referralSubtitle": "Erhalten Sie einen Gratismonat. Schenken Sie einen Gratismonat.",
     "@referralSubtitle": {},
-    "referralYourLink": "DEIN LINK",
+    "referralYourLink": "IHR LINK",
     "@referralYourLink": {},
     "referralCopyLink": "Link kopieren",
     "@referralCopyLink": {},
@@ -1695,7 +1695,7 @@
     "@referralShareTelegram": {},
     "referralShareEmail": "Per E-Mail teilen",
     "@referralShareEmail": {},
-    "referralEmailSubject": "Probiere Advocat — deinen KI-Rechtsassistenten",
+    "referralEmailSubject": "Probieren Sie Advocat — Ihren KI-Rechtsassistenten",
     "@referralEmailSubject": {},
     "referralLoadError": "Daten konnten nicht geladen werden. Zum Aktualisieren ziehen.",
     "@referralLoadError": {},
@@ -1784,7 +1784,7 @@
     "emailAlreadyRegistered": "Diese E-Mail ist bereits registriert. Anmelden?",
     "actionSignIn": "Anmelden",
     "actionUndo": "Rückgängig",
-    "intakeUrgentOpened": "Chat geöffnet — dein Entwurf ist gespeichert.",
+    "intakeUrgentOpened": "Chat geöffnet — Ihr Entwurf ist gespeichert.",
     "consiliumHeader": "Anwaltskonsilium",
     "@consiliumHeader": {
         "description": "Header text for the multi-agent legal consilium panel"
@@ -1892,9 +1892,9 @@
     "saveToVaultFailed": "Speichern im Vault fehlgeschlagen",
     "pdfWorkerUnavailable": "PDF-Export ist vorübergehend nicht verfügbar. Bitte versuchen Sie DOCX oder Markdown.",
     "draftingVersionHistory": "Versionsverlauf",
-    "dangerZone": "[en] Danger zone",
-    "deleteAccountConfirmButton": "[en] Delete forever",
-    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+    "dangerZone": "Gefahrenzone",
+    "deleteAccountConfirmButton": "Endgültig löschen",
+    "deleteAccountConfirmHint": "Geben Sie {email} ein, um zu bestätigen",
     "emptyHomeTitle": "Willkommen bei Advocat",
     "emptyHomeBody": "Wählen Sie einen Ausgangspunkt — wir übernehmen die rechtliche Schwerstarbeit.",
     "intentChip1": "Bußgeld erhalten",
@@ -1908,9 +1908,9 @@
     "chatExamplePrompt1": "Hilf mir, auf einen Bußgeldbescheid zu antworten",
     "chatExamplePrompt2": "Prüfe meinen Mietvertrag",
     "chatExamplePrompt3": "Welche Rechte habe ich am Arbeitsplatz?",
-    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
-    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
-    "deletingAccount": "[en] Deleting account…",
+    "deleteAccountSuccess": "Konto gelöscht. Es tut uns leid, Sie gehen zu sehen.",
+    "deleteAccountWarning": "Dadurch werden Ihr Konto, alle Fälle, Entwürfe, Tresordokumente und der Chatverlauf endgültig gelöscht. Dies kann nicht rückgängig gemacht werden.",
+    "deletingAccount": "Konto wird gelöscht…",
     "contractReviewTitle": "Vertragsprüfung",
     "@contractReviewTitle": {
         "description": "TODO native translation for locale=de; currently English fallback — copy lives in contract_review_screen.dart."
@@ -1996,7 +1996,7 @@
     "iapPayWithApple": "Mit Apple bezahlen",
     "iapRestorePurchases": "Käufe wiederherstellen",
     "iapPurchaseFailed": "Kauf fehlgeschlagen. Bitte erneut versuchen oder Support kontaktieren.",
-    "iapRestoreSuccess": "Dein Abonnement wurde wiederhergestellt.",
+    "iapRestoreSuccess": "Ihr Abonnement wurde wiederhergestellt.",
     "iapRestoreNoActive": "Kein aktives Abonnement zum Wiederherstellen gefunden.",
     "deadlineEuRadarTitle": "EU-Fristen-Radar (Vorschau)",
     "@deadlineEuRadarTitle": {

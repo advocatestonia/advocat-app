@@ -433,7 +433,7 @@
   "disconnectEmail": "Odłącz email",
   "disconnectEmailConfirm": "Automatyczna synchronizacja email zostanie zatrzymana. Wcześniej zsynchronizowane emaile pozostaną.",
   "discriminationDesc": "Jak zgłaszać i zwalczać dyskryminację",
-  "doNotIgnoreNotice": "NIE ignoruj zawiadomienia - terminy są ścisłe",
+  "doNotIgnoreNotice": "NIE ignoruj zawiadomienia — terminy są ścisłe",
   "documentAnalysis": "Analiza dokumentu",
   "documentIncident": "Udokumentuj zdarzenie (data, godzina, świadkowie)",
   "documentProcessedOk": "Dokument przetworzony pomyślnie",
@@ -820,15 +820,15 @@
   "chatDisclaimerFooter": "Wygenerowane przez AI. Zweryfikuj u licencjonowanego adwokata.",
   "chatDisclaimerGotIt": "Rozumiem",
   "guestUser": "Gość",
-  "howToUse": "Jak korzystac?",
+  "howToUse": "Jak korzystać?",
   "tutorialStep1Title": "Asystent prawny AI",
-  "tutorialStep1Desc": "Zadaj dowolne pytanie prawne i uzyskaj natychmiastowe odpowiedzi na podstawie prawa estonskiego.",
+  "tutorialStep1Desc": "Zadaj dowolne pytanie prawne i uzyskaj natychmiastowe odpowiedzi na podstawie prawa estońskiego.",
   "tutorialStep2Title": "Poznaj swoje prawa",
-  "tutorialStep2Desc": "Przegladaj informacje prawne wedlug tematow — praca, mieszkanie, prawa konsumenta i wiecej.",
+  "tutorialStep2Desc": "Przeglądaj informacje prawne według tematów — praca, mieszkanie, prawa konsumenta i więcej.",
   "tutorialStep3Title": "Skanuj dokumenty",
   "tutorialStep3Desc": "Fotografuj dokumenty prawne do analizy AI i bezpiecznego przechowywania.",
   "tutorialStep4Title": "Zaczynamy!",
-  "tutorialStep4Desc": "Odkryj aplikacje i chron swoje prawa. Wszystkie dane pozostaja prywatne na Twoim urzadzeniu.",
+  "tutorialStep4Desc": "Odkryj aplikację i chroń swoje prawa. Wszystkie dane pozostają prywatne na Twoim urządzeniu.",
   "advocatProTitle": "Advocat Pro",
   "advocatProSubtitle": "Odblokuj funkcje premium",
   "voiceDisclaimer": "Asystent głosowy działa obecnie tylko na komputerze (przeglądarka Chrome). Wsparcie mobilne wkrótce.",
@@ -1922,8 +1922,8 @@
   "deadlineSaveFailed": "Nie udało się zapisać terminu",
   "deadlineUrgentBannerSingle": "1 termin dzisiaj lub zaległy",
   "deadlineUrgentBannerMany": "{count} terminów dzisiaj lub zaległych",
-  "deadlineDaysLeft": "{count, plural, =0{dzisiaj} =1{pozostał 1 dzień} few{pozostały {count} dni} other{pozostało {count} dni}}",
-  "deadlineDaysOverdue": "{count, plural, =1{1 dzień opóźnienia} few{{count} dni opóźnienia} other{{count} dni opóźnienia}}",
+  "deadlineDaysLeft": "{count, plural, =0{dzisiaj} =1{pozostał 1 dzień} few{pozostały {count} dni} many{pozostało {count} dni} other{pozostało {count} dni}}",
+  "deadlineDaysOverdue": "{count, plural, =1{1 dzień opóźnienia} few{{count} dni opóźnienia} many{{count} dni opóźnienia} other{{count} dni opóźnienia}}",
   "@deadlineUrgentBannerMany": {
     "placeholders": {
       "count": {
@@ -2000,7 +2000,7 @@
       }
     }
   },
-  "timelineDaysAgo": "{count, plural, =1{1 dzień temu} few{{count} dni temu} many{{count} dni temu} other{{count} dnia temu}}",
+  "timelineDaysAgo": "{count, plural, =1{1 dzień temu} few{{count} dni temu} many{{count} dni temu} other{{count} dni temu}}",
   "@timelineDaysAgo": {
     "placeholders": {
       "count": {
@@ -2168,7 +2168,7 @@
     }
   },
   "uplDisclaimerFooter": "Advocat nie jest kancelarią prawną. To informacja, a nie porada prawna.",
-  "parallelActionsHeadline": "Konsylium zaleca {count, plural, =1{1 działanie równoległe} few{{count} działania równoległe} many{{count} działań równoległych} other{{count} działania równoległe}}",
+  "parallelActionsHeadline": "Konsylium zaleca {count, plural, =1{1 działanie równoległe} few{{count} działania równoległe} many{{count} działań równoległych} other{{count} działań równoległych}}",
   "@parallelActionsHeadline": {
     "placeholders": {
       "count": {
@@ -2188,7 +2188,7 @@
       }
     }
   },
-  "parallelActionsConfirmTitle": "Wysłać {count, plural, =1{1 e-mail} few{{count} e-maile} many{{count} e-maili} other{{count} e-maila}}?",
+  "parallelActionsConfirmTitle": "Wysłać {count, plural, =1{1 e-mail} few{{count} e-maile} many{{count} e-maili} other{{count} e-maili}}?",
   "@parallelActionsConfirmTitle": {
     "placeholders": {
       "count": {
@@ -2196,7 +2196,7 @@
       }
     }
   },
-  "parallelActionsConfirmBody": "Advocat wyśle {count, plural, =1{1 przygotowaną odpowiedź} few{{count} przygotowane odpowiedzi} many{{count} przygotowanych odpowiedzi} other{{count} przygotowane odpowiedzi}} przez połączony Gmail. Każda jest wysyłana niezależnie — jeśli jedna się nie powiedzie, pozostałe i tak zostaną wysłane.",
+  "parallelActionsConfirmBody": "Advocat wyśle {count, plural, =1{1 przygotowaną odpowiedź} few{{count} przygotowane odpowiedzi} many{{count} przygotowanych odpowiedzi} other{{count} przygotowanych odpowiedzi}} przez połączony Gmail. Każda jest wysyłana niezależnie — jeśli jedna się nie powiedzie, pozostałe i tak zostaną wysłane.",
   "@parallelActionsConfirmBody": {
     "placeholders": {
       "count": {
@@ -2338,7 +2338,7 @@
       }
     }
   },
-  "referralStatsEarnedCount": "Twój bonus: {months, plural, =0{jeszcze nic} =1{1 darmowy miesiąc} few{{months} darmowe miesiące} many{{months} darmowych miesięcy} other{{months} darmowego miesiąca}}",
+  "referralStatsEarnedCount": "Twój bonus: {months, plural, =0{jeszcze nic} =1{1 darmowy miesiąc} few{{months} darmowe miesiące} many{{months} darmowych miesięcy} other{{months} darmowych miesięcy}}",
   "@referralStatsEarnedCount": {
     "placeholders": {
       "months": {

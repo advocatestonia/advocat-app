@@ -108,7 +108,7 @@
   "emailInvalid": "Veuillez entrer une adresse e-mail valide",
   "emailPrivacyNote": "Nous ne lisons que les e-mails liés aux affaires juridiques. Vos e-mails personnels restent privés.",
   "emailRequired": "L’e-mail est obligatoire",
-  "emergencyShield": "Bouclier d’urgence",
+  "emergencyShield": "Protection de base",
   "error": "Erreur",
   "exportDataDesc": "Télécharger toutes les données de vos dossiers",
   "exportDataDialogContent": "Nous préparerons un téléchargement de toutes vos données, y compris les dossiers, documents et correspondance. Vous recevrez un e-mail lorsque ce sera prêt.",
@@ -361,7 +361,7 @@
   "cameraPermissionRequired": "Autorisation caméra requise",
   "capturePhotoFailed": "Échec de la capture photo. Veuillez réessayer.",
   "caseCreated": "Dossier créé",
-  "caseCreatedDesc": "Le dossier \"{title}\" a été créé.",
+  "caseCreatedDesc": "Le dossier « {title} » a été créé.",
   "@caseCreatedDesc": {
     "placeholders": {
       "title": {
@@ -375,7 +375,7 @@
   "caseTimeline": "Chronologie du dossier",
   "changesSaved": "Modifications enregistrées",
   "chatWelcomeMessage": "Bonjour ! Je suis Advocat — votre assistant juridique IA. Je fournis des informations juridiques, pas des conseils juridiques. Quelle est votre question ?",
-  "checkEligibility": "Vérifiez votre éligibilité à l'aide juridictionnelle: {country}",
+  "checkEligibility": "Vérifiez votre éligibilité à l'aide juridictionnelle en {country}",
   "checkingPurchases": "Vérification des achats précédents…",
   "chooseHowToAdd": "Choisissez comment ajouter votre document",
   "citizenship": "Citoyenneté",
@@ -411,7 +411,7 @@
   "decline": "Refuser",
   "delete": "Supprimer",
   "deleteCase": "Supprimer le dossier",
-  "deleteCaseConfirm": "Êtes-vous sûr de vouloir supprimer \"{title}\" ? Cette action est irréversible.",
+  "deleteCaseConfirm": "Êtes-vous sûr de vouloir supprimer « {title} » ? Cette action est irréversible.",
   "@deleteCaseConfirm": {
     "placeholders": {
       "title": {
@@ -445,7 +445,7 @@
   "draftGeneration": "Génération de brouillons",
   "edit": "Modifier",
   "editDocument": "Modifier le document",
-  "emailComingSoon": "Envoi d'email bientôt disponible",
+  "emailComingSoon": "Envoyer un e-mail via votre compte Gmail connecté",
   "emailIntegrationTitle": "Intégration email",
   "english": "Anglais",
   "estimateDisclaimer": "Ceci n'est qu'une estimation. L'éligibilité réelle est déterminée par le Bureau d'aide juridictionnelle.",
@@ -465,7 +465,7 @@
   "gdprChat": "Traitement de vos messages de chat par l'IA",
   "gdprDelete": "Droit de supprimer vos données à tout moment",
   "gdprDocs": "Analyse des documents téléchargés",
-  "gdprFooter": "Vos données sont chiffrées et ne sont jamais partagées avec des tiers. Vous pouvez retirer votre consentement et supprimer toutes les données dans les Paramètres.",
+  "gdprFooter": "Vos données sont chiffrées et traitées en toute sécurité. Nous faisons appel à des prestataires de services de confiance (traitement par IA, base de données cloud) pour fournir le service. Consultez notre politique de confidentialité pour plus de détails. Vous pouvez retirer votre consentement et supprimer toutes les données depuis les Paramètres.",
   "gdprIntro": "Pour fournir une assistance juridique par IA, nous traitons vos données conformément au RGPD (UE 2016/679). En continuant, vous acceptez :",
   "gdprStorage": "Stockage chiffré des données de dossiers",
   "generateAppealWithIssues": "{count, plural, =1{Générer un recours (1 problème)} other{Générer un recours ({count} problèmes)}}",
@@ -703,7 +703,7 @@
   "policeActionStayCalm": "Restez calme et gardez les mains visibles",
   "policeActionAskWhy": "Demandez à l'agent pourquoi vous êtes arrêté",
   "policeActionProvideName": "Donnez votre nom et date de naissance",
-  "policeActionWantLawyer": "Déclarez clairement : \"Je souhaite un avocat avant toute question\"",
+  "policeActionWantLawyer": "Déclarez clairement : « Je veux un avocat avant toute question »",
   "policeActionAskInterpreter": "Demandez un interprète si nécessaire",
   "policeActionNoteBadge": "Notez le nom et le numéro de badge de l'agent",
   "policeFactMustTellReason": "En Finlande, la police doit vous donner la raison de l'interpellation. Si elle ne le fait pas, vous pouvez demander — et elle est légalement tenue d'expliquer.",
@@ -1243,9 +1243,9 @@
   "saveToVaultFailed": "Échec de l'enregistrement dans le coffre-fort",
   "pdfWorkerUnavailable": "L'export PDF est temporairement indisponible. Veuillez essayer DOCX ou Markdown.",
   "draftingVersionHistory": "Historique des versions",
-  "dangerZone": "[en] Danger zone",
-  "deleteAccountConfirmButton": "[en] Delete forever",
-  "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+  "dangerZone": "Zone sensible",
+  "deleteAccountConfirmButton": "Supprimer définitivement",
+  "deleteAccountConfirmHint": "Saisissez {email} pour confirmer",
   "emptyHomeTitle": "Bienvenue sur Advocat",
   "emptyHomeBody": "Choisissez un point de départ — nous nous chargeons du travail juridique.",
   "intentChip1": "J'ai reçu une amende",
@@ -1259,9 +1259,9 @@
   "chatExamplePrompt1": "Aidez-moi à répondre à une amende",
   "chatExamplePrompt2": "Examinez mon contrat de location",
   "chatExamplePrompt3": "Quels sont mes droits au travail ?",
-  "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
-  "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
-  "deletingAccount": "[en] Deleting account…",
+  "deleteAccountSuccess": "Compte supprimé. Nous sommes désolés de vous voir partir.",
+  "deleteAccountWarning": "Cette action supprime définitivement votre compte, tous vos dossiers, brouillons, documents du coffre-fort et l'historique des conversations. Elle est irréversible.",
+  "deletingAccount": "Suppression du compte…",
   "contractReviewTitle": "Analyse de contrat",
   "@contractReviewTitle": {
     "description": "TODO native translation for locale=fr; currently English fallback — copy lives in contract_review_screen.dart."

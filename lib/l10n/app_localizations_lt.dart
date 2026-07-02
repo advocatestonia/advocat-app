@@ -2655,7 +2655,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'Pagal BDAR turite „teisę būti pamirštam“ — platformos privalo ištrinti jūsų asmens duomenis pagal jūsų prašymą, jei nėra teisinio pagrindo juos toliau saugoti.';
 
   @override
   String get guestUser => 'Svečias';
@@ -2668,14 +2668,14 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get tutorialStep1Desc =>
-      'Uzduokite bet koki teisini klausima ir gaukite greitus atsakymus pagal Estijos istatymus.';
+      'Užduokite bet kokį teisinį klausimą ir gaukite greitus atsakymus pagal Estijos įstatymus.';
 
   @override
-  String get tutorialStep2Title => 'Zinokite savo teises';
+  String get tutorialStep2Title => 'Žinokite savo teises';
 
   @override
   String get tutorialStep2Desc =>
-      'Narsykite teisine informacija pagal temas — darbas, bustas, vartotoju teises ir daugiau.';
+      'Naršykite teisinę informaciją pagal temas — darbas, būstas, vartotojų teisės ir daugiau.';
 
   @override
   String get tutorialStep3Title => 'Skenuoti dokumentus';
@@ -2685,11 +2685,11 @@ class AppLocalizationsLt extends AppLocalizations {
       'Fotografuokite teisinius dokumentus DI analizei ir saugiam saugojimui.';
 
   @override
-  String get tutorialStep4Title => 'Pradekime!';
+  String get tutorialStep4Title => 'Pradėkime!';
 
   @override
   String get tutorialStep4Desc =>
-      'Isstyrinkite programele ir apsaugokite savo teises. Visi duomenys lieka privatūs jusu irengynyje.';
+      'Ištyrinėkite programėlę ir apsaugokite savo teises. Visi duomenys lieka privatūs jūsų įrenginyje.';
 
   @override
   String get advocatProTitle => 'Advocat Pro';
@@ -4482,26 +4482,26 @@ class AppLocalizationsLt extends AppLocalizations {
   String get chatExamplePrompt3 => 'Kokios mano teisės darbe?';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'Pavojinga zona';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'Ištrinti visam laikui';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'Įveskite $email, kad patvirtintumėte';
   }
 
   @override
   String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+      'Paskyra ištrinta. Apgailestaujame, kad išeinate.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'Tai visam laikui ištrins jūsų paskyrą, visas bylas, juodraščius, saugyklos dokumentus ir pokalbių istoriją. Šio veiksmo anuliuoti negalima.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'Trinama paskyra…';
 
   @override
   String get contractReviewTitle => 'Sutarties peržiūra';

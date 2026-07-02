@@ -1713,7 +1713,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      '¡Hola! Soy Advocat, tu asistente legal de IA. Proporciono información jurídica, no asesoramiento legal. ¿En qué cuestión legal puedo ayudarte?';
+      '¡Hola! Soy Advocat, su asistente legal de IA. Proporciono información jurídica, no asesoramiento legal. ¿En qué cuestión legal puedo ayudarle?';
 
   @override
   String get copySummary => 'Copiar resumen';
@@ -2202,7 +2202,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get rightInheritanceWill =>
-      'Tienes derecho a otorgar testamento disponiendo de tus bienes; los testamentos notariales tienen la mayor fuerza legal';
+      'Tiene derecho a otorgar testamento disponiendo de sus bienes; los testamentos notariales tienen la mayor fuerza legal';
 
   @override
   String get rightInheritanceRenounce =>
@@ -2353,14 +2353,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get selectCategoryDescription =>
-      'Selecciona la categoría que mejor describe tu situación.';
+      'Seleccione la categoría que mejor describa su situación.';
 
   @override
-  String get tellUsAboutCase => 'Cuéntanos sobre tu caso';
+  String get tellUsAboutCase => 'Cuéntenos sobre su caso';
 
   @override
   String get aiHelpsUnderstand =>
-      'Esta información ayuda a nuestra IA a comprender mejor tu situación.';
+      'Esta información ayuda a nuestra IA a comprender mejor su situación.';
 
   @override
   String get caseTitleHint => 'p. ej., Recurso de permiso de residencia 2026';
@@ -2379,10 +2379,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get descriptionHint =>
-      'Describe brevemente tu situación. ¿Qué ocurrió? ¿Qué decisión se tomó?';
+      'Describa brevemente su situación. ¿Qué ocurrió? ¿Qué decisión se tomó?';
 
   @override
-  String get uploadFirstDocument => 'Sube tu primer documento';
+  String get uploadFirstDocument => 'Suba su primer documento';
 
   @override
   String get uploadDocumentDescription =>
@@ -2655,7 +2655,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get guestUser => 'Invitado';
 
   @override
-  String get howToUse => 'Como usar?';
+  String get howToUse => '¿Cómo se usa?';
 
   @override
   String get tutorialStep1Title => 'Asistente legal IA';
@@ -2679,7 +2679,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Tome fotos de documentos legales para analisis de IA y almacenamiento seguro.';
 
   @override
-  String get tutorialStep4Title => 'Empecemos!';
+  String get tutorialStep4Title => '¡Empecemos!';
 
   @override
   String get tutorialStep4Desc =>
@@ -3413,7 +3413,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get inboxConfirmSendBody =>
-      'Advocat enviará la respuesta preparada por la IA a través de tu Gmail conectado. Aún puedes revisar el contenido en la siguiente pantalla.';
+      'Advocat enviará la respuesta preparada por la IA a través de su Gmail conectado. Aún puede revisar el contenido en la siguiente pantalla.';
 
   @override
   String get inboxSendButton => 'Enviar';
@@ -3760,7 +3760,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get contractReviewsUpgradeBodyFree =>
-      'Has usado tu revisión de contrato gratuita. Actualiza para revisiones mensuales.';
+      'Ha usado su revisión de contrato gratuita. Actualice para revisiones mensuales.';
 
   @override
   String contractReviewsUpgradeBodyPaid(int used, int cap) {
@@ -3789,7 +3789,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Consigue un mes gratis. Regala un mes gratis.';
 
   @override
-  String get referralYourLink => 'TU ENLACE';
+  String get referralYourLink => 'SU ENLACE';
 
   @override
   String get referralCopyLink => 'Copiar enlace';
@@ -3820,7 +3820,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get referralEmailSubject =>
-      'Prueba Advocat — tu asistente legal con IA';
+      'Pruebe Advocat — su asistente legal con IA';
 
   @override
   String get referralLoadError =>
@@ -4271,7 +4271,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get draftingEmpty => 'Borrador vacío';
 
   @override
-  String get draftingPlaceholder => 'Empieza a escribir tu borrador…';
+  String get draftingPlaceholder => 'Empiece a escribir su borrador…';
 
   @override
   String get draftingDraftsList => 'Mis borradores';
@@ -4454,26 +4454,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chatExamplePrompt3 => '¿Cuáles son mis derechos en el trabajo?';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'Zona de riesgo';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'Eliminar definitivamente';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'Escriba $email para confirmar';
   }
 
   @override
   String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+      'Cuenta eliminada. Lamentamos que se marche.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'Esto elimina permanentemente su cuenta, todos los casos, borradores, documentos de la caja fuerte y el historial de chat. Esta acción no se puede deshacer.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'Eliminando cuenta…';
 
   @override
   String get contractReviewTitle => 'Revisión de contratos';
@@ -4504,7 +4504,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get referralInviteFriends => 'Invitar amigos';
 
   @override
-  String get referralYourCode => 'Tu código';
+  String get referralYourCode => 'Su código';
 
   @override
   String get referralCopiedToast => 'Código copiado al portapapeles';
@@ -4557,7 +4557,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get deadlineEmpty =>
-      'Aún no hay plazos. Los plazos se crean automáticamente a partir de tus correos y documentos, o añade uno manualmente con el botón +.';
+      'Aún no hay plazos. Los plazos se crean automáticamente a partir de sus correos y documentos, o añada uno manualmente con el botón +.';
 
   @override
   String get deadlineNewTitle => 'Nuevo plazo';
@@ -4619,7 +4619,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'La compra falló. Inténtalo de nuevo o contacta con soporte.';
 
   @override
-  String get iapRestoreSuccess => 'Tu suscripción ha sido restaurada.';
+  String get iapRestoreSuccess => 'Su suscripción ha sido restaurada.';
 
   @override
   String get iapRestoreNoActive =>
@@ -4636,14 +4636,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get changePassword => 'Cambiar contraseña';
 
   @override
-  String get changePasswordSubtitle => 'Actualiza la contraseña de tu cuenta';
+  String get changePasswordSubtitle => 'Actualice la contraseña de su cuenta';
 
   @override
   String get newPasswordTitle => 'Establecer una nueva contraseña';
 
   @override
   String get newPasswordHint =>
-      'Introduce y confirma una nueva contraseña para tu cuenta.';
+      'Introduzca y confirme una nueva contraseña para su cuenta.';
 
   @override
   String get newPasswordSave => 'Guardar nueva contraseña';

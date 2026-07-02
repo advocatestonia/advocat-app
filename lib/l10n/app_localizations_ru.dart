@@ -1716,7 +1716,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Привет! Я Advocat — твой AI-юридический ассистент. Я предоставляю правовую информацию, а не юридический совет. С чем я могу помочь?';
+      'Здравствуйте! Я Advocat — Ваш AI-юридический ассистент. Я предоставляю правовую информацию, а не юридический совет. С чем я могу помочь?';
 
   @override
   String get copySummary => 'Скопировать сводку';
@@ -3793,7 +3793,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get referralSubtitle =>
-      'Получи месяц бесплатно. Подари месяц бесплатно.';
+      'Получите месяц бесплатно. Подарите месяц бесплатно.';
 
   @override
   String get referralYourLink => 'ВАША ССЫЛКА';
@@ -3826,7 +3826,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get referralShareEmail => 'Отправить по email';
 
   @override
-  String get referralEmailSubject => 'Попробуй Advocat — твой ИИ-юрист';
+  String get referralEmailSubject => 'Попробуйте Advocat — Вашего ИИ-юриста';
 
   @override
   String get referralLoadError => 'Не удалось загрузить данные. Потяните вниз.';
@@ -3839,14 +3839,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get referralAfterReviewCta =>
-      'Понравилось? Пригласи друга — оба получите месяц бесплатно.';
+      'Понравилось? Пригласите друга — оба получите месяц бесплатно.';
 
   @override
   String get referralAntiFraud => 'До 12 успешных приглашений в год.';
 
   @override
   String get referralEmpty =>
-      'Приглашений пока нет. Отправь ссылку, чтобы начать.';
+      'Приглашений пока нет. Отправьте ссылку, чтобы начать.';
 
   @override
   String get referralRecentActivity => 'Недавняя активность';
@@ -3869,11 +3869,11 @@ class AppLocalizationsRu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: 'Ты пригласил $count друзей.',
-      many: 'Ты пригласил $count друзей.',
-      few: 'Ты пригласил $count друзей.',
-      one: 'Ты пригласил 1 друга.',
-      zero: 'Ты пока никого не пригласил.',
+      other: 'Вы пригласили $count друзей.',
+      many: 'Вы пригласили $count друзей.',
+      few: 'Вы пригласили $count друзей.',
+      one: 'Вы пригласили $count друга.',
+      zero: 'Вы пока никого не пригласили.',
     );
     return '$_temp0';
   }
@@ -3883,10 +3883,10 @@ class AppLocalizationsRu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count человек активировали.',
+      other: '$count человека активировали.',
       many: '$count человек активировали.',
       few: '$count человека активировали.',
-      one: '1 человек активировал.',
+      one: '$count человек активировал.',
       zero: 'Никто пока не активировал.',
     );
     return '$_temp0';
@@ -3897,10 +3897,10 @@ class AppLocalizationsRu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       months,
       locale: localeName,
-      other: 'Твой бонус: $months бесплатных месяцев.',
-      many: 'Твой бонус: $months бесплатных месяцев.',
-      few: 'Твой бонус: $months бесплатных месяца.',
-      one: 'Твой бонус: 1 бесплатный месяц.',
+      other: 'Ваш бонус: $months бесплатных месяца.',
+      many: 'Ваш бонус: $months бесплатных месяцев.',
+      few: 'Ваш бонус: $months бесплатных месяца.',
+      one: 'Ваш бонус: $months бесплатный месяц.',
       zero: 'Бонусы: пока ничего.',
     );
     return '$_temp0';
@@ -3908,22 +3908,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get referralNudgeMessage =>
-      'Нравится Advocat? Пригласи друга — оба получите месяц бесплатно.';
+      'Нравится Advocat? Пригласите друга — оба получите месяц бесплатно.';
 
   @override
   String get referralNudgeAction => 'Пригласить';
 
   @override
-  String get referralLandingTitle => 'Тебя пригласили в Advocat';
+  String get referralLandingTitle => 'Вас пригласили в Advocat';
 
   @override
   String referralLandingSubtitle(String inviterName) {
-    return '$inviterName пригласил тебя — получи первый месяц бесплатно.';
+    return '$inviterName пригласил(а) Вас — получите первый месяц бесплатно.';
   }
 
   @override
   String get referralLandingSubtitleGeneric =>
-      'Получи первый месяц Advocat Pro бесплатно.';
+      'Получите первый месяц Advocat Pro бесплатно.';
 
   @override
   String get referralLandingCta => 'Активировать месяц и зарегистрироваться';
@@ -3933,7 +3933,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get referralLandingFallback =>
-      'Эта ссылка истекла — но ты всё равно можешь попробовать Advocat бесплатно.';
+      'Эта ссылка истекла — но Вы всё равно можете попробовать Advocat бесплатно.';
 
   @override
   String get referralLandingBenefits =>
@@ -4156,13 +4156,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get intakeUrgentOpened => 'Чат открыт — черновик сохранён.';
 
   @override
-  String get panicCoachmark => 'Зажми, если сейчас нужна срочная помощь.';
+  String get panicCoachmark => 'Зажмите, если сейчас нужна срочная помощь.';
 
   @override
-  String get panicTitle => 'Что тебе сейчас нужно?';
+  String get panicTitle => 'Что Вам сейчас нужно?';
 
   @override
-  String get panicCardReadAloud => 'Зачитай это полицейскому';
+  String get panicCardReadAloud => 'Зачитайте это полицейскому';
 
   @override
   String get panicCardRecord => 'Записать разговор';
@@ -4346,7 +4346,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get draftingAiReviseInstructionHint =>
-      'например \"сделать более формальным\" или \"сократить\"';
+      'например «сделать более формальным» или «сократить»';
 
   @override
   String get draftingAiReviseRunButton => 'Создать переработку';
@@ -4603,7 +4603,7 @@ class AppLocalizationsRu extends AppLocalizations {
       other: 'осталось $count дней',
       many: 'осталось $count дней',
       few: 'осталось $count дня',
-      one: 'остался 1 день',
+      one: 'остался $count день',
       zero: 'сегодня',
     );
     return '$_temp0';

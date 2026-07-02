@@ -1106,7 +1106,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get mayNotQualifyDesc =>
-      'Bu tahmine göre devlet adli yardımına uygun olmayabilirsiniz.';
+      'Bu tahmine göre devlet adli yardımına uygun olmayabilirsiniz. Özel bir avukata veya hukuk kliniğine danışmayı düşünebilirsiniz.';
 
   @override
   String get couldNotLoadDeadlines => 'Süreler yüklenemedi';
@@ -1245,7 +1245,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get caseInfoUpdated => 'Dava bilgileri son güncelleme.';
+  String get caseInfoUpdated => 'Dava bilgileri güncellendi.';
 
   @override
   String get noEventsForFilter => 'Bu filtreye uyan olay yok';
@@ -1468,7 +1468,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get generatingDraftDesc =>
-      'YZ, dava detaylarınıza dayalı hukuki belge hazırlıyor.';
+      'YZ, dava detaylarınıza ve seçilen sorunlara dayanarak hukuki bir belge hazırlıyor.';
 
   @override
   String get failedToGenerateDraft =>
@@ -1481,7 +1481,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get copiedToClipboard => 'Panoya kopyalandı';
 
   @override
-  String get emailComingSoon => 'E-posta gönderimi yakında';
+  String get emailComingSoon =>
+      'Bağlı Gmail hesabınız üzerinden e-posta gönderin';
 
   @override
   String get reviewBeforeSending =>
@@ -1707,7 +1708,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get reportMileageFraudDesc =>
-      'Araç kontrol verilerine dayalı sahtekarlık raporu oluşturulacak.';
+      'Araç kontrol verilerine dayalı bir sahtekarlık raporu oluşturulacaktır. Daha ileri işlem için bir hukuki dava da açabilirsiniz.';
 
   @override
   String get reportAndOpenCase => 'Bildir ve dava aç';
@@ -1778,7 +1779,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get gdprFooter =>
-      'Verileriniz şifrelenir ve üçüncü taraflarla paylaşılmaz. Onayı geri çekebilir ve tüm verileri Ayarlardan silebilirsiniz.';
+      'Verileriniz şifrelenir ve güvenli bir şekilde işlenir. Hizmeti sunmak için güvenilir hizmet sağlayıcılar (yapay zeka işleme, bulut veritabanı) kullanıyoruz. Ayrıntılar için Gizlilik Politikamıza bakın. Onayı geri çekebilir ve tüm verileri Ayarlardan silebilirsiniz.';
 
   @override
   String get gdprConsentAiProcessing =>
@@ -2619,35 +2620,35 @@ class AppLocalizationsTr extends AppLocalizations {
   String get guestUser => 'Misafir';
 
   @override
-  String get howToUse => 'Nasil kullanilir?';
+  String get howToUse => 'Nasıl kullanılır?';
 
   @override
-  String get tutorialStep1Title => 'YZ Hukuk Asistani';
+  String get tutorialStep1Title => 'YZ Hukuk Asistanı';
 
   @override
   String get tutorialStep1Desc =>
-      'Herhangi bir hukuki soru sorun ve Estonya yasalarina dayali aninda yanitlar alin.';
+      'Herhangi bir hukuki soru sorun ve Estonya yasalarına dayalı anında yanıtlar alın.';
 
   @override
-  String get tutorialStep2Title => 'Haklarinizi Bilin';
+  String get tutorialStep2Title => 'Haklarınızı Bilin';
 
   @override
   String get tutorialStep2Desc =>
-      'Hukuki bilgileri konulara gore arayin — is, konut, tuketici haklari ve daha fazlasi.';
+      'Hukuki bilgileri konulara göre arayın — iş, konut, tüketici hakları ve daha fazlası.';
 
   @override
-  String get tutorialStep3Title => 'Belgeleri Tarayin';
+  String get tutorialStep3Title => 'Belgeleri Tarayın';
 
   @override
   String get tutorialStep3Desc =>
-      'Hukuki belgelerin fotografini cekin, YZ analizi ve guvenli depolama icin.';
+      'Hukuki belgelerin fotoğrafını çekin, YZ analizi ve güvenli depolama için.';
 
   @override
-  String get tutorialStep4Title => 'Baslayalim!';
+  String get tutorialStep4Title => 'Başlayalım!';
 
   @override
   String get tutorialStep4Desc =>
-      'Uygulamayi kesfedin ve haklarinizi koruyun. Tum veriler cihazinizda ozel kalir.';
+      'Uygulamayı keşfedin ve haklarınızı koruyun. Tüm veriler cihazınızda özel kalır.';
 
   @override
   String get advocatProTitle => 'Advocat Pro';
@@ -4397,26 +4398,26 @@ class AppLocalizationsTr extends AppLocalizations {
   String get chatExamplePrompt3 => 'İşyerindeki haklarım nelerdir?';
 
   @override
-  String get dangerZone => '[en] Danger zone';
+  String get dangerZone => 'Tehlikeli bölge';
 
   @override
-  String get deleteAccountConfirmButton => '[en] Delete forever';
+  String get deleteAccountConfirmButton => 'Kalıcı olarak sil';
 
   @override
   String deleteAccountConfirmHint(String email) {
-    return '[en] Type $email to confirm';
+    return 'Onaylamak için $email yazın';
   }
 
   @override
   String get deleteAccountSuccess =>
-      '[en] Account deleted. We\'re sorry to see you go.';
+      'Hesap silindi. Sizi kaybettiğimiz için üzgünüz.';
 
   @override
   String get deleteAccountWarning =>
-      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+      'Bu işlem hesabınızı, tüm davalarınızı, taslaklarınızı, kasa belgelerinizi ve sohbet geçmişinizi kalıcı olarak siler. Geri alınamaz.';
 
   @override
-  String get deletingAccount => '[en] Deleting account…';
+  String get deletingAccount => 'Hesap siliniyor…';
 
   @override
   String get contractReviewTitle => 'Sözleşme İncelemesi';
