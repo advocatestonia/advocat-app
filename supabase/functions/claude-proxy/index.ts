@@ -116,6 +116,7 @@ import {
   consumeLegalLookupLog,
   executeToolCalls,
   extractToolUseBlocks,
+  isServerTool,
 } from "./tool_handlers.ts";
 import {
   type AnthropicShapedResponse,
@@ -2454,6 +2455,16 @@ serve(
               { role: "assistant", content: result.content },
             ];
             let workingAssistantContent: unknown = result.content;
+            // Tracks the raw Anthropic response that produced the CURRENT
+            // `toolBlocks` batch (kept in lockstep with
+            // `workingAssistantContent` below). Used by the client-tool
+            // pass-through fix so we always return the response the
+            // model actually emitted, not a stale iteration-0 shell.
+            let latestResult: {
+              content?: unknown;
+              stop_reason?: string;
+              [key: string]: unknown;
+            } = result;
             let followUpResult: {
               content?: unknown;
               stop_reason?: string;
@@ -2465,6 +2476,62 @@ serve(
             while (iter < MAX_AGENT_ITERATIONS) {
               iter++;
               const isFinalIteration = iter >= MAX_AGENT_ITERATIONS;
+
+              // ── Client-tool pass-through (2026-07-02 fix) ─────────────────
+              // The Flutter client advertises ~30 "do things in the app"
+              // tools (create_deadline, navigate_to, change_language, …)
+              // that this server has never executed — only 8 tools are
+              // wired in tool_handlers.ts/executeSingleTool. Before this
+              // fix, a client-only tool_use hit executeSingleTool's
+              // `default:` case, which returned an is_error tool_result
+              // ("Unknown tool: <name>"). The model read that as a real
+              // failure and the app-action never ran — no approval card,
+              // no navigation, nothing. create_deadline/navigate_to/
+              // change_language/create_case were effectively dead for any
+              // caller that reaches this branch (agentic_loop.dart via
+              // ClaudeService.sendMessageWithTools's non-streaming path).
+              //
+              // Fix: if ANY tool_use block in this batch is not a tool we
+              // can execute ourselves, stop the server loop and hand the
+              // RAW Anthropic response straight back to the caller as
+              // plain JSON — the exact shape `_callApi` already expects
+              // (content[] + stop_reason). agentic_loop.dart's own while
+              // loop (lib/services/agentic_loop.dart:~183) reads
+              // stop_reason==='tool_use', finds the client tool by name,
+              // and either executes it immediately (read tools, via
+              // AssistantTools.execute) or pauses for the existing
+              // Approve/Decline UI (write tools, via its own
+              // AssistantTools.requiresApproval set) — so no client change
+              // is required, this fix is purely "stop swallowing the
+              // tool_use as an error".
+              //
+              // Mixed batches (server + client tools together) fall back to
+              // the same pass-through rather than partially executing the
+              // server tools — simpler and safer than reconciling two
+              // owners' results in one turn; the model can re-issue the
+              // server-tool calls on its next turn after the client tool
+              // resolves. This mirrors the write-tool interception's
+              // "halt on first non-executable tool" posture below.
+              const clientOnlyBlock = toolBlocks.find(
+                (b) => !isServerTool(b.name)
+              );
+              if (clientOnlyBlock) {
+                const claudeModelUsed =
+                  (body.model as string) ?? "claude-haiku-4-5-20251001";
+                const passthrough = {
+                  ...latestResult,
+                  citations: [],
+                  model_used: claudeModelUsed,
+                };
+                return new Response(JSON.stringify(passthrough), {
+                  status: 200,
+                  headers: {
+                    ...corsHeaders,
+                    "Content-Type": "application/json",
+                    "X-Advocat-Model-Used": claudeModelUsed,
+                  },
+                });
+              }
 
               // ── Day 4 (2026-05-27) — write-tool interception ─────────────
               // BEFORE executing any tool in this batch, check whether ANY
@@ -2673,6 +2740,7 @@ serve(
               // Otherwise, the model wants more tools. Append THIS assistant
               // turn to history and prepare next iteration.
               workingAssistantContent = iterResult.content;
+              latestResult = iterResult;
               workingMessages = [
                 ...workingMessages,
                 { role: "assistant", content: workingAssistantContent },

@@ -371,6 +371,35 @@ export const ASSISTANT_TOOLS = [
 ] as const;
 
 // =============================================================================
+// Server-tool membership — two agent-tool universes collide (2026-07-02 fix)
+// =============================================================================
+//
+// The Flutter client advertises a much larger `tools` array to Anthropic
+// than the 8 tools this file actually executes (see assistant_tools.dart /
+// tool_definitions.dart — ~30 "do things in the app" tools like
+// create_deadline, navigate_to, change_language, with client-side approval
+// cards). Anthropic doesn't know or care which side executes a tool; it
+// just calls whatever name/schema it was given.
+//
+// executeSingleTool's `default:` case used to answer any non-server tool
+// with `{is_error:true, content:"Unknown tool: <name>"}`, which the model
+// would read as a real failure and either retry or apologise — the
+// client-only tool never actually ran and no approval card ever appeared.
+//
+// SERVER_TOOL_NAMES lets index.ts's agent loop distinguish "I can execute
+// this myself" from "this belongs to the client" BEFORE calling
+// executeToolCalls, so it can hand the raw tool_use response back to the
+// client instead of executing or erroring it. Derived from ASSISTANT_TOOLS
+// so the two can never drift out of sync.
+export const SERVER_TOOL_NAMES: ReadonlySet<string> = new Set(
+  ASSISTANT_TOOLS.map((t) => t.name)
+);
+
+export function isServerTool(name: string): boolean {
+  return SERVER_TOOL_NAMES.has(name);
+}
+
+// =============================================================================
 // Tool input types
 // =============================================================================
 
