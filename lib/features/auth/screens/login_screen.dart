@@ -244,10 +244,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             languageCode: langCode,
           ),
 
-          // -- Logo --
+          // -- Logo (original Advocat shield PNG, whitespace-trimmed so it
+          //    fills the frame; restored 2026-07-03 after a prior design pass
+          //    had swapped it for a hand-coded SVG reconstruction) --
           Center(
-            child: SvgPicture.asset(
-              'assets/images/shield.svg',
+            child: Image.asset(
+              'assets/images/logo_shield_tight.png',
               width: logoSize,
               height: logoSize,
               fit: BoxFit.contain,

@@ -1875,11 +1875,14 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Advocat shield logo (vector — no PNG whitespace to clip)
-          SvgPicture.asset(
-            'assets/images/shield.svg',
+          // Advocat shield logo — original PNG (whitespace-trimmed variant so
+          // there is no padding to clip; restored 2026-07-03 after a prior
+          // design pass had swapped the original for an SVG reconstruction).
+          Image.asset(
+            'assets/images/logo_shield_tight.png',
             width: 130,
             height: 130,
+            fit: BoxFit.contain,
           ),
           Text(
             title,
