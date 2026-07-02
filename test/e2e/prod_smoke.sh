@@ -127,13 +127,17 @@ check "main.dart.js is 200" \
   "curl_code $BASE_URL/main.dart.js" \
   "200"
 
-# 2. main.dart.js size guard (5-10.5 MB — anything smaller means env vars missing)
+# 2. main.dart.js size guard (5-12 MB — anything smaller means env vars missing).
+# Upper bound raised 10.5M -> 12M on 2026-07-03: the full 17-locale translation
+# + native-QA pass legitimately grew the release bundle to ~10.86M (multi-byte
+# scripts ar/fa/uk/ru + previously-untranslated blocks now translated). Kept in
+# sync with canary-deploy.sh's build-size guard.
 SIZE=$(curl -sI --max-time "$TIMEOUT" $BASE_URL/main.dart.js | grep -i '^content-length' | awk '{print $2}' | tr -d '\r')
-if [[ -n "$SIZE" && "$SIZE" -ge 5000000 && "$SIZE" -le 10500000 ]]; then
-  printf "\033[1;32m  ✓\033[0m %-55s [%s bytes]\n" "main.dart.js size in 5-10.5 MB" "$SIZE"
+if [[ -n "$SIZE" && "$SIZE" -ge 5000000 && "$SIZE" -le 12000000 ]]; then
+  printf "\033[1;32m  ✓\033[0m %-55s [%s bytes]\n" "main.dart.js size in 5-12 MB" "$SIZE"
   PASS=$((PASS+1))
 else
-  printf "\033[1;31m  ✗\033[0m %-55s [size=%s]\n" "main.dart.js size in 5-10.5 MB" "$SIZE"
+  printf "\033[1;31m  ✗\033[0m %-55s [size=%s]\n" "main.dart.js size in 5-12 MB" "$SIZE"
   FAIL=$((FAIL+1))
   FAILURES+=("main.dart.js size out of range ($SIZE)")
 fi
