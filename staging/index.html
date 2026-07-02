@@ -2920,7 +2920,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <a href="/terms.html" data-i18n="foot.terms">Terms</a>
         <a href="/privacy.html" data-i18n="foot.privacy">Privacy</a>
         <a href="/privacy.html#gdpr" data-i18n="foot.gdpr">GDPR</a>
-        <a href="#" id="advManageCookies" data-i18n="cookie.manage" onclick="try{localStorage.removeItem('advocat_cookie_consent_v1');}catch(e){} location.reload(); return false;">Manage cookies</a>
+        <a href="#" id="advManageCookies" data-i18n="cookie.manage" onclick="if(window.advocatCookieConsent&amp;&amp;window.advocatCookieConsent.open){window.advocatCookieConsent.open();}return false;">Manage cookies</a>
       </div>
     </div>
     <div class="foot-bot">
@@ -2946,7 +2946,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     border-radius: 14px;
     box-shadow: 0 10px 30px rgba(0,0,0,.35);
     padding: 18px 20px;
-    font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    font: 14px/1.45 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     display: none;
   }
   #advCookieBanner.show { display: block; }
