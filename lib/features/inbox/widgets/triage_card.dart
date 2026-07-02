@@ -372,6 +372,8 @@ class _TriageCardState extends ConsumerState<TriageCard>
                   color: AppColors.textSecondary,
                   height: 1.35,
                 ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
             if (t.senderEmail.isNotEmpty) ...[

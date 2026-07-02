@@ -369,12 +369,24 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
         child: FadeTransition(
           opacity: _fadeAnimation,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  // -- Logo (symmetry with login_screen.dart) --
+                  Center(
+                    child: Image.asset(
+                      'assets/images/logo_shield_tight.png',
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.contain,
+                      excludeFromSemantics: true,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
                   // Reduced top spacing (was xxl = 48)
                   Text(
                     l.createAccount,

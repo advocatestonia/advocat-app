@@ -625,7 +625,7 @@ class _DeadlineCard extends StatelessWidget {
                   deadline.sourceDocumentId != null) ...[
                 const SizedBox(height: AppSpacing.sm),
                 Padding(
-                  padding: const EdgeInsets.only(left: 72),
+                  padding: const EdgeInsets.only(left: 76),
                   child: Row(
                     children: [
                       Icon(_sourceIcon(deadline.source),
