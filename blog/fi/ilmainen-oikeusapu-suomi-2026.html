@@ -180,7 +180,7 @@
                 "name": "Onko Advocat AI todella ilmainen?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Advocat AI toimii freemium-mallilla: 7 viestiä kuukaudessa ilmaiseksi, ja sen jälkeen maksullinen tilaus alkaen 19,99 €/kk. Ilmaisversio riittää yleensä yhden lyhyen oikeudellisen kysymyksen käsittelyyn. Palvelu toimii 17 kielellä, mukaan lukien suomi, viro ja venäjä. Advocat ei korvaa asianajajaa, mutta auttaa ymmärtämään oikeuksia ja valmistautumaan asianajajan tapaamiseen."
+                    "text": "Advocat AI toimii freemium-mallilla: 25 viestiä kuukaudessa ilmaiseksi, ja sen jälkeen maksullinen tilaus alkaen 19,99 €/kk. Ilmaisversio riittää yleensä yhden lyhyen oikeudellisen kysymyksen käsittelyyn. Palvelu toimii 17 kielellä, mukaan lukien suomi, viro ja venäjä. Advocat ei korvaa asianajajaa, mutta auttaa ymmärtämään oikeuksia ja valmistautumaan asianajajan tapaamiseen."
                 }
             }
         ]
@@ -189,6 +189,9 @@
 <!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
      All vendor scripts are loaded conditionally inside _analytics.js
      after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Cookie consent (W2-13): per-jurisdiction granular banner. MUST load before
+     _utm_capture.js and _analytics.js so consent gates every pixel. -->
+<script src="/_cookie_consent.js" defer></script>
 <script src="/_utm_capture.js"></script>
 <script src="/_analytics.js" defer></script>
 </head>
@@ -429,7 +432,7 @@
             <ul>
                 <li>Toimii <strong>17 kielellä</strong> — mukaan lukien suomi, viro, venäjä, englanti ja ruotsi</li>
                 <li>Käyttää Suomen ja Viron lakeja ja oikeuskäytäntöä</li>
-                <li>Antaa <strong>7 viestiä kuukaudessa ilmaiseksi</strong>, jonka jälkeen maksullinen Counsel-tilaus alkaen 19,99 €/kk</li>
+                <li>Antaa <strong>25 viestiä kuukaudessa ilmaiseksi</strong>, jonka jälkeen maksullinen Counsel-tilaus alkaen 19,99 €/kk</li>
                 <li>Analysoi dokumentteja (PDF) — esim. irtisanomisilmoituksia, sopimuksia, hallintopäätöksiä</li>
                 <li>Auttaa valmistautumaan asianajajan tapaamiseen</li>
             </ul>
@@ -463,7 +466,7 @@
 
             <div class="cta-box">
                 <h3>Tarvitsetko oikeudellista neuvontaa nyt?</h3>
-                <p>Advocat AI selittää tilanteesi suomeksi, viroksi tai 15 muulla kielellä. Ilmaista: 7 viestiä kuukaudessa, sen jälkeen 19,99 €/kk. Toimii 24/7.</p>
+                <p>Advocat AI selittää tilanteesi suomeksi, viroksi tai 15 muulla kielellä. Ilmaista: 25 viestiä kuukaudessa, sen jälkeen 19,99 €/kk. Toimii 24/7.</p>
                 <a href="/app.html" class="cta-btn">Kokeile Advocatia ilmaiseksi &rarr;</a>
             </div>
 
@@ -501,7 +504,7 @@
 
             <div class="faq-item">
                 <h3>7. Onko Advocat AI todella ilmainen?</h3>
-                <p>Advocat AI toimii freemium-mallilla: <strong>7 viestiä kuukaudessa ilmaiseksi</strong>, sen jälkeen Counsel-tilaus alkaen 19,99 €/kk. Ilmaisversio riittää yleensä yhden lyhyen kysymyksen käsittelyyn. Palvelu toimii 17 kielellä.</p>
+                <p>Advocat AI toimii freemium-mallilla: <strong>25 viestiä kuukaudessa ilmaiseksi</strong>, sen jälkeen Counsel-tilaus alkaen 19,99 €/kk. Ilmaisversio riittää yleensä yhden lyhyen kysymyksen käsittelyyn. Palvelu toimii 17 kielellä.</p>
             </div>
         </div>
 

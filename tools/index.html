@@ -136,6 +136,9 @@
 <!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
      All vendor scripts are loaded conditionally inside _analytics.js
      after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Cookie consent (W2-13): per-jurisdiction granular banner. MUST load before
+     _utm_capture.js and _analytics.js so consent gates every pixel. -->
+<script src="/_cookie_consent.js" defer></script>
 <script src="/_utm_capture.js"></script>
 <script src="/_analytics.js" defer></script>
 </head>
@@ -242,7 +245,7 @@
                 <div class="why-card">
                     <div class="icon">🤝</div>
                     <h3 data-i18n="why.card4.h">Advocat-i osa</h3>
-                    <p data-i18n="why.card4.p">Kui vajad reaalset õigusabi, on Advocat AI advokaat alati 1 klõpsu kaugusel.</p>
+                    <p data-i18n="why.card4.p">Kui vajad reaalset õigusabi, on Advocat AI-õigusassistent alati 1 klõpsu kaugusel.</p>
                 </div>
             </div>
         </div>
@@ -311,7 +314,7 @@
         'why.card1.h': 'Privaatne', 'why.card1.p': 'Kõik andmed jäävad sinu brauserisse. Midagi ei saadeta serverisse.',
         'why.card2.h': 'Sekundiga', 'why.card2.p': 'Ilma registreerimiseta, kohese tulemusega. Töötab ka telefonis.',
         'why.card3.h': 'Seadusepõhine', 'why.card3.p': 'Põhineb Eesti seaduste hetkel kehtivatel sätetel (PKS, TLS, VÕS, HMS).',
-        'why.card4.h': 'Advocat-i osa', 'why.card4.p': 'Kui vajad reaalset õigusabi, on Advocat AI advokaat alati 1 klõpsu kaugusel.',
+        'why.card4.h': 'Advocat-i osa', 'why.card4.p': 'Kui vajad reaalset õigusabi, on Advocat AI-õigusassistent alati 1 klõpsu kaugusel.',
         'cta.title': 'Vajad reaalset õigusabi?',
         'cta.body': 'Tööriistad annavad hinnangu. Advocat AI annab täieliku lahendi: koostab hagid, dokumendid, kaebused; analüüsib sinu olukorda; leiab kohtupraktika viited; aitab juriidilist keelt selgitada. 17 keeles.',
         'cta.btn': 'Proovi Advocat tasuta →',

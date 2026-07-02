@@ -5,14 +5,26 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
+
+<!--
+  Security hardening — F2/F4/F10 (WAVE 1, 2026-05-28).
+  Phase 1 CSP per audit `docs/security_audit_2026-05-28/findings/03_client_security.md`.
+  'unsafe-inline' is unavoidable today (Flutter CanvasKit emits inline styles,
+  cookie banner uses inline onclick handlers, landing has inline GA loader).
+  Phases 2-3 (extract inline JS + nonces) tracked separately.
+  Referrer-Policy = strict-origin-when-cross-origin (NOT no-referrer) so
+  Stripe checkout return validation still works while case UUIDs no longer
+  leak to Riigi Teataja / Finlex / ECHR via the Referer header.
+-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://analytics.tiktok.com https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.supabase.co https://www.googletagmanager.com https://www.google-analytics.com https://www.facebook.com https://analytics.tiktok.com; connect-src 'self' https://okgnkucgwsytsondrjye.supabase.co https://*.functions.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.googletagmanager.com https://connect.facebook.net https://analytics.tiktok.com https://api.stripe.com https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://*.ingest.de.sentry.io; worker-src 'self' blob:; frame-src https://js.stripe.com https://hooks.stripe.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://checkout.stripe.com; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Advocat — AI õigusabi · Defend Your Rights</title>
+<title>Advocat - AI Legal Assistant for Estonia and EU</title>
 <meta name="description" content="AI-powered legal assistant for Estonia and the EU. Get instant legal answers in 17 languages with real Estonian law citations. Free to start. €19.99/mo Pro. 24/7 — no waiting for a lawyer.">
 <meta name="robots" content="index,follow">
-<!-- TODO: Owner — add Google Search Console verification meta tag here after registering at https://search.google.com/search-console -->
-<!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE"> -->
-<!-- TODO: Owner — add Bing Webmaster Tools verification at https://www.bing.com/webmasters -->
-<!-- <meta name="msvalidate.01" content="YOUR_VERIFICATION_CODE"> -->
   <link rel="canonical" href="https://advocat.ee/">
   <link rel="alternate" hreflang="et" href="https://advocat.ee/">
   <link rel="alternate" hreflang="en" href="https://advocat.ee/?lang=en">
@@ -134,14 +146,57 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico?v=premium">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=premium">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=premium">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
-     All vendor scripts are loaded conditionally inside _analytics.js
-     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Self-hosted Inter Variable (was Google Fonts × 6 weights = ~120KB + 2 RTTs).
+     Single 344KB woff2 covers wght 100-900. font-display: swap prevents FOIT. -->
+<link rel="preload" href="/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="dns-prefetch" href="//okgnkucgwsytsondrjye.supabase.co">
+<link rel="preconnect" href="https://okgnkucgwsytsondrjye.supabase.co" crossorigin>
+<style>
+  @font-face {
+    font-family: 'Inter';
+    src: url('/assets/fonts/InterVariable.woff2') format('woff2-variations'),
+         url('/assets/fonts/InterVariable.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
+<!-- Geofence: redirects DACH/FR/BE/IT/PT/LU/ES B2C traffic to /b2b-only.html.
+     MUST load before _utm_capture.js and _analytics.js (and before signup CTAs)
+     so the redirect happens before any pixel fires or any sign-up form binds.
+     Audit ref: docs/security_audit_2026-05-28/findings/{10_dach,11_romance_eu}_legal.md -->
+<script src="/_geofence.js"></script>
+<!-- WAVE 2 W2-13 (2026-05-28): per-jurisdiction cookie consent. Selects a
+     CNIL / AEPD / Garante / TTDSG / EDPB profile from window.advocatGeo,
+     renders a granular banner (Necessary / Analytics / Marketing /
+     Functional) with equal-weight Accept-all + Reject-all + Manage buttons,
+     persists choice in localStorage "advocat_cookie_consent_v2", and
+     dispatches per-purpose events (advocat:consent:analytics / :marketing /
+     :functional) plus a v1-compat "advocat:cookie-consent" event.
+     Audit refs: docs/security_audit_2026-05-28/findings/{10_dach,11_romance_eu}_legal.md
+     Migration: hides legacy inline #advCookieBanner via body.advCcV2Active.
+     Smoke: docs/security_audit_2026-05-28/fixes/wave2_cookie_consent_smoke.html -->
+<script src="/_cookie_consent.js" defer></script>
+<!-- Analytics: GA4 + Meta + TikTok pixels (granular consent-gated) + UTM capture.
+     _analytics.js listens for advocat:consent:analytics (loads GA4) and
+     advocat:consent:marketing (loads Meta + TikTok pixels) — separate
+     purposes per CNIL/AEPD/Garante. v1 fallback still honoured. -->
 <script src="/_utm_capture.js"></script>
 <script src="/_analytics.js" defer></script>
+<!-- Sentry browser SDK: JS error monitoring + Web Vitals.
+     _sentry_config.js sets window.__SENTRY_DSN__ (placeholder is sed-replaced
+     by scripts/canary-deploy.sh at deploy time). The CDN bundle is pinned
+     to 8.42.0 with SRI to prevent CDN tampering. _sentry_init.js attaches
+     a PII-scrubbing beforeSend + beforeBreadcrumb pair (drops emails,
+     case numbers, OAuth tokens, HETU/isikukood, request bodies, cookies).
+     Replay only fires on errors (replaysSessionSampleRate=0) and masks
+     all text/inputs/media. Falls back to a no-op if DSN unset. -->
+<script src="/_sentry_config.js"></script>
+<script src="https://browser.sentry-cdn.com/8.42.0/bundle.tracing.replay.min.js"
+        integrity="sha384-1iMWRnx+u4Ya0s0sszeZUlZe15phFiYR+oG3VwP4dnVbyRNKmXTy1oA2EMnohM1F"
+        crossorigin="anonymous"
+        defer></script>
+<script src="/_sentry_init.js" defer></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -262,17 +317,26 @@ img, svg { display: block; max-width: 100%; }
 .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
 /* .btn-hero / .btn-hero-out — defined inside hero block below */
 
-/* Language dropdown */
-.lang-wrap { position: relative; }
-.lang-btn { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-height: 40px; transition: all .15s; background: #fff; display: inline-flex; align-items: center; gap: 6px; }
+/* Language dropdown (a.k.a. lang-switcher) */
+.lang-switcher, .lang-wrap { position: relative; }
+.lang-btn { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-height: 40px; transition: all .15s; background: #fff; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
 .lang-btn:hover { border-color: var(--teal); color: var(--teal); }
-.lang-btn .caret { font-size: 9px; opacity: .55; }
-.lang-menu { position: absolute; top: calc(100% + 6px); right: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px -8px rgba(15,27,53,.18); padding: 6px; min-width: 180px; max-height: 360px; overflow-y: auto; z-index: 200; display: none; }
-.lang-menu.open { display: block; }
-.lang-menu button { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 6px; font-size: 13.5px; color: var(--text); font-weight: 500; transition: background .15s; }
-.lang-menu button:hover { background: var(--bg2); }
+.lang-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.lang-btn .lang-globe { width: 14px; height: 14px; opacity: .7; }
+.lang-btn .lang-flag { font-size: 14px; line-height: 1; }
+.lang-btn .caret { font-size: 9px; opacity: .55; transition: transform .2s ease-out; }
+.lang-btn[aria-expanded="true"] .caret { transform: rotate(180deg); }
+.lang-menu { position: absolute; top: calc(100% + 6px); right: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px -8px rgba(15,27,53,.18); padding: 6px; min-width: 200px; max-height: 360px; overflow-y: auto; z-index: 200; display: none; opacity: 0; transform: translateY(-4px); transition: opacity .2s ease-out, transform .2s ease-out; }
+.lang-menu.open { display: block; opacity: 1; transform: translateY(0); }
+.lang-menu button { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 6px; font-size: 13.5px; color: var(--text); font-weight: 500; transition: background .15s; cursor: pointer; gap: 10px; }
+.lang-menu button:hover, .lang-menu button:focus-visible { background: var(--bg2); outline: none; }
 .lang-menu button.active { background: rgba(13,148,136,.08); color: var(--teal); }
+.lang-menu button .lang-flag { font-size: 16px; line-height: 1; flex-shrink: 0; }
+.lang-menu button .lang-label { flex: 1; text-align: left; }
 .lang-menu .lang-code { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: var(--faint); }
+@media (max-width: 480px) {
+  .lang-menu { position: fixed; left: 12px; right: 12px; top: 64px; min-width: 0; }
+}
 
 /* ── PROMO BANNER ── */
 .promo-banner { background: linear-gradient(135deg, var(--navy), #1a3a6e); color: #fff; padding: 9px 16px; text-align: center; font-size: 13px; font-weight: 500; }
@@ -342,6 +406,156 @@ img, svg { display: block; max-width: 100%; }
   100% { transform: translate(-50%, 14px); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .hero-scroll-hint .hero-scroll-dot { animation: none; } }
+
+/* Hero secondary CTA — text-only "See pricing" */
+.hero-cta-text {
+  display: inline-flex; align-items: center;
+  height: 44px; padding: 0 6px;
+  font-size: 14.5px; font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .15s ease;
+}
+.hero-cta-text:hover { color: var(--teal); }
+.hero-cta-text::after { content: ' →'; opacity: .6; }
+
+/* ── FOUNDER STORY (navy bg, cream text) ── */
+.founder-section {
+  background: linear-gradient(180deg, #0F1B35 0%, #1A2B4A 100%);
+  color: #F0EEEB;
+  padding: 88px 0;
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.founder-card {
+  max-width: 880px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 36px;
+  align-items: start;
+}
+.founder-avatar {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.35), 0 0 0 4px rgba(13,148,136,.18);
+  flex-shrink: 0;
+}
+.founder-avatar svg, .founder-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.founder-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(13,148,136,.16);
+  color: #14B8A6;
+  border: 1px solid rgba(13,148,136,.32);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 11.5px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.founder-text h2 {
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: #F0EEEB;
+  margin: 0 0 18px;
+}
+.founder-quote {
+  font-size: 17px;
+  line-height: 1.65;
+  color: rgba(240,238,235,.9);
+  font-style: italic;
+  margin: 0 0 20px;
+  padding: 0;
+  border: none;
+  max-width: 640px;
+}
+.founder-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #F0EEEB;
+  line-height: 1.55;
+}
+.founder-name small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(240,238,235,.6);
+  margin-top: 4px;
+}
+@media (max-width: 720px) {
+  .founder-section { padding: 56px 0; }
+  .founder-card { grid-template-columns: 1fr; gap: 20px; text-align: left; }
+  .founder-avatar { width: 88px; height: 88px; }
+  .founder-avatar svg { width: 88px; height: 88px; }
+  .founder-quote { font-size: 15.5px; }
+}
+
+/* ── TESTIMONIALS (cream cards) ── */
+.testimonials-trust {
+  background: #F0EEEB;
+  padding: 72px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.testimonials-trust .section-label {
+  font-size: 11.5px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--teal2);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.testimonials-trust h2 {
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin: 0 0 36px;
+}
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.testimonial {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 22px;
+  margin: 0;
+  box-shadow: 0 2px 12px rgba(15,27,53,.04);
+  display: flex; flex-direction: column;
+  gap: 14px;
+}
+.testimonial blockquote {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
+  font-style: italic;
+}
+.testimonial figcaption {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-top: auto;
+}
+.trust-note {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 32px auto 0;
+  max-width: 640px;
+  line-height: 1.55;
+}
+@media (max-width: 900px) {
+  .testimonial-grid { grid-template-columns: 1fr; max-width: 520px; }
+  .testimonials-trust { padding: 56px 0; }
+}
 
 /* ── CHAT CARD ── */
 .chat-card { background: #fff; border-radius: 16px; box-shadow: 0 24px 64px -16px rgba(15,27,53,.16), 0 4px 16px -4px rgba(15,27,53,.08); overflow: hidden; border: 1px solid var(--line); max-height: 440px; display: flex; flex-direction: column; }
@@ -934,6 +1148,38 @@ img, svg { display: block; max-width: 100%; }
 
 /* ── PRICING ── */
 .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 56px; }
+
+/* ── PRICING COMPARE TABLE (feature parity) ── */
+.pricing-compare-section { background: var(--bg2); }
+.pricing-compare-wrap { margin-top: 32px; border: 1px solid rgba(15, 27, 53, .08); border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 1px 3px rgba(15, 27, 53, .04); }
+.pricing-compare-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.pricing-compare-table { width: 100%; border-collapse: collapse; font-size: 14.5px; color: var(--navy); min-width: 640px; }
+.pricing-compare-table thead th { padding: 22px 18px 18px; background: #FAFBFC; border-bottom: 1.5px solid rgba(15, 27, 53, .08); text-align: center; font-weight: 600; color: var(--navy); vertical-align: top; }
+.pricing-compare-table thead th:first-child { text-align: left; background: #fff; }
+.pricing-compare-table thead .pcmp-plan-name { font-size: 18px; letter-spacing: -.01em; }
+.pricing-compare-table thead .pcmp-plan-price { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 4px; }
+.pricing-compare-table thead .pcmp-plan-price strong { color: var(--navy); font-weight: 700; font-size: 15px; }
+.pricing-compare-table thead .pcmp-col-featured { position: relative; background: linear-gradient(180deg, rgba(13, 148, 136, .06) 0%, rgba(13, 148, 136, .02) 100%); }
+.pricing-compare-table thead .pcmp-col-featured::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--teal); }
+.pricing-compare-table thead .pcmp-badge { display: inline-block; background: var(--teal); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; margin-bottom: 8px; }
+.pricing-compare-table tbody td { padding: 14px 18px; border-bottom: 1px solid rgba(15, 27, 53, .05); text-align: center; vertical-align: middle; }
+.pricing-compare-table tbody td:first-child { text-align: left; font-weight: 500; color: var(--navy); }
+.pricing-compare-table tbody tr:last-child td { border-bottom: none; }
+.pricing-compare-table tbody tr:nth-child(even) td { background: rgba(15, 27, 53, .015); }
+.pricing-compare-table tbody tr:nth-child(even) td.pcmp-cell-featured { background: rgba(13, 148, 136, .045); }
+.pricing-compare-table tbody td.pcmp-cell-featured { background: rgba(13, 148, 136, .025); }
+.pricing-compare-table .pcmp-check { color: var(--teal); font-weight: 700; font-size: 16px; }
+.pricing-compare-table .pcmp-dash { color: #C7CBD3; font-weight: 600; }
+.pricing-compare-table .pcmp-strong { font-weight: 600; color: var(--navy); }
+.pricing-compare-table .pcmp-section-row td { background: #F8F9FA !important; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; padding: 14px 18px 10px; text-align: left; }
+.pricing-compare-foot { padding: 18px 22px; background: #FAFBFC; border-top: 1px solid rgba(15, 27, 53, .06); font-size: 12.5px; color: var(--muted); text-align: center; line-height: 1.55; }
+.pricing-compare-foot strong { color: var(--navy); }
+@media (max-width: 768px) {
+  .pricing-compare-table { font-size: 13px; min-width: 560px; }
+  .pricing-compare-table thead th { padding: 16px 12px 14px; }
+  .pricing-compare-table tbody td { padding: 12px 12px; }
+}
+
 .plan {
   --plan-ease: cubic-bezier(.2,.8,.3,1);
   border-radius: 20px; padding: 30px 28px 28px; border: 1.5px solid var(--line);
@@ -1727,11 +1973,13 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
       </ul>
       <div class="nav-actions">
-        <div class="lang-wrap">
-          <button class="lang-btn" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
-            <span id="lang-current">EN</span><span class="caret">▾</span>
+        <div class="lang-wrap lang-switcher" id="langSwitcher">
+          <button class="lang-btn" id="lang-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Change language" aria-controls="lang-menu">
+            <svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span class="lang-flag" id="lang-flag" aria-hidden="true"></span>
+            <span id="lang-current">EN</span><span class="caret" aria-hidden="true">▾</span>
           </button>
-          <div class="lang-menu" id="lang-menu" role="menu"></div>
+          <ul class="lang-menu" id="lang-menu" role="listbox" aria-label="Languages"></ul>
         </div>
         <a class="btn btn-ghost nav-action-desktop" href="/app.html" data-i18n="nav.login">Sign in</a>
         <a class="btn btn-primary nav-action-desktop" href="/app.html" data-i18n="nav.cta">Try free</a>
@@ -1763,15 +2011,15 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div class="hero-grid">
       <div>
         <div class="hero-eyebrow" data-i18n="hero.eyebrow">AI LEGAL ASSISTANT · 2026</div>
-        <h1 data-i18n-html="hero.title">Legal <em>AI</em> built for Estonia and the EU.</h1>
-        <p class="hero-sub" data-i18n="hero.sub">Citations to statutes and case law, draft correspondence ready for your review, and case material organization — with multilingual support.</p>
+        <h1 data-i18n-html="hero.title" data-i18n-key="heroH1Ru">Facing deportation, a fine, or wrongful termination?<br>Advocat fights for you — 24/7.</h1>
+        <p class="hero-sub" data-i18n="hero.sub">Legal AI that understands immigrant pain — because we have been through it ourselves.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary btn-hero" href="/app.html" data-i18n="hero.primary">Try free →</a>
-          <a class="btn btn-hero-out" href="#how" data-i18n="hero.secondary">See an example</a>
+          <a class="btn btn-primary btn-hero" href="/app.html" data-i18n="hero.primary" data-cta="hero-primary-free">Try Advocat free →</a>
+          <a class="hero-cta-text" href="#pricing" data-i18n="hero.secondary">See pricing</a>
         </div>
         <p class="hero-disclaimer" data-i18n="hero.disclaimer">Information service. Not legal advice and not a substitute for a sworn advocate (vandeadvokaat) regulated under the Estonian Bar Association Act.</p>
         <div class="hero-trust">
-          <span data-i18n="hero.trust1">7 free messages — no card</span>
+          <span data-i18n="hero.trust1">25 free messages — no card</span>
           <span data-i18n="hero.trust2">Cited sources</span>
           <span data-i18n="hero.trust3">EU GDPR · servers in Frankfurt</span>
         </div>
@@ -1782,7 +2030,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <div class="chat-header">
           <div class="chat-header-l">
             <div class="chat-avatar">
-              <img src="/blog/logo_shield.png" alt="">
+              <img src="/blog/logo_shield.png" alt="" loading="lazy" decoding="async">
             </div>
             <div>
               <div class="chat-name">Advocat</div>
@@ -1803,6 +2051,58 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     </div>
   </div>
   <div class="hero-scroll-hint" id="hero-scroll-hint" aria-hidden="true"><span class="hero-scroll-dot"></span></div>
+</section>
+
+<!-- ── FOUNDER STORY ── -->
+<!-- TODO(owner): replace founder-avatar placeholder with real /web/founder-sulga.jpg portrait when available -->
+<section class="founder-section" id="why" aria-labelledby="founder-heading">
+  <div class="container">
+    <div class="founder-card">
+      <div class="founder-avatar" aria-hidden="true">
+        <!-- Placeholder: navy circle with DS initials. Owner: replace this <div> with <img src="founder-sulga.jpg" alt="Dmitri Sulga, Advocat founder"> -->
+        <svg viewBox="0 0 200 200" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dmitri Sulga portrait placeholder">
+          <circle cx="100" cy="100" r="100" fill="#0B7A70"/>
+          <text x="100" y="118" font-family="Inter, system-ui, sans-serif" font-size="72" font-weight="800" fill="#F0EEEB" text-anchor="middle" letter-spacing="-2">DS</text>
+        </svg>
+      </div>
+      <div class="founder-text">
+        <div class="founder-eyebrow" data-i18n="founder.eyebrow">WHY ADVOCAT EXISTS</div>
+        <h2 id="founder-heading" data-i18n="founder.heading">Built by people who lived this.</h2>
+        <blockquote class="founder-quote" data-i18n-html="founder.quote">
+          “December 2025. Helsinki. Police escorted my wife to the Eckerö Line ferry. Migri called it ‘voluntary return.’ We had paid €300 for a hotel that night.<br><br>
+          Six months later, our case is at the Supreme Administrative Court of Finland (KHO, application 200/2026). I built Advocat so other immigrants don't have to learn FI law from a Migri letter at 6&nbsp;pm on a Friday.”
+        </blockquote>
+        <div class="founder-name" data-i18n-html="founder.name">
+          — Dmitri Sulga, founder<br>
+          <small>Founder case: Sulga v. Finland · ECHR Application №200</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<!-- TODO(owner): replace 3 testimonials with real user quotes after first 10 paying users -->
+<section class="testimonials-trust" id="trust" aria-labelledby="trust-heading">
+  <div class="container">
+    <div class="section-label" data-i18n="testimonials.label">FROM REAL USERS</div>
+    <h2 id="trust-heading" data-i18n="testimonials.heading">From people who used Advocat</h2>
+    <div class="testimonial-grid">
+      <figure class="testimonial">
+        <blockquote data-i18n="testimonial.q1">“PLACEHOLDER — owner will insert real testimonial when the first paying user shares one.”</blockquote>
+        <figcaption data-i18n="testimonial.a1">— Name, RU-speaker, Tallinn</figcaption>
+      </figure>
+      <figure class="testimonial">
+        <blockquote data-i18n="testimonial.q2">“PLACEHOLDER — owner will insert real testimonial after first 10 paying users.”</blockquote>
+        <figcaption data-i18n="testimonial.a2">— Name, ET-speaker, Tartu</figcaption>
+      </figure>
+      <figure class="testimonial">
+        <blockquote data-i18n="testimonial.q3">“PLACEHOLDER — owner will insert real testimonial from a Finnish user.”</blockquote>
+        <figcaption data-i18n="testimonial.a3">— Name, FI-speaker, Helsinki</figcaption>
+      </figure>
+    </div>
+    <p class="trust-note" data-i18n="testimonials.disclaimer">Independent disclaimer: Advocat is an information service, not a substitute for sworn legal counsel.</p>
+  </div>
 </section>
 
 <!-- ── LIVE DEMO TEASER ── -->
@@ -1861,9 +2161,6 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
   </div>
 </section>
 
-<!-- ── CASES & DOCUMENTS ── -->
-<!-- ── CASES section removed 2026-05-03: header-only stub, content TBD. -->
-
 <!-- ── CONTRACT REVIEW ── -->
 <section id="contracts" class="contracts-section">
   <div class="contracts-inner">
@@ -1888,8 +2185,8 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
   <div class="container">
     <div style="text-align:center">
       <div class="section-label" style="justify-content:center" data-i18n="compare.label">COMPARISON</div>
-      <h2 data-i18n-html="compare.title">Why pay a <em>law firm</em> €100-200 / hour?</h2>
-      <p class="section-sub" style="margin:0 auto" data-i18n="compare.sub">A lawyer is the right answer for court. For the other 95% of legal life, there's a faster way.</p>
+      <h2 data-i18n-html="compare.title">Research with us. <em>Litigation</em> with a licensed advocate.</h2>
+      <p class="section-sub" style="margin:0 auto" data-i18n="compare.sub">For court representation you need a sworn advocate — we will never replace one. For the other ~80% of everyday legal work (understanding the statute, drafting a first reply, organising your case file) we are faster, cheaper, and never billed by the hour.</p>
     </div>
 
     <div class="cmp-stage" id="cmpStage">
@@ -1913,7 +2210,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
                 <circle class="r2" cx="130" cy="130" r="110"/>
                 <circle class="r3" cx="130" cy="130" r="110"/>
               </svg>
-              <img src="/logo.png" alt="Advocat — AI Legal Assistant">
+              <img src="/logo.png" alt="Advocat — AI Legal Assistant" loading="lazy" decoding="async">
             </div>
             <div class="cmp-eyebrow" data-i18n="compare.us_tag">AI LEGAL ASSISTANT</div>
           </div>
@@ -1922,7 +2219,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
             <span class="cmp-price-num" data-i18n="compare.us_price_num">€0.49</span>
             <span class="cmp-price-unit" data-i18n="compare.us_price_unit">/ hour</span>
           </div>
-          <div class="cmp-price-note" data-i18n="compare.us_price_note">First 7 messages free · Cancel anytime</div>
+          <div class="cmp-price-note" data-i18n="compare.us_price_note">First 25 messages free · Cancel anytime</div>
 
           <ul class="cmp-list">
             <li>
@@ -2125,7 +2422,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         </div>
         <div class="plan-desc" data-i18n="plan1.desc">Try the system. Get a real answer with cited law before you decide.</div>
         <ul class="plan-features">
-          <li data-i18n="plan1.f1">7 AI messages total</li>
+          <li data-i18n="plan1.f1">25 AI messages per month</li>
           <li data-i18n="plan1.f2">1 active case</li>
           <li data-i18n="plan1.f3">Document scanning (3 docs)</li>
           <li data-i18n="plan1.f4">Cited sources from EU & EE law</li>
@@ -2157,6 +2454,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan2.f4">Full document drafting (letters, complaints)</li>
           <li data-i18n="plan2.f5">Voice input</li>
           <li data-i18n="plan2.f6">Web search for fresh law</li>
+          <li data-i18n="plan2.f7">15-lawyer AI consilium debate per query</li>
           <li data-i18n="pricing.pro.contract_review">5 contract reviews / month</li>
         </ul>
         <a class="btn btn-primary ab-cta" data-variant="v1" data-plan="pro" id="plan2-cta" href="/app.html?plan=counsel&amp;billing=monthly" data-i18n="plan2.cta">Start now</a>
@@ -2170,7 +2468,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
             <circle class="r2" cx="50" cy="50" r="38"/>
             <circle class="r3" cx="50" cy="50" r="38"/>
           </svg>
-          <img class="plan-pulse-shield" src="/blog/logo_shield.png" alt="" aria-hidden="true">
+          <img class="plan-pulse-shield" src="/blog/logo_shield.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
         </div>
         <span class="plan-name-eyebrow" data-i18n="plan3.eyebrow">Full defense</span>
         <div class="plan-name" data-i18n="plan3.name">Premium</div>
@@ -2189,7 +2487,8 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan3.f3">Unlimited document scans</li>
           <li data-i18n="plan3.f4">Priority processing</li>
           <li data-i18n="plan3.f5">Everything in Pro</li>
-          <li data-i18n="plan3.f6">Email & document export</li>
+          <li data-i18n="plan3.f6">Email Agent — AI drafts replies in your Gmail inbox</li>
+          <li data-i18n="plan3.f7">Case timeline — auto-tracked from every email + deadline</li>
           <li data-i18n="pricing.premium.contract_review">20 contract reviews / month</li>
         </ul>
         <a class="btn btn-primary ab-cta" data-variant="v1" data-plan="premium" href="/app.html?plan=representation&amp;billing=monthly" data-i18n="plan3.cta">Choose Premium</a>
@@ -2226,7 +2525,11 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
       <p class="section-sub" style="margin:0 auto" data-i18n="pricing.sub.v2">14-day full refund — before your first AI message. No card required to start.</p>
     </div>
 
-    <!-- Launch promo banner removed 2026-05-20: no launch promo active. -->
+    <!-- Optional launch promo banner — appended/shown by JS only when banner copy + active window are set. -->
+    <div id="pricing-promo-banner" class="pricing-promo-banner" hidden>
+      <span class="pricing-promo-icon" aria-hidden="true">●</span>
+      <span class="pricing-promo-text" data-i18n="pricing.promo.text">Launch month: first month 50% off — code <strong>LAUNCH50</strong></span>
+    </div>
 
     <!-- Monthly / Annual toggle (annual default) -->
     <div class="billing-toggle" role="tablist" aria-label="Billing period">
@@ -2249,7 +2552,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         </div>
         <div class="plan-desc" data-i18n="plan1.desc">Try the system. Get a real answer with cited law before you decide.</div>
         <ul class="plan-features">
-          <li data-i18n="plan1.f1">7 AI messages total</li>
+          <li data-i18n="plan1.f1">25 AI messages per month</li>
           <li data-i18n="plan1.f2">1 active case</li>
           <li data-i18n="plan1.f3">Document scanning (3 docs)</li>
           <li data-i18n="plan1.f4">Cited sources from EU & EE law</li>
@@ -2291,6 +2594,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan2.f4">Full document drafting (letters, complaints)</li>
           <li data-i18n="plan2.f5">Voice input</li>
           <li data-i18n="plan2.f6">Web search for fresh law</li>
+          <li data-i18n="plan2.f7">15-lawyer AI consilium debate per query</li>
           <li data-i18n="pricing.pro.contract_review">5 contract reviews / month</li>
         </ul>
         <a class="btn btn-primary ab-cta plan-cta-billing" data-variant="v2" data-plan="pro" data-href-monthly="/app.html?plan=counsel&amp;billing=monthly" data-href-annual="/app.html?plan=counsel&amp;billing=annual" href="/app.html?plan=counsel&amp;billing=annual" data-i18n="plan2.cta">Start now</a>
@@ -2304,7 +2608,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
             <circle class="r2" cx="50" cy="50" r="38"/>
             <circle class="r3" cx="50" cy="50" r="38"/>
           </svg>
-          <img class="plan-pulse-shield" src="/blog/logo_shield.png" alt="" aria-hidden="true">
+          <img class="plan-pulse-shield" src="/blog/logo_shield.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
         </div>
         <span class="plan-name-eyebrow" data-i18n="plan3.eyebrow">Full defense</span>
         <div class="plan-name" data-i18n="plan3.name">Premium</div>
@@ -2331,7 +2635,8 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan3.f3">Unlimited document scans</li>
           <li data-i18n="plan3.f4">Priority processing</li>
           <li data-i18n="plan3.f5">Everything in Pro</li>
-          <li data-i18n="plan3.f6">Email & document export</li>
+          <li data-i18n="plan3.f6">Email Agent — AI drafts replies in your Gmail inbox</li>
+          <li data-i18n="plan3.f7">Case timeline — auto-tracked from every email + deadline</li>
           <li data-i18n="pricing.premium.contract_review">20 contract reviews / month</li>
         </ul>
         <a class="btn btn-primary ab-cta plan-cta-billing" data-variant="v2" data-plan="premium" data-href-monthly="/app.html?plan=representation&amp;billing=monthly" data-href-annual="/app.html?plan=representation&amp;billing=annual" href="/app.html?plan=representation&amp;billing=annual" data-i18n="plan3.cta">Choose Premium</a>
@@ -2395,6 +2700,144 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
   </div>
 </section>
 
+<!-- ── PRICING COMPARE TABLE — feature parity across Free / Pro / Premium ── -->
+<section class="section pricing-compare-section" id="pricing-compare" aria-label="Plan feature comparison">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label" style="justify-content:center" data-i18n="pricing.compare.label">COMPARE PLANS</div>
+      <h2 data-i18n-html="pricing.compare.title">Every feature, side <em>by side</em>.</h2>
+      <p class="section-sub" style="margin:0 auto" data-i18n="pricing.compare.sub">Pick what fits. Upgrade or cancel anytime — one click, no calls.</p>
+    </div>
+
+    <div class="pricing-compare-wrap">
+      <div class="pricing-compare-scroll">
+        <table class="pricing-compare-table">
+          <thead>
+            <tr>
+              <th scope="col"><span data-i18n="pricing.compare.feature_col">Feature</span></th>
+              <th scope="col">
+                <div class="pcmp-plan-name" data-i18n="plan1.name">Free</div>
+                <div class="pcmp-plan-price"><strong>€0</strong> <span data-i18n="pricing.compare.forever">/ forever</span></div>
+              </th>
+              <th scope="col" class="pcmp-col-featured">
+                <span class="pcmp-badge" data-i18n="plan2.badge">Most popular</span>
+                <div class="pcmp-plan-name" data-i18n="plan2.name">Pro</div>
+                <div class="pcmp-plan-price"><strong>€19.99</strong> <span data-i18n="pricing.compare.per_mo">/ mo</span> · <span data-i18n="pricing.compare.or_yr_pro">€159.99/yr</span></div>
+              </th>
+              <th scope="col">
+                <div class="pcmp-plan-name" data-i18n="plan3.name">Premium</div>
+                <div class="pcmp-plan-price"><strong>€29.99</strong> <span data-i18n="pricing.compare.per_mo">/ mo</span> · <span data-i18n="pricing.compare.or_yr_premium">€249.99/yr</span></div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="pcmp-section-row"><td colspan="4" data-i18n="pricing.compare.row.section.core">Core AI</td></tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.chat">AI legal chat</td>
+              <td><span data-i18n="pricing.compare.val.chat.free">25 messages</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-strong" data-i18n="pricing.compare.val.chat.pro">100 / day</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.chat.premium">Unlimited</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.cases">Active cases</td>
+              <td><span data-i18n="pricing.compare.val.cases.free">1 case</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.cases.pro">3 cases</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.cases.premium">Unlimited</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.langs">Languages</td>
+              <td><span data-i18n="pricing.compare.val.langs.all">17 langs</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.langs.all">17 langs</span></td>
+              <td><span data-i18n="pricing.compare.val.langs.all">17 langs</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.citations">Cited EU & EE law</td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr class="pcmp-section-row"><td colspan="4" data-i18n="pricing.compare.row.section.docs">Documents</td></tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.doc_upload">Document scanning</td>
+              <td><span data-i18n="pricing.compare.val.doc.free">3 docs</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.doc.pro">20 / mo</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.doc.premium">Unlimited</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.contract_review">Contract review</td>
+              <td><span data-i18n="pricing.compare.val.contract.free">1 (trial)</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.contract.pro">5 / mo</span></td>
+              <td><span data-i18n="pricing.compare.val.contract.premium">20 / mo</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.drafting">Drafting Studio (letters, complaints)</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.voice">Voice input</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr class="pcmp-section-row"><td colspan="4" data-i18n="pricing.compare.row.section.pro">Pro tools</td></tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.consilium">15-lawyer AI consilium</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.consilium.premium">✓ priority</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.deadline">Deadline radar</td>
+              <td><span data-i18n="pricing.compare.val.deadline.free">View only</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.deadline.pro">View + alerts</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.deadline.premium">Auto-track + alerts</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.web_search">Web search for fresh law</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.email_agent">Email Agent (drafts in Gmail)</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.timeline">Case timeline auto-tracking</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr class="pcmp-section-row"><td colspan="4" data-i18n="pricing.compare.row.section.support">Support & privacy</td></tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.support">Support response</td>
+              <td><span data-i18n="pricing.compare.val.support.free">Community</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.support.pro">Email · &lt;24h</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.support.premium">Email · &lt;4h</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.gdpr">GDPR · EU servers (Frankfurt)</td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pricing-compare-foot">
+        <span data-i18n-html="pricing.compare.foot"><strong>Annual saves 30–33%.</strong> 14-day refund before your first AI message. Prices include 22% VAT for EU consumers — business customers see VAT-exclusive prices at checkout.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── FAQ ── -->
 <section class="section" id="faq">
   <div class="container-sm">
@@ -2409,14 +2852,33 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 <!-- ── FINAL CTA ── -->
 <section class="final-cta">
   <!-- Layer 0.5 — AI-generated cinematic video background (Replicate minimax/video-01) -->
-  <video class="cta-video-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-    <source src="/cta-bg.mp4" type="video/mp4">
+  <!-- Hero video: 395KB H.264 (compressed 93% from 5.7MB). Poster renders instantly.
+       Mobile (<768px) skips video entirely via JS below to save bandwidth + battery. -->
+  <video class="cta-video-bg" muted loop playsinline preload="none"
+         poster="/cta-bg-poster.jpg" aria-hidden="true">
+    <source data-src="/cta-bg.mp4" type="video/mp4">
   </video>
+  <script>
+    (function(){
+      var v = document.currentScript.previousElementSibling;
+      if (!v || v.tagName !== 'VIDEO') return;
+      var saveData = navigator.connection && navigator.connection.saveData;
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Only fetch + autoplay video on desktop (>=768px) without save-data/reduced-motion.
+      if (window.innerWidth >= 768 && !saveData && !reduceMotion) {
+        var srcEl = v.querySelector('source');
+        if (srcEl) srcEl.src = srcEl.getAttribute('data-src');
+        v.preload = 'metadata';
+        v.load();
+        v.play().catch(function(){ /* autoplay blocked — poster remains visible */ });
+      }
+    })();
+  </script>
   <div class="container" style="position:relative;z-index:10;text-align:center">
     <h2 data-i18n-html="cta.title">Don't face your rights <em>alone</em>.</h2>
     <p data-i18n="cta.sub">Ask the first question. Cited answer in 30 seconds. No card required.</p>
     <a class="btn btn-primary" href="/app.html" data-i18n="cta.btn">Open the chat →</a>
-    <span class="micro" data-i18n="cta.micro">7 messages free · cancel anytime · 14-day refund before first AI message</span>
+    <span class="micro" data-i18n="cta.micro">25 messages free · cancel anytime · 14-day refund before first AI message</span>
   </div>
 </section>
 
@@ -2431,7 +2893,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div class="foot-grid">
       <div>
         <a href="#top" class="foot-brand">
-          <img src="/logo.png" alt="Advocat">
+          <img src="/logo.png" alt="Advocat" loading="lazy" decoding="async">
         </a>
         <p style="font-size:13.5px;color:var(--muted);line-height:1.55;max-width:280px;margin-top:4px" data-i18n="foot.about">
           AI-powered legal assistant for Estonia and the EU. Built in Tallinn by Vorantis OÜ.
@@ -2451,6 +2913,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <h5 data-i18n="foot.company">Company</h5>
         <a href="mailto:support@advocat.ee">support@advocat.ee</a>
         <a href="/blog/" data-i18n="foot.news">News</a>
+        <a href="/for-firms.html" data-i18n="foot.forFirms">For Law Firms</a>
       </div>
       <div class="foot-col">
         <h5 data-i18n="foot.legal">Legal</h5>
@@ -2462,7 +2925,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     </div>
     <div class="foot-bot">
       <div class="foot-bot-l">
-        <span class="cert-badge"><img src="/blog/logo_shield.png" alt="" class="cert-shield"><span data-i18n="foot.gdpr_badge">GDPR · EU servers (Frankfurt)</span></span>
+        <span class="cert-badge"><img src="/blog/logo_shield.png" alt="" class="cert-shield" loading="lazy" decoding="async"><span data-i18n="foot.gdpr_badge">GDPR · EU servers (Frankfurt)</span></span>
         <span class="cert-badge">Vorantis OÜ · Reg 17098992</span>
         <span class="cert-badge">Tallinn, Estonia</span>
       </div>
@@ -2574,23 +3037,23 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 <!-- ── i18n + chat demo ── -->
 <script>
 const LANGS = [
-  { code: 'en', label: 'English' },
-  { code: 'et', label: 'Eesti' },
-  { code: 'ru', label: 'Русский' },
-  { code: 'uk', label: 'Українська' },
-  { code: 'fi', label: 'Suomi' },
-  { code: 'sv', label: 'Svenska' },
-  { code: 'de', label: 'Deutsch' },
-  { code: 'fr', label: 'Français' },
-  { code: 'es', label: 'Español' },
-  { code: 'it', label: 'Italiano' },
-  { code: 'pl', label: 'Polski' },
-  { code: 'lv', label: 'Latviešu' },
-  { code: 'lt', label: 'Lietuvių' },
-  { code: 'ro', label: 'Română' },
-  { code: 'tr', label: 'Türkçe' },
-  { code: 'ar', label: 'العربية' },
-  { code: 'fa', label: 'فارسی' },
+  { code: 'en', label: 'English',    flag: '🇬🇧' },
+  { code: 'et', label: 'Eesti',      flag: '🇪🇪' },
+  { code: 'ru', label: 'Русский',    flag: '🇷🇺' },
+  { code: 'uk', label: 'Українська', flag: '🇺🇦' },
+  { code: 'fi', label: 'Suomi',      flag: '🇫🇮' },
+  { code: 'sv', label: 'Svenska',    flag: '🇸🇪' },
+  { code: 'de', label: 'Deutsch',    flag: '🇩🇪' },
+  { code: 'fr', label: 'Français',   flag: '🇫🇷' },
+  { code: 'es', label: 'Español',    flag: '🇪🇸' },
+  { code: 'it', label: 'Italiano',   flag: '🇮🇹' },
+  { code: 'pl', label: 'Polski',     flag: '🇵🇱' },
+  { code: 'lv', label: 'Latviešu',   flag: '🇱🇻' },
+  { code: 'lt', label: 'Lietuvių',   flag: '🇱🇹' },
+  { code: 'ro', label: 'Română',     flag: '🇷🇴' },
+  { code: 'tr', label: 'Türkçe',     flag: '🇹🇷' },
+  { code: 'ar', label: 'العربية',    flag: '🇸🇦' },
+  { code: 'fa', label: 'فارسی',      flag: '🇮🇷' },
 ];
 
 const RTL = { ar: true, fa: true };
@@ -2607,11 +3070,24 @@ const I18N = {
     'nav.login': 'Sign in', 'nav.cta': 'Try free',
     'meta.title': 'Advocat — AI Legal Assistant · Defend Your Rights',
     'hero.eyebrow': 'AI LEGAL ASSISTANT · 2026',
-    'hero.title': 'Legal <em>AI</em> built for Estonia and the EU.',
-    'hero.sub': 'Citations to statutes and case law, draft correspondence ready for your review, and case material organization — with multilingual support.',
+    'hero.title': 'Facing deportation, a fine, or wrongful termination?<br>Advocat fights for you — 24/7.',
+    'hero.sub': 'Legal AI that understands immigrant pain — because we have been through it ourselves.',
     'hero.disclaimer': "Information service. Not legal advice and not a substitute for a sworn advocate (vandeadvokaat) regulated under the Estonian Bar Association Act.",
-    'hero.primary': 'Try free →', 'hero.secondary': 'See an example',
-    'hero.trust1': '7 free messages — no card', 'hero.trust2': 'Cited sources', 'hero.trust3': 'EU GDPR · servers in Frankfurt',
+    'hero.primary': 'Try Advocat free →', 'hero.secondary': 'See pricing',
+    'hero.trust1': '25 free messages — no card', 'hero.trust2': 'Cited sources', 'hero.trust3': 'EU GDPR · servers in Frankfurt',
+    'founder.eyebrow': 'WHY ADVOCAT EXISTS',
+    'founder.heading': 'Built by people who lived this.',
+    'founder.quote': '“December 2025. Helsinki. Police escorted my wife to the Eckerö Line ferry. Migri called it ‘voluntary return.’ We had paid €300 for a hotel that night.<br><br>Six months later, our case is at the Supreme Administrative Court of Finland (KHO, application 200/2026). I built Advocat so other immigrants don\'t have to learn FI law from a Migri letter at 6&nbsp;pm on a Friday.”',
+    'founder.name': '— Dmitri Sulga, founder<br><small>Founder case: Sulga v. Finland · ECHR Application №200</small>',
+    'testimonials.label': 'FROM REAL USERS',
+    'testimonials.heading': 'From people who used Advocat',
+    'testimonials.disclaimer': 'Independent disclaimer: Advocat is an information service, not a substitute for sworn legal counsel.',
+    'testimonial.q1': '“PLACEHOLDER — owner will insert real testimonial when the first paying user shares one.”',
+    'testimonial.a1': '— Name, RU-speaker, Tallinn',
+    'testimonial.q2': '“PLACEHOLDER — owner will insert real testimonial after first 10 paying users.”',
+    'testimonial.a2': '— Name, ET-speaker, Tartu',
+    'testimonial.q3': '“PLACEHOLDER — owner will insert real testimonial from a Finnish user.”',
+    'testimonial.a3': '— Name, FI-speaker, Helsinki',
     'how.label': 'THREE STEPS', 'how.title': 'Legal help that actually <em>works</em>.',
     'how.sub': 'No seven-page sign-up. Speak naturally, attach the docs, get a clear next step.',
     'contracts.heading': 'Drop a contract. Get a reply in 90 seconds.',
@@ -2621,12 +3097,61 @@ const I18N = {
     'pricing.free.contract_review': '1 contract review (lifetime trial)',
     'pricing.pro.contract_review': '5 contract reviews / month',
     'pricing.premium.contract_review': '20 contract reviews / month',
+    // ── Pricing compare table ──
+    'pricing.compare.label': 'COMPARE PLANS',
+    'pricing.compare.title': 'Every feature, side <em>by side</em>.',
+    'pricing.compare.sub': 'Pick what fits. Upgrade or cancel anytime — one click, no calls.',
+    'pricing.compare.feature_col': 'Feature',
+    'pricing.compare.forever': '/ forever',
+    'pricing.compare.per_mo': '/ mo',
+    'pricing.compare.or_yr_pro': 'or €159.99/yr',
+    'pricing.compare.or_yr_premium': 'or €249.99/yr',
+    'pricing.compare.row.section.core': 'Core AI',
+    'pricing.compare.row.section.docs': 'Documents',
+    'pricing.compare.row.section.pro': 'Pro tools',
+    'pricing.compare.row.section.support': 'Support & privacy',
+    'pricing.compare.row.chat': 'AI legal chat',
+    'pricing.compare.row.cases': 'Active cases',
+    'pricing.compare.row.langs': 'Languages',
+    'pricing.compare.row.citations': 'Cited EU & EE law',
+    'pricing.compare.row.doc_upload': 'Document scanning',
+    'pricing.compare.row.contract_review': 'Contract review',
+    'pricing.compare.row.drafting': 'Drafting Studio (letters, complaints)',
+    'pricing.compare.row.voice': 'Voice input',
+    'pricing.compare.row.consilium': '15-lawyer AI consilium',
+    'pricing.compare.row.deadline': 'Deadline radar',
+    'pricing.compare.row.web_search': 'Web search for fresh law',
+    'pricing.compare.row.email_agent': 'Email Agent (drafts in Gmail)',
+    'pricing.compare.row.timeline': 'Case timeline auto-tracking',
+    'pricing.compare.row.support': 'Support response',
+    'pricing.compare.row.gdpr': 'GDPR · EU servers (Frankfurt)',
+    'pricing.compare.val.chat.free': '25 messages',
+    'pricing.compare.val.chat.pro': '100 / day',
+    'pricing.compare.val.chat.premium': 'Unlimited',
+    'pricing.compare.val.cases.free': '1 case',
+    'pricing.compare.val.cases.pro': '3 cases',
+    'pricing.compare.val.cases.premium': 'Unlimited',
+    'pricing.compare.val.langs.all': '17 langs',
+    'pricing.compare.val.doc.free': '3 docs',
+    'pricing.compare.val.doc.pro': '20 / mo',
+    'pricing.compare.val.doc.premium': 'Unlimited',
+    'pricing.compare.val.contract.free': '1 (trial)',
+    'pricing.compare.val.contract.pro': '5 / mo',
+    'pricing.compare.val.contract.premium': '20 / mo',
+    'pricing.compare.val.consilium.premium': '✓ priority',
+    'pricing.compare.val.deadline.free': 'View only',
+    'pricing.compare.val.deadline.pro': 'View + alerts',
+    'pricing.compare.val.deadline.premium': 'Auto-track + alerts',
+    'pricing.compare.val.support.free': 'Community',
+    'pricing.compare.val.support.pro': 'Email · <24h',
+    'pricing.compare.val.support.premium': 'Email · <4h',
+    'pricing.compare.foot': '<strong>Annual saves 30–33%.</strong> 14-day refund before your first AI message. Prices include 22% VAT for EU consumers — business customers see VAT-exclusive prices at checkout.',
     'how.s1h': 'Ask your question', 'how.s1p': 'Talk like you would to a friend — in any of 17 languages. Advocat asks follow-ups like a good lawyer would.', 'how.s1m': '~ 90 seconds',
     'how.s2h': 'AI cites the law', 'how.s2p': 'Every answer cites the exact statute (e.g. VÕS § 308 lg 3). You can verify it in Riigi Teataja yourself.', 'how.s2m': 'PDF · DOCX · images',
     'how.s3h': 'Send the letter from your email', 'how.s3p': 'AI drafts the letter — you send it from your own email in one click.', 'how.s3m': 'Ready to send',
     'cases.label': 'CASES & DOCUMENTS', 'cases.title': 'Your case <em>files</em>, organized.', 'cases.sub': 'Upload case documents — AI reads PDFs, remembers dates and context across sessions.',
-    'compare.label': 'COMPARISON', 'compare.title': 'Why pay a <em>law firm</em> €100-200 / hour?',
-    'compare.sub': 'A lawyer is the right answer for court. For the other 95% of legal life, there\'s a faster way.',
+    'compare.label': 'COMPARISON', 'compare.title': 'Research with us. <em>Litigation</em> with a licensed advocate.',
+    'compare.sub': 'For court representation you need a sworn advocate — we will never replace one. For the other ~80% of everyday legal work (understanding the statute, drafting a first reply, organising your case file) we are faster, cheaper, and never billed by the hour.',
     'compare.us_tag': 'AI legal assistant',
     'compare.u1': 'Answer in 30 seconds, 24/7',
     'compare.u2': 'From €19.99/month — Pro plan, 100 messages/day',
@@ -2635,7 +3160,7 @@ const I18N = {
     'compare.u5': 'Cancel anytime — 14-day refund before first AI message',
     'compare.cta_us': 'Start free',
     'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ hour',
-    'compare.us_price_note': 'First 7 messages free · Cancel anytime',
+    'compare.us_price_note': 'First 25 messages free · Cancel anytime',
     'compare.them_h': 'Law firm', 'compare.them_tag': 'Traditional',
     'compare.them_price_num': '€100–200', 'compare.them_price_unit': '/ hour',
     'compare.them_price_note': '1-hour minimum · Appointments only',
@@ -2655,6 +3180,7 @@ const I18N = {
     'pricing.anchor.them_label': 'A lawyer charges', 'pricing.anchor.us_label': 'Advocat costs',
     'pricing.anchor.per_hour': '/ hour', 'pricing.anchor.per_month': '/ month',
     'pricing.anchor.note': 'One hour with a lawyer costs more than a year of Advocat.',
+    'pricing.promo.text': 'Launch month: first month 50% off — code <strong>LAUNCH50</strong>',
     'billing.monthly': 'Monthly', 'billing.annual': 'Annual',
     'billing.savings_pill': 'Save up to 33%',
     'pricing.trust.refund': '14-day refund — before your first AI message',
@@ -2671,17 +3197,19 @@ const I18N = {
     'pricing.testimonials.a3_name': 'A., Russian-speaker in Finland', 'pricing.testimonials.a3_meta': 'Helsinki · Pro plan',
     'plan1.eyebrow': 'Starter', 'plan1.name': 'Free', 'plan1.per': '/ forever',
     'plan1.desc': 'Try the system. Get a real answer with cited law before you decide.',
-    'plan1.f1': '7 AI messages total', 'plan1.f2': '1 active case', 'plan1.f3': 'Document scanning (3 docs)', 'plan1.f4': 'Cited sources from EU & EE law', 'plan1.f5': 'No card required',
+    'plan1.f1': '25 AI messages per month', 'plan1.f2': '1 active case', 'plan1.f3': 'Document scanning (3 docs)', 'plan1.f4': 'Cited sources from EU & EE law', 'plan1.f5': 'No card required',
     'plan1.cta': 'Start free',
     'plan2.badge': 'Most popular', 'plan2.eyebrow': 'For families', 'plan2.name': 'Pro', 'plan2.per': '/ month', 'plan2.per_eff_month': '/ month, billed yearly', 'plan2.annual': 'or €159.99/year — save 33%', 'plan2.annual_full': '€159.99 per year — save €79.89 (33% off)', 'plan2.annual_hint': 'Switch to annual to save €79.89/year (33%)',
     'plan2.desc': 'Daily legal help for you and your family. 100 AI messages/day, full document drafting.',
     'plan2.f1': '100 AI messages / day', 'plan2.f2': '3 active cases', 'plan2.f3': 'Document scanning (20 docs)',
     'plan2.f4': 'Full document drafting (letters, complaints)', 'plan2.f5': 'Voice input', 'plan2.f6': 'Web search for fresh law',
+    'plan2.f7': '15-lawyer AI consilium debate per query',
     'plan2.cta': 'Start now',
     'plan3.eyebrow': 'Full defense', 'plan3.name': 'Premium', 'plan3.per': '/ month', 'plan3.per_eff_month': '/ month, billed yearly', 'plan3.annual': 'or €249.99/year — save 30%', 'plan3.annual_full': '€249.99 per year — save €109.89 (30% off)', 'plan3.annual_hint': 'Switch to annual to save €109.89/year (30%)',
     'plan3.desc': 'Full defense — unlimited everything, priority response, all features.',
     'plan3.f1': 'Unlimited AI messages', 'plan3.f2': 'Unlimited cases', 'plan3.f3': 'Unlimited document scans',
-    'plan3.f4': 'Priority processing', 'plan3.f5': 'Everything in Pro', 'plan3.f6': 'Email & document export',
+    'plan3.f4': 'Priority processing', 'plan3.f5': 'Everything in Pro', 'plan3.f6': 'Email Agent — AI drafts replies in your Gmail inbox',
+    'plan3.f7': 'Case timeline — auto-tracked from every email + deadline',
     'plan3.cta': 'Choose Premium',
     'pricing.vat_included': 'incl. 22% VAT',
     'pricing.note': 'Cancel anytime. Save 30-33% with annual billing.',
@@ -2701,12 +3229,12 @@ const I18N = {
     'cta.title': "Don't face your rights <em>alone</em>.",
     'cta.sub': 'Ask the first question. Cited answer in 30 seconds. No card required.',
     'cta.btn': 'Open the chat →',
-    'cta.micro': '7 messages free · cancel anytime · 14-day refund before first AI message',
-    'disclaimer.full': 'Advocat provides legal information, not legal advice. This service does not replace a licensed attorney. For court representation, judgments, or binding legal opinions, consult a qualified lawyer. Information may vary by jurisdiction.',
+    'cta.micro': '25 messages free · cancel anytime · 14-day refund before first AI message',
+    'disclaimer.full': 'Advocat provides legal information, not legal advice. This AI service does not replace a licensed attorney or sworn advocate (vandeadvokaat / asianajaja) for any litigation, court representation, binding legal opinion, or negotiation on your behalf. For those, consult a qualified lawyer. Information may vary by jurisdiction.',
     'foot.about': 'AI-powered legal assistant for Estonia and the EU. Built in Tallinn by Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Product', 'foot.how': 'How it works', 'foot.pricing': 'Pricing', 'foot.app': 'Open the app', 'foot.blog': 'Blog',
-    'foot.company': 'Company', 'foot.news': 'News',
+    'foot.company': 'Company', 'foot.news': 'News', 'foot.forFirms': 'For Law Firms',
     'foot.legal': 'Legal', 'foot.terms': 'Terms', 'foot.privacy': 'Privacy', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · EU servers (Frankfurt)',
     'chat.status': 'Online · avg. response 12s',
@@ -2732,11 +3260,24 @@ const I18N = {
     'nav.login': 'Logi sisse', 'nav.cta': 'Proovi tasuta',
     'meta.title': 'Advocat — AI õigusabi · Kaitse oma õigusi',
     'hero.eyebrow': 'AI-ÕIGUSABI · 2026',
-    'hero.title': '<em>AI-assistent</em> Eesti ja EL õiguses.',
-    'hero.sub': 'Struktureeritud vastused õigusküsimustele, kirjade mustandid sinu ülevaatuseks ja juhtumi materjalide korraldus — kõik ühes vestluses.',
+    'hero.title': 'Sind ähvardab väljasaatmine, trahv või vallandamine?<br>Advocat on sinu poolel — 24/7.',
+    'hero.sub': 'Õigus-AI, mis mõistab immigrandi valu — sest me ise oleme selle läbi elanud.',
     'hero.disclaimer': 'Infoteenus. Ei ole õigusabi Advokatuuriseaduse tähenduses ega asenda vandeadvokaati.',
-    'hero.primary': 'Proovi tasuta →', 'hero.secondary': 'Vaata näidet',
-    'hero.trust1': '7 sõnumit tasuta — kaarti pole vaja', 'hero.trust2': 'Viited Riigi Teatajale', 'hero.trust3': 'EL GDPR · serverid Frankfurdis',
+    'hero.primary': 'Proovi Advocat tasuta →', 'hero.secondary': 'Vaata hindu',
+    'hero.trust1': '25 sõnumit tasuta — kaarti pole vaja', 'hero.trust2': 'Viited Riigi Teatajale', 'hero.trust3': 'EL GDPR · serverid Frankfurdis',
+    'founder.eyebrow': 'MIKS ADVOCAT EKSISTEERIB',
+    'founder.heading': 'Loodud inimeste poolt, kes on selle ise läbi elanud.',
+    'founder.quote': '„Detsember 2025. Helsingi. Politsei saatis mu naise Eckerö Line praamile. Migri nimetas seda „vabatahtlikuks tagasipöördumiseks“. Olime maksnud 300 € hotelli eest selleks ööks.<br><br>Kuus kuud hiljem on meie asi Soome Riigikohtu halduskolleegiumis (KHO, hagi 200/2026). Tegin Advocati, et teised immigrandid ei peaks Soome seadust õppima Migri kirjast reede õhtul kell 18.“',
+    'founder.name': '— Dmitri Sulga, asutaja<br><small>Asutaja kaasus: Sulga vs. Soome · EIK avaldus nr 200</small>',
+    'testimonials.label': 'PÄRIS KASUTAJATELT',
+    'testimonials.heading': 'Inimestelt, kes on Advocati kasutanud',
+    'testimonials.disclaimer': 'Sõltumatu vastutus: Advocat on infoteenus, mitte vandeadvokaadi asendaja.',
+    'testimonial.q1': '„KOHATÄIDE — omanik lisab päris tagasiside, kui esimene maksev kasutaja selle jagab.“',
+    'testimonial.a1': '— Nimi, vene keelt rääkiv, Tallinn',
+    'testimonial.q2': '„KOHATÄIDE — omanik lisab päris tagasiside pärast esimest 10 maksvat kasutajat.“',
+    'testimonial.a2': '— Nimi, eestikeelne, Tartu',
+    'testimonial.q3': '„KOHATÄIDE — omanik lisab päris tagasiside Soome kasutajalt.“',
+    'testimonial.a3': '— Nimi, soomekeelne, Helsingi',
     'how.label': 'KOLM SAMMU', 'how.title': 'Õigusabi, mis <em>päriselt aitab</em>.',
     'how.sub': 'Ei mingit seitsmeleheküljelist registreerimist. Kirjelda olukorda oma sõnadega, lisa dokumendid, saa selge järgmine samm.',
     'contracts.heading': 'Lisa leping. Saa vastus 90 sekundiga.',
@@ -2746,12 +3287,61 @@ const I18N = {
     'pricing.free.contract_review': '1 lepingu ülevaatus (eluaegne proov)',
     'pricing.pro.contract_review': '5 lepingu ülevaatust / kuus',
     'pricing.premium.contract_review': '20 lepingu ülevaatust / kuus',
+    // ── Pricing compare table ──
+    'pricing.compare.label': 'VÕRDLE PAKETTE',
+    'pricing.compare.title': 'Iga funktsioon, <em>kõrvuti</em>.',
+    'pricing.compare.sub': 'Vali, mis sobib. Uuenda või lõpeta millal tahad — üks klõps, helistama ei pea.',
+    'pricing.compare.feature_col': 'Funktsioon',
+    'pricing.compare.forever': '/ igavesti',
+    'pricing.compare.per_mo': '/ kuus',
+    'pricing.compare.or_yr_pro': 'või €159.99/aastas',
+    'pricing.compare.or_yr_premium': 'või €249.99/aastas',
+    'pricing.compare.row.section.core': 'Põhi-AI',
+    'pricing.compare.row.section.docs': 'Dokumendid',
+    'pricing.compare.row.section.pro': 'Pro-tööriistad',
+    'pricing.compare.row.section.support': 'Tugi ja privaatsus',
+    'pricing.compare.row.chat': 'AI õigusvestlus',
+    'pricing.compare.row.cases': 'Aktiivsed juhtumid',
+    'pricing.compare.row.langs': 'Keeled',
+    'pricing.compare.row.citations': 'Viited EL ja EE seadustele',
+    'pricing.compare.row.doc_upload': 'Dokumentide skaneerimine',
+    'pricing.compare.row.contract_review': 'Lepingu ülevaatus',
+    'pricing.compare.row.drafting': 'Mustandi-stuudio (kirjad, kaebused)',
+    'pricing.compare.row.voice': 'Häälsisestus',
+    'pricing.compare.row.consilium': '15-juristi AI-konsiilium',
+    'pricing.compare.row.deadline': 'Tähtaja-radar',
+    'pricing.compare.row.web_search': 'Veebiotsing värske õiguse järele',
+    'pricing.compare.row.email_agent': 'E-posti agent (mustandid Gmaili)',
+    'pricing.compare.row.timeline': 'Juhtumi ajajoone autotäide',
+    'pricing.compare.row.support': 'Toe vastus',
+    'pricing.compare.row.gdpr': 'GDPR · EL-i serverid (Frankfurt)',
+    'pricing.compare.val.chat.free': '25 sõnumit',
+    'pricing.compare.val.chat.pro': '100 / päevas',
+    'pricing.compare.val.chat.premium': 'Piiramatu',
+    'pricing.compare.val.cases.free': '1 juhtum',
+    'pricing.compare.val.cases.pro': '3 juhtumit',
+    'pricing.compare.val.cases.premium': 'Piiramatu',
+    'pricing.compare.val.langs.all': '17 keelt',
+    'pricing.compare.val.doc.free': '3 dok.',
+    'pricing.compare.val.doc.pro': '20 / kuus',
+    'pricing.compare.val.doc.premium': 'Piiramatu',
+    'pricing.compare.val.contract.free': '1 (proov)',
+    'pricing.compare.val.contract.pro': '5 / kuus',
+    'pricing.compare.val.contract.premium': '20 / kuus',
+    'pricing.compare.val.consilium.premium': '✓ eelistatud',
+    'pricing.compare.val.deadline.free': 'Ainult vaatamine',
+    'pricing.compare.val.deadline.pro': 'Vaatamine + märguanded',
+    'pricing.compare.val.deadline.premium': 'Autom. + märguanded',
+    'pricing.compare.val.support.free': 'Kogukond',
+    'pricing.compare.val.support.pro': 'E-post · <24h',
+    'pricing.compare.val.support.premium': 'E-post · <4h',
+    'pricing.compare.foot': '<strong>Aastamaksuga säästad 30–33%.</strong> 14-päevane tagasimakse enne esimese AI-sõnumi saatmist. Hinnad sisaldavad 22% käibemaksu EL-i tarbijatele — ärikliendid näevad maksudeta hindu kassas.',
     'how.s1h': 'Kirjelda olukorda', 'how.s1p': 'Räägi nii, nagu räägiksid sõbrale — eesti, vene, ukraina või mõnes 17 muus keeles. Advocat küsib täpsustusi nagu hea jurist.', 'how.s1m': '~ 90 sekundit',
     'how.s2h': 'AI viitab seadusele', 'how.s2p': 'Iga vastus toob välja konkreetse sätte (nt VÕS § 308 lg 3). Saad selle Riigi Teatajast ise kontrollida.', 'how.s2m': 'PDF · DOCX · pildid',
     'how.s3h': 'Saada kiri oma postkastist', 'how.s3p': 'AI koostab kirja mustandi — saadad oma postkastist ühe klõpsuga.', 'how.s3m': 'Valmis saatmiseks',
     'cases.label': 'JUHTUMID JA DOKUMENDID', 'cases.title': 'Sinu juhtumi <em>toimik</em>, korras hoitud.', 'cases.sub': 'Laadi üles juhtumi dokumendid — AI loeb PDF-e, mäletab tähtaegu ja konteksti sessioonide vahel.',
-    'compare.label': 'VÕRDLUS', 'compare.title': 'Miks maksta <em>advokaadibüroole</em> €100–200 tunnis?',
-    'compare.sub': 'Kohtusaalis on advokaat õige valik. Ülejäänud 95% igapäevaõigusest saab kiiremini lahendada.',
+    'compare.label': 'VÕRDLUS', 'compare.title': 'Uurimistöö meiega. <em>Kohtuvaidlused</em> vandeadvokaadiga.',
+    'compare.sub': 'Kohtus esindamiseks vajad vandeadvokaati — meie teda kunagi ei asenda. Aga ülejäänud ~80% igapäevaõigusest (seaduse mõistmine, esimese vastuse mustand, juhtumi materjalide korrastamine) on meiega kiirem, odavam ja ilma tunnitasuta.',
     'compare.us_tag': 'AI-ÕIGUSABI',
     'compare.u1': 'Vastus 30 sekundiga, 24/7',
     'compare.u2': 'Alates €19.99/kuus — Pro plaan, 100 sõnumit päevas',
@@ -2760,7 +3350,7 @@ const I18N = {
     'compare.u5': 'Lõpetad, kui tahad — 14-päevane tagasimakse enne esimese AI-sõnumi saatmist',
     'compare.cta_us': 'Proovi tasuta',
     'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ tund',
-    'compare.us_price_note': 'Esimesed 7 sõnumit tasuta · Lõpeta millal tahad',
+    'compare.us_price_note': 'Esimesed 25 sõnumit tasuta · Lõpeta millal tahad',
     'compare.them_h': 'Advokaadibüroo', 'compare.them_tag': 'TRADITSIOONILINE',
     'compare.them_price_num': '€100–200', 'compare.them_price_unit': '/ tund',
     'compare.them_price_note': 'Vähemalt 1 tund · Ainult eelregistreerimisega',
@@ -2777,17 +3367,19 @@ const I18N = {
     'pricing.sub': 'Lõpeta millal tahad. Täielik tagasimakse 14 päeva jooksul, kui sa pole veel esimest AI-sõnumit saatnud.',
     'plan1.eyebrow': 'Tutvumiseks', 'plan1.name': 'Tasuta', 'plan1.per': '/ alati',
     'plan1.desc': 'Pane Advocat proovile. Saad esimese seadusepõhise vastuse, enne kui maksad sentigi.',
-    'plan1.f1': '7 AI-sõnumit kokku', 'plan1.f2': '1 aktiivne juhtum', 'plan1.f3': 'Dokumendiskann (3 faili)', 'plan1.f4': 'Viited Eesti ja EL õigusele', 'plan1.f5': 'Pangakaarti pole vaja',
+    'plan1.f1': '25 AI-sõnumit kuus', 'plan1.f2': '1 aktiivne juhtum', 'plan1.f3': 'Dokumendiskann (3 faili)', 'plan1.f4': 'Viited Eesti ja EL õigusele', 'plan1.f5': 'Pangakaarti pole vaja',
     'plan1.cta': 'Alusta tasuta',
     'plan2.badge': 'POPULAARSEIM', 'plan2.eyebrow': 'Perele', 'plan2.name': 'Pro', 'plan2.per': '/ kuus', 'plan2.annual': 'või €159.99 aastas — säästad 33%',
     'plan2.desc': 'Igapäevane õigustugi sulle ja perele. 100 AI-sõnumit päevas, dokumentide koostamine algusest lõpuni.',
     'plan2.f1': '100 AI-sõnumit päevas', 'plan2.f2': '3 aktiivset juhtumit', 'plan2.f3': 'Dokumendiskann (20 faili)',
     'plan2.f4': 'Kirjade ja kaebuste täisvormistus', 'plan2.f5': 'Häälsisestus', 'plan2.f6': 'Veebiotsing värske kohtupraktika jaoks',
+    'plan2.f7': '15 AI-juristi konsiilium iga küsimuse kohta',
     'plan2.cta': 'Alusta kohe',
     'plan3.eyebrow': 'Täiskaitse', 'plan3.name': 'Premium', 'plan3.per': '/ kuus', 'plan3.annual': 'või €249.99 aastas — säästad 30%',
     'plan3.desc': 'Täiskaitse — kõik piiranguteta, prioriteetne järjekord, kõik funktsioonid avatud.',
     'plan3.f1': 'AI-sõnumid piiranguteta', 'plan3.f2': 'Juhtumeid piiranguteta', 'plan3.f3': 'Dokumendiskannid piiranguteta',
-    'plan3.f4': 'Prioriteetne järjekord', 'plan3.f5': 'Kõik Pro funktsioonid', 'plan3.f6': 'E-kirjade ja dokumentide eksport',
+    'plan3.f4': 'Prioriteetne järjekord', 'plan3.f5': 'Kõik Pro funktsioonid', 'plan3.f6': 'E-kirja agent — AI koostab vastused sinu Gmaili postkastis',
+    'plan3.f7': 'Juhtumi ajaskaala — koostatakse automaatselt e-kirjadest ja tähtaegadest',
     'plan3.cta': 'Vali Premium',
     'pricing.vat_included': 'Sis. käibemaks 22%',
     'pricing.note': 'Lõpeta millal tahad. Aastamaksuga säästad 30-33%.',
@@ -2797,6 +3389,7 @@ const I18N = {
     'pricing.anchor.them_label': 'Advokaat võtab', 'pricing.anchor.us_label': 'Advocat maksab',
     'pricing.anchor.per_hour': '/ tund', 'pricing.anchor.per_month': '/ kuus',
     'pricing.anchor.note': 'Üks tund advokaadiga maksab rohkem kui aasta Advocatiga.',
+    'pricing.promo.text': 'Avamiskuu: esimene kuu 50% soodsamalt — kood <strong>LAUNCH50</strong>',
     'billing.monthly': 'Kuumakse', 'billing.annual': 'Aastamakse',
     'billing.savings_pill': 'Säästa kuni 33%',
     'pricing.trust.refund': '14-päevane tagasimakse — enne esimese AI-sõnumi saatmist',
@@ -2826,12 +3419,12 @@ const I18N = {
     'cta.title': 'Ära jää oma <em>murega</em> üksi.',
     'cta.sub': 'Esita esimene küsimus. Seaduseviidetega vastus 30 sekundiga. Pangakaarti pole vaja.',
     'cta.btn': 'Ava vestlus →',
-    'cta.micro': '7 sõnumit tasuta · lõpeta ühe klikiga · 14-päevane tagasimakse enne esimese AI-sõnumi saatmist',
-    'disclaimer.full': 'Advocat annab õigusinfot, mitte õigusnõu. Teenus ei asenda vandeadvokaati. Kohtus esindamiseks, ametlike kohtuotsuste või siduvate õigusarvamuste saamiseks pöördu kvalifitseeritud juristi poole. Info võib jurisdiktsiooniti erineda.',
+    'cta.micro': '25 sõnumit tasuta · lõpeta ühe klikiga · 14-päevane tagasimakse enne esimese AI-sõnumi saatmist',
+    'disclaimer.full': 'Advocat annab õigusinfot, mitte õigusnõu. See tehisintellekti teenus ei asenda litsentsitud vandeadvokaati (vandeadvokaat / asianajaja) kohtus esindamiseks, kohtuvaidlusteks, siduvate õigusarvamuste andmiseks ega läbirääkimisteks teie nimel. Selleks pöörduge kvalifitseeritud juristi poole. Info võib jurisdiktsiooniti erineda.',
     'foot.about': 'AI-õigusabi Eesti ja EL-i jaoks. Tehtud Tallinnas, Vorantis OÜ.',
     'foot.powered': 'Toetab Claude (Anthropic)',
     'foot.product': 'Toode', 'foot.how': 'Kuidas töötab', 'foot.pricing': 'Hinnad', 'foot.app': 'Ava rakendus', 'foot.blog': 'Blogi',
-    'foot.company': 'Ettevõte', 'foot.news': 'Uudised',
+    'foot.company': 'Ettevõte', 'foot.news': 'Uudised', 'foot.forFirms': 'Õigusbüroodele',
     'foot.legal': 'Juriidika', 'foot.terms': 'Kasutustingimused', 'foot.privacy': 'Privaatsus', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · EL-i serverid (Frankfurt)',
     'chat.status': 'Võrgus · vastame keskmiselt 12 sekundiga',
@@ -2857,11 +3450,24 @@ const I18N = {
     'nav.login': 'Войти', 'nav.cta': 'Попробовать',
     'meta.title': 'Advocat — AI юрист · Защитите свои права',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
-    'hero.title': '<em>AI-ассистент</em> по эстонскому и европейскому праву.',
-    'hero.sub': 'Отвечает на юридические вопросы, готовит черновики писем для вашей проверки и помогает систематизировать материалы дела.',
+    'hero.title': 'Депортация, штраф или незаконное увольнение?<br>Advocat на твоей стороне — 24/7.',
+    'hero.sub': 'Юридический AI, который понимает immigrant pain — потому что мы сами через это прошли.',
+    'founder.eyebrow': 'ЗАЧЕМ МЫ СДЕЛАЛИ ADVOCAT',
+    'founder.heading': 'Создан теми, кто сам через это прошёл.',
+    'founder.quote': '«Декабрь 2025. Хельсинки. Полиция сопроводила мою жену на паром Eckerö Line. Migri назвала это «добровольным возвращением». Мы заплатили 300 € за отель на ту ночь.<br><br>Шесть месяцев спустя наше дело в Верховном административном суде Финляндии (KHO, заявление 200/2026). Я сделал Advocat, чтобы другие иммигранты не учили финское право по письму Migri в 18:00 в пятницу.»',
+    'founder.name': '— Дмитрий Шульга, основатель<br><small>Дело основателя: Sulga v. Finland · ЕСПЧ заявление №200</small>',
+    'testimonials.label': 'ОТ РЕАЛЬНЫХ ПОЛЬЗОВАТЕЛЕЙ',
+    'testimonials.heading': 'От людей, которые пользовались Advocat',
+    'testimonials.disclaimer': 'Независимое уведомление: Advocat — информационный сервис, а не замена присяжного адвоката.',
+    'testimonial.q1': '«ПЛЕЙСХОЛДЕР — владелец вставит реальный отзыв, когда первый платный пользователь его оставит.»',
+    'testimonial.a1': '— Имя, русскоязычный, Таллинн',
+    'testimonial.q2': '«ПЛЕЙСХОЛДЕР — владелец вставит реальный отзыв после первых 10 платных пользователей.»',
+    'testimonial.a2': '— Имя, эстоноязычный, Тарту',
+    'testimonial.q3': '«ПЛЕЙСХОЛДЕР — владелец вставит реальный отзыв от пользователя из Финляндии.»',
+    'testimonial.a3': '— Имя, финноязычный, Хельсинки',
     'hero.disclaimer': 'Информационный сервис. Не заменяет присяжного адвоката (vandeadvokaat) и не оказывает юридическую помощь в смысле Advokatuuriseadus.',
     'hero.primary': 'Попробовать →', 'hero.secondary': 'Посмотреть пример',
-    'hero.trust1': '7 бесплатных сообщений — без карты', 'hero.trust2': 'Со ссылками на закон', 'hero.trust3': 'EU GDPR · серверы во Франкфурте',
+    'hero.trust1': '25 бесплатных сообщений — без карты', 'hero.trust2': 'Со ссылками на закон', 'hero.trust3': 'EU GDPR · серверы во Франкфурте',
     'how.label': 'ТРИ ШАГА', 'how.title': 'Юридическая помощь, которая <em>работает</em>.',
     'how.sub': 'Никакой регистрации на семь экранов. Говори естественно, прикрепи документы, получи понятный план.',
     'contracts.heading': 'Загрузи контракт. Получи готовый ответ за 90 секунд.',
@@ -2871,12 +3477,61 @@ const I18N = {
     'pricing.free.contract_review': '1 анализ контракта (пожизненный пробный)',
     'pricing.pro.contract_review': '5 анализов контрактов / месяц',
     'pricing.premium.contract_review': '20 анализов контрактов / месяц',
+    // ── Pricing compare table ──
+    'pricing.compare.label': 'СРАВНИТЬ ТАРИФЫ',
+    'pricing.compare.title': 'Каждая функция, <em>рядом</em>.',
+    'pricing.compare.sub': 'Выбери, что подходит. Обнови или отмени в любой момент — один клик, без звонков.',
+    'pricing.compare.feature_col': 'Функция',
+    'pricing.compare.forever': '/ навсегда',
+    'pricing.compare.per_mo': '/ мес',
+    'pricing.compare.or_yr_pro': 'или €159.99/год',
+    'pricing.compare.or_yr_premium': 'или €249.99/год',
+    'pricing.compare.row.section.core': 'Базовый ИИ',
+    'pricing.compare.row.section.docs': 'Документы',
+    'pricing.compare.row.section.pro': 'Pro-инструменты',
+    'pricing.compare.row.section.support': 'Поддержка и приватность',
+    'pricing.compare.row.chat': 'Юридический чат с ИИ',
+    'pricing.compare.row.cases': 'Активные дела',
+    'pricing.compare.row.langs': 'Языки',
+    'pricing.compare.row.citations': 'Ссылки на ЕС и ЭР право',
+    'pricing.compare.row.doc_upload': 'Сканирование документов',
+    'pricing.compare.row.contract_review': 'Анализ контракта',
+    'pricing.compare.row.drafting': 'Студия черновиков (письма, жалобы)',
+    'pricing.compare.row.voice': 'Голосовой ввод',
+    'pricing.compare.row.consilium': 'AI-консилиум из 15 юристов',
+    'pricing.compare.row.deadline': 'Радар сроков',
+    'pricing.compare.row.web_search': 'Веб-поиск свежего права',
+    'pricing.compare.row.email_agent': 'Email-агент (черновики в Gmail)',
+    'pricing.compare.row.timeline': 'Авто-таймлайн дела',
+    'pricing.compare.row.support': 'Ответ поддержки',
+    'pricing.compare.row.gdpr': 'GDPR · серверы ЕС (Франкфурт)',
+    'pricing.compare.val.chat.free': '25 сообщ.',
+    'pricing.compare.val.chat.pro': '100 / день',
+    'pricing.compare.val.chat.premium': 'Без лимита',
+    'pricing.compare.val.cases.free': '1 дело',
+    'pricing.compare.val.cases.pro': '3 дела',
+    'pricing.compare.val.cases.premium': 'Без лимита',
+    'pricing.compare.val.langs.all': '17 языков',
+    'pricing.compare.val.doc.free': '3 док.',
+    'pricing.compare.val.doc.pro': '20 / мес',
+    'pricing.compare.val.doc.premium': 'Без лимита',
+    'pricing.compare.val.contract.free': '1 (проба)',
+    'pricing.compare.val.contract.pro': '5 / мес',
+    'pricing.compare.val.contract.premium': '20 / мес',
+    'pricing.compare.val.consilium.premium': '✓ приоритет',
+    'pricing.compare.val.deadline.free': 'Только просмотр',
+    'pricing.compare.val.deadline.pro': 'Просмотр + уведомл.',
+    'pricing.compare.val.deadline.premium': 'Авто-отслеж. + уведомл.',
+    'pricing.compare.val.support.free': 'Сообщество',
+    'pricing.compare.val.support.pro': 'Email · <24ч',
+    'pricing.compare.val.support.premium': 'Email · <4ч',
+    'pricing.compare.foot': '<strong>Годовая оплата экономит 30–33%.</strong> Возврат за 14 дней до отправки первого AI-сообщения. Цены включают 22% НДС для потребителей ЕС — бизнес-клиенты видят цены без НДС при оформлении.',
     'how.s1h': 'Задай вопрос', 'how.s1p': 'Говори как с другом — на русском, эстонском, украинском или любом из 17 языков. Advocat задаёт уточняющие вопросы как хороший юрист.', 'how.s1m': '~ 90 сек',
     'how.s2h': 'ИИ цитирует закон', 'how.s2p': 'Каждый ответ ссылается на конкретную статью (например, VÕS § 308 ч. 3). Можно проверить в Riigi Teataja самостоятельно.', 'how.s2m': 'PDF · DOCX · фото',
     'how.s3h': 'Отправь письмо со своей почты', 'how.s3p': 'AI готовит письмо — отправляете со своей почты в один клик.', 'how.s3m': 'Готово к отправке',
     'cases.label': 'ДЕЛА И ДОКУМЕНТЫ', 'cases.title': 'Материалы вашего <em>дела</em>, по полочкам.', 'cases.sub': 'Загружайте документы дела — AI читает PDF, помнит даты и контекст между сессиями.',
-    'compare.label': 'СРАВНЕНИЕ', 'compare.title': 'Зачем платить <em>адвокатскому бюро</em> €100-200 / час?',
-    'compare.sub': 'В суде адвокат — правильный ответ. Для остальных 95% юридической жизни есть способ быстрее.',
+    'compare.label': 'СРАВНЕНИЕ', 'compare.title': 'Research у нас. <em>Литигация</em> — с присяжным адвокатом.',
+    'compare.sub': 'Для представительства в суде нужен присяжный адвокат — мы его никогда не заменяем. Зато для остальных ~80% повседневного права (разобраться в статье, составить первый ответ, систематизировать материалы дела) мы быстрее, дешевле и без почасовой оплаты.',
     'compare.us_tag': 'AI-ассистент',
     'compare.u1': 'Ответ за 30 секунд, 24/7',
     'compare.u2': 'От €19.99/мес — Pro, 100 сообщений в день',
@@ -2885,7 +3540,7 @@ const I18N = {
     'compare.u5': 'Отмена в любой момент — возврат за 14 дней до отправки первого сообщения ИИ',
     'compare.cta_us': 'Попробовать бесплатно',
     'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ час',
-    'compare.us_price_note': 'Первые 7 сообщений бесплатно · Отмена в любой момент',
+    'compare.us_price_note': 'Первые 25 сообщений бесплатно · Отмена в любой момент',
     'compare.them_h': 'Адв. бюро', 'compare.them_tag': 'Традиционно',
     'compare.them_price_num': '€100–200', 'compare.them_price_unit': '/ час',
     'compare.them_price_note': 'Минимум 1 час · Только по записи',
@@ -2902,17 +3557,19 @@ const I18N = {
     'pricing.sub': 'Отмени в любой момент. Полный возврат в течение 14 дней, если ещё не отправил первое сообщение ИИ.',
     'plan1.eyebrow': 'Старт', 'plan1.name': 'Бесплатно', 'plan1.per': '/ навсегда',
     'plan1.desc': 'Попробуй систему. Получи реальный ответ со ссылками на закон, прежде чем решать.',
-    'plan1.f1': '7 AI-сообщений всего', 'plan1.f2': '1 активное дело', 'plan1.f3': 'Сканирование документов (3 шт)', 'plan1.f4': 'Ссылки на EE и ЕС законы', 'plan1.f5': 'Без карты',
+    'plan1.f1': '25 AI-сообщений в месяц', 'plan1.f2': '1 активное дело', 'plan1.f3': 'Сканирование документов (3 шт)', 'plan1.f4': 'Ссылки на EE и ЕС законы', 'plan1.f5': 'Без карты',
     'plan1.cta': 'Начать',
     'plan2.badge': 'Популярный', 'plan2.eyebrow': 'Для семьи', 'plan2.name': 'Pro', 'plan2.per': '/ месяц', 'plan2.annual': 'или €159.99/год — экономия 33%',
     'plan2.desc': 'Ежедневная юридическая помощь тебе и семье. 100 сообщений ИИ в день, полное составление документов.',
     'plan2.f1': '100 AI-сообщений в день', 'plan2.f2': '3 активных дела', 'plan2.f3': 'Сканирование документов (20 шт)',
     'plan2.f4': 'Полное составление документов (письма, жалобы)', 'plan2.f5': 'Голосовой ввод', 'plan2.f6': 'Веб-поиск свежего права',
+    'plan2.f7': 'Консилиум из 15 AI-юристов на каждый запрос',
     'plan2.cta': 'Начать сейчас',
     'plan3.eyebrow': 'Полная защита', 'plan3.name': 'Premium', 'plan3.per': '/ месяц', 'plan3.annual': 'или €249.99/год — экономия 30%',
     'plan3.desc': 'Полная защита — безлимит во всём, приоритетный ответ, все функции.',
     'plan3.f1': 'Безлимит AI-сообщений', 'plan3.f2': 'Безлимит дел', 'plan3.f3': 'Безлимит сканирований',
-    'plan3.f4': 'Приоритетная обработка', 'plan3.f5': 'Всё из Pro', 'plan3.f6': 'Экспорт писем и документов',
+    'plan3.f4': 'Приоритетная обработка', 'plan3.f5': 'Всё из Pro', 'plan3.f6': 'Email-агент — AI пишет ответы в вашем Gmail',
+    'plan3.f7': 'Хронология дела — собирается автоматически из писем и сроков',
     'plan3.cta': 'Выбрать Premium',
     'pricing.vat_included': 'Включая НДС 22%',
     'pricing.note': 'Отмена в любой момент. Экономия 30-33% с годовой оплатой.',
@@ -2922,6 +3579,7 @@ const I18N = {
     'pricing.anchor.them_label': 'Адвокат берёт', 'pricing.anchor.us_label': 'Advocat стоит',
     'pricing.anchor.per_hour': '/ час', 'pricing.anchor.per_month': '/ месяц',
     'pricing.anchor.note': 'Час с адвокатом стоит больше, чем год Advocat.',
+    'pricing.promo.text': 'Месяц запуска: первый месяц -50% — код <strong>LAUNCH50</strong>',
     'billing.monthly': 'Помесячно', 'billing.annual': 'Годовая',
     'billing.savings_pill': 'Экономия до 33%',
     'pricing.trust.refund': '14 дней возврата — до отправки первого сообщения ИИ',
@@ -2951,12 +3609,12 @@ const I18N = {
     'cta.title': 'Не оставайся <em>один</em> со своими правами.',
     'cta.sub': 'Задай первый вопрос. Ответ со ссылками на закон за 30 секунд. Без карты.',
     'cta.btn': 'Открыть чат →',
-    'cta.micro': '7 сообщений бесплатно · отмена в один клик · возврат за 14 дней до первого сообщения ИИ',
-    'disclaimer.full': 'Advocat предоставляет правовую информацию, а не юридическую консультацию. Сервис не заменяет лицензированного адвоката. Для представления в суде, судебных решений или обязывающих юридических заключений обратитесь к квалифицированному юристу. Информация может различаться в зависимости от юрисдикции.',
+    'cta.micro': '25 сообщений бесплатно · отмена в один клик · возврат за 14 дней до первого сообщения ИИ',
+    'disclaimer.full': 'Advocat предоставляет правовую информацию, а не юридическую консультацию. ИИ-сервис не заменяет лицензированного адвоката (vandeadvokaat / asianajaja) для литигации, представления в суде, обязывающих юридических заключений или переговоров от вашего имени. Для этого обратитесь к квалифицированному юристу. Информация может различаться в зависимости от юрисдикции.',
     'foot.about': 'Юридический ассистент на ИИ для Эстонии и ЕС. Сделано в Таллинне, Vorantis OÜ.',
     'foot.powered': 'На основе Claude (Anthropic)',
     'foot.product': 'Продукт', 'foot.how': 'Как работает', 'foot.pricing': 'Тарифы', 'foot.app': 'Открыть приложение', 'foot.blog': 'Блог',
-    'foot.company': 'Компания', 'foot.news': 'Новости',
+    'foot.company': 'Компания', 'foot.news': 'Новости', 'foot.forFirms': 'Юр. фирмам',
     'foot.legal': 'Право', 'foot.terms': 'Условия', 'foot.privacy': 'Конфиденциальность', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · серверы ЕС (Франкфурт)',
     'chat.status': 'Онлайн · ответ за 12 сек',
@@ -2986,7 +3644,7 @@ const I18N = {
     'hero.sub': 'Відповідає на юридичні запитання, готує чернетки листів для вашої перевірки та допомагає систематизувати матеріали справи.',
     'hero.disclaimer': 'Інформаційний сервіс. Не замінює присяжного адвоката (vandeadvokaat) і не надає правової допомоги у розумінні Advokatuuriseadus.',
     'hero.primary': 'Спробувати →', 'hero.secondary': 'Подивитися приклад',
-    'hero.trust1': '7 безкоштовних повідомлень — без картки', 'hero.trust2': 'З посиланнями на закон', 'hero.trust3': 'EU GDPR · сервери у Франкфурті',
+    'hero.trust1': '25 безкоштовних повідомлень — без картки', 'hero.trust2': 'З посиланнями на закон', 'hero.trust3': 'EU GDPR · сервери у Франкфурті',
     'how.label': 'ТРИ КРОКИ', 'how.title': 'Юридична допомога, яка <em>справді працює</em>.',
     'how.sub': 'Жодної реєстрації на сім екранів. Говори природно, прикріпи документи, отримай чіткий наступний крок.',
     'how.s1h': 'Постав питання', 'how.s1p': 'Говори як із другом — українською, російською, естонською чи будь-якою з 17 мов. Advocat ставить уточнювальні питання як хороший юрист.', 'how.s1m': '~ 90 сек',
@@ -3003,7 +3661,7 @@ const I18N = {
     'compare.u5': 'Скасування будь-коли — повернення за 14 днів до першого повідомлення ШІ',
     'compare.cta_us': 'Спробувати безкоштовно',
     'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ год',
-    'compare.us_price_note': 'Перші 7 повідомлень безкоштовно · Скасування будь-коли',
+    'compare.us_price_note': 'Перші 25 повідомлень безкоштовно · Скасування будь-коли',
     'compare.them_h': 'Адв. бюро', 'compare.them_tag': 'Традиційно',
     'compare.them_price_num': '€100–200', 'compare.them_price_unit': '/ год',
     'compare.them_price_note': 'Мінімум 1 година · Лише за записом',
@@ -3020,17 +3678,19 @@ const I18N = {
     'pricing.sub': 'Скасуй будь-коли. Повне повернення протягом 14 днів, якщо ще не надсилав перше повідомлення ШІ.',
     'plan1.eyebrow': 'Старт', 'plan1.name': 'Безкоштовно', 'plan1.per': '/ назавжди',
     'plan1.desc': 'Спробуй систему. Отримай реальну відповідь із посиланнями на закон.',
-    'plan1.f1': '7 AI-повідомлень загалом', 'plan1.f2': '1 активна справа', 'plan1.f3': 'Сканування документів (3 шт)', 'plan1.f4': 'Посилання на EE та ЄС закони', 'plan1.f5': 'Без картки',
+    'plan1.f1': '25 AI-повідомлень на місяць', 'plan1.f2': '1 активна справа', 'plan1.f3': 'Сканування документів (3 шт)', 'plan1.f4': 'Посилання на EE та ЄС закони', 'plan1.f5': 'Без картки',
     'plan1.cta': 'Почати',
     'plan2.badge': 'Популярний', 'plan2.eyebrow': 'Для сім\'ї', 'plan2.name': 'Pro', 'plan2.per': '/ місяць', 'plan2.annual': 'або €159.99/рік — економія 33%',
     'plan2.desc': 'Щоденна юридична допомога тобі та родині. 100 повідомлень ШІ на день, повне складання документів.',
     'plan2.f1': '100 AI-повідомлень на день', 'plan2.f2': '3 активні справи', 'plan2.f3': 'Сканування документів (20 шт)',
     'plan2.f4': 'Повне складання документів', 'plan2.f5': 'Голосовий ввід', 'plan2.f6': 'Веб-пошук свіжого права',
+    'plan2.f7': 'Консиліум із 15 AI-юристів на кожен запит',
     'plan2.cta': 'Почати зараз',
     'plan3.eyebrow': 'Повний захист', 'plan3.name': 'Premium', 'plan3.per': '/ місяць', 'plan3.annual': 'або €249.99/рік — економія 30%',
     'plan3.desc': 'Повний захист — безліміт у всьому, пріоритетна відповідь, усі функції.',
     'plan3.f1': 'Безліміт AI-повідомлень', 'plan3.f2': 'Безліміт справ', 'plan3.f3': 'Безліміт сканувань',
-    'plan3.f4': 'Пріоритетна обробка', 'plan3.f5': 'Усе з Pro', 'plan3.f6': 'Експорт листів і документів',
+    'plan3.f4': 'Пріоритетна обробка', 'plan3.f5': 'Усе з Pro', 'plan3.f6': 'Email-агент — AI пише відповіді у вашому Gmail',
+    'plan3.f7': 'Хронологія справи — автоматично з листів і термінів',
     'plan3.cta': 'Обрати Premium',
     'pricing.vat_included': 'З ПДВ 22%',
     'pricing.note': 'Скасування будь-коли. Економія 30-33% з річною оплатою.',
@@ -3047,12 +3707,12 @@ const I18N = {
     'cta.title': 'Не залишайся <em>сам</em> зі своїми правами.',
     'cta.sub': 'Постав перше питання. Відповідь із посиланнями на закон за 30 секунд. Без картки.',
     'cta.btn': 'Відкрити чат →',
-    'cta.micro': '7 повідомлень безкоштовно · скасування в один клік · повернення за 14 днів до першого повідомлення ШІ',
+    'cta.micro': '25 повідомлень безкоштовно · скасування в один клік · повернення за 14 днів до першого повідомлення ШІ',
     'disclaimer.full': 'Advocat надає правову інформацію, а не юридичну консультацію. Сервіс не замінює ліцензованого адвоката. Для представництва в суді, судових рішень або обов\'язкових юридичних висновків зверніться до кваліфікованого юриста. Інформація може відрізнятися залежно від юрисдикції.',
     'foot.about': 'Юридичний асистент на ШІ для Естонії та ЄС. Створено в Таллінні, Vorantis OÜ.',
     'foot.powered': 'На основі Claude (Anthropic)',
     'foot.product': 'Продукт', 'foot.how': 'Як працює', 'foot.pricing': 'Тарифи', 'foot.app': 'Відкрити застосунок', 'foot.blog': 'Блог',
-    'foot.company': 'Компанія', 'foot.news': 'Новини',
+    'foot.company': 'Компанія', 'foot.news': 'Новини', 'foot.forFirms': 'Юр. фірмам',
     'foot.legal': 'Право', 'foot.terms': 'Умови', 'foot.privacy': 'Конфіденційність', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · сервери ЄС (Франкфурт)',
     'chat.status': 'Онлайн · відповідь за 12 сек',
@@ -3078,11 +3738,24 @@ const I18N = {
     'nav.login': 'Kirjaudu', 'nav.cta': 'Kokeile',
     'meta.title': 'Advocat — Tekoälyjuristi · Puolusta oikeuksiasi',
     'hero.eyebrow': 'AI-LAKIASSISTENTTI · 2026',
-    'hero.title': '<em>Tekoälyavustaja</em> Viron ja EU:n oikeuteen.',
-    'hero.sub': 'Vastaa juridisiin kysymyksiin, laatii kirjeluonnoksia tarkastettavaksesi ja auttaa järjestämään asiakirja-aineistoa.',
+    'hero.title': 'Uhkaako sinua karkotus, sakko tai irtisanominen?<br>Advocat on puolellasi — 24/7.',
+    'hero.sub': 'Oikeudellinen tekoäly, joka ymmärtää maahanmuuttajan tuskaa — koska olemme itse käyneet sen läpi.',
+    'founder.eyebrow': 'MIKSI ADVOCAT ON OLEMASSA',
+    'founder.heading': 'Rakennettu ihmisten toimesta, jotka ovat itse eläneet tämän.',
+    'founder.quote': '»Joulukuu 2025. Helsinki. Poliisi saattoi vaimoni Eckerö Linen laivaan. Migri kutsui sitä »vapaaehtoiseksi paluuksi«. Olimme maksaneet 300 € hotellista sille yölle.<br><br>Kuusi kuukautta myöhemmin asiamme on korkeimmassa hallinto-oikeudessa (KHO, hakemus 200/2026). Rakensin Advocatin, jotta muut maahanmuuttajat eivät joudu opettelemaan Suomen lakia Migri-kirjeestä perjantai-iltana klo 18.«',
+    'founder.name': '— Dmitri Sulga, perustaja<br><small>Perustajan asia: Sulga v. Finland · EIT-hakemus N:o 200</small>',
+    'testimonials.label': 'AIDOILTA KÄYTTÄJILTÄ',
+    'testimonials.heading': 'Ihmisiltä, jotka ovat käyttäneet Advocatia',
+    'testimonials.disclaimer': 'Riippumaton vastuuvapauslauseke: Advocat on tietopalvelu, ei korvaa valantehnyttä asianajajaa.',
+    'testimonial.q1': '»PAIKKAMERKKI — omistaja lisää aidon palautteen, kun ensimmäinen maksava käyttäjä jakaa sen.«',
+    'testimonial.a1': '— Nimi, venäjänkielinen, Tallinna',
+    'testimonial.q2': '»PAIKKAMERKKI — omistaja lisää aidon palautteen ensimmäisen 10 maksavan käyttäjän jälkeen.«',
+    'testimonial.a2': '— Nimi, vironkielinen, Tartto',
+    'testimonial.q3': '»PAIKKAMERKKI — omistaja lisää aidon palautteen suomenkieliseltä käyttäjältä.«',
+    'testimonial.a3': '— Nimi, suomenkielinen, Helsinki',
     'hero.disclaimer': 'Tietopalvelu. Ei ole oikeudellista neuvontaa eikä korvaa asianajajaa (vandeadvokaat), jonka toimintaa säätelee Viron asianajajalaki (Advokatuuriseadus).',
     'hero.primary': 'Kokeile ilmaiseksi →', 'hero.secondary': 'Katso esimerkki',
-    'hero.trust1': '7 ilmaista viestiä — ei korttia', 'hero.trust2': 'Lähdeviitteet mukana', 'hero.trust3': 'EU GDPR · palvelimet Frankfurtissa',
+    'hero.trust1': '25 ilmaista viestiä — ei korttia', 'hero.trust2': 'Lähdeviitteet mukana', 'hero.trust3': 'EU GDPR · palvelimet Frankfurtissa',
     'how.label': 'KOLME VAIHETTA', 'how.title': 'Lakiapua, joka <em>todella toimii</em>.',
     'how.sub': 'Ei seitsemän sivun rekisteröitymistä. Puhu luonnollisesti, lataa dokumentit, saat selkeän seuraavan askeleen.',
     'contracts.heading': 'Pudota sopimus. Saa vastaus 90 sekunnissa.',
@@ -3092,12 +3765,61 @@ const I18N = {
     'pricing.free.contract_review': '1 sopimuksen tarkastus (elinikäinen kokeilu)',
     'pricing.pro.contract_review': '5 sopimustarkastusta / kuukausi',
     'pricing.premium.contract_review': '20 sopimustarkastusta / kuukausi',
+    // ── Pricing compare table ──
+    'pricing.compare.label': 'VERTAA PAKETTEJA',
+    'pricing.compare.title': 'Jokainen ominaisuus, <em>rinnakkain</em>.',
+    'pricing.compare.sub': 'Valitse sopiva. Päivitä tai peruuta milloin tahansa — yksi klikkaus, ei puheluita.',
+    'pricing.compare.feature_col': 'Ominaisuus',
+    'pricing.compare.forever': '/ ikuisesti',
+    'pricing.compare.per_mo': '/ kk',
+    'pricing.compare.or_yr_pro': 'tai €159.99/vuosi',
+    'pricing.compare.or_yr_premium': 'tai €249.99/vuosi',
+    'pricing.compare.row.section.core': 'Ydin-AI',
+    'pricing.compare.row.section.docs': 'Asiakirjat',
+    'pricing.compare.row.section.pro': 'Pro-työkalut',
+    'pricing.compare.row.section.support': 'Tuki ja yksityisyys',
+    'pricing.compare.row.chat': 'AI-lakichat',
+    'pricing.compare.row.cases': 'Aktiiviset asiat',
+    'pricing.compare.row.langs': 'Kielet',
+    'pricing.compare.row.citations': 'Viittaukset EU- ja EE-lakiin',
+    'pricing.compare.row.doc_upload': 'Asiakirjojen skannaus',
+    'pricing.compare.row.contract_review': 'Sopimustarkastus',
+    'pricing.compare.row.drafting': 'Luonnos-studio (kirjeet, valitukset)',
+    'pricing.compare.row.voice': 'Äänisyöttö',
+    'pricing.compare.row.consilium': '15-juristin AI-konsilium',
+    'pricing.compare.row.deadline': 'Määräaika-tutka',
+    'pricing.compare.row.web_search': 'Verkkohaku tuoreesta laista',
+    'pricing.compare.row.email_agent': 'Sähköposti-agentti (luonnokset Gmailiin)',
+    'pricing.compare.row.timeline': 'Asian aikajanan automaatti',
+    'pricing.compare.row.support': 'Tuen vastaus',
+    'pricing.compare.row.gdpr': 'GDPR · EU-palvelimet (Frankfurt)',
+    'pricing.compare.val.chat.free': '25 viestiä',
+    'pricing.compare.val.chat.pro': '100 / päivä',
+    'pricing.compare.val.chat.premium': 'Rajaton',
+    'pricing.compare.val.cases.free': '1 asia',
+    'pricing.compare.val.cases.pro': '3 asiaa',
+    'pricing.compare.val.cases.premium': 'Rajaton',
+    'pricing.compare.val.langs.all': '17 kieltä',
+    'pricing.compare.val.doc.free': '3 asiak.',
+    'pricing.compare.val.doc.pro': '20 / kk',
+    'pricing.compare.val.doc.premium': 'Rajaton',
+    'pricing.compare.val.contract.free': '1 (kokeilu)',
+    'pricing.compare.val.contract.pro': '5 / kk',
+    'pricing.compare.val.contract.premium': '20 / kk',
+    'pricing.compare.val.consilium.premium': '✓ etusija',
+    'pricing.compare.val.deadline.free': 'Vain katselu',
+    'pricing.compare.val.deadline.pro': 'Katselu + hälytykset',
+    'pricing.compare.val.deadline.premium': 'Auto-seuranta + hälytykset',
+    'pricing.compare.val.support.free': 'Yhteisö',
+    'pricing.compare.val.support.pro': 'Sähköposti · <24h',
+    'pricing.compare.val.support.premium': 'Sähköposti · <4h',
+    'pricing.compare.foot': '<strong>Vuosimaksu säästää 30–33%.</strong> 14 päivän palautus ennen ensimmäistä AI-viestiä. Hinnat sisältävät 22% ALV:n EU-kuluttajille — yritysasiakkaat näkevät ALV:ttömät hinnat kassalla.',
     'how.s1h': 'Esitä kysymyksesi', 'how.s1p': 'Puhu kuin ystävälle — millä tahansa 17 kielellä. Advocat esittää tarkentavia kysymyksiä kuten hyvä juristi.', 'how.s1m': '~ 90 sek',
     'how.s2h': 'Tekoäly siteeraa lakia', 'how.s2p': 'Jokainen vastaus viittaa tarkkaan pykälään (esim. VÕS § 308). Voit tarkistaa sen Riigi Teatajasta itse.', 'how.s2m': 'PDF · DOCX · kuvat',
     'how.s3h': 'Lähetä kirje omasta postistasi', 'how.s3p': 'Tekoäly laatii kirjeen luonnoksen — lähetät sen omasta sähköpostistasi yhdellä klikkauksella.', 'how.s3m': 'Valmis lähetettäväksi',
     'cases.label': 'TAPAUKSET JA ASIAKIRJAT', 'cases.title': 'Tapauksesi <em>asiakirjat</em>, järjestyksessä.', 'cases.sub': 'Lataa tapauksen asiakirjat — tekoäly lukee PDF-tiedostot ja muistaa määräajat sekä taustatiedot istunnosta toiseen.',
-    'compare.label': 'VERTAILU', 'compare.title': 'Miksi maksaa <em>lakitoimistolle</em> €100-200 / tunti?',
-    'compare.sub': 'Oikeudessa asianajaja on oikea vastaus. Muille 95 %:lle lakiasioista — on nopeampi tapa.',
+    'compare.label': 'VERTAILU', 'compare.title': 'Selvittely meiltä. <em>Oikeudenkäynti</em> asianajajalta.',
+    'compare.sub': 'Tuomioistuinedustukseen tarvitset lisensoidun asianajajan — emme koskaan korvaa häntä. Muille ~80 %:lle arjen lakiasioista (lakipykälän ymmärtäminen, ensimmäisen vastauksen luonnos, asiakirja-aineiston järjestäminen) olemme nopeampia, edullisempia ja ilman tuntilaskutusta.',
     'compare.us_tag': 'AI-lakiapu',
     'compare.u1': 'Vastaus 30 sekunnissa, 24/7',
     'compare.u2': 'Alkaen €19.99/kk — Pro, 100 viestiä päivässä',
@@ -3106,7 +3828,7 @@ const I18N = {
     'compare.u5': 'Peruuta milloin tahansa — 14 pv:n palautus ennen ensimmäistä AI-viestiä',
     'compare.cta_us': 'Kokeile ilmaiseksi',
     'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ tunti',
-    'compare.us_price_note': 'Ensimmäiset 7 viestiä ilmaiseksi · Peru milloin tahansa',
+    'compare.us_price_note': 'Ensimmäiset 25 viestiä ilmaiseksi · Peru milloin tahansa',
     'compare.them_h': 'Lakitoimisto', 'compare.them_tag': 'Perinteinen',
     'compare.them_price_num': '€100–200', 'compare.them_price_unit': '/ tunti',
     'compare.them_price_note': 'Vähintään 1 tunti · Vain ajanvarauksella',
@@ -3123,17 +3845,19 @@ const I18N = {
     'pricing.sub': 'Peruuta milloin tahansa. Täysi palautus 14 päivän sisällä, jos et ole vielä lähettänyt ensimmäistä AI-viestiä.',
     'plan1.eyebrow': 'Aloitus', 'plan1.name': 'Ilmainen', 'plan1.per': '/ ikuisesti',
     'plan1.desc': 'Kokeile järjestelmää. Saat oikean vastauksen lähteineen ennen päätöstä.',
-    'plan1.f1': '7 AI-viestiä yhteensä', 'plan1.f2': '1 aktiivinen tapaus', 'plan1.f3': 'Asiakirjojen skannaus (3 kpl)', 'plan1.f4': 'Lähteet EE & EU-laista', 'plan1.f5': 'Ei korttia',
+    'plan1.f1': '25 AI-viestiä kuukaudessa', 'plan1.f2': '1 aktiivinen tapaus', 'plan1.f3': 'Asiakirjojen skannaus (3 kpl)', 'plan1.f4': 'Lähteet EE & EU-laista', 'plan1.f5': 'Ei korttia',
     'plan1.cta': 'Aloita',
     'plan2.badge': 'Suosituin', 'plan2.eyebrow': 'Perheille', 'plan2.name': 'Pro', 'plan2.per': '/ kuukausi', 'plan2.annual': 'tai €159.99/vuosi — säästä 33%',
     'plan2.desc': 'Päivittäinen lakiapu sinulle ja perheellesi. 100 AI-viestiä päivässä, täysi asiakirjojen laadinta.',
     'plan2.f1': '100 AI-viestiä päivässä', 'plan2.f2': '3 aktiivista tapausta', 'plan2.f3': 'Asiakirjojen skannaus (20 kpl)',
     'plan2.f4': 'Täysi asiakirjojen laadinta', 'plan2.f5': 'Äänisyöte', 'plan2.f6': 'Verkkohaku tuoreesta laista',
+    'plan2.f7': '15 AI-lakimiehen konsilium jokaista kysymystä kohden',
     'plan2.cta': 'Aloita nyt',
     'plan3.eyebrow': 'Täysi puolustus', 'plan3.name': 'Premium', 'plan3.per': '/ kuukausi', 'plan3.annual': 'tai €249.99/vuosi — säästä 30%',
     'plan3.desc': 'Täysi puolustus — rajaton kaikki, prioriteetti, kaikki ominaisuudet.',
     'plan3.f1': 'Rajattomat AI-viestit', 'plan3.f2': 'Rajattomat tapaukset', 'plan3.f3': 'Rajattomat skannaukset',
-    'plan3.f4': 'Prioriteettikäsittely', 'plan3.f5': 'Kaikki Pro:sta', 'plan3.f6': 'Sähköposti- ja asiakirjavienti',
+    'plan3.f4': 'Prioriteettikäsittely', 'plan3.f5': 'Kaikki Pro:sta', 'plan3.f6': 'Sähköpostiagentti — AI laatii vastaukset Gmail-postilaatikossasi',
+    'plan3.f7': 'Tapauksen aikajana — koostetaan automaattisesti sähköposteista ja määräajoista',
     'plan3.cta': 'Valitse Premium',
     'pricing.vat_included': 'Sis. ALV 22%',
     'pricing.note': 'Peruuta milloin tahansa. Säästä 30-33% vuosilaskutuksella.',
@@ -3150,12 +3874,12 @@ const I18N = {
     'cta.title': 'Älä jää oikeuksiesi kanssa <em>yksin</em>.',
     'cta.sub': 'Esitä ensimmäinen kysymys. Lähteistetty vastaus 30 sekunnissa. Ei korttia.',
     'cta.btn': 'Avaa chat →',
-    'cta.micro': '7 viestiä ilmaiseksi · peruutus milloin tahansa · 14 pv:n palautus ennen ensimmäistä AI-viestiä',
-    'disclaimer.full': 'Advocat tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. Tämä palvelu ei korvaa lisensoitua asianajajaa. Tuomioistuinedustusta, tuomioita tai sitovia oikeudellisia lausuntoja varten käänny pätevän juristin puoleen. Tiedot voivat vaihdella oikeudenkäyntialueittain.',
+    'cta.micro': '25 viestiä ilmaiseksi · peruutus milloin tahansa · 14 pv:n palautus ennen ensimmäistä AI-viestiä',
+    'disclaimer.full': 'Advocat tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. Tämä tekoälypalvelu ei korvaa lisensoitua asianajajaa (vandeadvokaat / asianajaja) oikeudenkäynteihin, tuomioistuinedustukseen, sitoviin oikeudellisiin lausuntoihin tai neuvotteluihin puolestasi. Niitä varten käänny pätevän juristin puoleen. Tiedot voivat vaihdella oikeudenkäyntialueittain.',
     'foot.about': 'Tekoälyyn perustuva lakiapu Virolle ja EU:lle. Tehty Tallinnassa, Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Tuote', 'foot.how': 'Miten toimii', 'foot.pricing': 'Hinnat', 'foot.app': 'Avaa sovellus', 'foot.blog': 'Blogi',
-    'foot.company': 'Yritys', 'foot.news': 'Uutiset',
+    'foot.company': 'Yritys', 'foot.news': 'Uutiset', 'foot.forFirms': 'Asianajotoimistoille',
     'foot.legal': 'Juridinen', 'foot.terms': 'Ehdot', 'foot.privacy': 'Tietosuoja', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · EU-palvelimet (Frankfurt)',
     'chat.status': 'Online · keskim. vastausaika 12 s',
@@ -3185,7 +3909,7 @@ const I18N = {
     'hero.sub': 'Beantwortet rechtliche Fragen, erstellt Schreiben-Entwürfe zu Ihrer Prüfung und hilft beim Ordnen Ihrer Fallunterlagen.',
     'hero.disclaimer': 'Informationsdienst. Keine Rechtsberatung und kein Ersatz für einen vereidigten Rechtsanwalt (vandeadvokaat) im Sinne des estnischen Anwaltsgesetzes (Advokatuuriseadus).',
     'hero.primary': 'Kostenlos testen →', 'hero.secondary': 'Beispiel ansehen',
-    'hero.trust1': '7 Nachrichten gratis — keine Karte nötig', 'hero.trust2': 'Mit Quellenangaben', 'hero.trust3': 'EU-DSGVO · Server in Frankfurt',
+    'hero.trust1': '25 Nachrichten gratis — keine Karte nötig', 'hero.trust2': 'Mit Quellenangaben', 'hero.trust3': 'EU-DSGVO · Server in Frankfurt',
     'how.label': 'DREI SCHRITTE', 'how.title': 'Rechtshilfe, die <em>wirklich funktioniert</em>.',
     'how.sub': 'Keine sieben Seiten Anmeldung. Schildern Sie Ihre Situation in eigenen Worten, hängen Sie Dokumente an, erhalten Sie den nächsten Schritt.',
     'how.s1h': 'Frage stellen', 'how.s1p': 'Reden Sie wie mit einem Freund — in einer von 17 Sprachen. Advocat fragt nach wie ein guter Anwalt.', 'how.s1m': '~ 90 Sekunden',
@@ -3202,7 +3926,7 @@ const I18N = {
     'compare.u5': 'Jederzeit kündbar — 14-Tage-Rückerstattung vor der ersten KI-Nachricht',
     'compare.cta_us': 'Kostenlos starten',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ Stunde',
-    'compare.us_price_note': 'Erste 7 Nachrichten gratis · Jederzeit kündbar',
+    'compare.us_price_note': 'Erste 25 Nachrichten gratis · Jederzeit kündbar',
     'compare.them_h': 'Kanzlei', 'compare.them_tag': 'KLASSISCH',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ Stunde',
     'compare.them_price_note': 'Mindestens 1 Stunde · Nur nach Termin',
@@ -3219,17 +3943,19 @@ const I18N = {
     'pricing.sub': 'Jederzeit kündbar. Volle Rückerstattung innerhalb von 14 Tagen, sofern Sie noch keine erste KI-Nachricht gesendet haben.',
     'plan1.eyebrow': 'Einstieg', 'plan1.name': 'Kostenlos', 'plan1.per': '/ für immer',
     'plan1.desc': 'Probieren Sie das System aus. Erhalten Sie eine echte Antwort mit Gesetzesfundstelle, bevor Sie sich entscheiden.',
-    'plan1.f1': '7 KI-Nachrichten insgesamt', 'plan1.f2': '1 aktiver Fall', 'plan1.f3': 'Dokumentenscan (3 Stück)', 'plan1.f4': 'Quellen aus EE- und EU-Recht', 'plan1.f5': 'Keine Kreditkarte nötig',
+    'plan1.f1': '25 KI-Nachrichten pro Monat', 'plan1.f2': '1 aktiver Fall', 'plan1.f3': 'Dokumentenscan (3 Stück)', 'plan1.f4': 'Quellen aus EE- und EU-Recht', 'plan1.f5': 'Keine Kreditkarte nötig',
     'plan1.cta': 'Kostenlos starten',
     'plan2.badge': 'Am beliebtesten', 'plan2.eyebrow': 'Für Familien', 'plan2.name': 'Pro', 'plan2.per': '/ Monat', 'plan2.annual': 'oder 159,99 €/Jahr — 33 % sparen',
     'plan2.desc': 'Tägliche Rechtshilfe für Sie und Ihre Familie. 100 KI-Nachrichten pro Tag, vollständige Dokumentenerstellung.',
     'plan2.f1': '100 KI-Nachrichten / Tag', 'plan2.f2': '3 aktive Fälle', 'plan2.f3': 'Dokumentenscan (20 Stück)',
     'plan2.f4': 'Vollständige Dokumentenerstellung (Schreiben, Beschwerden)', 'plan2.f5': 'Spracheingabe', 'plan2.f6': 'Websuche nach aktueller Rechtsprechung',
+    'plan2.f7': 'KI-Konsilium aus 15 Juristen pro Anfrage',
     'plan2.cta': 'Jetzt starten',
     'plan3.eyebrow': 'Volle Verteidigung', 'plan3.name': 'Premium', 'plan3.per': '/ Monat', 'plan3.annual': 'oder 249,99 €/Jahr — 30 % sparen',
     'plan3.desc': 'Volle Verteidigung — alles unbegrenzt, vorrangige Bearbeitung, alle Funktionen.',
     'plan3.f1': 'Unbegrenzte KI-Nachrichten', 'plan3.f2': 'Unbegrenzte Fälle', 'plan3.f3': 'Unbegrenzte Dokumentenscans',
-    'plan3.f4': 'Vorrangige Bearbeitung', 'plan3.f5': 'Alles aus Pro', 'plan3.f6': 'E-Mail- und Dokumentenexport',
+    'plan3.f4': 'Vorrangige Bearbeitung', 'plan3.f5': 'Alles aus Pro', 'plan3.f6': 'E-Mail-Agent — KI verfasst Antworten in Ihrem Gmail-Postfach',
+    'plan3.f7': 'Fall-Zeitleiste — automatisch aus jeder E-Mail und Frist',
     'plan3.cta': 'Premium wählen',
     'pricing.vat_included': 'inkl. 22 % MwSt.',
     'pricing.note': 'Jederzeit kündbar. Mit Jahresabrechnung 30-33 % sparen.',
@@ -3246,12 +3972,12 @@ const I18N = {
     'cta.title': 'Stehen Sie nicht <em>allein</em> da.',
     'cta.sub': 'Stellen Sie die erste Frage. Antwort mit Gesetzesfundstelle in 30 Sekunden. Keine Karte nötig.',
     'cta.btn': 'Chat öffnen →',
-    'cta.micro': '7 Nachrichten gratis · jederzeit kündbar · 14-Tage-Rückerstattung vor der ersten KI-Nachricht',
+    'cta.micro': '25 Nachrichten gratis · jederzeit kündbar · 14-Tage-Rückerstattung vor der ersten KI-Nachricht',
     'disclaimer.full': 'Advocat bietet Rechtsinformation, keine Rechtsberatung. Dieser Dienst ersetzt keinen zugelassenen Rechtsanwalt. Für eine Vertretung vor Gericht, gerichtliche Entscheidungen oder verbindliche Rechtsgutachten wenden Sie sich an einen qualifizierten Juristen. Die Informationen können je nach Rechtsordnung abweichen.',
     'foot.about': 'KI-gestützte Rechtshilfe für Estland und die EU. Entwickelt in Tallinn von Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Produkt', 'foot.how': 'So funktioniert\'s', 'foot.pricing': 'Preise', 'foot.app': 'App öffnen', 'foot.blog': 'Blog',
-    'foot.company': 'Unternehmen', 'foot.news': 'News',
+    'foot.company': 'Unternehmen', 'foot.news': 'News', 'foot.forFirms': 'Für Kanzleien',
     'foot.legal': 'Rechtliches', 'foot.terms': 'AGB', 'foot.privacy': 'Datenschutz', 'foot.gdpr': 'DSGVO',
     'foot.gdpr_badge': 'DSGVO · EU-Server (Frankfurt)',
     'chat.status': 'Online · Antwort im Schnitt in 12 s',
@@ -3281,7 +4007,7 @@ const I18N = {
     'hero.sub': 'Répond à vos questions juridiques, rédige des projets de courriers à votre relecture et aide à organiser votre dossier.',
     'hero.disclaimer': 'Service d\'information. Ne constitue pas un conseil juridique et ne remplace pas un avocat assermenté (vandeadvokaat) au sens de la loi estonienne sur le barreau (Advokatuuriseadus).',
     'hero.primary': 'Essai gratuit →', 'hero.secondary': 'Voir un exemple',
-    'hero.trust1': '7 messages gratuits — sans carte', 'hero.trust2': 'Sources citées', 'hero.trust3': 'RGPD · serveurs à Francfort',
+    'hero.trust1': '25 messages gratuits — sans carte', 'hero.trust2': 'Sources citées', 'hero.trust3': 'RGPD · serveurs à Francfort',
     'how.label': 'TROIS ÉTAPES', 'how.title': 'Une aide juridique qui <em>fonctionne vraiment</em>.',
     'how.sub': 'Pas d\'inscription en sept écrans. Parlez naturellement, joignez vos documents, recevez la marche à suivre.',
     'how.s1h': 'Posez votre question', 'how.s1p': 'Parlez comme à un proche — dans l\'une des 17 langues. Advocat pose des questions de précision comme le ferait un bon avocat.', 'how.s1m': '~ 90 secondes',
@@ -3298,7 +4024,7 @@ const I18N = {
     'compare.u5': 'Résiliation à tout moment — remboursement 14 jours avant le premier message IA',
     'compare.cta_us': 'Commencer gratuitement',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ heure',
-    'compare.us_price_note': 'Les 7 premiers messages gratuits · Résiliable à tout moment',
+    'compare.us_price_note': 'Les 25 premiers messages gratuits · Résiliable à tout moment',
     'compare.them_h': 'Cabinet', 'compare.them_tag': 'CLASSIQUE',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ heure',
     'compare.them_price_note': 'Minimum 1 heure · Sur rendez-vous uniquement',
@@ -3315,17 +4041,19 @@ const I18N = {
     'pricing.sub': 'Résiliable à tout moment. Remboursement intégral dans les 14 jours, tant que vous n\'avez pas envoyé votre premier message IA.',
     'plan1.eyebrow': 'Découverte', 'plan1.name': 'Gratuit', 'plan1.per': '/ pour toujours',
     'plan1.desc': 'Essayez le service. Obtenez une vraie réponse avec sources citées avant de décider.',
-    'plan1.f1': '7 messages IA au total', 'plan1.f2': '1 dossier actif', 'plan1.f3': 'Lecture de documents (3 fichiers)', 'plan1.f4': 'Sources du droit estonien et UE', 'plan1.f5': 'Sans carte bancaire',
+    'plan1.f1': '25 messages IA par mois', 'plan1.f2': '1 dossier actif', 'plan1.f3': 'Lecture de documents (3 fichiers)', 'plan1.f4': 'Sources du droit estonien et UE', 'plan1.f5': 'Sans carte bancaire',
     'plan1.cta': 'Commencer',
     'plan2.badge': 'Le plus populaire', 'plan2.eyebrow': 'Pour la famille', 'plan2.name': 'Pro', 'plan2.per': '/ mois', 'plan2.annual': 'ou 159,99 €/an — économisez 33 %',
     'plan2.desc': 'Aide juridique quotidienne pour vous et votre famille. 100 messages IA/jour, rédaction complète des documents.',
     'plan2.f1': '100 messages IA / jour', 'plan2.f2': '3 dossiers actifs', 'plan2.f3': 'Lecture de documents (20 fichiers)',
     'plan2.f4': 'Rédaction complète (courriers, plaintes)', 'plan2.f5': 'Saisie vocale', 'plan2.f6': 'Recherche web sur la jurisprudence à jour',
+    'plan2.f7': 'Consilium de 15 juristes IA pour chaque question',
     'plan2.cta': 'Commencer',
     'plan3.eyebrow': 'Défense complète', 'plan3.name': 'Premium', 'plan3.per': '/ mois', 'plan3.annual': 'ou 249,99 €/an — économisez 30 %',
     'plan3.desc': 'Défense complète — tout illimité, traitement prioritaire, toutes les fonctionnalités.',
     'plan3.f1': 'Messages IA illimités', 'plan3.f2': 'Dossiers illimités', 'plan3.f3': 'Lectures illimitées',
-    'plan3.f4': 'Traitement prioritaire', 'plan3.f5': 'Tout Pro inclus', 'plan3.f6': 'Export e-mail et documents',
+    'plan3.f4': 'Traitement prioritaire', 'plan3.f5': 'Tout Pro inclus', 'plan3.f6': 'Agent e-mail — l\'IA rédige les réponses dans votre boîte Gmail',
+    'plan3.f7': 'Chronologie du dossier — générée automatiquement à partir des e-mails et échéances',
     'plan3.cta': 'Choisir Premium',
     'pricing.vat_included': 'TVA 22 % incluse',
     'pricing.note': 'Résiliable à tout moment. Avec la facturation annuelle, économisez 30 à 33 %.',
@@ -3342,12 +4070,12 @@ const I18N = {
     'cta.title': 'N\'affrontez pas vos droits <em>seul</em>.',
     'cta.sub': 'Posez la première question. Réponse sourcée en 30 secondes. Sans carte bancaire.',
     'cta.btn': 'Ouvrir le chat →',
-    'cta.micro': '7 messages gratuits · résiliable à tout moment · remboursement 14 jours avant le premier message IA',
+    'cta.micro': '25 messages gratuits · résiliable à tout moment · remboursement 14 jours avant le premier message IA',
     'disclaimer.full': 'Advocat fournit des informations juridiques, et non des conseils juridiques. Ce service ne remplace pas un avocat agréé. Pour une représentation au tribunal, un jugement ou un avis juridique contraignant, consultez un juriste qualifié. Les informations peuvent varier selon la juridiction.',
     'foot.about': 'Assistant juridique IA pour l\'Estonie et l\'UE. Conçu à Tallinn par Vorantis OÜ.',
     'foot.powered': 'Propulsé par Claude (Anthropic)',
     'foot.product': 'Produit', 'foot.how': 'Comment ça marche', 'foot.pricing': 'Tarifs', 'foot.app': 'Ouvrir l\'application', 'foot.blog': 'Blog',
-    'foot.company': 'Société', 'foot.news': 'Actualités',
+    'foot.company': 'Société', 'foot.news': 'Actualités', 'foot.forFirms': 'Pour les cabinets',
     'foot.legal': 'Mentions légales', 'foot.terms': 'CGU', 'foot.privacy': 'Confidentialité', 'foot.gdpr': 'RGPD',
     'foot.gdpr_badge': 'RGPD · serveurs UE (Francfort)',
     'chat.status': 'En ligne · réponse en 12 s en moyenne',
@@ -3377,7 +4105,7 @@ const I18N = {
     'hero.sub': 'Responde a sus preguntas legales, prepara borradores de escritos para su revisión y le ayuda a organizar el material de su caso.',
     'hero.disclaimer': 'Servicio de información. No constituye asesoramiento jurídico ni sustituye a un abogado colegiado (vandeadvokaat) en el sentido de la Ley de la Abogacía de Estonia (Advokatuuriseadus).',
     'hero.primary': 'Probar gratis →', 'hero.secondary': 'Ver un ejemplo',
-    'hero.trust1': '7 mensajes gratis — sin tarjeta', 'hero.trust2': 'Con fuentes citadas', 'hero.trust3': 'RGPD · servidores en Fráncfort',
+    'hero.trust1': '25 mensajes gratis — sin tarjeta', 'hero.trust2': 'Con fuentes citadas', 'hero.trust3': 'RGPD · servidores en Fráncfort',
     'how.label': 'TRES PASOS', 'how.title': 'Asistencia jurídica que <em>de verdad funciona</em>.',
     'how.sub': 'Sin un registro de siete pantallas. Hable con naturalidad, adjunte los documentos y reciba un siguiente paso claro.',
     'how.s1h': 'Plantee su pregunta', 'how.s1p': 'Hable como con un amigo — en cualquiera de los 17 idiomas. Advocat hace preguntas de seguimiento como un buen abogado.', 'how.s1m': '~ 90 segundos',
@@ -3394,7 +4122,7 @@ const I18N = {
     'compare.u5': 'Cancele cuando quiera — reembolso 14 días antes del primer mensaje IA',
     'compare.cta_us': 'Empezar gratis',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ hora',
-    'compare.us_price_note': 'Los 7 primeros mensajes gratis · Cancele cuando quiera',
+    'compare.us_price_note': 'Los 25 primeros mensajes gratis · Cancele cuando quiera',
     'compare.them_h': 'Despacho', 'compare.them_tag': 'TRADICIONAL',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ hora',
     'compare.them_price_note': 'Mínimo 1 hora · Solo con cita',
@@ -3411,17 +4139,19 @@ const I18N = {
     'pricing.sub': 'Cancele cuando quiera. Reembolso íntegro en 14 días si aún no ha enviado su primer mensaje IA.',
     'plan1.eyebrow': 'Inicio', 'plan1.name': 'Gratis', 'plan1.per': '/ para siempre',
     'plan1.desc': 'Pruebe el sistema. Reciba una respuesta real con cita legal antes de decidir.',
-    'plan1.f1': '7 mensajes IA en total', 'plan1.f2': '1 caso activo', 'plan1.f3': 'Escaneo de documentos (3)', 'plan1.f4': 'Fuentes de derecho EE y UE', 'plan1.f5': 'Sin tarjeta',
+    'plan1.f1': '25 mensajes IA al mes', 'plan1.f2': '1 caso activo', 'plan1.f3': 'Escaneo de documentos (3)', 'plan1.f4': 'Fuentes de derecho EE y UE', 'plan1.f5': 'Sin tarjeta',
     'plan1.cta': 'Empezar gratis',
     'plan2.badge': 'El más popular', 'plan2.eyebrow': 'Para familias', 'plan2.name': 'Pro', 'plan2.per': '/ mes', 'plan2.annual': 'o 159,99 €/año — ahorre 33 %',
     'plan2.desc': 'Asistencia jurídica diaria para usted y su familia. 100 mensajes IA/día, redacción completa de documentos.',
     'plan2.f1': '100 mensajes IA / día', 'plan2.f2': '3 casos activos', 'plan2.f3': 'Escaneo de documentos (20)',
     'plan2.f4': 'Redacción completa (cartas, reclamaciones)', 'plan2.f5': 'Entrada por voz', 'plan2.f6': 'Búsqueda web de jurisprudencia reciente',
+    'plan2.f7': 'Consilium de 15 juristas IA por cada consulta',
     'plan2.cta': 'Empezar ahora',
     'plan3.eyebrow': 'Defensa completa', 'plan3.name': 'Premium', 'plan3.per': '/ mes', 'plan3.annual': 'o 249,99 €/año — ahorre 30 %',
     'plan3.desc': 'Defensa completa — todo ilimitado, prioridad de respuesta, todas las funciones.',
     'plan3.f1': 'Mensajes IA ilimitados', 'plan3.f2': 'Casos ilimitados', 'plan3.f3': 'Escaneos ilimitados',
-    'plan3.f4': 'Procesamiento prioritario', 'plan3.f5': 'Todo lo de Pro', 'plan3.f6': 'Exportación de correo y documentos',
+    'plan3.f4': 'Procesamiento prioritario', 'plan3.f5': 'Todo lo de Pro', 'plan3.f6': 'Agente de correo — la IA redacta respuestas en tu bandeja de Gmail',
+    'plan3.f7': 'Cronología del caso — generada automáticamente desde correos y plazos',
     'plan3.cta': 'Elegir Premium',
     'pricing.vat_included': 'IVA 22 % incl.',
     'pricing.note': 'Cancela en cualquier momento. Con facturación anual ahorra 30-33 %.',
@@ -3438,12 +4168,12 @@ const I18N = {
     'cta.title': 'No se enfrente a sus derechos <em>solo</em>.',
     'cta.sub': 'Plantee la primera pregunta. Respuesta con cita legal en 30 segundos. Sin tarjeta.',
     'cta.btn': 'Abrir el chat →',
-    'cta.micro': '7 mensajes gratis · cancele cuando quiera · reembolso 14 días antes del primer mensaje IA',
+    'cta.micro': '25 mensajes gratis · cancele cuando quiera · reembolso 14 días antes del primer mensaje IA',
     'disclaimer.full': 'Advocat ofrece información legal, no asesoramiento legal. Este servicio no sustituye a un abogado colegiado. Para representación en juicio, sentencias o dictámenes jurídicos vinculantes, consulte a un jurista cualificado. La información puede variar según la jurisdicción.',
     'foot.about': 'Asistente jurídico con IA para Estonia y la UE. Hecho en Tallin por Vorantis OÜ.',
     'foot.powered': 'Con tecnología de Claude (Anthropic)',
     'foot.product': 'Producto', 'foot.how': 'Cómo funciona', 'foot.pricing': 'Precios', 'foot.app': 'Abrir la app', 'foot.blog': 'Blog',
-    'foot.company': 'Empresa', 'foot.news': 'Noticias',
+    'foot.company': 'Empresa', 'foot.news': 'Noticias', 'foot.forFirms': 'Para bufetes',
     'foot.legal': 'Legal', 'foot.terms': 'Condiciones', 'foot.privacy': 'Privacidad', 'foot.gdpr': 'RGPD',
     'foot.gdpr_badge': 'RGPD · servidores UE (Fráncfort)',
     'chat.status': 'En línea · respuesta media 12 s',
@@ -3473,7 +4203,7 @@ const I18N = {
     'hero.sub': 'Risponde a quesiti giuridici, redige bozze di lettere per la Sua revisione e aiuta a organizzare il materiale del Suo caso.',
     'hero.disclaimer': 'Servizio informativo. Non costituisce consulenza legale e non sostituisce un avvocato giurato iscritto all\'albo (vandeadvokaat) ai sensi della Legge sull\'avvocatura estone (Advokatuuriseadus).',
     'hero.primary': 'Prova gratis →', 'hero.secondary': 'Vedi un esempio',
-    'hero.trust1': '7 messaggi gratuiti — senza carta', 'hero.trust2': 'Fonti citate', 'hero.trust3': 'GDPR · server a Francoforte',
+    'hero.trust1': '25 messaggi gratuiti — senza carta', 'hero.trust2': 'Fonti citate', 'hero.trust3': 'GDPR · server a Francoforte',
     'how.label': 'TRE PASSI', 'how.title': 'Assistenza legale che <em>funziona davvero</em>.',
     'how.sub': 'Niente registrazione in sette schermate. Parli liberamente, alleghi i documenti, riceva un passo successivo chiaro.',
     'how.s1h': 'Faccia la sua domanda', 'how.s1p': 'Parli come a un amico — in una qualsiasi delle 17 lingue. Advocat fa domande di chiarimento come un buon avvocato.', 'how.s1m': '~ 90 secondi',
@@ -3490,7 +4220,7 @@ const I18N = {
     'compare.u5': 'Disdetta in qualsiasi momento — rimborso 14 giorni prima del primo messaggio IA',
     'compare.cta_us': 'Inizia gratis',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ ora',
-    'compare.us_price_note': 'Primi 7 messaggi gratis · Disdetta in qualsiasi momento',
+    'compare.us_price_note': 'Primi 25 messaggi gratis · Disdetta in qualsiasi momento',
     'compare.them_h': 'Studio legale', 'compare.them_tag': 'TRADIZIONALE',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ ora',
     'compare.them_price_note': 'Minimo 1 ora · Solo su appuntamento',
@@ -3507,17 +4237,19 @@ const I18N = {
     'pricing.sub': 'Disdetta in qualsiasi momento. Rimborso integrale entro 14 giorni se non ha ancora inviato il primo messaggio IA.',
     'plan1.eyebrow': 'Inizio', 'plan1.name': 'Gratis', 'plan1.per': '/ per sempre',
     'plan1.desc': 'Provi il sistema. Riceva una risposta vera con citazione di legge prima di decidere.',
-    'plan1.f1': '7 messaggi IA in totale', 'plan1.f2': '1 caso attivo', 'plan1.f3': 'Scansione documenti (3)', 'plan1.f4': 'Fonti dal diritto EE e UE', 'plan1.f5': 'Senza carta',
+    'plan1.f1': '25 messaggi IA al mese', 'plan1.f2': '1 caso attivo', 'plan1.f3': 'Scansione documenti (3)', 'plan1.f4': 'Fonti dal diritto EE e UE', 'plan1.f5': 'Senza carta',
     'plan1.cta': 'Inizia gratis',
     'plan2.badge': 'Il più scelto', 'plan2.eyebrow': 'Per le famiglie', 'plan2.name': 'Pro', 'plan2.per': '/ mese', 'plan2.annual': 'oppure 159,99 €/anno — risparmio 33 %',
     'plan2.desc': 'Assistenza legale quotidiana per Lei e la Sua famiglia. 100 messaggi IA/giorno, redazione completa dei documenti.',
     'plan2.f1': '100 messaggi IA / giorno', 'plan2.f2': '3 casi attivi', 'plan2.f3': 'Scansione documenti (20)',
     'plan2.f4': 'Redazione completa (lettere, reclami)', 'plan2.f5': 'Dettatura vocale', 'plan2.f6': 'Ricerca web della giurisprudenza più recente',
+    'plan2.f7': 'Consilium di 15 giuristi IA per ogni richiesta',
     'plan2.cta': 'Inizia ora',
     'plan3.eyebrow': 'Difesa totale', 'plan3.name': 'Premium', 'plan3.per': '/ mese', 'plan3.annual': 'oppure 249,99 €/anno — risparmio 30 %',
     'plan3.desc': 'Difesa totale — tutto illimitato, corsia prioritaria, tutte le funzioni.',
     'plan3.f1': 'Messaggi IA illimitati', 'plan3.f2': 'Casi illimitati', 'plan3.f3': 'Scansioni illimitate',
-    'plan3.f4': 'Elaborazione prioritaria', 'plan3.f5': 'Tutto Pro incluso', 'plan3.f6': 'Esportazione email e documenti',
+    'plan3.f4': 'Elaborazione prioritaria', 'plan3.f5': 'Tutto Pro incluso', 'plan3.f6': 'Agente Email — l\'IA redige risposte nella tua casella Gmail',
+    'plan3.f7': 'Cronologia del caso — generata automaticamente da email e scadenze',
     'plan3.cta': 'Scegli Premium',
     'pricing.vat_included': 'IVA 22 % inclusa',
     'pricing.note': 'Disdici in qualsiasi momento. Con la fatturazione annuale risparmia il 30-33 %.',
@@ -3534,12 +4266,12 @@ const I18N = {
     'cta.title': 'Non affronti i Suoi diritti <em>da solo</em>.',
     'cta.sub': 'Faccia la prima domanda. Risposta con citazione di legge in 30 secondi. Senza carta.',
     'cta.btn': 'Apri la chat →',
-    'cta.micro': '7 messaggi gratis · disdetta in qualsiasi momento · rimborso 14 giorni prima del primo messaggio IA',
+    'cta.micro': '25 messaggi gratis · disdetta in qualsiasi momento · rimborso 14 giorni prima del primo messaggio IA',
     'disclaimer.full': 'Advocat fornisce informazioni legali, non consulenza legale. Questo servizio non sostituisce un avvocato iscritto all\'albo. Per la rappresentanza in tribunale, le sentenze o i pareri legali vincolanti, si rivolga a un giurista qualificato. Le informazioni possono variare in base alla giurisdizione.',
     'foot.about': 'Assistente legale IA per Estonia e UE. Realizzato a Tallinn da Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Prodotto', 'foot.how': 'Come funziona', 'foot.pricing': 'Prezzi', 'foot.app': 'Apri l\'app', 'foot.blog': 'Blog',
-    'foot.company': 'Azienda', 'foot.news': 'News',
+    'foot.company': 'Azienda', 'foot.news': 'News', 'foot.forFirms': 'Per studi legali',
     'foot.legal': 'Note legali', 'foot.terms': 'Termini', 'foot.privacy': 'Privacy', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · server UE (Francoforte)',
     'chat.status': 'Online · risposta media 12 s',
@@ -3569,7 +4301,7 @@ const I18N = {
     'hero.sub': 'Odpowiada na pytania prawne, przygotowuje projekty pism do Twojej weryfikacji i pomaga porządkować materiały sprawy.',
     'hero.disclaimer': 'Usługa informacyjna. Nie stanowi pomocy prawnej i nie zastępuje adwokata przysięgłego (vandeadvokaat) w rozumieniu estońskiej ustawy o adwokaturze (Advokatuuriseadus).',
     'hero.primary': 'Wypróbuj za darmo →', 'hero.secondary': 'Zobacz przykład',
-    'hero.trust1': '7 wiadomości za darmo — bez karty', 'hero.trust2': 'Z cytatami z ustaw', 'hero.trust3': 'RODO · serwery we Frankfurcie',
+    'hero.trust1': '25 wiadomości za darmo — bez karty', 'hero.trust2': 'Z cytatami z ustaw', 'hero.trust3': 'RODO · serwery we Frankfurcie',
     'how.label': 'TRZY KROKI', 'how.title': 'Pomoc prawna, która <em>naprawdę działa</em>.',
     'how.sub': 'Bez rejestracji na siedem ekranów. Mów naturalnie, dołącz dokumenty, otrzymaj jasny następny krok.',
     'how.s1h': 'Zadaj pytanie', 'how.s1p': 'Mów jak do znajomego — w jednym z 17 języków. Advocat dopytuje jak dobry prawnik.', 'how.s1m': '~ 90 sekund',
@@ -3586,7 +4318,7 @@ const I18N = {
     'compare.u5': 'Rezygnacja w każdej chwili — zwrot w 14 dni przed pierwszą wiadomością AI',
     'compare.cta_us': 'Zacznij za darmo',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ godz.',
-    'compare.us_price_note': 'Pierwsze 7 wiadomości za darmo · Rezygnacja w każdej chwili',
+    'compare.us_price_note': 'Pierwsze 25 wiadomości za darmo · Rezygnacja w każdej chwili',
     'compare.them_h': 'Kancelaria', 'compare.them_tag': 'TRADYCYJNIE',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ godz.',
     'compare.them_price_note': 'Minimum 1 godz. · Tylko po umówieniu',
@@ -3603,17 +4335,19 @@ const I18N = {
     'pricing.sub': 'Rezygnacja w każdej chwili. Pełny zwrot w 14 dni, jeśli nie wysłałeś jeszcze pierwszej wiadomości AI.',
     'plan1.eyebrow': 'Start', 'plan1.name': 'Bezpłatnie', 'plan1.per': '/ na zawsze',
     'plan1.desc': 'Sprawdź system. Otrzymaj prawdziwą odpowiedź z odniesieniem do przepisu, zanim zdecydujesz.',
-    'plan1.f1': '7 wiadomości AI łącznie', 'plan1.f2': '1 aktywna sprawa', 'plan1.f3': 'Skanowanie dokumentów (3)', 'plan1.f4': 'Źródła z prawa EE i UE', 'plan1.f5': 'Bez karty',
+    'plan1.f1': '25 wiadomości AI miesięcznie', 'plan1.f2': '1 aktywna sprawa', 'plan1.f3': 'Skanowanie dokumentów (3)', 'plan1.f4': 'Źródła z prawa EE i UE', 'plan1.f5': 'Bez karty',
     'plan1.cta': 'Zacznij za darmo',
     'plan2.badge': 'Najpopularniejszy', 'plan2.eyebrow': 'Dla rodzin', 'plan2.name': 'Pro', 'plan2.per': '/ mies.', 'plan2.annual': 'lub 159,99 €/rok — oszczędność 33 %',
     'plan2.desc': 'Codzienna pomoc prawna dla Pana/Pani i rodziny. 100 wiadomości AI dziennie, pełne pisanie dokumentów.',
     'plan2.f1': '100 wiadomości AI / dzień', 'plan2.f2': '3 aktywne sprawy', 'plan2.f3': 'Skanowanie dokumentów (20)',
     'plan2.f4': 'Pełne pisma (wezwania, skargi)', 'plan2.f5': 'Dyktowanie głosem', 'plan2.f6': 'Wyszukiwanie aktualnego orzecznictwa',
+    'plan2.f7': 'Konsylium 15 prawników AI przy każdym zapytaniu',
     'plan2.cta': 'Zacznij teraz',
     'plan3.eyebrow': 'Pełna obrona', 'plan3.name': 'Premium', 'plan3.per': '/ mies.', 'plan3.annual': 'lub 249,99 €/rok — oszczędność 30 %',
     'plan3.desc': 'Pełna obrona — wszystko bez limitu, priorytetowa kolejka, wszystkie funkcje.',
     'plan3.f1': 'Wiadomości AI bez limitu', 'plan3.f2': 'Sprawy bez limitu', 'plan3.f3': 'Skany bez limitu',
-    'plan3.f4': 'Priorytetowe przetwarzanie', 'plan3.f5': 'Wszystko z Pro', 'plan3.f6': 'Eksport e-mail i dokumentów',
+    'plan3.f4': 'Priorytetowe przetwarzanie', 'plan3.f5': 'Wszystko z Pro', 'plan3.f6': 'Agent e-mail — AI pisze odpowiedzi w Twojej skrzynce Gmail',
+    'plan3.f7': 'Oś czasu sprawy — automatycznie z e-maili i terminów',
     'plan3.cta': 'Wybierz Premium',
     'pricing.vat_included': 'zawiera 22% VAT',
     'pricing.note': 'Anuluj w dowolnym momencie. Przy rocznym rozliczeniu oszczędzasz 30-33 %.',
@@ -3630,12 +4364,12 @@ const I18N = {
     'cta.title': 'Nie zostań ze swoimi prawami <em>sam</em>.',
     'cta.sub': 'Zadaj pierwsze pytanie. Odpowiedź z odniesieniem do przepisu w 30 sekund. Bez karty.',
     'cta.btn': 'Otwórz czat →',
-    'cta.micro': '7 wiadomości za darmo · rezygnacja jednym kliknięciem · zwrot w 14 dni przed pierwszą wiadomością AI',
+    'cta.micro': '25 wiadomości za darmo · rezygnacja jednym kliknięciem · zwrot w 14 dni przed pierwszą wiadomością AI',
     'disclaimer.full': 'Advocat udziela informacji prawnej, nie porady prawnej. Usługa nie zastępuje uprawnionego adwokata. W sprawach reprezentacji w sądzie, wyroków lub wiążących opinii prawnych skontaktuj się z wykwalifikowanym prawnikiem. Informacje mogą się różnić w zależności od jurysdykcji.',
     'foot.about': 'Asystent prawny oparty na AI dla Estonii i UE. Stworzony w Tallinie przez Vorantis OÜ.',
     'foot.powered': 'Napędzany przez Claude (Anthropic)',
     'foot.product': 'Produkt', 'foot.how': 'Jak działa', 'foot.pricing': 'Cennik', 'foot.app': 'Otwórz aplikację', 'foot.blog': 'Blog',
-    'foot.company': 'Firma', 'foot.news': 'Aktualności',
+    'foot.company': 'Firma', 'foot.news': 'Aktualności', 'foot.forFirms': 'Dla kancelarii',
     'foot.legal': 'Informacje prawne', 'foot.terms': 'Regulamin', 'foot.privacy': 'Prywatność', 'foot.gdpr': 'RODO',
     'foot.gdpr_badge': 'RODO · serwery UE (Frankfurt)',
     'chat.status': 'Online · średnia odpowiedź 12 s',
@@ -3665,7 +4399,7 @@ const I18N = {
     'hero.sub': 'Besvarar juridiska frågor, skriver utkast till brev för din granskning och hjälper dig organisera ärendematerialet.',
     'hero.disclaimer': 'Informationstjänst. Utgör inte juridisk rådgivning och ersätter inte en edsvuren advokat (vandeadvokaat) i den mening som avses i den estniska advokatlagen (Advokatuuriseadus).',
     'hero.primary': 'Prova gratis →', 'hero.secondary': 'Se ett exempel',
-    'hero.trust1': '7 gratismeddelanden — inget kort', 'hero.trust2': 'Källor citeras', 'hero.trust3': 'GDPR · servrar i Frankfurt',
+    'hero.trust1': '25 gratismeddelanden — inget kort', 'hero.trust2': 'Källor citeras', 'hero.trust3': 'GDPR · servrar i Frankfurt',
     'how.label': 'TRE STEG', 'how.title': 'Juridisk hjälp som <em>faktiskt funkar</em>.',
     'how.sub': 'Ingen registrering på sju sidor. Prata naturligt, bifoga dokumenten, få ett tydligt nästa steg.',
     'how.s1h': 'Ställ din fråga', 'how.s1p': 'Prata som med en vän — på något av 17 språk. Advocat ställer följdfrågor som en bra jurist gör.', 'how.s1m': '~ 90 sekunder',
@@ -3682,7 +4416,7 @@ const I18N = {
     'compare.u5': 'Säg upp när som helst — 14 dagars återbetalning före första AI-meddelandet',
     'compare.cta_us': 'Börja gratis',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ timme',
-    'compare.us_price_note': 'Första 7 meddelandena gratis · Säg upp när som helst',
+    'compare.us_price_note': 'Första 25 meddelandena gratis · Säg upp när som helst',
     'compare.them_h': 'Advokatbyrå', 'compare.them_tag': 'TRADITIONELL',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ timme',
     'compare.them_price_note': 'Minst 1 timme · Endast bokning',
@@ -3699,17 +4433,19 @@ const I18N = {
     'pricing.sub': 'Säg upp när som helst. Full återbetalning inom 14 dagar om du inte har skickat ditt första AI-meddelande än.',
     'plan1.eyebrow': 'Start', 'plan1.name': 'Gratis', 'plan1.per': '/ för alltid',
     'plan1.desc': 'Prova systemet. Få ett riktigt svar med lagstöd innan du bestämmer dig.',
-    'plan1.f1': '7 AI-meddelanden totalt', 'plan1.f2': '1 aktivt ärende', 'plan1.f3': 'Dokumentskanning (3 st)', 'plan1.f4': 'Källor från EE- och EU-rätt', 'plan1.f5': 'Inget kort behövs',
+    'plan1.f1': '25 AI-meddelanden per månad', 'plan1.f2': '1 aktivt ärende', 'plan1.f3': 'Dokumentskanning (3 st)', 'plan1.f4': 'Källor från EE- och EU-rätt', 'plan1.f5': 'Inget kort behövs',
     'plan1.cta': 'Börja gratis',
     'plan2.badge': 'Mest populär', 'plan2.eyebrow': 'För familjer', 'plan2.name': 'Pro', 'plan2.per': '/ månad', 'plan2.annual': 'eller 159,99 €/år — spara 33 %',
     'plan2.desc': 'Daglig juridisk hjälp för dig och familjen. 100 AI-meddelanden/dag, full dokumentskrivning.',
     'plan2.f1': '100 AI-meddelanden / dag', 'plan2.f2': '3 aktiva ärenden', 'plan2.f3': 'Dokumentskanning (20 st)',
     'plan2.f4': 'Full skrivning (brev, klagomål)', 'plan2.f5': 'Röstinmatning', 'plan2.f6': 'Webbsökning efter färsk rättspraxis',
+    'plan2.f7': '15-juristers AI-konsilium för varje fråga',
     'plan2.cta': 'Börja nu',
     'plan3.eyebrow': 'Fullt försvar', 'plan3.name': 'Premium', 'plan3.per': '/ månad', 'plan3.annual': 'eller 249,99 €/år — spara 30 %',
     'plan3.desc': 'Fullt försvar — allt obegränsat, prioriterad hantering, alla funktioner.',
     'plan3.f1': 'Obegränsade AI-meddelanden', 'plan3.f2': 'Obegränsade ärenden', 'plan3.f3': 'Obegränsade skanningar',
-    'plan3.f4': 'Prioriterad hantering', 'plan3.f5': 'Allt från Pro', 'plan3.f6': 'E-post- och dokumentexport',
+    'plan3.f4': 'Prioriterad hantering', 'plan3.f5': 'Allt från Pro', 'plan3.f6': 'E-postagent — AI skriver svar i din Gmail-inkorg',
+    'plan3.f7': 'Ärendetidslinje — byggs automatiskt från e-post och frister',
     'plan3.cta': 'Välj Premium',
     'pricing.vat_included': 'inkl. 22 % moms',
     'pricing.note': 'Avsluta när som helst. Med årsbetalning sparar du 30-33 %.',
@@ -3726,12 +4462,12 @@ const I18N = {
     'cta.title': 'Möt inte dina rättigheter <em>ensam</em>.',
     'cta.sub': 'Ställ den första frågan. Källhänvisat svar på 30 sekunder. Inget kort.',
     'cta.btn': 'Öppna chatten →',
-    'cta.micro': '7 meddelanden gratis · säg upp när som helst · 14 dagars återbetalning före första AI-meddelandet',
+    'cta.micro': '25 meddelanden gratis · säg upp när som helst · 14 dagars återbetalning före första AI-meddelandet',
     'disclaimer.full': 'Advocat tillhandahåller juridisk information, inte juridisk rådgivning. Tjänsten ersätter inte en behörig advokat. För ombud i domstol, domar eller bindande juridiska utlåtanden, vänd dig till en kvalificerad jurist. Informationen kan variera mellan jurisdiktioner.',
     'foot.about': 'AI-driven juridisk assistent för Estland och EU. Byggd i Tallinn av Vorantis OÜ.',
     'foot.powered': 'Drivs av Claude (Anthropic)',
     'foot.product': 'Produkt', 'foot.how': 'Så funkar det', 'foot.pricing': 'Priser', 'foot.app': 'Öppna appen', 'foot.blog': 'Blogg',
-    'foot.company': 'Företag', 'foot.news': 'Nyheter',
+    'foot.company': 'Företag', 'foot.news': 'Nyheter', 'foot.forFirms': 'För advokatbyråer',
     'foot.legal': 'Juridiskt', 'foot.terms': 'Villkor', 'foot.privacy': 'Integritet', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · EU-servrar (Frankfurt)',
     'chat.status': 'Online · svar i snitt 12 s',
@@ -3761,7 +4497,7 @@ const I18N = {
     'hero.sub': 'Atbild uz tiesību jautājumiem, sagatavo vēstuļu uzmetumus jūsu pārbaudei un palīdz sakārtot lietas materiālus.',
     'hero.disclaimer': 'Informācijas pakalpojums. Tas nav juridiskā palīdzība un neaizstāj zvērinātu advokātu (vandeadvokaat) Igaunijas Advokatūras likuma (Advokatuuriseadus) izpratnē.',
     'hero.primary': 'Izmēģināt bez maksas →', 'hero.secondary': 'Apskatīt piemēru',
-    'hero.trust1': '7 ziņas bez maksas — bez kartes', 'hero.trust2': 'Ar atsaucēm uz likumu', 'hero.trust3': 'VDAR · serveri Frankfurtē',
+    'hero.trust1': '25 ziņas bez maksas — bez kartes', 'hero.trust2': 'Ar atsaucēm uz likumu', 'hero.trust3': 'VDAR · serveri Frankfurtē',
     'how.label': 'TRĪS SOĻI', 'how.title': 'Juridiska palīdzība, kas <em>tiešām strādā</em>.',
     'how.sub': 'Bez septiņu ekrānu reģistrācijas. Runājiet dabiski, pievienojiet dokumentus, saņemiet skaidru nākamo soli.',
     'how.s1h': 'Uzdodiet jautājumu', 'how.s1p': 'Runājiet kā ar draugu — kādā no 17 valodām. Advocat uzdod precizējošus jautājumus kā labs jurists.', 'how.s1m': '~ 90 sekundes',
@@ -3778,7 +4514,7 @@ const I18N = {
     'compare.u5': 'Atcelšana jebkurā brīdī — atmaksa 14 dienās pirms pirmās MI ziņas',
     'compare.cta_us': 'Sākt bez maksas',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ stunda',
-    'compare.us_price_note': 'Pirmās 7 ziņas bez maksas · Atcelšana jebkurā brīdī',
+    'compare.us_price_note': 'Pirmās 25 ziņas bez maksas · Atcelšana jebkurā brīdī',
     'compare.them_h': 'Advokātu birojs', 'compare.them_tag': 'TRADICIONĀLI',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ stunda',
     'compare.them_price_note': 'Minimums 1 stunda · Tikai pēc pieraksta',
@@ -3795,17 +4531,19 @@ const I18N = {
     'pricing.sub': 'Atcelšana jebkurā brīdī. Pilna atmaksa 14 dienās, ja vēl neesat nosūtījis pirmo MI ziņu.',
     'plan1.eyebrow': 'Sākums', 'plan1.name': 'Bez maksas', 'plan1.per': '/ uz mūžu',
     'plan1.desc': 'Izmēģiniet sistēmu. Saņemiet īstu atbildi ar likuma atsauci, pirms izšķirties.',
-    'plan1.f1': '7 MI ziņas kopā', 'plan1.f2': '1 aktīva lieta', 'plan1.f3': 'Dokumentu skenēšana (3)', 'plan1.f4': 'Atsauces uz EE un ES tiesībām', 'plan1.f5': 'Bez kartes',
+    'plan1.f1': '25 MI ziņas mēnesī', 'plan1.f2': '1 aktīva lieta', 'plan1.f3': 'Dokumentu skenēšana (3)', 'plan1.f4': 'Atsauces uz EE un ES tiesībām', 'plan1.f5': 'Bez kartes',
     'plan1.cta': 'Sākt bez maksas',
     'plan2.badge': 'Populārākais', 'plan2.eyebrow': 'Ģimenēm', 'plan2.name': 'Pro', 'plan2.per': '/ mēnesī', 'plan2.annual': 'vai 159,99 €/gadā — ietaupiet 33 %',
     'plan2.desc': 'Ikdienas juridiskā palīdzība jums un ģimenei. 100 MI ziņas dienā, pilna dokumentu sagatavošana.',
     'plan2.f1': '100 MI ziņu dienā', 'plan2.f2': '3 aktīvas lietas', 'plan2.f3': 'Dokumentu skenēšana (20)',
     'plan2.f4': 'Pilna sagatavošana (vēstules, sūdzības)', 'plan2.f5': 'Balss ievade', 'plan2.f6': 'Tīmekļa meklēšana aktuālajai praksei',
+    'plan2.f7': '15 MI juristu konsīlijs katram jautājumam',
     'plan2.cta': 'Sākt tagad',
     'plan3.eyebrow': 'Pilna aizsardzība', 'plan3.name': 'Premium', 'plan3.per': '/ mēnesī', 'plan3.annual': 'vai 249,99 €/gadā — ietaupiet 30 %',
     'plan3.desc': 'Pilna aizsardzība — viss bez ierobežojumiem, prioritāte, visas funkcijas.',
     'plan3.f1': 'Neierobežotas MI ziņas', 'plan3.f2': 'Neierobežotas lietas', 'plan3.f3': 'Neierobežoti skenējumi',
-    'plan3.f4': 'Prioritāra apstrāde', 'plan3.f5': 'Viss no Pro', 'plan3.f6': 'E-pasta un dokumentu eksports',
+    'plan3.f4': 'Prioritāra apstrāde', 'plan3.f5': 'Viss no Pro', 'plan3.f6': 'E-pasta aģents — MI raksta atbildes jūsu Gmail iesūtnē',
+    'plan3.f7': 'Lietas hronoloģija — automātiski no e-pastiem un termiņiem',
     'plan3.cta': 'Izvēlēties Premium',
     'pricing.vat_included': 'ar 22 % PVN',
     'pricing.note': 'Atcelt jebkurā laikā. Ar gada apmaksu ietaupiet 30-33 %.',
@@ -3822,12 +4560,12 @@ const I18N = {
     'cta.title': 'Nepalieciet ar savām tiesībām <em>viens</em>.',
     'cta.sub': 'Uzdodiet pirmo jautājumu. Atbilde ar likuma atsauci 30 sekundēs. Bez kartes.',
     'cta.btn': 'Atvērt tērzēšanu →',
-    'cta.micro': '7 ziņas bez maksas · atcelšana ar vienu klikšķi · atmaksa 14 dienās pirms pirmās MI ziņas',
+    'cta.micro': '25 ziņas bez maksas · atcelšana ar vienu klikšķi · atmaksa 14 dienās pirms pirmās MI ziņas',
     'disclaimer.full': 'Advocat sniedz juridisko informāciju, nevis juridisko konsultāciju. Pakalpojums neaizstāj licencētu advokātu. Pārstāvībai tiesā, tiesas spriedumiem vai saistošiem juridiskiem atzinumiem vērsieties pie kvalificēta jurista. Informācija var atšķirties atkarībā no jurisdikcijas.',
     'foot.about': 'MI juridiskais asistents Igaunijai un ES. Veidots Tallinā, Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Produkts', 'foot.how': 'Kā strādā', 'foot.pricing': 'Cenas', 'foot.app': 'Atvērt lietotni', 'foot.blog': 'Blogs',
-    'foot.company': 'Uzņēmums', 'foot.news': 'Jaunumi',
+    'foot.company': 'Uzņēmums', 'foot.news': 'Jaunumi', 'foot.forFirms': 'Advokātu birojiem',
     'foot.legal': 'Juridiska info', 'foot.terms': 'Noteikumi', 'foot.privacy': 'Privātums', 'foot.gdpr': 'VDAR',
     'foot.gdpr_badge': 'VDAR · ES serveri (Frankfurte)',
     'chat.status': 'Tiešsaistē · vidēja atbilde 12 s',
@@ -3857,7 +4595,7 @@ const I18N = {
     'hero.sub': 'Atsako į teisinius klausimus, rengia raštų projektus jūsų peržiūrai ir padeda sutvarkyti bylos medžiagą.',
     'hero.disclaimer': 'Informacinė paslauga. Tai nėra teisinė pagalba ir nepakeičia prisiekusiojo advokato (vandeadvokaat), kaip tai apibrėžta Estijos advokatūros įstatyme (Advokatuuriseadus).',
     'hero.primary': 'Išbandyti nemokamai →', 'hero.secondary': 'Pamatyti pavyzdį',
-    'hero.trust1': '7 nemokamos žinutės — be kortelės', 'hero.trust2': 'Su nuorodomis į įstatymą', 'hero.trust3': 'BDAR · serveriai Frankfurte',
+    'hero.trust1': '25 nemokamos žinutės — be kortelės', 'hero.trust2': 'Su nuorodomis į įstatymą', 'hero.trust3': 'BDAR · serveriai Frankfurte',
     'how.label': 'TRYS ŽINGSNIAI', 'how.title': 'Teisinė pagalba, kuri <em>tikrai veikia</em>.',
     'how.sub': 'Jokios septynių ekranų registracijos. Kalbėkite natūraliai, prisekite dokumentus, gaukite aiškų kitą žingsnį.',
     'how.s1h': 'Užduokite klausimą', 'how.s1p': 'Kalbėkite kaip su draugu — bet kuria iš 17 kalbų. Advocat užduoda tikslinančius klausimus kaip geras teisininkas.', 'how.s1m': '~ 90 sekundžių',
@@ -3874,7 +4612,7 @@ const I18N = {
     'compare.u5': 'Atšauksite bet kada — 14 dienų grąžinimas iki pirmos DI žinutės',
     'compare.cta_us': 'Pradėti nemokamai',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ val.',
-    'compare.us_price_note': 'Pirmosios 7 žinutės nemokamos · Galima atšaukti bet kada',
+    'compare.us_price_note': 'Pirmosios 25 žinutės nemokamos · Galima atšaukti bet kada',
     'compare.them_h': 'Advokatų kontora', 'compare.them_tag': 'TRADICIŠKAI',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ val.',
     'compare.them_price_note': 'Minimum 1 val. · Tik iš anksto užsiregistravus',
@@ -3891,17 +4629,19 @@ const I18N = {
     'pricing.sub': 'Atšauksite bet kada. Pilnas grąžinimas per 14 dienų, jei dar neišsiuntėte pirmos DI žinutės.',
     'plan1.eyebrow': 'Pradžia', 'plan1.name': 'Nemokamai', 'plan1.per': '/ visam laikui',
     'plan1.desc': 'Išbandykite sistemą. Gaukite tikrą atsakymą su įstatymo nuoroda prieš nuspręsdami.',
-    'plan1.f1': '7 DI žinutės iš viso', 'plan1.f2': '1 aktyvi byla', 'plan1.f3': 'Dokumentų skenavimas (3)', 'plan1.f4': 'Šaltiniai iš EE ir ES teisės', 'plan1.f5': 'Be kortelės',
+    'plan1.f1': '25 DI žinutės per mėnesį', 'plan1.f2': '1 aktyvi byla', 'plan1.f3': 'Dokumentų skenavimas (3)', 'plan1.f4': 'Šaltiniai iš EE ir ES teisės', 'plan1.f5': 'Be kortelės',
     'plan1.cta': 'Pradėti nemokamai',
     'plan2.badge': 'Populiariausias', 'plan2.eyebrow': 'Šeimoms', 'plan2.name': 'Pro', 'plan2.per': '/ mėn.', 'plan2.annual': 'arba 159,99 €/metus — sutaupote 33 %',
     'plan2.desc': 'Kasdienė teisinė pagalba jums ir šeimai. 100 DI žinučių per dieną, pilnas dokumentų rengimas.',
     'plan2.f1': '100 DI žinučių per dieną', 'plan2.f2': '3 aktyvios bylos', 'plan2.f3': 'Dokumentų skenavimas (20)',
     'plan2.f4': 'Pilnas dokumentų rengimas (raštai, skundai)', 'plan2.f5': 'Balso įvestis', 'plan2.f6': 'Žiniatinklio paieška šviežiai praktikai',
+    'plan2.f7': '15 DI teisininkų konsiliumas kiekvienam klausimui',
     'plan2.cta': 'Pradėti dabar',
     'plan3.eyebrow': 'Pilna gynyba', 'plan3.name': 'Premium', 'plan3.per': '/ mėn.', 'plan3.annual': 'arba 249,99 €/metus — sutaupote 30 %',
     'plan3.desc': 'Pilna gynyba — viskas neribotai, prioritetas, visos funkcijos.',
     'plan3.f1': 'Neribotos DI žinutės', 'plan3.f2': 'Neribotos bylos', 'plan3.f3': 'Neriboti skenavimai',
-    'plan3.f4': 'Prioritetinis apdorojimas', 'plan3.f5': 'Viskas iš Pro', 'plan3.f6': 'El. pašto ir dokumentų eksportas',
+    'plan3.f4': 'Prioritetinis apdorojimas', 'plan3.f5': 'Viskas iš Pro', 'plan3.f6': 'El. pašto agentas — DI rašo atsakymus jūsų Gmail dėžutėje',
+    'plan3.f7': 'Bylos chronologija — automatiškai iš laiškų ir terminų',
     'plan3.cta': 'Pasirinkti Premium',
     'pricing.vat_included': 'su 22 % PVM',
     'pricing.note': 'Atšaukite bet kada. Su metiniu mokėjimu sutaupote 30-33 %.',
@@ -3918,12 +4658,12 @@ const I18N = {
     'cta.title': 'Nestovėkite su savo teisėmis <em>vienas</em>.',
     'cta.sub': 'Užduokite pirmą klausimą. Atsakymas su įstatymo nuoroda per 30 sekundžių. Be kortelės.',
     'cta.btn': 'Atidaryti pokalbį →',
-    'cta.micro': '7 žinutės nemokamai · atšauksite bet kada · 14 dienų grąžinimas iki pirmos DI žinutės',
+    'cta.micro': '25 žinutės nemokamai · atšauksite bet kada · 14 dienų grąžinimas iki pirmos DI žinutės',
     'disclaimer.full': 'Advocat teikia teisinę informaciją, ne teisinę konsultaciją. Paslauga nepakeičia licencijuoto advokato. Atstovavimui teisme, sprendimams ar privalomoms teisinėms išvadoms kreipkitės į kvalifikuotą teisininką. Informacija gali skirtis priklausomai nuo jurisdikcijos.',
     'foot.about': 'DI teisės asistentas Estijai ir ES. Sukurta Taline, Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Produktas', 'foot.how': 'Kaip veikia', 'foot.pricing': 'Kainos', 'foot.app': 'Atidaryti programą', 'foot.blog': 'Tinklaraštis',
-    'foot.company': 'Įmonė', 'foot.news': 'Naujienos',
+    'foot.company': 'Įmonė', 'foot.news': 'Naujienos', 'foot.forFirms': 'Advokatų kontoroms',
     'foot.legal': 'Teisinė info', 'foot.terms': 'Sąlygos', 'foot.privacy': 'Privatumas', 'foot.gdpr': 'BDAR',
     'foot.gdpr_badge': 'BDAR · ES serveriai (Frankfurte)',
     'chat.status': 'Prisijungę · vidutinis atsakymo laikas 12 s',
@@ -3953,7 +4693,7 @@ const I18N = {
     'hero.sub': 'Răspunde la întrebări de drept, redactează proiecte de scrisori pentru verificarea dvs. și vă ajută să organizați materialele dosarului.',
     'hero.disclaimer': 'Serviciu de informare. Nu constituie asistență juridică și nu înlocuiește un avocat jurat (vandeadvokaat) în sensul Legii estoniene privind Baroul (Advokatuuriseadus).',
     'hero.primary': 'Încearcă gratuit →', 'hero.secondary': 'Vezi un exemplu',
-    'hero.trust1': '7 mesaje gratuite — fără card', 'hero.trust2': 'Cu surse citate', 'hero.trust3': 'GDPR · servere la Frankfurt',
+    'hero.trust1': '25 mesaje gratuite — fără card', 'hero.trust2': 'Cu surse citate', 'hero.trust3': 'GDPR · servere la Frankfurt',
     'how.label': 'TREI PAȘI', 'how.title': 'Asistență juridică ce <em>chiar funcționează</em>.',
     'how.sub': 'Nicio înregistrare în șapte ecrane. Vorbiți firesc, atașați documentele, primiți un pas următor clar.',
     'how.s1h': 'Puneți întrebarea', 'how.s1p': 'Vorbiți ca unui prieten — în oricare dintre cele 17 limbi. Advocat pune întrebări lămuritoare ca un avocat bun.', 'how.s1m': '~ 90 de secunde',
@@ -3970,7 +4710,7 @@ const I18N = {
     'compare.u5': 'Anulare oricând — rambursare 14 zile înainte de primul mesaj AI',
     'compare.cta_us': 'Începe gratuit',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ oră',
-    'compare.us_price_note': 'Primele 7 mesaje gratuite · Anulare oricând',
+    'compare.us_price_note': 'Primele 25 mesaje gratuite · Anulare oricând',
     'compare.them_h': 'Casă de avocatură', 'compare.them_tag': 'TRADIȚIONAL',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ oră',
     'compare.them_price_note': 'Minimum 1 oră · Doar pe bază de programare',
@@ -3987,17 +4727,19 @@ const I18N = {
     'pricing.sub': 'Anulare oricând. Rambursare integrală în 14 zile dacă nu ați trimis încă primul mesaj AI.',
     'plan1.eyebrow': 'Început', 'plan1.name': 'Gratuit', 'plan1.per': '/ pentru totdeauna',
     'plan1.desc': 'Încercați sistemul. Primiți un răspuns real cu trimitere la lege înainte să decideți.',
-    'plan1.f1': '7 mesaje AI în total', 'plan1.f2': '1 caz activ', 'plan1.f3': 'Scanare documente (3)', 'plan1.f4': 'Surse din dreptul EE și UE', 'plan1.f5': 'Fără card',
+    'plan1.f1': '25 mesaje AI pe lună', 'plan1.f2': '1 caz activ', 'plan1.f3': 'Scanare documente (3)', 'plan1.f4': 'Surse din dreptul EE și UE', 'plan1.f5': 'Fără card',
     'plan1.cta': 'Începe gratuit',
     'plan2.badge': 'Cel mai popular', 'plan2.eyebrow': 'Pentru familii', 'plan2.name': 'Pro', 'plan2.per': '/ lună', 'plan2.annual': 'sau 159,99 €/an — economisiți 33 %',
     'plan2.desc': 'Asistență juridică zilnică pentru dumneavoastră și familie. 100 mesaje AI/zi, redactare completă a documentelor.',
     'plan2.f1': '100 mesaje AI / zi', 'plan2.f2': '3 cazuri active', 'plan2.f3': 'Scanare documente (20)',
     'plan2.f4': 'Redactare completă (somații, plângeri)', 'plan2.f5': 'Dictare vocală', 'plan2.f6': 'Căutare web pentru jurisprudență recentă',
+    'plan2.f7': 'Consilium de 15 juriști AI pentru fiecare întrebare',
     'plan2.cta': 'Începe acum',
     'plan3.eyebrow': 'Apărare totală', 'plan3.name': 'Premium', 'plan3.per': '/ lună', 'plan3.annual': 'sau 249,99 €/an — economisiți 30 %',
     'plan3.desc': 'Apărare totală — totul nelimitat, prioritate, toate funcțiile.',
     'plan3.f1': 'Mesaje AI nelimitate', 'plan3.f2': 'Cazuri nelimitate', 'plan3.f3': 'Scanări nelimitate',
-    'plan3.f4': 'Procesare prioritară', 'plan3.f5': 'Tot ce este în Pro', 'plan3.f6': 'Export e-mail și documente',
+    'plan3.f4': 'Procesare prioritară', 'plan3.f5': 'Tot ce este în Pro', 'plan3.f6': 'Agent email — AI redactează răspunsuri în căsuța ta Gmail',
+    'plan3.f7': 'Cronologia cazului — generată automat din e-mailuri și termene',
     'plan3.cta': 'Alege Premium',
     'pricing.vat_included': 'TVA 22 % inclus',
     'pricing.note': 'Anulați oricând. Cu plata anuală economisiți 30-33 %.',
@@ -4014,12 +4756,12 @@ const I18N = {
     'cta.title': 'Nu vă înfruntați drepturile <em>singur</em>.',
     'cta.sub': 'Puneți prima întrebare. Răspuns cu trimitere la lege în 30 de secunde. Fără card.',
     'cta.btn': 'Deschide chatul →',
-    'cta.micro': '7 mesaje gratuite · anulare cu un clic · rambursare 14 zile înainte de primul mesaj AI',
+    'cta.micro': '25 mesaje gratuite · anulare cu un clic · rambursare 14 zile înainte de primul mesaj AI',
     'disclaimer.full': 'Advocat oferă informații juridice, nu consultanță juridică. Acest serviciu nu înlocuiește un avocat înscris în barou. Pentru reprezentare în instanță, hotărâri judecătorești sau opinii juridice obligatorii, consultați un jurist calificat. Informațiile pot varia în funcție de jurisdicție.',
     'foot.about': 'Asistent juridic AI pentru Estonia și UE. Construit la Tallinn de Vorantis OÜ.',
     'foot.powered': 'Pus în funcțiune de Claude (Anthropic)',
     'foot.product': 'Produs', 'foot.how': 'Cum funcționează', 'foot.pricing': 'Prețuri', 'foot.app': 'Deschide aplicația', 'foot.blog': 'Blog',
-    'foot.company': 'Companie', 'foot.news': 'Noutăți',
+    'foot.company': 'Companie', 'foot.news': 'Noutăți', 'foot.forFirms': 'Pentru cabinete',
     'foot.legal': 'Juridic', 'foot.terms': 'Termeni', 'foot.privacy': 'Confidențialitate', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · servere UE (Frankfurt)',
     'chat.status': 'Online · răspuns mediu 12 s',
@@ -4049,7 +4791,7 @@ const I18N = {
     'hero.sub': 'Hukuki sorularınızı yanıtlar, incelemeniz için yazışma taslakları hazırlar ve dosya materyallerinizi düzenlemenize yardımcı olur.',
     'hero.disclaimer': 'Bilgilendirme hizmetidir. Hukuki danışmanlık niteliği taşımaz ve Estonya Barolar Kanunu (Advokatuuriseadus) anlamında yeminli avukatın (vandeadvokaat) yerini almaz.',
     'hero.primary': 'Ücretsiz dene →', 'hero.secondary': 'Örneği gör',
-    'hero.trust1': '7 mesaj ücretsiz — kart gerekmez', 'hero.trust2': 'Yasal kaynak gösterimli', 'hero.trust3': 'KVKK/GDPR · sunucular Frankfurt\'ta',
+    'hero.trust1': '25 mesaj ücretsiz — kart gerekmez', 'hero.trust2': 'Yasal kaynak gösterimli', 'hero.trust3': 'KVKK/GDPR · sunucular Frankfurt\'ta',
     'how.label': 'ÜÇ ADIM', 'how.title': '<em>Gerçekten işe yarayan</em> hukuki yardım.',
     'how.sub': 'Yedi sayfalık kayıt yok. Doğal şekilde yazın, belgeleri ekleyin, net bir sonraki adım alın.',
     'how.s1h': 'Sorunuzu sorun', 'how.s1p': 'Bir arkadaşınızla konuşur gibi yazın — 17 dilden birinde. Advocat iyi bir avukat gibi açıklayıcı sorular sorar.', 'how.s1m': '~ 90 saniye',
@@ -4066,7 +4808,7 @@ const I18N = {
     'compare.u5': 'Dilediğiniz an iptal — ilk YZ mesajından önce 14 gün iade',
     'compare.cta_us': 'Ücretsiz başla',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ saat',
-    'compare.us_price_note': 'İlk 7 mesaj ücretsiz · Dilediğiniz an iptal',
+    'compare.us_price_note': 'İlk 25 mesaj ücretsiz · Dilediğiniz an iptal',
     'compare.them_h': 'Hukuk bürosu', 'compare.them_tag': 'GELENEKSEL',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ saat',
     'compare.them_price_note': 'En az 1 saat · Yalnızca randevuyla',
@@ -4083,17 +4825,19 @@ const I18N = {
     'pricing.sub': 'Dilediğiniz an iptal edin. Henüz ilk YZ mesajınızı göndermediyseniz 14 gün içinde tam iade.',
     'plan1.eyebrow': 'Başlangıç', 'plan1.name': 'Ücretsiz', 'plan1.per': '/ ömür boyu',
     'plan1.desc': 'Sistemi deneyin. Karar vermeden önce yasal kaynaklı gerçek bir cevap alın.',
-    'plan1.f1': 'Toplam 7 YZ mesajı', 'plan1.f2': '1 aktif dosya', 'plan1.f3': 'Belge tarama (3 adet)', 'plan1.f4': 'EE ve AB hukukundan kaynaklar', 'plan1.f5': 'Kart gerekmez',
+    'plan1.f1': 'Ayda 25 YZ mesajı', 'plan1.f2': '1 aktif dosya', 'plan1.f3': 'Belge tarama (3 adet)', 'plan1.f4': 'EE ve AB hukukundan kaynaklar', 'plan1.f5': 'Kart gerekmez',
     'plan1.cta': 'Ücretsiz başla',
     'plan2.badge': 'En çok tercih edilen', 'plan2.eyebrow': 'Aileler için', 'plan2.name': 'Pro', 'plan2.per': '/ ay', 'plan2.annual': 'veya 159,99 €/yıl — %33 tasarruf',
     'plan2.desc': 'Sizin ve aileniz için günlük hukuki destek. Günde 100 YZ mesajı, eksiksiz belge yazımı.',
     'plan2.f1': 'Günde 100 YZ mesajı', 'plan2.f2': '3 aktif dosya', 'plan2.f3': 'Belge tarama (20 adet)',
     'plan2.f4': 'Eksiksiz belge yazımı (mektup, şikâyet)', 'plan2.f5': 'Sesli giriş', 'plan2.f6': 'Güncel içtihat için web araması',
+    'plan2.f7': 'Her soruda 15 YZ avukatlık konsültasyonu',
     'plan2.cta': 'Hemen başla',
     'plan3.eyebrow': 'Tam savunma', 'plan3.name': 'Premium', 'plan3.per': '/ ay', 'plan3.annual': 'veya 249,99 €/yıl — %30 tasarruf',
     'plan3.desc': 'Tam savunma — her şey sınırsız, öncelikli işlem, tüm özellikler açık.',
     'plan3.f1': 'Sınırsız YZ mesajı', 'plan3.f2': 'Sınırsız dosya', 'plan3.f3': 'Sınırsız belge tarama',
-    'plan3.f4': 'Öncelikli işlem', 'plan3.f5': 'Pro\'daki her şey', 'plan3.f6': 'E-posta ve belge dışa aktarımı',
+    'plan3.f4': 'Öncelikli işlem', 'plan3.f5': 'Pro\'daki her şey', 'plan3.f6': 'E-posta Asistanı — YZ, Gmail kutunuzda yanıt taslakları hazırlar',
+    'plan3.f7': 'Dosya zaman çizelgesi — her e-posta ve süreden otomatik oluşturulur',
     'plan3.cta': 'Premium\'u seç',
     'pricing.vat_included': 'KDV %22 dahil',
     'pricing.note': 'İstediğiniz zaman iptal edin. Yıllık ödemeyle %30-33 tasarruf edersiniz.',
@@ -4110,12 +4854,12 @@ const I18N = {
     'cta.title': 'Haklarınızla <em>yalnız</em> kalmayın.',
     'cta.sub': 'İlk sorunuzu yazın. 30 saniyede yasal dayanaklı yanıt. Kart gerekmez.',
     'cta.btn': 'Sohbeti aç →',
-    'cta.micro': '7 mesaj ücretsiz · tek tıkla iptal · ilk YZ mesajından önce 14 gün iade',
+    'cta.micro': '25 mesaj ücretsiz · tek tıkla iptal · ilk YZ mesajından önce 14 gün iade',
     'disclaimer.full': 'Advocat hukuki bilgi sağlar, hukuki danışmanlık değil. Bu hizmet ruhsatlı bir avukatın yerini almaz. Mahkemede temsil, kararlar veya bağlayıcı hukuki görüşler için yetkin bir hukukçuya başvurun. Bilgiler yargı yetkisine göre değişebilir.',
     'foot.about': 'Estonya ve AB için yapay zekâ destekli hukuk asistanı. Tallinn\'de, Vorantis OÜ tarafından geliştirildi.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Ürün', 'foot.how': 'Nasıl çalışır', 'foot.pricing': 'Fiyatlar', 'foot.app': 'Uygulamayı aç', 'foot.blog': 'Blog',
-    'foot.company': 'Şirket', 'foot.news': 'Haberler',
+    'foot.company': 'Şirket', 'foot.news': 'Haberler', 'foot.forFirms': 'Hukuk büroları için',
     'foot.legal': 'Hukuki', 'foot.terms': 'Koşullar', 'foot.privacy': 'Gizlilik', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · AB sunucuları (Frankfurt)',
     'chat.status': 'Çevrimiçi · ortalama yanıt 12 sn',
@@ -4145,7 +4889,7 @@ const I18N = {
     'hero.sub': 'يجيب عن الأسئلة القانونية، ويُعدّ مسودات المراسلات لمراجعتك، ويساعد على تنظيم مواد القضية.',
     'hero.disclaimer': 'خدمة معلوماتية. لا تُعدّ استشارة قانونية ولا تحلّ محل المحامي المُحلَّف (vandeadvokaat) بالمعنى المقصود في قانون نقابة المحامين الإستوني (Advokatuuriseadus).',
     'hero.primary': 'جرّب مجاناً ←', 'hero.secondary': 'انظر مثالاً',
-    'hero.trust1': '7 رسائل مجانية — بدون بطاقة', 'hero.trust2': 'مع توثيق المصادر', 'hero.trust3': 'GDPR · خوادم في فرانكفورت',
+    'hero.trust1': '25 رسائل مجانية — بدون بطاقة', 'hero.trust2': 'مع توثيق المصادر', 'hero.trust3': 'GDPR · خوادم في فرانكفورت',
     'how.label': 'ثلاث خطوات', 'how.title': 'مساعدة قانونية <em>تنجز فعلاً</em>.',
     'how.sub': 'لا تسجيل بسبع شاشات. تكلّم بطبيعتك، أرفق المستندات، واحصل على خطوة تالية واضحة.',
     'how.s1h': 'اطرح سؤالك', 'how.s1p': 'تحدّث كأنك تخاطب صديقاً — بأي لغة من 17 لغة. يطرح Advocat أسئلة استيضاحية كما يفعل المحامي الجيد.', 'how.s1m': '~ 90 ثانية',
@@ -4162,7 +4906,7 @@ const I18N = {
     'compare.u5': 'إلغاء في أي وقت — استرداد خلال 14 يوماً قبل أوّل رسالة ذكاء اصطناعي',
     'compare.cta_us': 'ابدأ مجاناً',
     'compare.us_price_num': '0٫49 €', 'compare.us_price_unit': '/ ساعة',
-    'compare.us_price_note': 'أول 7 رسائل مجاناً · إلغاء في أي وقت',
+    'compare.us_price_note': 'أول 25 رسائل مجاناً · إلغاء في أي وقت',
     'compare.them_h': 'مكتب محاماة', 'compare.them_tag': 'تقليدي',
     'compare.them_price_num': '100–200 €', 'compare.them_price_unit': '/ ساعة',
     'compare.them_price_note': 'الحد الأدنى ساعة واحدة · بموعد فقط',
@@ -4179,17 +4923,19 @@ const I18N = {
     'pricing.sub': 'إلغاء في أي وقت. استرداد كامل خلال 14 يوماً إذا لم ترسل بعد أوّل رسالة ذكاء اصطناعي.',
     'plan1.eyebrow': 'البداية', 'plan1.name': 'مجاني', 'plan1.per': '/ إلى الأبد',
     'plan1.desc': 'جرّب النظام. احصل على إجابة حقيقية موثّقة بالقانون قبل أن تقرر.',
-    'plan1.f1': '7 رسائل ذكاء اصطناعي بالمجمل', 'plan1.f2': 'قضية فعّالة واحدة', 'plan1.f3': 'مسح المستندات (3)', 'plan1.f4': 'مصادر من القانون الإستوني والأوروبي', 'plan1.f5': 'بدون بطاقة',
+    'plan1.f1': '25 رسائل ذكاء اصطناعي شهرياً', 'plan1.f2': 'قضية فعّالة واحدة', 'plan1.f3': 'مسح المستندات (3)', 'plan1.f4': 'مصادر من القانون الإستوني والأوروبي', 'plan1.f5': 'بدون بطاقة',
     'plan1.cta': 'ابدأ مجاناً',
     'plan2.badge': 'الأكثر شيوعاً', 'plan2.eyebrow': 'للعائلات', 'plan2.name': 'Pro', 'plan2.per': '/ شهر', 'plan2.annual': 'أو 159٫99 €/سنة — وفّر 33%',
     'plan2.desc': 'دعم قانوني يومي لك ولعائلتك. 100 رسالة ذكاء اصطناعي يومياً، صياغة مستندات كاملة.',
     'plan2.f1': '100 رسالة ذكاء اصطناعي / يوم', 'plan2.f2': '3 قضايا فعّالة', 'plan2.f3': 'مسح المستندات (20)',
     'plan2.f4': 'صياغة كاملة (خطابات، شكاوى)', 'plan2.f5': 'إدخال صوتي', 'plan2.f6': 'بحث على الويب عن السوابق الحديثة',
+    'plan2.f7': 'مجلس استشاري من 15 محامياً بالذكاء الاصطناعي لكل سؤال',
     'plan2.cta': 'ابدأ الآن',
     'plan3.eyebrow': 'الدفاع الكامل', 'plan3.name': 'Premium', 'plan3.per': '/ شهر', 'plan3.annual': 'أو 249٫99 €/سنة — وفّر 30%',
     'plan3.desc': 'دفاع كامل — كل شيء بلا حدود، أولوية في الخدمة، جميع الميزات.',
     'plan3.f1': 'رسائل ذكاء اصطناعي بلا حدود', 'plan3.f2': 'قضايا بلا حدود', 'plan3.f3': 'مسح بلا حدود',
-    'plan3.f4': 'معالجة ذات أولوية', 'plan3.f5': 'كل ما في Pro', 'plan3.f6': 'تصدير البريد الإلكتروني والمستندات',
+    'plan3.f4': 'معالجة ذات أولوية', 'plan3.f5': 'كل ما في Pro', 'plan3.f6': 'وكيل البريد — الذكاء الاصطناعي يصيغ الردود في صندوق Gmail الخاص بك',
+    'plan3.f7': 'الخط الزمني للقضية — يُبنى تلقائياً من كل بريد ومهلة',
     'plan3.cta': 'اختر Premium',
     'pricing.vat_included': 'شامل ضريبة القيمة المضافة 22%',
     'pricing.note': 'إلغاء في أي وقت. وفّر 30-33% مع الفوترة السنوية.',
@@ -4206,12 +4952,12 @@ const I18N = {
     'cta.title': 'لا تواجه حقوقك <em>وحدك</em>.',
     'cta.sub': 'اطرح أول سؤال. إجابة موثّقة بالقانون خلال 30 ثانية. بدون بطاقة.',
     'cta.btn': 'افتح المحادثة ←',
-    'cta.micro': '7 رسائل مجاناً · إلغاء بنقرة · استرداد خلال 14 يوماً قبل أوّل رسالة ذكاء اصطناعي',
+    'cta.micro': '25 رسائل مجاناً · إلغاء بنقرة · استرداد خلال 14 يوماً قبل أوّل رسالة ذكاء اصطناعي',
     'disclaimer.full': 'يقدّم Advocat معلومات قانونية، لا استشارة قانونية. لا تحلّ هذه الخدمة محل المحامي المرخّص. للتمثيل أمام القضاء أو الأحكام أو الآراء القانونية المُلزِمة، استشر محامياً مؤهّلاً. قد تختلف المعلومات بحسب الاختصاص القضائي.',
     'foot.about': 'مساعد قانوني بالذكاء الاصطناعي لإستونيا والاتحاد الأوروبي. صُنع في تالين بواسطة Vorantis OÜ.',
     'foot.powered': 'مدعوم بـ Claude (Anthropic)',
     'foot.product': 'المنتج', 'foot.how': 'كيف يعمل', 'foot.pricing': 'الأسعار', 'foot.app': 'افتح التطبيق', 'foot.blog': 'المدوّنة',
-    'foot.company': 'الشركة', 'foot.news': 'الأخبار',
+    'foot.company': 'الشركة', 'foot.news': 'الأخبار', 'foot.forFirms': 'لمكاتب المحاماة',
     'foot.legal': 'قانوني', 'foot.terms': 'الشروط', 'foot.privacy': 'الخصوصية', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · خوادم الاتحاد الأوروبي (فرانكفورت)',
     'chat.status': 'متصل · متوسط الردّ 12 ث',
@@ -4241,7 +4987,7 @@ const I18N = {
     'hero.sub': 'به پرسش‌های حقوقی پاسخ می‌دهد، پیش‌نویس نامه‌ها را برای بازبینی شما آماده می‌کند و در نظم‌دهی به مواد پرونده یاری می‌رساند.',
     'hero.disclaimer': 'خدمت اطلاع‌رسانی است. مشاوره حقوقی محسوب نمی‌شود و جایگزین وکیل سوگندخورده (vandeadvokaat) بر اساس قانون کانون وکلای استونی (Advokatuuriseadus) نیست.',
     'hero.primary': 'امتحان رایگان ←', 'hero.secondary': 'یک نمونه ببینید',
-    'hero.trust1': '۷ پیام رایگان — بدون کارت', 'hero.trust2': 'با ذکر منبع قانونی', 'hero.trust3': 'GDPR · سرورها در فرانکفورت',
+    'hero.trust1': '۲۵ پیام رایگان — بدون کارت', 'hero.trust2': 'با ذکر منبع قانونی', 'hero.trust3': 'GDPR · سرورها در فرانکفورت',
     'how.label': 'سه گام', 'how.title': 'کمک حقوقی که <em>واقعاً نتیجه می‌دهد</em>.',
     'how.sub': 'بدون ثبت‌نام در هفت صفحه. طبیعی صحبت کنید، اسناد را پیوست کنید، و گام بعدی روشن را بگیرید.',
     'how.s1h': 'سؤال خود را بپرسید', 'how.s1p': 'مثل صحبت با یک دوست بنویسید — به یکی از ۱۷ زبان. Advocat مانند یک وکیل خوب سؤال‌های روشن‌گر می‌پرسد.', 'how.s1m': '~ ۹۰ ثانیه',
@@ -4258,7 +5004,7 @@ const I18N = {
     'compare.u5': 'لغو در هر زمان — بازپرداخت ۱۴ روزه پیش از اولین پیام هوش مصنوعی',
     'compare.cta_us': 'رایگان شروع کنید',
     'compare.us_price_num': '۰٫۴۹ €', 'compare.us_price_unit': '/ ساعت',
-    'compare.us_price_note': '۷ پیام نخست رایگان · لغو در هر زمان',
+    'compare.us_price_note': '۲۵ پیام نخست رایگان · لغو در هر زمان',
     'compare.them_h': 'دفتر وکالت', 'compare.them_tag': 'سنّتی',
     'compare.them_price_num': '۱۰۰–۲۰۰ €', 'compare.them_price_unit': '/ ساعت',
     'compare.them_price_note': 'حداقل یک ساعت · فقط با وقت قبلی',
@@ -4275,17 +5021,19 @@ const I18N = {
     'pricing.sub': 'لغو در هر زمان. بازپرداخت کامل ظرف ۱۴ روز اگر هنوز اولین پیام هوش مصنوعی را نفرستاده‌اید.',
     'plan1.eyebrow': 'شروع', 'plan1.name': 'رایگان', 'plan1.per': '/ همیشه',
     'plan1.desc': 'سامانه را امتحان کنید. پیش از تصمیم‌گیری، یک پاسخ واقعی همراه با استناد قانونی دریافت کنید.',
-    'plan1.f1': 'مجموعاً ۷ پیام هوش مصنوعی', 'plan1.f2': 'یک پرونده فعّال', 'plan1.f3': 'اسکن سند (۳ مورد)', 'plan1.f4': 'منابع از حقوق استونی و اتحادیه اروپا', 'plan1.f5': 'بدون نیاز به کارت',
+    'plan1.f1': '۲۵ پیام هوش مصنوعی در ماه', 'plan1.f2': 'یک پرونده فعّال', 'plan1.f3': 'اسکن سند (۳ مورد)', 'plan1.f4': 'منابع از حقوق استونی و اتحادیه اروپا', 'plan1.f5': 'بدون نیاز به کارت',
     'plan1.cta': 'رایگان شروع کنید',
     'plan2.badge': 'محبوب‌ترین', 'plan2.eyebrow': 'برای خانواده‌ها', 'plan2.name': 'Pro', 'plan2.per': '/ ماه', 'plan2.annual': 'یا ۱۵۹٫۹۹ €/سال — ۳۳٪ صرفه‌جویی',
     'plan2.desc': 'پشتیبانی حقوقی روزانه برای شما و خانواده. ۱۰۰ پیام هوش مصنوعی در روز، تنظیم کامل اسناد.',
     'plan2.f1': 'روزانه ۱۰۰ پیام هوش مصنوعی', 'plan2.f2': 'سه پرونده فعّال', 'plan2.f3': 'اسکن سند (۲۰ مورد)',
     'plan2.f4': 'تنظیم کامل (نامه، شکایت)', 'plan2.f5': 'ورودی صوتی', 'plan2.f6': 'جستجوی وب برای رویه‌ی روز',
+    'plan2.f7': 'شورای ۱۵ حقوق‌دان هوش مصنوعی برای هر پرسش',
     'plan2.cta': 'اکنون شروع کنید',
     'plan3.eyebrow': 'دفاع کامل', 'plan3.name': 'Premium', 'plan3.per': '/ ماه', 'plan3.annual': 'یا ۲۴۹٫۹۹ €/سال — ۳۰٪ صرفه‌جویی',
     'plan3.desc': 'دفاع کامل — همه چیز نامحدود، اولویت در پاسخ، تمامی امکانات.',
     'plan3.f1': 'پیام‌های هوش مصنوعی نامحدود', 'plan3.f2': 'پرونده‌های نامحدود', 'plan3.f3': 'اسکن نامحدود',
-    'plan3.f4': 'پردازش با اولویت', 'plan3.f5': 'همه‌ی امکانات Pro', 'plan3.f6': 'خروجی ایمیل و سند',
+    'plan3.f4': 'پردازش با اولویت', 'plan3.f5': 'همه‌ی امکانات Pro', 'plan3.f6': 'دستیار ایمیل — هوش مصنوعی پاسخ‌ها را در صندوق Gmail شما می‌نویسد',
+    'plan3.f7': 'خط زمانی پرونده — به‌صورت خودکار از هر ایمیل و مهلت ساخته می‌شود',
     'plan3.cta': 'انتخاب Premium',
     'pricing.vat_included': 'شامل ۲۲٪ مالیات بر ارزش افزوده',
     'faq.label': 'سؤالات متداول', 'faq.title': 'پاسخ‌های <em>صادقانه</em> به پرسش‌های رایج.',
@@ -4301,12 +5049,12 @@ const I18N = {
     'cta.title': 'با حقوق خود <em>تنها</em> روبه‌رو نشوید.',
     'cta.sub': 'نخستین پرسش را مطرح کنید. پاسخ همراه با استناد قانونی در ۳۰ ثانیه. بدون کارت.',
     'cta.btn': 'گفتگو را باز کنید ←',
-    'cta.micro': '۷ پیام رایگان · لغو با یک کلیک · بازپرداخت ۱۴ روزه پیش از اولین پیام هوش مصنوعی',
+    'cta.micro': '۲۵ پیام رایگان · لغو با یک کلیک · بازپرداخت ۱۴ روزه پیش از اولین پیام هوش مصنوعی',
     'disclaimer.full': 'Advocat اطلاعات حقوقی ارائه می‌دهد، نه مشاوره‌ی حقوقی. این خدمت جایگزین وکیل دارای پروانه نیست. برای نمایندگی در دادگاه، احکام قضایی یا نظر حقوقی الزام‌آور به یک حقوق‌دان واجد صلاحیت مراجعه کنید. اطلاعات ممکن است بسته به حوزه‌ی صلاحیت قضایی متفاوت باشد.',
     'foot.about': 'دستیار حقوقی هوش مصنوعی برای استونی و اتحادیه اروپا. ساخت تالین، Vorantis OÜ.',
     'foot.powered': 'با نیروی Claude (Anthropic)',
     'foot.product': 'محصول', 'foot.how': 'چگونه کار می‌کند', 'foot.pricing': 'قیمت‌ها', 'foot.app': 'باز کردن برنامه', 'foot.blog': 'وبلاگ',
-    'foot.company': 'شرکت', 'foot.news': 'اخبار',
+    'foot.company': 'شرکت', 'foot.news': 'اخبار', 'foot.forFirms': 'برای دفاتر حقوقی',
     'foot.legal': 'حقوقی', 'foot.terms': 'شرایط', 'foot.privacy': 'حریم خصوصی', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · سرورهای اتحادیه اروپا (فرانکفورت)',
     'chat.status': 'برخط · میانگین پاسخ ۱۲ ثانیه',
@@ -4327,25 +5075,59 @@ function tr(key) { return (TR[key] !== undefined) ? TR[key] : (I18N.en[key] !== 
 
 let CUR_LANG = 'en';
 
-// Build lang dropdown
+// Build lang dropdown (lang-switcher widget — uses localStorage advocat_lang)
 (function buildLangs(){
   const menu = document.getElementById('lang-menu');
+  const tog = document.getElementById('lang-toggle');
+  function openLangMenu(){ menu.classList.add('open'); tog.setAttribute('aria-expanded', 'true'); }
+  function closeLangMenu(){ menu.classList.remove('open'); tog.setAttribute('aria-expanded', 'false'); }
+  window.__closeLangMenu = closeLangMenu;
   LANGS.forEach(function(l){
+    const li = document.createElement('li');
+    li.setAttribute('role', 'none');
+    li.style.listStyle = 'none';
     const b = document.createElement('button');
     b.type = 'button';
     b.dataset.lang = l.code;
-    b.innerHTML = '<span>' + l.label + '</span><span class="lang-code">' + l.code.toUpperCase() + '</span>';
-    b.onclick = function(){ setLang(l.code); document.getElementById('lang-menu').classList.remove('open'); };
-    menu.appendChild(b);
+    b.setAttribute('role', 'option');
+    b.setAttribute('aria-selected', 'false');
+    b.lang = l.code;
+    var safeLabel = (l.label || '').replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; });
+    b.innerHTML = '<span class="lang-flag" aria-hidden="true">' + (l.flag || '') + '</span>'
+                + '<span class="lang-label">' + safeLabel + '</span>'
+                + '<span class="lang-code">' + l.code.toUpperCase() + '</span>';
+    b.onclick = function(){ setLang(l.code); closeLangMenu(); tog.focus(); };
+    li.appendChild(b);
+    menu.appendChild(li);
   });
-  const tog = document.getElementById('lang-toggle');
   tog.addEventListener('click', function(e){
     e.stopPropagation();
-    const m = document.getElementById('lang-menu');
-    m.classList.toggle('open');
-    tog.setAttribute('aria-expanded', m.classList.contains('open') ? 'true' : 'false');
+    if (menu.classList.contains('open')) { closeLangMenu(); }
+    else {
+      openLangMenu();
+      var active = menu.querySelector('button.active') || menu.querySelector('button');
+      if (active) setTimeout(function(){ active.focus(); }, 0);
+    }
   });
-  document.addEventListener('click', function(){ document.getElementById('lang-menu').classList.remove('open'); });
+  tog.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openLangMenu();
+      var first = menu.querySelector('button.active') || menu.querySelector('button');
+      if (first) first.focus();
+    }
+  });
+  menu.addEventListener('keydown', function(e){
+    const buttons = Array.prototype.slice.call(menu.querySelectorAll('button'));
+    const idx = buttons.indexOf(document.activeElement);
+    if (e.key === 'Escape') { e.preventDefault(); closeLangMenu(); tog.focus(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); (buttons[idx + 1] || buttons[0]).focus(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); (buttons[idx - 1] || buttons[buttons.length - 1]).focus(); }
+    else if (e.key === 'Home') { e.preventDefault(); buttons[0].focus(); }
+    else if (e.key === 'End') { e.preventDefault(); buttons[buttons.length - 1].focus(); }
+  });
+  document.addEventListener('click', function(){ closeLangMenu(); });
+  menu.addEventListener('click', function(e){ e.stopPropagation(); });
 })();
 
 function applyTranslations() {
@@ -4372,10 +5154,17 @@ function applyTranslations() {
   const promoSpan = document.querySelector('#promo-banner [data-i18n="promo"]');
   if (promoSpan) promoSpan.innerHTML = tr('promo');
 
-  // Top label
+  // Top label + flag
   document.getElementById('lang-current').textContent = CUR_LANG.toUpperCase();
+  var flagEl = document.getElementById('lang-flag');
+  if (flagEl) {
+    var curMeta = LANGS.find(function(l){ return l.code === CUR_LANG; });
+    flagEl.textContent = (curMeta && curMeta.flag) ? curMeta.flag : '';
+  }
   document.querySelectorAll('#lang-menu button').forEach(function(b){
-    b.classList.toggle('active', b.dataset.lang === CUR_LANG);
+    var isActive = (b.dataset.lang === CUR_LANG);
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-selected', isActive ? 'true' : 'false');
   });
 
   // FAQ items
@@ -4403,7 +5192,31 @@ function setLang(code) {
       (I18N.en && I18N.en['meta.title']);
     if (localisedTitle) document.title = localisedTitle;
   } catch (e) {}
+  // Persist to both keys: spec-compliant 'advocat_lang' and legacy 'advocat-landing-lang'
   try { localStorage.setItem('advocat-landing-lang', code); } catch(e){}
+  try { localStorage.setItem('advocat_lang', code); } catch(e){}
+  // Sync ?lang=XX URL so shared links round-trip (no reload).
+  try {
+    var url = new URL(window.location.href);
+    if (url.searchParams.get('lang') !== code) {
+      url.searchParams.set('lang', code);
+      window.history.replaceState(null, '', url);
+    }
+  } catch(e){}
+  // Screen reader announcement
+  try {
+    var live = document.getElementById('lang-live');
+    if (!live) {
+      live = document.createElement('div');
+      live.id = 'lang-live';
+      live.setAttribute('aria-live', 'polite');
+      live.setAttribute('aria-atomic', 'true');
+      live.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);';
+      document.body.appendChild(live);
+    }
+    var meta = LANGS.find(function(l){ return l.code === code; });
+    live.textContent = 'Language: ' + (meta ? meta.label : code.toUpperCase());
+  } catch(e){}
   applyTranslations();
 }
 
@@ -4586,21 +5399,30 @@ document.getElementById('chat-input').addEventListener('keydown', function(e){
 
 // ── INIT ──
 (function init(){
-  let lang = 'en';
+  // Priority: ?lang=XX URL param  >  localStorage  >  navigator.language  >  'en'
+  // The URL-param branch lets hreflang links from Google land on the right locale.
+  function isSupported(code) {
+    return !!(code && (I18N[code] || LANGS.find(function(l){ return l.code === code; })));
+  }
+  let lang = null;
   try {
-    const saved = localStorage.getItem('advocat-landing-lang');
-    if (saved && (I18N[saved] || LANGS.find(function(l){ return l.code === saved; }))) {
-      lang = saved;
-    }
+    const urlLang = new URLSearchParams(window.location.search).get('lang');
+    if (urlLang && isSupported(urlLang)) lang = urlLang;
   } catch(e){}
-  if (!I18N[lang]) {
+  if (!lang) {
+    try {
+      const saved = localStorage.getItem('advocat_lang') || localStorage.getItem('advocat-landing-lang');
+      if (saved && isSupported(saved)) lang = saved;
+    } catch(e){}
+  }
+  if (!lang || !I18N[lang]) {
     // Browser auto-detect for languages we have full strings for
     const nav = (navigator.language || '').toLowerCase();
     if (nav.startsWith('et')) lang = 'et';
     else if (nav.startsWith('ru')) lang = 'ru';
     else if (nav.startsWith('uk')) lang = 'uk';
     else if (nav.startsWith('fi')) lang = 'fi';
-    else lang = 'en';
+    else lang = lang || 'en';
   }
   setLang(lang);
 })();

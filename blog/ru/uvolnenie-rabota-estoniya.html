@@ -144,6 +144,9 @@
 <!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
      All vendor scripts are loaded conditionally inside _analytics.js
      after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Cookie consent (W2-13): per-jurisdiction granular banner. MUST load before
+     _utm_capture.js and _analytics.js so consent gates every pixel. -->
+<script src="/_cookie_consent.js" defer></script>
 <script src="/_utm_capture.js"></script>
 <script src="/_analytics.js" defer></script>
 </head>
@@ -423,7 +426,7 @@
 
                 <div class="cta-box">
                     <h3>Уволили — и не знаете, законно ли?</h3>
-                    <p>Advocat AI разберёт вашу ситуацию по TLS, скажет, какие у вас аргументы, и поможет составить заявление в Töövaidluskomisjon. Бесплатно — 7 сообщений в месяц.</p>
+                    <p>Advocat AI разберёт вашу ситуацию по TLS, скажет, какие у вас аргументы, и поможет составить заявление в Töövaidluskomisjon. Бесплатно — 25 сообщений в месяц.</p>
                     <a href="/app.html" class="cta-button">Попробовать Advocat &rarr;</a>
                 </div>
 
