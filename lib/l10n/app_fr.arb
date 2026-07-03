@@ -2248,5 +2248,19 @@
   "costEstimateFactorsAgainst": "À votre désavantage",
   "costEstimateStrengthWorth": "Vaut probablement la peine d'être poursuivie",
   "costEstimateStrengthContested": "Incertaine — l'issue pourrait basculer d'un côté ou de l'autre",
-  "costEstimateStrengthWeak": "Faible — à poursuivre avec prudence"
+  "costEstimateStrengthWeak": "Faible — à poursuivre avec prudence",
+  "deadlineIcsCopied": "Fichier ICS copié dans le presse-papiers",
+  "deadlineExportFailed": "Impossible d’exporter l’événement d’agenda",
+  "orgSlugAvailable": "L’adresse est disponible",
+  "orgSlugTaken": "L’adresse est déjà utilisée",
+  "commonCancel": "Annuler",
+  "commonRemove": "Supprimer",
+  "orgRemoveFromOrg": "Retirer de l’organisation",
+  "orgInvitationResent": "Invitation renvoyée",
+  "commonResend": "Renvoyer",
+  "commonRevoke": "Révoquer",
+  "vaultUploadSuccess": "Document téléversé avec succès",
+  "vaultView": "Afficher",
+  "vaultPathNotFound": "Chemin du document introuvable",
+  "vaultUrlFailed": "Impossible de générer l’URL du document"
 }

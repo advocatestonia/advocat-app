@@ -252,8 +252,9 @@ class _DeadlinesScreenState extends ConsumerState<DeadlinesScreen>
         // Probably web. Copy to clipboard so the user can paste anywhere.
         await Clipboard.setData(ClipboardData(text: ics));
         if (context.mounted) {
+          final l = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('ICS copied to clipboard')),
+            SnackBar(content: Text(l.deadlineIcsCopied)),
           );
         }
         return;
@@ -265,8 +266,9 @@ class _DeadlinesScreenState extends ConsumerState<DeadlinesScreen>
           subject: 'Advocat deadline: ${d.title}');
     } catch (_) {
       if (context.mounted) {
+        final l = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not export calendar event')),
+          SnackBar(content: Text(l.deadlineExportFailed)),
         );
       }
     }
@@ -625,7 +627,8 @@ class _DeadlineCard extends StatelessWidget {
                   deadline.sourceDocumentId != null) ...[
                 const SizedBox(height: AppSpacing.sm),
                 Padding(
-                  padding: const EdgeInsets.only(left: 76),
+                  // Align with the title column: day-badge width (60) + gap.
+                  padding: const EdgeInsets.only(left: 60 + AppSpacing.md),
                   child: Row(
                     children: [
                       Icon(_sourceIcon(deadline.source),
@@ -835,7 +838,7 @@ class _AddDeadlineSheetState extends State<_AddDeadlineSheet> {
                             Navigator.of(context).pop(true);
                           }
                         } catch (_) {
-                          setState(() => _saving = false);
+                          if (mounted) setState(() => _saving = false);
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(l.deadlineSaveFailed)),

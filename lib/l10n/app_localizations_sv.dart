@@ -5559,4 +5559,47 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Svagt – gå försiktigt fram';
+
+  @override
+  String get deadlineIcsCopied => 'ICS-fil kopierad till urklipp';
+
+  @override
+  String get deadlineExportFailed =>
+      'Det gick inte att exportera kalenderhändelsen';
+
+  @override
+  String get orgSlugAvailable => 'Adressen är tillgänglig';
+
+  @override
+  String get orgSlugTaken => 'Adressen är redan upptagen';
+
+  @override
+  String get commonCancel => 'Avbryt';
+
+  @override
+  String get commonRemove => 'Ta bort';
+
+  @override
+  String get orgRemoveFromOrg => 'Ta bort från organisationen';
+
+  @override
+  String get orgInvitationResent => 'Inbjudan skickades igen';
+
+  @override
+  String get commonResend => 'Skicka igen';
+
+  @override
+  String get commonRevoke => 'Återkalla';
+
+  @override
+  String get vaultUploadSuccess => 'Dokumentet har laddats upp';
+
+  @override
+  String get vaultView => 'Visa';
+
+  @override
+  String get vaultPathNotFound => 'Dokumentets sökväg hittades inte';
+
+  @override
+  String get vaultUrlFailed => 'Det gick inte att generera dokumentets URL';
 }

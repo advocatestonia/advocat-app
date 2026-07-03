@@ -227,6 +227,8 @@ class ConsiliumPanel extends StatelessWidget {
     this.headerLabel = 'Консилиум юристов',
     this.synthesisLabel = 'Синтезирую рекомендацию…',
     this.disagreementLabel = '⚠ Эксперты расходятся',
+    this.doneLabelBuilder,
+    this.adversarialLabelBuilder,
   }) : _testSnapshot = null;
 
   /// Test-only constructor: bypass event parsing by passing a pre-built
@@ -239,6 +241,8 @@ class ConsiliumPanel extends StatelessWidget {
     this.headerLabel = 'Консилиум юристов',
     this.synthesisLabel = 'Синтезирую рекомендацию…',
     this.disagreementLabel = '⚠ Эксперты расходятся',
+    this.doneLabelBuilder,
+    this.adversarialLabelBuilder,
   })  : events = const [],
         _testSnapshot = snapshot;
 
@@ -250,6 +254,15 @@ class ConsiliumPanel extends StatelessWidget {
   final String headerLabel;
   final String synthesisLabel;
   final String disagreementLabel;
+
+  /// Builds the localized "done" footer string from the role and round counts.
+  /// The parent passes a callback that formats the fully-localized string
+  /// (with locale-correct plurals); when null we fall back to the RU string.
+  final String Function(int roles, int rounds)? doneLabelBuilder;
+
+  /// Builds the localized expanded adversarial-round label from the objection
+  /// count; when null we fall back to the RU string.
+  final String Function(int count)? adversarialLabelBuilder;
 
   final ConsiliumSnapshot? _testSnapshot;
 
@@ -342,6 +355,7 @@ class ConsiliumPanel extends StatelessWidget {
             _AdversarialSection(
               attackCount: snap.adversarialAttacks,
               roundsCompleted: snap.roundsCompleted,
+              labelBuilder: adversarialLabelBuilder,
             ),
 
           // Synthesis indicator
@@ -376,8 +390,9 @@ class ConsiliumPanel extends StatelessWidget {
           if (snap.done) ...[
             const SizedBox(height: AppSpacing.sm),
             Text(
-              'Консилиум ${snap.totalRoles} юристов · '
-              '${snap.roundsCompleted} ${snap.roundsCompleted == 1 ? "раунд" : "раунда"} · готово',
+              doneLabelBuilder?.call(snap.totalRoles, snap.roundsCompleted) ??
+                  'Консилиум ${snap.totalRoles} юристов · '
+                      '${snap.roundsCompleted} ${snap.roundsCompleted == 1 ? "раунд" : "раунда"} · готово',
               key: const Key('consilium_done_footer'),
               style: const TextStyle(
                 fontSize: 11,
@@ -396,10 +411,15 @@ class _AdversarialSection extends StatefulWidget {
   const _AdversarialSection({
     required this.attackCount,
     required this.roundsCompleted,
+    this.labelBuilder,
   });
 
   final int attackCount;
   final int roundsCompleted;
+
+  /// Builds the localized expanded label from the objection count; when null
+  /// we fall back to the RU string.
+  final String Function(int count)? labelBuilder;
 
   @override
   State<_AdversarialSection> createState() => _AdversarialSectionState();
@@ -434,7 +454,8 @@ class _AdversarialSectionState extends State<_AdversarialSection> {
                 Expanded(
                   child: Text(
                     _expanded
-                        ? 'Адверсариальный раунд · ${widget.attackCount} возражений'
+                        ? (widget.labelBuilder?.call(widget.attackCount) ??
+                            'Адверсариальный раунд · ${widget.attackCount} возражений')
                         : 'Адверсариальный раунд (${widget.attackCount})',
                     style: const TextStyle(
                       fontSize: 12,

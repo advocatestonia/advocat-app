@@ -5617,4 +5617,47 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Слабо — действуйте осторожно';
+
+  @override
+  String get deadlineIcsCopied => 'Файл ICS скопирован в буфер обмена';
+
+  @override
+  String get deadlineExportFailed =>
+      'Не удалось экспортировать событие календаря';
+
+  @override
+  String get orgSlugAvailable => 'Адрес доступен';
+
+  @override
+  String get orgSlugTaken => 'Адрес занят';
+
+  @override
+  String get commonCancel => 'Отмена';
+
+  @override
+  String get commonRemove => 'Удалить';
+
+  @override
+  String get orgRemoveFromOrg => 'Удалить из организации';
+
+  @override
+  String get orgInvitationResent => 'Приглашение отправлено повторно';
+
+  @override
+  String get commonResend => 'Отправить повторно';
+
+  @override
+  String get commonRevoke => 'Отозвать';
+
+  @override
+  String get vaultUploadSuccess => 'Документ успешно загружен';
+
+  @override
+  String get vaultView => 'Просмотр';
+
+  @override
+  String get vaultPathNotFound => 'Путь к документу не найден';
+
+  @override
+  String get vaultUrlFailed => 'Не удалось создать ссылку на документ';
 }

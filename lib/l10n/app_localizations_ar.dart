@@ -5522,4 +5522,46 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'ضعيف — تابِع بحذر';
+
+  @override
+  String get deadlineIcsCopied => 'تم نسخ ملف ICS إلى الحافظة';
+
+  @override
+  String get deadlineExportFailed => 'تعذّر تصدير حدث التقويم';
+
+  @override
+  String get orgSlugAvailable => 'المُعرّف متاح';
+
+  @override
+  String get orgSlugTaken => 'المُعرّف مستخدَم بالفعل';
+
+  @override
+  String get commonCancel => 'إلغاء';
+
+  @override
+  String get commonRemove => 'إزالة';
+
+  @override
+  String get orgRemoveFromOrg => 'إزالة من المؤسسة';
+
+  @override
+  String get orgInvitationResent => 'تمت إعادة إرسال الدعوة';
+
+  @override
+  String get commonResend => 'إعادة الإرسال';
+
+  @override
+  String get commonRevoke => 'إلغاء';
+
+  @override
+  String get vaultUploadSuccess => 'تم رفع المستند بنجاح';
+
+  @override
+  String get vaultView => 'عرض';
+
+  @override
+  String get vaultPathNotFound => 'لم يتم العثور على مسار المستند';
+
+  @override
+  String get vaultUrlFailed => 'تعذّر إنشاء رابط المستند';
 }

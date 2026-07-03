@@ -1398,11 +1398,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         content: text,
       ));
 
-      // Check if the message maps to a tool call (intent detection)
+      // Check if the message maps to a tool call (intent detection).
+      //
+      // SAFETY (approval gate): the direct path calls executor.execute()
+      // which runs the tool handler synchronously — for WRITE tools
+      // (create_case / create_deadline / update_case / …) the handler
+      // mutates the DB *before* ToolResult.requiresApproval is even set,
+      // so the row is already committed and the only downstream guard just
+      // suppresses navigation. That bypasses user consent. We therefore
+      // NEVER auto-execute a requiresApproval tool on the direct path.
+      // Instead we fall through to the normal LLM tool-use flow, which
+      // pre-gates writes in agentic_loop (it stops with
+      // LoopStopReason.requiresApproval BEFORE executing) and surfaces the
+      // AgentApprovalCard — so the mutation only happens after approval.
       final toolCall = _detectToolIntent(text);
+      final isWriteTool =
+          toolCall != null && AssistantTools.requiresApproval.contains(toolCall.$1);
 
-      if (toolCall != null) {
-        // Execute tool directly and show rich result
+      if (toolCall != null && !isWriteTool) {
+        // Read-only tool → execute directly and show rich result.
         await _executeToolCall(toolCall.$1, toolCall.$2, supabase);
       } else {
         // Normal AI response flow
@@ -2261,10 +2275,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       // Flutter Web (the printing package handles the platform split).
       await Printing.sharePdf(bytes: bytes, filename: filename);
     } catch (e) {
+      debugPrint('_downloadMessageAsPdf export failed: $e');
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to export PDF: $e'),
+          content: Text(l10n?.exportFailed ?? 'Export failed'),
           backgroundColor: AppColors.error,
         ),
       );
@@ -3464,6 +3480,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     final screenWidth = MediaQuery.of(context).size.width;
     final bubbleMargin = screenWidth < 380 ? 32.0 : 48.0;
+    final l = AppLocalizations.of(context)!;
 
     return Align(
       // RTL-aware: in RTL, centerStart maps to the right edge automatically,
@@ -3492,6 +3509,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ConsiliumPanel(
                 key: ValueKey('consilium_panel_${message.id}'),
                 events: message.consiliumEvents,
+                headerLabel: l.consiliumHeader,
+                synthesisLabel: l.consiliumSynthesizing,
+                disagreementLabel: l.consiliumDisagreement,
               ),
             Container(
               padding: const EdgeInsets.symmetric(
@@ -4064,21 +4084,21 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final boldRegex = RegExp(r'\*\*(.+?)\*\*');
     int lastEnd = 0;
 
+    // Single source of truth for the body text style — the bold variant is
+    // derived via copyWith so the shared (color/fontSize/height) values stay
+    // byte-identical across all spans.
+    final baseStyle = TextStyle(color: baseColor, fontSize: 15, height: 1.45);
+
     for (final match in boldRegex.allMatches(text)) {
       if (match.start > lastEnd) {
         spans.add(TextSpan(
           text: text.substring(lastEnd, match.start),
-          style: TextStyle(color: baseColor, fontSize: 15, height: 1.45),
+          style: baseStyle,
         ));
       }
       spans.add(TextSpan(
         text: match.group(1),
-        style: TextStyle(
-          color: baseColor,
-          fontSize: 15,
-          height: 1.45,
-          fontWeight: FontWeight.w700,
-        ),
+        style: baseStyle.copyWith(fontWeight: FontWeight.w700),
       ));
       lastEnd = match.end;
     }
@@ -4086,14 +4106,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     if (lastEnd < text.length) {
       spans.add(TextSpan(
         text: text.substring(lastEnd),
-        style: TextStyle(color: baseColor, fontSize: 15, height: 1.45),
+        style: baseStyle,
       ));
     }
 
     if (spans.isEmpty) {
       return SelectableText(
         text,
-        style: TextStyle(color: baseColor, fontSize: 15, height: 1.45),
+        style: baseStyle,
       );
     }
 
@@ -5038,8 +5058,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               Tooltip(
                 message: AppLocalizations.of(context)?.chatLegalCouncilTooltip ?? 'Legal council (4 experts)',
                 child: Container(
-                  width: 40,
-                  height: 40,
+                  // a11y: match the 44x44 hit-target of the mic/send buttons
+                  // below so all composer controls meet the min touch size.
+                  width: 44,
+                  height: 44,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppColors.surface,

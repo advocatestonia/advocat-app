@@ -5554,4 +5554,46 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'ضعیف — با احتیاط پیش بروید';
+
+  @override
+  String get deadlineIcsCopied => 'فایل ICS در کلیپ‌بورد کپی شد';
+
+  @override
+  String get deadlineExportFailed => 'خروجی‌گرفتن رویداد تقویم امکان‌پذیر نشد';
+
+  @override
+  String get orgSlugAvailable => 'نشانی در دسترس است';
+
+  @override
+  String get orgSlugTaken => 'این نشانی قبلاً گرفته شده است';
+
+  @override
+  String get commonCancel => 'لغو';
+
+  @override
+  String get commonRemove => 'حذف';
+
+  @override
+  String get orgRemoveFromOrg => 'حذف از سازمان';
+
+  @override
+  String get orgInvitationResent => 'دعوت دوباره ارسال شد';
+
+  @override
+  String get commonResend => 'ارسال مجدد';
+
+  @override
+  String get commonRevoke => 'لغو دسترسی';
+
+  @override
+  String get vaultUploadSuccess => 'سند با موفقیت بارگذاری شد';
+
+  @override
+  String get vaultView => 'مشاهده';
+
+  @override
+  String get vaultPathNotFound => 'مسیر سند یافت نشد';
+
+  @override
+  String get vaultUrlFailed => 'ایجاد نشانی سند امکان‌پذیر نشد';
 }

@@ -854,11 +854,15 @@ class _AnimatedPasswordStrengthIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final (label, color, filledBars) = switch (strength) {
       _PasswordStrength.none => ('', AppColors.border, 0),
-      _PasswordStrength.weak => ('Weak', const Color(0xFFC0392B), 1),
-      _PasswordStrength.medium => ('Medium', const Color(0xFFD4870E), 2),
-      _PasswordStrength.strong => ('Strong', AppColors.accent, 3),
+      _PasswordStrength.weak =>
+        (l.passwordStrengthWeak, const Color(0xFFC0392B), 1),
+      _PasswordStrength.medium =>
+        (l.passwordStrengthMedium, const Color(0xFFD4870E), 2),
+      _PasswordStrength.strong =>
+        (l.passwordStrengthStrong, AppColors.accent, 3),
     };
 
     return AnimatedSize(

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/empty_state.dart';
@@ -218,6 +219,7 @@ class _MembersList extends ConsumerWidget {
 
   Future<void> _removeMember(
       BuildContext context, WidgetRef ref, OrgMember member) async {
+    final l = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
@@ -229,12 +231,12 @@ class _MembersList extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(l.commonCancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Remove'),
+            child: Text(l.commonRemove),
           ),
         ],
       ),
@@ -305,6 +307,7 @@ class _MemberRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final isOwner = member.role == OrgRole.owner;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -396,15 +399,15 @@ class _MemberRow extends StatelessWidget {
               onSelected: (v) {
                 if (v == 'remove') onRemove();
               },
-              itemBuilder: (_) => const [
+              itemBuilder: (_) => [
                 PopupMenuItem(
                   value: 'remove',
                   child: Row(
                     children: [
-                      Icon(Icons.person_remove_outlined,
+                      const Icon(Icons.person_remove_outlined,
                           size: 16, color: AppColors.error),
-                      SizedBox(width: 8),
-                      Text('Remove from org'),
+                      const SizedBox(width: 8),
+                      Text(l.orgRemoveFromOrg),
                     ],
                   ),
                 ),
@@ -429,6 +432,7 @@ class _InvitationsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -470,7 +474,7 @@ class _InvitationsSection extends ConsumerWidget {
                       .resendInvitation(invitations[i].id);
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Invitation resent')),
+                      SnackBar(content: Text(l.orgInvitationResent)),
                     );
                   }
                 } catch (e) {
@@ -514,6 +518,7 @@ class _InvitationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
@@ -550,8 +555,8 @@ class _InvitationRow extends StatelessWidget {
           if (canManage) ...[
             TextButton(
               onPressed: onResend,
-              child: const Text('Resend',
-                  style: TextStyle(fontSize: 12)),
+              child: Text(l.commonResend,
+                  style: const TextStyle(fontSize: 12)),
             ),
             IconButton(
               icon: const Icon(Icons.close_rounded, size: 18),

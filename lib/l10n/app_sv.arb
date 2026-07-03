@@ -2728,5 +2728,19 @@
   "costEstimateFactorsAgainst": "Mot dig",
   "costEstimateStrengthWorth": "Sannolikt värt att driva",
   "costEstimateStrengthContested": "Omtvistat – kan gå åt båda hållen",
-  "costEstimateStrengthWeak": "Svagt – gå försiktigt fram"
+  "costEstimateStrengthWeak": "Svagt – gå försiktigt fram",
+  "deadlineIcsCopied": "ICS-fil kopierad till urklipp",
+  "deadlineExportFailed": "Det gick inte att exportera kalenderhändelsen",
+  "orgSlugAvailable": "Adressen är tillgänglig",
+  "orgSlugTaken": "Adressen är redan upptagen",
+  "commonCancel": "Avbryt",
+  "commonRemove": "Ta bort",
+  "orgRemoveFromOrg": "Ta bort från organisationen",
+  "orgInvitationResent": "Inbjudan skickades igen",
+  "commonResend": "Skicka igen",
+  "commonRevoke": "Återkalla",
+  "vaultUploadSuccess": "Dokumentet har laddats upp",
+  "vaultView": "Visa",
+  "vaultPathNotFound": "Dokumentets sökväg hittades inte",
+  "vaultUrlFailed": "Det gick inte att generera dokumentets URL"
 }

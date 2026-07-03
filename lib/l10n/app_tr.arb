@@ -2248,5 +2248,19 @@
   "costEstimateFactorsAgainst": "Aleyhinize",
   "costEstimateStrengthWorth": "Takip etmeye değer olabilir",
   "costEstimateStrengthContested": "İhtilaflı — her iki yöne de gidebilir",
-  "costEstimateStrengthWeak": "Zayıf — dikkatli ilerleyin"
+  "costEstimateStrengthWeak": "Zayıf — dikkatli ilerleyin",
+  "deadlineIcsCopied": "ICS dosyası panoya kopyalandı",
+  "deadlineExportFailed": "Takvim etkinliği dışa aktarılamadı",
+  "orgSlugAvailable": "Adres kullanılabilir",
+  "orgSlugTaken": "Adres zaten kullanımda",
+  "commonCancel": "İptal",
+  "commonRemove": "Kaldır",
+  "orgRemoveFromOrg": "Kuruluştan Kaldır",
+  "orgInvitationResent": "Davet yeniden gönderildi",
+  "commonResend": "Yeniden Gönder",
+  "commonRevoke": "İptal Et",
+  "vaultUploadSuccess": "Belge başarıyla yüklendi",
+  "vaultView": "Görüntüle",
+  "vaultPathNotFound": "Belge yolu bulunamadı",
+  "vaultUrlFailed": "Belge URL'si oluşturulamadı"
 }

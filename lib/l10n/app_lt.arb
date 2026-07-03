@@ -2732,5 +2732,19 @@
   "costEstimateFactorsAgainst": "Prieš jus",
   "costEstimateStrengthWorth": "Tikriausiai verta imtis",
   "costEstimateStrengthContested": "Ginčytina – gali baigtis bet kaip",
-  "costEstimateStrengthWeak": "Silpna – elkitės atsargiai"
+  "costEstimateStrengthWeak": "Silpna – elkitės atsargiai",
+  "deadlineIcsCopied": "ICS failas nukopijuotas į iškarpinę",
+  "deadlineExportFailed": "Nepavyko eksportuoti kalendoriaus įvykio",
+  "orgSlugAvailable": "Adresas laisvas",
+  "orgSlugTaken": "Adresas jau užimtas",
+  "commonCancel": "Atšaukti",
+  "commonRemove": "Pašalinti",
+  "orgRemoveFromOrg": "Pašalinti iš organizacijos",
+  "orgInvitationResent": "Kvietimas išsiųstas iš naujo",
+  "commonResend": "Siųsti iš naujo",
+  "commonRevoke": "Atšaukti",
+  "vaultUploadSuccess": "Dokumentas sėkmingai įkeltas",
+  "vaultView": "Peržiūrėti",
+  "vaultPathNotFound": "Dokumento kelias nerastas",
+  "vaultUrlFailed": "Nepavyko sugeneruoti dokumento URL"
 }

@@ -5545,4 +5545,46 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Zayıf — dikkatli ilerleyin';
+
+  @override
+  String get deadlineIcsCopied => 'ICS dosyası panoya kopyalandı';
+
+  @override
+  String get deadlineExportFailed => 'Takvim etkinliği dışa aktarılamadı';
+
+  @override
+  String get orgSlugAvailable => 'Adres kullanılabilir';
+
+  @override
+  String get orgSlugTaken => 'Adres zaten kullanımda';
+
+  @override
+  String get commonCancel => 'İptal';
+
+  @override
+  String get commonRemove => 'Kaldır';
+
+  @override
+  String get orgRemoveFromOrg => 'Kuruluştan Kaldır';
+
+  @override
+  String get orgInvitationResent => 'Davet yeniden gönderildi';
+
+  @override
+  String get commonResend => 'Yeniden Gönder';
+
+  @override
+  String get commonRevoke => 'İptal Et';
+
+  @override
+  String get vaultUploadSuccess => 'Belge başarıyla yüklendi';
+
+  @override
+  String get vaultView => 'Görüntüle';
+
+  @override
+  String get vaultPathNotFound => 'Belge yolu bulunamadı';
+
+  @override
+  String get vaultUrlFailed => 'Belge URL\'si oluşturulamadı';
 }

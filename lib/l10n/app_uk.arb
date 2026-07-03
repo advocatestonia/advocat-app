@@ -2353,5 +2353,19 @@
   "costEstimateFactorsAgainst": "Проти вас",
   "costEstimateStrengthWorth": "Ймовірно, варто вести",
   "costEstimateStrengthContested": "Спірно — може скластися по-різному",
-  "costEstimateStrengthWeak": "Слабко — дійте обережно"
+  "costEstimateStrengthWeak": "Слабко — дійте обережно",
+  "deadlineIcsCopied": "Файл ICS скопійовано до буфера обміну",
+  "deadlineExportFailed": "Не вдалося експортувати подію календаря",
+  "orgSlugAvailable": "Адреса доступна",
+  "orgSlugTaken": "Адресу вже зайнято",
+  "commonCancel": "Скасувати",
+  "commonRemove": "Видалити",
+  "orgRemoveFromOrg": "Видалити з організації",
+  "orgInvitationResent": "Запрошення надіслано повторно",
+  "commonResend": "Надіслати повторно",
+  "commonRevoke": "Відкликати",
+  "vaultUploadSuccess": "Документ успішно завантажено",
+  "vaultView": "Переглянути",
+  "vaultPathNotFound": "Шлях до документа не знайдено",
+  "vaultUrlFailed": "Не вдалося створити URL-адресу документа"
 }

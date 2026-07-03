@@ -256,7 +256,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               excludeFromSemantics: true,
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: AppSpacing.sm),
 
           // -- Title with shadow effect --
           Text(

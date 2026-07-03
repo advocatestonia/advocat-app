@@ -208,6 +208,141 @@ void main() {
     });
   });
 
+  group('ConsiliumPanel localized labels', () {
+    testWidgets(
+        'doneLabelBuilder overrides the RU done footer with counts injected',
+        (tester) async {
+      final snap = _snap([
+        {
+          'kind': 'start',
+          'roster': ['Immigration lawyer', 'Criminal lawyer'],
+        },
+        {
+          'kind': 'opinion',
+          'role': 'Immigration lawyer',
+          'position': 'push',
+          'confidence': 0.8,
+          'opinion': 'Appeal.',
+        },
+        {
+          'kind': 'opinion',
+          'role': 'Criminal lawyer',
+          'position': 'push',
+          'confidence': 0.75,
+          'opinion': 'Agree.',
+        },
+        {'kind': 'round_done'},
+        {'kind': 'round_done'},
+        {'kind': 'done'},
+      ]);
+
+      await tester.pumpWidget(_wrap(ConsiliumPanel.fromSnapshot(
+        snapshot: snap,
+        doneLabelBuilder: (roles, rounds) =>
+            'Consilium of $roles lawyers · $rounds rounds · done',
+      )));
+      await tester.pumpAndSettle();
+
+      // Localized string rendered with the real counts (2 roles, 2 rounds).
+      expect(find.text('Consilium of 2 lawyers · 2 rounds · done'),
+          findsOneWidget);
+      // RU fallback footer no longer present.
+      expect(find.text('Консилиум 2 юристов · 2 раунда · готово'), findsNothing);
+    });
+
+    testWidgets('omitting doneLabelBuilder keeps the RU done footer',
+        (tester) async {
+      final snap = _snap([
+        {
+          'kind': 'start',
+          'roster': ['Иммиграционный юрист'],
+        },
+        {
+          'kind': 'opinion',
+          'role': 'Иммиграционный юрист',
+          'position': 'push',
+          'confidence': 0.8,
+          'opinion': 'X',
+        },
+        {'kind': 'round_done'},
+        {'kind': 'done'},
+      ]);
+
+      await tester
+          .pumpWidget(_wrap(ConsiliumPanel.fromSnapshot(snapshot: snap)));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('consilium_done_footer')), findsOneWidget);
+      expect(
+          find.text('Консилиум 1 юристов · 1 раунд · готово'), findsOneWidget);
+    });
+
+    testWidgets(
+        'adversarialLabelBuilder overrides the RU expanded label with count',
+        (tester) async {
+      final snap = _snap([
+        {
+          'kind': 'start',
+          'roster': ['Immigration lawyer'],
+        },
+        {
+          'kind': 'opinion',
+          'role': 'Immigration lawyer',
+          'position': 'push',
+          'confidence': 0.6,
+          'opinion': 'X',
+        },
+        {'kind': 'attack'},
+        {'kind': 'attack'},
+      ]);
+
+      await tester.pumpWidget(_wrap(ConsiliumPanel.fromSnapshot(
+        snapshot: snap,
+        adversarialLabelBuilder: (count) => 'Adversarial round · $count objections',
+      )));
+      await tester.pumpAndSettle();
+
+      // Collapsed by default → custom expanded label not visible yet, RU
+      // collapsed label shown.
+      expect(find.textContaining('Adversarial round'), findsNothing);
+
+      // Expand.
+      await tester.tap(find.byKey(const Key('consilium_adversarial_toggle')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Adversarial round · 2 objections'), findsOneWidget);
+      expect(find.textContaining('возражений'), findsNothing);
+    });
+
+    testWidgets('omitting adversarialLabelBuilder keeps the RU expanded label',
+        (tester) async {
+      final snap = _snap([
+        {
+          'kind': 'start',
+          'roster': ['Иммиграционный юрист'],
+        },
+        {
+          'kind': 'opinion',
+          'role': 'Иммиграционный юрист',
+          'position': 'push',
+          'confidence': 0.6,
+          'opinion': 'X',
+        },
+        {'kind': 'attack'},
+        {'kind': 'attack'},
+      ]);
+
+      await tester
+          .pumpWidget(_wrap(ConsiliumPanel.fromSnapshot(snapshot: snap)));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('consilium_adversarial_toggle')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Адверсариальный раунд · 2 возражений'), findsOneWidget);
+    });
+  });
+
   group('detectDisagreements', () {
     test('large confidence delta triggers disagreement', () {
       final out = detectDisagreements([

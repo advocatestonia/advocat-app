@@ -2248,5 +2248,19 @@
   "costEstimateFactorsAgainst": "În defavoarea dumneavoastră",
   "costEstimateStrengthWorth": "Probabil merită urmărită",
   "costEstimateStrengthContested": "Contestată — poate evolua în oricare direcție",
-  "costEstimateStrengthWeak": "Slabă — procedați cu prudență"
+  "costEstimateStrengthWeak": "Slabă — procedați cu prudență",
+  "deadlineIcsCopied": "Fișierul ICS a fost copiat în clipboard",
+  "deadlineExportFailed": "Nu s-a putut exporta evenimentul din calendar",
+  "orgSlugAvailable": "Adresa este disponibilă",
+  "orgSlugTaken": "Adresa este deja folosită",
+  "commonCancel": "Anulați",
+  "commonRemove": "Eliminați",
+  "orgRemoveFromOrg": "Eliminați din organizație",
+  "orgInvitationResent": "Invitația a fost retrimisă",
+  "commonResend": "Retrimiteți",
+  "commonRevoke": "Revocați",
+  "vaultUploadSuccess": "Documentul a fost încărcat cu succes",
+  "vaultView": "Vizualizați",
+  "vaultPathNotFound": "Calea documentului nu a fost găsită",
+  "vaultUrlFailed": "Nu s-a putut genera URL-ul documentului"
 }

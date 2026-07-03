@@ -2728,5 +2728,19 @@
   "costEstimateFactorsAgainst": "Przeciwko Tobie",
   "costEstimateStrengthWorth": "Prawdopodobnie warto prowadzić",
   "costEstimateStrengthContested": "Sporne — może pójść w obie strony",
-  "costEstimateStrengthWeak": "Słabe — postępuj ostrożnie"
+  "costEstimateStrengthWeak": "Słabe — postępuj ostrożnie",
+  "deadlineIcsCopied": "Plik ICS skopiowany do schowka",
+  "deadlineExportFailed": "Nie udało się wyeksportować wydarzenia kalendarza",
+  "orgSlugAvailable": "Adres jest dostępny",
+  "orgSlugTaken": "Adres jest już zajęty",
+  "commonCancel": "Anuluj",
+  "commonRemove": "Usuń",
+  "orgRemoveFromOrg": "Usuń z organizacji",
+  "orgInvitationResent": "Zaproszenie wysłane ponownie",
+  "commonResend": "Wyślij ponownie",
+  "commonRevoke": "Cofnij",
+  "vaultUploadSuccess": "Dokument przesłany pomyślnie",
+  "vaultView": "Wyświetl",
+  "vaultPathNotFound": "Nie znaleziono ścieżki dokumentu",
+  "vaultUrlFailed": "Nie udało się wygenerować adresu URL dokumentu"
 }

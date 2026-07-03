@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/app_text_field.dart';
@@ -659,6 +660,7 @@ class _SlugIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     if (slug.length < 3) {
       return const Text(
         'Slug must be at least 3 characters',
@@ -681,23 +683,24 @@ class _SlugIndicator extends StatelessWidget {
       );
     }
     if (available == true) {
-      return const Row(
+      return Row(
         children: [
-          Icon(Icons.check_circle_outline_rounded,
+          const Icon(Icons.check_circle_outline_rounded,
               size: 14, color: AppColors.success),
-          SizedBox(width: 6),
-          Text('Slug is available',
-              style: TextStyle(fontSize: 11, color: AppColors.success)),
+          const SizedBox(width: 6),
+          Text(l.orgSlugAvailable,
+              style: const TextStyle(fontSize: 11, color: AppColors.success)),
         ],
       );
     }
     if (available == false) {
-      return const Row(
+      return Row(
         children: [
-          Icon(Icons.error_outline_rounded, size: 14, color: AppColors.error),
-          SizedBox(width: 6),
-          Text('Slug is taken',
-              style: TextStyle(fontSize: 11, color: AppColors.error)),
+          const Icon(Icons.error_outline_rounded,
+              size: 14, color: AppColors.error),
+          const SizedBox(width: 6),
+          Text(l.orgSlugTaken,
+              style: const TextStyle(fontSize: 11, color: AppColors.error)),
         ],
       );
     }

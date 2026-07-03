@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/empty_state.dart';
@@ -161,6 +162,7 @@ class _ApiKeysBody extends ConsumerWidget {
 
   Future<void> _confirmRevoke(
       BuildContext context, WidgetRef ref, ApiKey k) async {
+    final l = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
@@ -171,12 +173,12 @@ class _ApiKeysBody extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(l.commonCancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Revoke'),
+            child: Text(l.commonRevoke),
           ),
         ],
       ),
@@ -202,6 +204,7 @@ class _ApiKeyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -228,7 +231,7 @@ class _ApiKeyCard extends StatelessWidget {
               TextButton.icon(
                 onPressed: onRevoke,
                 icon: const Icon(Icons.block_outlined, size: 14),
-                label: const Text('Revoke'),
+                label: Text(l.commonRevoke),
                 style: TextButton.styleFrom(
                   foregroundColor: AppColors.error,
                   textStyle: const TextStyle(fontSize: 12),

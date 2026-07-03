@@ -5611,4 +5611,47 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Débil: proceda con cautela';
+
+  @override
+  String get deadlineIcsCopied => 'Archivo ICS copiado al portapapeles';
+
+  @override
+  String get deadlineExportFailed =>
+      'No se pudo exportar el evento de calendario';
+
+  @override
+  String get orgSlugAvailable => 'La dirección está disponible';
+
+  @override
+  String get orgSlugTaken => 'La dirección ya está en uso';
+
+  @override
+  String get commonCancel => 'Cancelar';
+
+  @override
+  String get commonRemove => 'Eliminar';
+
+  @override
+  String get orgRemoveFromOrg => 'Eliminar de la organización';
+
+  @override
+  String get orgInvitationResent => 'Invitación reenviada';
+
+  @override
+  String get commonResend => 'Reenviar';
+
+  @override
+  String get commonRevoke => 'Revocar';
+
+  @override
+  String get vaultUploadSuccess => 'Documento subido correctamente';
+
+  @override
+  String get vaultView => 'Ver';
+
+  @override
+  String get vaultPathNotFound => 'No se encontró la ruta del documento';
+
+  @override
+  String get vaultUrlFailed => 'No se pudo generar la URL del documento';
 }

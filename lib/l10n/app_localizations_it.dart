@@ -5613,4 +5613,47 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Debole: proceda con cautela';
+
+  @override
+  String get deadlineIcsCopied => 'File ICS copiato negli appunti';
+
+  @override
+  String get deadlineExportFailed =>
+      'Impossibile esportare l’evento del calendario';
+
+  @override
+  String get orgSlugAvailable => 'L’indirizzo è disponibile';
+
+  @override
+  String get orgSlugTaken => 'L’indirizzo è già in uso';
+
+  @override
+  String get commonCancel => 'Annulla';
+
+  @override
+  String get commonRemove => 'Rimuovi';
+
+  @override
+  String get orgRemoveFromOrg => 'Rimuovi dall’organizzazione';
+
+  @override
+  String get orgInvitationResent => 'Invito inviato di nuovo';
+
+  @override
+  String get commonResend => 'Invia di nuovo';
+
+  @override
+  String get commonRevoke => 'Revoca';
+
+  @override
+  String get vaultUploadSuccess => 'Documento caricato correttamente';
+
+  @override
+  String get vaultView => 'Visualizza';
+
+  @override
+  String get vaultPathNotFound => 'Percorso del documento non trovato';
+
+  @override
+  String get vaultUrlFailed => 'Impossibile generare l’URL del documento';
 }

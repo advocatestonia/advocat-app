@@ -5570,4 +5570,46 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Heikko — etene varoen';
+
+  @override
+  String get deadlineIcsCopied => 'ICS-tiedosto kopioitu leikepöydälle';
+
+  @override
+  String get deadlineExportFailed => 'Kalenteritapahtuman vienti epäonnistui';
+
+  @override
+  String get orgSlugAvailable => 'Osoite on vapaana';
+
+  @override
+  String get orgSlugTaken => 'Osoite on jo käytössä';
+
+  @override
+  String get commonCancel => 'Peruuta';
+
+  @override
+  String get commonRemove => 'Poista';
+
+  @override
+  String get orgRemoveFromOrg => 'Poista organisaatiosta';
+
+  @override
+  String get orgInvitationResent => 'Kutsu lähetetty uudelleen';
+
+  @override
+  String get commonResend => 'Lähetä uudelleen';
+
+  @override
+  String get commonRevoke => 'Peru';
+
+  @override
+  String get vaultUploadSuccess => 'Asiakirja ladattu onnistuneesti';
+
+  @override
+  String get vaultView => 'Näytä';
+
+  @override
+  String get vaultPathNotFound => 'Asiakirjan polkua ei löytynyt';
+
+  @override
+  String get vaultUrlFailed => 'Asiakirjan URL-osoitteen luonti epäonnistui';
 }
