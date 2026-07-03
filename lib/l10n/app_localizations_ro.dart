@@ -5615,4 +5615,47 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Slabă — procedați cu prudență';
+
+  @override
+  String get deadlineIcsCopied => 'Fișierul ICS a fost copiat în clipboard';
+
+  @override
+  String get deadlineExportFailed =>
+      'Nu s-a putut exporta evenimentul din calendar';
+
+  @override
+  String get orgSlugAvailable => 'Adresa este disponibilă';
+
+  @override
+  String get orgSlugTaken => 'Adresa este deja folosită';
+
+  @override
+  String get commonCancel => 'Anulați';
+
+  @override
+  String get commonRemove => 'Eliminați';
+
+  @override
+  String get orgRemoveFromOrg => 'Eliminați din organizație';
+
+  @override
+  String get orgInvitationResent => 'Invitația a fost retrimisă';
+
+  @override
+  String get commonResend => 'Retrimiteți';
+
+  @override
+  String get commonRevoke => 'Revocați';
+
+  @override
+  String get vaultUploadSuccess => 'Documentul a fost încărcat cu succes';
+
+  @override
+  String get vaultView => 'Vizualizați';
+
+  @override
+  String get vaultPathNotFound => 'Calea documentului nu a fost găsită';
+
+  @override
+  String get vaultUrlFailed => 'Nu s-a putut genera URL-ul documentului';
 }

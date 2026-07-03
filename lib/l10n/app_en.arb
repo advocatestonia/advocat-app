@@ -2567,5 +2567,19 @@
   "costEstimateFactorsAgainst": "Working against you",
   "costEstimateStrengthWorth": "Likely worth pursuing",
   "costEstimateStrengthContested": "Contested — could go either way",
-  "costEstimateStrengthWeak": "Weak — proceed with caution"
+  "costEstimateStrengthWeak": "Weak — proceed with caution",
+  "deadlineIcsCopied": "ICS copied to clipboard",
+  "deadlineExportFailed": "Could not export calendar event",
+  "orgSlugAvailable": "Slug is available",
+  "orgSlugTaken": "Slug is taken",
+  "commonCancel": "Cancel",
+  "commonRemove": "Remove",
+  "orgRemoveFromOrg": "Remove from org",
+  "orgInvitationResent": "Invitation resent",
+  "commonResend": "Resend",
+  "commonRevoke": "Revoke",
+  "vaultUploadSuccess": "Document uploaded successfully",
+  "vaultView": "View",
+  "vaultPathNotFound": "Document path not found",
+  "vaultUrlFailed": "Could not generate document URL"
 }

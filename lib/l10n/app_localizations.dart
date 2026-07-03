@@ -9877,6 +9877,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Weak — proceed with caution'**
   String get costEstimateStrengthWeak;
+
+  /// No description provided for @deadlineIcsCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'ICS copied to clipboard'**
+  String get deadlineIcsCopied;
+
+  /// No description provided for @deadlineExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not export calendar event'**
+  String get deadlineExportFailed;
+
+  /// No description provided for @orgSlugAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Slug is available'**
+  String get orgSlugAvailable;
+
+  /// No description provided for @orgSlugTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Slug is taken'**
+  String get orgSlugTaken;
+
+  /// No description provided for @commonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get commonCancel;
+
+  /// No description provided for @commonRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get commonRemove;
+
+  /// No description provided for @orgRemoveFromOrg.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from org'**
+  String get orgRemoveFromOrg;
+
+  /// No description provided for @orgInvitationResent.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation resent'**
+  String get orgInvitationResent;
+
+  /// No description provided for @commonResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get commonResend;
+
+  /// No description provided for @commonRevoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Revoke'**
+  String get commonRevoke;
+
+  /// No description provided for @vaultUploadSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Document uploaded successfully'**
+  String get vaultUploadSuccess;
+
+  /// No description provided for @vaultView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get vaultView;
+
+  /// No description provided for @vaultPathNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Document path not found'**
+  String get vaultPathNotFound;
+
+  /// No description provided for @vaultUrlFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not generate document URL'**
+  String get vaultUrlFailed;
 }
 
 class _AppLocalizationsDelegate

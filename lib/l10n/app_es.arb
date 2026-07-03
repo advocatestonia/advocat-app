@@ -2248,5 +2248,19 @@
   "costEstimateFactorsAgainst": "En su contra",
   "costEstimateStrengthWorth": "Probablemente merezca la pena emprenderlo",
   "costEstimateStrengthContested": "Disputado: podría ir en cualquier dirección",
-  "costEstimateStrengthWeak": "Débil: proceda con cautela"
+  "costEstimateStrengthWeak": "Débil: proceda con cautela",
+  "deadlineIcsCopied": "Archivo ICS copiado al portapapeles",
+  "deadlineExportFailed": "No se pudo exportar el evento de calendario",
+  "orgSlugAvailable": "La dirección está disponible",
+  "orgSlugTaken": "La dirección ya está en uso",
+  "commonCancel": "Cancelar",
+  "commonRemove": "Eliminar",
+  "orgRemoveFromOrg": "Eliminar de la organización",
+  "orgInvitationResent": "Invitación reenviada",
+  "commonResend": "Reenviar",
+  "commonRevoke": "Revocar",
+  "vaultUploadSuccess": "Documento subido correctamente",
+  "vaultView": "Ver",
+  "vaultPathNotFound": "No se encontró la ruta del documento",
+  "vaultUrlFailed": "No se pudo generar la URL del documento"
 }

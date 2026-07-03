@@ -5632,4 +5632,47 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Faible — à poursuivre avec prudence';
+
+  @override
+  String get deadlineIcsCopied => 'Fichier ICS copié dans le presse-papiers';
+
+  @override
+  String get deadlineExportFailed =>
+      'Impossible d’exporter l’événement d’agenda';
+
+  @override
+  String get orgSlugAvailable => 'L’adresse est disponible';
+
+  @override
+  String get orgSlugTaken => 'L’adresse est déjà utilisée';
+
+  @override
+  String get commonCancel => 'Annuler';
+
+  @override
+  String get commonRemove => 'Supprimer';
+
+  @override
+  String get orgRemoveFromOrg => 'Retirer de l’organisation';
+
+  @override
+  String get orgInvitationResent => 'Invitation renvoyée';
+
+  @override
+  String get commonResend => 'Renvoyer';
+
+  @override
+  String get commonRevoke => 'Révoquer';
+
+  @override
+  String get vaultUploadSuccess => 'Document téléversé avec succès';
+
+  @override
+  String get vaultView => 'Afficher';
+
+  @override
+  String get vaultPathNotFound => 'Chemin du document introuvable';
+
+  @override
+  String get vaultUrlFailed => 'Impossible de générer l’URL du document';
 }

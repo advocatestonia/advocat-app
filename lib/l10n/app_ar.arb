@@ -2248,5 +2248,19 @@
   "costEstimateFactorsAgainst": "ضدك",
   "costEstimateStrengthWorth": "يُرجَّح أن يستحق المتابعة",
   "costEstimateStrengthContested": "متنازَع عليه — قد يميل لأي من الجانبين",
-  "costEstimateStrengthWeak": "ضعيف — تابِع بحذر"
+  "costEstimateStrengthWeak": "ضعيف — تابِع بحذر",
+  "deadlineIcsCopied": "تم نسخ ملف ICS إلى الحافظة",
+  "deadlineExportFailed": "تعذّر تصدير حدث التقويم",
+  "orgSlugAvailable": "المُعرّف متاح",
+  "orgSlugTaken": "المُعرّف مستخدَم بالفعل",
+  "commonCancel": "إلغاء",
+  "commonRemove": "إزالة",
+  "orgRemoveFromOrg": "إزالة من المؤسسة",
+  "orgInvitationResent": "تمت إعادة إرسال الدعوة",
+  "commonResend": "إعادة الإرسال",
+  "commonRevoke": "إلغاء",
+  "vaultUploadSuccess": "تم رفع المستند بنجاح",
+  "vaultView": "عرض",
+  "vaultPathNotFound": "لم يتم العثور على مسار المستند",
+  "vaultUrlFailed": "تعذّر إنشاء رابط المستند"
 }

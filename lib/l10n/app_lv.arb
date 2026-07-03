@@ -2728,5 +2728,19 @@
   "costEstimateFactorsAgainst": "Pret jums",
   "costEstimateStrengthWorth": "Visticamāk, ir vērts virzīt",
   "costEstimateStrengthContested": "Apstrīdams — var noiet abējādi",
-  "costEstimateStrengthWeak": "Vājš — rīkojieties piesardzīgi"
+  "costEstimateStrengthWeak": "Vājš — rīkojieties piesardzīgi",
+  "deadlineIcsCopied": "ICS fails nokopēts starpliktuvē",
+  "deadlineExportFailed": "Neizdevās eksportēt kalendāra notikumu",
+  "orgSlugAvailable": "Adrese ir pieejama",
+  "orgSlugTaken": "Adrese jau ir aizņemta",
+  "commonCancel": "Atcelt",
+  "commonRemove": "Noņemt",
+  "orgRemoveFromOrg": "Noņemt no organizācijas",
+  "orgInvitationResent": "Ielūgums nosūtīts atkārtoti",
+  "commonResend": "Sūtīt atkārtoti",
+  "commonRevoke": "Atsaukt",
+  "vaultUploadSuccess": "Dokuments veiksmīgi augšupielādēts",
+  "vaultView": "Skatīt",
+  "vaultPathNotFound": "Dokumenta ceļš nav atrasts",
+  "vaultUrlFailed": "Neizdevās izveidot dokumenta URL"
 }

@@ -5562,4 +5562,47 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Nõrk — toimige ettevaatlikult';
+
+  @override
+  String get deadlineIcsCopied => 'ICS-fail kopeeriti lõikelauale';
+
+  @override
+  String get deadlineExportFailed =>
+      'Kalendrisündmust ei õnnestunud eksportida';
+
+  @override
+  String get orgSlugAvailable => 'Aadress on saadaval';
+
+  @override
+  String get orgSlugTaken => 'Aadress on juba kasutusel';
+
+  @override
+  String get commonCancel => 'Tühista';
+
+  @override
+  String get commonRemove => 'Eemalda';
+
+  @override
+  String get orgRemoveFromOrg => 'Eemalda organisatsioonist';
+
+  @override
+  String get orgInvitationResent => 'Kutse saadeti uuesti';
+
+  @override
+  String get commonResend => 'Saada uuesti';
+
+  @override
+  String get commonRevoke => 'Tühista';
+
+  @override
+  String get vaultUploadSuccess => 'Dokument on üles laaditud';
+
+  @override
+  String get vaultView => 'Vaata';
+
+  @override
+  String get vaultPathNotFound => 'Dokumendi asukohta ei leitud';
+
+  @override
+  String get vaultUrlFailed => 'Dokumendi URL-i ei õnnestunud luua';
 }

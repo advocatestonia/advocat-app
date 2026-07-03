@@ -2273,5 +2273,19 @@
   "costEstimateFactorsAgainst": "Sinua vastaan",
   "costEstimateStrengthWorth": "Todennäköisesti ajamisen arvoinen",
   "costEstimateStrengthContested": "Riitainen — voi mennä kumpaan tahansa suuntaan",
-  "costEstimateStrengthWeak": "Heikko — etene varoen"
+  "costEstimateStrengthWeak": "Heikko — etene varoen",
+  "deadlineIcsCopied": "ICS-tiedosto kopioitu leikepöydälle",
+  "deadlineExportFailed": "Kalenteritapahtuman vienti epäonnistui",
+  "orgSlugAvailable": "Osoite on vapaana",
+  "orgSlugTaken": "Osoite on jo käytössä",
+  "commonCancel": "Peruuta",
+  "commonRemove": "Poista",
+  "orgRemoveFromOrg": "Poista organisaatiosta",
+  "orgInvitationResent": "Kutsu lähetetty uudelleen",
+  "commonResend": "Lähetä uudelleen",
+  "commonRevoke": "Peru",
+  "vaultUploadSuccess": "Asiakirja ladattu onnistuneesti",
+  "vaultView": "Näytä",
+  "vaultPathNotFound": "Asiakirjan polkua ei löytynyt",
+  "vaultUrlFailed": "Asiakirjan URL-osoitteen luonti epäonnistui"
 }

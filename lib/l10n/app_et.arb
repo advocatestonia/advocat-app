@@ -2255,5 +2255,19 @@
   "costEstimateFactorsAgainst": "Teie vastu",
   "costEstimateStrengthWorth": "Tõenäoliselt tasub ette võtta",
   "costEstimateStrengthContested": "Vaieldav — võib minna kummalegi poole",
-  "costEstimateStrengthWeak": "Nõrk — toimige ettevaatlikult"
+  "costEstimateStrengthWeak": "Nõrk — toimige ettevaatlikult",
+  "deadlineIcsCopied": "ICS-fail kopeeriti lõikelauale",
+  "deadlineExportFailed": "Kalendrisündmust ei õnnestunud eksportida",
+  "orgSlugAvailable": "Aadress on saadaval",
+  "orgSlugTaken": "Aadress on juba kasutusel",
+  "commonCancel": "Tühista",
+  "commonRemove": "Eemalda",
+  "orgRemoveFromOrg": "Eemalda organisatsioonist",
+  "orgInvitationResent": "Kutse saadeti uuesti",
+  "commonResend": "Saada uuesti",
+  "commonRevoke": "Tühista",
+  "vaultUploadSuccess": "Dokument on üles laaditud",
+  "vaultView": "Vaata",
+  "vaultPathNotFound": "Dokumendi asukohta ei leitud",
+  "vaultUrlFailed": "Dokumendi URL-i ei õnnestunud luua"
 }

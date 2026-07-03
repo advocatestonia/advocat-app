@@ -5623,4 +5623,46 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Слабко — дійте обережно';
+
+  @override
+  String get deadlineIcsCopied => 'Файл ICS скопійовано до буфера обміну';
+
+  @override
+  String get deadlineExportFailed => 'Не вдалося експортувати подію календаря';
+
+  @override
+  String get orgSlugAvailable => 'Адреса доступна';
+
+  @override
+  String get orgSlugTaken => 'Адресу вже зайнято';
+
+  @override
+  String get commonCancel => 'Скасувати';
+
+  @override
+  String get commonRemove => 'Видалити';
+
+  @override
+  String get orgRemoveFromOrg => 'Видалити з організації';
+
+  @override
+  String get orgInvitationResent => 'Запрошення надіслано повторно';
+
+  @override
+  String get commonResend => 'Надіслати повторно';
+
+  @override
+  String get commonRevoke => 'Відкликати';
+
+  @override
+  String get vaultUploadSuccess => 'Документ успішно завантажено';
+
+  @override
+  String get vaultView => 'Переглянути';
+
+  @override
+  String get vaultPathNotFound => 'Шлях до документа не знайдено';
+
+  @override
+  String get vaultUrlFailed => 'Не вдалося створити URL-адресу документа';
 }

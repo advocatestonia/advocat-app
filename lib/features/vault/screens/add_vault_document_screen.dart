@@ -122,8 +122,9 @@ class _AddVaultDocumentScreenState
       ref.invalidate(vaultDocumentsListProvider);
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Document uploaded successfully')),
+          SnackBar(content: Text(l10n.vaultUploadSuccess)),
         );
         Navigator.pop(context);
       }
@@ -179,8 +180,9 @@ class _AddVaultDocumentScreenState
       ref.invalidate(vaultDocumentsListProvider);
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Document uploaded successfully')),
+          SnackBar(content: Text(l10n.vaultUploadSuccess)),
         );
         Navigator.pop(context);
       }

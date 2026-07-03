@@ -2273,5 +2273,19 @@
   "costEstimateFactorsAgainst": "Против вас",
   "costEstimateStrengthWorth": "Вероятно, стоит вести",
   "costEstimateStrengthContested": "Спорно — может пойти в любую сторону",
-  "costEstimateStrengthWeak": "Слабо — действуйте осторожно"
+  "costEstimateStrengthWeak": "Слабо — действуйте осторожно",
+  "deadlineIcsCopied": "Файл ICS скопирован в буфер обмена",
+  "deadlineExportFailed": "Не удалось экспортировать событие календаря",
+  "orgSlugAvailable": "Адрес доступен",
+  "orgSlugTaken": "Адрес занят",
+  "commonCancel": "Отмена",
+  "commonRemove": "Удалить",
+  "orgRemoveFromOrg": "Удалить из организации",
+  "orgInvitationResent": "Приглашение отправлено повторно",
+  "commonResend": "Отправить повторно",
+  "commonRevoke": "Отозвать",
+  "vaultUploadSuccess": "Документ успешно загружен",
+  "vaultView": "Просмотр",
+  "vaultPathNotFound": "Путь к документу не найден",
+  "vaultUrlFailed": "Не удалось создать ссылку на документ"
 }

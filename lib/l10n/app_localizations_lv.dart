@@ -5588,4 +5588,46 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Vājš — rīkojieties piesardzīgi';
+
+  @override
+  String get deadlineIcsCopied => 'ICS fails nokopēts starpliktuvē';
+
+  @override
+  String get deadlineExportFailed => 'Neizdevās eksportēt kalendāra notikumu';
+
+  @override
+  String get orgSlugAvailable => 'Adrese ir pieejama';
+
+  @override
+  String get orgSlugTaken => 'Adrese jau ir aizņemta';
+
+  @override
+  String get commonCancel => 'Atcelt';
+
+  @override
+  String get commonRemove => 'Noņemt';
+
+  @override
+  String get orgRemoveFromOrg => 'Noņemt no organizācijas';
+
+  @override
+  String get orgInvitationResent => 'Ielūgums nosūtīts atkārtoti';
+
+  @override
+  String get commonResend => 'Sūtīt atkārtoti';
+
+  @override
+  String get commonRevoke => 'Atsaukt';
+
+  @override
+  String get vaultUploadSuccess => 'Dokuments veiksmīgi augšupielādēts';
+
+  @override
+  String get vaultView => 'Skatīt';
+
+  @override
+  String get vaultPathNotFound => 'Dokumenta ceļš nav atrasts';
+
+  @override
+  String get vaultUrlFailed => 'Neizdevās izveidot dokumenta URL';
 }

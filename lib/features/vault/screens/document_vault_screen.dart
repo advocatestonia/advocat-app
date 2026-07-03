@@ -252,6 +252,7 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
   }
 
   Future<void> _openVaultDocument(VaultDocument doc) async {
+    final l10n = AppLocalizations.of(context)!;
     // If the doc is editable in the Studio, offer a choice: external view
     // (signed URL) vs Edit in Studio. Non-editable types just open the
     // signed URL straight away.
@@ -266,7 +267,7 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
               ListTile(
                 key: const Key('vault_doc_action_view'),
                 leading: const Icon(Icons.open_in_new),
-                title: const Text('View'),
+                title: Text(l10n.vaultView),
                 onTap: () => Navigator.of(ctx).pop('view'),
               ),
               ListTile(
@@ -290,8 +291,8 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
     if (storagePath.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Document path not found'),
+          SnackBar(
+            content: Text(l10n.vaultPathNotFound),
             backgroundColor: AppColors.error,
           ),
         );
@@ -306,8 +307,8 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
       if (url.isEmpty) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Could not generate document URL'),
+            SnackBar(
+              content: Text(l10n.vaultUrlFailed),
               backgroundColor: AppColors.error,
             ),
           );

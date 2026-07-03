@@ -5634,4 +5634,46 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get costEstimateStrengthWeak => 'Silpna – elkitės atsargiai';
+
+  @override
+  String get deadlineIcsCopied => 'ICS failas nukopijuotas į iškarpinę';
+
+  @override
+  String get deadlineExportFailed => 'Nepavyko eksportuoti kalendoriaus įvykio';
+
+  @override
+  String get orgSlugAvailable => 'Adresas laisvas';
+
+  @override
+  String get orgSlugTaken => 'Adresas jau užimtas';
+
+  @override
+  String get commonCancel => 'Atšaukti';
+
+  @override
+  String get commonRemove => 'Pašalinti';
+
+  @override
+  String get orgRemoveFromOrg => 'Pašalinti iš organizacijos';
+
+  @override
+  String get orgInvitationResent => 'Kvietimas išsiųstas iš naujo';
+
+  @override
+  String get commonResend => 'Siųsti iš naujo';
+
+  @override
+  String get commonRevoke => 'Atšaukti';
+
+  @override
+  String get vaultUploadSuccess => 'Dokumentas sėkmingai įkeltas';
+
+  @override
+  String get vaultView => 'Peržiūrėti';
+
+  @override
+  String get vaultPathNotFound => 'Dokumento kelias nerastas';
+
+  @override
+  String get vaultUrlFailed => 'Nepavyko sugeneruoti dokumento URL';
 }

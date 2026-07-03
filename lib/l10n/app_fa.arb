@@ -2248,5 +2248,19 @@
   "costEstimateFactorsAgainst": "به ضرر شما",
   "costEstimateStrengthWorth": "احتمالاً ارزش پیگیری دارد",
   "costEstimateStrengthContested": "محل اختلاف — می‌تواند به هر سو برود",
-  "costEstimateStrengthWeak": "ضعیف — با احتیاط پیش بروید"
+  "costEstimateStrengthWeak": "ضعیف — با احتیاط پیش بروید",
+  "deadlineIcsCopied": "فایل ICS در کلیپ‌بورد کپی شد",
+  "deadlineExportFailed": "خروجی‌گرفتن رویداد تقویم امکان‌پذیر نشد",
+  "orgSlugAvailable": "نشانی در دسترس است",
+  "orgSlugTaken": "این نشانی قبلاً گرفته شده است",
+  "commonCancel": "لغو",
+  "commonRemove": "حذف",
+  "orgRemoveFromOrg": "حذف از سازمان",
+  "orgInvitationResent": "دعوت دوباره ارسال شد",
+  "commonResend": "ارسال مجدد",
+  "commonRevoke": "لغو دسترسی",
+  "vaultUploadSuccess": "سند با موفقیت بارگذاری شد",
+  "vaultView": "مشاهده",
+  "vaultPathNotFound": "مسیر سند یافت نشد",
+  "vaultUrlFailed": "ایجاد نشانی سند امکان‌پذیر نشد"
 }
