@@ -53,6 +53,10 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
+          # Pinned to the version the app is actually built with locally.
+          # Unpinned `stable` drifted ahead and broke 49 test files at the
+          # loading stage (2026-07) while the same suite was green locally.
+          flutter-version: "3.41.6"
           channel: stable
           cache: true
 
