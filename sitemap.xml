@@ -588,4 +588,146 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- ============================================================ -->
+  <!-- SEO Wave 1 (2026-07-16): official-letter pain queries, 4 langs -->
+  <!-- ============================================================ -->
+
+  <!-- Blog FI index (new) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/"/>
+  </url>
+
+  <!-- W1-1: Letter from Estonian police (PPA) -->
+  <url>
+    <loc>https://advocat.ee/blog/kiri-politseist-mida-teha.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kiri-politseist-mida-teha.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/pismo-iz-politsii-estonii.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/letter-from-estonian-police.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/kirje-viron-poliisilta.html"/>
+  </url>
+  <url>
+    <loc>https://advocat.ee/blog/ru/pismo-iz-politsii-estonii.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kiri-politseist-mida-teha.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/pismo-iz-politsii-estonii.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/letter-from-estonian-police.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/kirje-viron-poliisilta.html"/>
+  </url>
+  <url>
+    <loc>https://advocat.ee/blog/en/letter-from-estonian-police.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kiri-politseist-mida-teha.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/pismo-iz-politsii-estonii.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/letter-from-estonian-police.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/kirje-viron-poliisilta.html"/>
+  </url>
+  <url>
+    <loc>https://advocat.ee/blog/fi/kirje-viron-poliisilta.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kiri-politseist-mida-teha.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/pismo-iz-politsii-estonii.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/letter-from-estonian-police.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/kirje-viron-poliisilta.html"/>
+  </url>
+
+  <!-- W1-2: Letter from Migri Finland -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/kirje-migrista-mita-tehda.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kiri-migrist-mida-teha.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/pismo-iz-migri-finlyandiya.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/letter-from-migri-finland.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/kirje-migrista-mita-tehda.html"/>
+  </url>
+  <url>
+    <loc>https://advocat.ee/blog/kiri-migrist-mida-teha.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kiri-migrist-mida-teha.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/pismo-iz-migri-finlyandiya.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/letter-from-migri-finland.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/kirje-migrista-mita-tehda.html"/>
+  </url>
+  <url>
+    <loc>https://advocat.ee/blog/ru/pismo-iz-migri-finlyandiya.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kiri-migrist-mida-teha.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/pismo-iz-migri-finlyandiya.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/letter-from-migri-finland.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/kirje-migrista-mita-tehda.html"/>
+  </url>
+  <url>
+    <loc>https://advocat.ee/blog/en/letter-from-migri-finland.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kiri-migrist-mida-teha.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/pismo-iz-migri-finlyandiya.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/letter-from-migri-finland.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/kirje-migrista-mita-tehda.html"/>
+  </url>
+
+  <!-- W1-3: Official letter you don't understand -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/ne-ponimayu-ofitsialnoe-pismo.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/ametlik-kiri-kuidas-aru-saada.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/ne-ponimayu-ofitsialnoe-pismo.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/official-letter-estonia-finland-explained.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/virallinen-kirje-jota-et-ymmarra.html"/>
+  </url>
+  <url>
+    <loc>https://advocat.ee/blog/ametlik-kiri-kuidas-aru-saada.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/ametlik-kiri-kuidas-aru-saada.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/ne-ponimayu-ofitsialnoe-pismo.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/official-letter-estonia-finland-explained.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/virallinen-kirje-jota-et-ymmarra.html"/>
+  </url>
+  <url>
+    <loc>https://advocat.ee/blog/en/official-letter-estonia-finland-explained.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/ametlik-kiri-kuidas-aru-saada.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/ne-ponimayu-ofitsialnoe-pismo.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/official-letter-estonia-finland-explained.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/virallinen-kirje-jota-et-ymmarra.html"/>
+  </url>
+  <url>
+    <loc>https://advocat.ee/blog/fi/virallinen-kirje-jota-et-ymmarra.html</loc>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/ametlik-kiri-kuidas-aru-saada.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/ne-ponimayu-ofitsialnoe-pismo.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/official-letter-estonia-finland-explained.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/virallinen-kirje-jota-et-ymmarra.html"/>
+  </url>
+
 </urlset>
