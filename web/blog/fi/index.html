@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advocat-blogi — Oikeudellisia artikkeleita suomeksi</title>
+    <meta name="description" content="Selkeitä artikkeleita Suomen ja Viron laista suomeksi: kirje Migristä, kirje poliisilta, irtisanominen, vuokrasopimus, oikeusapu ja oleskelulupa-asiat.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://advocat.ee/blog/fi/">
+    <link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/">
+    <link rel="alternate" hreflang="et" href="https://advocat.ee/blog/">
+    <link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/">
+    <link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/">
+    <link rel="alternate" hreflang="x-default" href="https://advocat.ee/blog/">
+    <meta property="og:title" content="Advocat-blogi — Oikeudellisia artikkeleita suomeksi">
+    <meta property="og:description" content="Selkeitä artikkeleita Suomen ja Viron laista suomeksi. Kirje Migristä, irtisanominen, vuokrasopimus, oikeusapu.">
+    <meta property="og:url" content="https://advocat.ee/blog/fi/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Advocat">
+    <meta property="og:locale" content="fi_FI">
+    <meta property="og:image" content="https://advocat.ee/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://advocat.ee/og-image.png">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.6; }
+        a { color: #0A8F6C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo img { height: 80px; width: auto; }
+        .logo-text { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; line-height: 1; margin-left: -4px; transform: translateY(2px); }
+        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:hover { color: #fff; text-decoration: none; }
+        .hero { background: linear-gradient(135deg, #1A2B4A 0%, #0A8F6C 100%); padding: 64px 20px; text-align: center; color: #fff; }
+        .hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 12px; }
+        .hero p { font-size: 18px; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        .cards { max-width: 1100px; margin: -40px auto 60px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; position: relative; z-index: 10; }
+        .card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+        .card-color { height: 6px; }
+        .card-body { padding: 28px; }
+        .card-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; }
+        .card h2 { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: #1A2B4A; line-height: 1.3; }
+        .card p { font-size: 14px; color: #5A6A7A; margin-bottom: 16px; line-height: 1.6; }
+        .card-meta { font-size: 12px; color: #8A9AAA; display: flex; gap: 16px; align-items: center; }
+        .card-link { display: inline-flex; align-items: center; font-size: 14px; font-weight: 600; color: #0A8F6C; gap: 6px; }
+        .card-link:hover { text-decoration: none; gap: 10px; }
+        .cta-section { background: #1A2B4A; padding: 60px 20px; text-align: center; color: #fff; }
+        .cta-section h2 { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+        .cta-section p { font-size: 16px; opacity: 0.85; margin-bottom: 28px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .cta-btn { display: inline-block; background: #0A8F6C; color: #fff; padding: 14px 36px; border-radius: 50px; font-size: 16px; font-weight: 700; transition: background 0.2s; }
+        .cta-btn:hover { background: #078a63; text-decoration: none; }
+        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.7); }
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 26px; }
+            .hero { padding: 48px 20px; }
+            .cards { grid-template-columns: 1fr; margin-top: -24px; }
+        }
+        @media (max-width: 600px) {
+            .logo img { height: 56px; }
+            .logo-text { font-size: 22px; }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Advocat-blogi (FI)",
+        "description": "Oikeudellisia artikkeleita suomeksi Suomen ja Viron laista",
+        "url": "https://advocat.ee/blog/fi/",
+        "inLanguage": "fi",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Advocat",
+            "url": "https://advocat.ee"
+        },
+        "blogPost": [
+            {
+                "@type": "BlogPosting",
+                "headline": "Kirje Migristä — mitä tehdä ja mitkä ovat määräajat",
+                "url": "https://advocat.ee/blog/fi/kirje-migrista-mita-tehda.html"
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "Sait kirjeen Viron poliisilta (PPA) — mitä se tarkoittaa ja mitä tehdä",
+                "url": "https://advocat.ee/blog/fi/kirje-viron-poliisilta.html"
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "Virallinen kirje, jota et ymmärrä — näin selvität, mitä sinulta halutaan",
+                "url": "https://advocat.ee/blog/fi/virallinen-kirje-jota-et-ymmarra.html"
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "Ilmainen oikeusapu Suomessa 2026 — kaikki vaihtoehdot",
+                "url": "https://advocat.ee/blog/fi/ilmainen-oikeusapu-suomi-2026.html"
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "Irtisanominen Suomessa — työntekijän oikeudet 2026",
+                "url": "https://advocat.ee/blog/fi/irtisanominen-suomessa-oikeudet.html"
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "Vuokrasopimuksen päättäminen Suomessa 2026",
+                "url": "https://advocat.ee/blog/fi/vuokrasopimus-paattaminen-suomi.html"
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "Elatusapu Suomessa 2026 — kuinka elatusapu lasketaan",
+                "url": "https://advocat.ee/blog/fi/elatusapu-suomi-laskeminen.html"
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "Oleskelulupa hylätty — kuinka valittaa Migrin päätöksestä",
+                "url": "https://advocat.ee/blog/fi/oleskelulupa-hylkaaminen-valitus.html"
+            }
+        ]
+    }
+    </script>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture. -->
+<script src="/_cookie_consent.js" defer></script>
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="https://advocat.ee" class="logo"><img src="/blog/logo_shield.png" alt="Advocat"><span class="logo-text">Advocat</span></a>
+            <nav class="header-nav">
+                <a href="https://advocat.ee">Etusivu</a>
+                <a href="/blog/fi/">Blogi</a>
+                <a href="/blog/">Eesti</a>
+                <a href="/app.html">Kokeile maksutta</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Oikeudellinen blogi</h1>
+        <p>Selkeitä artikkeleita Suomen ja Viron laista suomeksi. Määräajat, oikeudet ja käytännön askeleet ilman lakikieltä.</p>
+    </section>
+
+    <section class="cards">
+        <article class="card">
+            <div class="card-color" style="background: linear-gradient(90deg, #0A8F6C, #067857);"></div>
+            <div class="card-body">
+                <span class="card-tag" style="background:#F0FDFA; color:#0A8F6C;">Maahanmuutto</span>
+                <h2>Kirje Migristä — mitä tehdä ja mitkä ovat määräajat</h2>
+                <p>Täydennyspyyntö, kuulemiskirje vai päätös? Mitä Migrin kirje tarkoittaa, mistä päivästä määräaika lasketaan ja miten vastaat niin, ettei hakemus kaadu.</p>
+                <div class="card-meta">
+                    <span>Advocat AI</span>
+                    <span>10 min</span>
+                </div>
+                <br>
+                <a href="/blog/fi/kirje-migrista-mita-tehda.html" class="card-link">Lue artikkeli &rarr;</a>
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-color" style="background: linear-gradient(90deg, #3182CE, #2B6CB0);"></div>
+            <div class="card-body">
+                <span class="card-tag" style="background:#EBF8FF; color:#3182CE;">Poliisi ja menettely</span>
+                <h2>Sait kirjeen Viron poliisilta (PPA) — mitä tehdä</h2>
+                <p>Kutsu, sakko vai oleskelulupa-asia? Mistä menettelystä on kyse, mistä määräaika löytyy ja miten kirjeeseen vastataan. Suomessa asuville ja Virossa työskenteleville.</p>
+                <div class="card-meta">
+                    <span>Advocat AI</span>
+                    <span>10 min</span>
+                </div>
+                <br>
+                <a href="/blog/fi/kirje-viron-poliisilta.html" class="card-link">Lue artikkeli &rarr;</a>
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-color" style="background: linear-gradient(90deg, #DD6B20, #C05621);"></div>
+            <div class="card-body">
+                <span class="card-tag" style="background:#FFFAF0; color:#DD6B20;">Viralliset kirjeet</span>
+                <h2>Virallinen kirje, jota et ymmärrä</h2>
+                <p>Kymmenen minuutin menetelmä: kuka kirjoittaa, mitä vaaditaan, mikä on määräaika ja voiko päätöksestä valittaa. Toimii sekä viron- että suomenkielisiin kirjeisiin.</p>
+                <div class="card-meta">
+                    <span>Advocat AI</span>
+                    <span>9 min</span>
+                </div>
+                <br>
+                <a href="/blog/fi/virallinen-kirje-jota-et-ymmarra.html" class="card-link">Lue artikkeli &rarr;</a>
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-color" style="background: linear-gradient(90deg, #3182CE, #2B6CB0);"></div>
+            <div class="card-body">
+                <span class="card-tag" style="background:#EBF8FF; color:#3182CE;">Oikeusapu · 2026</span>
+                <h2>Ilmainen oikeusapu Suomessa 2026 — kaikki vaihtoehdot</h2>
+                <p>Oikeusapulaki, tulorajat 2026, oikeusturvavakuutus, julkinen oikeusavustaja ja maksuttomat puhelinpalvelut yhdessä paikassa.</p>
+                <div class="card-meta">
+                    <span>Advocat AI</span>
+                    <span>12 min</span>
+                </div>
+                <br>
+                <a href="/blog/fi/ilmainen-oikeusapu-suomi-2026.html" class="card-link">Lue artikkeli &rarr;</a>
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-color" style="background: linear-gradient(90deg, #805AD5, #6B46C1);"></div>
+            <div class="card-body">
+                <span class="card-tag" style="background:#FAF5FF; color:#805AD5;">Työoikeus</span>
+                <h2>Irtisanominen Suomessa — työntekijän oikeudet 2026</h2>
+                <p>Irtisanominen henkilökohtaisilla syillä, koeaikapurku, kanneaika ja korvaus 3&ndash;24 kuukauden palkka. Työsopimuslain mukainen ohje.</p>
+                <div class="card-meta">
+                    <span>Advocat AI</span>
+                    <span>11 min</span>
+                </div>
+                <br>
+                <a href="/blog/fi/irtisanominen-suomessa-oikeudet.html" class="card-link">Lue artikkeli &rarr;</a>
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-color" style="background: linear-gradient(90deg, #0A8F6C, #067857);"></div>
+            <div class="card-body">
+                <span class="card-tag" style="background:#F0FDFA; color:#0A8F6C;">Asuminen</span>
+                <h2>Vuokrasopimuksen päättäminen Suomessa 2026</h2>
+                <p>Irtisanomisajat, häätöprosessi ja AHVL:n säännökset. Vuokralaisen ja vuokranantajan oikeudet selitettynä.</p>
+                <div class="card-meta">
+                    <span>Advocat AI</span>
+                    <span>10 min</span>
+                </div>
+                <br>
+                <a href="/blog/fi/vuokrasopimus-paattaminen-suomi.html" class="card-link">Lue artikkeli &rarr;</a>
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-color" style="background: linear-gradient(90deg, #D53F8C, #B83280);"></div>
+            <div class="card-body">
+                <span class="card-tag" style="background:#FFF5F7; color:#D53F8C;">Perheoikeus</span>
+                <h2>Elatusapu Suomessa 2026 — kuinka elatusapu lasketaan</h2>
+                <p>Oikeusministeriön laskentaohje, Kelan elatustuki, vahvistaminen ja ulosotto. Vanhempien oikeudet ja velvollisuudet.</p>
+                <div class="card-meta">
+                    <span>Advocat AI</span>
+                    <span>10 min</span>
+                </div>
+                <br>
+                <a href="/blog/fi/elatusapu-suomi-laskeminen.html" class="card-link">Lue artikkeli &rarr;</a>
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-color" style="background: linear-gradient(90deg, #DD6B20, #C05621);"></div>
+            <div class="card-body">
+                <span class="card-tag" style="background:#FFFAF0; color:#DD6B20;">Maahanmuutto</span>
+                <h2>Oleskelulupa hylätty — kuinka valittaa Migrin päätöksestä</h2>
+                <p>30 päivän valitusaika, hallinto-oikeus, KHO:n valituslupa, oikeus avustajaan ja käännytyspäätöksen täytäntöönpano.</p>
+                <div class="card-meta">
+                    <span>Advocat AI</span>
+                    <span>12 min</span>
+                </div>
+                <br>
+                <a href="/blog/fi/oleskelulupa-hylkaaminen-valitus.html" class="card-link">Lue artikkeli &rarr;</a>
+            </div>
+        </article>
+    </section>
+
+    <section class="cta-section">
+        <h2>Sait kirjeen, jota et ymmärrä?</h2>
+        <p>Lataa kirje kuvana tai PDF-muodossa — Advocat kertoo omalla kielelläsi, mistä on kyse, mitä sinulta halutaan ja mihin päivään mennessä. Vaikeissa asioissa juristien konsilio käsittelee kysymyksesi näytölläsi.</p>
+        <a href="https://app.advocat.ee" class="cta-btn">Kokeile Advocatia maksutta &rarr;</a>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 Advocat. Kaikki oikeudet pidätetään. | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
+        <p style="margin-top:8px;"><strong>Oikeudellinen huomautus:</strong> Blogin artikkelit ovat yleistä tietoa eivätkä korvaa yksilöllistä oikeudellista neuvontaa.</p>
+    </footer>
+<script src="/blog/_footer.js" defer></script>
+</body>
+</html>
