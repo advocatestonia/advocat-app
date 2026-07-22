@@ -19,17 +19,15 @@ name: Marketing copy lint
 on:
   pull_request:
     paths:
-      - 'web/**/*.html'
-      - 'lib/l10n/**/*.arb'
-      - '../../business/competitive/**'
-      - '../../business/PRICING_DECISION_*.md'
-      - 'scripts/lint_marketing_copy.sh'
+      - "web/**/*.html"
+      - "lib/l10n/**/*.arb"
+      - "scripts/lint_marketing_copy.sh"
   push:
     branches: [main]
     paths:
-      - 'web/**/*.html'
-      - 'lib/l10n/**/*.arb'
-      - 'scripts/lint_marketing_copy.sh'
+      - "web/**/*.html"
+      - "lib/l10n/**/*.arb"
+      - "scripts/lint_marketing_copy.sh"
   workflow_dispatch: {}
 
 # -----------------------------------------------------------------------------
@@ -49,20 +47,19 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout (outer workspace via submodule init)
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 1
 
       - name: Make linter executable
-        run: chmod +x app/advocat_project/scripts/lint_marketing_copy.sh
+        run: chmod +x scripts/lint_marketing_copy.sh
 
       - name: Run marketing copy linter
         id: lint
         continue-on-error: true # WARN MODE — flip to false after Wave 1 cleanup
         run: |
-          bash app/advocat_project/scripts/lint_marketing_copy.sh \
+          bash scripts/lint_marketing_copy.sh \
             --report marketing_violations.txt
 
       - name: Upload violations report
