@@ -1,0 +1,64 @@
+# =============================================================================
+# uptime-probe.yml — external prod liveness probe (Phase 0, master prompt).
+#
+# Every 30 min: POST claude-proxy WITHOUT credentials.
+#   ALIVE = 400/401 (function up, rejects unauthenticated call) or 2xx.
+#   DEAD  = 402 (Supabase quota kill), 404 (function missing), 5xx, timeout.
+# On DEAD: opens/updates a "🔴 PROD DOWN" issue and fails the job, so the
+# outage is visible within 30 minutes — not 9 days.
+# =============================================================================
+name: uptime-probe
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe claude-proxy
+        id: probe
+        run: |
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            "https://okgnkucgwsytsondrjye.supabase.co/functions/v1/claude-proxy" \
+            -H "Content-Type: application/json" -d '{}' --max-time 20 || echo "000")
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
+          echo "claude-proxy -> HTTP $CODE"
+          case "$CODE" in
+            2*|400|401) echo "status=alive" >> "$GITHUB_OUTPUT" ;;
+            *)          echo "status=dead"  >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - name: Alert on dead prod
+        if: steps.probe.outputs.status == 'dead'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CODE: ${{ steps.probe.outputs.code }}
+        run: |
+          TITLE="🔴 PROD DOWN: claude-proxy HTTP $CODE"
+          EXISTING=$(gh issue list -R "$GITHUB_REPOSITORY" --label prod-down --state open --json number --jq '.[0].number' || echo "")
+          BODY="Uptime probe: claude-proxy returned HTTP $CODE at $(date -u +%FT%TZ). 402 = Supabase quota/billing; 5xx/000 = platform failure; 404 = function undeployed. Check supabase.com/dashboard → Billing first."
+          if [ -n "$EXISTING" ] && [ "$EXISTING" != "null" ]; then
+            gh issue comment "$EXISTING" -R "$GITHUB_REPOSITORY" --body "$BODY"
+          else
+            gh label create prod-down -R "$GITHUB_REPOSITORY" --color B60205 --description "Production outage" 2>/dev/null || true
+            gh issue create -R "$GITHUB_REPOSITORY" --title "$TITLE" --label prod-down --body "$BODY"
+          fi
+          exit 1
+
+      - name: Close alert when alive again
+        if: steps.probe.outputs.status == 'alive'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          EXISTING=$(gh issue list -R "$GITHUB_REPOSITORY" --label prod-down --state open --json number --jq '.[0].number' || echo "")
+          if [ -n "$EXISTING" ] && [ "$EXISTING" != "null" ]; then
+            gh issue close "$EXISTING" -R "$GITHUB_REPOSITORY" --comment "✅ Probe green again ($(date -u +%FT%TZ))."
+          fi
