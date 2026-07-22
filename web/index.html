@@ -492,71 +492,6 @@ img, svg { display: block; max-width: 100%; }
   .founder-quote { font-size: 15.5px; }
 }
 
-/* ── TESTIMONIALS (cream cards) ── */
-.testimonials-trust {
-  background: #F0EEEB;
-  padding: 72px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-.testimonials-trust .section-label {
-  font-size: 11.5px; font-weight: 700;
-  letter-spacing: .08em; text-transform: uppercase;
-  color: var(--teal2);
-  margin-bottom: 12px;
-  text-align: center;
-}
-.testimonials-trust h2 {
-  font-size: clamp(22px, 3vw, 32px);
-  font-weight: 800;
-  color: var(--navy);
-  letter-spacing: -0.02em;
-  text-align: center;
-  margin: 0 0 36px;
-}
-.testimonial-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.testimonial {
-  background: #FFFFFF;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 24px 22px;
-  margin: 0;
-  box-shadow: 0 2px 12px rgba(15,27,53,.04);
-  display: flex; flex-direction: column;
-  gap: 14px;
-}
-.testimonial blockquote {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--text);
-  font-style: italic;
-}
-.testimonial figcaption {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--muted);
-  margin-top: auto;
-}
-.trust-note {
-  text-align: center;
-  font-size: 12.5px;
-  color: var(--muted);
-  margin: 32px auto 0;
-  max-width: 640px;
-  line-height: 1.55;
-}
-@media (max-width: 900px) {
-  .testimonial-grid { grid-template-columns: 1fr; max-width: 520px; }
-  .testimonials-trust { padding: 56px 0; }
-}
-
 /* ── CHAT CARD ── */
 .chat-card { background: #fff; border-radius: 16px; box-shadow: 0 24px 64px -16px rgba(15,27,53,.16), 0 4px 16px -4px rgba(15,27,53,.08); overflow: hidden; border: 1px solid var(--line); max-height: 440px; display: flex; flex-direction: column; }
 .chat-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--line); background: #fff; flex-shrink: 0; }
@@ -1415,7 +1350,7 @@ img, svg { display: block; max-width: 100%; }
 .pricing-note { text-align: center; margin-top: 28px; font-size: 13px; color: var(--muted); }
 .pricing-note strong { color: var(--teal); }
 
-/* ── PRICING v2 — anchor, toggle, trust, testimonials ─────────────────────── */
+/* ── PRICING v2 — anchor, toggle, trust ─────────────────────── */
 
 /* Lawyer-cost anchor block above the headline */
 .pricing-anchor {
@@ -1541,47 +1476,7 @@ img, svg { display: block; max-width: 100%; }
   font-size: 11px; font-weight: 900; flex-shrink: 0;
 }
 
-/* Testimonials block */
-.pricing-testimonials {
-  margin-top: 56px; padding-top: 40px;
-  border-top: 1px solid var(--line);
-}
-.pricing-testimonials-head { text-align: center; margin-bottom: 28px; }
-.pricing-testimonials-eyebrow {
-  font-size: 11px; font-weight: 800; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--teal); margin-bottom: 6px;
-}
-.pricing-testimonials-disclaimer {
-  font-size: 12px; color: var(--faint); font-style: italic;
-}
-.pricing-testimonials-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
-}
-.pricing-testimonial {
-  background: linear-gradient(180deg, #FAFCFB 0%, #F1F8F5 100%);
-  border: 1px solid var(--line); border-radius: 14px;
-  padding: 22px 22px 18px;
-  display: flex; flex-direction: column;
-  box-shadow: 0 2px 12px rgba(15,27,53,.04);
-}
-.pricing-testimonial-quote {
-  font-size: 14px; line-height: 1.55; color: var(--text);
-  flex: 1; margin-bottom: 14px;
-  quotes: "\201C" "\201D";
-}
-.pricing-testimonial-author {
-  display: flex; flex-direction: column; gap: 2px;
-  padding-top: 12px; border-top: 1px solid var(--line);
-}
-.pricing-testimonial-name {
-  font-size: 13px; font-weight: 700; color: var(--navy);
-}
-.pricing-testimonial-meta {
-  font-size: 11.5px; color: var(--muted); letter-spacing: .02em;
-}
-
 @media (max-width: 900px) {
-  .pricing-testimonials-grid { grid-template-columns: 1fr; }
   .pricing-anchor-row { flex-direction: column; gap: 12px; }
   .pricing-anchor-vs { transform: rotate(90deg); padding: 0; }
 }
@@ -2011,8 +1906,8 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div class="hero-grid">
       <div>
         <div class="hero-eyebrow" data-i18n="hero.eyebrow">AI LEGAL ASSISTANT · 2026</div>
-        <h1 data-i18n-html="hero.title" data-i18n-key="heroH1Ru">Facing deportation, a fine, or wrongful termination?<br>Advocat fights for you — 24/7.</h1>
-        <p class="hero-sub" data-i18n="hero.sub">Legal AI that understands immigrant pain — because we have been through it ourselves.</p>
+        <h1 data-i18n-html="hero.title" data-i18n-key="heroH1Ru">Got an official letter you don't understand?<br>See what it means and what to do — in 60 seconds, in your language.</h1>
+        <p class="hero-sub" data-i18n="hero.sub">Advocat reads the letter, convenes a live consilium of AI legal experts, drafts your reply, and tracks every deadline — so nothing slips through.</p>
         <div class="hero-cta">
           <a class="btn btn-primary btn-hero" href="/app.html" data-i18n="hero.primary" data-cta="hero-primary-free">Try Advocat free →</a>
           <a class="hero-cta-text" href="#pricing" data-i18n="hero.secondary">See pricing</a>
@@ -2248,30 +2143,6 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ── TESTIMONIALS ── -->
-<!-- TODO(owner): replace 3 testimonials with real user quotes after first 10 paying users -->
-<section class="testimonials-trust" id="trust" aria-labelledby="trust-heading">
-  <div class="container">
-    <div class="section-label" data-i18n="testimonials.label">FROM REAL USERS</div>
-    <h2 id="trust-heading" data-i18n="testimonials.heading">From people who used Advocat</h2>
-    <div class="testimonial-grid">
-      <figure class="testimonial">
-        <blockquote data-i18n="testimonial.q1">“PLACEHOLDER — owner will insert real testimonial when the first paying user shares one.”</blockquote>
-        <figcaption data-i18n="testimonial.a1">— Name, RU-speaker, Tallinn</figcaption>
-      </figure>
-      <figure class="testimonial">
-        <blockquote data-i18n="testimonial.q2">“PLACEHOLDER — owner will insert real testimonial after first 10 paying users.”</blockquote>
-        <figcaption data-i18n="testimonial.a2">— Name, ET-speaker, Tartu</figcaption>
-      </figure>
-      <figure class="testimonial">
-        <blockquote data-i18n="testimonial.q3">“PLACEHOLDER — owner will insert real testimonial from a Finnish user.”</blockquote>
-        <figcaption data-i18n="testimonial.a3">— Name, FI-speaker, Helsinki</figcaption>
-      </figure>
-    </div>
-    <p class="trust-note" data-i18n="testimonials.disclaimer">Independent disclaimer: Advocat is an information service, not a substitute for sworn legal counsel.</p>
   </div>
 </section>
 
@@ -2564,7 +2435,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
      =========================================================================
      Two variants live in the DOM simultaneously:
        .ab-v1  (control)   — original 3-card layout
-       .ab-v2  (treatment) — anchor + toggle + testimonials + guarantee
+       .ab-v2  (treatment) — anchor + toggle + guarantee
      One is hidden via [hidden] attribute by the A/B init script reading the
      `advocat_ab_pricing` cookie (set on first visit, 50/50 split).
      If JS is disabled, v2 shows (better-perceived default).
@@ -2670,7 +2541,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
   </div>
 </section>
 
-<!-- ── PRICING (v2 — TREATMENT: anchor + annual default + testimonials + guarantee) ── -->
+<!-- ── PRICING (v2 — TREATMENT: anchor + annual default + guarantee) ── -->
 <section class="section section-alt ab-pricing ab-v2" id="pricing-v2">
   <div class="container">
     <!-- Lawyer-cost anchor (above headline) -->
@@ -2830,37 +2701,6 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
       <div class="pricing-trust-badge">
         <span class="pricing-trust-icon" aria-hidden="true">✓</span>
         <span data-i18n="pricing.trust.nocard">No card to start</span>
-      </div>
-    </div>
-
-    <!-- Testimonials — clearly labelled as anonymised beta feedback -->
-    <div class="pricing-testimonials" aria-label="Beta user feedback">
-      <div class="pricing-testimonials-head">
-        <div class="pricing-testimonials-eyebrow" data-i18n="pricing.testimonials.eyebrow">EARLY USERS</div>
-        <div class="pricing-testimonials-disclaimer" data-i18n="pricing.testimonials.disclaimer">Beta user feedback, anonymised. Advocat is in early access.</div>
-      </div>
-      <div class="pricing-testimonials-grid">
-        <blockquote class="pricing-testimonial">
-          <p class="pricing-testimonial-quote" data-i18n="pricing.testimonials.q1">"Our supplier contract had a 60-day termination clause I had missed. Advocat flagged it, cited VÕS § 196, and drafted the counter-letter. We would have signed blind."</p>
-          <footer class="pricing-testimonial-author">
-            <span class="pricing-testimonial-name" data-i18n="pricing.testimonials.a1_name">M., SaaS founder</span>
-            <span class="pricing-testimonial-meta" data-i18n="pricing.testimonials.a1_meta">Tallinn · Pro plan</span>
-          </footer>
-        </blockquote>
-        <blockquote class="pricing-testimonial">
-          <p class="pricing-testimonial-quote" data-i18n="pricing.testimonials.q2">"Deadline radar caught a 14-day appeal window the day before it closed. I would have lost the right to appeal entirely."</p>
-          <footer class="pricing-testimonial-author">
-            <span class="pricing-testimonial-name" data-i18n="pricing.testimonials.a2_name">K., solopreneur</span>
-            <span class="pricing-testimonial-meta" data-i18n="pricing.testimonials.a2_meta">Tartu · Premium plan</span>
-          </footer>
-        </blockquote>
-        <blockquote class="pricing-testimonial">
-          <p class="pricing-testimonial-quote" data-i18n="pricing.testimonials.q3">"I asked in Russian, got the answer with Estonian statute references, then a Finnish letter draft. No other tool spans all three languages at this depth."</p>
-          <footer class="pricing-testimonial-author">
-            <span class="pricing-testimonial-name" data-i18n="pricing.testimonials.a3_name">A., Russian-speaker in Finland</span>
-            <span class="pricing-testimonial-meta" data-i18n="pricing.testimonials.a3_meta">Helsinki · Pro plan</span>
-          </footer>
-        </blockquote>
       </div>
     </div>
 
@@ -3260,8 +3100,8 @@ const I18N = {
     'nav.login': 'Sign in', 'nav.cta': 'Try free',
     'meta.title': 'Advocat — AI Legal Assistant · Defend Your Rights',
     'hero.eyebrow': 'AI LEGAL ASSISTANT · 2026',
-    'hero.title': 'Facing deportation, a fine, or wrongful termination?<br>Advocat fights for you — 24/7.',
-    'hero.sub': 'Legal AI that understands immigrant pain — because we have been through it ourselves.',
+    'hero.title': 'Got an official letter you don\'t understand?<br>See what it means and what to do — in 60 seconds, in your language.',
+    'hero.sub': 'Advocat reads the letter, convenes a live consilium of AI legal experts, drafts your reply, and tracks every deadline — so nothing slips through.',
     'hero.disclaimer': "Information service. Not legal advice and not a substitute for a sworn advocate (vandeadvokaat) regulated under the Estonian Bar Association Act.",
     'hero.primary': 'Try Advocat free →', 'hero.secondary': 'See pricing',
     'hero.trust1': '25 free messages — no card', 'hero.trust2': 'Cited sources', 'hero.trust3': 'EU GDPR · servers in Frankfurt',
@@ -3269,15 +3109,6 @@ const I18N = {
     'founder.heading': 'The letter came. Now you have someone.',
     'founder.quote': '“You open an envelope from the authorities and your stomach drops — a language you half-understand, a legal system you don\'t, and a deadline nobody warned you about. It\'s Friday evening. There is no lawyer. Just you against a whole bureaucracy.<br><br>Advocat reads that letter and explains it plainly in your own language. It convenes a consilium of AI lawyers you watch reason through your case, live. It drafts the reply — and sends it. It counts every deadline so none slips past you. We built this because we lived it: our own case went all the way to the Supreme Court, so that you would never have to stand in front of the system alone.”',
     'founder.name': '— Dmitri Sulga, founder<br><small>founder case · Sulga v. Finland · ECHR Application №200</small>',
-    'testimonials.label': 'FROM REAL USERS',
-    'testimonials.heading': 'From people who used Advocat',
-    'testimonials.disclaimer': 'Independent disclaimer: Advocat is an information service, not a substitute for sworn legal counsel.',
-    'testimonial.q1': '“PLACEHOLDER — owner will insert real testimonial when the first paying user shares one.”',
-    'testimonial.a1': '— Name, RU-speaker, Tallinn',
-    'testimonial.q2': '“PLACEHOLDER — owner will insert real testimonial after first 10 paying users.”',
-    'testimonial.a2': '— Name, ET-speaker, Tartu',
-    'testimonial.q3': '“PLACEHOLDER — owner will insert real testimonial from a Finnish user.”',
-    'testimonial.a3': '— Name, FI-speaker, Helsinki',
     'how.label': 'THREE STEPS', 'how.title': 'Legal help that actually <em>works</em>.',
     'how.sub': 'No seven-page sign-up. Speak naturally, attach the docs, get a clear next step.',
     'contracts.heading': 'Drop a contract. Get a reply in 90 seconds.',
@@ -3377,14 +3208,6 @@ const I18N = {
     'pricing.trust.cancel': 'Cancel anytime, one click',
     'pricing.trust.gdpr': 'GDPR · EU servers (Frankfurt)',
     'pricing.trust.nocard': 'No card to start',
-    'pricing.testimonials.eyebrow': 'EARLY USERS',
-    'pricing.testimonials.disclaimer': 'Beta user feedback, anonymised. Advocat is in early access.',
-    'pricing.testimonials.q1': '"Our supplier contract had a 60-day termination clause I had missed. Advocat flagged it, cited VÕS § 196, and drafted the counter-letter. We would have signed blind."',
-    'pricing.testimonials.a1_name': 'M., SaaS founder', 'pricing.testimonials.a1_meta': 'Tallinn · Pro plan',
-    'pricing.testimonials.q2': '"Deadline radar caught a 14-day appeal window the day before it closed. I would have lost the right to appeal entirely."',
-    'pricing.testimonials.a2_name': 'K., solopreneur', 'pricing.testimonials.a2_meta': 'Tartu · Premium plan',
-    'pricing.testimonials.q3': '"I asked in Russian, got the answer with Estonian statute references, then a Finnish letter draft. No other tool spans all three languages at this depth."',
-    'pricing.testimonials.a3_name': 'A., Russian-speaker in Finland', 'pricing.testimonials.a3_meta': 'Helsinki · Pro plan',
     'plan1.eyebrow': 'Starter', 'plan1.name': 'Free', 'plan1.per': '/ forever',
     'plan1.desc': 'Try the system. Get a real answer with cited law before you decide.',
     'plan1.f1': '25 AI messages per month', 'plan1.f2': '1 active case', 'plan1.f3': 'Document scanning (3 docs)', 'plan1.f4': 'Cited sources from EU & EE law', 'plan1.f5': 'No card required',
@@ -3470,8 +3293,8 @@ const I18N = {
     'nav.login': 'Logi sisse', 'nav.cta': 'Proovi tasuta',
     'meta.title': 'Advocat — AI õigusabi · Kaitse oma õigusi',
     'hero.eyebrow': 'AI-ÕIGUSABI · 2026',
-    'hero.title': 'Sind ähvardab väljasaatmine, trahv või vallandamine?<br>Advocat on sinu poolel — 24/7.',
-    'hero.sub': 'Õigus-AI, mis mõistab immigrandi valu — sest me ise oleme selle läbi elanud.',
+    'hero.title': 'Said ametliku kirja, millest aru ei saa?<br>Vaata 60 sekundiga, mida see tähendab ja mida teha — sinu emakeeles.',
+    'hero.sub': 'Advocat loeb kirja läbi, kutsub kokku AI õigusekspertide konsiiliumi, koostab vastuse mustandi ja jälgib kõiki tähtaegu — miski ei jää kahe silma vahele.',
     'hero.disclaimer': 'Infoteenus. Ei ole õigusabi Advokatuuriseaduse tähenduses ega asenda vandeadvokaati.',
     'hero.primary': 'Proovi Advocat tasuta →', 'hero.secondary': 'Vaata hindu',
     'hero.trust1': '25 sõnumit tasuta — kaarti pole vaja', 'hero.trust2': 'Viited Riigi Teatajale', 'hero.trust3': 'EL GDPR · serverid Frankfurdis',
@@ -3479,15 +3302,6 @@ const I18N = {
     'founder.heading': 'Kiri tuli. Nüüd on sul keegi.',
     'founder.quote': '„Avad ametiasutuse ümbriku ja süda vajub saapasäärde — keel, mida mõistad poolenisti, õigussüsteem, mida üldse mitte, ja tähtaeg, millest keegi sind ei hoiatanud. On reede õhtu. Advokaati pole kuskilt võtta. Ainult sina terve bürokraatia vastu.<br><br>Advocat loeb selle kirja läbi ja seletab su enda keeles lihtsalt lahti. Ta kutsub kokku AI-juristide konsiiliumi, kelle arutelu su asja üle näed reaalajas oma silmaga. Ta koostab vastuse — ja saadab selle ära. Ta peab arvet iga tähtaja üle, et ükski neist sul kahe silma vahele ei jääks. Me ehitasime selle, sest elasime sama läbi ise: meie oma asi jõudis välja Riigikohtuni, et sinul ei tuleks kunagi süsteemi ees üksi seista.”',
     'founder.name': '— Dmitri Sulga, asutaja<br><small>asutaja enda kohtuasi · Sulga vs. Soome · EIK avaldus №200</small>',
-    'testimonials.label': 'PÄRIS KASUTAJATELT',
-    'testimonials.heading': 'Inimestelt, kes on Advocati kasutanud',
-    'testimonials.disclaimer': 'Sõltumatu vastutus: Advocat on infoteenus, mitte vandeadvokaadi asendaja.',
-    'testimonial.q1': '„KOHATÄIDE — omanik lisab päris tagasiside, kui esimene maksev kasutaja selle jagab.“',
-    'testimonial.a1': '— Nimi, vene keelt rääkiv, Tallinn',
-    'testimonial.q2': '„KOHATÄIDE — omanik lisab päris tagasiside pärast esimest 10 maksvat kasutajat.“',
-    'testimonial.a2': '— Nimi, eestikeelne, Tartu',
-    'testimonial.q3': '„KOHATÄIDE — omanik lisab päris tagasiside Soome kasutajalt.“',
-    'testimonial.a3': '— Nimi, soomekeelne, Helsingi',
     'how.label': 'KOLM SAMMU', 'how.title': 'Õigusabi, mis <em>päriselt aitab</em>.',
     'how.sub': 'Ei mingit seitsmeleheküljelist registreerimist. Kirjelda olukorda oma sõnadega, lisa dokumendid, saa selge järgmine samm.',
     'contracts.heading': 'Lisa leping. Saa vastus 90 sekundiga.',
@@ -3606,14 +3420,6 @@ const I18N = {
     'pricing.trust.cancel': 'Lõpeta millal tahad, ühe klikiga',
     'pricing.trust.gdpr': 'GDPR · EL-i serverid (Frankfurt)',
     'pricing.trust.nocard': 'Pangakaarti pole vaja',
-    'pricing.testimonials.eyebrow': 'VARAJASED KASUTAJAD',
-    'pricing.testimonials.disclaimer': 'Beta-kasutajate tagasiside, anonüümitud. Advocat on varases juurdepääsus.',
-    'pricing.testimonials.q1': '"Tarnijalepingus oli 60-päevane lõpetamisklausel, mille olin märkamata jätnud. Advocat tõi selle välja, viitas VÕS § 196-le ja koostas vastukirja. Oleksime allkirjastanud pimesi."',
-    'pricing.testimonials.a1_name': 'M., SaaS-asutaja', 'pricing.testimonials.a1_meta': 'Tallinn · Pro pakett',
-    'pricing.testimonials.q2': '"Tähtaegade radar leidis 14-päevase apellatsioonitähtaja päev enne selle lõppu. Oleksin täielikult kaotanud apellatsiooniõiguse."',
-    'pricing.testimonials.a2_name': 'K., ettevõtja', 'pricing.testimonials.a2_meta': 'Tartu · Premium pakett',
-    'pricing.testimonials.q3': '"Küsisin vene keeles, sain vastuse Eesti seaduseviidetega ja seejärel soome kirja mustandi. Ükski teine tööriist ei kata kolme keelt sellisel tasemel."',
-    'pricing.testimonials.a3_name': 'A., venekeelne kasutaja Soomes', 'pricing.testimonials.a3_meta': 'Helsingi · Pro pakett',
     'plan2.per_eff_month': '/ kuus, aastamaksuga', 'plan2.annual_full': '€159.99 aastas — säästad €79.89 (33%)', 'plan2.annual_hint': 'Lülitu aastamaksule ja säästad €79.89 (33%) aastas',
     'plan3.per_eff_month': '/ kuus, aastamaksuga', 'plan3.annual_full': '€249.99 aastas — säästad €109.89 (30%)', 'plan3.annual_hint': 'Lülitu aastamaksule ja säästad €109.89 (30%) aastas',
     'faq.label': 'KKK', 'faq.title': 'Ausad <em>vastused</em> levinud küsimustele.',
@@ -3680,21 +3486,12 @@ const I18N = {
     'nav.login': 'Войти', 'nav.cta': 'Попробовать',
     'meta.title': 'Advocat — AI юрист · Защитите свои права',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
-    'hero.title': 'Депортация, штраф или незаконное увольнение?<br>Advocat на твоей стороне — 24/7.',
-    'hero.sub': 'Юридический AI, который понимает immigrant pain — потому что мы сами через это прошли.',
+    'hero.title': 'Получил официальное письмо и не понимаешь его?<br>Узнай, что оно значит и что делать — за 60 секунд, на твоём языке.',
+    'hero.sub': 'Advocat читает письмо, созывает живой консилиум ИИ-экспертов по праву, готовит черновик ответа и отслеживает все сроки — чтобы ничего не потерялось.',
     'founder.eyebrow': 'ВЫ НЕ ОДИН',
     'founder.heading': 'Письмо пришло. Теперь у вас есть свой человек.',
     'founder.quote': '«Вы вскрываете конверт от властей — и внутри всё обрывается: язык, который понимаете лишь наполовину, чужая правовая система и срок, о котором вас никто не предупредил. Вечер пятницы. Юриста нет. Только вы — один против целой бюрократической машины.<br><br>Advocat читает это письмо и объясняет его простыми словами, на вашем родном языке. Он собирает консилиум ИИ-юристов — и вы вживую видите, как они разбирают ваше дело. Он пишет ответ — и отправляет его. Он считает каждый срок, чтобы ни один не проскользнул мимо. Мы создали это, потому что прошли через это сами: наше собственное дело дошло до Верховного суда — чтобы вам никогда не пришлось стоять перед системой в одиночку.»',
     'founder.name': '— Dmitri Sulga, основатель<br><small>дело основателя · Sulga v. Finland · жалоба в ЕСПЧ №200</small>',
-    'testimonials.label': 'ОТ РЕАЛЬНЫХ ПОЛЬЗОВАТЕЛЕЙ',
-    'testimonials.heading': 'От людей, которые пользовались Advocat',
-    'testimonials.disclaimer': 'Независимое уведомление: Advocat — информационный сервис, а не замена присяжного адвоката.',
-    'testimonial.q1': '«ПЛЕЙСХОЛДЕР — владелец вставит реальный отзыв, когда первый платный пользователь его оставит.»',
-    'testimonial.a1': '— Имя, русскоязычный, Таллинн',
-    'testimonial.q2': '«ПЛЕЙСХОЛДЕР — владелец вставит реальный отзыв после первых 10 платных пользователей.»',
-    'testimonial.a2': '— Имя, эстоноязычный, Тарту',
-    'testimonial.q3': '«ПЛЕЙСХОЛДЕР — владелец вставит реальный отзыв от пользователя из Финляндии.»',
-    'testimonial.a3': '— Имя, финноязычный, Хельсинки',
     'hero.disclaimer': 'Информационный сервис. Не заменяет присяжного адвоката (vandeadvokaat) и не оказывает юридическую помощь в смысле Advokatuuriseadus.',
     'hero.primary': 'Попробовать →', 'hero.secondary': 'Посмотреть пример',
     'hero.trust1': '25 бесплатных сообщений — без карты', 'hero.trust2': 'Со ссылками на закон', 'hero.trust3': 'EU GDPR · серверы во Франкфурте',
@@ -3816,14 +3613,6 @@ const I18N = {
     'pricing.trust.cancel': 'Отмена в один клик',
     'pricing.trust.gdpr': 'GDPR · серверы ЕС (Франкфурт)',
     'pricing.trust.nocard': 'Карта не нужна',
-    'pricing.testimonials.eyebrow': 'ПЕРВЫЕ ПОЛЬЗОВАТЕЛИ',
-    'pricing.testimonials.disclaimer': 'Отзывы бета-пользователей, обезличены. Advocat в раннем доступе.',
-    'pricing.testimonials.q1': '"В договоре с поставщиком был пункт о 60-дневном расторжении, который я не заметил. Advocat показал его, сослался на VÕS § 196 и составил ответное письмо. Подписали бы вслепую."',
-    'pricing.testimonials.a1_name': 'М., основатель SaaS', 'pricing.testimonials.a1_meta': 'Таллинн · тариф Pro',
-    'pricing.testimonials.q2': '"Радар сроков нашёл 14-дневный срок апелляции за день до его истечения. Я бы полностью потерял право на обжалование."',
-    'pricing.testimonials.a2_name': 'К., предприниматель', 'pricing.testimonials.a2_meta': 'Тарту · тариф Premium',
-    'pricing.testimonials.q3': '"Спросил на русском, получил ответ со ссылками на эстонские нормы и проект письма по-фински. Никакой другой инструмент так не покрывает три языка."',
-    'pricing.testimonials.a3_name': 'А., русскоговорящий в Финляндии', 'pricing.testimonials.a3_meta': 'Хельсинки · тариф Pro',
     'plan2.per_eff_month': '/ месяц при годовой оплате', 'plan2.annual_full': '€159.99 в год — экономия €79.89 (33%)', 'plan2.annual_hint': 'Переключитесь на годовой и экономьте €79.89 (33%) в год',
     'plan3.per_eff_month': '/ месяц при годовой оплате', 'plan3.annual_full': '€249.99 в год — экономия €109.89 (30%)', 'plan3.annual_hint': 'Переключитесь на годовой и экономьте €109.89 (30%) в год',
     'faq.label': 'FAQ', 'faq.title': 'Честные <em>ответы</em> на частые вопросы.',
@@ -3894,8 +3683,8 @@ const I18N = {
     'nav.login': 'Увійти', 'nav.cta': 'Спробувати',
     'meta.title': 'Advocat — AI юрист · Захистіть свої права',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
-    'hero.title': '<em>AI-асистент</em> з естонського та європейського права.',
-    'hero.sub': 'Відповідає на юридичні запитання, готує чернетки листів для вашої перевірки та допомагає систематизувати матеріали справи.',
+    'hero.title': 'Отримали офіційний лист, якого не розумієте?<br>Дізнайтеся, що він означає і що робити — за 60 секунд, вашою мовою.',
+    'hero.sub': 'Advocat читає лист, скликає живий консиліум AI-експертів з права, готує чернетку відповіді та відстежує всі терміни — щоб нічого не було втрачено.',
     'hero.disclaimer': 'Інформаційний сервіс. Не замінює присяжного адвоката (vandeadvokaat) і не надає правової допомоги у розумінні Advokatuuriseadus.',
     'hero.primary': 'Спробувати →', 'hero.secondary': 'Подивитися приклад',
     'hero.trust1': '25 безкоштовних повідомлень — без картки', 'hero.trust2': 'З посиланнями на закон', 'hero.trust3': 'EU GDPR · сервери у Франкфурті',
@@ -4012,21 +3801,12 @@ const I18N = {
     'nav.login': 'Kirjaudu', 'nav.cta': 'Kokeile',
     'meta.title': 'Advocat — Tekoälyjuristi · Puolusta oikeuksiasi',
     'hero.eyebrow': 'AI-LAKIASSISTENTTI · 2026',
-    'hero.title': 'Uhkaako sinua karkotus, sakko tai irtisanominen?<br>Advocat on puolellasi — 24/7.',
-    'hero.sub': 'Oikeudellinen tekoäly, joka ymmärtää maahanmuuttajan tuskaa — koska olemme itse käyneet sen läpi.',
+    'hero.title': 'Saitko virallisen kirjeen, jota et ymmärrä?<br>Näe 60 sekunnissa, mitä se tarkoittaa ja mitä tehdä — omalla kielelläsi.',
+    'hero.sub': 'Advocat lukee kirjeen, kutsuu koolle tekoälyn oikeusasiantuntijoiden konsiilion, laatii vastausluonnoksen ja seuraa kaikkia määräaikoja — mikään ei pääse yllättämään.',
     'founder.eyebrow': 'ET OLE YKSIN',
     'founder.heading': 'Kirje tuli. Nyt sinulla on tuki.',
     'founder.quote': '»Avaat viranomaisen kirjeen ja vatsanpohjaa vihloo — kieli, jota ymmärrät puoliksi, oikeusjärjestelmä, jota et lainkaan, ja määräaika, josta kukaan ei varoittanut. On perjantai-ilta. Lakimiestä ei ole. Vain sinä koko byrokratiaa vastaan.<br><br>Advocat lukee sen kirjeen ja selittää sen selkokielellä sinun omalla kielelläsi. Se kokoaa tekoälylakimiesten konsiliumin, jonka näet päättelevän asiaasi reaaliajassa. Se laatii vastauksen — ja lähettää sen. Se laskee jokaisen määräajan, jottei yksikään lipsahda ohitsesi. Rakensimme tämän, koska elimme sen itse: oma asiamme eteni aina korkeimpaan hallinto-oikeuteen asti, jottei sinun tarvitsisi koskaan seistä järjestelmää vastaan yksin.«',
     'founder.name': '— Dmitri Sulga, perustaja<br><small>perustajan oma tapaus · Sulga v. Finland · EIT-valitus №200</small>',
-    'testimonials.label': 'AIDOILTA KÄYTTÄJILTÄ',
-    'testimonials.heading': 'Ihmisiltä, jotka ovat käyttäneet Advocatia',
-    'testimonials.disclaimer': 'Riippumaton vastuuvapauslauseke: Advocat on tietopalvelu, ei korvaa valantehnyttä asianajajaa.',
-    'testimonial.q1': '»PAIKKAMERKKI — omistaja lisää aidon palautteen, kun ensimmäinen maksava käyttäjä jakaa sen.«',
-    'testimonial.a1': '— Nimi, venäjänkielinen, Tallinna',
-    'testimonial.q2': '»PAIKKAMERKKI — omistaja lisää aidon palautteen ensimmäisen 10 maksavan käyttäjän jälkeen.«',
-    'testimonial.a2': '— Nimi, vironkielinen, Tartto',
-    'testimonial.q3': '»PAIKKAMERKKI — omistaja lisää aidon palautteen suomenkieliseltä käyttäjältä.«',
-    'testimonial.a3': '— Nimi, suomenkielinen, Helsinki',
     'hero.disclaimer': 'Tietopalvelu. Ei ole oikeudellista neuvontaa eikä korvaa asianajajaa (vandeadvokaat), jonka toimintaa säätelee Viron asianajajalaki (Advokatuuriseadus).',
     'hero.primary': 'Kokeile ilmaiseksi →', 'hero.secondary': 'Katso esimerkki',
     'hero.trust1': '25 ilmaista viestiä — ei korttia', 'hero.trust2': 'Lähdeviitteet mukana', 'hero.trust3': 'EU GDPR · palvelimet Frankfurtissa',
@@ -4203,8 +3983,8 @@ const I18N = {
     'nav.login': 'Anmelden', 'nav.cta': 'Kostenlos testen',
     'meta.title': 'Advocat — KI-Rechtsassistent · Verteidigen Sie Ihre Rechte',
     'hero.eyebrow': 'KI-RECHTSASSISTENT · 2026',
-    'hero.title': '<em>KI-Assistent</em> für estnisches und europäisches Recht.',
-    'hero.sub': 'Beantwortet rechtliche Fragen, erstellt Schreiben-Entwürfe zu Ihrer Prüfung und hilft beim Ordnen Ihrer Fallunterlagen.',
+    'hero.title': 'Einen amtlichen Brief erhalten, den Sie nicht verstehen?<br>Erfahren Sie in 60 Sekunden, was er bedeutet und was zu tun ist — in Ihrer Sprache.',
+    'hero.sub': 'Advocat liest den Brief, beruft ein Live-Konsilium aus KI-Rechtsexperten ein, entwirft Ihre Antwort und verfolgt jede Frist — damit nichts durchrutscht.',
     'hero.disclaimer': 'Informationsdienst. Keine Rechtsberatung und kein Ersatz für einen vereidigten Rechtsanwalt (vandeadvokaat) im Sinne des estnischen Anwaltsgesetzes (Advokatuuriseadus).',
     'hero.primary': 'Kostenlos testen →', 'hero.secondary': 'Beispiel ansehen',
     'hero.trust1': '25 Nachrichten gratis — keine Karte nötig', 'hero.trust2': 'Mit Quellenangaben', 'hero.trust3': 'EU-DSGVO · Server in Frankfurt',
@@ -4325,8 +4105,8 @@ const I18N = {
     'nav.login': 'Se connecter', 'nav.cta': 'Essai gratuit',
     'meta.title': 'Advocat — Assistant juridique IA · Défendez vos droits',
     'hero.eyebrow': 'ASSISTANT JURIDIQUE IA · 2026',
-    'hero.title': '<em>Assistant IA</em> en droit estonien et européen.',
-    'hero.sub': 'Répond à vos questions juridiques, rédige des projets de courriers à votre relecture et aide à organiser votre dossier.',
+    'hero.title': 'Vous avez reçu une lettre officielle que vous ne comprenez pas ?<br>Découvrez ce qu\'elle signifie et quoi faire — en 60 secondes, dans votre langue.',
+    'hero.sub': 'Advocat lit la lettre, réunit un consilium en direct d\'experts juridiques IA, rédige votre réponse et suit chaque échéance — pour que rien ne vous échappe.',
     'hero.disclaimer': 'Service d\'information. Ne constitue pas un conseil juridique et ne remplace pas un avocat assermenté (vandeadvokaat) au sens de la loi estonienne sur le barreau (Advokatuuriseadus).',
     'hero.primary': 'Essai gratuit →', 'hero.secondary': 'Voir un exemple',
     'hero.trust1': '25 messages gratuits — sans carte', 'hero.trust2': 'Sources citées', 'hero.trust3': 'RGPD · serveurs à Francfort',
@@ -4447,8 +4227,8 @@ const I18N = {
     'nav.login': 'Iniciar sesión', 'nav.cta': 'Probar gratis',
     'meta.title': 'Advocat — Asistente jurídico IA · Defiende tus derechos',
     'hero.eyebrow': 'ASISTENTE JURÍDICO IA · 2026',
-    'hero.title': '<em>Asistente de IA</em> en Derecho estonio y europeo.',
-    'hero.sub': 'Responde a sus preguntas legales, prepara borradores de escritos para su revisión y le ayuda a organizar el material de su caso.',
+    'hero.title': '¿Recibió una carta oficial que no entiende?<br>Descubra qué significa y qué hacer — en 60 segundos, en su idioma.',
+    'hero.sub': 'Advocat lee la carta, convoca un consilium en vivo de expertos legales de IA, redacta su respuesta y hace seguimiento de cada plazo — para que nada se le escape.',
     'hero.disclaimer': 'Servicio de información. No constituye asesoramiento jurídico ni sustituye a un abogado colegiado (vandeadvokaat) en el sentido de la Ley de la Abogacía de Estonia (Advokatuuriseadus).',
     'hero.primary': 'Probar gratis →', 'hero.secondary': 'Ver un ejemplo',
     'hero.trust1': '25 mensajes gratis — sin tarjeta', 'hero.trust2': 'Con fuentes citadas', 'hero.trust3': 'RGPD · servidores en Fráncfort',
@@ -4569,8 +4349,8 @@ const I18N = {
     'nav.login': 'Accedi', 'nav.cta': 'Prova gratis',
     'meta.title': 'Advocat — Assistente legale IA · Difendi i tuoi diritti',
     'hero.eyebrow': 'ASSISTENTE LEGALE IA · 2026',
-    'hero.title': '<em>Assistente IA</em> in diritto estone ed europeo.',
-    'hero.sub': 'Risponde a quesiti giuridici, redige bozze di lettere per la Sua revisione e aiuta a organizzare il materiale del Suo caso.',
+    'hero.title': 'Hai ricevuto una lettera ufficiale che non capisci?<br>Scopri cosa significa e cosa fare — in 60 secondi, nella tua lingua.',
+    'hero.sub': 'Advocat legge la lettera, convoca un consilium dal vivo di esperti legali IA, redige la tua risposta e monitora ogni scadenza — così non ti sfugge nulla.',
     'hero.disclaimer': 'Servizio informativo. Non costituisce consulenza legale e non sostituisce un avvocato giurato iscritto all\'albo (vandeadvokaat) ai sensi della Legge sull\'avvocatura estone (Advokatuuriseadus).',
     'hero.primary': 'Prova gratis →', 'hero.secondary': 'Vedi un esempio',
     'hero.trust1': '25 messaggi gratuiti — senza carta', 'hero.trust2': 'Fonti citate', 'hero.trust3': 'GDPR · server a Francoforte',
@@ -4691,8 +4471,8 @@ const I18N = {
     'nav.login': 'Zaloguj się', 'nav.cta': 'Wypróbuj za darmo',
     'meta.title': 'Advocat — Asystent prawny AI · Broń swoich praw',
     'hero.eyebrow': 'ASYSTENT PRAWNY AI · 2026',
-    'hero.title': '<em>Asystent AI</em> w prawie estońskim i europejskim.',
-    'hero.sub': 'Odpowiada na pytania prawne, przygotowuje projekty pism do Twojej weryfikacji i pomaga porządkować materiały sprawy.',
+    'hero.title': 'Dostałeś oficjalne pismo, którego nie rozumiesz?<br>Sprawdź, co ono oznacza i co robić — w 60 sekund, w Twoim języku.',
+    'hero.sub': 'Advocat czyta pismo, zwołuje żywe konsylium ekspertów prawnych AI, przygotowuje projekt odpowiedzi i pilnuje każdego terminu — aby nic nie umknęło.',
     'hero.disclaimer': 'Usługa informacyjna. Nie stanowi pomocy prawnej i nie zastępuje adwokata przysięgłego (vandeadvokaat) w rozumieniu estońskiej ustawy o adwokaturze (Advokatuuriseadus).',
     'hero.primary': 'Wypróbuj za darmo →', 'hero.secondary': 'Zobacz przykład',
     'hero.trust1': '25 wiadomości za darmo — bez karty', 'hero.trust2': 'Z cytatami z ustaw', 'hero.trust3': 'RODO · serwery we Frankfurcie',
@@ -4813,8 +4593,8 @@ const I18N = {
     'nav.login': 'Logga in', 'nav.cta': 'Prova gratis',
     'meta.title': 'Advocat — AI-juristassistent · Försvara dina rättigheter',
     'hero.eyebrow': 'AI-JURISTASSISTENT · 2026',
-    'hero.title': '<em>AI-assistent</em> i estnisk och europeisk rätt.',
-    'hero.sub': 'Besvarar juridiska frågor, skriver utkast till brev för din granskning och hjälper dig organisera ärendematerialet.',
+    'hero.title': 'Fick du ett officiellt brev du inte förstår?<br>Se vad det betyder och vad du ska göra — på 60 sekunder, på ditt språk.',
+    'hero.sub': 'Advocat läser brevet, sammankallar ett levande konsilium av AI-rättsexperter, utformar ditt svar och bevakar varje tidsfrist — så att inget faller mellan stolarna.',
     'hero.disclaimer': 'Informationstjänst. Utgör inte juridisk rådgivning och ersätter inte en edsvuren advokat (vandeadvokaat) i den mening som avses i den estniska advokatlagen (Advokatuuriseadus).',
     'hero.primary': 'Prova gratis →', 'hero.secondary': 'Se ett exempel',
     'hero.trust1': '25 gratismeddelanden — inget kort', 'hero.trust2': 'Källor citeras', 'hero.trust3': 'GDPR · servrar i Frankfurt',
@@ -4935,8 +4715,8 @@ const I18N = {
     'nav.login': 'Pieslēgties', 'nav.cta': 'Izmēģināt',
     'meta.title': 'Advocat — MI juridiskais asistents · Aizstāvi savas tiesības',
     'hero.eyebrow': 'MI JURIDISKAIS ASISTENTS · 2026',
-    'hero.title': '<em>MI asistents</em> Igaunijas un Eiropas tiesībās.',
-    'hero.sub': 'Atbild uz tiesību jautājumiem, sagatavo vēstuļu uzmetumus jūsu pārbaudei un palīdz sakārtot lietas materiālus.',
+    'hero.title': 'Saņēmāt oficiālu vēstuli, ko nesaprotat?<br>Uzziniet, ko tā nozīmē un ko darīt — 60 sekundēs, jūsu valodā.',
+    'hero.sub': 'Advocat izlasa vēstuli, sasauc AI tiesību ekspertu tiešraides konsilium, sagatavo jūsu atbildes melnrakstu un seko līdzi katram termiņam — lai nekas nepaslīdētu garām.',
     'hero.disclaimer': 'Informācijas pakalpojums. Tas nav juridiskā palīdzība un neaizstāj zvērinātu advokātu (vandeadvokaat) Igaunijas Advokatūras likuma (Advokatuuriseadus) izpratnē.',
     'hero.primary': 'Izmēģināt bez maksas →', 'hero.secondary': 'Apskatīt piemēru',
     'hero.trust1': '25 ziņas bez maksas — bez kartes', 'hero.trust2': 'Ar atsaucēm uz likumu', 'hero.trust3': 'VDAR · serveri Frankfurtē',
@@ -5057,8 +4837,8 @@ const I18N = {
     'nav.login': 'Prisijungti', 'nav.cta': 'Išbandyti nemokamai',
     'meta.title': 'Advocat — DI teisės asistentas · Apgink savo teises',
     'hero.eyebrow': 'DI TEISĖS ASISTENTAS · 2026',
-    'hero.title': '<em>DI asistentas</em> Estijos ir Europos teisėje.',
-    'hero.sub': 'Atsako į teisinius klausimus, rengia raštų projektus jūsų peržiūrai ir padeda sutvarkyti bylos medžiagą.',
+    'hero.title': 'Gavote oficialų laišką, kurio nesuprantate?<br>Sužinokite, ką jis reiškia ir ką daryti — per 60 sekundžių, jūsų kalba.',
+    'hero.sub': 'Advocat perskaito laišką, sušaukia gyvą AI teisės ekspertų konsiliumą, parengia jūsų atsakymo juodraštį ir seka visus terminus — kad niekas nepraslystų.',
     'hero.disclaimer': 'Informacinė paslauga. Tai nėra teisinė pagalba ir nepakeičia prisiekusiojo advokato (vandeadvokaat), kaip tai apibrėžta Estijos advokatūros įstatyme (Advokatuuriseadus).',
     'hero.primary': 'Išbandyti nemokamai →', 'hero.secondary': 'Pamatyti pavyzdį',
     'hero.trust1': '25 nemokamos žinutės — be kortelės', 'hero.trust2': 'Su nuorodomis į įstatymą', 'hero.trust3': 'BDAR · serveriai Frankfurte',
@@ -5179,8 +4959,8 @@ const I18N = {
     'nav.login': 'Autentificare', 'nav.cta': 'Încearcă gratuit',
     'meta.title': 'Advocat — Asistent juridic AI · Apără-ți drepturile',
     'hero.eyebrow': 'ASISTENT JURIDIC AI · 2026',
-    'hero.title': '<em>Asistent AI</em> în dreptul estonian și european.',
-    'hero.sub': 'Răspunde la întrebări de drept, redactează proiecte de scrisori pentru verificarea dvs. și vă ajută să organizați materialele dosarului.',
+    'hero.title': 'Ați primit o scrisoare oficială pe care nu o înțelegeți?<br>Aflați ce înseamnă și ce trebuie să faceți — în 60 de secunde, în limba dvs.',
+    'hero.sub': 'Advocat citește scrisoarea, convoacă un consiliu live de experți juridici AI, redactează răspunsul dvs. și urmărește fiecare termen-limită — ca nimic să nu vă scape.',
     'hero.disclaimer': 'Serviciu de informare. Nu constituie asistență juridică și nu înlocuiește un avocat jurat (vandeadvokaat) în sensul Legii estoniene privind Baroul (Advokatuuriseadus).',
     'hero.primary': 'Încearcă gratuit →', 'hero.secondary': 'Vezi un exemplu',
     'hero.trust1': '25 mesaje gratuite — fără card', 'hero.trust2': 'Cu surse citate', 'hero.trust3': 'GDPR · servere la Frankfurt',
@@ -5301,8 +5081,8 @@ const I18N = {
     'nav.login': 'Giriş yap', 'nav.cta': 'Ücretsiz dene',
     'meta.title': 'Advocat — Yapay zekâ hukuk asistanı · Haklarını savun',
     'hero.eyebrow': 'YAPAY ZEKÂ HUKUK ASİSTANI · 2026',
-    'hero.title': 'Estonya ve Avrupa hukukuna özel <em>yapay zekâ asistanı</em>.',
-    'hero.sub': 'Hukuki sorularınızı yanıtlar, incelemeniz için yazışma taslakları hazırlar ve dosya materyallerinizi düzenlemenize yardımcı olur.',
+    'hero.title': 'Anlamadığınız resmi bir mektup mu aldınız?<br>Ne anlama geldiğini ve ne yapmanız gerektiğini 60 saniyede, kendi dilinizde öğrenin.',
+    'hero.sub': 'Advocat mektubu okur, canlı bir yapay zekâ hukuk uzmanları konsiliumu toplar, yanıtınızın taslağını hazırlar ve her son tarihi takip eder — hiçbir şey gözden kaçmaz.',
     'hero.disclaimer': 'Bilgilendirme hizmetidir. Hukuki danışmanlık niteliği taşımaz ve Estonya Barolar Kanunu (Advokatuuriseadus) anlamında yeminli avukatın (vandeadvokaat) yerini almaz.',
     'hero.primary': 'Ücretsiz dene →', 'hero.secondary': 'Örneği gör',
     'hero.trust1': '25 mesaj ücretsiz — kart gerekmez', 'hero.trust2': 'Yasal kaynak gösterimli', 'hero.trust3': 'KVKK/GDPR · sunucular Frankfurt\'ta',
@@ -5423,8 +5203,8 @@ const I18N = {
     'nav.login': 'تسجيل الدخول', 'nav.cta': 'جرّب مجاناً',
     'meta.title': 'Advocat — مساعد قانوني بالذكاء الاصطناعي · دافع عن حقوقك',
     'hero.eyebrow': 'مساعد قانوني بالذكاء الاصطناعي · 2026',
-    'hero.title': '<em>مساعد ذكاء اصطناعي</em> للقانون الإستوني والأوروبي.',
-    'hero.sub': 'يجيب عن الأسئلة القانونية، ويُعدّ مسودات المراسلات لمراجعتك، ويساعد على تنظيم مواد القضية.',
+    'hero.title': 'وصلتك رسالة رسمية لا تفهمها؟<br>اعرف ماذا تعني وماذا تفعل — خلال 60 ثانية، بلغتك.',
+    'hero.sub': 'يقرأ Advocat الرسالة، ويعقد مجلسًا استشاريًا مباشرًا من خبراء قانونيين بالذكاء الاصطناعي، ويُعدّ مسودة ردك، ويتابع كل موعد نهائي — حتى لا يفوتك شيء.',
     'hero.disclaimer': 'خدمة معلوماتية. لا تُعدّ استشارة قانونية ولا تحلّ محل المحامي المُحلَّف (vandeadvokaat) بالمعنى المقصود في قانون نقابة المحامين الإستوني (Advokatuuriseadus).',
     'hero.primary': 'جرّب مجاناً ←', 'hero.secondary': 'انظر مثالاً',
     'hero.trust1': '25 رسائل مجانية — بدون بطاقة', 'hero.trust2': 'مع توثيق المصادر', 'hero.trust3': 'GDPR · خوادم في فرانكفورت',
@@ -5545,8 +5325,8 @@ const I18N = {
     'nav.login': 'ورود', 'nav.cta': 'امتحان رایگان',
     'meta.title': 'Advocat — دستیار حقوقی هوش مصنوعی · از حقوق خود دفاع کنید',
     'hero.eyebrow': 'دستیار حقوقی هوش مصنوعی · ۲۰۲۶',
-    'hero.title': '<em>دستیار هوش مصنوعی</em> در حقوق استونی و اروپایی.',
-    'hero.sub': 'به پرسش‌های حقوقی پاسخ می‌دهد، پیش‌نویس نامه‌ها را برای بازبینی شما آماده می‌کند و در نظم‌دهی به مواد پرونده یاری می‌رساند.',
+    'hero.title': 'نامه‌ی رسمی‌ای دریافت کرده‌اید که آن را نمی‌فهمید؟<br>در ۶۰ ثانیه، به زبان خودتان بفهمید یعنی چه و چه باید کرد.',
+    'hero.sub': 'Advocat نامه را می‌خواند، یک شورای زنده از کارشناسان حقوقی هوش مصنوعی تشکیل می‌دهد، پیش‌نویس پاسخ شما را آماده می‌کند و همه‌ی مهلت‌ها را پیگیری می‌کند — تا چیزی از قلم نیفتد.',
     'hero.disclaimer': 'خدمت اطلاع‌رسانی است. مشاوره حقوقی محسوب نمی‌شود و جایگزین وکیل سوگندخورده (vandeadvokaat) بر اساس قانون کانون وکلای استونی (Advokatuuriseadus) نیست.',
     'hero.primary': 'امتحان رایگان ←', 'hero.secondary': 'یک نمونه ببینید',
     'hero.trust1': '۲۵ پیام رایگان — بدون کارت', 'hero.trust2': 'با ذکر منبع قانونی', 'hero.trust3': 'GDPR · سرورها در فرانکفورت',
