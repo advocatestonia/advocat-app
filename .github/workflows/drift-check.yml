@@ -1,0 +1,39 @@
+# =============================================================================
+# drift-check.yml — nightly git ↔ prod ↔ client drift gate.
+#
+# Runs scripts/drift-check.sh against prod (READ-ONLY):
+#   [1] committed-but-undeployed functions (June-2026 outage class)
+#   [2] zombie functions (deployed, no source in git)
+#   [3] phantom endpoints (client invokes a function that is not deployed)
+#   [4] migration ghosts (local vs supabase_migrations.schema_migrations)
+#
+# REQUIRED SECRET: SUPABASE_ACCESS_TOKEN (Supabase personal access token,
+# read scope is enough). The owner must set it in repo Settings → Secrets
+# and variables → Actions. Without it the job fails with exit 2.
+# =============================================================================
+name: drift-check
+
+on:
+  schedule:
+    - cron: "17 3 * * *" # nightly 03:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  drift-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run drift check (read-only against prod)
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "${SUPABASE_ACCESS_TOKEN}" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN secret is not set — add it in Settings → Secrets and variables → Actions."
+            exit 2
+          fi
+          bash scripts/drift-check.sh
