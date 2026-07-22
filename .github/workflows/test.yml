@@ -31,6 +31,7 @@ on:
       - "supabase/functions/**"
       - "pubspec.yaml"
       - "deno.json"
+      - ".github/workflows/test.yml"
   workflow_dispatch: {}
 
 # Least-privilege: tests only read the repo.
