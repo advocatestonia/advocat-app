@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../../config/feature_flags.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
@@ -552,7 +553,9 @@ class _InvitationRow extends StatelessWidget {
             ),
           ),
           RoleBadge(role: invitation.role, size: RoleBadgeSize.small),
-          if (canManage) ...[
+          // resend-invitation / cancel-invitation edge functions are not
+          // deployed yet — hide the controls entirely (no dead buttons).
+          if (canManage && kOrgPendingB2bEndpointsEnabled) ...[
             TextButton(
               onPressed: onResend,
               child: Text(l.commonResend,

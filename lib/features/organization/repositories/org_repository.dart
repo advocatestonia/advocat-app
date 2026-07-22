@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../config/feature_flags.dart';
 import '../models/api_key.dart';
 import '../models/org_branding.dart';
 import '../models/org_invitation.dart';
@@ -199,21 +200,26 @@ class SupabaseOrgRepository implements OrgRepository {
   @override
   Future<bool> isSlugAvailable(String slug) async {
     if (slug.length < 3) return false;
-    try {
-      final data = await _invoke('check-slug-availability', body: {'slug': slug});
-      return (data['available'] as bool?) ?? false;
-    } on OrgRepositoryException {
-      // Fall back to a direct query — slugs are unique server-side anyway.
+    if (kOrgPendingB2bEndpointsEnabled) {
+      // `check-slug-availability` is not deployed to prod yet (2026-07-16).
       try {
-        final row = await _client
-            .from('organizations')
-            .select('id')
-            .eq('slug', slug)
-            .maybeSingle();
-        return row == null;
-      } catch (_) {
-        return true; // Optimistic; server will 409 if not.
+        final data =
+            await _invoke('check-slug-availability', body: {'slug': slug});
+        return (data['available'] as bool?) ?? false;
+      } on OrgRepositoryException {
+        // Fall through to the direct query below.
       }
+    }
+    // Direct query — slugs are unique server-side anyway.
+    try {
+      final row = await _client
+          .from('organizations')
+          .select('id')
+          .eq('slug', slug)
+          .maybeSingle();
+      return row == null;
+    } catch (_) {
+      return true; // Optimistic; server will 409 if not.
     }
   }
 
@@ -308,11 +314,12 @@ class SupabaseOrgRepository implements OrgRepository {
     required String userId,
     required OrgRole role,
   }) async {
-    await _invoke('change-member-role',
+    // `update-member-role` reads the org from the X-Org-Context header
+    // (requireOrgContext) and expects `member_user_id` + `role` in the body.
+    await _invoke('update-member-role',
         orgContext: orgId,
         body: {
-          'org_id': orgId,
-          'user_id': userId,
+          'member_user_id': userId,
           'role': role.wire,
         });
   }
@@ -334,16 +341,23 @@ class SupabaseOrgRepository implements OrgRepository {
 
   @override
   Future<void> resendInvitation(String invitationId) async {
+    if (!kOrgPendingB2bEndpointsEnabled) {
+      throw const OrgRepositoryException('feature_disabled');
+    }
     await _invoke('resend-invitation', body: {'invitation_id': invitationId});
   }
 
   @override
   Future<void> cancelInvitation(String invitationId) async {
+    if (!kOrgPendingB2bEndpointsEnabled) {
+      throw const OrgRepositoryException('feature_disabled');
+    }
     await _invoke('cancel-invitation', body: {'invitation_id': invitationId});
   }
 
   @override
   Future<OrgInvitation?> previewInvitation(String token) async {
+    if (!kOrgPendingB2bEndpointsEnabled) return null;
     try {
       final data = await _invoke('preview-invitation', body: {'token': token});
       return OrgInvitation.fromJson(data);
@@ -364,12 +378,14 @@ class SupabaseOrgRepository implements OrgRepository {
 
   @override
   Future<Map<String, dynamic>> getBillingSummary(String orgId) async {
+    if (!kOrgPendingB2bEndpointsEnabled) return const {};
     return _invoke('org-billing-summary',
         orgContext: orgId, body: {'org_id': orgId});
   }
 
   @override
   Future<List<Map<String, dynamic>>> listInvoices(String orgId) async {
+    if (!kOrgPendingB2bEndpointsEnabled) return const [];
     final data = await _invoke('org-invoices',
         orgContext: orgId, body: {'org_id': orgId});
     final items = data['invoices'] ?? data['items'];
@@ -390,12 +406,18 @@ class SupabaseOrgRepository implements OrgRepository {
 
   @override
   Future<void> changeSeats(String orgId, int newCount) async {
+    if (!kOrgPendingB2bEndpointsEnabled) {
+      throw const OrgRepositoryException('feature_disabled');
+    }
     await _invoke('change-seats',
         orgContext: orgId, body: {'org_id': orgId, 'seats': newCount});
   }
 
   @override
   Future<void> changePlan(String orgId, OrgPlan plan, bool yearly) async {
+    if (!kOrgPendingB2bEndpointsEnabled) {
+      throw const OrgRepositoryException('feature_disabled');
+    }
     await _invoke('change-plan',
         orgContext: orgId,
         body: {
@@ -423,6 +445,9 @@ class SupabaseOrgRepository implements OrgRepository {
 
   @override
   Future<OrgBranding> saveBranding(OrgBranding branding) async {
+    if (!kOrgPendingB2bEndpointsEnabled) {
+      throw const OrgRepositoryException('feature_disabled');
+    }
     final data = await _invoke('save-org-branding',
         orgContext: branding.orgId,
         body: {

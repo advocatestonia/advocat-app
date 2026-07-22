@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../config/feature_flags.dart';
 import '../../../config/theme.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../../shared/widgets/app_text_field.dart';
@@ -55,6 +56,19 @@ class OrgBrandingScreen extends ConsumerWidget {
                   title: 'Available on Firm plan and up',
                   description:
                       'Upgrade to the Firm plan to upload your logo and pick brand colors.',
+                );
+              }
+              // save-org-branding is not deployed yet — showing the editor
+              // would silently drop every change on autosave. Placeholder
+              // instead until kOrgPendingB2bEndpointsEnabled flips on.
+              if (!kOrgPendingB2bEndpointsEnabled) {
+                return const EmptyState(
+                  icon: Icons.brush_outlined,
+                  title: 'Branding setup is coming soon',
+                  description:
+                      'Logo, brand colors, and custom-domain settings will be '
+                      'editable here shortly. Your plan already includes them — '
+                      'contact support if you need branding configured now.',
                 );
               }
               return _BrandingBody(org: org);

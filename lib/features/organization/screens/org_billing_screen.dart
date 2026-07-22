@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../config/feature_flags.dart';
 import '../../../config/theme.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../../shared/widgets/app_button.dart';
@@ -97,7 +98,6 @@ class _BillingBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final invoicesAsync = ref.watch(orgInvoicesProvider(org.id));
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
       children: [
@@ -106,47 +106,57 @@ class _BillingBody extends ConsumerWidget {
         if (org.isOnTrial) _TrialBanner(org: org),
         _PlanCard(org: org, onManage: () => _openPortal(context, ref)),
         const SizedBox(height: 16),
+        // change-seats is not deployed yet — render the seats card
+        // read-only (no +/- steppers) until the endpoint exists.
         _SeatsCard(
           org: org,
-          onIncrement: () => _changeSeats(context, ref, 1),
-          onDecrement: () => _changeSeats(context, ref, -1),
+          onIncrement: kOrgPendingB2bEndpointsEnabled
+              ? () => _changeSeats(context, ref, 1)
+              : null,
+          onDecrement: kOrgPendingB2bEndpointsEnabled
+              ? () => _changeSeats(context, ref, -1)
+              : null,
         ),
         const SizedBox(height: 16),
         _PaymentMethodCard(onManage: () => _openPortal(context, ref)),
-        const SizedBox(height: 16),
-        _SectionHeader(title: 'Invoices'),
-        invoicesAsync.when(
-          loading: () => const Padding(
-            padding: EdgeInsets.all(24),
-            child: Center(child: CircularProgressIndicator()),
-          ),
-          error: (e, _) => Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text('Could not load invoices: $e',
-                style: const TextStyle(color: AppColors.error)),
-          ),
-          data: (invoices) {
-            if (invoices.isEmpty) {
-              return Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(AppRadius.lg),
-                  border: Border.all(color: AppColors.border),
-                ),
-                child: const Text(
-                  'No invoices yet. The first will appear after your trial ends.',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 13,
-                    color: AppColors.textTertiary,
+        // org-invoices is not deployed yet — hide the whole section;
+        // invoices remain available inside the Stripe portal.
+        if (kOrgPendingB2bEndpointsEnabled) ...[
+          const SizedBox(height: 16),
+          const _SectionHeader(title: 'Invoices'),
+          ref.watch(orgInvoicesProvider(org.id)).when(
+            loading: () => const Padding(
+              padding: EdgeInsets.all(24),
+              child: Center(child: CircularProgressIndicator()),
+            ),
+            error: (e, _) => Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text('Could not load invoices: $e',
+                  style: const TextStyle(color: AppColors.error)),
+            ),
+            data: (invoices) {
+              if (invoices.isEmpty) {
+                return Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                    border: Border.all(color: AppColors.border),
                   ),
-                ),
-              );
-            }
-            return _InvoicesTable(invoices: invoices);
-          },
-        ),
+                  child: const Text(
+                    'No invoices yet. The first will appear after your trial ends.',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 13,
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+                );
+              }
+              return _InvoicesTable(invoices: invoices);
+            },
+          ),
+        ],
       ],
     );
   }
@@ -290,8 +300,13 @@ class _SeatsCard extends StatelessWidget {
     required this.onDecrement,
   });
   final Organization org;
-  final VoidCallback onIncrement;
-  final VoidCallback onDecrement;
+
+  /// Null callbacks render the card read-only (steppers hidden) — used
+  /// while the `change-seats` edge function is not deployed.
+  final VoidCallback? onIncrement;
+  final VoidCallback? onDecrement;
+
+  bool get _selfServe => onIncrement != null && onDecrement != null;
 
   @override
   Widget build(BuildContext context) {
@@ -321,14 +336,16 @@ class _SeatsCard extends StatelessWidget {
           const SizedBox(height: 12),
           Row(
             children: [
-              IconButton.filled(
-                onPressed: canDecrement ? onDecrement : null,
-                icon: const Icon(Icons.remove_rounded),
-                style: IconButton.styleFrom(
-                    backgroundColor: AppColors.surfaceVariant,
-                    foregroundColor: AppColors.textPrimary),
-              ),
-              const SizedBox(width: 16),
+              if (_selfServe) ...[
+                IconButton.filled(
+                  onPressed: canDecrement ? onDecrement : null,
+                  icon: const Icon(Icons.remove_rounded),
+                  style: IconButton.styleFrom(
+                      backgroundColor: AppColors.surfaceVariant,
+                      foregroundColor: AppColors.textPrimary),
+                ),
+                const SizedBox(width: 16),
+              ],
               Text(
                 '${org.seatCount}',
                 style: const TextStyle(
@@ -338,15 +355,17 @@ class _SeatsCard extends StatelessWidget {
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(width: 16),
-              IconButton.filled(
-                onPressed: canIncrement ? onIncrement : null,
-                icon: const Icon(Icons.add_rounded),
-                style: IconButton.styleFrom(
-                  backgroundColor: AppColors.accent,
-                  foregroundColor: Colors.white,
+              if (_selfServe) ...[
+                const SizedBox(width: 16),
+                IconButton.filled(
+                  onPressed: canIncrement ? onIncrement : null,
+                  icon: const Icon(Icons.add_rounded),
+                  style: IconButton.styleFrom(
+                    backgroundColor: AppColors.accent,
+                    foregroundColor: Colors.white,
+                  ),
                 ),
-              ),
+              ],
               const Spacer(),
               Text(
                 '€${total.toStringAsFixed(0)}/mo',
@@ -361,7 +380,9 @@ class _SeatsCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '€${org.plan.pricePerSeatMonthly.toStringAsFixed(0)} per seat / month. Changes are prorated on your next invoice.',
+            _selfServe
+                ? '€${org.plan.pricePerSeatMonthly.toStringAsFixed(0)} per seat / month. Changes are prorated on your next invoice.'
+                : '€${org.plan.pricePerSeatMonthly.toStringAsFixed(0)} per seat / month. To change seats, use "Manage in Stripe" below or contact support.',
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 12,

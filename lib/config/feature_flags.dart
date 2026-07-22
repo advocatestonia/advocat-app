@@ -153,3 +153,37 @@ const bool kLawyerPartnershipEnabled = bool.fromEnvironment(
   'ADVOCAT_LAWYER_PARTNERSHIP_ENABLED',
   defaultValue: false,
 );
+
+// -----------------------------------------------------------------------------
+// B2B org — pending (not-yet-deployed) edge-function endpoints.
+// Ref: prod edge-function audit 2026-07-16 (plan 1.1). Owner decision
+// 2026-07-16: no paying B2B orgs exist, so these stay OFF.
+// -----------------------------------------------------------------------------
+
+/// Gates every client call to a B2B org edge function that is NOT deployed
+/// to prod as of 2026-07-16. The 9 phantom functions:
+///
+///   cancel-invitation, change-plan, change-seats, check-slug-availability,
+///   org-billing-summary, org-invoices, preview-invitation,
+///   resend-invitation, save-org-branding
+///
+/// When `false` (the **production default**):
+///   * `OrgRepository` never invokes any of the functions above —
+///     `isSlugAvailable` falls back to a direct table query, list-style
+///     methods return empty, mutating methods throw
+///     `OrgRepositoryException('feature_disabled')`.
+///   * Members screen: "Resend" / "Cancel invitation" controls are hidden.
+///   * Billing screen: seat +/- steppers and the Invoices section are
+///     hidden (plan & payment method are still manageable via the Stripe
+///     portal, whose `org-billing-portal` function IS deployed).
+///   * Branding screen: the editor is replaced by a "coming soon" card
+///     (autosave would silently fail without `save-org-branding`).
+///
+/// Flip via `--dart-define=ADVOCAT_ORG_PENDING_B2B_ENDPOINTS_ENABLED=true`
+/// ONLY after the 9 functions above are deployed and smoke-tested — the
+/// contract test `test/contract/org_edge_functions_contract_test.dart`
+/// pins this list against `supabase/functions/`.
+const bool kOrgPendingB2bEndpointsEnabled = bool.fromEnvironment(
+  'ADVOCAT_ORG_PENDING_B2B_ENDPOINTS_ENABLED',
+  defaultValue: false,
+);
