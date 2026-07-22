@@ -1,0 +1,10 @@
+{
+  "tasks": {
+    "test": "deno test --allow-read tests/",
+    "test:live": "SMARTID_SPIKE_LIVE=1 deno test --allow-read --allow-net --allow-env tests/",
+    "serve": "deno run --allow-net index.ts"
+  },
+  "fmt": {
+    "lineWidth": 100
+  }
+}

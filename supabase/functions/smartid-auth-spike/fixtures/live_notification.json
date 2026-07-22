@@ -1,0 +1,55 @@
+{
+  "request": {
+    "relyingPartyUUID": "00000000-0000-4000-8000-000000000000",
+    "relyingPartyName": "DEMO",
+    "certificateLevel": "QUALIFIED",
+    "signatureProtocol": "ACSP_V2",
+    "signatureProtocolParameters": {
+      "rpChallenge": "fWd0Z1ZZiCjXYPwOxfhMbdCrLZ7FbBSDAvFnzRfQCZlyiVRJ0tVdKJP3QeLnx/RIoJnkdYK2uA8oTYuiRkj8Sw==",
+      "signatureAlgorithm": "rsassa-pss",
+      "signatureAlgorithmParameters": {
+        "hashAlgorithm": "SHA-512"
+      }
+    },
+    "interactions": "W3sidHlwZSI6ImRpc3BsYXlUZXh0QW5kUElOIiwiZGlzcGxheVRleHQ2MCI6IkFkdm9jYXQgU21hcnQtSUQgc3Bpa2UifV0=",
+    "vcType": "numeric4"
+  },
+  "interactionsJson": "[{\"type\":\"displayTextAndPIN\",\"displayText60\":\"Advocat Smart-ID spike\"}]",
+  "rpChallenge": "fWd0Z1ZZiCjXYPwOxfhMbdCrLZ7FbBSDAvFnzRfQCZlyiVRJ0tVdKJP3QeLnx/RIoJnkdYK2uA8oTYuiRkj8Sw==",
+  "expectedVC": "6909",
+  "init": {
+    "sessionID": "c3e23877-e37f-4d3e-a1f7-aa05bbdba9d6"
+  },
+  "session": {
+    "state": "COMPLETE",
+    "result": {
+      "endResult": "OK",
+      "documentNumber": "PNOEE-40504040001-DEM2-Q"
+    },
+    "signatureProtocol": "ACSP_V2",
+    "signature": {
+      "value": "PDGAeZQrBEX1HCgo99GGtGYSTjkL3xTUlWmhgXxlVGh5YzDMLfHDxzjpNpY6m4EsRTu7dNf21Kn4AjQQc4aaDxXiNiVN3JeurPqGp2dM7iugboyt/aEdoxBjRqfB33y+FLB3Bq2S2Rie8TFdKwWXEiVuderpLsLWPORjvuSNzqtU8tuQsR/Ix1V6vlh5XcTWDRo1vUEyfXwf8VN1X4gpXNk72Y/oE1ihd1EwiPmSDle/IBQI86SNsAzqCA2rgLHvKbkGCscOdl7DrGe0Kbei7xMsS+WL/sYQqnTmcjtANGcajbQf3xbMmpLGSI6lS67mbUMB79aWBUksW3hJV3AcA4UFihQiglSShnkvz20BK2e5zDPtMCZgUulVGJXuXOMuLAzmsqw1AO2Ht8JYsK29j9eqAgF76L+KUn/RYiO/fVSOb9rXanfkLheO2kKcXIfpmK1G13mnYuRVlTz7V7h7eiv7Rw0EaCutd5+IWgrc0POymPQNsaUYpzykn80tpdE3KOxjDM43qNMTngCNUzkUtWRWjQG2uWI5FHLEGq6L0KCwC3loL7sevmik6CoetkhKzyvnWcXSSQ30mxdVQkAKTnu9KxEb8VbpP9/00mo07t41vAkfEg2bVAZ95ql0AsX4mOiiSrRB0SrRO4MAcXDj3UOeGrhS5DvX5aKL829bN3DREJuBEMQozpnrakA6B/GgzaEXNJtvXytUDT4yp/wrT0cQVJaK1PZIwW/rfLMUCilljLWJQHHM3r+qQ0bAdhMpUKIyWpwQLqE3iHklIkWa7NyG9HJkAjrKnVoNcGZGkgWhWS/nt9oLMjCgJOGwDB2pI+aXMf+5RSflkuL/byESsBQDPa8FpWl79gRis4IHb2Q2U/isHCHHZNyM/pdZFC+ZFjRqPAxHKcwl+da6RlK9JTo1gTvdcoADU0hcz8rCrt2Obo1yf3p1T9/DVg5380XtxS2HQDAC8yryhH5MX32LaCiUbIyiZQVVYdXmGWgwhBZa8yFpu1ebjJpmKKKQC/5y",
+      "signatureAlgorithm": "rsassa-pss",
+      "signatureAlgorithmParameters": {
+        "hashAlgorithm": "SHA-512",
+        "maskGenAlgorithm": {
+          "algorithm": "id-mgf1",
+          "parameters": {
+            "hashAlgorithm": "SHA-512"
+          }
+        },
+        "saltLength": 64,
+        "trailerField": "0xbc"
+      },
+      "serverRandom": "WDt5SzxxOlfjdqlxD9v/r93H",
+      "userChallenge": "ABcqYrfbkysCtTIDEwGVfC3oIwXvyFUhJe0dceTFiB0",
+      "flowType": "Notification"
+    },
+    "cert": {
+      "value": "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",
+      "certificateLevel": "QUALIFIED"
+    },
+    "interactionTypeUsed": "displayTextAndPIN"
+  },
+  "schemeName": "smart-id-demo"
+}
