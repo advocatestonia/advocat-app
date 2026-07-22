@@ -2053,6 +2053,176 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
   <div class="hero-scroll-hint" id="hero-scroll-hint" aria-hidden="true"><span class="hero-scroll-dot"></span></div>
 </section>
 
+<!-- ── CONSILIUM LIVE SHOWCASE ── -->
+<!-- Flagship differentiator: an in-page animated replay of the real consilium panel
+     (roles taken from supabase/functions/_shared/lawyer_agents/). Two i18n layers:
+     static EN defaults below (no-JS/SEO) + consilium.* keys in the I18N dict.
+     Animation: JS toggles .cl-on on .cl-step elements; prefers-reduced-motion
+     shows everything statically. All steps stay in flow (opacity only) → no CLS. -->
+<style>
+.consilium-live { padding: 72px 0; background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%); border-bottom: 1px solid var(--line); overflow: hidden; }
+.cl-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.08fr); gap: 56px; align-items: center; }
+.cl-cta-row { margin-top: 24px; }
+.cl-cta-row .btn-primary { height: 48px; padding: 0 24px; font-size: 15px; font-weight: 700; }
+.cl-note { margin-top: 14px; font-size: 12.5px; color: var(--faint); max-width: 460px; line-height: 1.5; }
+.cl-panel { background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 24px 64px -16px rgba(15,27,53,.16), 0 4px 16px -4px rgba(15,27,53,.08); overflow: hidden; }
+.cl-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.cl-head img { width: 30px; height: 30px; object-fit: contain; }
+.cl-head-name { font-weight: 800; color: var(--navy); font-size: 14px; line-height: 1.2; }
+.cl-head-sub { font-size: 11.5px; color: var(--muted); }
+.cl-live { margin-inline-start: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; color: var(--error); background: rgba(220,38,38,.08); padding: 4px 10px; border-radius: 20px; }
+.cl-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--error); animation: clPulse 1.4s ease-in-out infinite; }
+@keyframes clPulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.72); } }
+.cl-body { padding: 16px 14px; display: flex; flex-direction: column; gap: 10px; }
+/* Steps are visible by default (no-JS / SEO safe); the .cl-anim class is added
+   by the script right before the replay starts, so hiding only ever happens
+   when JS is guaranteed to reveal the steps again. */
+.cl-anim .cl-step { opacity: 0; transform: translateY(10px); transition: opacity .5s cubic-bezier(.2,.7,.3,1), transform .5s cubic-bezier(.2,.7,.3,1); }
+.cl-anim .cl-step.cl-on { opacity: 1; transform: none; }
+.cl-user { align-self: flex-end; max-width: 88%; background: linear-gradient(135deg, var(--navy), #1a3a6e); color: #fff; padding: 10px 14px; border-radius: 14px; border-end-end-radius: 3px; }
+.cl-user p { font-size: 13.5px; line-height: 1.5; margin: 0; }
+.cl-lawyer { display: flex; gap: 9px; max-width: 94%; }
+.cl-ava { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; color: #fff; margin-top: 2px; }
+.cl-bubble { background: var(--bg2); border: 1px solid var(--line); border-radius: 14px; border-start-start-radius: 3px; padding: 9px 12px; }
+.cl-name { font-size: 11px; font-weight: 800; letter-spacing: .02em; color: var(--teal2); margin-bottom: 3px; }
+.cl-bubble p { font-size: 13px; line-height: 1.5; color: var(--text); margin: 0; }
+.cl-diverge-msg .cl-bubble { border-color: rgba(217,119,6,.45); background: #FFFBEB; }
+.cl-diverge-msg .cl-name { color: var(--warn); }
+.cl-banner { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 700; color: var(--warn); background: rgba(217,119,6,.08); border: 1px dashed rgba(217,119,6,.4); border-radius: 10px; padding: 7px 11px; }
+.cl-banner svg { flex-shrink: 0; }
+.cl-chair { background: linear-gradient(135deg, rgba(13,148,136,.05), rgba(13,148,136,.12)); border: 1px solid rgba(13,148,136,.35); border-radius: 14px; padding: 12px 13px; }
+.cl-chair-head { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 800; letter-spacing: .04em; color: var(--navy); text-transform: uppercase; margin-bottom: 6px; }
+.cl-chair-head img { width: 20px; height: 20px; object-fit: contain; }
+.cl-chair > p { font-size: 13.5px; line-height: 1.55; color: var(--text); margin: 0 0 9px; }
+.cl-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.cl-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 20px; }
+.cl-chip svg { flex-shrink: 0; }
+.cl-chip-verified { color: var(--green); background: rgba(5,150,105,.1); }
+.cl-chip-deadline { color: var(--navy2); background: rgba(15,27,53,.07); }
+@media (max-width: 900px) {
+  .consilium-live { padding: 56px 0; }
+  .cl-grid { grid-template-columns: 1fr; gap: 32px; }
+  .cl-panel { max-width: 560px; margin: 0 auto; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cl-anim .cl-step, .cl-step { opacity: 1; transform: none; transition: none; }
+  .cl-live-dot { animation: none; }
+}
+</style>
+<section class="section consilium-live" id="consilium" aria-labelledby="consilium-heading">
+  <div class="container">
+    <div class="cl-grid">
+      <div class="cl-copy">
+        <div class="section-label" data-i18n="consilium.eyebrow">THE CONSILIUM — LIVE ON YOUR SCREEN</div>
+        <h2 id="consilium-heading" data-i18n="consilium.heading">Hard question? Watch AI lawyers debate it — live.</h2>
+        <p class="section-sub" data-i18n="consilium.sub">For complex cases Advocat convenes a consilium of specialist AI lawyers. They state positions, attack each other's weak points, and a chairman merges everything into one plan — every law citation verified before you see it. You watch the whole debate, not just the answer.</p>
+        <div class="cl-cta-row">
+          <a class="btn btn-primary" href="/app.html" data-cta="consilium-live-cta" data-i18n="consilium.cta">Convene a consilium on my question →</a>
+        </div>
+        <p class="cl-note" data-i18n="consilium.note">This is a replay of the real feature — in the app the consilium debates your actual case, in your language.</p>
+      </div>
+
+      <div class="cl-panel" id="consilium-panel">
+        <div class="cl-head">
+          <img src="/blog/logo_shield.png" alt="" loading="lazy" decoding="async">
+          <div>
+            <div class="cl-head-name" data-i18n="consilium.panel">Consilium</div>
+            <div class="cl-head-sub" data-i18n="consilium.roster">3 specialists + chairman</div>
+          </div>
+          <span class="cl-live"><span class="cl-live-dot" aria-hidden="true"></span><span data-i18n="consilium.live">LIVE</span></span>
+        </div>
+        <div class="cl-body">
+          <div class="cl-user cl-step">
+            <p data-i18n="consilium.q">Migri refused to extend my residence permit. The letter mentions 30 days. What do I do?</p>
+          </div>
+          <div class="cl-lawyer cl-step">
+            <div class="cl-ava" style="background:#0F1B35" aria-hidden="true">IM</div>
+            <div class="cl-bubble">
+              <div class="cl-name" data-i18n="consilium.r1n">Immigration lawyer</div>
+              <p data-i18n="consilium.r1t">This decision is appealable. You have 30 days from notification to appeal to the Administrative Court — Aliens Act (ulkomaalaislaki) § 190.</p>
+            </div>
+          </div>
+          <div class="cl-lawyer cl-step">
+            <div class="cl-ava" style="background:#0B7A70" aria-hidden="true">AA</div>
+            <div class="cl-bubble">
+              <div class="cl-name" data-i18n="consilium.r2n">Senior asianajaja (FI)</div>
+              <p data-i18n="consilium.r2t">Agreed on the appeal. One more thing: keep your job — while the appeal is pending, your right to work usually continues.</p>
+            </div>
+          </div>
+          <div class="cl-lawyer cl-diverge-msg cl-step">
+            <div class="cl-ava" style="background:#B45309" aria-hidden="true">LT</div>
+            <div class="cl-bubble">
+              <div class="cl-name" data-i18n="consilium.r3n">Litigator (KHO + Riigikohus)</div>
+              <p data-i18n="consilium.r3t">I push back: an appeal alone is slow — it takes months. File a new application on updated grounds in parallel. Two tracks, not one.</p>
+            </div>
+          </div>
+          <div class="cl-banner cl-step">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            <span data-i18n="consilium.diverge">Positions diverge — the chairman must address both.</span>
+          </div>
+          <div class="cl-chair cl-step">
+            <div class="cl-chair-head">
+              <img src="/blog/logo_shield.png" alt="" loading="lazy" decoding="async">
+              <span data-i18n="consilium.chn">Chairman · synthesis</span>
+            </div>
+            <p data-i18n="consilium.cht">Unanimous: appeal within 30 days. On strategy the majority favours a parallel new application. The appeal is drafted — waiting for your approval.</p>
+            <div class="cl-chips">
+              <span class="cl-chip cl-chip-verified">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span data-i18n="consilium.verified">ulkomaalaislaki § 190 — citation verified</span>
+              </span>
+              <span class="cl-chip cl-chip-deadline">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span data-i18n="consilium.deadline">Deadline saved: 30 days · reminders on</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  var panel = document.getElementById('consilium-panel');
+  if (!panel) return;
+  var steps = Array.prototype.slice.call(panel.querySelectorAll('.cl-step'));
+  var mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var DELAYS = [400, 1700, 3400, 5100, 6600, 7600];
+  var HOLD = 7000;
+  var timers = [];
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+  function showAll() {
+    clearTimers();
+    panel.classList.remove('cl-anim');
+    steps.forEach(function (s) { s.classList.add('cl-on'); });
+  }
+  function cycle() {
+    clearTimers();
+    panel.classList.add('cl-anim');
+    steps.forEach(function (s) { s.classList.remove('cl-on'); });
+    steps.forEach(function (s, i) {
+      timers.push(setTimeout(function () { s.classList.add('cl-on'); }, DELAYS[i] || (7600 + (i - DELAYS.length + 1) * 900)));
+    });
+    timers.push(setTimeout(cycle, (DELAYS[Math.min(steps.length, DELAYS.length) - 1] || 7600) + HOLD));
+  }
+  if (mq.matches) { showAll(); return; }
+  var started = false;
+  function start() { if (!started) { started = true; cycle(); } }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { start(); io.disconnect(); } });
+    }, { threshold: 0.25 });
+    io.observe(panel);
+  } else {
+    start();
+  }
+  if (mq.addEventListener) {
+    mq.addEventListener('change', function (ev) { if (ev.matches) showAll(); });
+  }
+})();
+</script>
+
 <!-- ── FOUNDER STORY ── -->
 <!-- TODO(owner): replace founder-avatar placeholder with real /web/founder-sulga.jpg portrait when available -->
 <section class="founder-section" id="why" aria-labelledby="founder-heading">
@@ -3060,6 +3230,26 @@ const RTL = { ar: true, fa: true };
 
 const I18N = {
   en: {
+    'consilium.eyebrow': 'THE CONSILIUM — LIVE ON YOUR SCREEN',
+    'consilium.heading': 'Hard question? Watch AI lawyers debate it — live.',
+    'consilium.sub': 'For complex cases Advocat convenes a consilium of specialist AI lawyers. They state positions, attack each other’s weak points, and a chairman merges everything into one plan — every law citation verified before you see it. You watch the whole debate, not just the answer.',
+    'consilium.cta': 'Convene a consilium on my question →',
+    'consilium.note': 'This is a replay of the real feature — in the app the consilium debates your actual case, in your language.',
+    'consilium.panel': 'Consilium',
+    'consilium.roster': '3 specialists + chairman',
+    'consilium.live': 'LIVE',
+    'consilium.q': 'Migri refused to extend my residence permit. The letter mentions 30 days. What do I do?',
+    'consilium.r1n': 'Immigration lawyer',
+    'consilium.r1t': 'This decision is appealable. You have 30 days from notification to appeal to the Administrative Court — Aliens Act (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'Senior asianajaja (FI)',
+    'consilium.r2t': 'Agreed on the appeal. One more thing: keep your job — while the appeal is pending, your right to work usually continues.',
+    'consilium.r3n': 'Litigator (KHO + Riigikohus)',
+    'consilium.r3t': 'I push back: an appeal alone is slow — it takes months. File a new application on updated grounds in parallel. Two tracks, not one.',
+    'consilium.diverge': 'Positions diverge — the chairman must address both.',
+    'consilium.chn': 'Chairman · synthesis',
+    'consilium.cht': 'Unanimous: appeal within 30 days. On strategy the majority favours a parallel new application. The appeal is drafted — waiting for your approval.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — citation verified',
+    'consilium.deadline': 'Deadline saved: 30 days · reminders on',
     'cookie.title': 'Cookies & privacy',
     'cookie.body': 'We use cookies needed to keep you signed in. After your consent, we also use anonymous analytics to improve the service. See our <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>. Questions: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Accept',
@@ -3250,6 +3440,26 @@ const I18N = {
   },
 
   et: {
+    'consilium.eyebrow': 'KONSIILIUM — OTSE SINU EKRAANIL',
+    'consilium.heading': 'Keeruline küsimus? Vaata, kuidas AI-juristid selle üle väitlevad — otse.',
+    'consilium.sub': 'Keeruliste juhtumite puhul kutsub Advocat kokku eriala AI-juristide konsiiliumi. Nad esitavad seisukohad, ründavad üksteise nõrku kohti ning esimees koondab kõik üheks plaaniks — iga seaduseviide kontrollitakse enne, kui sina seda näed. Sa näed kogu väitlust, mitte ainult vastust.',
+    'consilium.cta': 'Kutsu minu küsimuses konsiilium kokku →',
+    'consilium.note': 'See on päris funktsiooni kordus — rakenduses arutab konsiilium just sinu juhtumit, sinu keeles.',
+    'consilium.panel': 'Konsiilium',
+    'consilium.roster': '3 spetsialisti + esimees',
+    'consilium.live': 'OTSE',
+    'consilium.q': 'Migri keeldus mu elamisluba pikendamast. Kirjas mainitakse 30 päeva. Mida ma tegema pean?',
+    'consilium.r1n': 'Migratsioonijurist',
+    'consilium.r1t': 'See otsus on vaidlustatav. Sul on teatavakstegemisest 30 päeva kaebuse esitamiseks halduskohtule — Soome välismaalaste seadus (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'Vanem asianajaja (FI)',
+    'consilium.r2t': 'Kaebuse osas nõus. Veel üks asi: hoia oma töökohta — kaebuse menetlemise ajal töötamisõigus üldjuhul säilib.',
+    'consilium.r3n': 'Kohtujurist (KHO + Riigikohus)',
+    'consilium.r3t': 'Vaidlen vastu: ainult kaebusest on vähe — see võtab kuid. Esita paralleelselt uus taotlus uuendatud alustel. Kaks rada, mitte üks.',
+    'consilium.diverge': 'Seisukohad lahknevad — esimees peab käsitlema mõlemat.',
+    'consilium.chn': 'Esimees · süntees',
+    'consilium.cht': 'Üksmeelselt: kaebus 30 päeva jooksul. Strateegias pooldab enamus paralleelset uut taotlust. Kaebus on koostatud — ootab sinu kinnitust.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — viide kontrollitud',
+    'consilium.deadline': 'Tähtaeg salvestatud: 30 päeva · meeldetuletused sees',
     'cookie.title': 'Küpsised ja privaatsus',
     'cookie.body': 'Kasutame küpsiseid, mis on vajalikud sisselogimiseks. Pärast sinu nõusolekut kasutame ka anonüümset analüütikat teenuse parandamiseks. Vaata <a href="/privacy.html" target="_blank" rel="noopener">privaatsuspoliitikat</a>. Küsimused: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Nõustu',
@@ -3440,6 +3650,26 @@ const I18N = {
   },
 
   ru: {
+    'consilium.eyebrow': 'КОНСИЛИУМ — ВЖИВУЮ НА ВАШЕМ ЭКРАНЕ',
+    'consilium.heading': 'Сложный вопрос? Смотрите, как AI-юристы спорят о нём — вживую.',
+    'consilium.sub': 'По сложным делам Advocat созывает консилиум профильных AI-юристов. Они излагают позиции, атакуют слабые места друг друга, а председатель сводит всё в один план — каждая ссылка на закон проверяется до того, как вы её увидите. Вы видите весь спор, а не только ответ.',
+    'consilium.cta': 'Собрать консилиум по моему вопросу →',
+    'consilium.note': 'Это повтор настоящей функции — в приложении консилиум разбирает именно ваше дело, на вашем языке.',
+    'consilium.panel': 'Консилиум',
+    'consilium.roster': '3 специалиста + председатель',
+    'consilium.live': 'LIVE',
+    'consilium.q': 'Migri отказала в продлении вида на жительство. В письме сказано про 30 дней. Что мне делать?',
+    'consilium.r1n': 'Иммиграционный адвокат',
+    'consilium.r1t': 'Это решение можно обжаловать. У вас 30 дней с момента уведомления на жалобу в административный суд — закон об иностранцах (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'Старший asianajaja (Финляндия)',
+    'consilium.r2t': 'Согласен насчёт жалобы. И ещё: не увольняйтесь — пока жалобу рассматривают, право на работу обычно сохраняется.',
+    'consilium.r3n': 'Судебный юрист (KHO + Riigikohus)',
+    'consilium.r3t': 'Возражу: одна жалоба — это медленно, месяцы. Параллельно подайте новое заявление на обновлённых основаниях. Два пути, а не один.',
+    'consilium.diverge': 'Позиции разошлись — председатель обязан разобрать обе.',
+    'consilium.chn': 'Председатель · синтез',
+    'consilium.cht': 'Единогласно: жалоба в течение 30 дней. По стратегии большинство за параллельное новое заявление. Жалоба уже составлена — ждёт вашего подтверждения.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — ссылка проверена',
+    'consilium.deadline': 'Срок сохранён: 30 дней · напоминания включены',
     'cookie.title': 'Файлы cookie и конфиденциальность',
     'cookie.body': 'Мы используем файлы cookie, необходимые для входа в систему. После вашего согласия мы также используем анонимную аналитику для улучшения сервиса. Подробнее в <a href="/privacy.html" target="_blank" rel="noopener">Политике конфиденциальности</a>. Вопросы: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Принять',
@@ -3630,6 +3860,26 @@ const I18N = {
   },
 
   uk: {
+    'consilium.eyebrow': 'КОНСИЛІУМ — НАЖИВО НА ВАШОМУ ЕКРАНІ',
+    'consilium.heading': 'Складне питання? Дивіться, як AI-юристи сперечаються про нього — наживо.',
+    'consilium.sub': 'У складних справах Advocat скликає консиліум профільних AI-юристів. Вони викладають позиції, атакують слабкі місця одне одного, а голова зводить усе в один план — кожне посилання на закон перевіряється, перш ніж ви його побачите. Ви бачите всю дискусію, а не лише відповідь.',
+    'consilium.cta': 'Скликати консиліум у моїй справі →',
+    'consilium.note': 'Це повтор справжньої функції — у застосунку консиліум розбирає саме вашу справу, вашою мовою.',
+    'consilium.panel': 'Консиліум',
+    'consilium.roster': '3 фахівці + голова',
+    'consilium.live': 'LIVE',
+    'consilium.q': 'Migri відмовила у продовженні посвідки на проживання. У листі йдеться про 30 днів. Що мені робити?',
+    'consilium.r1n': 'Юрист з міграційного права',
+    'consilium.r1t': 'Це рішення можна оскаржити. У вас 30 днів від повідомлення на скаргу до адміністративного суду — закон про іноземців (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'Старший asianajaja (Фінляндія)',
+    'consilium.r2t': 'Згоден щодо скарги. І ще: не покидайте роботу — доки скаргу розглядають, право на працю зазвичай зберігається.',
+    'consilium.r3n': 'Судовий юрист (KHO + Riigikohus)',
+    'consilium.r3t': 'Заперечу: сама лише скарга — це повільно, місяці. Паралельно подайте нову заяву на оновлених підставах. Два шляхи, а не один.',
+    'consilium.diverge': 'Позиції розійшлися — голова має розглянути обидві.',
+    'consilium.chn': 'Голова · синтез',
+    'consilium.cht': 'Одностайно: скарга протягом 30 днів. Щодо стратегії більшість за паралельну нову заяву. Скаргу вже складено — чекає на ваше підтвердження.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — посилання перевірено',
+    'consilium.deadline': 'Строк збережено: 30 днів · нагадування увімкнено',
     'founder.eyebrow': 'ТИ НЕ САМ',
     'founder.heading': 'Лист прийшов. Тепер ти не сам.',
     'founder.quote': '„Ти відкриваєш конверт від держустанови — і всередині холоне: мова, яку розумієш лише наполовину, чужа правова система, і термін, про який тебе ніхто не попередив. П\'ятниця, вечір. Жодного юриста поруч. Тільки ти — проти цілої бюрократії.<br><br>Advocat читає цей лист і пояснює його простими словами твоєю мовою. Він скликає консиліум ШІ-юристів, і ти на власні очі бачиш, як вони розбирають твою справу — наживо. Він складає відповідь — і надсилає її. Він рахує кожен термін, щоб жоден не проминув. Ми створили це, бо самі це пройшли: наша власна справа дійшла аж до Верховного суду — щоб тобі ніколи не довелося стояти проти системи наодинці."',
@@ -3732,6 +3982,26 @@ const I18N = {
   },
 
   fi: {
+    'consilium.eyebrow': 'KONSILIUM — SUORANA NÄYTÖLLÄSI',
+    'consilium.heading': 'Vaikea kysymys? Katso, kun AI-juristit väittelevät siitä — suorana.',
+    'consilium.sub': 'Monimutkaisissa tapauksissa Advocat kutsuu koolle erikoistuneiden AI-juristien konsiliumin. He esittävät kantansa, haastavat toistensa heikot kohdat, ja puheenjohtaja kokoaa kaiken yhdeksi suunnitelmaksi — jokainen lakiviittaus tarkistetaan ennen kuin näet sen. Näet koko väittelyn, et vain vastausta.',
+    'consilium.cta': 'Kutsu konsilium koolle kysymykseeni →',
+    'consilium.note': 'Tämä on toisinto oikeasta ominaisuudesta — sovelluksessa konsilium käsittelee juuri sinun asiaasi, sinun kielelläsi.',
+    'consilium.panel': 'Konsilium',
+    'consilium.roster': '3 erikoisjuristia + puheenjohtaja',
+    'consilium.live': 'SUORA',
+    'consilium.q': 'Migri hylkäsi oleskelulupani jatkohakemuksen. Kirjeessä mainitaan 30 päivää. Mitä teen?',
+    'consilium.r1n': 'Ulkomaalaisoikeuden juristi',
+    'consilium.r1t': 'Päätökseen voi hakea muutosta. Sinulla on 30 päivää tiedoksisaannista valittaa hallinto-oikeuteen — ulkomaalaislaki 190 §.',
+    'consilium.r2n': 'Vanhempi asianajaja (FI)',
+    'consilium.r2t': 'Valituksesta samaa mieltä. Lisäksi: pidä työpaikkasi — valituksen käsittelyn aikana työnteko-oikeus yleensä jatkuu.',
+    'consilium.r3n': 'Oikeudenkäyntijuristi (KHO + Riigikohus)',
+    'consilium.r3t': 'Olen eri mieltä: pelkkä valitus on hidas — se kestää kuukausia. Jätä rinnalle uusi hakemus päivitetyin perustein. Kaksi polkua, ei yhtä.',
+    'consilium.diverge': 'Kannat eroavat — puheenjohtajan on käsiteltävä molemmat.',
+    'consilium.chn': 'Puheenjohtaja · yhteenveto',
+    'consilium.cht': 'Yksimielisesti: valitus 30 päivän kuluessa. Strategiassa enemmistö kannattaa rinnakkaista uutta hakemusta. Valitus on laadittu — odottaa hyväksyntääsi.',
+    'consilium.verified': 'ulkomaalaislaki 190 § — viittaus tarkistettu',
+    'consilium.deadline': 'Määräaika tallennettu: 30 päivää · muistutukset päällä',
     'cookie.title': 'Evästeet ja yksityisyys',
     'cookie.body': 'Käytämme evästeitä, jotka tarvitaan sisäänkirjautumisen ylläpitämiseen. Suostumuksesi jälkeen käytämme myös anonyymiä analytiikkaa palvelun parantamiseksi. Lue <a href="/privacy.html" target="_blank" rel="noopener">tietosuojakäytäntömme</a>. Kysymykset: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Hyväksy',
@@ -3899,6 +4169,26 @@ const I18N = {
   },
 
   de: {
+    'consilium.eyebrow': 'DAS KONSILIUM — LIVE AUF IHREM BILDSCHIRM',
+    'consilium.heading': 'Schwierige Frage? Sehen Sie zu, wie KI-Juristen darüber streiten — live.',
+    'consilium.sub': 'Bei komplexen Fällen beruft Advocat ein Konsilium spezialisierter KI-Juristen ein. Sie legen Positionen dar, greifen die Schwachstellen der anderen an, und ein Vorsitzender führt alles zu einem Plan zusammen — jedes Gesetzeszitat wird geprüft, bevor Sie es sehen. Sie verfolgen die ganze Debatte, nicht nur die Antwort.',
+    'consilium.cta': 'Konsilium zu meiner Frage einberufen →',
+    'consilium.note': 'Dies ist ein Replay der echten Funktion — in der App berät das Konsilium Ihren konkreten Fall, in Ihrer Sprache.',
+    'consilium.panel': 'Konsilium',
+    'consilium.roster': '3 Spezialisten + Vorsitzender',
+    'consilium.live': 'LIVE',
+    'consilium.q': 'Migri hat die Verlängerung meiner Aufenthaltserlaubnis abgelehnt. Im Brief stehen 30 Tage. Was soll ich tun?',
+    'consilium.r1n': 'Jurist für Migrationsrecht',
+    'consilium.r1t': 'Diese Entscheidung ist anfechtbar. Sie haben 30 Tage ab Zustellung für die Beschwerde beim Verwaltungsgericht — finnisches Ausländergesetz (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'Senior-Asianajaja (FI)',
+    'consilium.r2t': 'Bei der Beschwerde einverstanden. Noch etwas: Behalten Sie Ihre Stelle — solange die Beschwerde läuft, besteht Ihr Recht zu arbeiten in der Regel fort.',
+    'consilium.r3n': 'Prozessjurist (KHO + Riigikohus)',
+    'consilium.r3t': 'Ich widerspreche: Eine Beschwerde allein ist langsam — das dauert Monate. Stellen Sie parallel einen neuen Antrag mit aktualisierter Begründung. Zwei Wege, nicht einer.',
+    'consilium.diverge': 'Die Positionen gehen auseinander — der Vorsitzende muss beide behandeln.',
+    'consilium.chn': 'Vorsitzender · Synthese',
+    'consilium.cht': 'Einstimmig: Beschwerde innerhalb von 30 Tagen. Bei der Strategie ist die Mehrheit für einen parallelen neuen Antrag. Die Beschwerde ist entworfen — sie wartet auf Ihre Freigabe.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — Zitat geprüft',
+    'consilium.deadline': 'Frist gespeichert: 30 Tage · Erinnerungen aktiv',
     'founder.eyebrow': 'SIE SIND NICHT ALLEIN',
     'founder.heading': 'Der Brief ist da. Jetzt sind Sie es nicht mehr allein.',
     'founder.quote': '„Sie öffnen einen Umschlag von der Behörde, und Ihnen wird flau im Magen — eine Sprache, die Sie nur halb verstehen, ein Rechtssystem, das Sie gar nicht kennen, und eine Frist, vor der Sie niemand gewarnt hat. Es ist Freitagabend. Kein Anwalt weit und breit. Nur Sie gegen einen ganzen Behördenapparat.<br><br>Advocat liest diesen Brief und erklärt ihn Ihnen klar und einfach in Ihrer eigenen Sprache. Es beruft ein Konsilium von KI-Anwälten ein, denen Sie live dabei zusehen, wie sie Ihren Fall durchdenken. Es verfasst die Antwort — und verschickt sie. Es zählt jede Frist, damit Ihnen keine entgeht. Wir haben das gebaut, weil wir es selbst durchgestanden haben: Unser eigener Fall ging bis vor das Oberste Gericht, damit Sie dem System nie allein gegenüberstehen müssen."',
@@ -4001,6 +4291,26 @@ const I18N = {
   },
 
   fr: {
+    'consilium.eyebrow': 'LE CONSILIUM — EN DIRECT SUR VOTRE ÉCRAN',
+    'consilium.heading': 'Question difficile ? Regardez des juristes IA en débattre — en direct.',
+    'consilium.sub': 'Pour les cas complexes, Advocat réunit un consilium de juristes IA spécialisés. Chacun expose sa position, attaque les points faibles des autres, et un président fusionne le tout en un seul plan — chaque référence légale est vérifiée avant que vous ne la voyiez. Vous suivez tout le débat, pas seulement la réponse.',
+    'consilium.cta': 'Réunir un consilium sur ma question →',
+    'consilium.note': 'Ceci est une rediffusion de la vraie fonctionnalité — dans l’application, le consilium examine votre dossier réel, dans votre langue.',
+    'consilium.panel': 'Consilium',
+    'consilium.roster': '3 spécialistes + président',
+    'consilium.live': 'EN DIRECT',
+    'consilium.q': 'Migri a refusé de prolonger mon permis de séjour. La lettre mentionne 30 jours. Que faire ?',
+    'consilium.r1n': 'Juriste en droit des étrangers',
+    'consilium.r1t': 'Cette décision est contestable. Vous avez 30 jours à compter de la notification pour saisir le tribunal administratif — loi finlandaise sur les étrangers (ulkomaalaislaki), § 190.',
+    'consilium.r2n': 'Asianajaja senior (FI)',
+    'consilium.r2t': 'D’accord pour le recours. Autre chose : gardez votre emploi — pendant l’examen du recours, votre droit de travailler est en général maintenu.',
+    'consilium.r3n': 'Avocat plaidant (KHO + Riigikohus)',
+    'consilium.r3t': 'Je conteste : un recours seul est lent — cela prend des mois. Déposez en parallèle une nouvelle demande sur des bases actualisées. Deux voies, pas une.',
+    'consilium.diverge': 'Les positions divergent — le président doit traiter les deux.',
+    'consilium.chn': 'Président · synthèse',
+    'consilium.cht': 'Unanimité : recours sous 30 jours. Côté stratégie, la majorité privilégie une nouvelle demande en parallèle. Le recours est rédigé — il attend votre validation.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — référence vérifiée',
+    'consilium.deadline': 'Délai enregistré : 30 jours · rappels activés',
     'founder.eyebrow': 'VOUS N\'ÊTES PAS SEUL',
     'founder.heading': 'La lettre est arrivée. Vous n\'êtes plus seul.',
     'founder.quote': '« Vous ouvrez une enveloppe de l\'administration et votre cœur se serre — une langue que vous saisissez à peine, un système juridique qui vous échappe, et un délai dont personne ne vous a prévenu. C\'est vendredi soir. Aucun avocat. Vous seul, face à toute une bureaucratie.<br><br>Advocat lit cette lettre et vous l\'explique clairement, dans votre langue. Il réunit un consilium d\'avocats IA que vous voyez raisonner sur votre affaire, en direct. Il rédige la réponse — et l\'envoie. Il compte chaque délai pour qu\'aucun ne vous échappe. Nous avons créé cela parce que nous l\'avons vécu : notre propre affaire est allée jusqu\'à la Cour suprême, pour que jamais vous n\'ayez à affronter le système seul. »',
@@ -4103,6 +4413,26 @@ const I18N = {
   },
 
   es: {
+    'consilium.eyebrow': 'EL CONSILIUM — EN DIRECTO EN TU PANTALLA',
+    'consilium.heading': '¿Pregunta difícil? Mira cómo los juristas de IA la debaten — en directo.',
+    'consilium.sub': 'En los casos complejos, Advocat convoca un consilium de juristas de IA especializados. Exponen sus posiciones, atacan los puntos débiles de los demás y un presidente lo une todo en un solo plan — cada cita legal se verifica antes de que la veas. Ves todo el debate, no solo la respuesta.',
+    'consilium.cta': 'Convocar un consilium sobre mi pregunta →',
+    'consilium.note': 'Esto es una repetición de la función real — en la app, el consilium analiza tu caso concreto, en tu idioma.',
+    'consilium.panel': 'Consilium',
+    'consilium.roster': '3 especialistas + presidente',
+    'consilium.live': 'EN VIVO',
+    'consilium.q': 'Migri rechazó prorrogar mi permiso de residencia. La carta menciona 30 días. ¿Qué hago?',
+    'consilium.r1n': 'Jurista de extranjería',
+    'consilium.r1t': 'Esta decisión es recurrible. Tienes 30 días desde la notificación para recurrir ante el tribunal administrativo — ley finlandesa de extranjería (ulkomaalaislaki), § 190.',
+    'consilium.r2n': 'Asianajaja sénior (FI)',
+    'consilium.r2t': 'De acuerdo con el recurso. Algo más: conserva tu trabajo — mientras se tramita el recurso, tu derecho a trabajar normalmente se mantiene.',
+    'consilium.r3n': 'Litigante (KHO + Riigikohus)',
+    'consilium.r3t': 'Discrepo: un recurso solo es lento — tarda meses. Presenta en paralelo una nueva solicitud con motivos actualizados. Dos vías, no una.',
+    'consilium.diverge': 'Las posiciones divergen — el presidente debe abordar ambas.',
+    'consilium.chn': 'Presidente · síntesis',
+    'consilium.cht': 'Unánime: recurso en 30 días. En estrategia, la mayoría prefiere una nueva solicitud en paralelo. El recurso ya está redactado — espera tu aprobación.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — cita verificada',
+    'consilium.deadline': 'Plazo guardado: 30 días · recordatorios activados',
     'founder.eyebrow': 'NO ESTÁS SOLO',
     'founder.heading': 'Llegó la carta. Ahora tienes a alguien.',
     'founder.quote': '«Abres un sobre de la administración y se te encoge el estómago: un idioma que entiendes a medias, un sistema legal que no conoces y un plazo del que nadie te avisó. Es viernes por la tarde. No hay abogado. Solo tú frente a toda una burocracia.<br><br>Advocat lee esa carta y te la explica con palabras claras, en tu propio idioma. Convoca un consilium de abogados de IA que ves razonar tu caso, en directo. Redacta la respuesta, y la envía. Cuenta cada plazo para que ninguno se te escape. Lo creamos porque lo vivimos: nuestro propio caso llegó hasta el Tribunal Supremo, para que tú nunca tengas que enfrentarte al sistema a solas.»',
@@ -4205,6 +4535,26 @@ const I18N = {
   },
 
   it: {
+    'consilium.eyebrow': 'IL CONSILIUM — IN DIRETTA SUL TUO SCHERMO',
+    'consilium.heading': 'Domanda difficile? Guarda i giuristi IA discuterne — in diretta.',
+    'consilium.sub': 'Per i casi complessi Advocat convoca un consilium di giuristi IA specializzati. Espongono le posizioni, attaccano i punti deboli degli altri e un presidente unisce tutto in un unico piano — ogni citazione di legge viene verificata prima che tu la veda. Segui l’intero dibattito, non solo la risposta.',
+    'consilium.cta': 'Convoca un consilium sulla mia domanda →',
+    'consilium.note': 'Questo è un replay della funzione reale — nell’app il consilium esamina il tuo caso concreto, nella tua lingua.',
+    'consilium.panel': 'Consilium',
+    'consilium.roster': '3 specialisti + presidente',
+    'consilium.live': 'LIVE',
+    'consilium.q': 'Migri ha rifiutato di prorogare il mio permesso di soggiorno. La lettera parla di 30 giorni. Cosa faccio?',
+    'consilium.r1n': 'Giurista dell’immigrazione',
+    'consilium.r1t': 'Questa decisione è impugnabile. Hai 30 giorni dalla notifica per ricorrere al tribunale amministrativo — legge finlandese sugli stranieri (ulkomaalaislaki), § 190.',
+    'consilium.r2n': 'Asianajaja senior (FI)',
+    'consilium.r2t': 'D’accordo sul ricorso. Un’altra cosa: tieni il lavoro — mentre il ricorso è pendente, il diritto di lavorare di norma continua.',
+    'consilium.r3n': 'Avvocato processualista (KHO + Riigikohus)',
+    'consilium.r3t': 'Obietto: il solo ricorso è lento — richiede mesi. Presenta in parallelo una nuova domanda su basi aggiornate. Due strade, non una.',
+    'consilium.diverge': 'Le posizioni divergono — il presidente deve affrontarle entrambe.',
+    'consilium.chn': 'Presidente · sintesi',
+    'consilium.cht': 'Unanime: ricorso entro 30 giorni. Sulla strategia la maggioranza preferisce una nuova domanda in parallelo. Il ricorso è pronto in bozza — attende la tua approvazione.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — citazione verificata',
+    'consilium.deadline': 'Termine salvato: 30 giorni · promemoria attivi',
     'founder.eyebrow': 'NON SEI SOLO',
     'founder.heading': 'È arrivata la lettera. Ora hai qualcuno.',
     'founder.quote': '«Apri una busta delle autorità e lo stomaco si stringe: una lingua che capisci a metà, un sistema legale che non conosci e una scadenza di cui nessuno ti aveva avvisato. È venerdì sera. Non c\'è nessun avvocato. Solo tu contro un\'intera burocrazia.<br><br>Advocat legge quella lettera e te la spiega con parole semplici, nella tua lingua. Riunisce un consilium di avvocati IA che vedi ragionare sul tuo caso, in diretta. Scrive la risposta — e la invia. Conta ogni scadenza perché nessuna ti sfugga. Abbiamo creato tutto questo perché l\'abbiamo vissuto: il nostro caso è arrivato fino alla Corte Suprema, perché tu non debba mai affrontare il sistema da solo.»',
@@ -4307,6 +4657,26 @@ const I18N = {
   },
 
   pl: {
+    'consilium.eyebrow': 'KONSYLIUM — NA ŻYWO NA TWOIM EKRANIE',
+    'consilium.heading': 'Trudne pytanie? Zobacz, jak prawnicy AI o nim debatują — na żywo.',
+    'consilium.sub': 'W złożonych sprawach Advocat zwołuje konsylium wyspecjalizowanych prawników AI. Przedstawiają stanowiska, atakują słabe punkty pozostałych, a przewodniczący łączy wszystko w jeden plan — każde odwołanie do przepisu jest weryfikowane, zanim je zobaczysz. Widzisz całą debatę, nie tylko odpowiedź.',
+    'consilium.cta': 'Zwołaj konsylium w mojej sprawie →',
+    'consilium.note': 'To powtórka prawdziwej funkcji — w aplikacji konsylium analizuje Twoją konkretną sprawę, w Twoim języku.',
+    'consilium.panel': 'Konsylium',
+    'consilium.roster': '3 specjalistów + przewodniczący',
+    'consilium.live': 'NA ŻYWO',
+    'consilium.q': 'Migri odmówiło przedłużenia mojego zezwolenia na pobyt. W piśmie jest mowa o 30 dniach. Co robić?',
+    'consilium.r1n': 'Prawnik ds. migracji',
+    'consilium.r1t': 'Tę decyzję można zaskarżyć. Masz 30 dni od doręczenia na skargę do sądu administracyjnego — fińska ustawa o cudzoziemcach (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'Starszy asianajaja (FI)',
+    'consilium.r2t': 'Zgoda co do skargi. Jeszcze jedno: nie rezygnuj z pracy — w trakcie rozpatrywania skargi prawo do pracy zwykle zostaje zachowane.',
+    'consilium.r3n': 'Prawnik procesowy (KHO + Riigikohus)',
+    'consilium.r3t': 'Nie zgadzam się: sama skarga to miesiące czekania. Równolegle złóż nowy wniosek na zaktualizowanych podstawach. Dwie ścieżki, nie jedna.',
+    'consilium.diverge': 'Stanowiska się różnią — przewodniczący musi odnieść się do obu.',
+    'consilium.chn': 'Przewodniczący · synteza',
+    'consilium.cht': 'Jednogłośnie: skarga w ciągu 30 dni. Co do strategii większość jest za równoległym nowym wnioskiem. Skarga jest już przygotowana — czeka na Twoją akceptację.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — cytat zweryfikowany',
+    'consilium.deadline': 'Termin zapisany: 30 dni · przypomnienia włączone',
     'founder.eyebrow': 'NIE JESTEŚ SAM',
     'founder.heading': 'Przyszło pismo. Teraz masz kogoś przy sobie.',
     'founder.quote': '„Otwierasz kopertę z urzędu i serce ci zamiera — język, który rozumiesz w połowie, system prawny, którego nie rozumiesz wcale, i termin, o którym nikt cię nie uprzedził. Jest piątkowy wieczór. Żadnego prawnika. Tylko ty przeciwko całej biurokracji.<br><br>Advocat czyta to pismo i tłumaczy je prosto, w twoim języku. Zwołuje konsylium prawników AI, których tok rozumowania nad twoją sprawą widzisz na żywo. Redaguje odpowiedź — i wysyła ją. Pilnuje każdego terminu, by żaden ci nie umknął. Zbudowaliśmy to, bo sami przez to przeszliśmy: nasza własna sprawa dotarła aż do Sądu Najwyższego, żebyś ty nigdy nie musiał stanąć naprzeciw systemu w pojedynkę.”',
@@ -4409,6 +4779,26 @@ const I18N = {
   },
 
   sv: {
+    'consilium.eyebrow': 'KONSILIET — LIVE PÅ DIN SKÄRM',
+    'consilium.heading': 'Svår fråga? Se AI-jurister debattera den — live.',
+    'consilium.sub': 'Vid komplexa ärenden sammankallar Advocat ett konsilium av specialiserade AI-jurister. De lägger fram sina ståndpunkter, angriper varandras svaga punkter, och en ordförande sammanför allt till en enda plan — varje laghänvisning verifieras innan du ser den. Du följer hela debatten, inte bara svaret.',
+    'consilium.cta': 'Sammankalla ett konsilium om min fråga →',
+    'consilium.note': 'Detta är en repris av den riktiga funktionen — i appen behandlar konsiliet ditt faktiska ärende, på ditt språk.',
+    'consilium.panel': 'Konsilium',
+    'consilium.roster': '3 specialister + ordförande',
+    'consilium.live': 'LIVE',
+    'consilium.q': 'Migri avslog förlängningen av mitt uppehållstillstånd. Brevet nämner 30 dagar. Vad gör jag?',
+    'consilium.r1n': 'Migrationsjurist',
+    'consilium.r1t': 'Beslutet kan överklagas. Du har 30 dagar från delgivningen att överklaga till förvaltningsdomstolen — utlänningslagen (ulkomaalaislaki) 190 §.',
+    'consilium.r2n': 'Senior asianajaja (FI)',
+    'consilium.r2t': 'Överens om överklagandet. En sak till: behåll ditt jobb — medan överklagandet prövas fortsätter din rätt att arbeta i regel.',
+    'consilium.r3n': 'Processjurist (KHO + Riigikohus)',
+    'consilium.r3t': 'Jag invänder: enbart ett överklagande är långsamt — det tar månader. Lämna parallellt in en ny ansökan på uppdaterade grunder. Två spår, inte ett.',
+    'consilium.diverge': 'Ståndpunkterna går isär — ordföranden måste behandla båda.',
+    'consilium.chn': 'Ordförande · syntes',
+    'consilium.cht': 'Enhälligt: överklaga inom 30 dagar. I strategin förordar majoriteten en parallell ny ansökan. Överklagandet är färdigskrivet — väntar på ditt godkännande.',
+    'consilium.verified': 'ulkomaalaislaki 190 § — hänvisning verifierad',
+    'consilium.deadline': 'Tidsfrist sparad: 30 dagar · påminnelser på',
     'founder.eyebrow': 'DU ÄR INTE ENSAM',
     'founder.heading': 'Brevet kom. Nu har du någon.',
     'founder.quote': '»Du öppnar ett kuvert från myndigheten och magen sjunker — ett språk du bara halvt förstår, ett rättssystem du inte förstår alls, och en tidsfrist som ingen varnade dig för. Det är fredag kväll. Ingen jurist finns att nå. Bara du mot en hel byråkrati.<br><br>Advocat läser det brevet och förklarar det rakt och tydligt på ditt eget språk. Det samlar ett consilium av AI-jurister som du ser resonera sig genom ditt ärende, i realtid. Det skriver svaret — och skickar det. Det räknar varje frist så att ingen glider dig förbi. Vi byggde det här för att vi levde det själva: vårt eget ärende gick hela vägen till Högsta domstolen, för att du aldrig ska behöva stå ensam inför systemet.«',
@@ -4511,6 +4901,26 @@ const I18N = {
   },
 
   lv: {
+    'consilium.eyebrow': 'KONSILIJS — TIEŠRAIDĒ JŪSU EKRĀNĀ',
+    'consilium.heading': 'Sarežģīts jautājums? Skatieties, kā AI juristi par to diskutē — tiešraidē.',
+    'consilium.sub': 'Sarežģītās lietās Advocat sasauc specializētu AI juristu konsiliju. Viņi izklāsta nostājas, uzbrūk cits cita vājajām vietām, un priekšsēdētājs visu apvieno vienā plānā — katra atsauce uz likumu tiek pārbaudīta, pirms jūs to redzat. Jūs redzat visu diskusiju, ne tikai atbildi.',
+    'consilium.cta': 'Sasaukt konsiliju par manu jautājumu →',
+    'consilium.note': 'Šis ir īstās funkcijas atkārtojums — lietotnē konsilijs izskata tieši jūsu lietu, jūsu valodā.',
+    'consilium.panel': 'Konsilijs',
+    'consilium.roster': '3 speciālisti + priekšsēdētājs',
+    'consilium.live': 'TIEŠRAIDE',
+    'consilium.q': 'Migri atteica pagarināt manu uzturēšanās atļauju. Vēstulē minētas 30 dienas. Ko man darīt?',
+    'consilium.r1n': 'Migrācijas tiesību jurists',
+    'consilium.r1t': 'Šo lēmumu var pārsūdzēt. Jums ir 30 dienas no paziņošanas, lai iesniegtu sūdzību administratīvajā tiesā — Somijas ārzemnieku likums (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'Vecākais asianajaja (FI)',
+    'consilium.r2t': 'Piekrītu par sūdzību. Vēl kas: saglabājiet darbu — kamēr sūdzība tiek izskatīta, tiesības strādāt parasti saglabājas.',
+    'consilium.r3n': 'Tiesvedības jurists (KHO + Riigikohus)',
+    'consilium.r3t': 'Iebilstu: ar sūdzību vien ir lēni — tas prasa mēnešus. Paralēli iesniedziet jaunu pieteikumu ar atjauninātu pamatojumu. Divi ceļi, ne viens.',
+    'consilium.diverge': 'Nostājas atšķiras — priekšsēdētājam jāizvērtē abas.',
+    'consilium.chn': 'Priekšsēdētājs · sintēze',
+    'consilium.cht': 'Vienbalsīgi: sūdzība 30 dienu laikā. Stratēģijā vairākums atbalsta paralēlu jaunu pieteikumu. Sūdzība ir sagatavota — gaida jūsu apstiprinājumu.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — atsauce pārbaudīta',
+    'consilium.deadline': 'Termiņš saglabāts: 30 dienas · atgādinājumi ieslēgti',
     'founder.eyebrow': 'TU NEESI VIENS',
     'founder.heading': 'Vēstule atnāca. Tagad tev ir kāds līdzās.',
     'founder.quote': '„Tu atver aploksni no iestādes, un sirds sažņaudzas — valoda, ko saproti tikai pa pusei, tiesību sistēma, ko nemaz, un termiņš, par kuru neviens tevi nebrīdināja. Ir piektdienas vakars. Neviena jurista nav. Tikai tu pret visu birokrātiju.<br><br>Advocat izlasa to vēstuli un vienkārši izskaidro to tavā valodā. Tas sasauc AI juristu konsīliju, un tu redzi, kā viņi dzīvajā spriež par tavu lietu. Tas sagatavo atbildi — un nosūta to. Tas skaita katru termiņu, lai neviens tev nepaslīdētu garām. Mēs to izveidojām tāpēc, ka paši to izdzīvojām: mūsu pašu lieta aizgāja līdz pat Augstākajai tiesai, lai tev nekad nebūtu jāstāv sistēmas priekšā vienam.”',
@@ -4613,6 +5023,26 @@ const I18N = {
   },
 
   lt: {
+    'consilium.eyebrow': 'KONSILIUMAS — TIESIOGIAI JŪSŲ EKRANE',
+    'consilium.heading': 'Sudėtingas klausimas? Stebėkite, kaip DI teisininkai dėl jo diskutuoja — tiesiogiai.',
+    'consilium.sub': 'Sudėtingose bylose Advocat sukviečia specializuotų DI teisininkų konsiliumą. Jie išdėsto pozicijas, puola vieni kitų silpnas vietas, o pirmininkas viską sujungia į vieną planą — kiekviena nuoroda į įstatymą patikrinama prieš jums ją pamatant. Matote visą diskusiją, o ne tik atsakymą.',
+    'consilium.cta': 'Sukviesti konsiliumą mano klausimu →',
+    'consilium.note': 'Tai tikros funkcijos pakartojimas — programėlėje konsiliumas nagrinėja būtent jūsų bylą, jūsų kalba.',
+    'consilium.panel': 'Konsiliumas',
+    'consilium.roster': '3 specialistai + pirmininkas',
+    'consilium.live': 'TIESIOGIAI',
+    'consilium.q': 'Migri atsisakė pratęsti mano leidimą gyventi. Laiške minimos 30 dienų. Ką daryti?',
+    'consilium.r1n': 'Migracijos teisės teisininkas',
+    'consilium.r1t': 'Šį sprendimą galima apskųsti. Turite 30 dienų nuo pranešimo skundui administraciniam teismui — Suomijos užsieniečių įstatymas (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'Vyresnysis asianajaja (FI)',
+    'consilium.r2t': 'Dėl skundo sutinku. Dar vienas dalykas: išsaugokite darbą — kol skundas nagrinėjamas, teisė dirbti paprastai išlieka.',
+    'consilium.r3n': 'Bylinėjimosi teisininkas (KHO + Riigikohus)',
+    'consilium.r3t': 'Prieštarauju: vien skundas — lėta, tai trunka mėnesius. Lygiagrečiai pateikite naują prašymą atnaujintais pagrindais. Du keliai, ne vienas.',
+    'consilium.diverge': 'Pozicijos išsiskiria — pirmininkas privalo aptarti abi.',
+    'consilium.chn': 'Pirmininkas · sintezė',
+    'consilium.cht': 'Vienbalsiai: skundas per 30 dienų. Dėl strategijos dauguma palaiko lygiagretų naują prašymą. Skundas parengtas — laukia jūsų patvirtinimo.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — nuoroda patikrinta',
+    'consilium.deadline': 'Terminas išsaugotas: 30 dienų · priminimai įjungti',
     'founder.eyebrow': 'TU NE VIENAS',
     'founder.heading': 'Laiškas atėjo. Dabar turi ką nors šalia.',
     'founder.quote': '„Atplėši voką nuo valdžios ir viduje viskas nukrenta — kalba, kurią supranti tik pusiau, teisinė sistema, kurios nesupranti visai, ir terminas, apie kurį niekas neįspėjo. Penktadienio vakaras. Advokato nėra. Tik tu prieš visą biurokratiją.<br><br>Advocat perskaito tą laišką ir paprastai paaiškina jį tavo kalba. Jis sušaukia dirbtinio intelekto teisininkų konsiliumą, kurio svarstymus dėl tavo bylos matai tiesiogiai. Jis parašo atsakymą — ir jį išsiunčia. Jis skaičiuoja kiekvieną terminą, kad nė vienas nepraslystų. Sukūrėme tai, nes patys tai išgyvenome: mūsų pačių byla nuėjo iki pat Aukščiausiojo teismo, kad tau niekada nereikėtų stoti prieš sistemą vienam.“',
@@ -4715,6 +5145,26 @@ const I18N = {
   },
 
   ro: {
+    'consilium.eyebrow': 'CONSILIUM — LIVE PE ECRANUL TĂU',
+    'consilium.heading': 'Întrebare grea? Privește juriștii AI dezbătând-o — live.',
+    'consilium.sub': 'Pentru cazurile complexe, Advocat convoacă un consilium de juriști AI specializați. Își expun pozițiile, atacă punctele slabe ale celorlalți, iar un președinte unește totul într-un singur plan — fiecare citare de lege este verificată înainte să o vezi. Urmărești toată dezbaterea, nu doar răspunsul.',
+    'consilium.cta': 'Convoacă un consilium pentru întrebarea mea →',
+    'consilium.note': 'Aceasta este o reluare a funcției reale — în aplicație, consiliumul analizează cazul tău concret, în limba ta.',
+    'consilium.panel': 'Consilium',
+    'consilium.roster': '3 specialiști + președinte',
+    'consilium.live': 'LIVE',
+    'consilium.q': 'Migri a refuzat prelungirea permisului meu de ședere. Scrisoarea menționează 30 de zile. Ce fac?',
+    'consilium.r1n': 'Jurist specializat în imigrație',
+    'consilium.r1t': 'Această decizie poate fi contestată. Ai 30 de zile de la notificare pentru a face contestație la tribunalul administrativ — legea finlandeză a străinilor (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'Asianajaja senior (FI)',
+    'consilium.r2t': 'De acord cu contestația. Încă ceva: păstrează-ți locul de muncă — cât timp contestația e în curs, dreptul de a munci de regulă continuă.',
+    'consilium.r3n': 'Avocat de instanță (KHO + Riigikohus)',
+    'consilium.r3t': 'Obiectez: doar contestația e lentă — durează luni. Depune în paralel o cerere nouă pe motive actualizate. Două căi, nu una.',
+    'consilium.diverge': 'Pozițiile diferă — președintele trebuie să le trateze pe amândouă.',
+    'consilium.chn': 'Președinte · sinteză',
+    'consilium.cht': 'Unanim: contestație în 30 de zile. La strategie, majoritatea preferă o cerere nouă în paralel. Contestația este redactată — așteaptă aprobarea ta.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — citare verificată',
+    'consilium.deadline': 'Termen salvat: 30 de zile · memento-uri active',
     'founder.eyebrow': 'NU EȘTI SINGUR',
     'founder.heading': 'A venit scrisoarea. Acum ai pe cineva.',
     'founder.quote': '„Deschizi un plic de la autorități și ți se strânge stomacul — o limbă pe care abia o pricepi, un sistem juridic străin și un termen despre care nu te-a avertizat nimeni. E vineri seara. Niciun avocat la orizont. Doar tu în fața unei birocrații întregi.<br><br>Advocat citește acea scrisoare și ți-o explică limpede, în limba ta. Convoacă un consiliu de avocați AI pe care îi vezi cum gândesc cazul tău, în direct. Redactează răspunsul — și îl trimite. Numără fiecare termen, ca niciunul să nu-ți scape. Am construit asta pentru că am trăit-o pe pielea noastră: propriul nostru caz a ajuns până la Curtea Supremă, ca tu să nu fii nevoit niciodată să înfrunți singur sistemul.”',
@@ -4817,6 +5267,26 @@ const I18N = {
   },
 
   tr: {
+    'consilium.eyebrow': 'KONSİLYUM — EKRANINIZDA CANLI',
+    'consilium.heading': 'Zor bir soru mu? AI hukukçuların bunu canlı tartışmasını izleyin.',
+    'consilium.sub': 'Karmaşık vakalarda Advocat, uzman AI hukukçulardan oluşan bir konsilyum toplar. Görüşlerini ortaya koyar, birbirlerinin zayıf noktalarına itiraz eder, başkan her şeyi tek bir plana dönüştürür — her yasa atfı siz görmeden önce doğrulanır. Yalnızca cevabı değil, tüm tartışmayı izlersiniz.',
+    'consilium.cta': 'Sorum için konsilyum topla →',
+    'consilium.note': 'Bu, gerçek özelliğin bir tekrarıdır — uygulamada konsilyum sizin gerçek dosyanızı, sizin dilinizde ele alır.',
+    'consilium.panel': 'Konsilyum',
+    'consilium.roster': '3 uzman + başkan',
+    'consilium.live': 'CANLI',
+    'consilium.q': 'Migri oturma iznimin uzatılmasını reddetti. Mektupta 30 günden söz ediliyor. Ne yapmalıyım?',
+    'consilium.r1n': 'Göç hukuku uzmanı',
+    'consilium.r1t': 'Bu karara itiraz edilebilir. Tebliğden itibaren idare mahkemesine başvurmak için 30 gününüz var — Finlandiya yabancılar yasası (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'Kıdemli asianajaja (FI)',
+    'consilium.r2t': 'İtiraz konusunda hemfikirim. Bir şey daha: işinizi bırakmayın — itiraz görülürken çalışma hakkınız genellikle devam eder.',
+    'consilium.r3n': 'Dava avukatı (KHO + Riigikohus)',
+    'consilium.r3t': 'Karşı çıkıyorum: tek başına itiraz yavaştır — aylar sürer. Paralel olarak güncellenmiş gerekçelerle yeni bir başvuru yapın. Tek değil, iki yol.',
+    'consilium.diverge': 'Görüşler ayrışıyor — başkan ikisini de ele almak zorunda.',
+    'consilium.chn': 'Başkan · sentez',
+    'consilium.cht': 'Oybirliğiyle: 30 gün içinde itiraz. Stratejide çoğunluk paralel yeni başvurudan yana. İtiraz dilekçesi hazır — onayınızı bekliyor.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — atıf doğrulandı',
+    'consilium.deadline': 'Süre kaydedildi: 30 gün · hatırlatıcılar açık',
     'founder.eyebrow': 'YALNIZ DEĞİLSİNİZ',
     'founder.heading': 'Mektup geldi. Artık yanınızda biri var.',
     'founder.quote': '„Resmî kurumdan bir zarf açıyorsunuz ve içiniz bir anda düşüyor — yarım anladığınız bir dil, hiç bilmediğiniz bir hukuk sistemi ve kimsenin uyarmadığı bir son tarih. Cuma akşamı. Ortada avukat yok. Sadece siz ve karşınızda koca bir bürokrasi.<br><br>Advocat o mektubu okur ve size kendi dilinizde sade sade anlatır. Gözünüzün önünde, canlı canlı davanızı akıl yürüterek tartışan bir yapay zekâ avukat konseyi toplar. Cevabı yazar — ve gönderir. Hiçbiri elinizden kaçmasın diye her son tarihi tek tek sayar. Bunu kurduk, çünkü bunu bizzat yaşadık: kendi davamız ta Yüksek İdare Mahkemesi\'ne kadar gitti — siz sistemin karşısında bir daha asla tek başınıza durmayın diye.”',
@@ -4919,6 +5389,26 @@ const I18N = {
   },
 
   ar: {
+    'consilium.eyebrow': 'الكونسيليوم — مباشرة على شاشتك',
+    'consilium.heading': 'سؤال صعب؟ شاهد محامي الذكاء الاصطناعي يتناقشون فيه — مباشرة.',
+    'consilium.sub': 'في القضايا المعقّدة يستدعي Advocat كونسيليومًا من محامي ذكاء اصطناعي متخصصين. يعرضون مواقفهم، ويهاجمون نقاط ضعف بعضهم البعض، ثم يجمع الرئيس كل شيء في خطة واحدة — ويتم التحقق من كل استشهاد قانوني قبل أن تراه. أنت تشاهد النقاش كاملًا، لا الجواب فقط.',
+    'consilium.cta': 'استدعِ كونسيليومًا لسؤالي ←',
+    'consilium.note': 'هذا إعادة عرض للميزة الحقيقية — في التطبيق يناقش الكونسيليوم قضيتك الفعلية، وبلغتك.',
+    'consilium.panel': 'الكونسيليوم',
+    'consilium.roster': '3 مختصين + رئيس',
+    'consilium.live': 'مباشر',
+    'consilium.q': 'رفضت Migri تمديد تصريح إقامتي. الرسالة تذكر 30 يومًا. ماذا أفعل؟',
+    'consilium.r1n': 'محامي هجرة',
+    'consilium.r1t': 'هذا القرار قابل للطعن. أمامك 30 يومًا من تاريخ التبليغ للطعن أمام المحكمة الإدارية — قانون الأجانب الفنلندي (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'محامٍ أول asianajaja (فنلندا)',
+    'consilium.r2t': 'أوافق على الطعن. وأمر آخر: حافظ على عملك — أثناء نظر الطعن يستمر حقك في العمل عادةً.',
+    'consilium.r3n': 'محامي مرافعات (KHO + Riigikohus)',
+    'consilium.r3t': 'أعترض: الطعن وحده بطيء — يستغرق شهورًا. قدِّم بالتوازي طلبًا جديدًا بأسس محدّثة. مساران لا مسار واحد.',
+    'consilium.diverge': 'المواقف متباينة — على الرئيس معالجة كليهما.',
+    'consilium.chn': 'الرئيس · الخلاصة',
+    'consilium.cht': 'بالإجماع: الطعن خلال 30 يومًا. في الاستراتيجية ترجّح الأغلبية طلبًا جديدًا بالتوازي. صيغة الطعن جاهزة — بانتظار موافقتك.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — تم التحقق من الاستشهاد',
+    'consilium.deadline': 'تم حفظ المهلة: 30 يومًا · التذكيرات مفعّلة',
     'founder.eyebrow': 'لست وحدك',
     'founder.heading': 'وصلَتِ الرسالة. الآن معك من يقف بجانبك.',
     'founder.quote': '«تفتح مظروفاً من الجهات الرسمية فيهوي قلبك — لغةٌ تفهمها بالكاد، ونظامٌ قانونيٌّ لا تعرفه، ومهلةٌ لم يحذّرك منها أحد. إنه مساء الجمعة. لا محامٍ في الأفق. أنت وحدك في مواجهة بيروقراطيةٍ بأكملها.<br><br>يقرأ Advocat تلك الرسالة ويشرحها لك بوضوح بلغتك أنت. يعقد مجلساً من محامي الذكاء الاصطناعي تراهم يفكّرون في قضيتك أمام عينيك، مباشرةً. يصيغ الردّ — ثم يرسله. ويحصي كل مهلةٍ حتى لا تفوتك واحدة. بنينا هذا لأننا عشناه بأنفسنا: قضيّتنا نحن بلغت المحكمة العليا، كي لا تضطر أنت يوماً إلى الوقوف وحيداً أمام النظام.»',
@@ -5021,6 +5511,26 @@ const I18N = {
   },
 
   fa: {
+    'consilium.eyebrow': 'کنسیلیوم — زنده روی صفحه شما',
+    'consilium.heading': 'پرسش دشواری دارید؟ ببینید حقوق‌دانان هوش مصنوعی درباره‌اش بحث می‌کنند — زنده.',
+    'consilium.sub': 'در پرونده‌های پیچیده، Advocat کنسیلیومی از حقوق‌دانان متخصص هوش مصنوعی تشکیل می‌دهد. آن‌ها مواضع خود را مطرح می‌کنند، به نقاط ضعف یکدیگر حمله می‌کنند و رئیس همه را در یک برنامه واحد جمع می‌بندد — هر استناد قانونی پیش از آنکه ببینید بررسی و تأیید می‌شود. شما کل بحث را می‌بینید، نه فقط پاسخ را.',
+    'consilium.cta': 'برای پرسش من کنسیلیوم تشکیل بده ←',
+    'consilium.note': 'این بازپخش قابلیت واقعی است — در اپلیکیشن، کنسیلیوم پرونده واقعی شما را به زبان خودتان بررسی می‌کند.',
+    'consilium.panel': 'کنسیلیوم',
+    'consilium.roster': '۳ متخصص + رئیس',
+    'consilium.live': 'زنده',
+    'consilium.q': 'Migri تمدید اجازه اقامت من را رد کرد. در نامه از ۳۰ روز صحبت شده. چه کار کنم؟',
+    'consilium.r1n': 'حقوق‌دان مهاجرت',
+    'consilium.r1t': 'این تصمیم قابل اعتراض است. از تاریخ ابلاغ ۳۰ روز فرصت دارید به دادگاه اداری شکایت کنید — قانون اتباع خارجی فنلاند (ulkomaalaislaki) § 190.',
+    'consilium.r2n': 'asianajaja ارشد (فنلاند)',
+    'consilium.r2t': 'با اعتراض موافقم. یک نکته دیگر: کار خود را حفظ کنید — تا زمان رسیدگی به اعتراض، حق کار معمولاً پابرجا می‌ماند.',
+    'consilium.r3n': 'وکیل دادگاهی (KHO + Riigikohus)',
+    'consilium.r3t': 'مخالفم: اعتراض به‌تنهایی کند است — ماه‌ها طول می‌کشد. هم‌زمان درخواست جدیدی با دلایل به‌روز ارائه دهید. دو مسیر، نه یک مسیر.',
+    'consilium.diverge': 'مواضع متفاوت است — رئیس باید به هر دو بپردازد.',
+    'consilium.chn': 'رئیس · جمع‌بندی',
+    'consilium.cht': 'به‌اتفاق آرا: اعتراض ظرف ۳۰ روز. در استراتژی، اکثریت درخواست جدید موازی را ترجیح می‌دهند. متن اعتراض آماده است — منتظر تأیید شماست.',
+    'consilium.verified': 'ulkomaalaislaki § 190 — استناد تأیید شد',
+    'consilium.deadline': 'مهلت ذخیره شد: ۳۰ روز · یادآورها فعال',
     'founder.eyebrow': 'شما تنها نیستید',
     'founder.heading': 'نامه رسید. حالا کسی را داری.',
     'founder.quote': '«پاکتی از اداره‌ای دولتی باز می‌کنی و دلت فرو می‌ریزد — زبانی که نیمه‌کاره می‌فهمی، نظامی حقوقی که اصلاً نمی‌شناسی، و مهلتی که هیچ‌کس درباره‌اش هشدارت نداده بود. عصر جمعه است. هیچ وکیلی در دسترس نیست. فقط تویی در برابر یک دستگاه اداری تمام‌عیار.<br><br>Advocat آن نامه را می‌خواند و ساده و روشن به زبان خودت برایت توضیح می‌دهد. شورایی از وکلای هوش مصنوعی تشکیل می‌دهد که زنده می‌بینی چطور روی پرونده‌ات فکر می‌کنند. پاسخ را می‌نویسد — و می‌فرستد. هر مهلت را می‌شمارد تا هیچ‌کدام از دستت نرود. ما این را ساختیم چون خودمان از سرش گذشتیم: پرونده‌ی خودمان تا دیوان عالی رفت، تا تو هرگز مجبور نباشی تنها روبه‌روی این نظام بایستی.»',
